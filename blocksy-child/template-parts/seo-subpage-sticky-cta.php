@@ -50,7 +50,7 @@ if ( '' === $hu_sticky_target ) {
 ?>
 
 <aside
-	class="hu-sticky-cta"
+	class="hu-sticky-cta tafel"
 	id="hu-sticky-cta"
 	role="region"
 	aria-label="<?php echo esc_attr( $hu_sticky_region ); ?>"

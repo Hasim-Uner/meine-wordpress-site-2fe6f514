@@ -43,9 +43,9 @@ Neue Seiten verwenden diese Tokens. Sie definieren weder eine zweite Abstandsska
 
 Der Ausgangsstand vom 14.09.2026 betrug **39 CSS-Dateien mit NX-Namen** außerhalb des Providers. Davon waren **34 tatsächlich an Tokens gekoppelt, die `design-system.css` deklariert**; fünf Dateien trugen lediglich historische NX-Namen, deren Token der Provider gar nicht besitzt.
 
-Der provider-unabhängige NX-Abbau ist abgeschlossen. `server-side-tracking-cro.css`, `b2b-solar-leads-page.css`, `server-side-tracking-protocol.css` und `solar-leads-kaufen-alternative-page.css` verwenden jetzt die kanonischen Typografie-Rollen. Die Anfragestrecke besitzt für ihre von JavaScript gemessene Energy-Header-Höhe den route-lokalen Token `--strecke-header-height` statt eines global benannten NX-Tokens.
+Der provider-unabhängige NX-Abbau ist abgeschlossen. `b2b-solar-leads-page.css` und `solar-leads-kaufen-alternative-page.css` verwenden jetzt die kanonischen Typografie-Rollen. Die Anfragestrecke besitzt für ihre von JavaScript gemessene Energy-Header-Höhe den route-lokalen Token `--strecke-header-height` statt eines global benannten NX-Tokens.
 
-Die shrink-only Baseline steht nach der Entkopplung der globalen Shell aktuell bei **27 NX-Verbraucherdateien**. `site-header.css` und `site-header.js` sind mit dem retired Growth-Audit-Sonderheader entfernt; das verwaiste `audit.css` ebenfalls. `style.css` konsumiert keine `--nx-*`-Variablen mehr und ist aus der Baseline entfernt. Jeder verbleibende Verbraucher nutzt mindestens ein Token des Legacy-Providers; die Zahl darf nur sinken.
+Die shrink-only Baseline steht aktuell bei **21 NX-Verbraucherdateien**. `site-header.css` und `site-header.js` sind mit dem retired Growth-Audit-Sonderheader entfernt; das verwaiste `audit.css` ebenfalls. `style.css` konsumiert keine `--nx-*`-Variablen mehr und ist aus der Baseline entfernt. Jeder verbleibende Verbraucher nutzt mindestens ein Token des Legacy-Providers; die Zahl darf nur sinken.
 
 Die ehemalige Meta-Ads-Service-Route ist ebenfalls retired: `page-meta-ads.php` und `meta-ads.css` sind entfernt. Der aktive redaktionelle Beitrag `meta-ads-fuer-b2b` läuft über die normale Single-/Editorial-Architektur und benötigt dieses Service-CSS nicht.
 
@@ -56,9 +56,17 @@ Regeln:
 - bestehende Verbraucher einzeln auf `system.css` migrieren oder stilllegen;
 - ein bereinigter Verbraucher wird sofort aus der Baseline entfernt;
 - keine neuen generischen Komponenten in `design-system.css` erfinden;
-- `design-system.css` ist auf der kanonischen Startseite, der Personenseite, dem Ergebnisse-Hub, den Glossarseiten, der White-Label-Seite und der Kontaktseite bereits aus dem Enqueue genommen; weitere Routen folgen erst nach eigenem Provider-Audit.
+- `design-system.css` ist auf der kanonischen Startseite, der Personenseite, dem Ergebnisse-Hub, den Glossarseiten, der White-Label-Seite, der Kontaktseite und der Server-Side-Tracking-Seite bereits aus dem Enqueue genommen; weitere Routen folgen erst nach eigenem Provider-Audit.
 
 Das unmittelbare Ziel ist daher nicht, `design-system.css` mit `system.css` zu verschmelzen. Beide Systeme haben unterschiedliche historische Semantik und Theme-Annahmen; ein blindes Zusammenlegen würde Cascade- und Kontrastfehler erzeugen.
+
+### 3a. Server-Side Tracking: eine Datei
+
+`/server-side-tracking-b2b/` lädt `system.css`, `contact.css`, `sticky-cta.css` und `server-side-tracking.css` — weder `design-system.css` noch `solar-leads-kaufen-alternative.css`. Die Datei ersetzt die fünf früheren Schichten (`-base`, `-cro`, `-funnel`, `-protocol`, `-contrast`), die per `@import` zusammengesetzt wurden und eigene Token-Familien (`--sst-*`, `--vp-*`) mitbrachten. Die Reihenfolge der Abschnitte ist die alte Kaskadenreihenfolge, damit die Spezifität-Verhältnisse unverändert bleiben. Der Deployment-Build bündelt nichts mehr; er minifiziert die Datei wie jede andere und bricht ab, wenn sie ein `@import` enthält.
+
+Farben stehen nur noch als Token: Kupferstufen sind `--stempel`, Flächen `--papier`/`--zone`/`--zone2`, Text `--tinte`/`--grau`/`--matt`, Linien `--haar`, Transparenzen `color-mix(in srgb, <Token> N%, transparent)`. Radien sind `--r0` (Formularfelder `--r1`), Schatten und Verläufe als Fläche entfallen. Die Autorenzeile (`.hu-intercept__byline`) trägt die Route selbst, weil ihre Grundregeln auf dunklem Grund gesetzt waren.
+
+Die gemeinsame Sticky-CTA-Leiste (`sticky-cta.css`, `template-parts/seo-subpage-sticky-cta.php`) trägt die Klasse `.tafel` und steht damit auf der dunklen Fläche für Handlung. Die Money-Page-Hülle (`.hu-money-*`, Rail und mobiles Inhaltsverzeichnis) lag bis dahin in `sticky-cta.css` und gehört jetzt zur SST-Datei, weil nur diese Route sie nutzt.
 
 ### Gemessene Legacy-Cluster
 
@@ -68,7 +76,7 @@ Die verbleibenden Verbraucher verteilen sich nicht gleichmäßig. Für die Migra
 2. **Schwere Legacy-Oberflächen:** `homepage.css`, `wgos.css`, `wgos-assets.css`. `ergebnisse.css` ist bereits vollständig entkoppelt.
 3. **Service-Routen:** `cro.css`, `ga4.css`, `cwv.css`, `seo-cornerstone.css`, `seo.css`. `performance.css` ist entkoppelt (siehe unten).
 4. **Blog / Editorial:** `single.css`, `single-editorial.css`, `related-content.css`, `footer-cta.css`, Provider-Decision-Layer.
-5. **Solar / Tracking / Intercepts:** `energy-systems.css`, SST-Quellen, `solar-marketcheck-compact.css`, `sticky-cta.css` und die Solar-SEO-Deltas.
+5. **Solar / Intercepts:** `energy-systems.css`, `solar-marketcheck-compact.css`, `solar-leads-kaufen-alternative.css` und die Solar-SEO-Deltas. `server-side-tracking.css` und `sticky-cta.css` stehen auf `system.css` (siehe Abschnitt 3a).
 6. **Kleine Restverbraucher:** Dateien mit nur wenigen oder provider-unabhängigen NX-Verwendungen werden bevorzugt entfernt, sofern die Semantik eindeutig ist.
 
 Die Anzahl allein entscheidet nicht über die Reihenfolge. Global geladene Verbraucher haben Vorrang, weil sie die Abschaltung des Providers blockieren.

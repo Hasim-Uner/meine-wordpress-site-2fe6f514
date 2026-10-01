@@ -97,13 +97,13 @@ function hu_enqueue_assets() {
 	);
 
 	// ── Legacy compatibility provider ──────────────────────────────
-	// Startseite, Personenseite, Ergebnisse-Hub, Glossar, White-Label und
-	// Kontakt stehen vollstaendig auf system.css und konsumieren weder NX- noch
+	// Startseite, Personenseite, Ergebnisse-Hub, Glossar, White-Label, Kontakt
+	// und Server-Side Tracking stehen vollstaendig auf system.css und konsumieren weder NX- noch
 	// unpraefixierte Provider-Tokens. Alle anderen Routen behalten den
 	// Legacy-Provider, bis ihre impliziten Token-/Selector-Abhaengigkeiten
 	// einzeln nachgewiesen und migriert sind.
 	$is_contact_route          = function_exists( 'nexus_is_contact_page' ) && nexus_is_contact_page();
-	$uses_legacy_design_system = ! ( is_front_page() || hu_is_person_page() || $is_results_hub || $is_glossary || $is_whitelabel || $is_contact_route );
+	$uses_legacy_design_system = ! ( is_front_page() || hu_is_person_page() || $is_results_hub || $is_glossary || $is_whitelabel || $is_contact_route || $is_sst_route );
 	if ( $uses_legacy_design_system ) {
 		hu_enqueue_css( 'nexus-design-system', 'design-system.css', [ 'blocksy-child-style' ] );
 	}
@@ -421,8 +421,12 @@ function hu_enqueue_assets() {
 
 	foreach ( $intercept_routes as $slug => $template ) {
 		if ( is_page( $slug ) || is_page_template( $template ) ) {
-			hu_enqueue_css( 'nexus-intercept-solar-leads-css', 'solar-leads-kaufen-alternative.css', [ 'nexus-design-system' ] );
-			hu_enqueue_css( 'nexus-sticky-cta-css', 'sticky-cta.css', [ 'nexus-design-system' ] );
+			// Server-Side Tracking steht auf system.css und braucht weder das
+			// Intercept-Blatt noch den Legacy-Provider (siehe unten).
+			if ( ! $is_sst_route ) {
+				hu_enqueue_css( 'nexus-intercept-solar-leads-css', 'solar-leads-kaufen-alternative.css', [ 'nexus-design-system' ] );
+			}
+			hu_enqueue_css( 'nexus-sticky-cta-css', 'sticky-cta.css', [ $is_sst_route ? 'nexus-system-css' : 'nexus-design-system' ] );
 			hu_enqueue_js( 'nexus-seo-subpage-sticky-cta-js', 'seo-subpage-sticky-cta.js', [] );
 			break;
 		}
@@ -456,8 +460,8 @@ function hu_enqueue_assets() {
 	// lädt zuletzt und ist über .hu-sst gescopet – keine andere Intercept-Seite
 	// wird berührt.
 	if ( $is_sst_route ) {
-		hu_enqueue_css( 'nexus-contact-css', 'contact.css', [ 'nexus-design-system' ] );
-		hu_enqueue_css( 'nexus-sst-css', 'server-side-tracking.css', [ 'nexus-intercept-solar-leads-css', 'nexus-contact-css' ] );
+		hu_enqueue_css( 'nexus-contact-css', 'contact.css', [ 'nexus-system-css' ] );
+		hu_enqueue_css( 'nexus-sst-css', 'server-side-tracking.css', [ 'nexus-system-css', 'nexus-contact-css' ] );
 		hu_enqueue_js( 'nexus-contact-js', 'contact.js', [ 'nexus-core-js' ] );
 
 		wp_localize_script(

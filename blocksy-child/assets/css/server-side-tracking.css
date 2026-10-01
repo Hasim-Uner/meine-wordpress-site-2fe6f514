@@ -1,3 +1,5022 @@
+/* ==========================================================================
+   /server-side-tracking-b2b/ — eine Datei, ein Token-System
+
+   Frueher fuenf Schichten (base, cro, funnel, protocol, contrast) mit eigenen
+   --sst-* und --vp-* Tokens, zusammengesetzt per @import. Seit der
+   Zusammenfuehrung liest die Route Farbe, Radius und Schrift aus system.css
+   und laedt weder design-system.css noch solar-leads-kaufen-alternative.css.
+   Die Reihenfolge der Abschnitte ist die alte Kaskadenreihenfolge:
+   Money-Page-Huelle, base, cro, funnel, protocol, contrast, Rest.
+
+   Dunkle Flaechen entstehen nur ueber die Klasse .tafel. Die Seite selbst
+   ist hell; das protocol-Design wird per seo-subpage-sticky-cta.js gesetzt
+   (data-sst-design). Wer hier eine Farbe braucht, braucht einen Token in
+   system.css, kein Literal.
+   ========================================================================== */
+
+/* ═════ Money-Page-Huelle (vormals in sticky-cta.css) ═════ */
+/* ══════════════════════════════════════════════════════════
+   Money-Page Shell — zentrierte Leseflaeche mit Instrument-Rails
+
+   Die linke Navigation arbeitet auf grossen Viewports wie ein Messgeraet:
+   kompakt als Skala, bei Hover oder Tastaturfokus aufgeklappt mit Labels.
+   Die mittlere Leseflaeche bleibt geometrisch zentriert. Unterhalb des
+   Rail-Breakpoints bleibt das native <details>-TOC als robuste Alternative.
+   ══════════════════════════════════════════════════════════ */
+
+.hu-sst[data-track-page="server-side-tracking-b2b"] {
+	--hu-money-content: 960px;
+	--hu-money-content-half: 480px;
+	--hu-money-context-width: 176px;
+	--hu-money-toc-collapsed: 88px;
+	--hu-money-toc-expanded: 224px;
+	--hu-money-rail-gap: 1.5rem;
+}
+
+/* Leseflaeche nach dem Hero bewusst schmaler; FAQ und Formular behalten
+   ihren bereits engeren --narrow-Kanon. */
+.hu-sst[data-track-page="server-side-tracking-b2b"]
+	.hu-sst__band:not(.hu-sst__hero)
+	.hu-sst__container:not(.hu-sst__container--narrow) {
+	width: min(100%, var(--hu-money-content));
+}
+
+.hu-sst[data-track-page="server-side-tracking-b2b"] #symptome,
+.hu-sst[data-track-page="server-side-tracking-b2b"] #unterschied,
+.hu-sst[data-track-page="server-side-tracking-b2b"] #fit,
+.hu-sst[data-track-page="server-side-tracking-b2b"] #architektur,
+.hu-sst[data-track-page="server-side-tracking-b2b"] #umfang,
+.hu-sst[data-track-page="server-side-tracking-b2b"] #pakete,
+.hu-sst[data-track-page="server-side-tracking-b2b"] #tracking-care,
+.hu-sst[data-track-page="server-side-tracking-b2b"] #ablauf,
+.hu-sst[data-track-page="server-side-tracking-b2b"] #sicherheit,
+.hu-sst[data-track-page="server-side-tracking-b2b"] #faq,
+.hu-sst[data-track-page="server-side-tracking-b2b"] #anfrage {
+	scroll-margin-top: 96px;
+}
+
+.hu-money-rail {
+	display: none;
+}
+
+.hu-money-mobile-toc {
+	margin: 0 0 2rem;
+	border: 1px solid var(--haar);
+	border-radius: var(--r0);
+	background: color-mix(in srgb, var(--papier) 72%, transparent);
+	box-shadow: none;
+}
+
+.hu-money-mobile-toc__details {
+	margin: 0;
+}
+
+.hu-money-mobile-toc__summary {
+	display: flex;
+	align-items: center;
+	justify-content: space-between;
+	gap: 1rem;
+	min-block-size: 52px;
+	padding-block: 1rem;
+	padding-inline: 1.5rem;
+	list-style: none;
+	cursor: pointer;
+	font-size: 0.92rem;
+	font-weight: 700;
+	color: var(--tinte);
+}
+
+.hu-money-mobile-toc__summary::-webkit-details-marker {
+	display: none;
+}
+
+.hu-money-mobile-toc__summary::after {
+	content: "+";
+	flex: 0 0 auto;
+	font-size: 1.1rem;
+	font-weight: 500;
+	color: var(--stempel);
+}
+
+.hu-money-mobile-toc__details[open] .hu-money-mobile-toc__summary::after {
+	content: "–";
+}
+
+.hu-money-mobile-toc__summary small {
+	margin-inline-start: auto;
+	font-size: 0.74rem;
+	font-weight: 600;
+	letter-spacing: 0.06em;
+	text-transform: uppercase;
+	color: var(--matt);
+}
+
+.hu-money-mobile-toc .hu-money-toc__list {
+	display: grid;
+	grid-template-columns: 1fr;
+	gap: 0;
+	margin: 0;
+	padding: 0 1.5rem 1rem;
+	list-style: none;
+	border-top: 1px solid var(--haar);
+}
+
+.hu-money-mobile-toc__link {
+	display: grid;
+	grid-template-columns: 2.2rem 10px minmax(0, 1fr);
+	align-items: center;
+	gap: 0.5rem;
+	min-block-size: 46px;
+	color: var(--grau);
+	font-size: 0.88rem;
+	text-decoration: none;
+}
+
+.hu-money-mobile-toc__link + .hu-money-mobile-toc__link {
+	border-top: 1px solid color-mix(in srgb, var(--haar) 6%, transparent);
+}
+
+.hu-money-mobile-toc__link .hu-money-toc__num {
+	font-size: 0.7rem;
+	font-weight: 700;
+	letter-spacing: 0.08em;
+	color: var(--stempel);
+	font-variant-numeric: tabular-nums;
+}
+
+.hu-money-mobile-toc__link .hu-money-toc__marker {
+	inline-size: 6px;
+	block-size: 6px;
+	border-radius: 50%;
+	background: var(--haar);
+}
+
+.hu-money-mobile-toc__link[aria-current="true"] {
+	font-weight: 700;
+	color: var(--tinte);
+}
+
+.hu-money-mobile-toc__link[aria-current="true"] .hu-money-toc__marker {
+	background: var(--stempel);
+	box-shadow: none;
+}
+
+.hu-money-mobile-toc__link:focus-visible,
+.hu-money-context__cta:focus-visible,
+.hu-money-toc__link:focus-visible {
+	outline: 2px solid var(--stempel);
+	outline-offset: 3px;
+}
+
+@media (min-width: 700px) and (max-width: 1439px) {
+	.hu-money-mobile-toc .hu-money-toc__list {
+		grid-template-columns: repeat(2, minmax(0, 1fr));
+		column-gap: 1.5rem;
+	}
+}
+
+@media (min-width: 1440px) {
+	.hu-money-mobile-toc {
+		display: none;
+	}
+
+	.hu-money-rail {
+		position: fixed;
+		z-index: 76;
+		top: 50%;
+		display: block;
+		max-block-size: min(640px, 78vh);
+		padding-block: 1.5rem;
+		border: 1px solid color-mix(in srgb, var(--haar) 12%, transparent);
+		background: color-mix(in srgb, var(--papier) 96%, transparent);
+		box-shadow: none;
+		color: var(--tinte);
+		opacity: 0;
+		visibility: hidden;
+		pointer-events: none;
+		transform: translateY(-50%) translateY(8px);
+		transition: opacity var(--t-norm) var(--ease-aus),
+			transform var(--t-norm) var(--ease-aus),
+			border-color var(--t-norm) var(--ease-aus),
+			box-shadow var(--t-norm) var(--ease-aus),
+			visibility 0s linear var(--t-norm);
+	}
+
+	.hu-money-rail--toc {
+		inset-inline-start: max(12px, calc(50vw - var(--hu-money-content-half) - var(--hu-money-rail-gap) - var(--hu-money-toc-expanded)));
+		inline-size: var(--hu-money-toc-collapsed);
+		padding-inline: 12px;
+		border-radius: var(--r0);
+		overflow: hidden;
+		background: color-mix(in srgb, var(--papier) 98%, transparent);
+		transition: inline-size 240ms var(--ease-aus),
+			background-color var(--t-norm) var(--ease-aus),
+			border-color var(--t-norm) var(--ease-aus),
+			box-shadow var(--t-norm) var(--ease-aus),
+			opacity var(--t-norm) var(--ease-aus),
+			transform var(--t-norm) var(--ease-aus),
+			visibility 0s linear var(--t-norm);
+	}
+
+	.hu-money-rail--toc::before {
+		content: "";
+		position: absolute;
+		inset-block: 56px 24px;
+		inset-inline-start: 13px;
+		inline-size: 9px;
+		background: repeating-linear-gradient(
+			to bottom,
+			var(--haar) 0,
+			var(--haar) 1px,
+			transparent 1px,
+			transparent 8px
+		);
+		opacity: 0.48;
+		pointer-events: none;
+	}
+
+	.hu-money-rail--toc::after {
+		content: "LIVE";
+		position: absolute;
+		inset-block-end: 10px;
+		inset-inline-start: 12px;
+		font-size: 0.52rem;
+		font-weight: 700;
+		letter-spacing: 0.14em;
+		color: color-mix(in srgb, var(--tinte) 32%, transparent);
+		pointer-events: none;
+	}
+
+	.hu-money-rail--context {
+		inset-inline-end: max(12px, calc(50vw - var(--hu-money-content-half) - var(--hu-money-rail-gap) - var(--hu-money-context-width)));
+		inline-size: var(--hu-money-context-width);
+		padding-inline: 1rem;
+		border-radius: var(--r0);
+	}
+
+	.hu-sst.is-money-rails-active:not(.is-money-form-visible) .hu-money-rail {
+		opacity: 1;
+		visibility: visible;
+		pointer-events: auto;
+		transform: translateY(-50%);
+		transition-delay: 0s;
+	}
+
+	.hu-money-rail__kicker {
+		margin: 0 0 1rem;
+		font-size: 0.62rem;
+		font-weight: 700;
+		letter-spacing: 0.16em;
+		text-transform: uppercase;
+		white-space: nowrap;
+		color: var(--stempel);
+	}
+
+	.hu-money-rail--toc .hu-money-rail__kicker {
+		max-inline-size: 42px;
+		overflow: hidden;
+		text-overflow: clip;
+		transition: max-inline-size 240ms var(--ease-aus);
+	}
+
+	.hu-money-rail--toc .hu-money-rail__progress {
+		position: absolute;
+		top: 58px;
+		bottom: 29px;
+		inset-inline-start: 48px;
+		inline-size: 2px;
+		background: color-mix(in srgb, var(--zone) 10%, transparent);
+		box-shadow: none;
+		pointer-events: none;
+	}
+
+	.hu-money-rail__progress-fill {
+		display: block;
+		inline-size: 2px;
+		block-size: 100%;
+		background: var(--stempel);
+		box-shadow: none;
+		transform: scaleY(0);
+		transform-origin: top center;
+	}
+
+	.hu-money-rail .hu-money-toc__list {
+		display: grid;
+		gap: 0;
+		margin: 0;
+		padding: 0;
+		list-style: none;
+	}
+
+	.hu-money-toc__item {
+		position: relative;
+	}
+
+	.hu-money-toc__item::before {
+		content: "";
+		position: absolute;
+		z-index: 1;
+		inset-inline-start: 36px;
+		inset-block-start: 50%;
+		inline-size: 12px;
+		block-size: 1px;
+		background: color-mix(in srgb, var(--zone) 15%, transparent);
+		pointer-events: none;
+	}
+
+	.hu-money-toc__link {
+		position: relative;
+		display: grid;
+		grid-template-columns: 1.4rem 10px minmax(0, 1fr);
+		align-items: center;
+		gap: 8px;
+		min-block-size: 42px;
+		color: color-mix(in srgb, var(--tinte) 52%, transparent);
+		font-size: 0.78rem;
+		line-height: 1.2;
+		text-decoration: none;
+		white-space: nowrap;
+		transition: color var(--t-norm) var(--ease-aus);
+	}
+
+	.hu-money-toc__num {
+		font-size: 0.61rem;
+		font-weight: 700;
+		letter-spacing: 0.08em;
+		color: color-mix(in srgb, var(--tinte) 32%, transparent);
+		font-variant-numeric: tabular-nums;
+	}
+
+	.hu-money-toc__marker {
+		position: relative;
+		z-index: 2;
+		inline-size: 8px;
+		block-size: 8px;
+		border: 1px solid color-mix(in srgb, var(--haar) 32%, transparent);
+		border-radius: 50%;
+		background: var(--papier);
+		transition: background-color var(--t-norm) var(--ease-aus),
+			border-color var(--t-norm) var(--ease-aus),
+			box-shadow var(--t-norm) var(--ease-aus);
+	}
+
+	.hu-money-toc__label {
+		max-inline-size: 0;
+		overflow: hidden;
+		opacity: 0;
+		transform: translateX(-6px);
+		transition: max-inline-size 240ms var(--ease-aus),
+			opacity 160ms var(--ease-aus),
+			transform 200ms var(--ease-aus);
+	}
+
+	.hu-money-toc__link[aria-current="true"] {
+		font-weight: 700;
+		color: var(--tinte);
+	}
+
+	.hu-money-toc__link[aria-current="true"]::after {
+		content: "";
+		position: absolute;
+		inset-inline-end: 0;
+		inline-size: 3px;
+		block-size: 16px;
+		border-radius: var(--r0);
+		background: var(--stempel);
+		opacity: 0;
+		transition: opacity 160ms var(--ease-aus);
+	}
+
+	.hu-money-toc__link[aria-current="true"] .hu-money-toc__num {
+		color: var(--stempel);
+	}
+
+	.hu-money-toc__link[aria-current="true"] .hu-money-toc__marker {
+		border-color: var(--stempel);
+		background: var(--stempel);
+		box-shadow: none;
+	}
+
+	.hu-money-rail--toc:hover,
+	.hu-money-rail--toc:focus-within {
+		inline-size: var(--hu-money-toc-expanded);
+		border-color: color-mix(in srgb, var(--stempel) 38%, transparent);
+		box-shadow: none;
+	}
+
+	.hu-money-rail--toc:hover .hu-money-rail__kicker,
+	.hu-money-rail--toc:focus-within .hu-money-rail__kicker {
+		max-inline-size: 180px;
+	}
+
+	.hu-money-rail--toc:hover .hu-money-toc__label,
+	.hu-money-rail--toc:focus-within .hu-money-toc__label {
+		max-inline-size: 150px;
+		opacity: 1;
+		transform: translateX(0);
+	}
+
+	.hu-money-rail--toc:hover .hu-money-toc__link[aria-current="true"]::after,
+	.hu-money-rail--toc:focus-within .hu-money-toc__link[aria-current="true"]::after {
+		opacity: 1;
+	}
+
+	.hu-money-context__current {
+		margin: 0 0 1.5rem;
+		font-family: var(--serif-display);
+		font-size: 1.05rem;
+		font-weight: 700;
+		line-height: 1.3;
+		color: var(--tinte);
+	}
+
+	.hu-money-context__proof {
+		display: grid;
+		gap: 0;
+		margin: 0 0 1.5rem;
+		padding: 0;
+		border-top: 1px solid color-mix(in srgb, var(--haar) 10%, transparent);
+	}
+
+	.hu-money-context__proof-row {
+		padding-block: 1rem;
+		border-bottom: 1px solid color-mix(in srgb, var(--haar) 10%, transparent);
+	}
+
+	.hu-money-context__proof dt {
+		margin: 0 0 0.2rem;
+		font-size: 0.62rem;
+		font-weight: 700;
+		letter-spacing: 0.1em;
+		text-transform: uppercase;
+		color: color-mix(in srgb, var(--tinte) 42%, transparent);
+	}
+
+	.hu-money-context__proof dd {
+		margin: 0;
+		font-size: 0.76rem;
+		font-weight: 600;
+		line-height: 1.4;
+		color: color-mix(in srgb, var(--tinte) 82%, transparent);
+	}
+
+	.hu-money-context__cta {
+		display: inline-flex;
+		align-items: center;
+		justify-content: center;
+		inline-size: 100%;
+		min-block-size: 48px;
+		padding-block: 0.75rem;
+		padding-inline: 1rem;
+		border-radius: var(--r0);
+		background: var(--stempel);
+		color: var(--papier);
+		font-size: 0.78rem;
+		font-weight: 700;
+		line-height: 1.2;
+		text-align: center;
+		text-decoration: none;
+		transition: background-color var(--t-norm) var(--ease-aus);
+	}
+
+	@media (hover: hover) and (pointer: fine) {
+		.hu-money-toc__link:hover {
+			color: var(--tinte);
+		}
+
+		.hu-money-context__cta:hover {
+			background: var(--stempel);
+		}
+	}
+}
+
+@media (prefers-reduced-motion: reduce) {
+	.hu-money-rail,
+	.hu-money-rail--toc .hu-money-rail__kicker,
+	.hu-money-toc__link,
+	.hu-money-toc__marker,
+	.hu-money-toc__label,
+	.hu-money-toc__link::after,
+	.hu-money-context__cta {
+		transition: none !important;
+	}
+}
+/* ── Autorenzeile ────────────────────────────────────────────────────────
+   template-parts/seo-subpage-byline.php. Die Grundregeln dafuer lagen in
+   solar-leads-kaufen-alternative.css und sind auf dunklem Grund gesetzt;
+   diese Route laedt dieses Blatt nicht mehr. */
+.hu-sst .hu-intercept__byline {
+	display: inline-flex;
+	flex-wrap: wrap;
+	align-items: center;
+	gap: 10px;
+	margin: 0 0 32px;
+	padding: 8px 0;
+	font-size: 0.88rem;
+	line-height: 1.4;
+	color: var(--grau);
+}
+
+.hu-sst .hu-intercept__byline-author {
+	color: var(--grau);
+}
+
+.hu-sst .hu-intercept__byline-author-link {
+	color: var(--tinte);
+	font-weight: 600;
+	text-decoration: none;
+	border-bottom: 1px solid var(--haar);
+	transition: color var(--t-norm) var(--ease-aus), border-color var(--t-norm) var(--ease-aus);
+}
+
+.hu-sst .hu-intercept__byline-author-link:hover,
+.hu-sst .hu-intercept__byline-author-link:focus-visible {
+	color: var(--stempel);
+	border-color: var(--stempel);
+}
+
+.hu-sst .hu-intercept__byline-author-link:focus-visible {
+	outline: 2px solid var(--stempel);
+	outline-offset: 4px;
+}
+
+.hu-sst .hu-intercept__byline-sep {
+	color: var(--matt);
+}
+
+.hu-sst .hu-intercept__byline-date {
+	color: var(--grau);
+	font-variant-numeric: tabular-nums;
+}
+
+@media (prefers-reduced-motion: reduce) {
+	.hu-sst .hu-intercept__byline-author-link {
+		transition: none;
+	}
+}
+
+
+/* ═════ Schicht: server-side-tracking-base.css ═════ */
+/* ==========================================================================
+   /server-side-tracking-b2b/  —  transaktionale Tracking-Money-Page
+   --------------------------------------------------------------------------
+   Laedt NUR auf dieser Seite, nach system.css und contact.css. Alle Regeln liegen unter .hu-sst und koennen keine der elf
+   anderen Intercept-Sub-Pages beeinflussen.
+
+   Die Route nutzt die Tokens aus system.css und eine eigene Entscheidungs-
+   architektur. Bewegung bestaetigt nur Interaktion; der Datenfluss bleibt
+   statisch lesbar.
+   ========================================================================== */
+
+.hu-intercept.hu-sst {
+	background: var(--papier);
+	color: var(--tinte);
+	font-family: var(--serif);
+	overflow-wrap: anywhere;
+}
+
+/* ── Baender ─────────────────────────────────────────────────────────── */
+
+.hu-sst .hu-sst__band {
+	padding: clamp(3rem, 7vw, 6rem) 0;
+	position: relative;
+	isolation: isolate;
+}
+
+.hu-sst .hu-sst__band--dark {
+	color: var(--tinte);
+}
+
+.hu-sst .hu-sst__band--deep {
+	background: var(--papier);
+}
+
+.hu-sst .hu-sst__band--warm {
+	background: var(--papier);
+}
+
+.hu-sst .hu-sst__band--light {
+	color: var(--grau);
+}
+
+.hu-sst .hu-sst__band--cream {
+	background: var(--zone);
+	border-top: 1px solid color-mix(in srgb, var(--haar) 6%, transparent);
+}
+
+.hu-sst .hu-sst__band--white {
+	background: var(--papier);
+	border-top: 1px solid var(--haar);
+}
+
+/* Erster Wechsel dunkel -> hell bekommt Tiefe, damit der Schnitt gewollt
+   wirkt statt hart. */
+.hu-sst #symptome {
+	box-shadow: none;
+}
+
+.hu-sst .hu-sst__container {
+	width: min(100%, 1180px);
+	margin: 0 auto;
+	padding: 0 clamp(1.5rem, 4vw, 4rem);
+}
+
+.hu-sst .hu-sst__container--narrow {
+	width: min(100%, 820px);
+}
+
+/* ── Typografie ──────────────────────────────────────────────────────── */
+
+.hu-sst .hu-sst__eyebrow {
+	margin: 0 0 0.85rem;
+	font-size: 0.78rem;
+	font-weight: 700;
+	letter-spacing: 0.16em;
+	text-transform: uppercase;
+}
+
+.hu-sst .hu-sst__band--dark .hu-sst__eyebrow {
+	color: var(--stempel);
+}
+
+.hu-sst .hu-sst__band--light .hu-sst__eyebrow {
+	color: var(--stempel);
+}
+
+.hu-sst .hu-sst__h1 {
+	margin: 0 0 1.25rem;
+	max-width: 20ch;
+	font-family: var(--serif-display);
+	font-size: clamp(2.1rem, 5.4vw, 3.6rem);
+	line-height: 1.08;
+	letter-spacing: -0.02em;
+	font-weight: 700;
+	color: var(--tinte);
+}
+
+.hu-sst .hu-sst__h2 {
+	margin: 0 0 1rem;
+	max-width: 26ch;
+	font-family: var(--serif-display);
+	font-size: clamp(1.6rem, 3.6vw, 2.6rem);
+	line-height: 1.16;
+	letter-spacing: -0.015em;
+	font-weight: 700;
+}
+
+.hu-sst .hu-sst__band--dark .hu-sst__h2 {
+	color: var(--tinte);
+}
+
+.hu-sst .hu-sst__band--light .hu-sst__h2 {
+	color: var(--tinte);
+}
+
+.hu-sst .hu-sst__section-head {
+	margin: 0 0 clamp(2rem, 4vw, 3.25rem);
+}
+
+.hu-sst .hu-sst__section-lead {
+	margin: 0;
+	max-width: 62ch;
+	font-size: clamp(1rem, 1.6vw, 1.12rem);
+	line-height: 1.65;
+}
+
+.hu-sst .hu-sst__band--dark .hu-sst__section-lead {
+	color: var(--grau);
+}
+
+.hu-sst .hu-sst__band--light .hu-sst__section-lead {
+	color: var(--grau);
+}
+
+.hu-sst .hu-sst__lead {
+	margin: 0 0 0.9rem;
+	max-width: 58ch;
+	font-size: clamp(1.08rem, 2vw, 1.35rem);
+	line-height: 1.55;
+	color: var(--grau);
+}
+
+.hu-sst .hu-sst__lead-sub {
+	margin: 0 0 1.75rem;
+	max-width: 58ch;
+	font-size: clamp(0.95rem, 1.5vw, 1.05rem);
+	line-height: 1.6;
+	color: var(--matt);
+}
+
+/* ── Hero ────────────────────────────────────────────────────────────── */
+
+.hu-sst .hu-sst__hero {
+	padding-top: clamp(3rem, 8vw, 5.5rem);
+}
+
+.hu-sst .hu-sst__hero-grid {
+	display: grid;
+	grid-template-areas:
+		"copy"
+		"proof"
+		"decision";
+	gap: clamp(2rem, 5vw, 4rem);
+	align-items: center;
+}
+
+.hu-sst .hu-sst__hero-copy {
+	grid-area: copy;
+	min-width: 0;
+}
+
+.hu-sst .hu-sst__decision {
+	grid-area: decision;
+	padding: clamp(1.5rem, 3vw, 2rem);
+	border: 1px solid color-mix(in srgb, var(--stempel) 34%, transparent);
+	border-radius: var(--r0);
+	background: var(--zone);
+	box-shadow: none;
+}
+
+.hu-sst .hu-sst__decision-kicker {
+	margin: 0 0 0.5rem;
+	font-size: 0.72rem;
+	font-weight: 700;
+	letter-spacing: 0.14em;
+	text-transform: uppercase;
+	color: var(--stempel);
+}
+
+.hu-sst .hu-sst__decision-title {
+	margin: 0 0 1.5rem;
+	font-family: var(--serif-display);
+	font-size: clamp(1.35rem, 2.4vw, 1.8rem);
+	line-height: 1.2;
+	color: var(--tinte);
+}
+
+.hu-sst .hu-sst__decision-list {
+	display: grid;
+	gap: 0;
+	margin: 0;
+	padding: 0;
+	list-style: none;
+}
+
+.hu-sst .hu-sst__decision-list li {
+	display: grid;
+	grid-template-columns: 2rem minmax(0, 1fr);
+	gap: 1rem;
+	padding: 1rem 0;
+	border-top: 1px solid var(--haar);
+	font-size: 0.93rem;
+	line-height: 1.55;
+	color: var(--grau);
+}
+
+.hu-sst .hu-sst__decision-list strong {
+	color: var(--tinte);
+}
+
+.hu-sst .hu-sst__decision-num {
+	font-size: 0.74rem;
+	font-weight: 700;
+	letter-spacing: 0.08em;
+	color: var(--stempel);
+}
+
+.hu-sst .hu-sst__decision-note {
+	margin: 1rem 0 0;
+	padding-top: 1rem;
+	border-top: 1px solid var(--haar);
+	font-size: 0.86rem;
+	line-height: 1.55;
+	color: var(--matt);
+}
+
+.hu-sst .hu-sst__proof-strip {
+	grid-area: proof;
+	display: grid;
+	gap: 0;
+	margin: 0;
+	padding: 0;
+	border-top: 1px solid var(--haar);
+	border-bottom: 1px solid var(--haar);
+}
+
+.hu-sst .hu-sst__proof-strip > div {
+	padding: 1rem 0;
+}
+
+.hu-sst .hu-sst__proof-strip > div + div {
+	border-top: 1px solid var(--haar);
+}
+
+.hu-sst .hu-sst__proof-strip dt {
+	margin: 0 0 0.3rem;
+	font-size: 0.68rem;
+	font-weight: 700;
+	letter-spacing: 0.13em;
+	text-transform: uppercase;
+	color: var(--stempel);
+}
+
+.hu-sst .hu-sst__proof-strip dd {
+	margin: 0;
+	font-size: 0.92rem;
+	font-weight: 600;
+	line-height: 1.45;
+	color: var(--tinte);
+}
+
+@media (min-width: 720px) {
+	.hu-sst .hu-sst__proof-strip {
+		grid-template-columns: repeat(3, minmax(0, 1fr));
+	}
+
+	.hu-sst .hu-sst__proof-strip > div {
+		padding: 1.5rem;
+	}
+
+	.hu-sst .hu-sst__proof-strip > div:first-child {
+		padding-left: 0;
+	}
+
+	.hu-sst .hu-sst__proof-strip > div + div {
+		border-top: 0;
+		border-left: 1px solid var(--haar);
+	}
+}
+
+@media (min-width: 1024px) {
+	.hu-sst .hu-sst__hero-grid {
+		grid-template-columns: minmax(0, 1.4fr) minmax(320px, 1fr);
+		grid-template-areas:
+			"copy decision"
+			"proof proof";
+	}
+}
+
+.hu-sst .hu-sst__cta {
+	display: flex;
+	flex-wrap: wrap;
+	gap: 0.85rem;
+	margin: 0 0 1.15rem;
+}
+
+.hu-sst .hu-sst__cta-note {
+	margin: 0;
+	font-size: 0.94rem;
+	line-height: 1.55;
+	color: var(--matt);
+}
+
+.hu-sst .hu-sst__cta-note a {
+	display: inline-flex;
+	align-items: center;
+	min-height: 44px;
+	color: color-mix(in srgb, var(--stempel) 14%, var(--papier));
+	text-decoration: underline;
+	text-underline-offset: 3px;
+	text-decoration-thickness: 1px;
+	transition: color var(--t-norm) var(--ease-aus);
+}
+
+.hu-sst .hu-sst__cta-note a:focus-visible {
+	color: var(--papier);
+}
+
+/* ── Buttons ─────────────────────────────────────────────────────────── */
+
+.hu-sst .hu-sst__btn {
+	display: inline-flex;
+	align-items: center;
+	justify-content: center;
+	gap: 0.5rem;
+	min-height: 52px;
+	padding: 0.9rem 1.6rem;
+	border-radius: var(--r0);
+	border: 1px solid transparent;
+	font-family: inherit;
+	font-size: 1rem;
+	font-weight: 600;
+	line-height: 1.2;
+	text-align: center;
+	text-decoration: none;
+	cursor: pointer;
+	transition: background-color var(--t-norm) var(--ease-aus),
+		border-color var(--t-norm) var(--ease-aus),
+		color var(--t-norm) var(--ease-aus),
+		box-shadow var(--t-norm) var(--ease-aus),
+		transform var(--t-norm) var(--ease-aus);
+}
+
+.hu-sst .hu-sst__btn--primary {
+	background: var(--stempel);
+	color: var(--papier);
+	box-shadow: none;
+}
+
+.hu-sst .hu-sst__btn--primary:focus-visible {
+	background: var(--stempel);
+}
+
+.hu-sst .hu-sst__band--dark .hu-sst__btn--ghost {
+	color: var(--tinte);
+	border-color: var(--haar);
+	background: transparent;
+}
+
+.hu-sst .hu-sst__band--dark .hu-sst__btn--ghost:focus-visible {
+	border-color: var(--stempel);
+	color: color-mix(in srgb, var(--stempel) 14%, var(--papier));
+	background: var(--zone);
+}
+
+@media (hover: hover) and (pointer: fine) {
+	.hu-sst .hu-sst__cta-note a:hover {
+		color: var(--papier);
+	}
+
+	.hu-sst .hu-sst__btn--primary:hover {
+		background: var(--stempel);
+		transform: translateY(-1px);
+	}
+
+	.hu-sst .hu-sst__band--dark .hu-sst__btn--ghost:hover {
+		border-color: var(--stempel);
+		color: color-mix(in srgb, var(--stempel) 14%, var(--papier));
+		background: var(--zone);
+	}
+}
+
+.hu-sst .hu-sst__btn--block {
+	width: 100%;
+	margin-top: auto;
+}
+
+.hu-sst a:focus-visible,
+.hu-sst button:focus-visible,
+.hu-sst summary:focus-visible,
+.hu-sst input:focus-visible,
+.hu-sst select:focus-visible,
+.hu-sst textarea:focus-visible {
+	outline: 2px solid var(--stempel);
+	outline-offset: 3px;
+	border-radius: var(--r1);
+}
+
+.hu-sst .hu-sst__band--light a:focus-visible,
+.hu-sst .hu-sst__band--light button:focus-visible,
+.hu-sst .hu-sst__band--light summary:focus-visible {
+	outline-color: var(--stempel);
+}
+
+/* ── Karten-Raster ───────────────────────────────────────────────────── */
+
+.hu-sst .hu-sst__grid {
+	display: grid;
+	gap: clamp(1rem, 2.5vw, 2rem);
+}
+
+@media (min-width: 640px) {
+	.hu-sst .hu-sst__grid--2,
+	.hu-sst .hu-sst__grid--3 {
+		grid-template-columns: repeat(2, minmax(0, 1fr));
+	}
+}
+
+@media (min-width: 1000px) {
+	.hu-sst .hu-sst__grid--3 {
+		grid-template-columns: repeat(3, minmax(0, 1fr));
+	}
+}
+
+.hu-sst .hu-sst__card {
+	padding: clamp(1.35rem, 2.5vw, 1.85rem);
+	border-radius: var(--r0);
+	background: var(--papier);
+	border: 1px solid var(--haar);
+	box-shadow: none;
+}
+
+.hu-sst .hu-sst__card-title {
+	margin: 0 0 0.6rem;
+	font-size: 1.05rem;
+	line-height: 1.35;
+	font-weight: 700;
+	color: var(--tinte);
+}
+
+.hu-sst .hu-sst__card-text {
+	margin: 0;
+	font-size: 0.96rem;
+	line-height: 1.62;
+	color: var(--grau);
+}
+
+/* ── Vergleich Client/Server ─────────────────────────────────────────── */
+
+.hu-sst .hu-sst__compare {
+	display: grid;
+	gap: clamp(1rem, 2.5vw, 2rem);
+	margin: 0 0 clamp(1.5rem, 3vw, 2.25rem);
+}
+
+@media (min-width: 860px) {
+	.hu-sst .hu-sst__compare {
+		grid-template-columns: repeat(2, minmax(0, 1fr));
+	}
+}
+
+.hu-sst .hu-sst__compare-col {
+	padding: clamp(1.35rem, 2.5vw, 2rem);
+	border-radius: var(--r0);
+	border: 1px solid var(--haar);
+	background: var(--zone);
+}
+
+.hu-sst .hu-sst__compare-col--accent {
+	border-color: color-mix(in srgb, var(--stempel) 42%, transparent);
+	background: color-mix(in srgb, var(--stempel) 7%, transparent);
+}
+
+.hu-sst .hu-sst__compare-title {
+	margin: 0 0 1.1rem;
+	font-size: 1.1rem;
+	font-weight: 700;
+	color: var(--tinte);
+}
+
+.hu-sst .hu-sst__chain {
+	list-style: none;
+	display: flex;
+	flex-wrap: wrap;
+	align-items: center;
+	gap: 0.5rem;
+	margin: 0 0 1.1rem;
+	padding: 0;
+}
+
+.hu-sst .hu-sst__chain-node {
+	display: inline-flex;
+	align-items: center;
+	padding: 0.5rem 0.85rem;
+	border-radius: var(--r0);
+	border: 1px solid var(--haar);
+	background: color-mix(in srgb, var(--papier) 55%, transparent);
+	font-size: 0.86rem;
+	font-weight: 600;
+	color: var(--tinte);
+}
+
+.hu-sst .hu-sst__chain-node + .hu-sst__chain-node::before {
+	content: "→";
+	margin-right: 0.6rem;
+	margin-left: -0.35rem;
+	color: var(--stempel);
+	font-weight: 400;
+}
+
+.hu-sst .hu-sst__compare-text {
+	margin: 0;
+	font-size: 0.96rem;
+	line-height: 1.65;
+	color: var(--grau);
+}
+
+.hu-sst .hu-sst__note {
+	margin: 0;
+	padding: clamp(1rem, 2vw, 1.35rem) clamp(1.1rem, 2.2vw, 1.6rem);
+	border-left: 3px solid var(--stempel);
+	border-radius: var(--r0);
+	background: var(--zone);
+	font-size: 0.98rem;
+	line-height: 1.68;
+	color: var(--grau);
+}
+
+.hu-sst .hu-sst__note strong {
+	color: var(--tinte);
+}
+
+.hu-sst .hu-sst__note--light {
+	margin-top: clamp(1.5rem, 3vw, 2.25rem);
+	border-left-color: var(--stempel);
+	background: color-mix(in srgb, var(--zone2) 4%, transparent);
+	color: var(--matt);
+}
+
+/* ── Zwei-Spalten: Ja / Nein ─────────────────────────────────────────── */
+
+.hu-sst .hu-sst__split {
+	display: grid;
+	gap: clamp(1rem, 2.5vw, 2rem);
+}
+
+@media (min-width: 860px) {
+	.hu-sst .hu-sst__split {
+		grid-template-columns: repeat(2, minmax(0, 1fr));
+	}
+}
+
+.hu-sst .hu-sst__split-col {
+	padding: clamp(1.35rem, 2.5vw, 2rem);
+	border-radius: var(--r0);
+	border: 1px solid var(--haar);
+	background: var(--papier);
+	box-shadow: none;
+}
+
+.hu-sst .hu-sst__band--white .hu-sst__split-col {
+	background: var(--zone);
+}
+
+.hu-sst .hu-sst__split-title {
+	display: flex;
+	align-items: center;
+	gap: 0.65rem;
+	margin: 0 0 1.1rem;
+	font-size: 1.08rem;
+	font-weight: 700;
+	color: var(--tinte);
+}
+
+.hu-sst .hu-sst__split-badge {
+	display: inline-flex;
+	align-items: center;
+	justify-content: center;
+	width: 28px;
+	height: 28px;
+	flex: 0 0 28px;
+	border-radius: 50%;
+	font-size: 0.9rem;
+	line-height: 1;
+}
+
+.hu-sst .hu-sst__split-col--yes .hu-sst__split-badge {
+	background: color-mix(in srgb, var(--stempel) 12%, transparent);
+	color: var(--stempel);
+}
+
+.hu-sst .hu-sst__split-col--no .hu-sst__split-badge {
+	background: color-mix(in srgb, var(--zone2) 8%, transparent);
+	color: var(--matt);
+}
+
+.hu-sst .hu-sst__list {
+	list-style: none;
+	margin: 0;
+	padding: 0;
+	display: grid;
+	gap: 0.75rem;
+}
+
+.hu-sst .hu-sst__list li {
+	position: relative;
+	padding-left: 1.35rem;
+	font-size: 0.96rem;
+	line-height: 1.6;
+	color: var(--grau);
+}
+
+.hu-sst .hu-sst__list li::before {
+	content: "";
+	position: absolute;
+	left: 0;
+	top: 0.62em;
+	width: 6px;
+	height: 6px;
+	border-radius: 50%;
+	background: var(--haar);
+}
+
+.hu-sst .hu-sst__split-col--yes .hu-sst__list li::before {
+	background: var(--stempel);
+}
+
+.hu-sst .hu-sst__split-note {
+	margin: 1.15rem 0 0;
+	padding-top: 1.15rem;
+	border-top: 1px solid var(--haar);
+	font-size: 0.9rem;
+	line-height: 1.6;
+	color: var(--matt);
+}
+
+/* ── Datenfluss ──────────────────────────────────────────────────────── */
+
+.hu-sst .hu-sst__flow {
+	margin: 0;
+}
+
+.hu-sst .hu-sst__flow-chain,
+.hu-sst .hu-sst__flow-outputs {
+	list-style: none;
+	margin: 0;
+	padding: 0;
+	display: grid;
+	gap: 1.6rem;
+}
+
+.hu-sst .hu-sst__flow-node {
+	position: relative;
+	padding: 1.1rem 1.25rem;
+	border-radius: var(--r0);
+	border: 1px solid var(--haar);
+	background: var(--zone);
+	display: flex;
+	flex-direction: column;
+	gap: 0.3rem;
+}
+
+/* Verbinder: mobil senkrecht unter dem Knoten, mit Pfeilspitze. */
+.hu-sst .hu-sst__flow-chain .hu-sst__flow-node:not(:last-child)::after {
+	content: "";
+	position: absolute;
+	left: 50%;
+	bottom: -1.6rem;
+	width: 1px;
+	height: 1.6rem;
+	background: color-mix(in srgb, var(--stempel) 55%, transparent);
+}
+
+.hu-sst .hu-sst__flow-chain .hu-sst__flow-node:not(:last-child)::before {
+	content: "";
+	position: absolute;
+	left: 50%;
+	bottom: -1.35rem;
+	width: 7px;
+	height: 7px;
+	border-right: 1.5px solid var(--stempel);
+	border-bottom: 1.5px solid var(--stempel);
+	transform: translateX(-50%) rotate(45deg);
+}
+
+.hu-sst .hu-sst__flow-step {
+	font-size: 0.72rem;
+	font-weight: 700;
+	letter-spacing: 0.14em;
+	color: var(--stempel);
+}
+
+.hu-sst .hu-sst__flow-label {
+	font-size: 1rem;
+	font-weight: 700;
+	line-height: 1.3;
+	color: var(--tinte);
+}
+
+.hu-sst .hu-sst__flow-note {
+	font-size: 0.86rem;
+	line-height: 1.5;
+	color: var(--matt);
+}
+
+.hu-sst .hu-sst__flow-divider {
+	display: flex;
+	align-items: center;
+	gap: 1rem;
+	margin: 1.6rem 0;
+	font-size: 0.76rem;
+	font-weight: 700;
+	letter-spacing: 0.16em;
+	text-transform: uppercase;
+	color: var(--stempel);
+}
+
+.hu-sst .hu-sst__flow-divider::before,
+.hu-sst .hu-sst__flow-divider::after {
+	content: "";
+	flex: 1 1 auto;
+	height: 1px;
+	background: var(--haar);
+}
+
+.hu-sst .hu-sst__flow-node--output {
+	background: color-mix(in srgb, var(--papier) 50%, transparent);
+	border-color: var(--haar);
+}
+
+.hu-sst .hu-sst__flow-node--output.is-optional {
+	border-style: dashed;
+	background: transparent;
+}
+
+.hu-sst .hu-sst__flow-tag {
+	align-self: flex-start;
+	margin-top: 0.3rem;
+	padding: 0.15rem 0.55rem;
+	border-radius: var(--r0);
+	background: var(--zone);
+	font-size: 0.7rem;
+	font-weight: 700;
+	letter-spacing: 0.1em;
+	text-transform: uppercase;
+	color: var(--matt);
+}
+
+.hu-sst .hu-sst__flow-caption {
+	margin: 1.75rem 0 0;
+	max-width: 78ch;
+	font-size: 0.9rem;
+	line-height: 1.65;
+	color: var(--matt);
+}
+
+@media (min-width: 900px) {
+	.hu-sst .hu-sst__flow-chain {
+		grid-template-columns: repeat(4, minmax(0, 1fr));
+		gap: 2.25rem;
+	}
+
+	.hu-sst .hu-sst__flow-outputs {
+		grid-template-columns: repeat(4, minmax(0, 1fr));
+		gap: 1.25rem;
+	}
+
+	/* Verbinder wandert auf Desktop nach rechts. */
+	.hu-sst .hu-sst__flow-chain .hu-sst__flow-node:not(:last-child)::after {
+		left: auto;
+		right: -2.25rem;
+		bottom: auto;
+		top: 50%;
+		width: 2.25rem;
+		height: 1px;
+		background: color-mix(in srgb, var(--stempel) 55%, transparent);
+	}
+
+	.hu-sst .hu-sst__flow-chain .hu-sst__flow-node:not(:last-child)::before {
+		left: auto;
+		right: -0.6rem;
+		bottom: auto;
+		top: 50%;
+		transform: translateY(-50%) rotate(-45deg);
+	}
+}
+
+/* ── Leistungs-Items ─────────────────────────────────────────────────── */
+
+.hu-sst .hu-sst__item {
+	display: flex;
+	gap: 0.9rem;
+	padding: 1.1rem 1.15rem;
+	border-radius: var(--r0);
+	border: 1px solid var(--haar);
+	background: var(--papier);
+}
+
+.hu-sst .hu-sst__item-mark {
+	flex: 0 0 auto;
+	display: inline-flex;
+	align-items: center;
+	justify-content: center;
+	width: 30px;
+	height: 30px;
+	border-radius: 50%;
+	background: color-mix(in srgb, var(--stempel) 10%, transparent);
+	color: var(--stempel);
+}
+
+.hu-sst .hu-sst__icon {
+	width: 17px;
+	height: 17px;
+}
+
+.hu-sst .hu-sst__item-title {
+	margin: 0 0 0.35rem;
+	font-size: 1rem;
+	font-weight: 700;
+	line-height: 1.35;
+	color: var(--tinte);
+}
+
+.hu-sst .hu-sst__item-text {
+	margin: 0;
+	font-size: 0.93rem;
+	line-height: 1.6;
+	color: var(--grau);
+}
+
+.hu-sst .hu-sst__callout {
+	margin: clamp(1.75rem, 3.5vw, 2.5rem) 0 0;
+	padding: clamp(1.25rem, 2.5vw, 1.85rem);
+	border-radius: var(--r0);
+	border: 1px solid color-mix(in srgb, var(--stempel) 28%, transparent);
+	border-left: 3px solid var(--stempel);
+	background: color-mix(in srgb, var(--stempel) 8%, transparent);
+}
+
+.hu-sst .hu-sst__callout-title {
+	margin: 0 0 0.55rem;
+	font-size: 1.02rem;
+	font-weight: 700;
+	color: var(--tinte);
+}
+
+.hu-sst .hu-sst__callout p {
+	margin: 0;
+	font-size: 0.96rem;
+	line-height: 1.65;
+	color: var(--grau);
+}
+
+.hu-sst .hu-sst__callout strong {
+	color: var(--tinte);
+}
+
+.hu-sst .hu-sst__callout .hu-sst__callout-links {
+	margin-top: 1rem;
+	padding-top: 1rem;
+	border-top: 1px solid color-mix(in srgb, var(--stempel) 18%, transparent);
+	font-size: 0.9rem;
+}
+
+.hu-sst .hu-sst__callout-links a {
+	color: var(--stempel);
+	font-weight: 650;
+	text-decoration: underline;
+	text-decoration-thickness: 1px;
+	text-underline-offset: 3px;
+}
+
+/* ── Checkliste Sicherheit ───────────────────────────────────────────── */
+
+.hu-sst .hu-sst__checklist {
+	list-style: none;
+	margin: 0;
+	padding: 0;
+	display: grid;
+	gap: 0.9rem;
+}
+
+@media (min-width: 780px) {
+	.hu-sst .hu-sst__checklist {
+		grid-template-columns: repeat(2, minmax(0, 1fr));
+	}
+}
+
+.hu-sst .hu-sst__checklist li {
+	display: flex;
+	align-items: flex-start;
+	gap: 0.8rem;
+	font-size: 0.96rem;
+	line-height: 1.6;
+	color: var(--grau);
+}
+
+/* ── Preiskarten ─────────────────────────────────────────────────────── */
+
+.hu-sst .hu-sst__pricing {
+	display: grid;
+	gap: clamp(1.1rem, 2.5vw, 1.75rem);
+	align-items: stretch;
+}
+
+@media (min-width: 900px) {
+	.hu-sst .hu-sst__pricing {
+		grid-template-columns: repeat(3, minmax(0, 1fr));
+	}
+}
+
+.hu-sst .hu-sst__price-card {
+	display: flex;
+	flex-direction: column;
+	padding: clamp(1.5rem, 3vw, 2.15rem);
+	border-radius: var(--r0);
+	border: 1px solid var(--haar);
+	background: color-mix(in srgb, var(--zone) 4%, transparent);
+	transition: border-color var(--t-norm) var(--ease-aus),
+		background-color var(--t-norm) var(--ease-aus);
+}
+
+.hu-sst .hu-sst__price-card:focus-within {
+	border-color: var(--haar);
+	background: color-mix(in srgb, var(--zone) 6%, transparent);
+}
+
+@media (hover: hover) and (pointer: fine) {
+	.hu-sst .hu-sst__price-card:hover {
+		border-color: var(--haar);
+		background: color-mix(in srgb, var(--zone) 6%, transparent);
+	}
+}
+
+.hu-sst .hu-sst__price-card--featured {
+	border-color: color-mix(in srgb, var(--stempel) 50%, transparent);
+	background: color-mix(in srgb, var(--zone) 5%, transparent);
+}
+
+.hu-sst .hu-sst__price-flag {
+	margin: 0 0 0.85rem;
+	align-self: flex-start;
+	padding: 0.25rem 0.7rem;
+	border-radius: var(--r0);
+	background: color-mix(in srgb, var(--stempel) 18%, transparent);
+	font-size: 0.72rem;
+	font-weight: 700;
+	letter-spacing: 0.1em;
+	text-transform: uppercase;
+	color: color-mix(in srgb, var(--stempel) 14%, var(--papier));
+}
+
+.hu-sst .hu-sst__price-name {
+	margin: 0 0 0.5rem;
+	font-family: var(--serif-display);
+	font-size: 1.32rem;
+	font-weight: 700;
+	line-height: 1.25;
+	color: var(--tinte);
+}
+
+.hu-sst .hu-sst__price-lead {
+	margin: 0 0 1.35rem;
+	font-size: 0.94rem;
+	line-height: 1.6;
+	color: var(--matt);
+}
+
+.hu-sst .hu-sst__price-figures {
+	margin: 0 0 0.6rem;
+	display: grid;
+	grid-template-columns: repeat(2, minmax(0, 1fr));
+	gap: 0.9rem;
+	padding-bottom: 1.1rem;
+	border-bottom: 1px solid var(--haar);
+}
+
+.hu-sst .hu-sst__price-figures dt {
+	margin: 0 0 0.25rem;
+	font-size: 0.74rem;
+	font-weight: 600;
+	letter-spacing: 0.1em;
+	text-transform: uppercase;
+	color: var(--matt);
+}
+
+.hu-sst .hu-sst__price-figures dd {
+	margin: 0;
+	font-size: 1.14rem;
+	font-weight: 700;
+	line-height: 1.25;
+	color: var(--tinte);
+	font-variant-numeric: tabular-nums;
+}
+
+.hu-sst .hu-sst__price-terms {
+	margin: 0 0 1.35rem;
+	font-size: 0.82rem;
+	line-height: 1.5;
+	color: var(--matt);
+}
+
+.hu-sst .hu-sst__price-list {
+	list-style: none;
+	margin: 0 0 1.75rem;
+	padding: 0;
+	display: grid;
+	gap: 0.6rem;
+}
+
+.hu-sst .hu-sst__price-list li {
+	position: relative;
+	padding-left: 1.35rem;
+	font-size: 0.92rem;
+	line-height: 1.55;
+	color: var(--grau);
+}
+
+.hu-sst .hu-sst__price-list li::before {
+	content: "";
+	position: absolute;
+	left: 1px;
+	top: 0.36em;
+	width: 5px;
+	height: 9px;
+	border-right: 1.6px solid var(--stempel);
+	border-bottom: 1.6px solid var(--stempel);
+	transform: rotate(45deg);
+}
+
+/* ── Ablauf ──────────────────────────────────────────────────────────── */
+
+.hu-sst .hu-sst__steps {
+	list-style: none;
+	margin: 0;
+	padding: 0;
+	display: grid;
+	gap: clamp(1rem, 2vw, 1.4rem);
+	counter-reset: none;
+}
+
+@media (min-width: 860px) {
+	.hu-sst .hu-sst__steps {
+		grid-template-columns: repeat(2, minmax(0, 1fr));
+	}
+}
+
+.hu-sst .hu-sst__step {
+	display: flex;
+	gap: 1rem;
+	padding: 1.25rem 1.35rem;
+	border-radius: var(--r0);
+	border: 1px solid var(--haar);
+	background: var(--zone);
+}
+
+.hu-sst .hu-sst__step-num {
+	flex: 0 0 auto;
+	display: inline-flex;
+	align-items: center;
+	justify-content: center;
+	width: 38px;
+	height: 38px;
+	border-radius: 50%;
+	border: 1px solid color-mix(in srgb, var(--stempel) 45%, transparent);
+	background: color-mix(in srgb, var(--stempel) 10%, transparent);
+	font-size: 0.86rem;
+	font-weight: 700;
+	color: color-mix(in srgb, var(--stempel) 14%, var(--papier));
+	font-variant-numeric: tabular-nums;
+}
+
+.hu-sst .hu-sst__step-title {
+	margin: 0 0 0.4rem;
+	font-size: 1.02rem;
+	font-weight: 700;
+	line-height: 1.35;
+	color: var(--tinte);
+}
+
+.hu-sst .hu-sst__step-text {
+	margin: 0;
+	font-size: 0.93rem;
+	line-height: 1.62;
+	color: var(--grau);
+}
+
+/* ── Fliesstext-Block (Erfahrungswerte) ──────────────────────────────── */
+
+.hu-sst .hu-sst__prose {
+	display: grid;
+	gap: 1.1rem;
+	max-width: 68ch;
+}
+
+.hu-sst .hu-sst__prose p {
+	margin: 0;
+	font-size: clamp(1rem, 1.6vw, 1.08rem);
+	line-height: 1.72;
+	color: var(--grau);
+}
+
+.hu-sst .hu-sst__prose strong {
+	color: var(--tinte);
+	font-weight: 700;
+}
+
+/* ── FAQ ─────────────────────────────────────────────────────────────── */
+
+.hu-sst .hu-sst__faq-list {
+	display: grid;
+	gap: 0.75rem;
+}
+
+.hu-sst .hu-sst__faq-item {
+	border-radius: var(--r0);
+	border: 1px solid var(--haar);
+	background: var(--zone);
+	transition: border-color var(--t-norm) var(--ease-aus);
+}
+
+.hu-sst .hu-sst__faq-item[open] {
+	border-color: var(--haar);
+}
+
+.hu-sst .hu-sst__faq-q {
+	display: flex;
+	align-items: flex-start;
+	justify-content: space-between;
+	gap: 1rem;
+	padding: 1.05rem 1.25rem;
+	cursor: pointer;
+	font-size: 1rem;
+	font-weight: 700;
+	line-height: 1.45;
+	color: var(--tinte);
+	list-style: none;
+}
+
+.hu-sst .hu-sst__faq-q::-webkit-details-marker {
+	display: none;
+}
+
+.hu-sst .hu-sst__faq-q::after {
+	content: "+";
+	flex: 0 0 auto;
+	font-size: 1.25rem;
+	font-weight: 400;
+	line-height: 1.1;
+	color: var(--stempel);
+}
+
+.hu-sst .hu-sst__faq-item[open] .hu-sst__faq-q::after {
+	content: "–";
+}
+
+.hu-sst .hu-sst__faq-a {
+	padding: 0 1.25rem 1.15rem;
+}
+
+.hu-sst .hu-sst__faq-a p {
+	margin: 0;
+	font-size: 0.96rem;
+	line-height: 1.68;
+	color: var(--grau);
+}
+
+/* ── Formular (Overrides ueber contact.css) ──────────────────────────── */
+
+.hu-sst .hu-sst__form {
+	margin: 0;
+	padding: clamp(1.35rem, 3vw, 2.25rem);
+	border-radius: var(--r0);
+	border: 1px solid var(--haar);
+	background: color-mix(in srgb, var(--papier) 55%, transparent);
+	display: grid;
+	gap: 1.15rem;
+}
+
+/* Anfragetyp und Thema sind technisch fest vorbelegt. Native hidden entfernt
+   die Presets auch aus Tastatur- und Assistenztechnik-Pfaden. */
+.hu-sst .hu-sst__form-fixed[hidden] {
+	display: none !important;
+}
+
+.hu-sst .hu-sst__form .contact-field {
+	display: grid;
+	gap: 0.4rem;
+	min-width: 0;
+}
+
+.hu-sst .hu-sst__form label {
+	font-size: 0.92rem;
+	font-weight: 600;
+	color: var(--tinte);
+}
+
+.hu-sst .hu-sst__optional {
+	margin-left: 0.4rem;
+	font-size: 0.78rem;
+	font-weight: 400;
+	color: var(--matt);
+}
+
+.hu-sst .hu-sst__form .contact-field__help {
+	margin: 0;
+	font-size: 0.85rem;
+	line-height: 1.5;
+	color: var(--matt);
+}
+
+.hu-sst .hu-sst__form input[type="text"],
+.hu-sst .hu-sst__form input[type="email"],
+.hu-sst .hu-sst__form input[type="url"],
+.hu-sst .hu-sst__form select,
+.hu-sst .hu-sst__form textarea {
+	width: 100%;
+	min-width: 0;
+	min-height: 48px;
+	padding: 0.7rem 0.85rem;
+	border-radius: var(--r1);
+	border: 1px solid var(--haar);
+	background: color-mix(in srgb, var(--zone) 5%, transparent);
+	color: var(--tinte);
+	font-family: inherit;
+	font-size: 1rem;
+	line-height: 1.5;
+	transition: border-color var(--t-norm) var(--ease-aus),
+		background-color var(--t-norm) var(--ease-aus);
+}
+
+.hu-sst .hu-sst__form textarea {
+	min-height: 96px;
+	resize: vertical;
+}
+
+.hu-sst .hu-sst__form ::placeholder {
+	color: color-mix(in srgb, var(--tinte) 38%, transparent);
+}
+
+.hu-sst .hu-sst__form .contact-form__row {
+	display: grid;
+	gap: 1.15rem;
+	min-width: 0;
+}
+
+@media (min-width: 720px) {
+	.hu-sst .hu-sst__form .contact-form__row {
+		grid-template-columns: repeat(2, minmax(0, 1fr));
+	}
+}
+
+.hu-sst .hu-sst__form-details {
+	min-width: 0;
+	border: 1px solid var(--haar);
+	border-radius: var(--r0);
+	background: var(--zone);
+	overflow: clip;
+}
+
+.hu-sst .hu-sst__form-details summary {
+	display: flex;
+	align-items: center;
+	justify-content: space-between;
+	gap: 1rem;
+	min-height: 52px;
+	padding: 0.85rem 1rem;
+	list-style: none;
+	cursor: pointer;
+	font-size: 0.94rem;
+	font-weight: 700;
+	color: var(--tinte);
+}
+
+.hu-sst .hu-sst__form-details summary::-webkit-details-marker {
+	display: none;
+}
+
+.hu-sst .hu-sst__form-details summary span {
+	flex: 0 0 auto;
+	margin-left: auto;
+	font-size: 0.72rem;
+	font-weight: 600;
+	letter-spacing: 0.08em;
+	text-transform: uppercase;
+	white-space: nowrap;
+	color: var(--matt);
+}
+
+.hu-sst .hu-sst__form-details summary::after {
+	content: "+";
+	flex: 0 0 auto;
+	font-size: 1.2rem;
+	font-weight: 400;
+	color: var(--stempel);
+}
+
+.hu-sst .hu-sst__form-details[open] summary::after {
+	content: "–";
+}
+
+.hu-sst .hu-sst__form-details-body {
+	display: grid;
+	gap: 1.15rem;
+	padding: 1rem;
+	border-top: 1px solid var(--haar);
+}
+
+@media (hover: hover) and (pointer: fine) {
+	.hu-sst .hu-sst__form input:hover,
+	.hu-sst .hu-sst__form select:hover,
+	.hu-sst .hu-sst__form textarea:hover {
+		border-color: color-mix(in srgb, var(--stempel) 45%, transparent);
+	}
+}
+
+.hu-sst .hu-sst__fieldset {
+	margin: 0;
+	min-width: 0;
+	padding: 1.05rem 1.15rem;
+	border-radius: var(--r1);
+	border: 1px solid var(--haar);
+	background: var(--zone);
+}
+
+.hu-sst .hu-sst__fieldset legend {
+	padding: 0 0.4rem;
+	font-size: 0.92rem;
+	font-weight: 600;
+	color: var(--tinte);
+}
+
+.hu-sst .hu-sst__checks {
+	display: grid;
+	gap: 0.6rem;
+	margin-top: 0.6rem;
+}
+
+@media (min-width: 560px) {
+	.hu-sst .hu-sst__checks {
+		grid-template-columns: repeat(2, minmax(0, 1fr));
+	}
+}
+
+.hu-sst .hu-sst__check {
+	display: flex;
+	align-items: center;
+	gap: 0.6rem;
+	min-height: 44px;
+	font-weight: 500;
+	cursor: pointer;
+}
+
+.hu-sst .hu-sst__check input[type="checkbox"] {
+	width: 20px;
+	height: 20px;
+	flex: 0 0 20px;
+	accent-color: var(--stempel);
+	cursor: pointer;
+}
+
+.hu-sst .hu-sst__form .contact-consent {
+	display: grid;
+	grid-template-columns: auto 1fr;
+	gap: 0.7rem;
+	align-items: start;
+	font-size: 0.92rem;
+	line-height: 1.6;
+	color: var(--grau);
+	cursor: pointer;
+}
+
+.hu-sst .hu-sst__form .contact-consent input[type="checkbox"] {
+	width: 20px;
+	height: 20px;
+	margin-top: 0.15rem;
+	accent-color: var(--stempel);
+	cursor: pointer;
+}
+
+.hu-sst .hu-sst__form .contact-consent span {
+	font-weight: 400;
+}
+
+.hu-sst .hu-sst__form .contact-consent a {
+	color: color-mix(in srgb, var(--stempel) 14%, var(--papier));
+	text-decoration: underline;
+	text-underline-offset: 3px;
+}
+
+.hu-sst .hu-sst__form .contact-consent .contact-field__error {
+	grid-column: 1 / -1;
+}
+
+.hu-sst .hu-sst__form .contact-field__error {
+	margin: 0;
+	font-size: 0.86rem;
+	line-height: 1.5;
+	color: var(--stempel);
+}
+
+.hu-sst .hu-sst__form .contact-field__error.is-hidden {
+	display: none;
+}
+
+.hu-sst .hu-sst__form [aria-invalid="true"] {
+	border-color: var(--stempel);
+}
+
+.hu-sst .hu-sst__form-hint {
+	margin: 0;
+	font-size: 0.85rem;
+	line-height: 1.55;
+	color: var(--matt);
+}
+
+.hu-sst .hu-sst__form .contact-form__honeypot {
+	position: absolute;
+	width: 1px;
+	height: 1px;
+	margin: -1px;
+	padding: 0;
+	overflow: hidden;
+	clip-path: inset(50%);
+	white-space: nowrap;
+	border: 0;
+}
+
+.hu-sst .hu-sst__form .contact-form__actions {
+	margin: 0;
+}
+
+.hu-sst .hu-sst__form .contact-submit {
+	width: 100%;
+	min-height: 54px;
+	padding: 0.95rem 1.6rem;
+	border: 0;
+	border-radius: var(--r0);
+	background: var(--stempel);
+	color: var(--papier);
+	font-family: inherit;
+	font-size: 1.02rem;
+	font-weight: 700;
+	line-height: 1.2;
+	cursor: pointer;
+	box-shadow: none;
+	transition: background-color var(--t-norm) var(--ease-aus),
+		transform var(--t-norm) var(--ease-aus);
+}
+
+.hu-sst .hu-sst__form .contact-submit[disabled] {
+	opacity: 0.6;
+	cursor: progress;
+}
+
+@media (hover: hover) and (pointer: fine) {
+	.hu-sst .hu-sst__form .contact-submit:hover:not([disabled]) {
+		background: var(--stempel);
+		transform: translateY(-1px);
+	}
+}
+
+.hu-sst .contact-error-summary {
+	margin: 0 0 1.25rem;
+	padding: 1rem 1.15rem;
+	border-radius: var(--r0);
+	border: 1px solid color-mix(in srgb, var(--stempel) 50%, transparent);
+	background: color-mix(in srgb, var(--stempel) 10%, transparent);
+	color: var(--tinte);
+}
+
+.hu-sst .contact-error-summary.is-hidden {
+	display: none;
+}
+
+.hu-sst .contact-error-summary__title {
+	margin: 0 0 0.5rem;
+	font-size: 0.94rem;
+	font-weight: 700;
+}
+
+.hu-sst .contact-error-summary__list {
+	margin: 0;
+	padding-left: 1.15rem;
+	font-size: 0.9rem;
+	line-height: 1.6;
+}
+
+.hu-sst .contact-error-summary__list a {
+	color: color-mix(in srgb, var(--stempel) 14%, var(--papier));
+}
+
+.hu-sst .hu-sst__form .contact-form__feedback:empty {
+	display: none;
+}
+
+.hu-sst .hu-sst__form .contact-form__feedback {
+	padding: 1rem 1.15rem;
+	border-radius: var(--r0);
+	border: 1px solid var(--haar);
+	background: var(--zone);
+	font-size: 0.94rem;
+	line-height: 1.6;
+	color: var(--grau);
+}
+
+@media (pointer: coarse) {
+	.hu-sst .hu-sst__check,
+	.hu-sst .hu-sst__form .contact-consent {
+		min-height: 48px;
+	}
+
+	.hu-sticky-cta__close {
+		width: 48px;
+		height: 48px;
+		min-width: 48px;
+		min-height: 48px;
+	}
+}
+
+@media (max-width: 430px) {
+	.hu-sticky-cta__inner {
+		gap: 10px;
+		padding: 10px 12px;
+	}
+
+	.hu-sticky-cta__text {
+		display: none;
+	}
+
+	.hu-sticky-cta__primary {
+		flex: 1 1 auto;
+		justify-content: center;
+		padding-inline: 12px;
+		font-size: 0.88rem;
+	}
+}
+
+/* ── Bewegung reduzieren ─────────────────────────────────────────────── */
+
+@media (prefers-reduced-motion: reduce) {
+	.hu-sst .hu-sst__btn,
+	.hu-sst .hu-sst__price-card,
+	.hu-sst .hu-sst__faq-item,
+	.hu-sst .hu-sst__cta-note a,
+	.hu-sst .hu-sst__form input,
+	.hu-sst .hu-sst__form select,
+	.hu-sst .hu-sst__form textarea,
+	.hu-sst .hu-sst__form .contact-submit {
+		transition: none !important;
+	}
+
+	.hu-sst .hu-sst__btn--primary:hover,
+	.hu-sst .hu-sst__btn--primary:focus-visible,
+	.hu-sst .hu-sst__form .contact-submit:hover:not([disabled]) {
+		transform: none;
+	}
+}
+
+/* ═════ Schicht: server-side-tracking-cro.css ═════ */
+/* ==========================================================================
+   /server-side-tracking-b2b/ — CRO-Delta
+   --------------------------------------------------------------------------
+   Mobile und kleinere Desktops nutzen die ruhige Inline-Navigation. Auf
+   breiten Desktops wird das bestehende Scroll-Spy-TOC als schmaler Messstrahl
+   links neben der Leseflaeche inszeniert. Setup- und Care-Preise bleiben
+   visuell getrennt.
+   ========================================================================== */
+
+/* Das per JS erzeugte Mobile-TOC und die rechte Kontext-Rail bleiben auf
+   dieser Route aus. Unterhalb des Desktop-Rail-Breakpoints dient das statische
+   Inhaltsverzeichnis direkt hinter dem Hero als robuste Navigation. */
+.hu-sst[data-track-page="server-side-tracking-b2b"] .hu-money-mobile-toc,
+.hu-sst[data-track-page="server-side-tracking-b2b"] > .hu-money-rail--context,
+.hu-sst[data-track-page="server-side-tracking-b2b"] > .hu-money-rail--toc {
+	display: none;
+}
+
+/* ── Inline-TOC direkt hinter dem Hero ─────────────────────────────── */
+.hu-sst .hu-sst__toc-band {
+	position: relative;
+	z-index: 3;
+	background: var(--papier);
+	border-top: 1px solid color-mix(in srgb, var(--haar) 10%, transparent);
+	border-bottom: 1px solid color-mix(in srgb, var(--haar) 12%, transparent);
+}
+
+.hu-sst .hu-sst__toc {
+	display: grid;
+	gap: 0.75rem;
+	padding-top: 0.95rem;
+	padding-bottom: 0.95rem;
+}
+
+.hu-sst .hu-sst__toc-label {
+	margin: 0;
+	font-size: 0.68rem;
+	font-weight: 700;
+	letter-spacing: 0.14em;
+	text-transform: uppercase;
+	color: color-mix(in srgb, var(--tinte) 46%, transparent);
+}
+
+.hu-sst .hu-sst__toc-list {
+	display: flex;
+	flex-wrap: wrap;
+	gap: 0.25rem 1.1rem;
+	margin: 0;
+	padding: 0;
+	list-style: none;
+}
+
+.hu-sst .hu-sst__toc-list li {
+	margin: 0;
+	padding: 0;
+}
+
+.hu-sst .hu-sst__toc-list a {
+	display: inline-flex;
+	align-items: center;
+	min-height: 42px;
+	padding: 0.15rem 0;
+	color: color-mix(in srgb, var(--tinte) 68%, transparent);
+	font-size: 0.88rem;
+	font-weight: 600;
+	line-height: 1.3;
+	text-decoration: none;
+	border-bottom: 1px solid transparent;
+	transition: color var(--t-norm) var(--ease-aus),
+		border-color var(--t-norm) var(--ease-aus);
+}
+
+.hu-sst .hu-sst__toc-list a:focus-visible,
+.hu-sst .hu-sst__toc-list a:hover {
+	color: var(--tinte);
+	border-bottom-color: color-mix(in srgb, var(--stempel) 58%, transparent);
+}
+
+.hu-sst .hu-sst__toc-list .hu-sst__toc-link--strong {
+	color: color-mix(in srgb, var(--stempel) 14%, var(--papier));
+}
+
+@media (min-width: 920px) {
+	.hu-sst .hu-sst__toc {
+		grid-template-columns: auto minmax(0, 1fr);
+		align-items: center;
+		gap: 1.5rem;
+	}
+
+	.hu-sst .hu-sst__toc-list {
+		justify-content: flex-end;
+	}
+}
+
+@media (max-width: 600px) {
+	.hu-sst .hu-sst__toc-list {
+		display: grid;
+		grid-template-columns: repeat(2, minmax(0, 1fr));
+		gap: 0 1rem;
+	}
+
+	.hu-sst .hu-sst__toc-list a {
+		width: 100%;
+		border-bottom-color: color-mix(in srgb, var(--haar) 8%, transparent);
+	}
+}
+
+/* ── Desktop: schwebender Messstrahl links der Leseflaeche ────────── */
+@media (min-width: 1360px) {
+	.hu-sst .hu-sst__toc-band {
+		display: none;
+	}
+
+	.hu-sst[data-track-page="server-side-tracking-b2b"] > .hu-money-rail--toc {
+		position: fixed;
+		z-index: 76;
+		top: 44%;
+		inset-inline-start: max(28px, calc(50vw - 640px));
+		display: block;
+		inline-size: 58px;
+		max-block-size: min(520px, 72vh);
+		padding: 14px 0;
+		border: 0;
+		border-radius: 0;
+		background: transparent;
+		box-shadow: none;
+		color: var(--tinte);
+		overflow: visible;
+		opacity: 0;
+		visibility: hidden;
+		pointer-events: none;
+		transform: translateY(-50%) translateY(7px);
+		transition: opacity 180ms var(--ease-aus),
+			transform 220ms var(--ease-aus),
+			visibility 0s linear 220ms;
+	}
+
+	.hu-sst[data-track-page="server-side-tracking-b2b"]
+		> .hu-money-rail--toc::before,
+	.hu-sst[data-track-page="server-side-tracking-b2b"]
+		> .hu-money-rail--toc::after {
+		content: none;
+	}
+
+	.hu-sst.is-money-rails-active:not(.is-money-form-visible)
+		> .hu-money-rail--toc {
+		opacity: 0.86;
+		visibility: visible;
+		pointer-events: auto;
+		transform: translateY(-50%);
+		transition-delay: 0s;
+	}
+
+	.hu-sst.is-money-rails-active:not(.is-money-form-visible)
+		> .hu-money-rail--toc:hover,
+	.hu-sst.is-money-rails-active:not(.is-money-form-visible)
+		> .hu-money-rail--toc:focus-within {
+		opacity: 1;
+	}
+
+	.hu-sst .hu-money-rail--toc .hu-money-rail__kicker {
+		max-inline-size: none;
+		margin: 0 0 7px;
+		padding-inline-start: 3px;
+		overflow: visible;
+		font-size: 0.52rem;
+		font-weight: 700;
+		letter-spacing: 0.13em;
+		line-height: 1.2;
+		text-transform: uppercase;
+		white-space: nowrap;
+		color: color-mix(in srgb, var(--tinte) 34%, transparent);
+	}
+
+	.hu-sst .hu-money-rail--toc .hu-money-rail__progress {
+		position: absolute;
+		top: 43px;
+		bottom: 19px;
+		inset-inline-start: 31px;
+		inline-size: 1px;
+		background: color-mix(in srgb, var(--zone) 18%, transparent);
+		box-shadow: none;
+		pointer-events: none;
+	}
+
+	.hu-sst .hu-money-rail--toc .hu-money-rail__progress-fill {
+		display: block;
+		inline-size: 1px;
+		block-size: 100%;
+		background: var(--stempel);
+		box-shadow: none;
+		transform-origin: top center;
+	}
+
+	.hu-sst .hu-money-rail--toc .hu-money-toc__list {
+		display: grid;
+		gap: 0;
+		margin: 0;
+		padding: 0;
+		list-style: none;
+	}
+
+	.hu-sst .hu-money-rail--toc .hu-money-toc__item {
+		position: relative;
+	}
+
+	.hu-sst .hu-money-rail--toc .hu-money-toc__item::before {
+		content: "";
+		position: absolute;
+		z-index: 1;
+		inset-inline-start: 25px;
+		inset-block-start: 50%;
+		inline-size: 13px;
+		block-size: 1px;
+		background: color-mix(in srgb, var(--zone) 20%, transparent);
+		transform: translateY(-50%);
+		transition: inline-size 180ms var(--ease-aus),
+			background-color 180ms var(--ease-aus);
+		pointer-events: none;
+	}
+
+	.hu-sst .hu-money-rail--toc .hu-money-toc__link {
+		position: relative;
+		display: grid;
+		grid-template-columns: 18px 10px;
+		align-items: center;
+		gap: 7px;
+		inline-size: 54px;
+		min-block-size: 34px;
+		padding: 0;
+		color: color-mix(in srgb, var(--tinte) 38%, transparent);
+		font-size: 0.72rem;
+		line-height: 1;
+		text-decoration: none;
+		white-space: nowrap;
+	}
+
+	.hu-sst .hu-money-rail--toc .hu-money-toc__num {
+		font-size: 0.54rem;
+		font-weight: 650;
+		letter-spacing: 0.05em;
+		text-align: end;
+		color: color-mix(in srgb, var(--tinte) 32%, transparent);
+		font-variant-numeric: tabular-nums;
+		transition: color 180ms var(--ease-aus);
+	}
+
+	.hu-sst .hu-money-rail--toc .hu-money-toc__marker {
+		position: relative;
+		z-index: 2;
+		inline-size: 5px;
+		block-size: 5px;
+		border: 1px solid color-mix(in srgb, var(--haar) 34%, transparent);
+		border-radius: var(--r0);
+		background: var(--papier);
+		box-shadow: none;
+		transition: inline-size 180ms var(--ease-aus),
+			block-size 180ms var(--ease-aus),
+			background-color 180ms var(--ease-aus),
+			border-color 180ms var(--ease-aus);
+	}
+
+	.hu-sst .hu-money-rail--toc .hu-money-toc__label {
+		position: absolute;
+		z-index: 4;
+		inset-inline-start: 49px;
+		inset-block-start: 50%;
+		display: block;
+		max-inline-size: 0;
+		padding: 0;
+		border: 1px solid transparent;
+		border-radius: var(--r0);
+		background: color-mix(in srgb, var(--papier) 94%, transparent);
+		box-shadow: none;
+		overflow: hidden;
+		opacity: 0;
+		transform: translate(7px, -50%);
+		font-size: 0.7rem;
+		font-weight: 650;
+		line-height: 1.2;
+		color: color-mix(in srgb, var(--tinte) 82%, transparent);
+		pointer-events: none;
+		transition: max-inline-size 180ms var(--ease-aus),
+			padding 180ms var(--ease-aus),
+			opacity 150ms var(--ease-aus),
+			transform 180ms var(--ease-aus),
+			border-color 180ms var(--ease-aus);
+	}
+
+	.hu-sst .hu-money-rail--toc .hu-money-toc__link::after {
+		content: none;
+	}
+
+	.hu-sst .hu-money-rail--toc .hu-money-toc__link[aria-current="true"] {
+		color: var(--tinte);
+	}
+
+	.hu-sst .hu-money-rail--toc .hu-money-toc__link[aria-current="true"] .hu-money-toc__num {
+		color: var(--stempel);
+	}
+
+	.hu-sst .hu-money-rail--toc .hu-money-toc__link[aria-current="true"] .hu-money-toc__marker {
+		inline-size: 8px;
+		block-size: 8px;
+		border-color: var(--stempel);
+		background: var(--stempel);
+		box-shadow: none;
+	}
+
+	.hu-sst .hu-money-rail--toc .hu-money-toc__item:has(.hu-money-toc__link[aria-current="true"])::before {
+		inline-size: 18px;
+		background: color-mix(in srgb, var(--stempel) 72%, transparent);
+	}
+
+	.hu-sst .hu-money-rail--toc .hu-money-toc__link[aria-current="true"] .hu-money-toc__label,
+	.hu-sst .hu-money-rail--toc .hu-money-toc__link:hover .hu-money-toc__label,
+	.hu-sst .hu-money-rail--toc .hu-money-toc__link:focus-visible .hu-money-toc__label {
+		max-inline-size: 170px;
+		padding: 0.36rem 0.62rem;
+		border-color: color-mix(in srgb, var(--haar) 10%, transparent);
+		opacity: 1;
+		transform: translate(0, -50%);
+	}
+
+	.hu-sst .hu-money-rail--toc .hu-money-toc__link[aria-current="true"] .hu-money-toc__label {
+		border-color: color-mix(in srgb, var(--stempel) 20%, transparent);
+		color: var(--tinte);
+	}
+
+	.hu-sst .hu-money-rail--toc .hu-money-toc__link:focus-visible {
+		outline: 1px solid color-mix(in srgb, var(--stempel) 58%, transparent);
+		outline-offset: 3px;
+		border-radius: var(--r0);
+	}
+}
+
+/* ── Setup-Pakete: nur einmaliger Projektpreis ─────────────────────── */
+.hu-sst #pakete .hu-sst__price-figures {
+	grid-template-columns: minmax(0, 1fr);
+	margin-bottom: 0.65rem;
+}
+
+.hu-sst #pakete .hu-sst__price-figures dd {
+	font-size: clamp(1.55rem, 2.6vw, 2rem);
+	letter-spacing: -0.02em;
+}
+
+.hu-sst #pakete .hu-sst__price-card--featured {
+	transform: translateY(-4px);
+	box-shadow: none;
+}
+
+.hu-sst #pakete .hu-sst__price-flag {
+	letter-spacing: 0.08em;
+}
+
+/* ── Tracking Care: eigener Preisblock statt zweiter Preis je Setup ── */
+.hu-sst .hu-sst__care-pricing {
+	display: grid;
+	gap: clamp(1rem, 2.5vw, 2rem);
+	margin: 0 0 clamp(1.75rem, 4vw, 2.75rem);
+}
+
+@media (min-width: 840px) {
+	.hu-sst .hu-sst__care-pricing {
+		grid-template-columns: repeat(3, minmax(0, 1fr));
+	}
+}
+
+.hu-sst .hu-sst__care-card {
+	padding: clamp(1.2rem, 2.4vw, 1.65rem);
+	border: 1px solid var(--haar);
+	border-radius: var(--r0);
+	background: var(--zone);
+	box-shadow: none;
+}
+
+.hu-sst .hu-sst__care-name {
+	margin: 0 0 0.55rem;
+	font-size: 1rem;
+	font-weight: 700;
+	line-height: 1.35;
+	color: var(--tinte);
+}
+
+.hu-sst .hu-sst__care-price {
+	margin: 0 0 0.8rem;
+	font-family: var(--serif-display);
+	font-size: clamp(1.45rem, 2.6vw, 1.85rem);
+	font-weight: 700;
+	line-height: 1.15;
+	letter-spacing: -0.02em;
+	color: var(--tinte);
+	font-variant-numeric: tabular-nums;
+}
+
+.hu-sst .hu-sst__care-lead {
+	margin: 0;
+	font-size: 0.92rem;
+	line-height: 1.58;
+	color: var(--grau);
+}
+
+.hu-sst .hu-sst__care-terms {
+	margin: 0.9rem 0 0;
+	padding-top: 0.9rem;
+	border-top: 1px solid var(--haar);
+	font-size: 0.78rem;
+	line-height: 1.5;
+	color: var(--matt);
+}
+
+.hu-sst .hu-sst__care-scope {
+	margin-top: 0;
+}
+
+@media (prefers-reduced-motion: reduce) {
+	.hu-sst .hu-sst__toc-list a,
+	.hu-sst .hu-money-rail--toc,
+	.hu-sst .hu-money-rail--toc .hu-money-toc__item::before,
+	.hu-sst .hu-money-rail--toc .hu-money-toc__num,
+	.hu-sst .hu-money-rail--toc .hu-money-toc__marker,
+	.hu-sst .hu-money-rail--toc .hu-money-toc__label {
+		transition: none !important;
+	}
+
+	.hu-sst #pakete .hu-sst__price-card--featured {
+		transform: none;
+	}
+}
+
+/* ═════ Schicht: server-side-tracking-funnel.css ═════ */
+/* ========================================================================== 
+   /server-side-tracking-b2b/ — Premium Service Funnel
+   --------------------------------------------------------------------------
+   Design delta only. Content, REST contract, schema and SEO ownership stay
+   untouched. The visual language borrows the proven Freelancer-page patterns:
+   a real sticky index, paper-like inquiry card and purposeful system motion.
+   ========================================================================== */
+
+/* ── Existing CRO additions ───────────────────────────────────────── */
+.hu-sst .hu-sst__proof-zone .hu-sst__card {
+	position: relative;
+	min-height: 100%;
+	overflow: hidden;
+}
+
+.hu-sst .hu-sst__proof-zone .hu-sst__card::before {
+	content: "";
+	position: absolute;
+	inset: 0 auto 0 0;
+	width: 2px;
+	background: var(--stempel);
+	opacity: 0.56;
+}
+
+.hu-sst .hu-sst__proof-zone .hu-sst__callout {
+	margin-top: clamp(1.5rem, 3vw, 2rem);
+}
+
+.hu-sst .hu-sst__proof-zone .hu-sst__callout-links {
+	margin-bottom: 0;
+}
+
+.hu-sst .hu-sst__hero-microcopy {
+	margin-top: calc(0.5rem * -1);
+	margin-bottom: 0.5rem;
+}
+
+.hu-sst .hu-sst__mechanism-head {
+	margin-top: clamp(3rem, 6vw, 6rem);
+	padding-top: clamp(2rem, 4vw, 3rem);
+	border-top: 1px solid var(--haar);
+}
+
+.hu-sst #unterschied .hu-sst__flow {
+	margin-top: 0;
+}
+
+.hu-sst #pakete .hu-sst__price-lead strong {
+	display: block;
+	margin-bottom: 0.25rem;
+	font-size: 0.72rem;
+	letter-spacing: 0.1em;
+	text-transform: uppercase;
+	color: var(--stempel);
+}
+
+.hu-sst .hu-sst__btn,
+.hu-sst .contact-submit {
+	transition: transform 150ms var(--ease-aus),
+		background-color var(--t-norm) var(--ease-aus),
+		border-color var(--t-norm) var(--ease-aus),
+		color var(--t-norm) var(--ease-aus);
+}
+
+.hu-sst .hu-sst__btn:active,
+.hu-sst .contact-submit:active {
+	transform: scale(0.97);
+}
+
+@media (hover: hover) and (pointer: fine) {
+	.hu-sst #pakete .hu-sst__price-card {
+		transition: transform 180ms var(--ease-aus),
+			border-color 180ms var(--ease-aus),
+			box-shadow 180ms var(--ease-aus);
+	}
+
+	.hu-sst #pakete .hu-sst__price-card:hover {
+		transform: translateY(-3px);
+		border-color: color-mix(in srgb, var(--stempel) 34%, transparent);
+	}
+
+	.hu-sst #pakete .hu-sst__price-card--featured:hover {
+		transform: translateY(-6px);
+	}
+}
+
+/* ── Hero: Signal Integrity Console ──────────────────────────────── */
+.hu-sst #hero .hu-sst__decision {
+	position: relative;
+	isolation: isolate;
+	overflow: hidden;
+	padding: clamp(1.05rem, 2.4vw, 1.5rem);
+	border: 1px solid color-mix(in srgb, var(--stempel) 30%, transparent);
+	border-radius: var(--r0);
+	background: none;
+	box-shadow: none;
+}
+
+.hu-sst #hero .hu-sst__decision::before {
+	content: "";
+	position: absolute;
+	z-index: -1;
+	inset: 0;
+	background-image: none;
+	background-size: 34px 34px;
+	mask-image: linear-gradient(to bottom, var(--tinte), transparent 92%);
+	pointer-events: none;
+}
+
+.hu-sst #hero .hu-sst__decision::after {
+	content: "";
+	position: absolute;
+	z-index: 4;
+	inset-inline: 0;
+	top: -22%;
+	height: 22%;
+	background: none;
+	filter: blur(0.5px);
+	animation: hu-sst-scan 5.4s linear infinite;
+	pointer-events: none;
+}
+
+.hu-sst #hero .hu-sst__decision-kicker {
+	display: inline-flex;
+	align-items: center;
+	gap: 0.55rem;
+	margin-bottom: 0.72rem;
+	color: var(--stempel);
+	letter-spacing: 0.12em;
+}
+
+.hu-sst #hero .hu-sst__decision-kicker::before {
+	content: "";
+	flex: 0 0 8px;
+	width: 8px;
+	height: 8px;
+	border-radius: 50%;
+	background: var(--stempel);
+	box-shadow: none;
+	animation: hu-sst-live 2.2s cubic-bezier(0.23, 1, 0.32, 1) infinite;
+}
+
+.hu-sst #hero .hu-sst__decision-title {
+	max-width: 19ch;
+	margin-bottom: 0.9rem;
+	font-size: clamp(1.2rem, 2vw, 1.55rem);
+	line-height: 1.17;
+	letter-spacing: -0.025em;
+}
+
+.hu-sst #hero .hu-sst__decision svg {
+	position: relative;
+	z-index: 2;
+	display: block;
+	width: 100%;
+	height: auto;
+	margin: 0.5rem 0 0.8rem !important;
+	padding: 0.25rem;
+	filter: none;
+}
+
+.hu-sst #hero .hu-sst__decision svg rect {
+	transition: stroke 220ms var(--ease-aus),
+		filter 220ms var(--ease-aus);
+}
+
+.hu-sst #hero .hu-sst__decision svg path[marker-end] {
+	stroke-dasharray: 9 9;
+	animation: hu-sst-data-flow 1.8s linear infinite;
+	filter: none;
+}
+
+.hu-sst #hero .hu-sst__decision svg circle {
+	transform-box: fill-box;
+	transform-origin: center;
+	animation: hu-sst-packet 2.4s cubic-bezier(0.23, 1, 0.32, 1) infinite;
+}
+
+.hu-sst #hero .hu-sst__decision-note {
+	position: relative;
+	z-index: 5;
+	margin-top: 0.35rem;
+	padding: 0.9rem 1rem;
+	border: 1px solid color-mix(in srgb, var(--stempel) 17%, transparent);
+	border-radius: var(--r0);
+	background: color-mix(in srgb, var(--papier) 43%, transparent);
+	backdrop-filter: blur(7px);
+	color: color-mix(in srgb, var(--tinte) 72%, transparent);
+	font-size: 0.83rem;
+	line-height: 1.55;
+}
+
+@keyframes hu-sst-data-flow {
+	to { stroke-dashoffset: -36; }
+}
+
+@keyframes hu-sst-scan {
+	0% { transform: translateY(0); opacity: 0; }
+	12% { opacity: 1; }
+	82% { opacity: 0.8; }
+	100% { transform: translateY(560%); opacity: 0; }
+}
+
+@keyframes hu-sst-live {
+	0%, 100% { box-shadow: none; }
+	48% { box-shadow: none; }
+}
+
+@keyframes hu-sst-packet {
+	0%, 100% { transform: scale(0.88); opacity: 0.62; }
+	48% { transform: scale(1.22); opacity: 1; }
+}
+
+/* ── Sticky TOC: same interaction family as the Freelancer page ──── */
+.hu-sst .hu-sst__toc-band {
+	z-index: 75;
+	background: color-mix(in srgb, var(--papier) 97%, transparent);
+	border-color: color-mix(in srgb, var(--haar) 10%, transparent);
+	backdrop-filter: blur(14px);
+}
+
+.hu-sst .hu-sst__toc-list {
+	counter-reset: hu-sst-toc;
+}
+
+.hu-sst .hu-sst__toc-list li {
+	counter-increment: hu-sst-toc;
+}
+
+.hu-sst .hu-sst__toc-list a::before {
+	content: "0" counter(hu-sst-toc);
+	flex: 0 0 1.8rem;
+	font-size: 0.65rem;
+	font-weight: 700;
+	letter-spacing: 0.045em;
+	color: color-mix(in srgb, var(--stempel) 72%, transparent);
+	font-variant-numeric: tabular-nums;
+}
+
+.hu-sst .hu-sst__toc-list a[href="#pakete"] {
+	color: var(--stempel);
+}
+
+@media (max-width: 1379px) {
+	.hu-sst .hu-sst__toc-band {
+		position: sticky;
+		top: 64px;
+	}
+
+	.hu-sst .hu-sst__toc {
+		grid-template-columns: auto minmax(0, 1fr);
+		align-items: center;
+		gap: 1rem;
+	}
+
+	.hu-sst .hu-sst__toc-list {
+		flex-wrap: nowrap;
+		justify-content: flex-start;
+		overflow-x: auto;
+		overscroll-behavior-inline: contain;
+		scrollbar-width: none;
+	}
+
+	.hu-sst .hu-sst__toc-list::-webkit-scrollbar {
+		display: none;
+	}
+
+	.hu-sst .hu-sst__toc-list li {
+		flex: 0 0 auto;
+	}
+
+	.hu-sst .hu-sst__toc-list a {
+		width: auto;
+		white-space: nowrap;
+	}
+}
+
+@media (min-width: 1380px) and (min-height: 620px) and (hover: hover) and (pointer: fine) {
+	.hu-sst .hu-sst__toc-band {
+		position: fixed;
+		z-index: 90;
+		top: 50%;
+		left: 12px;
+		display: block !important;
+		width: 64px;
+		border: 1px solid color-mix(in srgb, var(--stempel) 22%, transparent);
+		border-radius: var(--r0);
+		background: var(--zone);
+		box-shadow: none;
+		transform: translateY(-50%);
+		overflow: hidden;
+		transition: width 210ms var(--ease-aus),
+			border-color 180ms var(--ease-aus),
+			box-shadow 180ms var(--ease-aus);
+	}
+
+	.hu-sst .hu-sst__toc-band:is(:hover, :focus-within) {
+		width: 248px;
+		border-color: color-mix(in srgb, var(--stempel) 56%, transparent);
+		box-shadow: none;
+	}
+
+	.hu-sst .hu-sst__toc {
+		display: block;
+		width: 100%;
+		padding: 0.55rem;
+	}
+
+	.hu-sst .hu-sst__toc-label {
+		display: flex;
+		align-items: center;
+		min-height: 36px;
+		margin: 0;
+		padding: 0 0.48rem;
+		overflow: hidden;
+		white-space: nowrap;
+		font-size: 0.58rem;
+		color: color-mix(in srgb, var(--tinte) 46%, transparent);
+	}
+
+	.hu-sst .hu-sst__toc-label::before {
+		content: "INDEX";
+		flex: 0 0 42px;
+		color: color-mix(in srgb, var(--tinte) 50%, transparent);
+	}
+
+	.hu-sst .hu-sst__toc-label {
+		font-size: 0;
+	}
+
+	.hu-sst .hu-sst__toc-band:is(:hover, :focus-within) .hu-sst__toc-label {
+		font-size: 0.64rem;
+		letter-spacing: 0.09em;
+	}
+
+	.hu-sst .hu-sst__toc-list {
+		display: grid;
+		grid-template-columns: minmax(0, 1fr);
+		gap: 0.18rem;
+		width: 100%;
+		margin: 0;
+		padding: 0;
+		overflow: visible;
+	}
+
+	.hu-sst .hu-sst__toc-list a {
+		display: flex;
+		align-items: center;
+		gap: 0.55rem;
+		width: 100%;
+		min-height: 42px;
+		padding: 0.42rem 0.5rem;
+		border: 0;
+		border-radius: var(--r0);
+		overflow: hidden;
+		white-space: nowrap;
+		color: transparent;
+		font-size: 0.78rem;
+		font-weight: 650;
+		text-decoration: none;
+		transition: background-color 160ms var(--ease-aus),
+			color 160ms var(--ease-aus);
+	}
+
+	.hu-sst .hu-sst__toc-band:is(:hover, :focus-within) .hu-sst__toc-list a {
+		color: color-mix(in srgb, var(--tinte) 72%, transparent);
+	}
+
+	.hu-sst .hu-sst__toc-list a::before {
+		flex-basis: 2rem;
+		color: color-mix(in srgb, var(--stempel) 68%, transparent);
+		text-align: center;
+	}
+
+	.hu-sst .hu-sst__toc-list a:is(:hover, :focus-visible) {
+		background: var(--zone2);
+		color: var(--stempel) !important;
+	}
+
+	.hu-sst .hu-sst__toc-list a[href="#pakete"] {
+		background: color-mix(in srgb, var(--stempel) 6%, transparent);
+	}
+
+	.hu-sst:has(#symptome:target) .hu-sst__toc-list a[href="#symptome"],
+	.hu-sst:has(#unterschied:target) .hu-sst__toc-list a[href="#unterschied"],
+	.hu-sst:has(#pakete:target) .hu-sst__toc-list a[href="#pakete"],
+	.hu-sst:has(#ablauf:target) .hu-sst__toc-list a[href="#ablauf"],
+	.hu-sst:has(#anfrage:target) .hu-sst__toc-list a[href="#anfrage"] {
+		background: var(--zone2);
+		color: var(--stempel);
+	}
+
+	.hu-sst[data-track-page="server-side-tracking-b2b"] > .hu-money-rail--toc,
+	.hu-sst[data-track-page="server-side-tracking-b2b"] > .hu-money-rail--context {
+		display: none !important;
+	}
+}
+
+/* ── Inquiry: Freelancer-page paper card adapted to service intent ── */
+.hu-sst #anfrage {
+	border-top: 1px solid color-mix(in srgb, var(--stempel) 16%, transparent);
+}
+
+.hu-sst #anfrage .hu-sst__container--narrow {
+	max-width: 1180px;
+	display: grid;
+	grid-template-columns: minmax(0, 0.84fr) minmax(0, 1.16fr);
+	gap: clamp(2.25rem, 6vw, 5.5rem);
+	align-items: start;
+}
+
+.hu-sst #anfrage .hu-sst__section-head {
+	position: sticky;
+	top: calc(64px + 2rem);
+	max-width: 470px;
+	margin: 0;
+}
+
+.hu-sst #anfrage .hu-sst__section-head::after {
+	content: "Name, geschäftliche E-Mail und Ihr konkretes Messproblem reichen für die erste Einordnung. Technische Details können Sie freiwillig ergänzen.";
+	display: block;
+	margin-top: 1.5rem;
+	padding-top: 1.2rem;
+	border-top: 1px solid color-mix(in srgb, var(--haar) 14%, transparent);
+	color: color-mix(in srgb, var(--tinte) 58%, transparent);
+	font-size: 0.86rem;
+	line-height: 1.62;
+}
+
+.hu-sst #anfrage .contact-error-summary {
+	grid-column: 2;
+	margin: 0 0 1rem;
+}
+
+.hu-sst #anfrage .hu-sst__form {
+	--theme-form-text-initial-color: var(--tinte);
+	--theme-form-text-focus-color: var(--tinte);
+	grid-column: 2;
+	margin: 0;
+	padding: clamp(1.25rem, 3.2vw, 2rem);
+	border: 1px solid var(--haar);
+	border-radius: var(--r0);
+	background: var(--papier);
+	box-shadow: none;
+	color: var(--tinte);
+}
+
+.hu-sst #anfrage .hu-sst__form-intro-hint {
+	margin: 0 0 1.3rem;
+	padding-bottom: 1rem;
+	border-bottom: 1px solid var(--haar);
+	color: var(--grau);
+	font-size: 0.84rem;
+}
+
+.hu-sst #anfrage .contact-form__row {
+	gap: 1rem;
+}
+
+.hu-sst #anfrage .contact-field {
+	margin-bottom: 1.05rem;
+}
+
+.hu-sst #anfrage .contact-field label,
+.hu-sst #anfrage .hu-sst__fieldset legend {
+	display: block;
+	margin-bottom: 0.42rem;
+	color: var(--tinte);
+	font-size: 0.92rem;
+	font-weight: 700;
+	line-height: 1.45;
+}
+
+.hu-sst #anfrage .contact-field__help {
+	margin: -0.1rem 0 0.45rem;
+	color: var(--grau);
+	font-size: 0.82rem;
+	line-height: 1.5;
+}
+
+.hu-sst #anfrage .hu-sst__optional {
+	color: var(--matt);
+	font-weight: 450;
+}
+
+.hu-sst #anfrage :is(
+	input:not([type="checkbox"]):not([type="radio"]),
+	select,
+	textarea
+) {
+	width: 100%;
+	max-width: 100%;
+	min-width: 0;
+	min-height: 50px;
+	padding: 0.72rem 0.85rem;
+	border: 1px solid var(--haar);
+	border-radius: var(--r1);
+	background: var(--papier);
+	color: var(--tinte);
+	box-shadow: none;
+	font-size: 0.96rem;
+	line-height: 1.5;
+	transition: border-color 160ms var(--ease-aus),
+		box-shadow 160ms var(--ease-aus),
+		background-color 160ms var(--ease-aus);
+}
+
+.hu-sst #anfrage textarea {
+	min-height: 142px;
+	resize: vertical;
+}
+
+.hu-sst #anfrage :is(
+	input:not([type="checkbox"]):not([type="radio"]),
+	select,
+	textarea
+):focus {
+	border-color: var(--stempel);
+	background: var(--papier);
+	box-shadow: 0 0 0 3px color-mix(in srgb, var(--stempel) 10%, transparent);
+	outline: 0;
+}
+
+.hu-sst #anfrage .hu-sst__form-details {
+	margin: 1.2rem 0;
+	padding: 0;
+	border: 0;
+	border-block: 1px solid var(--haar);
+	background: transparent;
+}
+
+.hu-sst #anfrage .hu-sst__form-details > summary {
+	padding: 1rem 0;
+	color: var(--stempel);
+	font-size: 0.9rem;
+	font-weight: 700;
+	cursor: pointer;
+}
+
+.hu-sst #anfrage .hu-sst__form-details-body {
+	padding: 0.25rem 0 0.35rem;
+}
+
+.hu-sst #anfrage .hu-sst__checks {
+	gap: 0.55rem;
+}
+
+.hu-sst #anfrage .hu-sst__check {
+	border-color: var(--haar);
+	background: var(--zone);
+	color: var(--tinte);
+}
+
+.hu-sst #anfrage .hu-sst__package-selection {
+	margin: 0 0 1rem;
+	padding: 0.9rem 1rem;
+	border: 1px solid color-mix(in srgb, var(--stempel) 22%, transparent);
+	border-radius: var(--r0);
+	background: var(--zone2);
+	color: var(--grau);
+	font-size: 0.86rem;
+}
+
+.hu-sst #anfrage .hu-sst__package-selection strong {
+	color: var(--tinte);
+}
+
+.hu-sst #anfrage .contact-consent {
+	color: var(--grau);
+	font-size: 0.86rem;
+	line-height: 1.62;
+}
+
+.hu-sst #anfrage .contact-consent a {
+	color: var(--stempel);
+}
+
+.hu-sst #anfrage .contact-consent input {
+	accent-color: var(--stempel);
+}
+
+.hu-sst #anfrage .hu-sst__form-hint {
+	margin: 1rem 0 1.2rem;
+	color: var(--matt);
+	font-size: 0.78rem;
+	line-height: 1.55;
+}
+
+.hu-sst #anfrage .contact-submit {
+	width: 100%;
+	min-height: 54px;
+	border-color: var(--stempel);
+	background: var(--stempel);
+	color: var(--papier);
+	font-weight: 750;
+}
+
+.hu-sst #anfrage .contact-submit:hover {
+	border-color: var(--stempel);
+	background: var(--stempel);
+	color: var(--papier);
+}
+
+.hu-sst #anfrage .contact-form__feedback:not(:empty) {
+	margin-top: 1rem;
+	padding: 0.9rem 1rem;
+	border-left: 3px solid var(--stempel);
+	background: var(--zone2);
+	color: var(--tinte);
+}
+
+/* ── Compact care/security still stay secondary ──────────────────── */
+.hu-sst #tracking-care .hu-sst__care-summary {
+	margin-top: calc(1.5rem * -1);
+	margin-bottom: 1.5rem;
+}
+
+.hu-sst #tracking-care .hu-sst__faq-item,
+.hu-sst #sicherheit .hu-sst__faq-item {
+	margin-top: 1.5rem;
+}
+
+.hu-sst #tracking-care .hu-sst__faq-a .hu-sst__care-pricing {
+	margin-top: 1rem;
+}
+
+.hu-sst #sicherheit .hu-sst__faq-a .hu-sst__checklist {
+	margin-top: 0.5rem;
+}
+
+@media (max-width: 840px) {
+	.hu-sst #anfrage .hu-sst__container--narrow {
+		grid-template-columns: minmax(0, 1fr);
+		gap: 1.75rem;
+	}
+
+	.hu-sst #anfrage .hu-sst__section-head,
+	.hu-sst #anfrage .hu-sst__form,
+	.hu-sst #anfrage .contact-error-summary {
+		grid-column: 1;
+	}
+
+	.hu-sst #anfrage .hu-sst__section-head {
+		position: static;
+		max-width: 680px;
+	}
+
+	.hu-sst #anfrage .hu-sst__section-head::after {
+		max-width: 62ch;
+	}
+}
+
+@media (max-width: 600px) {
+	.hu-sst .hu-sst__toc {
+		grid-template-columns: minmax(0, 1fr);
+		gap: 0.25rem;
+		padding-top: 0.65rem;
+		padding-bottom: 0.65rem;
+	}
+
+	.hu-sst .hu-sst__toc-label {
+		display: none;
+	}
+
+	.hu-sst .hu-sst__toc-list {
+		gap: 0.8rem;
+	}
+
+	.hu-sst .hu-sst__toc-list a {
+		min-height: 40px;
+		padding-inline: 0.15rem;
+		font-size: 0.78rem;
+	}
+
+	.hu-sst #hero .hu-sst__decision {
+		padding: 0.9rem;
+		border-radius: var(--r0);
+	}
+
+	.hu-sst #hero .hu-sst__decision-title {
+		font-size: 1.15rem;
+	}
+
+	.hu-sst #anfrage .hu-sst__form {
+		padding: 1rem;
+		border-radius: var(--r0);
+	}
+}
+
+@media (prefers-reduced-motion: reduce) {
+	.hu-sst .hu-sst__btn,
+	.hu-sst .contact-submit,
+	.hu-sst #pakete .hu-sst__price-card,
+	.hu-sst #hero .hu-sst__decision::after,
+	.hu-sst #hero .hu-sst__decision-kicker::before,
+	.hu-sst #hero .hu-sst__decision svg rect,
+	.hu-sst #hero .hu-sst__decision svg path[marker-end],
+	.hu-sst #hero .hu-sst__decision svg circle,
+	.hu-sst .hu-sst__toc-band,
+	.hu-sst .hu-sst__toc-list a,
+	.hu-sst #anfrage :is(input, select, textarea) {
+		animation: none !important;
+		transition: none !important;
+	}
+
+	.hu-sst .hu-sst__btn:active,
+	.hu-sst .contact-submit:active,
+	.hu-sst #pakete .hu-sst__price-card:hover,
+	.hu-sst #pakete .hu-sst__price-card--featured:hover {
+		transform: none;
+	}
+}
+
+/* ═════ Schicht: server-side-tracking-protocol.css ═════ */
+/* ========================================================================== 
+   /server-side-tracking-b2b/ — Verification Protocol
+   --------------------------------------------------------------------------
+   Visuelles Leitbild: technisches Mess- und Abnahmeprotokoll statt SaaS-
+   Dashboard. Heller Dokumentgrund, klare Kapitel, tabellarische Messwerte,
+   wenige dunkle Tafeln. REST-, Formular-, SEO- und Tracking-Vertraege bleiben
+   unveraendert.
+   ========================================================================== */
+
+.hu-sst[data-sst-design="protocol"] {
+	background: var(--papier);
+	color: var(--tinte);
+}
+
+.hu-sst[data-sst-design="protocol"] *,
+.hu-sst[data-sst-design="protocol"] *::before,
+.hu-sst[data-sst-design="protocol"] *::after {
+	box-sizing: border-box;
+}
+
+/* ── Grundrhythmus: helles Dokument statt wechselnder Landingpage-Baender ─ */
+.hu-sst[data-sst-design="protocol"] .hu-sst__band,
+.hu-sst[data-sst-design="protocol"] .hu-sst__band--light,
+.hu-sst[data-sst-design="protocol"] .hu-sst__band--dark,
+.hu-sst[data-sst-design="protocol"] .hu-sst__band--cream,
+.hu-sst[data-sst-design="protocol"] .hu-sst__band--white,
+.hu-sst[data-sst-design="protocol"] .hu-sst__band--deep,
+.hu-sst[data-sst-design="protocol"] .hu-sst__band--warm {
+	background: var(--papier);
+	color: var(--tinte);
+	box-shadow: none;
+	border-top: 1px solid var(--haar);
+}
+
+.hu-sst[data-sst-design="protocol"] .hu-sst__band {
+	padding-block: clamp(4.8rem, 8vw, 8rem);
+}
+
+.hu-sst[data-sst-design="protocol"] .hu-sst__container {
+	width: min(100%, 1220px);
+	padding-inline: clamp(1.25rem, 4vw, 3.5rem);
+}
+
+.hu-sst[data-sst-design="protocol"] .hu-sst__container--narrow {
+	width: min(100%, 880px);
+}
+
+.hu-sst[data-sst-design="protocol"] .hu-sst__eyebrow,
+.hu-sst[data-sst-design="protocol"] .hu-sst__band--dark .hu-sst__eyebrow,
+.hu-sst[data-sst-design="protocol"] .hu-sst__band--light .hu-sst__eyebrow {
+	margin-bottom: 1rem;
+	font-family: var(--mono);
+	font-size: 0.68rem;
+	font-weight: 600;
+	letter-spacing: 0.15em;
+	text-transform: uppercase;
+	color: var(--stempel);
+}
+
+.hu-sst[data-sst-design="protocol"] .hu-sst__h1,
+.hu-sst[data-sst-design="protocol"] .hu-sst__h2,
+.hu-sst[data-sst-design="protocol"] .hu-sst__band--dark .hu-sst__h2,
+.hu-sst[data-sst-design="protocol"] .hu-sst__band--light .hu-sst__h2 {
+	font-family: var(--serif-display);
+	color: var(--tinte);
+	letter-spacing: -0.04em;
+	text-wrap: balance;
+}
+
+.hu-sst[data-sst-design="protocol"] .hu-sst__h1 {
+	max-width: 13ch;
+	margin-bottom: 1.6rem;
+	font-size: clamp(3rem, 6.4vw, 5.5rem);
+	line-height: 0.98;
+	font-weight: 650;
+}
+
+.hu-sst[data-sst-design="protocol"] .hu-sst__h2 {
+	max-width: 19ch;
+	font-size: clamp(2.25rem, 4.4vw, 4rem);
+	line-height: 1.02;
+	font-weight: 600;
+}
+
+.hu-sst[data-sst-design="protocol"] .hu-sst__section-head {
+	max-width: 900px;
+	margin-bottom: clamp(2.5rem, 5vw, 4.5rem);
+}
+
+.hu-sst[data-sst-design="protocol"] .hu-sst__section-lead,
+.hu-sst[data-sst-design="protocol"] .hu-sst__band--dark .hu-sst__section-lead,
+.hu-sst[data-sst-design="protocol"] .hu-sst__band--light .hu-sst__section-lead {
+	max-width: 67ch;
+	font-size: clamp(1.05rem, 1.45vw, 1.2rem);
+	line-height: 1.65;
+	color: var(--matt);
+}
+
+/* ── Hero: Papier + ein einziges Messprotokoll ─────────────────────── */
+.hu-sst[data-sst-design="protocol"] #hero {
+	padding-block: clamp(5rem, 8vw, 8rem) clamp(4rem, 7vw, 6.5rem);
+	border-top: 0;
+	background: var(--papier);
+	background-size: 52px 52px;
+	background-position: calc(50% + 1px) 0;
+}
+
+.hu-sst[data-sst-design="protocol"] #hero::before {
+	content: "";
+	position: absolute;
+	inset: 0 auto 0 max(1rem, calc(50% - 610px));
+	width: 1px;
+	background: color-mix(in srgb, var(--stempel) 26%, transparent);
+	pointer-events: none;
+}
+
+.hu-sst[data-sst-design="protocol"] #hero .hu-sst__hero-grid {
+	grid-template-columns: minmax(0, 1.06fr) minmax(390px, 0.94fr);
+	grid-template-areas:
+		"copy decision"
+		"proof decision";
+	gap: clamp(2.5rem, 6vw, 6rem);
+	align-items: start;
+}
+
+.hu-sst[data-sst-design="protocol"] #hero .hu-sst__hero-copy {
+	max-width: 720px;
+	padding-top: clamp(0.5rem, 1.5vw, 1.25rem);
+}
+
+.hu-sst[data-sst-design="protocol"] #hero .hu-sst__lead,
+.hu-sst[data-sst-design="protocol"] #hero .hu-sst__lead-sub,
+.hu-sst[data-sst-design="protocol"] #hero .hu-sst__cta-note {
+	color: var(--matt);
+}
+
+.hu-sst[data-sst-design="protocol"] #hero .hu-sst__lead {
+	max-width: 55ch;
+	margin-bottom: 0.9rem;
+	font-size: clamp(1.12rem, 1.65vw, 1.32rem);
+	line-height: 1.58;
+}
+
+.hu-sst[data-sst-design="protocol"] #hero .hu-sst__lead-sub {
+	max-width: 59ch;
+	margin-bottom: 2rem;
+	font-size: 0.98rem;
+	line-height: 1.65;
+}
+
+.hu-sst[data-sst-design="protocol"] #hero .hu-sst__cta {
+	margin-bottom: 0.75rem;
+}
+
+.hu-sst[data-sst-design="protocol"] .hu-sst__btn--primary {
+	border-radius: var(--r0);
+	box-shadow: none;
+}
+
+.hu-sst[data-sst-design="protocol"] #hero .hu-sst__proof-strip {
+	align-self: end;
+	margin-top: clamp(1.5rem, 4vw, 3rem);
+	border-color: var(--haar);
+}
+
+.hu-sst[data-sst-design="protocol"] #hero .hu-sst__proof-strip > div + div {
+	border-color: var(--haar);
+}
+
+.hu-sst[data-sst-design="protocol"] #hero .hu-sst__proof-strip dt {
+	font-family: var(--mono);
+	color: var(--stempel);
+	font-size: 0.62rem;
+}
+
+.hu-sst[data-sst-design="protocol"] #hero .hu-sst__proof-strip dd {
+	color: var(--tinte);
+	font-size: 0.87rem;
+	font-weight: 520;
+}
+
+/* Hero-Protokoll: kein Dashboard, keine verschachtelten Cards. */
+.hu-sst[data-sst-design="protocol"] #hero .hu-sst__decision.hu-sst-verify {
+	position: relative;
+	margin: 0;
+	padding: 0;
+	border: 1px solid var(--haar);
+	border-radius: var(--r0);
+	background: color-mix(in srgb, var(--papier) 96%, transparent);
+	box-shadow: none;
+	color: var(--tinte);
+	overflow: hidden;
+}
+
+.hu-sst[data-sst-design="protocol"] #hero .hu-sst__decision.hu-sst-verify::before {
+	content: "";
+	position: absolute;
+	inset: 0;
+	background-image: none;
+	background-size: 24px 24px;
+	pointer-events: none;
+}
+
+.hu-sst[data-sst-design="protocol"] #hero .hu-sst__decision.hu-sst-verify::after {
+	display: none;
+}
+
+.hu-sst[data-sst-design="protocol"] .hu-sst-verify > * {
+	position: relative;
+	z-index: 1;
+}
+
+.hu-sst[data-sst-design="protocol"] .hu-sst-verify__topbar {
+	display: flex;
+	justify-content: space-between;
+	align-items: center;
+	gap: 1rem;
+	padding: 0.9rem 1rem;
+	border-bottom: 1px solid var(--haar);
+	background: color-mix(in srgb, var(--zone) 82%, transparent);
+	font-family: var(--mono);
+	font-size: 0.6rem;
+	font-weight: 600;
+	letter-spacing: 0.13em;
+	text-transform: uppercase;
+	color: var(--matt);
+}
+
+.hu-sst[data-sst-design="protocol"] .hu-sst-verify__brand,
+.hu-sst[data-sst-design="protocol"] .hu-sst-verify__mode {
+	display: inline-flex;
+	align-items: center;
+	gap: 0.5rem;
+}
+
+.hu-sst[data-sst-design="protocol"] .hu-sst-verify__mode {
+	padding: 0;
+	border: 0;
+	background: transparent;
+	color: var(--stempel);
+}
+
+.hu-sst[data-sst-design="protocol"] .hu-sst-verify__pulse,
+.hu-sst[data-sst-design="protocol"] .hu-sst-verify__event-dot,
+.hu-sst[data-sst-design="protocol"] .hu-sst-verify__gate-dot,
+.hu-sst[data-sst-design="protocol"] .hu-sst-verify__check-dot {
+	width: 6px;
+	height: 6px;
+	border-radius: 50%;
+	background: var(--stempel);
+	box-shadow: none;
+	animation: none;
+}
+
+.hu-sst[data-sst-design="protocol"] .hu-sst-verify__intro {
+	padding: clamp(1.25rem, 3vw, 2rem) clamp(1.1rem, 3vw, 2rem) 1rem;
+}
+
+.hu-sst[data-sst-design="protocol"] .hu-sst-verify__kicker {
+	margin: 0 0 0.45rem;
+	font-family: var(--mono);
+	font-size: 0.62rem;
+	font-weight: 600;
+	letter-spacing: 0.14em;
+	text-transform: uppercase;
+	color: var(--stempel);
+}
+
+.hu-sst[data-sst-design="protocol"] .hu-sst-verify__title {
+	max-width: 17ch;
+	margin: 0;
+	font-family: var(--serif-display);
+	font-size: clamp(1.55rem, 2.5vw, 2.2rem);
+	line-height: 1.05;
+	letter-spacing: -0.04em;
+	font-weight: 600;
+	color: var(--tinte);
+}
+
+.hu-sst[data-sst-design="protocol"] .hu-sst-verify__event {
+	display: grid;
+	grid-template-columns: auto auto minmax(0, 1fr);
+	align-items: center;
+	gap: 0.55rem;
+	margin: 0 clamp(1.1rem, 3vw, 2rem);
+	padding: 0.72rem 0;
+	border: 0;
+	border-top: 1px solid var(--haar);
+	border-bottom: 1px solid var(--haar);
+	border-radius: 0;
+	background: transparent;
+}
+
+.hu-sst[data-sst-design="protocol"] .hu-sst-verify__event code,
+.hu-sst[data-sst-design="protocol"] .hu-sst-verify__event-id {
+	font-family: var(--mono);
+	background: transparent;
+	color: var(--tinte);
+}
+
+.hu-sst[data-sst-design="protocol"] .hu-sst-verify__event code {
+	font-size: 0.7rem;
+	font-weight: 600;
+}
+
+.hu-sst[data-sst-design="protocol"] .hu-sst-verify__event-id {
+	justify-self: end;
+	font-size: 0.58rem;
+	color: var(--matt);
+}
+
+.hu-sst[data-sst-design="protocol"] .hu-sst-verify__lanes {
+	display: block;
+	padding: 0 clamp(1.1rem, 3vw, 2rem);
+}
+
+.hu-sst[data-sst-design="protocol"] .hu-sst-verify__lane {
+	display: grid;
+	grid-template-columns: minmax(0, 1fr) auto;
+	grid-template-areas:
+		"head metric"
+		"meta metric";
+	gap: 0.3rem 1rem;
+	align-items: center;
+	min-height: 5.25rem;
+	padding: 0.95rem 0;
+	border: 0;
+	border-bottom: 1px solid var(--haar);
+	border-radius: 0;
+	background: transparent;
+	box-shadow: none;
+	overflow: visible;
+}
+
+.hu-sst[data-sst-design="protocol"] .hu-sst-verify__lane::after,
+.hu-sst[data-sst-design="protocol"] .hu-sst-verify__bar {
+	display: none;
+}
+
+.hu-sst[data-sst-design="protocol"] .hu-sst-verify__lane-head {
+	grid-area: head;
+	display: flex;
+	justify-content: flex-start;
+	align-items: baseline;
+	gap: 0.75rem;
+	min-height: 0;
+}
+
+.hu-sst[data-sst-design="protocol"] .hu-sst-verify__lane-label {
+	font-size: 0.84rem;
+	font-weight: 620;
+	line-height: 1.35;
+	color: var(--tinte);
+}
+
+.hu-sst[data-sst-design="protocol"] .hu-sst-verify__lane-state {
+	font-family: var(--mono);
+	font-size: 0.54rem;
+	letter-spacing: 0.1em;
+	text-transform: uppercase;
+	color: var(--matt);
+}
+
+.hu-sst[data-sst-design="protocol"] .hu-sst-verify__metric {
+	grid-area: metric;
+	display: flex;
+	align-items: baseline;
+	gap: 0.35rem;
+	margin: 0;
+	font-family: var(--mono);
+}
+
+.hu-sst[data-sst-design="protocol"] .hu-sst-verify__metric strong {
+	font-size: clamp(1.9rem, 4vw, 3.1rem);
+	line-height: 1;
+	font-weight: 500;
+	color: var(--tinte);
+	font-variant-numeric: tabular-nums;
+}
+
+.hu-sst[data-sst-design="protocol"] .hu-sst-verify__metric span {
+	font-size: 0.58rem;
+	color: var(--matt);
+}
+
+.hu-sst[data-sst-design="protocol"] .hu-sst-verify__lane-meta {
+	grid-area: meta;
+	margin: 0;
+	font-size: 0.7rem;
+	line-height: 1.45;
+	color: var(--matt);
+}
+
+.hu-sst[data-sst-design="protocol"] .hu-sst-verify__lane.is-server .hu-sst-verify__metric strong {
+	color: var(--stempel);
+}
+
+.hu-sst[data-sst-design="protocol"] .hu-sst-verify__checks {
+	display: none;
+}
+
+.hu-sst[data-sst-design="protocol"] .hu-sst-verify__footer {
+	display: flex;
+	align-items: center;
+	justify-content: space-between;
+	gap: 1rem;
+	padding: 1rem clamp(1.1rem, 3vw, 2rem);
+	border-top: 0;
+	border-bottom: 1px solid var(--haar);
+	background: var(--papier);
+}
+
+.hu-sst[data-sst-design="protocol"] .hu-sst-verify__result span,
+.hu-sst[data-sst-design="protocol"] .hu-sst-verify__result strong {
+	display: block;
+}
+
+.hu-sst[data-sst-design="protocol"] .hu-sst-verify__result span {
+	margin-bottom: 0.18rem;
+	font-family: var(--mono);
+	font-size: 0.55rem;
+	letter-spacing: 0.1em;
+	text-transform: uppercase;
+	color: color-mix(in srgb, var(--tinte) 55%, transparent);
+}
+
+.hu-sst[data-sst-design="protocol"] .hu-sst-verify__result strong {
+	font-family: var(--mono);
+	font-size: 0.78rem;
+	font-weight: 500;
+	color: var(--stempel);
+}
+
+.hu-sst[data-sst-design="protocol"] .hu-sst-verify__gate {
+	display: inline-flex;
+	align-items: center;
+	gap: 0.45rem;
+	padding: 0;
+	border: 0;
+	background: transparent;
+	font-family: var(--mono);
+	font-size: 0.58rem;
+	letter-spacing: 0.08em;
+	color: var(--tinte);
+}
+
+.hu-sst[data-sst-design="protocol"] .hu-sst-verify__caption {
+	margin: 0;
+	padding: 0.75rem clamp(1.1rem, 3vw, 2rem) 0.9rem;
+	border: 0;
+	font-family: var(--mono);
+	font-size: 0.56rem;
+	line-height: 1.55;
+	color: var(--matt);
+}
+
+/* ── Kapitel-Index: echte Methodik statt Dekoration ────────────────── */
+.hu-sst[data-sst-design="protocol"] .hu-sst__toc-band {
+	z-index: 80;
+	background: color-mix(in srgb, var(--papier) 96%, transparent);
+	border-color: var(--haar);
+	backdrop-filter: blur(14px);
+}
+
+.hu-sst[data-sst-design="protocol"] .hu-sst__toc-label {
+	font-family: var(--mono);
+	color: var(--matt);
+}
+
+.hu-sst[data-sst-design="protocol"] .hu-sst__toc-list {
+	counter-reset: vp-toc;
+}
+
+.hu-sst[data-sst-design="protocol"] .hu-sst__toc-list li {
+	counter-increment: vp-toc;
+}
+
+.hu-sst[data-sst-design="protocol"] .hu-sst__toc-list a {
+	font-family: var(--mono);
+	font-size: 0.64rem;
+	font-weight: 520;
+	letter-spacing: 0.06em;
+	text-transform: uppercase;
+	color: var(--matt);
+}
+
+.hu-sst[data-sst-design="protocol"] .hu-sst__toc-list a::before {
+	content: "0" counter(vp-toc);
+	flex: 0 0 2rem;
+	font-family: var(--mono);
+	font-size: 0.62rem;
+	color: var(--stempel);
+	font-variant-numeric: tabular-nums;
+}
+
+.hu-sst[data-sst-design="protocol"] .hu-sst__toc-list a[aria-current="location"],
+.hu-sst[data-sst-design="protocol"] .hu-sst__toc-list a[aria-current="true"] {
+	color: var(--tinte);
+}
+
+.hu-sst[data-sst-design="protocol"] .hu-sst__toc-list a[href="#pakete"] {
+	color: inherit;
+}
+
+@media (min-width: 1380px) and (min-height: 620px) and (hover: hover) and (pointer: fine) {
+	.hu-sst[data-sst-design="protocol"] .hu-sst__toc-band {
+		position: fixed;
+		top: 50%;
+		left: 14px;
+		width: 58px;
+		border: 1px solid var(--haar);
+		border-radius: var(--r0);
+		background: color-mix(in srgb, var(--papier) 98%, transparent);
+		box-shadow: none;
+		transform: translateY(-50%);
+		overflow: hidden;
+		transition: width 180ms cubic-bezier(0.22, 1, 0.36, 1);
+	}
+
+	.hu-sst[data-sst-design="protocol"] .hu-sst__toc-band:is(:hover, :focus-within) {
+		width: 238px;
+		border-color: var(--stempel);
+		box-shadow: none;
+	}
+
+	.hu-sst[data-sst-design="protocol"] .hu-sst__toc {
+		padding: 0.45rem;
+	}
+
+	.hu-sst[data-sst-design="protocol"] .hu-sst__toc-label {
+		min-height: 34px;
+		padding-inline: 0.4rem;
+		font-size: 0;
+	}
+
+	.hu-sst[data-sst-design="protocol"] .hu-sst__toc-label::before {
+		content: "PROTOKOLL";
+		font-size: 0.52rem;
+		letter-spacing: 0.11em;
+		color: var(--matt);
+	}
+
+	.hu-sst[data-sst-design="protocol"] .hu-sst__toc-list {
+		display: grid;
+		gap: 0;
+	}
+
+	.hu-sst[data-sst-design="protocol"] .hu-sst__toc-list a {
+		display: flex;
+		align-items: center;
+		min-height: 44px;
+		padding: 0 0.45rem;
+		border-top: 1px solid var(--haar);
+		white-space: nowrap;
+		overflow: hidden;
+	}
+
+	.hu-sst[data-sst-design="protocol"] .hu-sst__toc-list a::before {
+		flex-basis: 40px;
+	}
+
+	.hu-sst[data-sst-design="protocol"] .hu-sst__toc-list a[aria-current="location"]::before,
+	.hu-sst[data-sst-design="protocol"] .hu-sst__toc-list a[aria-current="true"]::before {
+		font-weight: 700;
+	}
+}
+
+/* ── 01 Befund: Ausgangslage als Befundzeilen statt Cards ─────────── */
+.hu-sst[data-sst-design="protocol"] #symptome {
+	border-top: 1px solid var(--haar);
+}
+
+.hu-sst[data-sst-design="protocol"] #symptome .hu-sst__grid--3 {
+	display: grid;
+	grid-template-columns: 1fr;
+	gap: 0;
+	border-top: 1px solid var(--haar);
+}
+
+.hu-sst[data-sst-design="protocol"] #symptome .hu-sst__card {
+	display: grid;
+	grid-template-columns: minmax(230px, 0.7fr) minmax(0, 1.3fr);
+	gap: clamp(1.5rem, 4vw, 4rem);
+	align-items: start;
+	min-height: 0;
+	padding: clamp(1.25rem, 2.8vw, 2rem) 0;
+	border: 0;
+	border-bottom: 1px solid var(--haar);
+	border-radius: 0;
+	background: transparent;
+	box-shadow: none;
+}
+
+.hu-sst[data-sst-design="protocol"] #symptome .hu-sst__card-title {
+	margin: 0;
+	font-size: clamp(1.05rem, 1.8vw, 1.35rem);
+	line-height: 1.25;
+	color: var(--tinte);
+}
+
+.hu-sst[data-sst-design="protocol"] #symptome .hu-sst__card-text {
+	margin: 0;
+	max-width: 64ch;
+	font-size: 0.98rem;
+	line-height: 1.65;
+	color: var(--matt);
+}
+
+/* ── 02 Gegenprobe: Lead-Reconciliation wie ein Pruefblatt ───────── */
+.hu-sst[data-sst-design="protocol"] #proof {
+	background: var(--zone);
+}
+
+.hu-sst[data-sst-design="protocol"] .hu-sst-reconcile__layout {
+	display: grid;
+	grid-template-columns: minmax(0, 1.25fr) minmax(280px, 0.75fr);
+	gap: clamp(2rem, 5vw, 5rem);
+	align-items: start;
+}
+
+.hu-sst[data-sst-design="protocol"] .hu-sst-reconcile__report {
+	padding: 0;
+	border: 0;
+	border-top: 2px solid var(--tinte);
+	border-bottom: 1px solid var(--haar);
+	border-radius: 0;
+	background: transparent;
+	box-shadow: none;
+}
+
+.hu-sst[data-sst-design="protocol"] .hu-sst-reconcile__report::before {
+	display: none;
+}
+
+.hu-sst[data-sst-design="protocol"] .hu-sst-reconcile__report-top {
+	display: flex;
+	justify-content: space-between;
+	gap: 1rem;
+	padding: 0.85rem 0;
+	border-bottom: 1px solid var(--haar);
+	font-family: var(--mono);
+	font-size: 0.58rem;
+	letter-spacing: 0.12em;
+	text-transform: uppercase;
+	color: var(--matt);
+}
+
+.hu-sst[data-sst-design="protocol"] .hu-sst-reconcile__report-state {
+	color: var(--stempel);
+}
+
+.hu-sst[data-sst-design="protocol"] .hu-sst-reconcile__title {
+	margin: 1.4rem 0 0.25rem;
+	font-size: clamp(1.7rem, 3.1vw, 2.7rem);
+	letter-spacing: -0.04em;
+	color: var(--tinte);
+}
+
+.hu-sst[data-sst-design="protocol"] .hu-sst-reconcile__period {
+	margin: 0 0 1.2rem;
+	font-family: var(--mono);
+	font-size: 0.58rem;
+	line-height: 1.5;
+	color: var(--matt);
+}
+
+.hu-sst[data-sst-design="protocol"] .hu-sst-reconcile__rows {
+	border-top: 1px solid var(--haar);
+}
+
+.hu-sst[data-sst-design="protocol"] .hu-sst-reconcile__row {
+	display: grid;
+	grid-template-columns: minmax(0, 1fr) 5rem 4.5rem;
+	gap: 1rem;
+	align-items: center;
+	padding: 1rem 0;
+	border-bottom: 1px solid var(--haar);
+	background: transparent;
+}
+
+.hu-sst[data-sst-design="protocol"] .hu-sst-reconcile__name {
+	font-size: 0.9rem;
+	font-weight: 600;
+	color: var(--tinte);
+}
+
+.hu-sst[data-sst-design="protocol"] .hu-sst-reconcile__count,
+.hu-sst[data-sst-design="protocol"] .hu-sst-reconcile__rate {
+	font-family: var(--mono);
+	font-variant-numeric: tabular-nums;
+	text-align: right;
+}
+
+.hu-sst[data-sst-design="protocol"] .hu-sst-reconcile__count {
+	font-size: 1.2rem;
+	font-weight: 500;
+	color: var(--tinte);
+}
+
+.hu-sst[data-sst-design="protocol"] .hu-sst-reconcile__rate {
+	font-size: 0.68rem;
+	color: var(--matt);
+}
+
+.hu-sst[data-sst-design="protocol"] .hu-sst-reconcile__mini-bar {
+	display: none;
+}
+
+.hu-sst[data-sst-design="protocol"] .hu-sst-reconcile__row.is-server .hu-sst-reconcile__count,
+.hu-sst[data-sst-design="protocol"] .hu-sst-reconcile__row.is-server .hu-sst-reconcile__rate {
+	color: var(--stempel);
+}
+
+.hu-sst[data-sst-design="protocol"] .hu-sst-reconcile__delta {
+	display: flex;
+	justify-content: space-between;
+	align-items: baseline;
+	gap: 1rem;
+	padding: 1rem 0;
+	font-size: 0.85rem;
+	color: var(--matt);
+}
+
+.hu-sst[data-sst-design="protocol"] .hu-sst-reconcile__delta strong {
+	font-family: var(--mono);
+	font-size: 1rem;
+	color: var(--stempel);
+}
+
+.hu-sst[data-sst-design="protocol"] .hu-sst-reconcile__disclaimer,
+.hu-sst[data-sst-design="protocol"] .hu-sst-reconcile__note {
+	font-size: 0.76rem;
+	line-height: 1.55;
+	color: var(--matt);
+}
+
+.hu-sst[data-sst-design="protocol"] .hu-sst-reconcile__explain {
+	display: grid;
+	gap: 0;
+	border-top: 2px solid var(--tinte);
+}
+
+.hu-sst[data-sst-design="protocol"] .hu-sst-reconcile__explain-card {
+	display: grid;
+	grid-template-columns: 2.4rem minmax(0, 1fr);
+	gap: 0 0.9rem;
+	padding: 1.15rem 0;
+	border: 0;
+	border-bottom: 1px solid var(--haar);
+	border-radius: 0;
+	background: transparent;
+	box-shadow: none;
+}
+
+.hu-sst[data-sst-design="protocol"] .hu-sst-reconcile__num {
+	grid-row: 1 / span 2;
+	font-family: var(--mono);
+	font-size: 0.68rem;
+	color: var(--stempel);
+}
+
+.hu-sst[data-sst-design="protocol"] .hu-sst-reconcile__explain-card h3 {
+	margin: 0 0 0.35rem;
+	font-size: 1rem;
+	color: var(--tinte);
+}
+
+.hu-sst[data-sst-design="protocol"] .hu-sst-reconcile__explain-card p {
+	margin: 0;
+	font-size: 0.84rem;
+	line-height: 1.55;
+	color: var(--matt);
+}
+
+/* ── 03 System: technische Zeichnung statt Card-Cluster ───────────── */
+.hu-sst[data-sst-design="protocol"] #fit,
+.hu-sst[data-sst-design="protocol"] #unterschied,
+.hu-sst[data-sst-design="protocol"] #umfang,
+.hu-sst[data-sst-design="protocol"] #pakete,
+.hu-sst[data-sst-design="protocol"] #tracking-care,
+.hu-sst[data-sst-design="protocol"] #sicherheit,
+.hu-sst[data-sst-design="protocol"] #ablauf,
+.hu-sst[data-sst-design="protocol"] #faq {
+	background: var(--papier);
+	color: var(--tinte);
+}
+
+.hu-sst[data-sst-design="protocol"] #unterschied .hu-sst__mechanism-head {
+	margin-top: clamp(3rem, 6vw, 5rem);
+	padding-top: clamp(2rem, 4vw, 3.5rem);
+	border-color: var(--haar);
+}
+
+.hu-sst[data-sst-design="protocol"] #unterschied .hu-sst__compare {
+	gap: 0;
+	border-top: 1px solid var(--haar);
+	border-bottom: 1px solid var(--haar);
+}
+
+.hu-sst[data-sst-design="protocol"] #unterschied .hu-sst__compare > * {
+	border: 0;
+	border-radius: 0;
+	background: transparent;
+	box-shadow: none;
+}
+
+.hu-sst[data-sst-design="protocol"] #unterschied .hu-sst__compare > * + * {
+	border-left: 1px solid var(--haar);
+}
+
+.hu-sst[data-sst-design="protocol"] #unterschied .hu-sst__flow {
+	position: relative;
+	padding: clamp(1.5rem, 4vw, 2.6rem);
+	border: 0;
+	border-radius: var(--r0);
+	background: var(--papier);
+	color: var(--tinte);
+	box-shadow: none;
+}
+
+.hu-sst[data-sst-design="protocol"] #unterschied .hu-sst__flow * {
+	border-color: color-mix(in srgb, var(--haar) 14%, transparent);
+}
+
+.hu-sst[data-sst-design="protocol"] #unterschied .hu-sst__flow-node,
+.hu-sst[data-sst-design="protocol"] #unterschied .hu-sst__flow-output {
+	border-radius: var(--r0);
+	box-shadow: none;
+}
+
+/* Leistungsumfang: sechs nummerierte Zeilen, keine Kartenwand. */
+.hu-sst[data-sst-design="protocol"] #umfang .hu-sst__grid {
+	display: grid;
+	grid-template-columns: 1fr;
+	gap: 0;
+	border-top: 1px solid var(--haar);
+	counter-reset: vp-deliverable;
+}
+
+.hu-sst[data-sst-design="protocol"] #umfang .hu-sst__card {
+	counter-increment: vp-deliverable;
+	display: grid;
+	grid-template-columns: 4rem minmax(220px, 0.55fr) minmax(0, 1fr);
+	gap: clamp(1rem, 3vw, 3rem);
+	align-items: start;
+	padding: 1.4rem 0;
+	border: 0;
+	border-bottom: 1px solid var(--haar);
+	border-radius: 0;
+	background: transparent;
+	box-shadow: none;
+}
+
+.hu-sst[data-sst-design="protocol"] #umfang .hu-sst__card::before {
+	content: "0" counter(vp-deliverable);
+	font-family: var(--mono);
+	font-size: 0.68rem;
+	color: var(--stempel);
+}
+
+.hu-sst[data-sst-design="protocol"] #umfang .hu-sst__card-title {
+	margin: 0;
+	font-size: 1.05rem;
+	line-height: 1.35;
+	color: var(--tinte);
+}
+
+.hu-sst[data-sst-design="protocol"] #umfang .hu-sst__card-text {
+	margin: 0;
+	font-size: 0.93rem;
+	line-height: 1.65;
+	color: var(--matt);
+}
+
+/* ── 04 Leistung & Preis: Entscheidungsmatrix statt drei Preisboxen ─ */
+.hu-sst[data-sst-design="protocol"] #pakete {
+	background: var(--zone);
+}
+
+.hu-sst[data-sst-design="protocol"] #pakete .hu-sst__pricing {
+	display: grid;
+	grid-template-columns: repeat(3, minmax(0, 1fr));
+	gap: 0;
+	border-top: 2px solid var(--tinte);
+	border-bottom: 1px solid var(--haar);
+}
+
+.hu-sst[data-sst-design="protocol"] #pakete .hu-sst__price-card,
+.hu-sst[data-sst-design="protocol"] #pakete .hu-sst__price-card--featured,
+.hu-sst[data-sst-design="protocol"] #pakete .hu-sst__price-card:hover,
+.hu-sst[data-sst-design="protocol"] #pakete .hu-sst__price-card--featured:hover {
+	min-height: 0;
+	padding: clamp(1.25rem, 2.8vw, 2rem);
+	border: 0;
+	border-right: 1px solid var(--haar);
+	border-radius: 0;
+	background: transparent;
+	box-shadow: none;
+	transform: none;
+	color: var(--tinte);
+}
+
+.hu-sst[data-sst-design="protocol"] #pakete .hu-sst__price-card:last-child {
+	border-right: 0;
+}
+
+.hu-sst[data-sst-design="protocol"] #pakete .hu-sst__price-card--featured {
+	background: color-mix(in srgb, var(--stempel) 6%, transparent);
+}
+
+.hu-sst[data-sst-design="protocol"] #pakete .hu-sst__price-flag {
+	min-height: 1.4rem;
+	margin: 0 0 1rem;
+	padding: 0;
+	border: 0;
+	border-radius: 0;
+	background: transparent;
+	font-family: var(--mono);
+	font-size: 0.58rem;
+	letter-spacing: 0.11em;
+	text-transform: uppercase;
+	color: var(--stempel);
+}
+
+.hu-sst[data-sst-design="protocol"] #pakete .hu-sst__price-name {
+	min-height: 3.2rem;
+	margin-bottom: 0.8rem;
+	font-size: clamp(1.2rem, 2vw, 1.55rem);
+	line-height: 1.15;
+	color: var(--tinte);
+}
+
+.hu-sst[data-sst-design="protocol"] #pakete .hu-sst__price-lead,
+.hu-sst[data-sst-design="protocol"] #pakete .hu-sst__price-meta,
+.hu-sst[data-sst-design="protocol"] #pakete .hu-sst__price-list {
+	color: var(--matt);
+}
+
+.hu-sst[data-sst-design="protocol"] #pakete .hu-sst__price-lead {
+	min-height: 7.4rem;
+	font-size: 0.9rem;
+	line-height: 1.58;
+}
+
+.hu-sst[data-sst-design="protocol"] #pakete .hu-sst__price-lead strong {
+	font-family: var(--mono);
+	font-size: 0.57rem;
+	color: var(--stempel);
+}
+
+.hu-sst[data-sst-design="protocol"] #pakete .hu-sst__price-label {
+	font-family: var(--mono);
+	font-size: 0.56rem;
+	letter-spacing: 0.12em;
+	text-transform: uppercase;
+	color: var(--matt);
+}
+
+.hu-sst[data-sst-design="protocol"] #pakete .hu-sst__price-value {
+	font-family: var(--mono);
+	font-size: clamp(1.9rem, 3.8vw, 3rem);
+	font-weight: 500;
+	letter-spacing: -0.04em;
+	color: var(--tinte);
+}
+
+.hu-sst[data-sst-design="protocol"] #pakete .hu-sst__price-list {
+	margin-top: 1.2rem;
+	padding-top: 1.15rem;
+	border-top: 1px solid var(--haar);
+	font-size: 0.82rem;
+	line-height: 1.5;
+}
+
+.hu-sst[data-sst-design="protocol"] #pakete .hu-sst__price-list li::before {
+	color: var(--stempel);
+}
+
+.hu-sst[data-sst-design="protocol"] #pakete .hu-sst__btn {
+	margin-top: auto;
+	border-radius: var(--r0);
+}
+
+/* Fit, Care, Sicherheit, Ablauf: Information, nicht Card-Sammlung. */
+.hu-sst[data-sst-design="protocol"] #fit .hu-sst__fit-grid,
+.hu-sst[data-sst-design="protocol"] #sicherheit .hu-sst__security-grid,
+.hu-sst[data-sst-design="protocol"] #ablauf .hu-sst__steps {
+	gap: 0;
+	border-top: 1px solid var(--haar);
+}
+
+.hu-sst[data-sst-design="protocol"] #fit .hu-sst__fit-card,
+.hu-sst[data-sst-design="protocol"] #sicherheit .hu-sst__card,
+.hu-sst[data-sst-design="protocol"] #ablauf .hu-sst__step {
+	border: 0;
+	border-bottom: 1px solid var(--haar);
+	border-radius: 0;
+	background: transparent;
+	box-shadow: none;
+}
+
+.hu-sst[data-sst-design="protocol"] #tracking-care .hu-sst__faq-item,
+.hu-sst[data-sst-design="protocol"] #sicherheit .hu-sst__faq-item,
+.hu-sst[data-sst-design="protocol"] #faq .hu-sst__faq-item {
+	border: 0;
+	border-top: 1px solid var(--haar);
+	border-radius: 0;
+	background: transparent;
+	box-shadow: none;
+}
+
+.hu-sst[data-sst-design="protocol"] #faq .hu-sst__faq-list {
+	border-bottom: 1px solid var(--haar);
+}
+
+/* ── 05 Anfrage: einzige grosse dunkle Tafel ───────────────────────── */
+.hu-sst[data-sst-design="protocol"] #anfrage,
+.hu-sst[data-sst-design="protocol"] #anfrage.hu-sst__band--dark,
+.hu-sst[data-sst-design="protocol"] #anfrage.hu-sst__band--deep,
+.hu-sst[data-sst-design="protocol"] #anfrage.hu-sst__band--warm {
+	background: var(--papier);
+	color: var(--tinte);
+	border-top: 0;
+}
+
+.hu-sst[data-sst-design="protocol"] #anfrage .hu-sst__eyebrow {
+	color: var(--stempel);
+}
+
+.hu-sst[data-sst-design="protocol"] #anfrage .hu-sst__h2,
+.hu-sst[data-sst-design="protocol"] #anfrage .hu-sst__section-lead {
+	color: var(--tinte);
+}
+
+.hu-sst[data-sst-design="protocol"] #anfrage .hu-sst__request-copy p,
+.hu-sst[data-sst-design="protocol"] #anfrage .hu-sst__request-note {
+	color: color-mix(in srgb, var(--tinte) 66%, transparent);
+}
+
+.hu-sst[data-sst-design="protocol"] #anfrage .hu-sst__form {
+	border-radius: var(--r0);
+	box-shadow: none;
+}
+
+/* ── Responsive ────────────────────────────────────────────────────── */
+@media (max-width: 1100px) {
+	.hu-sst[data-sst-design="protocol"] #hero .hu-sst__hero-grid {
+		grid-template-columns: 1fr;
+		grid-template-areas:
+			"copy"
+			"decision"
+			"proof";
+	}
+
+	.hu-sst[data-sst-design="protocol"] #hero .hu-sst__decision.hu-sst-verify {
+		max-width: 760px;
+	}
+
+	.hu-sst[data-sst-design="protocol"] .hu-sst-reconcile__layout {
+		grid-template-columns: 1fr;
+	}
+}
+
+@media (max-width: 900px) {
+	.hu-sst[data-sst-design="protocol"] #pakete .hu-sst__pricing {
+		grid-template-columns: 1fr;
+	}
+
+	.hu-sst[data-sst-design="protocol"] #pakete .hu-sst__price-card,
+	.hu-sst[data-sst-design="protocol"] #pakete .hu-sst__price-card--featured {
+		border-right: 0;
+		border-bottom: 1px solid var(--haar);
+	}
+
+	.hu-sst[data-sst-design="protocol"] #pakete .hu-sst__price-lead,
+	.hu-sst[data-sst-design="protocol"] #pakete .hu-sst__price-name {
+		min-height: 0;
+	}
+}
+
+@media (max-width: 720px) {
+	.hu-sst[data-sst-design="protocol"] .hu-sst__band {
+		padding-block: 4rem;
+	}
+
+	.hu-sst[data-sst-design="protocol"] .hu-sst__h1 {
+		font-size: clamp(2.55rem, 12vw, 4rem);
+	}
+
+	.hu-sst[data-sst-design="protocol"] .hu-sst__h2 {
+		font-size: clamp(2rem, 9vw, 3rem);
+	}
+
+	.hu-sst[data-sst-design="protocol"] #hero::before {
+		display: none;
+	}
+
+	.hu-sst[data-sst-design="protocol"] #hero .hu-sst__proof-strip {
+		grid-template-columns: 1fr;
+	}
+
+	.hu-sst[data-sst-design="protocol"] #hero .hu-sst__proof-strip > div {
+		padding-inline: 0;
+	}
+
+	.hu-sst[data-sst-design="protocol"] #hero .hu-sst__proof-strip > div + div {
+		border-left: 0;
+		border-top: 1px solid var(--haar);
+	}
+
+	.hu-sst[data-sst-design="protocol"] .hu-sst-verify__event-id {
+		display: none;
+	}
+
+	.hu-sst[data-sst-design="protocol"] .hu-sst-verify__lane {
+		grid-template-columns: minmax(0, 1fr) auto;
+	}
+
+	.hu-sst[data-sst-design="protocol"] #symptome .hu-sst__card,
+	.hu-sst[data-sst-design="protocol"] #umfang .hu-sst__card {
+		grid-template-columns: 1fr;
+		gap: 0.65rem;
+	}
+
+	.hu-sst[data-sst-design="protocol"] #umfang .hu-sst__card::before {
+		margin-bottom: 0.25rem;
+	}
+
+	.hu-sst[data-sst-design="protocol"] .hu-sst-reconcile__row {
+		grid-template-columns: minmax(0, 1fr) 3.2rem 3.5rem;
+		gap: 0.55rem;
+	}
+}
+
+@media (prefers-reduced-motion: reduce) {
+	.hu-sst[data-sst-design="protocol"] *,
+	.hu-sst[data-sst-design="protocol"] *::before,
+	.hu-sst[data-sst-design="protocol"] *::after {
+		animation-duration: 0.001ms !important;
+		animation-iteration-count: 1 !important;
+		scroll-behavior: auto !important;
+	}
+}
+
+/* ═════ Schicht: server-side-tracking-contrast.css ═════ */
+/* ========================================================================== 
+   /server-side-tracking-b2b/ — Contrast + cascade hardening
+   --------------------------------------------------------------------------
+   Applies from first paint via the route attribute. This file deliberately
+   does not depend on data-sst-design being added by deferred JavaScript.
+   It also neutralises the legacy dark-band classes still present in the PHP
+   template so the verification-protocol design cannot fall back to the old
+   low-contrast SaaS presentation.
+   ========================================================================== */
+
+.hu-sst[data-track-page="server-side-tracking-b2b"] {
+	background: var(--papier);
+	color: var(--tinte);
+}
+
+/* ── First-paint theme normalisation ─────────────────────────────── */
+.hu-sst[data-track-page="server-side-tracking-b2b"] :is(
+	#hero,
+	#symptome,
+	#proof,
+	#fit,
+	#unterschied,
+	#umfang,
+	#pakete,
+	#tracking-care,
+	#sicherheit,
+	#ablauf,
+	#faq
+) {
+	background: var(--papier) !important;
+	color: var(--tinte) !important;
+	box-shadow: none;
+}
+
+.hu-sst[data-track-page="server-side-tracking-b2b"] :is(#proof, #pakete) {
+	background: var(--zone) !important;
+}
+
+.hu-sst[data-track-page="server-side-tracking-b2b"] :is(
+	#hero,
+	#symptome,
+	#proof,
+	#fit,
+	#unterschied,
+	#umfang,
+	#pakete,
+	#tracking-care,
+	#sicherheit,
+	#ablauf,
+	#faq
+) :is(p, li, dd) {
+	color: var(--grau);
+}
+
+.hu-sst[data-track-page="server-side-tracking-b2b"] :is(
+	#hero,
+	#symptome,
+	#proof,
+	#fit,
+	#unterschied,
+	#umfang,
+	#pakete,
+	#tracking-care,
+	#sicherheit,
+	#ablauf,
+	#faq
+) :is(h1, h2, h3, h4, strong, dt) {
+	color: var(--tinte);
+}
+
+.hu-sst[data-track-page="server-side-tracking-b2b"] :is(
+	#hero,
+	#symptome,
+	#proof,
+	#fit,
+	#unterschied,
+	#umfang,
+	#pakete,
+	#tracking-care,
+	#sicherheit,
+	#ablauf,
+	#faq
+) a:not(.hu-sst__btn) {
+	color: var(--stempel);
+}
+
+.hu-sst[data-track-page="server-side-tracking-b2b"] :is(
+	#hero,
+	#symptome,
+	#proof,
+	#fit,
+	#unterschied,
+	#umfang,
+	#pakete,
+	#tracking-care,
+	#sicherheit,
+	#ablauf,
+	#faq
+) .hu-sst__eyebrow {
+	color: var(--stempel) !important;
+}
+
+.hu-sst[data-track-page="server-side-tracking-b2b"] :is(
+	#hero,
+	#symptome,
+	#proof,
+	#fit,
+	#unterschied,
+	#umfang,
+	#pakete,
+	#tracking-care,
+	#sicherheit,
+	#ablauf,
+	#faq
+) :is(.hu-sst__section-lead, .hu-sst__lead, .hu-sst__lead-sub, .hu-sst__note) {
+	color: var(--grau) !important;
+}
+
+/* Hero must never inherit the old dark-band button/text treatment. */
+.hu-sst[data-track-page="server-side-tracking-b2b"] #hero .hu-sst__h1,
+.hu-sst[data-track-page="server-side-tracking-b2b"] #hero .hu-sst__lead,
+.hu-sst[data-track-page="server-side-tracking-b2b"] #hero .hu-sst__lead-sub,
+.hu-sst[data-track-page="server-side-tracking-b2b"] #hero .hu-sst__cta-note {
+	color: var(--tinte) !important;
+}
+
+.hu-sst[data-track-page="server-side-tracking-b2b"] #hero .hu-sst__lead,
+.hu-sst[data-track-page="server-side-tracking-b2b"] #hero .hu-sst__lead-sub,
+.hu-sst[data-track-page="server-side-tracking-b2b"] #hero .hu-sst__cta-note {
+	color: var(--grau) !important;
+}
+
+.hu-sst[data-track-page="server-side-tracking-b2b"] .hu-sst__btn--primary {
+	border-color: var(--stempel) !important;
+	background: var(--stempel) !important;
+	color: var(--papier) !important;
+	box-shadow: none;
+}
+
+.hu-sst[data-track-page="server-side-tracking-b2b"] .hu-sst__btn--primary:is(:hover, :focus-visible) {
+	border-color: var(--stempel) !important;
+	background: var(--stempel) !important;
+	color: var(--papier) !important;
+}
+
+.hu-sst[data-track-page="server-side-tracking-b2b"] #hero .hu-sst__btn--ghost,
+.hu-sst[data-track-page="server-side-tracking-b2b"] #pakete .hu-sst__btn--ghost {
+	border-color: var(--haar) !important;
+	background: transparent !important;
+	color: var(--tinte) !important;
+}
+
+.hu-sst[data-track-page="server-side-tracking-b2b"] #hero .hu-sst__btn--ghost:is(:hover, :focus-visible),
+.hu-sst[data-track-page="server-side-tracking-b2b"] #pakete .hu-sst__btn--ghost:is(:hover, :focus-visible) {
+	border-color: var(--tinte) !important;
+	background: var(--tinte) !important;
+	color: var(--papier) !important;
+}
+
+/* ── Sticky protocol index ───────────────────────────────────────── */
+.hu-sst[data-track-page="server-side-tracking-b2b"] .hu-sst__toc-band {
+	background: color-mix(in srgb, var(--papier) 98%, transparent) !important;
+	border-color: var(--haar) !important;
+	box-shadow: none;
+}
+
+.hu-sst[data-track-page="server-side-tracking-b2b"] .hu-sst__toc-list a {
+	color: var(--grau) !important;
+}
+
+.hu-sst[data-track-page="server-side-tracking-b2b"] .hu-sst__toc-list a::before {
+	color: var(--stempel) !important;
+}
+
+.hu-sst[data-track-page="server-side-tracking-b2b"] .hu-sst__toc-list a[aria-current="location"] {
+	background: var(--zone2) !important;
+	color: var(--tinte) !important;
+}
+
+/* ── 01 Befund: ledger rows, no feature-card look ───────────────── */
+.hu-sst[data-track-page="server-side-tracking-b2b"] #symptome .hu-sst__grid--3 {
+	display: grid !important;
+	grid-template-columns: 1fr !important;
+	gap: 0 !important;
+	border-top: 1px solid var(--haar);
+}
+
+.hu-sst[data-track-page="server-side-tracking-b2b"] #symptome .hu-sst__card {
+	display: grid !important;
+	grid-template-columns: minmax(230px, 0.72fr) minmax(0, 1.28fr) !important;
+	gap: clamp(1.25rem, 4vw, 4rem) !important;
+	align-items: start;
+	min-height: 0 !important;
+	margin: 0 !important;
+	padding: clamp(1.25rem, 2.8vw, 2rem) 0 !important;
+	border: 0 !important;
+	border-bottom: 1px solid var(--haar) !important;
+	border-radius: var(--r0);
+	background: transparent !important;
+	box-shadow: none;
+	transform: none !important;
+}
+
+.hu-sst[data-track-page="server-side-tracking-b2b"] #symptome .hu-sst__card::before {
+	display: none !important;
+}
+
+.hu-sst[data-track-page="server-side-tracking-b2b"] #symptome .hu-sst__card-title {
+	margin: 0 !important;
+	font-size: clamp(1.05rem, 1.7vw, 1.32rem);
+	line-height: 1.28;
+	color: var(--tinte) !important;
+}
+
+.hu-sst[data-track-page="server-side-tracking-b2b"] #symptome .hu-sst__card-text {
+	margin: 0 !important;
+	max-width: 66ch;
+	font-size: 0.98rem;
+	line-height: 1.68;
+	color: var(--grau) !important;
+}
+
+/* ── 02 Gegenprobe: clean report with readable metadata ─────────── */
+.hu-sst[data-track-page="server-side-tracking-b2b"] #proof .hu-sst-reconcile__report,
+.hu-sst[data-track-page="server-side-tracking-b2b"] #proof .hu-sst-reconcile__explain {
+	background: transparent !important;
+	box-shadow: none;
+}
+
+.hu-sst[data-track-page="server-side-tracking-b2b"] #proof :is(
+	.hu-sst-reconcile__period,
+	.hu-sst-reconcile__disclaimer,
+	.hu-sst-reconcile__note,
+	.hu-sst-reconcile__explain-card p
+) {
+	color: var(--grau) !important;
+}
+
+.hu-sst[data-track-page="server-side-tracking-b2b"] #proof .hu-sst-reconcile__row,
+.hu-sst[data-track-page="server-side-tracking-b2b"] #proof .hu-sst-reconcile__explain-card {
+	border-color: var(--haar) !important;
+}
+
+/* ── 03 System: light editorial shell, one deliberate dark diagram ─ */
+.hu-sst[data-track-page="server-side-tracking-b2b"] #unterschied {
+	background: var(--papier) !important;
+	color: var(--tinte) !important;
+}
+
+.hu-sst[data-track-page="server-side-tracking-b2b"] #unterschied .hu-sst__compare {
+	border-top: 1px solid var(--haar) !important;
+	border-bottom: 1px solid var(--haar) !important;
+	background: transparent !important;
+}
+
+.hu-sst[data-track-page="server-side-tracking-b2b"] #unterschied .hu-sst__compare > * {
+	background: transparent !important;
+	border-color: var(--haar) !important;
+	box-shadow: none;
+}
+
+.hu-sst[data-track-page="server-side-tracking-b2b"] #unterschied .hu-sst__compare :is(h3, strong) {
+	color: var(--tinte) !important;
+}
+
+.hu-sst[data-track-page="server-side-tracking-b2b"] #unterschied .hu-sst__compare :is(p, li, span) {
+	color: var(--grau) !important;
+}
+
+.hu-sst[data-track-page="server-side-tracking-b2b"] #unterschied .hu-sst__flow {
+	background: var(--papier) !important;
+	color: var(--tinte) !important;
+	border: 1px solid var(--haar) !important;
+	border-radius: var(--r0);
+	box-shadow: none;
+}
+
+.hu-sst[data-track-page="server-side-tracking-b2b"] #unterschied .hu-sst__flow :is(h3, h4, strong, .hu-sst__flow-label) {
+	color: var(--tinte) !important;
+}
+
+.hu-sst[data-track-page="server-side-tracking-b2b"] #unterschied .hu-sst__flow :is(p, span, li, .hu-sst__flow-note) {
+	color: var(--grau) !important;
+}
+
+.hu-sst[data-track-page="server-side-tracking-b2b"] #unterschied :is(.hu-sst__flow-node, .hu-sst__flow-output) {
+	border-color: var(--haar) !important;
+	background: var(--zone) !important;
+	box-shadow: none;
+}
+
+.hu-sst[data-track-page="server-side-tracking-b2b"] #unterschied .hu-sst__flow-index,
+.hu-sst[data-track-page="server-side-tracking-b2b"] #unterschied .hu-sst__flow-arrow,
+.hu-sst[data-track-page="server-side-tracking-b2b"] #unterschied .hu-sst__flow-kicker {
+	color: var(--stempel) !important;
+}
+
+.hu-sst[data-track-page="server-side-tracking-b2b"] #unterschied .hu-sst__flow-caption {
+	color: var(--grau) !important;
+}
+
+/* ── Lieferumfang: six numbered report rows ──────────────────────── */
+.hu-sst[data-track-page="server-side-tracking-b2b"] #umfang .hu-sst__grid {
+	display: grid !important;
+	grid-template-columns: 1fr !important;
+	gap: 0 !important;
+	border-top: 1px solid var(--haar);
+	counter-reset: vp-scope;
+}
+
+.hu-sst[data-track-page="server-side-tracking-b2b"] #umfang .hu-sst__card {
+	counter-increment: vp-scope;
+	display: grid !important;
+	grid-template-columns: 4rem minmax(220px, 0.55fr) minmax(0, 1fr) !important;
+	gap: clamp(1rem, 3vw, 3rem) !important;
+	align-items: start;
+	min-height: 0 !important;
+	margin: 0 !important;
+	padding: 1.4rem 0 !important;
+	border: 0 !important;
+	border-bottom: 1px solid var(--haar) !important;
+	border-radius: var(--r0);
+	background: transparent !important;
+	box-shadow: none;
+	transform: none !important;
+}
+
+.hu-sst[data-track-page="server-side-tracking-b2b"] #umfang .hu-sst__card::before {
+	content: "0" counter(vp-scope) !important;
+	position: static !important;
+	display: block !important;
+	width: auto !important;
+	height: auto !important;
+	background: transparent !important;
+	font-family: var(--mono);
+	font-size: 0.68rem;
+	font-weight: 600;
+	letter-spacing: 0.06em;
+	color: var(--stempel) !important;
+}
+
+.hu-sst[data-track-page="server-side-tracking-b2b"] #umfang .hu-sst__card-title {
+	margin: 0 !important;
+	color: var(--tinte) !important;
+}
+
+.hu-sst[data-track-page="server-side-tracking-b2b"] #umfang .hu-sst__card-text {
+	margin: 0 !important;
+	color: var(--grau) !important;
+	line-height: 1.66;
+}
+
+/* ── 04 Leistung & Preis: light decision matrix, no dark card wall ─ */
+.hu-sst[data-track-page="server-side-tracking-b2b"] #pakete {
+	background: var(--zone) !important;
+	color: var(--tinte) !important;
+}
+
+.hu-sst[data-track-page="server-side-tracking-b2b"] #pakete .hu-sst__pricing {
+	display: grid !important;
+	grid-template-columns: repeat(3, minmax(0, 1fr)) !important;
+	gap: 0 !important;
+	border-top: 2px solid var(--tinte) !important;
+	border-bottom: 1px solid var(--haar) !important;
+	background: transparent !important;
+}
+
+.hu-sst[data-track-page="server-side-tracking-b2b"] #pakete :is(.hu-sst__price-card, .hu-sst__price-card--featured) {
+	min-height: 0 !important;
+	padding: clamp(1.25rem, 2.6vw, 2rem) !important;
+	border: 0 !important;
+	border-right: 1px solid var(--haar) !important;
+	border-radius: var(--r0);
+	background: transparent !important;
+	box-shadow: none;
+	transform: none !important;
+	color: var(--tinte) !important;
+}
+
+.hu-sst[data-track-page="server-side-tracking-b2b"] #pakete .hu-sst__price-card:last-child {
+	border-right: 0 !important;
+}
+
+.hu-sst[data-track-page="server-side-tracking-b2b"] #pakete .hu-sst__price-card--featured {
+	background: var(--zone2) !important;
+}
+
+.hu-sst[data-track-page="server-side-tracking-b2b"] #pakete :is(
+	.hu-sst__price-name,
+	.hu-sst__price-value,
+	.hu-sst__price-card strong
+) {
+	color: var(--tinte) !important;
+}
+
+.hu-sst[data-track-page="server-side-tracking-b2b"] #pakete :is(
+	.hu-sst__price-lead,
+	.hu-sst__price-meta,
+	.hu-sst__price-list,
+	.hu-sst__price-list li,
+	.hu-sst__price-note
+) {
+	color: var(--grau) !important;
+}
+
+.hu-sst[data-track-page="server-side-tracking-b2b"] #pakete :is(.hu-sst__price-label, .hu-sst__price-flag, .hu-sst__price-lead strong) {
+	color: var(--stempel) !important;
+}
+
+.hu-sst[data-track-page="server-side-tracking-b2b"] #pakete .hu-sst__price-flag {
+	border: 0 !important;
+	background: transparent !important;
+}
+
+.hu-sst[data-track-page="server-side-tracking-b2b"] #pakete .hu-sst__price-list {
+	border-top: 1px solid var(--haar) !important;
+}
+
+.hu-sst[data-track-page="server-side-tracking-b2b"] #pakete .hu-sst__price-list li::before {
+	color: var(--stempel) !important;
+}
+
+/* ── Secondary sections: keep text AA-readable, lose card noise ─── */
+.hu-sst[data-track-page="server-side-tracking-b2b"] :is(#fit, #tracking-care, #sicherheit, #ablauf, #faq) :is(
+	.hu-sst__card,
+	.hu-sst__fit-card,
+	.hu-sst__step,
+	.hu-sst__faq-item
+) {
+	box-shadow: none;
+}
+
+.hu-sst[data-track-page="server-side-tracking-b2b"] :is(#fit, #sicherheit, #ablauf) :is(
+	.hu-sst__fit-card,
+	.hu-sst__card,
+	.hu-sst__step
+) {
+	background: transparent !important;
+	border-color: var(--haar) !important;
+}
+
+.hu-sst[data-track-page="server-side-tracking-b2b"] :is(#fit, #tracking-care, #sicherheit, #ablauf, #faq) :is(p, li) {
+	color: var(--grau) !important;
+}
+
+.hu-sst[data-track-page="server-side-tracking-b2b"] :is(#tracking-care, #sicherheit, #faq) .hu-sst__faq-q {
+	color: var(--tinte) !important;
+}
+
+/* ── 05 Anfrage: intentional dark ending with stronger contrast ─── */
+.hu-sst[data-track-page="server-side-tracking-b2b"] #anfrage,
+.hu-sst[data-track-page="server-side-tracking-b2b"] #anfrage.hu-sst__band--dark,
+.hu-sst[data-track-page="server-side-tracking-b2b"] #anfrage.hu-sst__band--deep,
+.hu-sst[data-track-page="server-side-tracking-b2b"] #anfrage.hu-sst__band--warm {
+	background: var(--papier) !important;
+	color: var(--tinte) !important;
+	border-top: 0 !important;
+}
+
+.hu-sst[data-track-page="server-side-tracking-b2b"] #anfrage :is(.hu-sst__h2, h2, h3, strong) {
+	color: var(--tinte) !important;
+}
+
+.hu-sst[data-track-page="server-side-tracking-b2b"] #anfrage .hu-sst__eyebrow {
+	color: var(--stempel) !important;
+}
+
+.hu-sst[data-track-page="server-side-tracking-b2b"] #anfrage :is(
+	.hu-sst__section-lead,
+	.hu-sst__request-copy p,
+	.hu-sst__request-note,
+	.hu-sst__cta-note
+) {
+	color: var(--grau) !important;
+}
+
+.hu-sst[data-track-page="server-side-tracking-b2b"] #anfrage .hu-sst__section-head::after {
+	border-color: var(--haar) !important;
+	color: var(--matt) !important;
+}
+
+.hu-sst[data-track-page="server-side-tracking-b2b"] #anfrage .hu-sst__form {
+	--theme-form-text-initial-color: var(--tinte);
+	--theme-form-text-focus-color: var(--tinte);
+	padding: clamp(1.3rem, 3vw, 2rem) !important;
+	border: 1px solid var(--haar) !important;
+	border-radius: var(--r0);
+	background: var(--papier) !important;
+	box-shadow: none;
+	color: var(--tinte) !important;
+}
+
+.hu-sst[data-track-page="server-side-tracking-b2b"] #anfrage .hu-sst__form :is(p, li, span) {
+	color: var(--grau);
+}
+
+.hu-sst[data-track-page="server-side-tracking-b2b"] #anfrage .hu-sst__form :is(label, legend, strong) {
+	color: var(--tinte) !important;
+}
+
+.hu-sst[data-track-page="server-side-tracking-b2b"] #anfrage .hu-sst__form-intro-hint {
+	border-color: var(--haar) !important;
+	color: var(--grau) !important;
+}
+
+.hu-sst[data-track-page="server-side-tracking-b2b"] #anfrage .contact-field__help,
+.hu-sst[data-track-page="server-side-tracking-b2b"] #anfrage .hu-sst__optional,
+.hu-sst[data-track-page="server-side-tracking-b2b"] #anfrage .hu-sst__form-hint {
+	color: var(--grau) !important;
+}
+
+.hu-sst[data-track-page="server-side-tracking-b2b"] #anfrage :is(
+	input:not([type="checkbox"]):not([type="radio"]),
+	select,
+	textarea
+) {
+	border-color: var(--haar) !important;
+	background: var(--papier) !important;
+	color: var(--tinte) !important;
+	box-shadow: none;
+}
+
+.hu-sst[data-track-page="server-side-tracking-b2b"] #anfrage :is(
+	input:not([type="checkbox"]):not([type="radio"]),
+	select,
+	textarea
+)::placeholder {
+	color: var(--matt) !important;
+	opacity: 1;
+}
+
+.hu-sst[data-track-page="server-side-tracking-b2b"] #anfrage :is(
+	input:not([type="checkbox"]):not([type="radio"]),
+	select,
+	textarea
+):focus {
+	border-color: var(--stempel) !important;
+	background: var(--papier) !important;
+	box-shadow: 0 0 0 3px color-mix(in srgb, var(--stempel) 12%, transparent) !important;
+	outline: 0;
+}
+
+.hu-sst[data-track-page="server-side-tracking-b2b"] #anfrage .hu-sst__form-details {
+	border-color: var(--haar) !important;
+}
+
+.hu-sst[data-track-page="server-side-tracking-b2b"] #anfrage .hu-sst__form-details > summary,
+.hu-sst[data-track-page="server-side-tracking-b2b"] #anfrage .contact-consent a {
+	color: var(--stempel) !important;
+}
+
+.hu-sst[data-track-page="server-side-tracking-b2b"] #anfrage .hu-sst__check {
+	border-color: var(--haar) !important;
+	background: var(--zone2) !important;
+	color: var(--tinte) !important;
+}
+
+.hu-sst[data-track-page="server-side-tracking-b2b"] #anfrage .contact-consent {
+	color: var(--grau) !important;
+}
+
+.hu-sst[data-track-page="server-side-tracking-b2b"] #anfrage .contact-submit {
+	border-color: var(--stempel) !important;
+	background: var(--stempel) !important;
+	color: var(--papier) !important;
+	font-weight: 760;
+}
+
+.hu-sst[data-track-page="server-side-tracking-b2b"] #anfrage .contact-submit:is(:hover, :focus-visible) {
+	border-color: var(--stempel) !important;
+	background: var(--stempel) !important;
+	color: var(--papier) !important;
+}
+
+/* ── Responsive ─────────────────────────────────────────────────── */
+@media (max-width: 900px) {
+	.hu-sst[data-track-page="server-side-tracking-b2b"] #pakete .hu-sst__pricing {
+		grid-template-columns: 1fr !important;
+	}
+
+	.hu-sst[data-track-page="server-side-tracking-b2b"] #pakete :is(.hu-sst__price-card, .hu-sst__price-card--featured) {
+		border-right: 0 !important;
+		border-bottom: 1px solid var(--haar) !important;
+	}
+}
+
+@media (max-width: 720px) {
+	.hu-sst[data-track-page="server-side-tracking-b2b"] #symptome .hu-sst__card,
+	.hu-sst[data-track-page="server-side-tracking-b2b"] #umfang .hu-sst__card {
+		grid-template-columns: 1fr !important;
+		gap: 0.6rem !important;
+	}
+
+	.hu-sst[data-track-page="server-side-tracking-b2b"] #umfang .hu-sst__card::before {
+		margin-bottom: 0.2rem;
+	}
+}
+
+/* ═════ Rest des Einstiegs ═════ */
 /* ========================================================================== 
    /server-side-tracking-b2b/ — CSS composition
    --------------------------------------------------------------------------
@@ -5,13 +5024,6 @@
    Produktoberflaeche kommt ausschliesslich aus dem Verification-Protocol-
    Layer; die verworfenen SaaS-/Dashboard-Layer werden nicht mehr geladen.
    ========================================================================== */
-
-@import url("./server-side-tracking-base.css?v=20260909-1");
-@import url("./server-side-tracking-cro.css?v=20260909-2");
-@import url("./server-side-tracking-funnel.css?v=20260912-2");
-@import url("./server-side-tracking-protocol.css?v=20260912-1");
-@import url("./server-side-tracking-contrast.css?v=20260912-1");
-
 /* Desktop-Feinschliff fuer den globalen Money-Rail-Fallback. */
 @media (min-width: 1360px) {
 	.hu-sst .hu-money-rail--toc:hover .hu-money-toc__link,
@@ -23,17 +5035,17 @@
 	.hu-sst .hu-money-rail--toc:focus-within .hu-money-toc__label {
 		max-inline-size: 170px;
 		padding: 0.36rem 0.62rem;
-		border-color: rgba(246, 244, 239, 0.07);
-		background: rgba(23, 20, 17, 0.88);
-		color: rgba(246, 244, 239, 0.62);
+		border-color: color-mix(in srgb, var(--haar) 7%, transparent);
+		background: color-mix(in srgb, var(--papier) 88%, transparent);
+		color: color-mix(in srgb, var(--tinte) 62%, transparent);
 		opacity: 1;
 		transform: translate(0, -50%);
 	}
 
 	.hu-sst .hu-money-rail--toc:hover .hu-money-toc__link[aria-current="true"] .hu-money-toc__label,
 	.hu-sst .hu-money-rail--toc:focus-within .hu-money-toc__link[aria-current="true"] .hu-money-toc__label {
-		border-color: rgba(229, 149, 115, 0.24);
-		background: rgba(23, 20, 17, 0.96);
-		color: var(--sst-on-dark, #f6f4ef);
+		border-color: color-mix(in srgb, var(--stempel) 24%, transparent);
+		background: color-mix(in srgb, var(--papier) 96%, transparent);
+		color: var(--tinte);
 	}
 }

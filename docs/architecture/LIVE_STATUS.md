@@ -262,6 +262,10 @@ Abschnitt anzuhängen; der Verlauf gehört in Commit-Nachrichten.
   (`cta_package_to_measurement`). Seitenweit verlinkt
   im Fuß als „Server-Side Tracking“ (Route `tracking_b2b`). Beide
   Tracking-Seiten gelten als ein Kontext (`hu_is_tracking_route_context()`).
+  Seit 2026-10-01 steht die Route auf `system.css`: ein Stylesheet
+  (`server-side-tracking.css`) statt fünf Schichten, kein
+  `design-system.css`, keine `--sst-*`/`--vp-*`-Tokens, kein Orange außer
+  `--stempel`; die Sticky-CTA-Leiste ist eine `.tafel`.
 - **`/wordpress-agentur-hannover/`** (`page-wordpress-agentur.php`):
   Entscheidungsseite „Agentur oder direkte Umsetzung“ mit den Ankern
   `#entscheidung`, `#technik`, `#zusammenarbeit`, `#belege`, `#hannover`, `#faq`,

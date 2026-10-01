@@ -95,6 +95,9 @@ DECLARATION_RE = re.compile(
 ROOT_BLOCK_RE = re.compile(r"(?s):root(?:\s*,[^\{]+)?\s*\{(.*?)\}")
 
 
+RETIRED_TOKEN_PREFIXES = ("--sst-", "--vp-")
+
+
 def normalize_value(value: str) -> str:
     return re.sub(r"\s+", " ", value.strip())
 
@@ -191,6 +194,20 @@ def main() -> int:
                     f"expected {selector}={sorted(expected)!r}, "
                     f"file={sorted(actual_file)!r}, scope={sorted(actual_scope)!r}"
                 )
+
+    # Abgeloeste Token-Familien: --sst-* und --vp-* waren die Seitentokens der
+    # Server-Side-Tracking-Schichten und sind in system.css aufgegangen.
+    for path, defined_all in file_declarations.items():
+        retired = sorted(t for t in defined_all if t.startswith(RETIRED_TOKEN_PREFIXES))
+        if retired:
+            errors.append(
+                f"{relative(path)} declares retired page tokens ({', '.join(retired)}); "
+                "use the system.css tokens instead"
+            )
+
+    sst_css = CSS_DIR / "server-side-tracking.css"
+    if sst_css.is_file() and re.search(r"(?m)^\s*@import\b", sst_css.read_text(encoding="utf-8")):
+        errors.append("server-side-tracking.css must be one file without @import")
 
     # Report unscoped root token owners. This is diagnostic for the remaining
     # legacy systems; it intentionally does not fail while those routes exist.
