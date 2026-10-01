@@ -275,7 +275,7 @@ get_header();
 						   data-track-action="cta_marktcheck"
 						   data-track-category="intercept_solar_leads"
 						   data-track-section="hero">
-							Marktcheck mit Fit-Entscheid starten
+							Marktcheck starten
 							<span aria-hidden="true">→</span>
 						</a>
 						<a class="hu-buy__button hu-buy__button--secondary"
@@ -456,7 +456,7 @@ get_header();
 			</ol>
 			<div class="hu-buy__inline-action">
 				<p>Für den generischen Suchintent rund um Wärmepumpen-Anfragen bleibt die eigene <a href="<?php echo esc_url( $waermepumpen_url ); ?>" data-track-action="related_waermepumpen_leads" data-track-category="internal_link_hierarchy" data-track-section="system">Wärmepumpen-Leads-Seite</a> der thematische Owner.</p>
-				<a class="hu-buy__button hu-buy__button--primary" href="<?php echo esc_url( $marktcheck_url ); ?>" data-track-action="cta_marktcheck" data-track-category="intercept_solar_leads" data-track-section="system">Eigenen Anfrageweg prüfen lassen <span aria-hidden="true">→</span></a>
+				<a class="hu-buy__button hu-buy__button--primary" href="<?php echo esc_url( $marktcheck_url ); ?>" data-track-action="cta_marktcheck" data-track-category="intercept_solar_leads" data-track-section="system">Marktcheck starten <span aria-hidden="true">→</span></a>
 			</div>
 		</div>
 	</section>
@@ -527,7 +527,7 @@ get_header();
 			<h2 class="hu-buy__h2" id="hu-buy-final-title">Klären Sie zuerst, welches Beschaffungsmodell zu Ihrem Betrieb passt.</h2>
 			<p class="hu-buy__final-text">Der Marktcheck ordnet Zielgebiet, Vertrieb, aktuelle Leadquellen und Anfragequalität ein. Das Ergebnis ist eine klare Empfehlung für Zukauf, Übergang oder eigenen Anfragekanal — auch dann, wenn eine Umsetzung aktuell nicht sinnvoll ist.</p>
 			<div class="hu-buy__actions hu-buy__actions--centered">
-				<a class="hu-buy__button hu-buy__button--primary" href="<?php echo esc_url( $marktcheck_url ); ?>" data-track-action="cta_marktcheck" data-track-category="intercept_solar_leads" data-track-section="final">Marktcheck mit Fit-Entscheid starten <span aria-hidden="true">→</span></a>
+				<a class="hu-buy__button hu-buy__button--primary" href="<?php echo esc_url( $marktcheck_url ); ?>" data-track-action="cta_marktcheck" data-track-category="intercept_solar_leads" data-track-section="final">Marktcheck starten <span aria-hidden="true">→</span></a>
 			</div>
 			<p class="hu-buy__final-note">Erst die Gesamtmethode verstehen? <a href="<?php echo esc_url( $solar_money_url ); ?>" data-track-action="cta_money_page" data-track-category="internal_link_hierarchy" data-track-section="final">Das eigene Anfragesystem ansehen</a>.</p>
 		</div>

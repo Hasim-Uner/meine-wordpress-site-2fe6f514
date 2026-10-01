@@ -425,7 +425,7 @@ get_template_part(
 		'track_category' => 'case_solar_methodology',
 		'lead'           => 'Marktcheck',
 		'sub'            => 'Fit-Befund statt Standardbericht',
-		'label'          => 'Eigene Quellen prüfen',
+		'label'          => 'Marktcheck starten',
 		'track_action'   => 'cta_sticky_case_study_marktcheck',
 	]
 );

@@ -56,10 +56,10 @@ require_file "$PRICING_CANON"
 
 # The solar money page names the free marketcheck as its entry offer. Ready
 # buyers therefore need a direct primary path from the document head to the
-# actual gate; the explanatory five-station tour remains the secondary route.
+# actual gate; buyers of portal leads get the Sofortkontakt route beside it.
 require_pattern 'data-track-action="cta_strecke_kopf_to_marktcheck"' "$SOLAR_PAGE"
 require_pattern '>(Kostenlosen[[:space:]]+)?Marktcheck starten[[:space:]]*<span' "$SOLAR_PAGE"
-require_pattern 'data-track-action="cta_strecke_kopf_to_stationen"' "$SOLAR_PAGE"
+require_pattern 'data-track-action="cta_strecke_kopf_to_sofortkontakt"' "$SOLAR_PAGE"
 
 # The stable WordPress handle is a bootstrap now. It must load the compact
 # two-view controller and its matching stylesheet using the actual repo paths.
