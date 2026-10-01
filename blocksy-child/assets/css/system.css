@@ -772,7 +772,15 @@ body.nx-custom-header-active {
    Schlanke Zeile, Wortmarke links, Navigation rechts, eine Haarlinie
    als Abschluss. Sie steht im Fluss (sticky), nicht darueber: eine
    dauerhaft sichtbare fixierte Leiste zwaenge jede Route zu einem
-   eigenen Ausgleich oben. */
+   eigenen Ausgleich oben.
+
+   Zwei Modi trägt template-parts/site-header.php (Entscheidung:
+   hu_funnel_context() in inc/funnel-doors.php):
+   .leiste--voll   Wortmarke, vier Wege, Haarlinie, Ergebnisse, Tuer, Menue.
+   .leiste--leser  Wortmarke, Artikelpfad, Tuer. Kein Hauptmenue.
+   Der Modus "fokus" der Solar-Seite folgt mit der Solar-Strecke.
+   Die Regeln ohne Modus gelten weiter fuer Leisten, die dieses Template
+   nicht rendert (Kopf der White-Label-Seite). */
 
 .leiste {
   position: sticky;
@@ -868,9 +876,6 @@ body.nx-custom-header-active {
   padding: var(--s0) var(--s2);
   font-size: 0.7rem;
 }
-
-/* Kurzform des Zeilen-Buttons, nur auf schmalen Schirmen (siehe unten). */
-.leiste .tun-kurz { display: none; }
 
 /* ── Klappe und Blatt fuer schmale Schirme ──────────────────── */
 
@@ -986,15 +991,166 @@ body.nx-custom-header-active {
   }
 }
 
-@media (max-width: 479px) {
-  .leiste .rechts > .tun .tun-lang { display: none; }
-  .leiste .rechts > .tun .tun-kurz { display: inline; }
-}
-
 /* Unter 340 px reicht die Zeile nicht fuer Wortmarke, Button und Klappe;
    der Button steht dann nur im Blatt. */
 @media (max-width: 339px) {
   .leiste[data-leiste-bereit] .rechts > .tun { display: none; }
+}
+
+/* ── Tuer ──────────────────────────────────────────────────────
+   Das eine eigene Element der Leiste: Bezeichnung und Betrag als zwei
+   Felder eines Formularkopfs, getrennt durch eine Haarlinie. Ohne Betrag
+   steht nur ein Feld. Radius --r0, Hoehe --tuer-h. Der Hover kehrt die
+   Flaeche um, der Pfeil rueckt 3 px. Layout wird nie animiert. */
+
+.leiste .tuer {
+  display: inline-flex;
+  align-items: stretch;
+  min-height: var(--tuer-h);
+  text-decoration: none;
+  border: 1px solid var(--stempel);
+  border-radius: var(--r0);
+  background: var(--stempel);
+  color: var(--papier);
+  font-family: var(--mono);
+  font-size: var(--tuer-schrift);
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  font-weight: 500;
+  white-space: nowrap;
+  transition:
+    background-color var(--t-mikro) ease,
+    color var(--t-mikro) ease;
+}
+
+.leiste .tuer span {
+  display: flex;
+  align-items: center;
+  padding-inline: 0.85rem;
+}
+
+.leiste .tuer .preis {
+  border-left: 1px solid color-mix(in srgb, var(--papier) 35%, transparent);
+  font-variant-numeric: tabular-nums;
+  letter-spacing: 0.04em;
+}
+
+.leiste .tuer .pf {
+  display: inline-block;
+  margin-left: 0.45rem;
+  transform: translateY(-0.5px);
+  transition: transform 180ms var(--ease-aus);
+}
+
+.leiste .tuer:hover {
+  background: transparent;
+  color: var(--stempel);
+}
+
+.leiste .tuer:hover .preis { border-left-color: var(--stempel); }
+.leiste .tuer:hover .pf { transform: translate(3px, -0.5px); }
+
+/* Kurztext nur auf schmalen Schirmen (unten). */
+.leiste .tuer .kurz { display: none; }
+
+/* ── Haarlinie vor "Ergebnisse" ─────────────────────────────── */
+
+.leiste .rechts > nav .beleg {
+  padding-left: var(--s3);
+  border-left: 1px solid var(--haar);
+}
+
+/* Die Linie unter dem aktiven Punkt beginnt beim Text, nicht an der Haarlinie. */
+.leiste .rechts > nav .beleg::after { left: var(--s3); }
+
+/* ── Lesemodus: Artikelpfad statt Hauptmenue ─────────────────── */
+
+.leiste--leser .in {
+  justify-content: flex-start;
+  gap: var(--s3);
+}
+
+.leiste--leser .rechts { margin-left: auto; }
+
+.leiste .pfad {
+  display: flex;
+  align-items: center;
+  gap: var(--s1);
+  min-width: 0;
+  overflow: hidden;
+  font-family: var(--mono);
+  font-size: var(--mono-s);
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--matt);
+  white-space: nowrap;
+  text-overflow: ellipsis;
+}
+
+/* Die Regeln fuer Hauptnavigations-Links (.leiste nav a) gelten auch hier;
+   der Pfad nimmt Schriftgrad und Spur von seinem Container und hat keine
+   Hover-Linie. */
+.leiste .pfad a {
+  min-width: 0;
+  overflow: hidden;
+  padding-block: 0;
+  font-size: inherit;
+  letter-spacing: inherit;
+  color: var(--grau);
+  text-decoration: none;
+  text-overflow: ellipsis;
+  transition: color var(--t-norm) var(--ease-weich);
+}
+
+.leiste .pfad a::after { display: none; }
+.leiste .pfad a:first-child { flex: none; }
+.leiste .pfad a:hover { color: var(--tinte); }
+
+/* ── Tuer im Klappblatt: volle Breite, beide Felder ─────────── */
+
+.leiste .blatt-klapp .tuer {
+  margin-top: var(--s3);
+  width: 100%;
+  justify-content: space-between;
+}
+
+.leiste .blatt-klapp .tuer span { flex: 0 0 auto; }
+.leiste .blatt-klapp .tuer .lang { margin-right: auto; }
+
+/* ── Schmale Schirme ────────────────────────────────────────────
+   Unter 1081 px tritt das Hauptmenue hinter "Menue"; die Tuer bleibt in
+   der Zeile (mit JavaScript; ohne steht sie im offenen Blatt). Unter 561 px
+   Kurztext, unter 371 px ohne Betrag. Bei 360 px bleiben Wortmarke, Tuer
+   und Menue in einer Zeile. Im Lesemodus gibt es kein Blatt: die Tuer bleibt
+   immer sichtbar. */
+
+@media (max-width: 1080px) {
+  .leiste--voll .rechts > .tuer { display: none; }
+  .leiste--voll[data-leiste-bereit] .rechts > .tuer { display: inline-flex; }
+  /* Geoeffnet traegt das Blatt dieselbe Tuer in voller Breite. Die Zeile
+     gibt den Platz frei: "Schliessen" ist laenger als "Menue" und liesse
+     sonst neben einer breiten Tuer (Betrag) aus dem Bild laufen. */
+  .leiste--voll.offen .rechts > .tuer { display: none; }
+}
+
+@media (max-width: 560px) {
+  .leiste .rechts > .tuer .lang { display: none; }
+  .leiste .rechts > .tuer .kurz { display: flex; }
+  .leiste .rechts > .tuer span { padding-inline: 0.6rem; }
+  .leiste .pfad { display: none; }
+  .leiste--voll .in,
+  .leiste--leser .in { gap: var(--s1); }
+}
+
+@media (max-width: 370px) {
+  .leiste .rechts > .tuer .preis { display: none; }
+}
+
+/* Unter 340 px reicht die Zeile mit Menue nicht fuer Wortmarke und Tuer;
+   die Tuer steht dann nur im Blatt. Der Lesemodus hat kein Menue und
+   behaelt sie. */
+@media (max-width: 339px) {
+  .leiste--voll[data-leiste-bereit] .rechts > .tuer { display: none; }
 }
 
 /* ══ Fuss ═════════════════════════════════════════════════════

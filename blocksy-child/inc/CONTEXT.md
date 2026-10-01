@@ -7,6 +7,7 @@ Scope: `blocksy-child/inc/*.php`
 - Bootstrap and helpers: `helpers.php`, `enqueue.php`, `menu-setup.php`
 - SEO and schema: `seo-meta.php`, `org-schema.php`, `llms-txt.php`
 - Funnel and CRM: `review-crm.php`, `crm.php`, `blog-notify.php`, `mail.php`
+- Routing and doors: `commercial-routing.php` (routes, navigation contracts), `funnel-doors.php` (six doors, mode and way per request for header and footer)
 - Registries and sync: `glossary-registry*.php`, `wgos-asset-registry*.php`, `wgos-assets.php`
 - Admin products: `seo-cockpit*.php`, `client-portal.php`, `admin-manager.php`
 

@@ -29,11 +29,6 @@
     --ao-enter: var(--duration-slow, 350ms);
 }
 
-/* The extra reader header is redundant on this flagship route. */
-.single-post .nexus-article-reader-header {
-    display: none !important;
-}
-
 .single-post .nexus-blog-header__context-links {
     display: none !important;
 }

@@ -214,12 +214,20 @@ function hu_nav_current_state( $is_target, $in_section = false ) {
  * lesen diese eine Struktur. Die Tracking-Action-Namen bleiben die
  * historischen Werte, damit die Zeitreihe vergleichbar bleibt.
  *
- * Reihenfolge seit 2026-09-25: erst was ich anbiete (Leistungen, Tracking),
+ * Reihenfolge seit 2026-09-25: erst was ich anbiete (Projekte, Tracking),
  * dann die beiden Wege fuer bestimmte Absender (White-Label fuer Agenturen,
  * Solar & Waermepumpe fuer Energiebetriebe), dann Belege und Person. Der
  * Fuss (template-parts/site-footer.php) bietet seine vier Wege in derselben
  * Reihenfolge an. Tracking stand vorher zwischen White-Label und Solar und
  * trennte damit die beiden direkten Leistungen voneinander.
+ *
+ * Seit 2026-10-01 zeigt die Zeile die vier Wege, eine Haarlinie und
+ * "Ergebnisse"; "Ueber Hasim" steht nur im Klappblatt und im Fuss. Das
+ * Flag `row` einer Gruppen-Zeile sagt, ob sie in der Zeile steht (true) oder
+ * nur im Klappblatt. Die Tuer rechts ist kontextabhaengig und kommt nicht aus
+ * diesem Contract, sondern aus hu_funnel_context() (inc/funnel-doors.php);
+ * `cta` bleibt die Standardtuer "Projekt anfragen" fuer Menue, 404 und SEO
+ * Cockpit.
  *
  * `current` ist ein aria-current-Wert aus hu_nav_current_state(), kein Bool.
  *
@@ -227,6 +235,8 @@ function hu_nav_current_state( $is_target, $in_section = false ) {
  */
 function hu_get_site_header_navigation_contract() {
 	$routes = hu_get_commercial_route_map();
+	$door   = hu_funnel_doors()['projekt'];
+
 	return [
 		'toggle' => [
 			'track'    => 'nav_menu_toggle',
@@ -237,7 +247,7 @@ function hu_get_site_header_navigation_contract() {
 			[
 				'kind'     => 'route',
 				'kicker'   => __( 'Direkte Projekte', 'blocksy-child' ),
-				'label'    => __( 'Leistungen', 'blocksy-child' ),
+				'label'    => __( 'Projekte', 'blocksy-child' ),
 				'desc'     => __( 'Neubau, Relaunch und Weiterentwicklung — mit Messung, die von Anfang an mitgebaut wird.', 'blocksy-child' ),
 				'url'      => home_url( '/#angebote' ),
 				// Ein Anker, keine Seite: Auf der Startseite setzt
@@ -295,6 +305,7 @@ function hu_get_site_header_navigation_contract() {
 					[
 						'kind'     => 'group',
 						'label'    => __( 'Ergebnisse', 'blocksy-child' ),
+						'row'      => true,
 						'url'      => hu_get_results_nav_url(),
 						// Das Ziel ist ein Abschnitt der Startseite; die
 						// Fallstudie liegt nur im Bereich des Punkts.
@@ -307,6 +318,7 @@ function hu_get_site_header_navigation_contract() {
 					[
 						'kind'     => 'group',
 						'label'    => __( 'Über Haşim', 'blocksy-child' ),
+						'row'      => false,
 						'url'      => $routes['about'],
 						'current'  => hu_nav_current_state( is_page( 'hasim-uener' ) || is_page( 'uber-mich' ) || is_page_template( 'page-hasim-uener.php' ) ),
 						'class'    => 'nav-about-link',
@@ -345,12 +357,12 @@ function hu_get_site_header_navigation_contract() {
 		],
 		'cta' => [
 			'kind'        => 'cta',
-			'label'       => __( 'Projekt anfragen', 'blocksy-child' ),
-			'short_label' => __( 'Anfragen', 'blocksy-child' ),
-			'url'         => $routes['project_request'],
+			'label'       => $door['label'],
+			'short_label' => $door['short'],
+			'url'         => $door['url'],
 			'current'     => '',
 			'class'       => 'nav-cta-button nav-project-link',
-			'track'       => 'nav_header_project',
+			'track'       => $door['track'],
 			'category'    => 'lead_gen',
 			'section'     => 'header',
 		],

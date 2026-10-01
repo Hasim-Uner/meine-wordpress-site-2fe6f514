@@ -35,30 +35,41 @@ Abschnitt anzuhängen; der Verlauf gehört in Commit-Nachrichten.
   2026-09-24 ein leiser Nebenausgang unter den Leistungen), Energie-Intent →
   `/solar-waermepumpen-leadgenerierung/#marktcheck`. Der Marktcheck ist kein
   globaler CTA.
-- Kopf: `.leiste` aus `system.css` plus `leiste.js`. Reihenfolge seit
-  2026-09-25 Leistungen (`/#angebote`), Tracking (`/ga4-tracking-setup/`,
-  Route `tracking_setup`), White-Label, Solar & Wärmepumpe, Ergebnisse
-  (`/#arbeiten`, Ziel aus `hu_get_results_nav_url()`), Über Haşim, CTA
-  „Projekt anfragen“. Erst die Leistungen, dann die Wege für Agenturen und
-  Energiebetriebe, dann Belege und Person. Quelle ist
-  `hu_get_site_header_navigation_contract()` in `inc/commercial-routing.php`;
-  Klappblatt, 404-Seite, gespeichertes WordPress-Menü (`inc/menu-setup.php`,
-  nur Backend-Zustand, nirgends gerendert) und SEO Cockpit lesen denselben
-  Contract. `aria-current="page"` nur auf dem Link, der die Seite ist;
+- Kopf: `.leiste` aus `system.css` plus `leiste.js`, gerendert von
+  `template-parts/site-header.php`. Seit 2026-10-01 entscheidet
+  `hu_funnel_context()` (`inc/funnel-doors.php`) Modus und Tür; Kopf und Fuß
+  lesen dieselbe Entscheidung. Modus `voll`: Wortmarke, Projekte (`/#angebote`),
+  Tracking (`/ga4-tracking-setup/`, Route `tracking_setup`), White-Label,
+  Solar & Wärmepumpe, Haarlinie, Ergebnisse (`/#arbeiten`, Ziel aus
+  `hu_get_results_nav_url()`), die Tür, „Menü“; „Über Haşim“ steht nur im
+  Klappblatt und im Fuß. Modus `leser` (Einzelbeiträge): Wortmarke,
+  Artikelpfad „Wissen / Dossier“, die Tür, kein Hauptmenü; der frühere
+  Lesekopf (`article-reader-header.php`, `blog-header.css`) ist entfallen, die
+  Klasse `nexus-article-reader-header` bleibt als Haken für die Artikel-
+  Stylesheets. Die Tür ist kontextabhängig (Matrix in
+  `docs/architecture/CONVERSION_ROUTING.md`): Projekt anfragen (ohne Betrag),
+  Tracking anfragen („ab“ Messung-Setup), Test-Sprint anfragen, Marktcheck
+  (kostenlos) oder Sofortkontakt; Beträge kommen aus dem Kanon. Quelle der
+  Punkte ist `hu_get_site_header_navigation_contract()` in
+  `inc/commercial-routing.php`; Klappblatt, 404-Seite, gespeichertes
+  WordPress-Menü (`inc/menu-setup.php`, nur Backend-Zustand, nirgends
+  gerendert) und SEO Cockpit lesen denselben Contract.
+  `aria-current="page"` nur auf dem Link, der die Seite ist;
   `aria-current="true"` für den Bereich (Server-Side-Seite unter Tracking,
-  Fallstudie unter Ergebnisse). Unter 1081 px bleibt der CTA in der Zeile
-  neben „Menü“ (unter 480 px als „Anfragen“, unter 340 px nur im Blatt); auf
-  Seiten mit Sticky-CTA-Leiste übernimmt unter 761 px die Leiste, auf der
-  Startseite bleibt er schmal im Blatt, weil der Hero die Anfrage trägt. Das
-  Klappblatt scrollt selbst, wenn es höher als der Viewport ist (Handy quer).
+  Fallstudie unter Ergebnisse). Unter 1081 px bleibt die Tür in der Zeile
+  neben „Menü“ (unter 561 px als Kurztext, unter 371 px ohne Betrag, unter
+  340 px nur im Blatt); auf Seiten mit Sticky-CTA-Leiste übernimmt unter
+  761 px die Leiste. Das Klappblatt scrollt selbst, wenn es höher als der
+  Viewport ist (Handy quer). Auf `/kontakt/` entfällt die Tür.
+  `HU_FEATURE_SOLAR_DOORS` (Vorgabe `false`, `inc/feature-flags.php`) hält die
+  Türen Analyse und Sofortkontakt bis zur Solar-Strecke auf `#einstieg`.
   `/whitelabel-retainer/` hat eine eigene Seitennavigation aus derselben
-  `.leiste`, ohne Klappblatt.
-  Auf der Startseite (nur dort, über `startseite-strecke.css/.js`) ist der
-  Header-Button ein Outline-Button, weil dort „Kostenlose Ersteinschätzung“
-  der primäre Button ist; „Leistungen“ ist nur aktiv, solange `#angebote` im
-  Blick ist (`aria-current="location"`), ohne JavaScript neutral; die
-  Wortmarke trägt `aria-current="page"`. Der Menüknopf hat kein eigenes
-  `aria-label`, der sichtbare Text „Menü“/„Schließen“ ist sein Name.
+  `.leiste`, ohne Klappblatt und ohne Tür aus `hu_funnel_doors()`.
+  Auf der Startseite (über `startseite-strecke.css/.js`) ist „Projekte“ nur
+  aktiv, solange `#angebote` im Blick ist (`aria-current="location"`), ohne
+  JavaScript neutral; die Wortmarke trägt `aria-current="page"`. Der
+  Menüknopf hat kein eigenes `aria-label`, der sichtbare Text
+  „Menü“/„Schließen“ ist sein Name.
 - Fuß: `template-parts/site-footer.php` aus
   `hu_get_site_footer_navigation_contract()`. Vier Wege in Kopf-Reihenfolge
   (Website, Tracking, Agentur, Energie; der eigene Weg entfällt), Direktzeile,

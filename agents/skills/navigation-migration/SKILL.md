@@ -21,6 +21,10 @@ The checklist renders the live contract; it never lists a hand-kept menu.
 - Footer ways and directory: `hu_get_site_footer_navigation_contract()`.
 - Route targets: `hu_get_commercial_route_map()`. All in
   `blocksy-child/inc/commercial-routing.php`.
+- Header door, mode and footer way per request: `hu_funnel_doors()` and
+  `hu_funnel_context()` in `blocksy-child/inc/funnel-doors.php`. Amounts come
+  from the canon, never as literals; `HU_FEATURE_SOLAR_DOORS` switches the
+  Analyse and Sofortkontakt anchors.
 - Current targets and events: `docs/architecture/CONVERSION_ROUTING.md`
   (sections Header, Footer, 404). Do not restate them here.
 

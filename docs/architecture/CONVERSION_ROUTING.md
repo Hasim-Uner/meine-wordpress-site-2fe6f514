@@ -361,26 +361,71 @@ breadcrumb or wayfinding layer. Hooks kept from the previous version:
 one section), `nav_whitelabel_process` labels „Ablauf“; `cta_whitelabel_hero_call`
 was replaced by `cta_whitelabel_hero_offer`, and `cta_whitelabel_way_later` is new.
 
-### Header (seit 2026-09-25)
+### Header (seit 2026-10-01: Türen)
 
-Quelle: `hu_get_site_header_navigation_contract()` in
-`blocksy-child/inc/commercial-routing.php`. Kopfzeile und Klappblatt rendern
-dieselbe Liste in derselben Reihenfolge; das gespeicherte WordPress-Menü, die
-404-Seite und das SEO Cockpit lesen denselben Contract. Geprüft von
-`scripts/tests/navigation-contract.php` (CI).
+Quelle der Punkte: `hu_get_site_header_navigation_contract()` in
+`blocksy-child/inc/commercial-routing.php`. Quelle der Tür und des Modus:
+`hu_funnel_doors()` und `hu_funnel_context()` in
+`blocksy-child/inc/funnel-doors.php`; Kopf und Fuß lesen dieselbe
+Entscheidung. Kopfzeile und Klappblatt rendern dieselbe Liste in derselben
+Reihenfolge (das Blatt zusätzlich „Über Haşim“); das gespeicherte
+WordPress-Menü, die 404-Seite und das SEO Cockpit lesen denselben Contract.
+Geprüft von `scripts/tests/navigation-contract.php` (CI).
 
-| Punkt | Ziel | Event |
-|---|---|---|
-| Leistungen | `/#angebote` | `nav_header_freelancer` |
-| Tracking | `/ga4-tracking-setup/` (Route `tracking_setup`) | `nav_header_tracking` |
-| White-Label | `/whitelabel-retainer/` | `nav_header_whitelabel` |
-| Solar & Wärmepumpe | `/solar-waermepumpen-leadgenerierung/` | `nav_header_solar` |
-| Ergebnisse | `/#arbeiten` | `nav_header_results` |
-| Über Haşim | `/hasim-uener/` | `nav_header_about` |
-| CTA „Projekt anfragen“ | `/kontakt/?type=project` | `nav_header_project` |
+| Punkt | Ziel | Event | Zeile |
+|---|---|---|---|
+| Projekte | `/#angebote` | `nav_header_freelancer` | ja |
+| Tracking | `/ga4-tracking-setup/` (Route `tracking_setup`) | `nav_header_tracking` | ja |
+| White-Label | `/whitelabel-retainer/` | `nav_header_whitelabel` | ja |
+| Solar & Wärmepumpe | `/solar-waermepumpen-leadgenerierung/` | `nav_header_solar` | ja |
+| Ergebnisse (hinter einer Haarlinie) | `/#arbeiten` | `nav_header_results` | ja |
+| Über Haşim | `/hasim-uener/` | `nav_header_about` | nur Blatt |
 
-Reihenfolge: erst was angeboten wird (Leistungen, Tracking), dann die Wege für
-bestimmte Absender (Agenturen, Energiebetriebe), dann Belege und Person. Der
+Die Tür ersetzt den kontextblinden CTA. Der Contract behält `cta` als
+Standardtür „Projekt anfragen“ für Menü, 404 und SEO Cockpit.
+
+Türmatrix (Modus `voll` zeigt das Hauptmenü, `leser` den Artikelpfad statt des
+Menüs, `fokus` die Leiter der Solar-Seite):
+
+| Route | Modus | Tür | Betrag (Kanon) | Ziel | `data-track-action` |
+|---|---|---|---|---|---|
+| Startseite, Über, sonstige Seiten | voll | Projekt anfragen | kein Betrag | `/kontakt/?type=project` | `nav_header_project` |
+| `/ga4-tracking-setup/`, `/server-side-tracking-b2b/` | voll | Tracking anfragen | „ab“ Messung-Setup | `/kontakt/?type=project&focus=tracking` | `nav_header_door_tracking` |
+| White-Label | voll | Test-Sprint anfragen | Test-Sprint | `/whitelabel-retainer/#aufgabe` | `nav_header_door_whitelabel` |
+| Portal-Einordnungen (Checkfox, Aroundhome, Wattfox, DAA) | leser | Sofortkontakt | Sofortkontakt-Setup | `/solar-waermepumpen-leadgenerierung/#sofortkontakt` | `nav_header_door_sofortkontakt` |
+| Übrige Beiträge, Dossier „Leadgenerierung“ | leser | Marktcheck | kostenlos | `…/#marktcheck` | `nav_header_door_marktcheck` |
+| Übrige Beiträge, Dossier „Tracking“ | leser | Tracking anfragen | „ab“ Messung-Setup | wie oben | `nav_header_door_tracking` |
+| Übrige Beiträge, sonst | leser | Projekt anfragen | kein Betrag | wie oben | `nav_header_project` |
+| Fallstudie | voll | Marktcheck | kostenlos | `…/#marktcheck` | `nav_header_door_marktcheck` |
+| Solar-Seite | fokus | Leiter der Seite (folgt mit der Solar-Strecke) | | Anker der Seite | `nav_header_door_*` |
+| Kontakt | voll | keine Tür | | | |
+
+Jede Tür trägt zusätzlich `data-door="<schlüssel>"` (`projekt`, `tracking`,
+`aufgabe`, `marktcheck`, `analyse`, `sofort`), `data-track-category="lead_gen"`
+und `data-track-section="header"`. Die Beträge kommen ausschließlich aus
+`inc/canon/pricing-canon.php` (`hu_tracking_price( 'measurement', 'setup' )`,
+`HU_WHITELABEL_TEST_SPRINT_PRICE`, `hu_analysis_price()`,
+`hu_entry_setup_price()`); die Navigationsprüfung verbietet Preisliterale in
+`inc/funnel-doors.php` und im Template. Ein „ab“-Betrag ist die echte
+Untergrenze dessen, was hinter der Tür liegt: Tracking beginnt bei der
+Messung (Stufe 1 der Tracking-Leiste), nicht beim Basis-Paket. Die Tür „Projekt anfragen“ bündelt
+Website, Landingpage, Relaunch und Optimierung und trägt keinen Betrag.
+Der Marktcheck erscheint als Tür nur im Energie-Kontext (Fallstudie, Dossier
+„Leadgenerierung“, Portal-Einordnungen).
+
+Bis zur Solar-Strecke (Solar PR 2) zeigen die Türen Analyse und Sofortkontakt
+auf `/solar-waermepumpen-leadgenerierung/#einstieg`; `HU_FEATURE_SOLAR_DOORS`
+(`inc/feature-flags.php`, Vorgabe `false`) schaltet sie auf `#analyse` und
+`#sofortkontakt`. Haşim schaltet ihn per `wp-config.php` um, sobald diese
+Anker live sind.
+
+Der Lesemodus übernimmt den Artikelpfad des früheren Lesekopfs:
+„Wissen“ → Blog (`article_reader_back_blog`), Dossier →
+Dossier-Archiv (`article_reader_open_dossier`). Die Metazeile
+(Autor, Aktualisiert, Minuten) des früheren Lesekopfs entfällt im Kopf.
+
+Reihenfolge: erst was angeboten wird (Projekte, Tracking), dann die Wege für
+bestimmte Absender (Agenturen, Energiebetriebe), dann Belege. Der
 Punkt „Tracking“ führt auf das Tracking-Angebot, dieselbe Leiter, deren erste
 Stufe die Startseite als „Conversion-Tracking“ mit Preis verkauft. Die Server-Side-Seite
 bleibt Query-Owner für Server-Side-Tracking-Suchen und wird mit genau diesem
@@ -389,11 +434,11 @@ Namen verlinkt (Fuß, GA4-Seite, White-Label-Margenblock), nie als bloßes
 Seite ist; liegt die Seite nur im Bereich eines Punkts (Server-Side-Seite unter
 Tracking, Fallstudie unter Ergebnisse), steht `aria-current="true"`.
 
-Unter 1081 px bleibt der CTA in der Kopfzeile sichtbar, unter 480 px als
-„Anfragen“. Nur im Klappblatt steht er unter 340 px, auf der Startseite (der
-Hero führt dort schon mit zwei Buttons auf die Anfrage) und auf Seiten mit
-eigener Sticky-CTA-Leiste (unter 761 px). Ohne JavaScript ist das Klappblatt
-offen.
+Unter 1081 px bleibt die Tür in der Kopfzeile sichtbar, unter 561 px als
+Kurztext, unter 371 px ohne Betrag. Nur im Klappblatt steht sie unter 340 px
+und auf Seiten mit eigener Sticky-CTA-Leiste (unter 761 px). Ohne JavaScript
+ist das Klappblatt offen. `/whitelabel-retainer/` rendert einen eigenen Kopf
+(`cta_whitelabel_header_task_brief`) und nutzt diese Türen nicht.
 
 ### Footer: Selbstauskunft statt Sammel-CTA
 

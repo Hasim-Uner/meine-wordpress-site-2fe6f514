@@ -193,9 +193,12 @@ function hu_enqueue_assets() {
 	}
 
 
-	// ── GLOBAL: Blog-Header Fallback (nicht auf Blog-Index — nutzt Site-Header) ──
+	// ── GLOBAL: Blog-Header (nicht auf Blog-Index — nutzt Site-Header) ──
+	// Die Leiste im Lesemodus kommt aus system.css; blog-header.css ist entfallen.
+	// Der Blog-Bereich laedt leiste.js hier selbst: der globale Block oben
+	// schliesst ihn aus, weil der Kopf dort ueber blog-header.php entsteht.
 	if ( ( is_archive() || is_singular( 'post' ) ) && ! is_home() ) {
-		hu_enqueue_css( 'nexus-blog-header-css', 'blog-header.css', [ 'nexus-design-system' ] );
+		hu_enqueue_js( 'nexus-leiste-js', 'leiste.js', [] );
 	}
 
 	// ── GLOBAL: Blog Notify ────────────────────────────────────────

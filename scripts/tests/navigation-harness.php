@@ -32,6 +32,15 @@ function nav_test_contexts() {
 		'agentur_local' => [ 'path' => '/wordpress-agentur-hannover/', 'front' => false, 'page' => 'wordpress-agentur-hannover', 'template' => 'page-wordpress-agentur.php' ],
 		'imprint'       => [ 'path' => '/impressum/', 'front' => false, 'page' => 'impressum', 'template' => 'page-impressum.php' ],
 		'not_found'     => [ 'path' => '/gibt-es-nicht/', 'front' => false, 'page' => '', 'template' => '' ],
+		'whitelabel'    => [ 'path' => '/whitelabel-retainer/', 'front' => false, 'page' => 'whitelabel-retainer', 'template' => 'page-whitelabel-retainer.php' ],
+		// Solar-Seite: der Kopf entsteht dort ueber eine eigene Leiste (inc/header.php).
+		// Der Kontext dient nur der Entscheidung (hu_funnel_context), nicht dem Rendern.
+		'solar'         => [ 'path' => '/solar-waermepumpen-leadgenerierung/', 'front' => false, 'page' => 'solar-waermepumpen-leadgenerierung', 'template' => 'page-solar-waermepumpen-leadgenerierung.php', 'render' => false ],
+		// Einzelbeitraege: Slug und Kategorien bestimmen Dossier und Tuer.
+		'portal'        => [ 'path' => '/blog/checkfox-solar-waermepumpe-einordnung/', 'front' => false, 'page' => '', 'template' => '', 'post' => [ 'slug' => 'checkfox-solar-waermepumpe-einordnung', 'categories' => [ 'leadgenerierung' ] ] ],
+		'article_lead'  => [ 'path' => '/blog/anfragen-statt-portale/', 'front' => false, 'page' => '', 'template' => '', 'post' => [ 'slug' => 'anfragen-statt-portale', 'categories' => [ 'leadgenerierung' ] ] ],
+		'article_track' => [ 'path' => '/blog/ga4-consent-mode/', 'front' => false, 'page' => '', 'template' => '', 'post' => [ 'slug' => 'ga4-consent-mode', 'categories' => [ 'tracking' ] ] ],
+		'article_cro'   => [ 'path' => '/blog/b2b-landingpage-optimieren/', 'front' => false, 'page' => '', 'template' => '', 'post' => [ 'slug' => 'b2b-landingpage-optimieren', 'categories' => [ 'cro' ] ] ],
 	];
 }
 
@@ -89,6 +98,7 @@ function sanitize_html_class( $value ) { return preg_replace( '/[^A-Za-z0-9_-]/'
 function absint( $value ) { return abs( (int) $value ); }
 function wp_unslash( $value ) { return $value; }
 function wp_strip_all_tags( $value ) { return trim( strip_tags( (string) $value ) ); }
+function wp_get_theme() { return new class { public function get( $key ) { return '1.0'; } }; }
 function get_option( $option, $default = false ) { return 'blog_charset' === $option ? 'UTF-8' : $default; }
 function get_bloginfo( $key = '' ) { return 'Haşim Üner'; }
 function get_page_by_path( ...$args ) { return null; }
@@ -106,7 +116,25 @@ function wp_doing_ajax() { return false; }
 function is_front_page() { return ! empty( $GLOBALS['nav_test']['front'] ); }
 function is_home() { return false; }
 function is_archive() { return false; }
-function is_singular( $type = '' ) { return '' !== ( $GLOBALS['nav_test']['page'] ?? '' ); }
+function is_singular( $type = '' ) {
+	if ( ! empty( $GLOBALS['nav_test']['post'] ) ) {
+		return '' === $type || 'post' === $type;
+	}
+	return 'post' !== $type && '' !== ( $GLOBALS['nav_test']['page'] ?? '' );
+}
+function get_queried_object_id() { return 1; }
+function get_post_field( $field, $post = null ) {
+	return 'post_name' === $field ? (string) ( $GLOBALS['nav_test']['post']['slug'] ?? '' ) : '';
+}
+function get_the_category( $post = null ) {
+	return array_map(
+		static function ( $slug ) { return (object) [ 'slug' => $slug ]; },
+		(array) ( $GLOBALS['nav_test']['post']['categories'] ?? [] )
+	);
+}
+function wp_list_pluck( $list, $field ) {
+	return array_map( static function ( $item ) use ( $field ) { return is_object( $item ) ? $item->$field : $item[ $field ]; }, (array) $list );
+}
 function is_page( $page = '' ) {
 	$current = (string) ( $GLOBALS['nav_test']['page'] ?? '' );
 	if ( '' === $page ) {
@@ -134,12 +162,15 @@ $theme = get_stylesheet_directory() . '/inc/';
 
 foreach ( [
 	'helpers.php',
+	'feature-flags.php',
 	'canon/messaging-canon.php',
 	'canon/diagnose-canon.php',
 	'canon/e3-proof-canon.php',
+	'canon/pricing-canon.php',
 	'wgos/wgos-cluster-pages.php',
 	'header.php',
 	'commercial-routing.php',
+	'funnel-doors.php',
 ] as $module ) {
 	require_once $theme . $module;
 }
