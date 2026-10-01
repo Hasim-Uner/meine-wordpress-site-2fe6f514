@@ -287,12 +287,15 @@ if ( 'leser' === $leiste_modus && function_exists( 'hu_funnel_reader_dossier' ) 
 	$reader_share_js_url  = get_stylesheet_directory_uri() . '/assets/js/article-reader-share.js';
 	$reader_share_js_path = get_stylesheet_directory() . '/assets/js/article-reader-share.js';
 	$reader_share_version = function_exists( 'hu_get_asset_version' ) ? hu_get_asset_version( $reader_share_js_path ) : wp_get_theme()->get( 'Version' );
+	// CSS-String, kein JSON: wp_json_encode() schriebe "Leadökonomie" als
+	// \u00f6, und das ist in CSS kein Escape (es erschien als "LEADU00F6KONOMIE").
+	$reader_dossier_css_label = '"' . str_replace( '</', '<\\/', addcslashes( (string) $reader_dossier['label'], "\"\\" ) ) . '"';
 	?>
 	<script id="nexus-article-reader-share-loader" src="<?php echo esc_url( add_query_arg( 'ver', rawurlencode( (string) $reader_share_version ), $reader_share_js_url ) ); ?>"></script>
 
 	<style id="nexus-article-reader-dossier-label">
 		.nexus-article-reader-header ~ .nexus-single-container .nexus-article-hero--editorial::before {
-			content: <?php echo wp_json_encode( $reader_dossier['label'] ); ?>;
+			content: <?php echo $reader_dossier_css_label; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- CSS string, escaped above. ?>;
 		}
 	</style>
 <?php endif; ?>

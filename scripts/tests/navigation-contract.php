@@ -286,6 +286,8 @@ foreach ( nav_test_contexts() as $context => $definition ) {
 		nav_check( [] === $row && [] === $sheet && 0 === $header_x->query( '//button[@data-leiste-klappe]' )->length, "{$context}: reader mode has no main menu, sheet or menu button" );
 		nav_check( [ 'Wissen' ] === [ $trail[0]['text'] ?? '' ] && [ 'article_reader_back_blog', 'article_reader_open_dossier' ] === array_column( $trail, 'track' ), "{$context}: article path Wissen / dossier keeps its tracking" );
 		nav_check( $header_el && false !== strpos( $header_el->getAttribute( 'class' ), 'nexus-article-reader-header' ), "{$context}: reader hook class stays for the article stylesheets" );
+		// Das Dossier-Etikett steht als CSS-String im Beitrag: Umlaute roh, kein JSON-Escape (\u00f6 ist in CSS kein Escape).
+		nav_check( 1 === preg_match( '/content: "([^"]*)";/', $header_html, $label_match ) && false === strpos( $label_match[1], '\\u' ) && html_entity_decode( strip_tags( $trail[1]['text'] ?? '' ) ) === $label_match[1], "{$context}: dossier label is a plain CSS string equal to the path label" );
 	}
 
 	// One door per context, the same one in the row and in the sheet.

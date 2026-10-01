@@ -129,7 +129,7 @@ function get_post_field( $field, $post = null ) {
 }
 function get_the_category( $post = null ) {
 	return array_map(
-		static function ( $slug ) { return (object) [ 'slug' => $slug ]; },
+		static function ( $slug ) { return (object) [ 'slug' => $slug, 'name' => $slug, 'term_id' => 1 ]; },
 		(array) ( $GLOBALS['nav_test']['post']['categories'] ?? [] )
 	);
 }
