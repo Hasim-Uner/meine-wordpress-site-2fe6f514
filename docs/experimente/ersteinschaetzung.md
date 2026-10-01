@@ -89,10 +89,15 @@ werden fünf Zeilen (neu: Landingpage, Conversion-Optimierung); Zeilen mit
 Produktseite bekommen neben der Anfrage den Sub-CTA „Was drinsteckt“. Hero und
 Abschluss, also die beiden Buttons des Versuchs, bleiben unverändert.
 
-Bei der Auswertung Einsendungen vor und nach dem Deploy-Datum (Merge-Datum des
-Pull Requests) getrennt ansehen. Die Entscheidungsregel gilt unverändert; die
-Zählung ab Deploy läuft auf einer anderen Seitenstruktur und ist mit der davor
-nur eingeschränkt vergleichbar. Ein längerer Weg bis zu den Preisen oder neue
+Die Änderung ging in zwei Deploys live. **Trennpunkt für die Auswertung ist der
+erste Deploy: 2026-10-01, 23:16 Uhr MESZ (21:16 UTC), Pull Request 511.** Er
+brachte die neue Reihenfolge (Prüfstand hinter den Arbeiten) und die fünf Zeilen.
+Pull Request 513 folgte danach mit dem schmalen Prüfstand-Streifen, dem Link der
+Website-Zeile auf die neue Produktseite und den eindeutigen Hook-Namen; er ändert
+nichts mehr an der Reihenfolge. Einsendungen vor und nach dem ersten Deploy
+getrennt ansehen. Die Entscheidungsregel gilt unverändert; die Zählung danach
+läuft auf einer anderen Seitenstruktur und ist mit der davor nur eingeschränkt
+vergleichbar. Ein längerer Weg bis zu den Preisen oder neue
 Ausgänge zu Produktseiten können Anfragen vom Hero-Button wegziehen.
 
 ## Wo was steht
