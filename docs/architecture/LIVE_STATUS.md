@@ -289,6 +289,10 @@ Abschnitt anzuhängen; der Verlauf gehört in Commit-Nachrichten.
   ohne JavaScript steht der Endzustand bereit. Danach folgen Rechnung, Fall,
   Einstieg, der gemeinsame Abschnitt „Was es braucht“, Marktcheck, Fragen und
   Verweise. `#anteil` und `#passung` führen beide zu „Was es braucht“.
+  Der Rechner zählt Änderungen in 300 ms und vergleicht die Auftragskosten
+  in Balken mit gemeinsamem Maßstab. Der Messschrieb zeigt ausschließlich
+  dokumentierte CPL-Bandbreiten nach Projektphase, ohne Monatsmesskurve;
+  Hover und Tastaturfokus auf den Fallphasen heben die passenden Stufen hervor.
 - **Energie-Cluster** (`.hu-intercept`, Pfade in
   `hu_get_solar_seo_subpage_paths()`): `/solar-leads-kaufen-alternative/`,
   `/waermepumpen-leads/`, `/b2b-solar-leads/`,

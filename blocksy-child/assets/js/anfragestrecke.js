@@ -211,54 +211,112 @@
       return isFinite(zahl) && zahl >= 0 ? zahl : 0;
     }
 
-    /* Schreibt nur, wenn sich etwas geaendert hat. Sonst liefe die
-       Aufblende-Animation bei jedem Tastendruck erneut, auch wenn der
-       Wert gleich bleibt. */
-    function setze(id, text) {
-      var el = ausgaben[id];
-      if (!el || el.textContent === text) {
-        return;
+    var angezeigt = null;
+    var ziel = null;
+    var frame = 0;
+    var summen = blatt.querySelectorAll('.summe');
+    var balken = {};
+    ['A', 'B'].forEach(function (weg) {
+      balken[weg] = blatt.querySelector('[data-balken="' + weg + '"]');
+    });
+
+    function formatiere(id, zahl) {
+      if (zahl === null) {
+        return '–';
       }
-
-      el.textContent = text;
-
-      if (!el.classList.contains('w') || ruhig) {
-        return;
+      if (id === 'oA2' || id === 'oB2') {
+        return stueck.format(zahl);
       }
-
-      el.classList.remove('frisch');
-      void el.offsetWidth;
-      el.classList.add('frisch');
+      return euro.format(zahl) + (id === 'oA1' || id === 'oB1' ? ' / Mon.' : '');
     }
 
-    function jeAuftrag(kosten, auftraege) {
-      return auftraege > 0 ? euro.format(kosten / auftraege) : '–';
+    function zeichne(werte) {
+      angezeigt = werte;
+      Object.keys(ausgaben).forEach(function (id) {
+        var text = formatiere(id, werte[id]);
+        if (ausgaben[id] && ausgaben[id].textContent !== text) {
+          ausgaben[id].textContent = text;
+        }
+      });
+
+      var massstab = Math.max(werte.oA3 || 0, werte.oB3 || 0, 1);
+      ['A', 'B'].forEach(function (weg) {
+        var zeile = balken[weg];
+        if (!zeile) {
+          return;
+        }
+        var kosten = werte['o' + weg + '3'];
+        var anteil = kosten === null ? 0 : kosten / massstab;
+        var spur = zeile.querySelector('.balken-spur');
+        var marke = zeile.querySelector('.balken-wert');
+        zeile.querySelector('.balken-flaeche').style.transform = 'scaleX(' + anteil + ')';
+        marke.querySelector('b').textContent = formatiere('o' + weg + '3', kosten);
+        var versatz = (anteil - 1) * spur.clientWidth + (anteil < 0.25 ? marke.offsetWidth : 0);
+        marke.style.transform = 'translateX(' + versatz + 'px)';
+      });
+    }
+
+    function beschaeftigt(status) {
+      Array.prototype.forEach.call(summen, function (summe) {
+        summe.setAttribute('aria-busy', status ? 'true' : 'false');
+      });
     }
 
     function rechne() {
       var anfragenA = wert('a1');
-      var preisA = wert('a2');
-      var quoteA = wert('a3') / 100;
-
-      var einkauf = anfragenA * preisA;
-      var auftraegeA = anfragenA * quoteA;
-
-      setze('oA1', euro.format(einkauf) + ' / Mon.');
-      setze('oA2', stueck.format(auftraegeA));
-      setze('oA3', jeAuftrag(einkauf, auftraegeA));
-
+      var einkauf = anfragenA * wert('a2');
+      var auftraegeA = anfragenA * wert('a3') / 100;
       var budgetB = wert('b1');
       var cplB = wert('b2');
-      var quoteB = wert('b3') / 100;
-
       var kostenB = budgetB + AUFBAU / MONATE + HOSTING;
-      var anfragenB = cplB > 0 ? budgetB / cplB : 0;
-      var auftraegeB = anfragenB * quoteB;
+      var auftraegeB = cplB > 0 ? budgetB / cplB * wert('b3') / 100 : 0;
+      var neu = {
+        oA1: einkauf,
+        oA2: auftraegeA,
+        oA3: auftraegeA > 0 ? einkauf / auftraegeA : null,
+        oB1: kostenB,
+        oB2: auftraegeB,
+        oB3: auftraegeB > 0 ? kostenB / auftraegeB : null
+      };
+      if (ziel && Object.keys(neu).every(function (id) { return neu[id] === ziel[id]; })) {
+        return;
+      }
+      ziel = neu;
+      window.cancelAnimationFrame(frame);
+      if (ruhig || !angezeigt) {
+        zeichne(neu);
+        beschaeftigt(false);
+        return;
+      }
 
-      setze('oB1', euro.format(kostenB) + ' / Mon.');
-      setze('oB2', stueck.format(auftraegeB));
-      setze('oB3', jeAuftrag(kostenB, auftraegeB));
+      var vorher = angezeigt;
+      var beginn = window.performance.now();
+      beschaeftigt(true);
+      function zaehle(zeit) {
+        var fortschritt = Math.min(1, (zeit - beginn) / 300);
+        var easeOut = 1 - Math.pow(1 - fortschritt, 3);
+        var zwischen = {};
+        Object.keys(neu).forEach(function (id) {
+          zwischen[id] = neu[id] === null || vorher[id] === null
+            ? neu[id]
+            : vorher[id] + (neu[id] - vorher[id]) * easeOut;
+        });
+        zeichne(zwischen);
+        if (fortschritt < 1) {
+          frame = window.requestAnimationFrame(zaehle);
+        } else {
+          zeichne(neu);
+          beschaeftigt(false);
+        }
+      }
+      frame = window.requestAnimationFrame(zaehle);
     }
+
+    window.addEventListener('resize', function () {
+      if (angezeigt) {
+        zeichne(angezeigt);
+      }
+    }, { passive: true });
 
     Object.keys(felder).forEach(function (id) {
       var feld = felder[id];
@@ -270,6 +328,41 @@
     });
 
     rechne();
+  }
+
+  /* Bandbreiten bauen sich beim ersten Sichtkontakt auf. Die drei
+     Fallphasen verbinden Hover und Tastaturfokus mit der Grafik. */
+  function bandtreppe() {
+    var treppe = wurzel.querySelector('.bandtreppe');
+    if (!treppe) {
+      return;
+    }
+    if (!ruhig && 'IntersectionObserver' in window) {
+      treppe.classList.add('armed');
+      var beobachter = new IntersectionObserver(function (eintraege) {
+        if (eintraege.some(function (eintrag) { return eintrag.isIntersecting; })) {
+          treppe.classList.add('lauf');
+          beobachter.disconnect();
+        }
+      }, { threshold: 0.2 });
+      beobachter.observe(treppe);
+    }
+
+    var hover = null;
+    var fokus = null;
+    function hervorheben() {
+      var aktiv = hover || fokus;
+      Array.prototype.forEach.call(treppe.querySelectorAll('[data-treppenphase]'), function (stufe) {
+        stufe.classList.toggle('gedimmt', !!aktiv && stufe.getAttribute('data-treppenphase') !== aktiv);
+      });
+    }
+    Array.prototype.forEach.call(wurzel.querySelectorAll('[data-fallphase]'), function (phase) {
+      var name = phase.getAttribute('data-fallphase');
+      phase.addEventListener('mouseenter', function () { hover = name; hervorheben(); });
+      phase.addEventListener('mouseleave', function () { hover = null; hervorheben(); });
+      phase.addEventListener('focusin', function () { fokus = name; hervorheben(); });
+      phase.addEventListener('focusout', function () { fokus = null; hervorheben(); });
+    });
   }
 
   /* ── Zwei Aufbau-Bewegungen, mehr nicht ──────────────────────── */
@@ -452,7 +545,7 @@
     kopfUndRegister();
     rechner();
     einmalig(wurzel.querySelector('.buehne'), 0.25, 1400);
-    einmalig(wurzel.querySelector('.schrieb'), 0.3, 0);
+    bandtreppe();
     marktcheckBewegung();
     kapitelmarke();
     leiste();

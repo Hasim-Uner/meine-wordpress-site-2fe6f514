@@ -206,9 +206,9 @@ $conditions = [
 
 // ── 03 Der Fall: Projektmonate inklusive Vorbereitung ──────────
 $phases = [
-	[ 'label' => $e3_timeline['preparation_label'], 'text' => $e3_timeline['preparation'] ],
-	[ 'label' => $e3_timeline['campaign_label'], 'text' => $e3_timeline['campaign'] ],
-	[ 'label' => $e3_timeline['optimization_label'], 'text' => $e3_timeline['optimization'] . ' ' . $e3_timeline['followup'] ],
+	[ 'id' => 'vorbereitung', 'label' => $e3_timeline['preparation_label'], 'text' => $e3_timeline['preparation'] ],
+	[ 'id' => 'kampagne', 'label' => $e3_timeline['campaign_label'], 'text' => $e3_timeline['campaign'] ],
+	[ 'id' => 'optimierung', 'label' => $e3_timeline['optimization_label'], 'text' => $e3_timeline['optimization'] . ' ' . $e3_timeline['followup'] ],
 ];
 
 
@@ -663,26 +663,55 @@ get_header();
 						<span class="mono">Dokumentierter Fall · PV-Mittelstand · <?php echo esc_html( $e3_timeframe ); ?></span>
 					</div>
 
-					<?php
-					// Zwei Vergleichswerte, keine erfundenen monatlichen Zwischenpunkte.
-					$e3_after_y = 114 - ( 96 * $e3_cpl_after_val / max( 1, $e3_cpl_before_val ) );
-					?>
-					<svg viewBox="0 -22 620 192" role="img" aria-label="<?php echo esc_attr( $e3_timeline['comparison'] ); ?>">
-						<line x1="46" y1="114" x2="612" y2="114" stroke="var(--strich)" stroke-width="1" />
-						<g stroke="var(--stempel)" stroke-width="24">
-							<line x1="140" y1="114" x2="140" y2="18" />
-							<line x1="470" y1="114" x2="470" y2="<?php echo esc_attr( (string) $e3_after_y ); ?>" />
-						</g>
-						<g class="marke" fill="var(--tinte)" font-family="IBM Plex Mono, monospace" font-size="11" font-weight="500" text-anchor="middle">
-							<text x="140" y="12"><?php echo esc_html( $e3_cpl_before ); ?></text>
-							<text x="470" y="<?php echo esc_attr( (string) ( $e3_after_y - 11 ) ); ?>"><?php echo esc_html( $e3_cpl_after ); ?></text>
-						</g>
-						<g class="zeit" fill="var(--matt)" font-family="IBM Plex Mono, monospace" font-size="8.5" text-anchor="middle">
-							<text x="140" y="150">PORTAL · VORHER</text>
-							<text x="470" y="150">EIGENE · ERREICHT</text>
-						</g>
-					</svg>
-					<p><?php echo esc_html( $e3_timeline['comparison'] ); ?></p>
+					<figure class="bandtreppe" aria-labelledby="messschrieb treppe-hinweis">
+						<svg viewBox="0 0 1000 230" preserveAspectRatio="none" aria-hidden="true">
+							<line x1="16" y1="210" x2="970" y2="210" stroke="var(--strich)" vector-effect="non-scaling-stroke" />
+							<?php
+							// Gemeinsamer Maßstab: 150 € entsprechen 180 SVG-Einheiten.
+							// Nur Bandbreiten aus der dokumentierten Fallbeschreibung.
+							$bands = [
+								[ 'phase' => 'portal', 'label' => 'Vorher', 'title' => 'Vor dem Projekt · Portale', 'value' => '150 €', 'low' => 150, 'high' => 150 ],
+								[ 'phase' => 'vorbereitung', 'label' => '1', 'title' => 'Projektmonat 1 · Vorbereitung', 'value' => 'Keine eigenen Kampagnen', 'low' => null, 'high' => null ],
+								[ 'phase' => 'kampagne', 'label' => '2', 'title' => 'Projektmonat 2 · Kampagnenstart', 'value' => '70–100 €', 'low' => 70, 'high' => 100 ],
+								[ 'phase' => 'optimierung', 'label' => '3', 'title' => 'Projektmonat 3 · Optimierung', 'value' => '30–50 €, dann rund 22 €', 'low' => 30, 'high' => 50 ],
+								[ 'phase' => 'optimierung', 'label' => '4–6', 'title' => 'Projektmonate 4–6', 'value' => 'Überwiegend 22–30 €', 'low' => 22, 'high' => 30 ],
+							];
+							foreach ( $bands as $band_index => $band ) :
+								$band_x = 16 + $band_index * 196;
+								?>
+								<g data-treppenphase="<?php echo esc_attr( $band['phase'] ); ?>">
+									<g class="treppe-form" style="--versatz: <?php echo esc_attr( (string) ( $band_index * 60 ) ); ?>ms">
+										<line x1="<?php echo esc_attr( (string) $band_x ); ?>" y1="30" x2="<?php echo esc_attr( (string) ( $band_x + 170 ) ); ?>" y2="30" stroke="var(--haar)" vector-effect="non-scaling-stroke" />
+										<?php if ( null !== $band['low'] ) : ?>
+											<?php $band_y = 210 - $band['high'] * 180 / $e3_cpl_before_val; ?>
+											<?php if ( $band['low'] === $band['high'] ) : ?>
+												<line class="treppe-marke" x1="<?php echo esc_attr( (string) $band_x ); ?>" y1="<?php echo esc_attr( (string) $band_y ); ?>" x2="<?php echo esc_attr( (string) ( $band_x + 170 ) ); ?>" y2="<?php echo esc_attr( (string) $band_y ); ?>" vector-effect="non-scaling-stroke" />
+											<?php else : ?>
+												<rect class="treppe-band" x="<?php echo esc_attr( (string) $band_x ); ?>" y="<?php echo esc_attr( (string) $band_y ); ?>" width="170" height="<?php echo esc_attr( (string) ( ( $band['high'] - $band['low'] ) * 180 / $e3_cpl_before_val ) ); ?>" />
+											<?php endif; ?>
+											<?php if ( 3 === $band_index ) : ?>
+												<line class="treppe-marke" x1="<?php echo esc_attr( (string) $band_x ); ?>" y1="183.6" x2="<?php echo esc_attr( (string) ( $band_x + 170 ) ); ?>" y2="183.6" vector-effect="non-scaling-stroke" />
+											<?php endif; ?>
+										<?php endif; ?>
+									</g>
+								</g>
+							<?php endforeach; ?>
+						</svg>
+						<div class="treppe-monate mono" aria-hidden="true">
+							<?php foreach ( $bands as $band ) : ?>
+								<span><?php echo esc_html( $band['label'] ); ?></span>
+							<?php endforeach; ?>
+						</div>
+						<dl class="treppe-daten">
+							<?php foreach ( $bands as $band ) : ?>
+								<div data-treppenphase="<?php echo esc_attr( $band['phase'] ); ?>">
+									<dt><?php echo esc_html( $band['title'] ); ?></dt>
+									<dd><?php echo esc_html( $band['value'] ); ?></dd>
+								</div>
+							<?php endforeach; ?>
+						</dl>
+						<figcaption id="treppe-hinweis">Bandbreiten laut Fallbeschreibung, keine Monatsmesskurve.</figcaption>
+					</figure>
 
 					<table class="werte">
 						<caption class="nur-vorlesen">Kennzahlen des dokumentierten Falls</caption>
@@ -870,6 +899,7 @@ get_header();
 									<span class="w" data-ausgabe="oA3">–</span>
 								</div>
 							</div>
+							<p class="quote-hinweis">Die Quote ist niedrig, weil derselbe Kontakt an 3 bis 5 Betriebe geht. Exklusive Portal-Anfragen kosten rund 150 € statt 80 €.</p>
 						</div>
 
 						<div class="weg b">
@@ -906,6 +936,18 @@ get_header();
 								</div>
 							</div>
 						</div>
+						<figure class="auftragsbalken" aria-label="Kosten je gewonnener Auftrag im gemeinsamen Maßstab">
+							<figcaption class="mono">Kosten je gewonnener Auftrag</figcaption>
+							<?php foreach ( [ 'A', 'B' ] as $bar_way ) : ?>
+								<div class="balken-zeile" data-balken="<?php echo esc_attr( $bar_way ); ?>">
+									<span class="mono">Weg <?php echo esc_html( $bar_way ); ?></span>
+									<div class="balken-spur">
+										<span class="balken-flaeche"></span>
+										<span class="balken-wert"><b>–</b></span>
+									</div>
+								</div>
+							<?php endforeach; ?>
+						</figure>
 					</div>
 
 					<p class="fuss">
@@ -935,7 +977,7 @@ get_header();
 
 					<div class="phasen">
 						<?php foreach ( $phases as $phase ) : ?>
-							<div>
+							<div tabindex="0" data-fallphase="<?php echo esc_attr( $phase['id'] ); ?>">
 								<span class="ph"><?php echo esc_html( $phase['label'] ); ?></span>
 								<?php // Enthaelt nur <b> aus dem Inhaltsmodell oben, alle Werte sind dort escaped. ?>
 								<p><?php echo wp_kses( $phase['text'], [ 'b' => [] ] ); ?></p>
