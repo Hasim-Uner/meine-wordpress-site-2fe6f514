@@ -196,6 +196,35 @@ Abschnitt anzuhängen; der Verlauf gehört in Commit-Nachrichten.
   `/performance-marketing/` (Vorgehen) und `/glossar/landingpage/`
   (Hauptziel des Begriffs). Die Startseite verlinkt die Seite noch nicht
   (eingefroren bis 2026-11-20, Versuch Ersteinschätzung).
+- **`/conversion-optimierung/`** (`page-conversion-optimierung.php`,
+  Gutachten-Layout wie `/landingpage-erstellen-lassen/`, seit 2026-09-30):
+  Conversion-Optimierung für B2B-Websites mit wenig Traffic, Einstieg ist die
+  Anfragesystem-Analyse (`hu_analysis_price()`, Dauer aus
+  `hu_diagnose_canon()['primary_days']`, dasselbe Produkt wie auf der
+  Solar-Seite), danach Umsetzung zu Festpreisen aus dem Kanon. Abschnitte:
+  Anlass, Methode (ohne A/B-Test), Strecke (sechs Stationen), statische
+  Vorqualifizierung ohne JavaScript, Analyse, Umsetzung, Beleg, Fragen. FAQ und
+  FAQPage-Schema aus `nexus_get_conversion_faq_items()`, Service mit Offer in
+  `inc/org-schema.php`, Title/Description in `inc/seo-meta.php`. CTAs auf
+  `/kontakt/?type=analysis&focus=conversion`, alle Tracking-Werte mit Präfix
+  `cro_offer_`, kein Marktcheck-CTA. Die Tabellen laufen in der Hülle
+  `.tabelle` (`system.css`) mit eigenem Scrollkontext. Route `conversion`,
+  Seitenanlage über `nexus_get_provisioned_pages()`. Query-Owner für
+  `conversion optimierung b2b`, `conversion optimierung`,
+  `conversion rate optimierung` und `wordpress conversion optimieren`.
+  Eingehende Links: Fuß (Gruppe Leistungen, `cta_footer_nav_conversion`),
+  `/landingpage-erstellen-lassen/` (Anlass 04), `/ga4-tracking-setup/`
+  (Abschnitt Probleme), Artikel `/website-relaunch/` und die Glossarbegriffe
+  `conversion`, `conversion-rate`, `formularabbruch`, `lead-qualifizierung`
+  (Hauptziel „Passende Leistung“). Die Startseite verlinkt die Seite noch nicht:
+  Sie ist bis 2026-11-20 eingefroren (Versuch Ersteinschätzung); der geplante
+  Satzlink im Leistungsabschnitt folgt danach. `assets/css/cro.css` (Scope
+  `.cro-page`) lädt nur noch auf der stillgelegten Route
+  `/conversion-rate-optimization/` und bleibt unberührt.
+  `/conversion-rate-optimization/` liefert weiter 410. Die Backlink-Prüfung
+  für 301 statt 410 konnte nicht abgeschlossen werden (DataForSEO ohne
+  Guthaben, Bing-Linkdaten nicht angebunden, im Repo nur Domain-Summary:
+  31 Backlinks, 25 verweisende Domains); Entscheidung offen.
 - **`/ga4-tracking-setup/`** (`page-ga4.php`, virtuelle Cluster-Route):
   Das Tracking-Angebot. Zeigt alle vier Stufen der Tracking-Leiter aus
   `hu_tracking_product_ladder()` als Karten `#stufe-1` bis `#stufe-4` (Raster

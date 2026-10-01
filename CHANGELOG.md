@@ -2,6 +2,13 @@
 
 ## 2026-09
 
+### Neue Seite: Conversion-Optimierung
+
+- **`/conversion-optimierung/`:** Money Page für B2B-Websites mit wenig Traffic: schriftlicher Befund der Anfragestrecke statt A/B-Tests, Einstieg über die Anfragesystem-Analyse (`hu_analysis_price()`, `hu_diagnose_canon()`), danach Umsetzung zu Festpreisen aus dem Kanon. Sechs Stationen als Tabelle, Vorqualifizierung als statische Beispieltabelle ohne JavaScript, Beleg mit dem dokumentierten Fall, Fragen. Gutachten-Layout aus `system.css` mit neuer Tabellenhülle `.tabelle` (eigener Scrollkontext, 360 px ohne Seitenscroll), keine neue CSS-Datei. CTAs auf `/kontakt/?type=analysis&focus=conversion`, Tracking-Präfix `cro_offer_`, kein Marktcheck-CTA.
+- **Verdrahtung:** Seitenanlage über `nexus_get_provisioned_pages()`, Route `conversion` in Routen- und URL-Karte, Title/Description in `inc/seo-meta.php`, Service mit Offer und FAQPage in `inc/org-schema.php` (FAQ aus `nexus_get_conversion_faq_items()`), `llms.txt`, Query-Ownership für vier Conversion-Queries.
+- **Eingehende Links:** Fuß-Gruppe Leistungen (`cta_footer_nav_conversion`), Anlass 04 auf `/landingpage-erstellen-lassen/`, `/ga4-tracking-setup/`, Artikel `/website-relaunch/` (Seed-Version v4) und Hauptziel der Glossarbegriffe `conversion`, `conversion-rate`, `formularabbruch`, `lead-qualifizierung` (Registry-Version v8). Die Startseite bleibt wegen des Versuchs Ersteinschätzung bis 2026-11-20 unverändert.
+- **Offen:** `/conversion-rate-optimization/` bleibt 410, bis die Backlink-Prüfung vorliegt.
+
 ### Neue Seite: Landingpage erstellen lassen
 
 - **`/landingpage-erstellen-lassen/`:** Festpreis-Angebot für Direktkunden (Preis aus `hu_landingpage_price()`), gebaut als Produkt: Anlass, Umfang mit „Nicht dazu“, Ablauf mit zwei Freigaben, Zusätze aus Tracking-Leiter und Freelancer-Preisliste, Beleg (Fall mit Herleitung, öffentliche Arbeiten, PageSpeed-Link), Fragen, Abschluss. Gutachten-Layout aus `system.css`, keine neue CSS-Datei. CTAs auf `/kontakt/?type=project&focus=conversion`.

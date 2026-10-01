@@ -579,6 +579,10 @@ function nexus_get_primary_public_url_map() {
 			[ 'landingpage-erstellen-lassen' ],
 			home_url( '/landingpage-erstellen-lassen/' )
 		),
+		'conversion'           => nexus_get_page_url(
+			[ 'conversion-optimierung' ],
+			home_url( '/conversion-optimierung/' )
+		),
 		'tools'                => $request_url,
 		'performance_analysis' => $request_url,
 		'about'                => nexus_get_page_url(
@@ -752,6 +756,52 @@ function nexus_get_landingpage_faq_items() {
 			'key'      => 'pflege',
 			'question' => 'Kann ich die Seite danach selbst ändern?',
 			'answer'   => 'Ja. Texte und Bilder pflegen Sie im WordPress-Editor, und bei der Übergabe zeige ich Ihnen, wie. Größere Änderungen übernehme ich auf Wunsch im Monatskontingent.',
+		],
+	];
+}
+
+/**
+ * Return the FAQ set for the conversion offer /conversion-optimierung/.
+ *
+ * Shared between the page template and the FAQPage node in inc/org-schema.php.
+ * Der Betrag der Analyse kommt aus dem Kanon (hu_analysis_price()); die
+ * Vorqualifizierung bekommt bewusst keinen Preis.
+ *
+ * @return array<int, array{key: string, question: string, answer: string}>
+ */
+function nexus_get_conversion_faq_items() {
+	$analysis_price = hu_analysis_price();
+
+	return [
+		[
+			'key'      => 'landingpage',
+			'question' => 'Was ist der Unterschied zur Landingpage?',
+			'answer'   => 'Die Landingpage ist eine neue Seite für ein Angebot. Die Conversion-Optimierung setzt an einer Website an, die es schon gibt und die Besucher hat. Oft ist eine Landingpage eine der Maßnahmen aus dem Befund.',
+		],
+		[
+			'key'      => 'traffic',
+			'question' => 'Wie viel Traffic braucht meine Seite?',
+			'answer'   => 'Keine feste Grenze. Es sollten aber schon Besucher kommen und zumindest vereinzelt Anfragen eingehen. Ohne Besucher ist zuerst Sichtbarkeit das Thema, nicht Conversion.',
+		],
+		[
+			'key'      => 'ab-tests',
+			'question' => 'Warum keine A/B-Tests?',
+			'answer'   => 'Bei ein paar Dutzend Anfragen im Monat dauert ein Test lange und zeigt trotzdem vor allem Zufall. Reicht Ihr Traffic für belastbare Tests, steht das im Befund.',
+		],
+		[
+			'key'      => 'wordpress',
+			'question' => 'Muss meine Website mit WordPress gebaut sein?',
+			'answer'   => 'Für die Analyse nicht. Für die Umsetzung arbeite ich in WordPress. Bei anderen Systemen sage ich im Befund, was Ihr Team oder Ihre Agentur selbst umsetzen kann.',
+		],
+		[
+			'key'      => 'ki',
+			'question' => 'Arbeitet hier eine KI mit meinen Anfragen?',
+			'answer'   => 'Nur wenn Sie die Vorqualifizierung beauftragen, und nur für die Einordnung von Freitext. Entscheidungen treffen feste Regeln. Wo die Daten verarbeitet werden, legen wir vorher fest, auf Wunsch in Deutschland oder der EU.',
+		],
+		[
+			'key'      => 'anrechnung',
+			'question' => sprintf( 'Was passiert mit den %s, wenn ich umsetzen lasse?', $analysis_price ),
+			'answer'   => 'Sie werden auf die Umsetzung angerechnet.',
 		],
 	];
 }
@@ -1434,6 +1484,12 @@ function nexus_get_provisioned_pages() {
 			'title'    => 'Landingpage erstellen lassen',
 			'excerpt'  => 'Landingpage zum Festpreis: eine Seite, ein Angebot, ein Ziel. Text, Anfrageformular, Herkunft jeder Anfrage und Abnahme inklusive.',
 			'template' => 'page-landingpage-erstellen-lassen.php',
+		],
+		[
+			'slug'     => 'conversion-optimierung',
+			'title'    => 'Conversion-Optimierung für B2B',
+			'excerpt'  => 'Conversion-Optimierung für B2B-Websites mit wenig Traffic: schriftlicher Befund der Anfragestrecke, danach Umsetzung zu festen Preisen.',
+			'template' => 'page-conversion-optimierung.php',
 		],
 		[
 			'slug'     => 'qualifizierte-pv-anfragen',

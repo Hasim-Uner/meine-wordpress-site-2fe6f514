@@ -1196,11 +1196,28 @@ function hu_output_schema()
             'serviceOutput' => 'Saubere Daten & Conversion-Insights'
         ],
 
+        // Einstieg ist die Anfragesystem-Analyse; ihr Preis kommt aus dem Kanon
+        // (HU_ANALYSIS_PRICE), wie der sichtbare Betrag auf /conversion-optimierung/.
         'conversion-optimierung' => [
-            'name'        => 'Conversion Optimierung',
-            'description' => 'Optimierung von Angebotsseiten, Proof, CTA-Führung und Formularen für qualifiziertere Anfragen.',
-            'serviceType' => 'Conversion Rate Optimization',
-            'serviceOutput' => 'Klarere Nutzerführung und belastbarere Anfragepfade'
+            'name'        => 'Conversion-Optimierung für B2B-Websites',
+            'description' => 'Conversion-Optimierung für B2B-Websites mit wenig Traffic: ein schriftlicher Befund der Strecke vom Besuch bis zur Rückmeldung im Vertrieb, danach Umsetzung zu festen Preisen.',
+            'serviceType' => 'Conversion-Optimierung',
+            'serviceOutput' => 'Schriftlicher Befund mit drei priorisierten Hebeln für mehr brauchbare Anfragen',
+            'offers'      => [
+                [
+                    '@type'         => 'Offer',
+                    'name'          => 'Anfragesystem-Analyse',
+                    'price'         => HU_ANALYSIS_PRICE,
+                    'priceCurrency' => 'EUR',
+                    'priceSpecification' => [
+                        '@type'                 => 'UnitPriceSpecification',
+                        'price'                 => HU_ANALYSIS_PRICE,
+                        'priceCurrency'         => 'EUR',
+                        'valueAddedTaxIncluded' => false,
+                    ],
+                    'url'           => home_url('/conversion-optimierung/'),
+                ],
+            ],
         ],
 
         'wordpress-tech-audit' => [
@@ -1556,6 +1573,35 @@ function hu_output_schema()
                     'inLanguage' => 'de',
                     'publisher'  => ['@id' => home_url('/#organization')],
                     'mainEntity' => $landingpage_faq_entities,
+                ];
+            }
+        }
+
+        if ('conversion-optimierung' === $slug && function_exists('nexus_get_conversion_faq_items')) {
+            // Dieselbe Quelle wie die sichtbaren Fragen im Template.
+            $conversion_faq_entities = array_map(
+                static function ($item) {
+                    return [
+                        '@type'          => 'Question',
+                        'name'           => (string) $item['question'],
+                        'acceptedAnswer' => [
+                            '@type' => 'Answer',
+                            'text'  => (string) $item['answer'],
+                        ],
+                    ];
+                },
+                nexus_get_conversion_faq_items()
+            );
+
+            if (!empty($conversion_faq_entities)) {
+                $schemas[] = [
+                    '@context'   => 'https://schema.org',
+                    '@type'      => 'FAQPage',
+                    '@id'        => home_url('/conversion-optimierung/#faq'),
+                    'url'        => home_url('/conversion-optimierung/'),
+                    'inLanguage' => 'de',
+                    'publisher'  => ['@id' => home_url('/#organization')],
+                    'mainEntity' => $conversion_faq_entities,
                 ];
             }
         }

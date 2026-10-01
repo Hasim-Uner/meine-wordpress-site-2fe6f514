@@ -40,7 +40,7 @@ function get_post_meta( ...$args ) { return ''; }
 function get_option( $key, $default = '' ) { return $default; }
 function hu_get_commercial_route( $key, $fallback = '' ) { return home_url( '/kontakt/?type=project' ); }
 function nexus_get_primary_public_url( $key, $fallback = '' ) {
-	$routes = [ 'home' => '/', 'cro' => '/#angebot-funnel', 'tracking' => '/ga4-tracking-setup/', 'cwv' => '/wgos-assets/cwv-optimierung/', 'seo' => '/wordpress-agentur-hannover/#zusammenarbeit', 'wgos' => '/wordpress-agentur-hannover/#zusammenarbeit', 'agentur' => '/wordpress-agentur-hannover/', 'energy' => '/solar-waermepumpen-leadgenerierung/', 'solar_leads_alternative' => '/solar-leads-kaufen-alternative/' ];
+	$routes = [ 'home' => '/', 'cro' => '/#angebot-funnel', 'conversion' => '/conversion-optimierung/', 'tracking' => '/ga4-tracking-setup/', 'cwv' => '/wgos-assets/cwv-optimierung/', 'seo' => '/wordpress-agentur-hannover/#zusammenarbeit', 'wgos' => '/wordpress-agentur-hannover/#zusammenarbeit', 'agentur' => '/wordpress-agentur-hannover/', 'energy' => '/solar-waermepumpen-leadgenerierung/', 'solar_leads_alternative' => '/solar-leads-kaufen-alternative/' ];
 	return isset( $routes[ $key ] ) ? home_url( $routes[ $key ] ) : $fallback;
 }
 function get_header() { echo '<!doctype html><html lang="de"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Glossar · Layoutprüfung</title><link rel="stylesheet" href="preview.css"></head><body><main id="main">'; }

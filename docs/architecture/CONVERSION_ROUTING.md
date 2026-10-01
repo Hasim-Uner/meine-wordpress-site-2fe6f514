@@ -26,6 +26,7 @@ A page can remain the canonical SEO destination for its query while its CTA rout
 | `/ga4-tracking-setup/` | Tracking purchase intent: GA4/GTM setup, consent, ads conversions | Tracking offer page; target of the header item „Tracking“ and the footer way (route `tracking_setup`) | `Tracking-Projekt anfragen` → `/kontakt/?type=project&focus=tracking` | Tracking specialist / project evidence |
 | `/performance-marketing/` | B2B companies running Google Ads or Meta | Paid-demand money page (measurement → landing page → budget) | `Ausgangslage prüfen lassen` → `/kontakt/?type=project` | Tracking setup, landing page offer (`/landingpage-erstellen-lassen/`, `perf_to_landingpage_offer`; the former `perf_to_landingpages` → `/#angebot-funnel` is retired), case study; performance agencies → White-Label task (`?type=whitelabel&case=aufgabe`) |
 | `/landingpage-erstellen-lassen/` | Direct clients who need one page for one offer (`landingpage erstellen lassen`) | Fixed-price product page (route `landingpage`, since 2026-09-26) | `Landingpage anfragen` → `/kontakt/?type=project&focus=conversion` (`cta_lp_offer_hero_project`, `cta_lp_offer_scope_project`, `cta_lp_offer_close_project`) | Tracking setup and website offer as add-ons, case study; agencies → White-Label (`lp_offer_hero_whitelabel`) |
+| `/conversion-optimierung/` | B2B websites with visitors but too few matching inquiries (`conversion optimierung b2b`) | Written finding of the inquiry path (Anfragesystem-Analyse), then fixed-price implementation (route `conversion`, since 2026-09-30) | `Analyse anfragen` → `/kontakt/?type=analysis&focus=conversion` (`cro_offer_cta_hero_analysis`, `cro_offer_cta_analysis_scope`, `cro_offer_cta_close_analysis`) | Landingpage, tracking setup and website offer as implementation blocks, case study; agencies → White-Label (`cro_offer_hero_whitelabel`); no Marktcheck CTA |
 | `/wordpress-agentur-hannover/` | Local `wordpress agentur hannover` search intent | Local SEO acquisition page | Project request without preset focus (`hu_get_navigation_project_request_url()`, since 2026-09-26) | Offers `/#angebote`; proof: public references `/#referenzen` (`agentur_proof_references`) and the case study (`agentur_proof_case`) |
 | `/ergebnisse/` | Retired proof hub (since 2026-09-25) | 301 to `/case-study-solar-leadgenerierung/`; excluded from sitemap and `llms.txt` | none | Menu item „Ergebnisse“ → `/#arbeiten`; route `results` → case study |
 | `/case-study-solar-leadgenerierung/` | Solar proof; since 2026-09-25 also the proof target of homepage, menu item „Ergebnisse“, tracking and agency pages | Evidence page | Solar Marktcheck | Non-energy readers: quiet project request below the Marktcheck (`cta_case_study_to_project`, since 2026-09-26) |
@@ -429,6 +430,7 @@ Ein Eintrag, der die aufgerufene Seite ist, trägt `aria-current="page"`.
 | Leistungen | Performance Marketing | `/performance-marketing/` | `cta_footer_nav_performance_marketing` | `navigation` |
 | Leistungen | WordPress Agentur Hannover | `/wordpress-agentur-hannover/` | `cta_footer_nav_agentur_local` | `navigation` |
 | Leistungen | Landingpage erstellen lassen | `/landingpage-erstellen-lassen/` | `cta_footer_nav_landingpage` | `navigation` |
+| Leistungen | Conversion-Optimierung | `/conversion-optimierung/` | `cta_footer_nav_conversion` | `navigation` |
 | Belege & Person | Solar-Fallstudie | `/case-study-solar-leadgenerierung/` | `cta_footer_nav_case_study_proof` | `trust` |
 | Belege & Person | Über Haşim | `/hasim-uener/` | `cta_footer_nav_about` | `navigation` |
 | Wissen | Blog | `/blog/` | `cta_footer_nav_insights` | `navigation` |
@@ -445,6 +447,12 @@ stillgelegt, damit seine Zeitreihe nicht mit einem anderen Ziel weiterläuft.
 
 Neu seit 2026-09-26: `cta_footer_nav_landingpage` für das Festpreis-Angebot
 `/landingpage-erstellen-lassen/`, als letzter Eintrag der Gruppe Leistungen.
+
+Neu seit 2026-09-30: `cta_footer_nav_conversion` für `/conversion-optimierung/`,
+als letzter Eintrag der Gruppe Leistungen. Die Kopfnavigation führt die Seite
+nicht (ihr Punkt „Leistungen“ ist ein Anker auf der Startseite); der Satzlink
+im Leistungsabschnitt der Startseite folgt nach dem Versuch Ersteinschätzung
+(2026-11-20).
 
 Retired with the CTA band and the merged minimal footers:
 `cta_footer_primary`, `cta_footer_primary_mobile`, `cta_footer_route_*`,
