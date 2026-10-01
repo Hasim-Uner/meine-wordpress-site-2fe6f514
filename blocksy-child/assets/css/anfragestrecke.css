@@ -785,33 +785,81 @@
   letter-spacing: -0.01em;
 }
 
-.strecke-doc .schrieb svg {
+.strecke-doc .bandtreppe { margin: var(--s3) 0 0; }
+
+.strecke-doc .bandtreppe svg {
   width: 100%;
-  height: auto;
+  height: 12rem;
   display: block;
-  margin-top: 1.5rem;
 }
 
-/* Die Kurve behaelt ihre Breite, die Beschriftung waechst mit.
-   Das SVG rechnet in 620 Einheiten; auf einem 360-px-Schirm landet es bei
-   rund 290 px, und eine 9-Einheiten-Zeile ist dort gut vier Pixel hoch.
-   Die Alternative waere eine zweite seitwaerts scrollende Zone gleich im
-   ersten Beweisblock gewesen — Beschriftung hochskalieren ist der
-   ruhigere Weg. CSS schlaegt das gleichnamige Praesentationsattribut. */
+.strecke-doc .treppe-band { fill: var(--stempel); }
+.strecke-doc .treppe-marke { stroke: var(--stempel); stroke-width: 3; }
+
+.strecke-doc .treppe-monate,
+.strecke-doc .treppe-daten {
+  display: grid;
+  grid-template-columns: repeat(5, minmax(0, 1fr));
+  gap: var(--s1);
+}
+
+.strecke-doc .treppe-monate { text-align: center; }
+.strecke-doc .treppe-daten { margin-top: var(--s2); }
+
+.strecke-doc .treppe-daten dt {
+  font-size: 0.76rem;
+  color: var(--matt);
+}
+
+.strecke-doc .treppe-daten dd {
+  margin: var(--s0) 0 0;
+  font-family: var(--mono);
+  font-size: var(--mono-l);
+  color: var(--tinte);
+}
+
+.strecke-doc .bandtreppe figcaption {
+  margin-top: var(--s2);
+  font-size: 0.76rem;
+  color: var(--matt);
+}
+
+.strecke-doc .bandtreppe [data-treppenphase] {
+  transition: opacity 200ms ease-out;
+}
+
+.strecke-doc .bandtreppe [data-treppenphase].gedimmt { opacity: 0.3; }
+.strecke-doc .bandtreppe.armed .treppe-form { opacity: 0; transform: translateY(8px); }
+
+.strecke-doc .bandtreppe.lauf .treppe-form {
+  opacity: 1;
+  transform: none;
+  transition: opacity 300ms ease-out var(--versatz), transform 300ms ease-out var(--versatz);
+}
+
 @media (max-width: 700px) {
-  .strecke-doc .schrieb svg .achse { font-size: 19px; }
-  .strecke-doc .schrieb svg .marke { font-size: 23px; }
-  .strecke-doc .schrieb svg .zeit { font-size: 17px; }
+  .strecke-doc .treppe-daten { grid-template-columns: 1fr; }
+
+  .strecke-doc .treppe-daten > div {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: var(--s1);
+    padding-block: var(--s0);
+    border-bottom: 1px solid var(--haar);
+  }
+
+  .strecke-doc .treppe-daten dd { margin-top: 0; }
 }
 
-/* Auf dem Telefon faellt die Achsenskala weg. Hochskaliert kollidierte sie
-   mit der 150-€-Marke direkt daneben, und sie sagt nichts, was die beiden
-   Marken und die Tabelle darunter nicht schon sagen. Die Rasterlinien
-   bleiben und tragen die Struktur allein. */
-@media (max-width: 560px) {
-  .strecke-doc .schrieb svg .achse { display: none; }
-  .strecke-doc .schrieb svg .marke { font-size: 30px; }
-  .strecke-doc .schrieb svg .zeit { font-size: 21px; }
+@media (prefers-reduced-motion: reduce) {
+  .strecke-doc .bandtreppe.armed .treppe-form,
+  .strecke-doc .bandtreppe.lauf .treppe-form {
+    opacity: 1;
+    transform: none;
+    transition: none;
+  }
+
+  .strecke-doc .bandtreppe [data-treppenphase] { transition: none; }
 }
 
 .strecke-doc .werte { margin-top: 1.5rem; }
@@ -855,41 +903,6 @@
   padding-top: 1rem;
   letter-spacing: 0.01em;
   font-weight: 400;
-}
-
-/* Bewegung 1 von 2: die CPL-Kurve zeichnet sich einmal.
-   Scharfgeschaltet wird sie nur, wenn sie beim Laden unter dem
-   Sichtfeld liegt. Ohne JS steht sie fertig da. */
-.strecke-doc .schrieb.armed .kurve {
-  stroke-dasharray: 620;
-  stroke-dashoffset: 620;
-}
-
-.strecke-doc .schrieb.armed .punkte { opacity: 0; }
-
-.strecke-doc .schrieb.lauf .kurve {
-  stroke-dashoffset: 0;
-  transition: stroke-dashoffset 1.2s var(--ease-weich);
-}
-
-.strecke-doc .schrieb.lauf .punkte {
-  opacity: 1;
-  transition: opacity 400ms var(--ease-weich) 900ms;
-}
-
-@media (prefers-reduced-motion: reduce) {
-  .strecke-doc .schrieb.armed .kurve,
-  .strecke-doc .schrieb.lauf .kurve {
-    stroke-dasharray: none;
-    stroke-dashoffset: 0;
-    transition: none;
-  }
-
-  .strecke-doc .schrieb.armed .punkte,
-  .strecke-doc .schrieb.lauf .punkte {
-    opacity: 1;
-    transition: none;
-  }
 }
 
 /* ══ Marktzeile ═══════════════════════════════════════════════ */
@@ -1354,14 +1367,49 @@
   line-height: 1;
 }
 
-.strecke-doc .summe .haupt .w.frisch {
-  animation: strecke-wert var(--t-gross) var(--ease-aus);
+.strecke-doc .quote-hinweis {
+  margin-top: var(--s2);
+  font-size: 0.88rem;
+  color: var(--grau);
 }
 
-@keyframes strecke-wert {
-  0% { opacity: 0.45; transform: translateY(-2px); }
-  100% { opacity: 1; transform: none; }
+.strecke-doc .auftragsbalken { grid-column: 1 / -1; margin: 0; }
+.strecke-doc .auftragsbalken figcaption { margin-bottom: var(--s3); }
+
+.strecke-doc .balken-zeile {
+  display: grid;
+  grid-template-columns: 4rem minmax(0, 1fr);
+  align-items: end;
+  gap: var(--s2);
+  margin-top: var(--s3);
 }
+
+.strecke-doc .balken-spur {
+  position: relative;
+  height: var(--s1);
+  border-bottom: 1px solid var(--haar);
+}
+
+.strecke-doc .balken-flaeche {
+  position: absolute;
+  inset: 0;
+  background: var(--matt);
+  transform: scaleX(0);
+  transform-origin: left;
+}
+
+.strecke-doc [data-balken="B"] .balken-flaeche { background: var(--stempel); }
+
+.strecke-doc .balken-wert {
+  position: absolute;
+  bottom: calc(100% + var(--s0));
+  right: 0;
+  font-family: var(--mono);
+  font-size: var(--mono-l);
+  white-space: nowrap;
+}
+
+.strecke-doc .balken-wert b { display: inline-block; font-weight: 500; }
 
 .strecke-doc .weg.b .summe .haupt .w { color: var(--stempel); }
 
@@ -1461,6 +1509,11 @@
 .strecke-doc .phasen > div {
   padding: 1.4rem 1.4rem 1.4rem 0;
   border-right: 1px solid var(--haar);
+}
+
+.strecke-doc .phasen [data-fallphase]:focus-visible {
+  outline: 2px solid var(--stempel);
+  outline-offset: 4px;
 }
 
 .strecke-doc .phasen > div:last-child {
