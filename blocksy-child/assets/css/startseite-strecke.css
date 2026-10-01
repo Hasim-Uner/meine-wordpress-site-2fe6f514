@@ -328,7 +328,7 @@
   width: 56px;
   height: 56px;
   object-fit: cover;
-  border-radius: 3px;
+  border-radius: var(--r0);
 }
 
 .st .st-hero__metazeile {
@@ -476,7 +476,7 @@
 .st .st-protokoll {
   padding: var(--s1) var(--s2) var(--s2);
   border: 1px solid var(--tinte);
-  border-radius: 3px;
+  border-radius: var(--r0);
   background: var(--papier);
   font-family: var(--mono);
   font-size: 0.75rem;
@@ -709,7 +709,7 @@
   align-items: flex-start;
   padding: var(--s3);
   border: 1px solid var(--haar);
-  border-radius: 3px;
+  border-radius: var(--r0);
   background: var(--zone);
   transition:
     border-color var(--t-norm) var(--ease-weich),
@@ -1357,7 +1357,7 @@
   display: block;
   width: 100%;
   height: auto;
-  border-radius: 3px;
+  border-radius: var(--r0);
 }
 
 .st .st-portrait figcaption {
