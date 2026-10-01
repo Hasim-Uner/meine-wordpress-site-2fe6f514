@@ -39,7 +39,6 @@ $e3_case_label = isset( $e3_canon['case_label'] ) ? (string) $e3_canon['case_lab
 
 $e3_lead_count    = $e3_metrics['lead_count']['display'] ?? '1.750';
 $e3_sales_conv    = $e3_metrics['sales_conversion']['display'] ?? '15 %';
-$e3_lead_conv     = $e3_metrics['lead_conversion']['display'] ?? '12 %';
 $e3_cpl_reduction = $e3_metrics['cpl_reduction']['display'] ?? 'über 85 %';
 $e3_cpl_before    = $e3_metrics['cpl_before']['display'] ?? '150 €';
 $e3_cpl_after     = $e3_metrics['cpl_after']['display'] ?? '22 €';
@@ -84,8 +83,9 @@ $format_eur = static function ( $value ) {
 
 $foundation_price = $format_eur( $calc_build );
 $hosting_price    = $format_eur( $calc_hosting );
-$entry_price      = $format_eur( (int) ( $pricing_canon['entry_setup_price'] ?? 790 ) );
+$setup_price      = $format_eur( (int) ( $pricing_canon['entry_setup_price'] ?? 790 ) );
 $analysis_price   = $format_eur( (int) ( $pricing_canon['analysis_price'] ?? 690 ) );
+$entry_price      = $analysis_price;
 
 // ── Marktcheck (Diagnose-Canon) ────────────────────────────────
 $diagnose_canon    = function_exists( 'hu_diagnose_canon' ) ? hu_diagnose_canon() : [];
@@ -226,20 +226,20 @@ $ladder = [
 		'note'  => 'kostenlos',
 	],
 	[
-		'id'    => 'stufe-sofortkontakt',
-		'titel' => 'Sofortkontakt-Setup',
-		'takt'  => '5 Werktage · keine Mindestlaufzeit',
-		'text'  => 'Wirkt auf die Anfragen, die Sie heute schon haben — auch auf gekaufte Leads von Aroundhome, DAA oder Wattfox. Alarm unter 60 Sekunden, automatische Eingangsbestätigung mit Terminlink, alle Quellen in einer Übersicht. Sobald ausreichend Abschlüsse erfasst sind, lassen sich die Anfragequellen wirtschaftlich vergleichen.',
-		'preis' => $entry_price,
-		'note'  => 'netto · einmalig',
-	],
-	[
 		'id'    => 'stufe-analyse',
 		'titel' => 'Anfragesystem-Analyse',
 		'takt'  => sprintf( '%d Werktage · wird angerechnet', $analysis_days ),
 		'text'  => 'Anfragequellen, Tracking, Funnel und Vertriebsanschluss als schriftlicher Befund mit drei priorisierten Hebeln und einer Wirtschaftlichkeits-Einordnung. Bei Umsetzung zahlen Sie sie nicht doppelt.',
 		'preis' => $analysis_price,
 		'note'  => 'netto · anrechenbar',
+	],
+	[
+		'id'    => 'stufe-sofortkontakt',
+		'titel' => 'Sofortkontakt-Setup',
+		'takt'  => sprintf( '%d Werktage · keine Mindestlaufzeit · auch einzeln buchbar', (int) ( $pricing_canon['entry_setup_business_days'] ?? 5 ) ),
+		'text'  => 'Wirkt auf die Anfragen, die Sie heute schon haben — auch auf gekaufte Leads von Aroundhome, DAA oder Wattfox. Alarm unter 60 Sekunden, automatische Eingangsbestätigung mit Terminlink, alle Quellen in einer Übersicht. Sobald ausreichend Abschlüsse erfasst sind, lassen sich die Anfragequellen wirtschaftlich vergleichen.',
+		'preis' => $setup_price,
+		'note'  => 'netto · einmalig',
 	],
 	[
 		'id'    => 'stufe-aufbau',
@@ -447,18 +447,18 @@ $schema_blocks[] = [
 		],
 		[
 			'@type'         => 'Offer',
-			'name'          => 'Sofortkontakt-Setup',
-			'price'         => (string) ( $pricing_canon['entry_setup_price'] ?? 790 ),
-			'priceCurrency' => 'EUR',
-			'description'   => 'Alarm unter 60 Sekunden, automatische Eingangsbestätigung mit Terminlink und eine Übersicht aller Anfragen nach Quelle. Wirkt auch auf gekaufte Portal-Leads. Netto, einmalig.',
-			'availability'  => 'https://schema.org/InStock',
-		],
-		[
-			'@type'         => 'Offer',
 			'name'          => 'Anfragesystem-Analyse',
 			'price'         => (string) ( $pricing_canon['analysis_price'] ?? 690 ),
 			'priceCurrency' => 'EUR',
 			'description'   => sprintf( 'Schriftlicher Befund zu Anfragequellen, Tracking, Funnel und Vertriebsanschluss in %d Werktagen, mit drei priorisierten Hebeln. Wird bei Umsetzung auf den Aufbau angerechnet. Netto.', $analysis_days ),
+			'availability'  => 'https://schema.org/InStock',
+		],
+		[
+			'@type'         => 'Offer',
+			'name'          => 'Sofortkontakt-Setup',
+			'price'         => (string) ( $pricing_canon['entry_setup_price'] ?? 790 ),
+			'priceCurrency' => 'EUR',
+			'description'   => 'Alarm unter 60 Sekunden, automatische Eingangsbestätigung mit Terminlink und eine Übersicht aller Anfragen nach Quelle. Wirkt auch auf gekaufte Portal-Leads. Netto, einmalig.',
 			'availability'  => 'https://schema.org/InStock',
 		],
 		[
@@ -955,7 +955,7 @@ get_header();
 				<?php $render_chapter( $chapter_by_id['einstieg'] ); ?>
 				<div class="voll">
 					<h2 class="kopf" id="leiter">Welcher Einstieg zu Ihrer Ausgangslage passt.</h2>
-					<p class="vorspann">Der kostenlose Marktcheck klärt den Bedarf. Danach entscheiden Sie, ob ein einzelnes Setup, eine vertiefte Analyse oder der Aufbau sinnvoll ist. Es gibt keine Pflicht, alle Stufen zu buchen.</p>
+					<p class="vorspann">Der kostenlose Marktcheck klärt den Bedarf. Danach entscheiden Sie, ob eine vertiefte Analyse, ein einzelnes Setup oder der Aufbau sinnvoll ist. Es gibt keine Pflicht, alle Stufen zu buchen.</p>
 
 					<div class="leiter">
 						<?php foreach ( $ladder as $rung_index => $rung ) : ?>

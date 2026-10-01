@@ -43,9 +43,9 @@ rule	frist-4h	(^|[^0-9])(4|vier)[[:space:]]*(Stunden|h)[[:space:]]+werktags	-	An
 
 # ── Abschlussquote im PV-Case ─────────────────────────────────────────────
 # Kanon: hu_e3_metric( 'sales_conversion' ) in
-# blocksy-child/inc/canon/e3-proof-canon.php. 12 % ist in diesem Fall die
-# Lead-Conversion-Rate, nicht die Abschlussquote — deshalb greift die Regel
-# nur im Case-Kontext und nicht auf jede 12 im Repo.
+# blocksy-child/inc/canon/e3-proof-canon.php. Die unbelegte Besucher-zu-Lead-
+# Rate wurde entfernt. 12 % bleibt allein als konservative Rechnerannahme.
+# Deshalb greift die Regel nur im Case-Kontext und nicht auf jede 12 im Repo.
 rule	case-abschlussquote-12	(^|[^0-9,.])12[[:space:]]*(%|&nbsp;%|Prozent)	Abschlussquote|Abschluss-Quote|sales_conversion|Case[ -]Study|case-study|PV-Case|E3-	Abschlussquote kommt aus hu_e3_metric( 'sales_conversion' ).
 
 # Die Vorher-Abschlussquote des Falls ist eine Marktannahme, keine Messung.

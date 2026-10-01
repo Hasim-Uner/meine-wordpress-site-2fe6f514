@@ -43,6 +43,7 @@ function hu_pricing_canon() {
 		'premium_layer_setup'             => HU_PREMIUM_LAYER_SETUP,
 		'premium_layer_retainer'          => HU_PREMIUM_LAYER_RETAINER,
 		'entry_setup_price'               => HU_ENTRY_SETUP_PRICE,
+		'entry_setup_business_days'       => HU_ENTRY_SETUP_BUSINESS_DAYS,
 		'analysis_price'                  => HU_ANALYSIS_PRICE,
 		'freelancer_takeover_check_price' => HU_FREELANCER_TAKEOVER_CHECK_PRICE,
 		// Schlüssel enthält "price", damit [hu_price] ihn als Betrag formatiert.
@@ -159,9 +160,10 @@ function hu_portal_reference_leads_display( $months ) {
 // Eigene Ebene unterhalb des Foundation-Modells: beschleunigt die Reaktion
 // auf vorhandene Anfragen, auch auf gekaufte Portal-Leads.
 define( 'HU_ENTRY_SETUP_PRICE', 790 );
+define( 'HU_ENTRY_SETUP_BUSINESS_DAYS', 5 );
 
 /**
- * Display value of the Sofortkontakt-Setup entry price.
+ * Display value of the Sofortkontakt-Setup price.
  *
  * Single source for the price, so nav label, section CTA and the offer
  * panel cannot drift apart when the price changes.
@@ -175,9 +177,9 @@ function hu_entry_setup_price( $with_net = false ) {
 	return $with_net ? $price . ' netto' : $price;
 }
 
-// ── Anfragesystem-Analyse: dritte Stufe der Angebotsleiter ──────
+// ── Anfragesystem-Analyse: zweite Stufe der Angebotsleiter ───────
 // Schriftlicher Befund zu Anfragequellen, Tracking, Funnel und
-// Vertriebsanschluss. Steht zwischen Sofortkontakt-Setup (790 EUR) und
+// Vertriebsanschluss. Steht vor dem Sofortkontakt-Setup (790 EUR) und
 // Foundation-Aufbau und wird bei Umsetzung auf den Aufbau angerechnet.
 //
 // Die Anrechenbarkeit gehoert zum Preis und wird deshalb hier mitgefuehrt:

@@ -112,7 +112,7 @@ Service-Pitch darf hier NICHT dominant sein.
 ## 5. PROOF / CASE STUDY PAGES
 
 Beispiele:
-- page-e3-new-energy.php
+- page-case-study-solar.php
 - page-ergebnisse.php
 
 Ziel:
