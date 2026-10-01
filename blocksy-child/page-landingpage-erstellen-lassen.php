@@ -76,7 +76,7 @@ $routes          = hu_get_commercial_route_map();
 $contact_url     = hu_get_contact_intake_url( 'project', 'conversion' );
 $tracking_url    = $routes['tracking_setup'];
 $whitelabel_url  = $routes['whitelabel'];
-$website_url     = home_url( '/#angebot-website' );
+$website_url     = $routes['website'];
 $page_url        = get_permalink() ? get_permalink() : home_url( '/landingpage-erstellen-lassen/' );
 $psi_url         = 'https://pagespeed.web.dev/analysis?url=' . rawurlencode( $page_url );
 
@@ -285,7 +285,7 @@ get_header();
 				</div>
 				<div class="ausgang">
 					<a class="textlink" href="<?php echo esc_url( $tracking_url ); ?>" data-track-action="lp_offer_to_tracking_setup" data-track-category="navigation" data-track-section="lp_offer_addons">Tracking-Setup im Detail</a>
-					<a class="textlink" href="<?php echo esc_url( $website_url ); ?>" data-track-action="lp_offer_to_website" data-track-category="navigation" data-track-section="lp_offer_addons">Website-Angebot ansehen</a>
+					<a class="textlink" href="<?php echo esc_url( $website_url ); ?>" data-track-action="lp_offer_to_website_offer" data-track-category="navigation" data-track-section="lp_offer_addons">Website-Angebot ansehen</a>
 				</div>
 			</div>
 		</div>
