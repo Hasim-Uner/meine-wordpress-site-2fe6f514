@@ -298,7 +298,7 @@
   margin-top: var(--s3);
 }
 
-.legal-page :where(.privacy-button, .imprint-button) {
+.legal-page a:is(.privacy-button, .imprint-button) {
   display: inline-flex;
   align-items: center;
   justify-content: center;
@@ -315,23 +315,35 @@
   text-decoration: none;
   transition:
     transform var(--t-norm) var(--ease-aus),
+    border-color var(--t-norm) var(--ease-weich),
     background-color var(--t-norm) var(--ease-weich),
     color var(--t-norm) var(--ease-weich);
 }
 
-.legal-page :where(.privacy-button, .imprint-button):hover {
+.legal-page a:is(.privacy-button, .imprint-button):is(:hover, :focus-visible) {
   transform: translateY(-2px);
+  border-color: var(--tinte);
   background: var(--zone);
+  color: var(--tinte);
 }
 
-.legal-page :where(.privacy-button--primary, .imprint-button--primary) {
+.legal-page a:is(.privacy-button--primary, .imprint-button--primary) {
   border-color: var(--stempel);
   background: var(--stempel);
   color: var(--papier);
 }
 
-.legal-page :where(.privacy-button--primary, .imprint-button--primary):hover {
+.legal-page a:is(.privacy-button--primary, .imprint-button--primary):is(:hover, :focus-visible) {
+  border-color: var(--stempel);
   background: color-mix(in srgb, var(--stempel) 88%, var(--tinte));
+  color: var(--papier);
+}
+
+.legal-page a:is(.privacy-button, .imprint-button):focus-visible,
+.legal-index__link:focus-visible,
+.legal-modal__close:focus-visible {
+  outline: 2px solid var(--stempel);
+  outline-offset: var(--s0);
 }
 
 /* ══ Lesepfad ═════════════════════════════════════════════════ */
@@ -448,6 +460,7 @@
 
 .legal-page :where(.privacy-sections, .imprint-sections) {
   min-width: 0;
+  scroll-margin-top: calc(var(--leiste-h) + var(--s3));
 }
 
 .legal-page :where(.privacy-section, .imprint-section) {
@@ -598,6 +611,7 @@
   background: var(--papier);
   color: var(--tinte);
   box-shadow: 0 var(--s3) var(--s6) color-mix(in srgb, var(--tinte) 22%, transparent);
+  max-height: 92dvh;
 }
 
 .legal-modal__close {
@@ -644,8 +658,8 @@
   position: static;
 }
 
-.legal-modal__body .legal-index {
-  display: none;
+.legal-modal__body :where(.privacy-sections, .imprint-sections, .privacy-section, .imprint-section) {
+  scroll-margin-top: calc(var(--s4) + var(--s3));
 }
 
 /* ══ Responsive ═══════════════════════════════════════════════ */
@@ -700,6 +714,10 @@
     left: 2.05rem;
   }
 
+  .legal-page :where(.privacy-section, .imprint-section).is-active::after {
+    width: 1rem;
+  }
+
   .legal-index {
     grid-template-columns: 1fr;
   }
@@ -726,7 +744,17 @@
   }
 }
 
+@media (max-width: 640px) {
+  .legal-modal__panel {
+    max-height: 100dvh;
+    border-radius: var(--r0);
+  }
+}
+
 @media (prefers-reduced-motion: reduce) {
+  .legal-modal,
+  .legal-modal__panel,
+  .legal-modal__close,
   .legal-page *,
   .legal-page *::before,
   .legal-page *::after {

@@ -507,6 +507,7 @@
             headerOffset = headerOffset || 100;
 
             document.addEventListener('click', function (e) {
+                if (e.defaultPrevented) return;
                 var link = e.target.closest('a[href^="#"]');
                 if (!link) return;
                 if (link.closest('[data-aroundhome-decision]')) return;

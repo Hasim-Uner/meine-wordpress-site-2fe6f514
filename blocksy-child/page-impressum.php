@@ -45,7 +45,7 @@ while ( have_posts() ) :
 
 						<div class="imprint-actions">
 							<a class="imprint-button imprint-button--primary" href="<?php echo esc_url( $mail_link ); ?>">E-Mail schreiben</a>
-							<a class="imprint-button" href="<?php echo esc_url( $privacy_url ); ?>">Datenschutz</a>
+							<a class="imprint-button" href="<?php echo esc_url( $privacy_url . '#datenschutz-inhalt' ); ?>">Datenschutz</a>
 							<a class="imprint-button" href="<?php echo esc_url( $contact_url ); ?>">Kontakt</a>
 						</div>
 					</div>
@@ -121,7 +121,7 @@ while ( have_posts() ) :
 					</div>
 				</aside>
 
-				<div class="imprint-sections">
+				<div class="imprint-sections" id="impressum-inhalt">
 					<section class="imprint-section" aria-labelledby="imprint-ddg">
 						<span class="imprint-copy-chip">Angaben gemäß § 5 DDG</span>
 						<h2 id="imprint-ddg">1. Diensteanbieter</h2>
