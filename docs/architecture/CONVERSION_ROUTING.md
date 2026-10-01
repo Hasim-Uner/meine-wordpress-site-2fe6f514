@@ -26,7 +26,7 @@ A page can remain the canonical SEO destination for its query while its CTA rout
 | `/ga4-tracking-setup/` | Tracking purchase intent: GA4/GTM setup, consent, ads conversions | Tracking offer page; target of the header item „Tracking“ and the footer way (route `tracking_setup`) | `Tracking-Projekt anfragen` → `/kontakt/?type=project&focus=tracking` | Tracking specialist / project evidence |
 | `/performance-marketing/` | B2B companies running Google Ads or Meta | Paid-demand money page (measurement → landing page → budget) | `Ausgangslage prüfen lassen` → `/kontakt/?type=project` | Tracking setup, landing page offer (`/landingpage-erstellen-lassen/`, `perf_to_landingpage_offer`; the former `perf_to_landingpages` → `/#angebot-funnel` is retired), case study; performance agencies → White-Label task (`?type=whitelabel&case=aufgabe`) |
 | `/landingpage-erstellen-lassen/` | Direct clients who need one page for one offer (`landingpage erstellen lassen`) | Fixed-price product page (route `landingpage`, since 2026-09-26) | `Landingpage anfragen` → `/kontakt/?type=project&focus=conversion` (`cta_lp_offer_hero_project`, `cta_lp_offer_scope_project`, `cta_lp_offer_close_project`) | Tracking setup and website offer as add-ons, case study; agencies → White-Label (`lp_offer_hero_whitelabel`) |
-| `/conversion-optimierung/` | B2B websites with visitors but too few matching inquiries (`conversion optimierung b2b`) | Written finding of the inquiry path (Anfragesystem-Analyse), then fixed-price implementation (route `conversion`, since 2026-09-30) | `Analyse anfragen` → `/kontakt/?type=analysis&focus=conversion` (`cro_offer_cta_hero_analysis`, `cro_offer_cta_analysis_scope`, `cro_offer_cta_close_analysis`) | Landingpage, tracking setup and website offer as implementation blocks, case study; agencies → White-Label (`cro_offer_hero_whitelabel`); no Marktcheck CTA |
+| `/conversion-optimierung/` | B2B websites with visitors but too few matching inquiries (`conversion optimierung b2b`) | Written finding of the inquiry path (Anfragesystem-Analyse), then fixed-price implementation (route `conversion`, since 2026-09-30) | `Analyse anfragen` → `/kontakt/?type=analysis&focus=conversion` (`cro_offer_cta_hero_analysis`, `cro_offer_cta_analysis_scope`, `cro_offer_cta_close_analysis`) | Landingpage and tracking setup as price rows (`cro_offer_to_landingpage`, `cro_offer_to_tracking`), case study (`cro_offer_proof_case`); no footer door register on this page; no Marktcheck CTA. New direct-contact links in the close: `cro_offer_close_mail`, `cro_offer_close_tel`. Since 2026-10-01 the former `cro_offer_hero_whitelabel`, `cro_offer_to_website` and `cro_offer_reference_open` are retired (hero meta boxes, website row and reference list are gone) |
 | `/wordpress-agentur-hannover/` | Local `wordpress agentur hannover` search intent | Local SEO acquisition page | Project request without preset focus (`hu_get_navigation_project_request_url()`, since 2026-09-26) | Offers `/#angebote`; proof: public references `/#referenzen` (`agentur_proof_references`) and the case study (`agentur_proof_case`) |
 | `/ergebnisse/` | Retired proof hub (since 2026-09-25) | 301 to `/case-study-solar-leadgenerierung/`; excluded from sitemap and `llms.txt` | none | Menu item „Ergebnisse“ → `/#arbeiten`; route `results` → case study |
 | `/case-study-solar-leadgenerierung/` | Solar proof; since 2026-09-25 also the proof target of homepage, menu item „Ergebnisse“, tracking and agency pages | Evidence page | Solar Marktcheck | Non-energy readers: quiet project request below the Marktcheck (`cta_case_study_to_project`, since 2026-09-26) |
@@ -484,6 +484,16 @@ der Seite, die den Anker besitzt, zeigt die Tür auf den Anker der Seite
 auf der Startseite und der Energie-Seite; auf `/kontakt/` bleibt es weg, die
 Seite ist das Ziel jeder Tür. `/whitelabel-retainer/` rendert einen eigenen
 Fuß und zeigt das Register nicht.
+
+Der Schalter sitzt zentral: `hu_footer_shows_register()` in
+`blocksy-child/inc/funnel-doors.php` liefert `false` für die Kontaktseite und für
+jede Seite, deren Template in `hu_footer_register_suppressed_templates()`
+steht (derzeit `page-conversion-optimierung.php`: eine Money Page mit genau einem
+Angebot und eigenem Abschluss braucht darunter keine zweite Auswahl). Der Fuß
+(`template-parts/site-footer.php`) liest nur die Funktion und bleibt sonst
+unverändert, Direktzeile, Verzeichnis und Absender erscheinen weiter. Eine weitere
+Money Page ohne Register trägt man mit ihrer Template-Datei in diese Liste ein;
+`scripts/tests/navigation-contract.php` prüft den Kontext `conversion`.
 
 Die Energie-Zeile führt den Marktcheck damit auf jeder Seite (außer Kontakt
 und White-Label) als eine von drei Türen der Energie-Betriebe. Das ist die

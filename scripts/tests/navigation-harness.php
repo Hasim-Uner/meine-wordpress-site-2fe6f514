@@ -31,6 +31,8 @@ function nav_test_contexts() {
 		'contact'       => [ 'path' => '/kontakt/', 'front' => false, 'page' => 'kontakt', 'template' => 'page-kontakt.php' ],
 		'agentur_local' => [ 'path' => '/wordpress-agentur-hannover/', 'front' => false, 'page' => 'wordpress-agentur-hannover', 'template' => 'page-wordpress-agentur.php' ],
 		'imprint'       => [ 'path' => '/impressum/', 'front' => false, 'page' => 'impressum', 'template' => 'page-impressum.php' ],
+		// Money Page ohne Tuerregister im Fuss (hu_footer_register_suppressed_templates()).
+		'conversion'    => [ 'path' => '/conversion-optimierung/', 'front' => false, 'page' => 'conversion-optimierung', 'template' => 'page-conversion-optimierung.php' ],
 		'not_found'     => [ 'path' => '/gibt-es-nicht/', 'front' => false, 'page' => '', 'template' => '' ],
 		'whitelabel'    => [ 'path' => '/whitelabel-retainer/', 'front' => false, 'page' => 'whitelabel-retainer', 'template' => 'page-whitelabel-retainer.php' ],
 		// Solar-Seite: der Kopf entsteht dort ueber eine eigene Leiste (inc/header.php).

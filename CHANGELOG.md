@@ -2,6 +2,15 @@
 
 ## 2026-10
 
+### Conversion-Optimierung: auf eine Aussage verdichtet
+
+- **`/conversion-optimierung/`:** Die Seite hat jetzt Kopf, sechs Abschnitte und Abschluss (rund 740 Wörter; vorher neun Blöcke plus Wegweiser). Die Kernaussage „Drei von sechs Stationen liegen hinter dem Formular“ ist eine eigene Grafik in HTML/CSS (geordnete Liste, orange Formularkante, Stationen 04 bis 06 getönt, mobil einspaltig mit waagerechter Kante), darunter der HBR-Befund „7×“ mit sichtbarer Quellenzeile. Alles andere ordnet sich ihr unter: „Warum kein A/B-Test“ und „Selbst umsetzen“ sind Marginalien, die Preise stehen als Tabelle mit vier Zeilen, der Beleg ist nur der PV-Fall, die Fragen sind drei.
+- **Entfallen:** die vier Metaboxen im Kopf, Abschnitt Methode, Abschnitt Vorqualifizierung mit Beispieltabelle (lebt als Station 05 und Preiszeile weiter), die drei Referenzen, die Zeile zur neuen Website, drei Fragen (Unterschied zur Landingpage, Anrechnung der Analyse, Warum keine A/B-Tests; die dritte steht jetzt als Marginalie in Abschnitt 3). Tracking-Events `cro_offer_hero_whitelabel`, `cro_offer_to_website` und `cro_offer_reference_open` sind damit retired; neu sind `cro_offer_close_mail` und `cro_offer_close_tel` für die Direktzeile im Abschluss (E-Mail und Telefon als Links, Werte aus dem Kanon).
+- **Wegweiser:** Das Türregister „Welcher Weg passt?“ im Fuß erscheint auf dieser Seite nicht mehr. Der Schalter ist neu und zentral: `hu_footer_shows_register()` und die Template-Liste `hu_footer_register_suppressed_templates()` in `inc/funnel-doors.php`; `site-footer.php` liest sie nur. Weitere Money Pages tragen sich dort ein. Startseite und alle anderen Seiten unverändert.
+- **Schema:** Das Offer im Service-Node trägt „netto“ in der Beschreibung. Die FAQPage liest die drei Fragen aus `nexus_get_conversion_faq_items()`, dieselbe Quelle wie die sichtbaren Fragen.
+- **CSS:** neue Datei `assets/css/conversion-optimierung.css` als Delta auf `system.css` (nur Tokens, Container Query für die Grafik, keine Bewegung). Orange bleibt bei Messwerten, den Stationen hinter dem Formular und dem Primär-Button.
+- **Tests:** `scripts/tests/navigation-harness.php` und `navigation-contract.php` kennen den Kontext `conversion` (Fuß ohne Register, mit Direktzeile, Verzeichnis und Absender).
+
 ### Landingpage erstellen lassen: Umfang als Angebotsblatt
 
 - **Abschnitt „Umfang“ (`#umfang`):** Die flache Protokoll-Liste in der dunklen Tafel ist ersetzt durch ein Angebotsblatt. Links Titel und Vorspann, rechts eine Preiskarte mit dem Betrag groß gesetzt (Betrag und Währung getrennt aus `hu_landingpage_price()`), vier Haken und dem Button direkt am Preis. Darunter ein Raster aus den sieben Leistungen (Titel, Nummer, Text) und der Grenze „Nicht dazu“ als achtem, gefülltem Feld mit einer Zeile je Ausschluss.

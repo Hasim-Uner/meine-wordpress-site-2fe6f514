@@ -76,8 +76,9 @@ Abschnitt anzuhängen; der Verlauf gehört in Commit-Nachrichten.
   Tracking, Agentur, Energie), je Tür eine Zeile mit Bezeichnung, Betrag
   (aus dem Kanon) und Pfeil, Tracking `cta_footer_door_<schlüssel>`. Die
   eigene Route ist markiert („Ihr Weg“), nicht ausgeblendet; das Register
-  erscheint auch auf Startseite und Energie-Seite, nur `/kontakt/` zeigt es
-  nicht. Darunter Direktzeile und Verzeichnis in vier Gruppen: Leistungen
+  erscheint auch auf Startseite und Energie-Seite, nur `/kontakt/` und die
+  Seiten aus `hu_footer_register_suppressed_templates()` (`inc/funnel-doors.php`,
+  derzeit `/conversion-optimierung/`) zeigen es nicht. Darunter Direktzeile und Verzeichnis in vier Gruppen: Leistungen
   (Server-Side Tracking, Performance Marketing, WordPress Agentur Hannover,
   Landingpage erstellen lassen, Conversion-Optimierung), Belege & Person
   (Solar-Fallstudie, Über Haşim), Wissen (Blog, Glossar), Rechtliches
@@ -216,14 +217,20 @@ Abschnitt anzuhängen; der Verlauf gehört in Commit-Nachrichten.
   Conversion-Optimierung für B2B-Websites mit wenig Traffic, Einstieg ist die
   Anfragesystem-Analyse (`hu_analysis_price()`, Dauer aus
   `hu_diagnose_canon()['primary_days']`, dasselbe Produkt wie auf der
-  Solar-Seite), danach Umsetzung zu Festpreisen aus dem Kanon. Abschnitte:
-  Anlass, Methode (ohne A/B-Test), Strecke (sechs Stationen), statische
-  Vorqualifizierung ohne JavaScript, Analyse, Umsetzung, Beleg, Fragen. FAQ und
-  FAQPage-Schema aus `nexus_get_conversion_faq_items()`, Service mit Offer in
-  `inc/org-schema.php`, Title/Description in `inc/seo-meta.php`. CTAs auf
-  `/kontakt/?type=analysis&focus=conversion`, alle Tracking-Werte mit Präfix
-  `cro_offer_`, kein Marktcheck-CTA. Die Tabellen laufen in der Hülle
-  `.tabelle` (`system.css`) mit eigenem Scrollkontext. Route `conversion`,
+  Solar-Seite), danach Umsetzung zu Festpreisen aus dem Kanon. Seit
+  2026-10-01 verdichtet (rund 740 Wörter): Kopf, sechs Abschnitte (Anlass,
+  Strecke, Analyse, Danach, Beleg, Fragen) und Abschluss. Die Kernaussage „Drei
+  von sechs Stationen liegen hinter dem Formular“ ist eine HTML/CSS-Grafik
+  (geordnete Liste, Formularkante, mobil einspaltig); „Warum kein A/B-Test“ ist
+  Marginalie in Abschnitt 3, die Vorqualifizierung nur Station 05 und eine
+  Preiszeile. Beleg ist allein der PV-Fall (kein Firmenname, keine Region), die
+  Referenzliste entfällt. Layout aus `system.css` plus Delta
+  `assets/css/conversion-optimierung.css`. FAQ (drei Fragen) und FAQPage-Schema
+  aus `nexus_get_conversion_faq_items()`, Service mit Offer (Betrag, netto in der
+  Beschreibung) in `inc/org-schema.php`, Title/Description in `inc/seo-meta.php`.
+  CTAs auf `/kontakt/?type=analysis&focus=conversion`, alle Tracking-Werte mit
+  Präfix `cro_offer_`, kein Marktcheck-CTA. Der Fuß zeigt auf dieser Seite kein
+  Türregister (`hu_footer_register_suppressed_templates()`). Route `conversion`,
   Seitenanlage über `nexus_get_provisioned_pages()`. Query-Owner für
   `conversion optimierung b2b`, `conversion optimierung`,
   `conversion rate optimierung` und `wordpress conversion optimieren`.

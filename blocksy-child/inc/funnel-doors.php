@@ -239,6 +239,47 @@ function hu_funnel_reader_dossier( $post_slug = '' ) {
 }
 
 /**
+ * Templates, deren Seite im Fuss kein Tuerregister ("Welcher Weg passt?") traegt.
+ *
+ * Eine Money Page mit genau einem Angebot und einem eigenen Abschluss braucht
+ * keine zweite Auswahl unter ihrem Abschluss. Wer eine weitere Seite aus dem
+ * Register nehmen will, traegt hier ihre Template-Datei ein; der Fuss selbst
+ * bleibt unveraendert. /kontakt/ steht nicht in dieser Liste, hu_footer_shows_register()
+ * behandelt sie eigens.
+ *
+ * @return string[]
+ */
+function hu_footer_register_suppressed_templates() {
+	return [
+		'page-conversion-optimierung.php',
+	];
+}
+
+/**
+ * Whether the footer renders the door register on the current request.
+ *
+ * Das Register steht auf jeder Seite ausser der Kontaktseite (sie ist das Ziel
+ * jeder Tuer, eine erneute Auswahl wuerde aus dem Abschluss einen Ausgang
+ * zurueck in die Orientierung machen) und den Seiten aus
+ * hu_footer_register_suppressed_templates().
+ *
+ * @return bool
+ */
+function hu_footer_shows_register() {
+	if ( function_exists( 'nexus_is_contact_page' ) && nexus_is_contact_page() ) {
+		return false;
+	}
+
+	foreach ( hu_footer_register_suppressed_templates() as $template ) {
+		if ( is_page_template( $template ) ) {
+			return false;
+		}
+	}
+
+	return true;
+}
+
+/**
  * Decide mode, door and way for the current request.
  *
  * `mode`  voll (Hauptmenue plus Tuer), leser (Artikelpfad plus Tuer) oder
