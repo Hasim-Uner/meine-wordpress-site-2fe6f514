@@ -44,6 +44,15 @@
   }
 
   function track(action, extra) {
+    var event = {
+      system_intake_validation_error: 'form_validation_error',
+      system_intake_step_next: 'form_step_two',
+      system_intake_submit_success: 'form_submitted'
+    }[action];
+    if (action === 'system_intake_submit_error' && extra && extra.error_field) event = 'form_validation_error';
+    if (event) {
+      window.dispatchEvent(new CustomEvent('nexus:solar-form', { detail: { event: event, door: 'marktcheck' } }));
+    }
     try {
       if (window.dataLayer && typeof window.dataLayer.push === 'function') {
         window.dataLayer.push(Object.assign({event: action, event_category: 'lead_gen'}, extra || {}));
@@ -306,6 +315,10 @@
       '<p class="mc2-topline"><span>Marktcheck eingegangen</span><span>Persönliche Prüfung</span></p>' +
       '<h3 class="mc2-title">' + esc(headline) + '</h3>' +
       '<p class="mc2-intro">' + esc(message) + '</p>';
+
+    if (CFG.replyPromise && message.indexOf(CFG.replyPromise) === -1) {
+      html += '<p class="mc2-intro">Ich melde mich ' + esc(CFG.replyPromise) + '.</p>';
+    }
 
     if (deadline) {
       html += '<p class="mc2-deadline"><strong>Rückmeldung spätestens:</strong> ' + esc(deadline) + '</p>';

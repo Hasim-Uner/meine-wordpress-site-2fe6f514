@@ -2,7 +2,7 @@
  * Marktcheck — zusammenhaengender Conversion-Block
  * /solar-waermepumpen-leadgenerierung/
  *
- * Dieser Layer baut Abschnitt 07 als ein Arbeitsdokument auf:
+ * Dieser Layer baut Abschnitt 06 als ein Arbeitsdokument auf:
  * Befundumfang → Lieferumfang → Fit-Pruefung. Der Uebergang zwischen
  * Papier und dunkler Arbeitsflaeche bleibt bewusst kurz, aber sichtbar.
  */
@@ -11,24 +11,6 @@
   position: relative;
   isolation: isolate;
   padding-bottom: clamp(4.5rem, 8vw, 7.5rem);
-}
-
-.strecke-doc #marktcheck::before {
-  content: "";
-  position: absolute;
-  z-index: -1;
-  inset-inline: 0;
-  top: clamp(18rem, 26vw, 25rem);
-  bottom: clamp(1.25rem, 3vw, 2.5rem);
-  background: linear-gradient(
-    180deg,
-    rgb(247 246 243 / 0) 0,
-    rgb(247 246 243 / 0.88) 5rem,
-    #f7f6f3 11rem,
-    #f7f6f3 calc(100% - 5rem),
-    rgb(247 246 243 / 0) 100%
-  );
-  pointer-events: none;
 }
 
 .strecke-doc #marktcheck .kopf { max-width: 15ch; }
@@ -49,10 +31,10 @@
   margin-top: clamp(2.6rem, 5vw, 4rem);
   padding: 0;
   overflow: hidden;
-  background: #fff;
+  background: var(--papier);
   border: 1px solid var(--haar);
-  border-radius: 3px;
-  box-shadow: 0 28px 72px rgb(23 20 18 / 0.06);
+  border-radius: var(--r0);
+  box-shadow: none;
 }
 
 /* Durchgehende Stempelkante: dieselbe Linie ueber alle drei Phasen. */
@@ -63,7 +45,7 @@
   inset-block: 0;
   left: 0;
   width: 3px;
-  background: linear-gradient(180deg, #b8420f 0 43%, #ef8b4d 57% 100%);
+  background: var(--stempel);
   pointer-events: none;
 }
 
@@ -73,7 +55,7 @@
   position: relative;
   padding: clamp(1.6rem, 3vw, 2.4rem);
   padding-bottom: clamp(2rem, 3.5vw, 2.8rem);
-  background: rgb(255 255 255 / 0.96);
+  background: var(--papier);
 }
 
 .strecke-doc #marktcheck .gate > div:first-child > .mono {
@@ -118,9 +100,7 @@
   border-top: 1px solid var(--haar);
 }
 
-/* ── Papier → Arbeitsflaeche ──────────────────────────────────
-   Kein 1-px-Schnitt. Die ersten ~4rem der dunklen Phase sind reine
-   Material-Transition; dort liegt bewusst kein Text. */
+/* Papier und dunkle Formularfläche treffen an einer Haarlinie aufeinander. */
 
 .strecke-doc #marktcheck .gate .schein {
   display: grid;
@@ -129,19 +109,11 @@
   gap: 0;
   align-items: start;
   margin: 0;
-  padding: clamp(3.4rem, 5vw, 4.4rem) 0 0;
+  padding: 0;
   border: 0;
+  border-top: 1px solid var(--haar);
   border-radius: 0;
-  background: linear-gradient(
-    180deg,
-    #f7f6f3 0,
-    #e8ddd3 0.65rem,
-    #b99176 1.45rem,
-    #684a37 2.35rem,
-    #30251d 3.25rem,
-    #17140f 4.35rem,
-    #17140f 100%
-  );
+  background: var(--papier);
 }
 
 /* ── Phase 02: Lieferumfang ─────────────────────────────────── */
@@ -184,7 +156,7 @@
   min-height: 100%;
   padding: clamp(1.8rem, 3.5vw, 2.6rem);
   border-left: 1px solid var(--haar);
-  background: linear-gradient(180deg, #211c16 0, #1d1914 5rem, #1d1914 100%);
+  background: var(--papier);
 }
 
 .strecke-doc #marktcheck #sol-quiz-mount::before {
@@ -293,8 +265,6 @@
 }
 
 @media (max-width: 760px) {
-  .strecke-doc #marktcheck::before { top: 19rem; }
-
   .strecke-doc #marktcheck .vorspann.klein { padding-left: 0.85rem; }
 
   .strecke-doc #marktcheck .gate ol { grid-template-columns: 1fr; }
@@ -302,19 +272,6 @@
 
   .strecke-doc #marktcheck .gate > div:first-child,
   .strecke-doc #marktcheck #sol-quiz-mount { padding: 1.35rem; }
-
-  .strecke-doc #marktcheck .gate .schein {
-    padding-top: 3.25rem;
-    background: linear-gradient(
-      180deg,
-      #f7f6f3 0,
-      #ddcdbf 0.55rem,
-      #8c6750 1.45rem,
-      #3d2e23 2.35rem,
-      #17140f 3.25rem,
-      #17140f 100%
-    );
-  }
 
   .strecke-doc #marktcheck .gate .schein > .mono,
   .strecke-doc #marktcheck .gate .schein > .z,
