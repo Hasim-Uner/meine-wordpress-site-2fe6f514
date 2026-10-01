@@ -58,8 +58,14 @@ ADDED_LINES="$(
     | grep -vE '^\+\s*(//|\*|/\*|#|<!--)' || true
 )"
 
+# "Test" steht auf der Sperrliste als Pilot-/Beta-Formulierung. Als A/B-Test
+# ("ein Test", "per Test") ist es normales Fachwort, etwa auf
+# /conversion-optimierung/ ("Warum ohne A/B-Test"). Diese Artikelformen werden
+# vor der Pruefung neutralisiert; "Test" allein, "Pilot", "Beta" usw. bleiben
+# gesperrt. Zeilennummern bleiben erhalten.
 MATCHES="$(
   printf '%s\n' "${ADDED_LINES}" \
+    | sed -E 's/(^|[^[:alnum:]_-])(ein|einen|einem|per|kein|keinen|jeder) Test([^[:alnum:]_-]|$)/\1\2 ~\3/g' \
     | grep -En "${VALUE_PATTERN}|${TERM_PATTERN}" || true
 )"
 
