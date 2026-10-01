@@ -1,0 +1,253 @@
+/* ══════════════════════════════════════════════════════════════
+   LANDINGPAGE ERSTELLEN LASSEN — Angebotsblatt
+
+   Delta auf system.css für den Abschnitt „Umfang“ von
+   /landingpage-erstellen-lassen/. Der Abschnitt ist das Produkt der
+   Seite und liest sich deshalb wie ein Angebotsblatt: links Titel und
+   Vorspann, rechts die Preiskarte mit dem Betrag und dem Weg zur
+   Anfrage, darunter ein Raster aus sieben Leistungen und der Grenze
+   „Nicht dazu“ als achtem, abgesetztem Feld.
+
+   Kein eigener Farbwert, keine eigene Abstandsskala, keine --nx-*
+   Tokens. Die Tafel definiert die Farb-Tokens lokal um; alles hier liest
+   nur daraus. Orange (--stempel) bleibt bei Haken, der Kante der
+   Preiskarte und dem primären Button.
+
+   Das Layout folgt der Breite der Tafel, nicht des Fensters
+   (Container Query). Ohne Unterstützung steht alles einspaltig
+   untereinander, vollständig und lesbar. Keine Bewegung außer dem Hover
+   des Buttons aus system.css.
+   ══════════════════════════════════════════════════════════════ */
+
+.lp-offer-page .angebot {
+  container: angebot / inline-size;
+  padding: var(--s3);
+}
+
+@media (min-width: 640px) {
+  .lp-offer-page .angebot { padding: var(--s5); }
+}
+
+/* ══ Kopf: Titel links, Preiskarte rechts ═════════════════════ */
+
+.lp-offer-page .angebot-kopf {
+  display: grid;
+  gap: var(--s4);
+}
+
+.lp-offer-page .angebot-titel .kopf { margin-top: var(--s2); }
+
+.lp-offer-page .angebot-titel .vorspann {
+  margin-top: var(--s3);
+  max-width: 44ch;
+}
+
+@container angebot (min-width: 44rem) {
+  .lp-offer-page .angebot-kopf {
+    grid-template-columns: minmax(0, 1fr) minmax(17rem, 21rem);
+    gap: var(--s5);
+    align-items: start;
+  }
+
+  .lp-offer-page .angebot-preis { max-width: none; }
+}
+
+/* ══ Preiskarte ═══════════════════════════════════════════════
+   Eine Fläche eine Stufe heller als die Tafel, Haarlinie statt
+   Schatten, eine Kante in Orange als einziges Signal. Schmal bleibt
+   sie auf Kartenbreite, statt als Balken über die ganze Tafel zu
+   laufen. */
+
+.lp-offer-page .angebot-preis {
+  display: flex;
+  flex-direction: column;
+  max-width: 26rem;
+  padding: var(--s3);
+  background: var(--zone);
+  border: 1px solid var(--haar);
+  border-top: 2px solid var(--stempel);
+  border-radius: 3px;
+}
+
+.lp-offer-page .angebot-preis .betrag {
+  display: flex;
+  align-items: baseline;
+  gap: var(--s0);
+  margin-top: var(--s1);
+  font-family: var(--serif-display);
+  font-size: clamp(3.4rem, 2.6rem + 2.6vw, 4.6rem);
+  font-weight: 500;
+  line-height: 1;
+  letter-spacing: -0.045em;
+  color: var(--tinte);
+}
+
+.lp-offer-page .angebot-preis .einheit {
+  font-size: 0.5em;
+  font-weight: 400;
+  letter-spacing: 0;
+  color: var(--grau);
+}
+
+.lp-offer-page .angebot-preis .netto {
+  margin-top: var(--s1);
+  font-size: 0.9rem;
+  color: var(--grau);
+}
+
+.lp-offer-page .angebot-preis .haken {
+  display: grid;
+  gap: var(--s1);
+  margin: var(--s3) 0 0;
+  padding: var(--s3) 0 0;
+  list-style: none;
+  border-top: 1px solid var(--haar);
+}
+
+.lp-offer-page .angebot-preis .haken li {
+  position: relative;
+  margin: 0;
+  padding: 0 0 0 var(--s3);
+  font-size: 0.95rem;
+  line-height: 1.4;
+}
+
+/* Der Haken sitzt auf der Mitte der ersten Zeile, nicht der Zeilenbox. */
+.lp-offer-page .angebot-preis .haken li::before {
+  content: "";
+  position: absolute;
+  top: 0.3em;
+  left: 0.15rem;
+  width: 0.4rem;
+  height: 0.72rem;
+  border-right: 1.5px solid var(--stempel);
+  border-bottom: 1.5px solid var(--stempel);
+  transform: rotate(45deg);
+}
+
+.lp-offer-page .angebot-preis .tun {
+  width: 100%;
+  justify-content: space-between;
+  margin-top: var(--s3);
+}
+
+.lp-offer-page .angebot-preis .antwort {
+  margin-top: var(--s2);
+  font-family: var(--serif);
+  font-size: 0.82rem;
+  letter-spacing: 0;
+  text-transform: none;
+  color: var(--matt);
+}
+
+/* ══ Raster: sieben Leistungen und die Grenze ═════════════════
+   Die obere Linie ist die kräftige des Systems (--strich), die Zeilen
+   darunter tragen Haarlinien. Spalten trennt ein Zwischenraum, keine
+   Linie; dadurch bleibt das Raster auch bei ungerader Zahl ruhig.
+   Eng (Handy) steht der Text unter Nummer und Titel auf voller Breite,
+   erst ab 30rem rückt er unter den Titel ein. */
+
+.lp-offer-page .angebot-posten {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  margin: var(--s5) 0 0;
+  padding: 0;
+  list-style: none;
+  border-top: 1px solid var(--strich);
+}
+
+.lp-offer-page .angebot-posten > li {
+  display: grid;
+  grid-template-columns: var(--s4) minmax(0, 1fr);
+  align-content: start;
+  margin: 0;
+  padding: var(--s3) 0;
+  border-bottom: 1px solid var(--haar);
+}
+
+.lp-offer-page .angebot-posten .nr {
+  grid-column: 1;
+  grid-row: 1;
+  padding-top: 0.3em;
+  font-family: var(--mono);
+  font-size: var(--mono-l);
+  letter-spacing: 0.04em;
+  color: var(--matt);
+  font-variant-numeric: tabular-nums;
+}
+
+.lp-offer-page .angebot-posten h3 {
+  grid-column: 2;
+  font-size: 1.2rem;
+  letter-spacing: -0.015em;
+  line-height: 1.2;
+}
+
+.lp-offer-page .angebot-posten li > p {
+  grid-column: 1 / -1;
+  max-width: 52ch;
+  margin-top: var(--s1);
+  font-size: 0.95rem;
+  line-height: 1.55;
+  color: var(--grau);
+}
+
+@container angebot (min-width: 30rem) {
+  .lp-offer-page .angebot-posten > li { grid-template-columns: var(--s5) minmax(0, 1fr); }
+  .lp-offer-page .angebot-posten li > p { grid-column: 2; }
+}
+
+@container angebot (min-width: 46rem) {
+  .lp-offer-page .angebot-posten {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    column-gap: var(--s5);
+  }
+}
+
+/* ── Grenze: das achte Feld ────────────────────────────────────
+   Gefüllt statt gelinet, damit klar ist, dass es nicht zur Lieferung
+   gehört. Die Marke ist ein Malzeichen statt einer Nummer. */
+
+.lp-offer-page .angebot-posten > .grenze {
+  padding-inline: var(--s3);
+  background: var(--zone);
+  border-bottom-color: var(--zone);
+}
+
+.lp-offer-page .angebot-posten > .grenze .nr {
+  padding-top: 0;
+  font-size: 1.35rem;
+  line-height: 1;
+}
+
+.lp-offer-page .angebot-posten > .grenze ul {
+  grid-column: 1 / -1;
+  display: grid;
+  gap: var(--s0);
+  margin: var(--s1) 0 0;
+  padding: 0;
+  list-style: none;
+}
+
+@container angebot (min-width: 30rem) {
+  .lp-offer-page .angebot-posten > .grenze ul { grid-column: 2; }
+}
+
+.lp-offer-page .angebot-posten > .grenze ul li {
+  position: relative;
+  margin: 0;
+  padding: 0 0 0 var(--s2);
+  font-size: 0.95rem;
+  line-height: 1.5;
+  color: var(--grau);
+}
+
+.lp-offer-page .angebot-posten > .grenze ul li::before {
+  content: "";
+  position: absolute;
+  top: 0.78em;
+  left: 0;
+  width: 0.5rem;
+  height: 1px;
+  background: var(--matt);
+}
