@@ -23,8 +23,11 @@
 
    REGEL
    Kein Farbwert ausserhalb von :root und .tafel. Kein Abstand, der nicht
-   aus --s0 bis --s6 kommt. Wer eine Ausnahme braucht, braucht einen
-   Token.
+   aus --s0 bis --s6 kommt. Kein Radius ausser --r0 und --r1 (50% nur fuer
+   Punkte). Keine Schriftfamilie ausser --serif, --serif-display und
+   --mono. Wer eine Ausnahme braucht, braucht einen Token.
+   scripts/audit-css-values.py zaehlt die Verstoesse je Datei; die Zahl
+   darf nur sinken (scripts/baselines/css-values.tsv).
 
    KEIN DARK MODE. color-scheme: light, keine
    prefers-color-scheme-Umschaltung. Die dunklen Flaechen sind gesetzt
@@ -82,6 +85,26 @@
   --mono-m: 0.7rem;
   --mono-l: 0.82rem;
 
+  /* ── Radius. Zwei Werte, sonst keine ───────────────────────────
+     --r0 fuer alles, --r1 nur fuer die Tafel und Eingabefelder.
+     50% gehoert allein den Punkten und steht dort als Literal. */
+  --r0: 0;
+  --r1: 3px;
+
+  /* ── Schriftgrade. Die fliessenden Stufen des Dokuments ────────
+     Als Tokens, damit eine Routen-Datei keine eigene clamp()-Formel
+     erfindet. --grad-klein ist die Marginalie und die Kleinschrift
+     neben dem Satz. */
+  --grad-h1: clamp(2.1rem, 1.3rem + 4vw, 4.4rem);
+  --grad-h2: clamp(1.85rem, 1.3rem + 2.4vw, 3.1rem);
+  --grad-h2-leise: clamp(1.5rem, 1.2rem + 1.4vw, 2.2rem);
+  --grad-text: clamp(1rem, 0.95rem + 0.25vw, 1.125rem);
+  --grad-klein: 0.82rem;
+
+  /* ── Tuer. Die eine Schaltflaeche in Kopf und Fuss ────────────── */
+  --tuer-h: 40px;
+  --tuer-schrift: 0.72rem;
+
   /* ── Bewegung ──────────────────────────────────────────────────
      --ease-aus fuer alles, was erscheint oder vom Nutzer ausgeloest
      wird. --ease-weich fuer Farb- und Zustandswechsel. */
@@ -123,7 +146,7 @@ body.nx-custom-header-active {
 
   background: var(--papier);
   color: var(--tinte);
-  border-radius: 3px;
+  border-radius: var(--r1);
   padding: clamp(1.4rem, 3.5vw, 2.4rem);
 }
 
@@ -135,7 +158,7 @@ body.nx-custom-header-active {
   font-family: var(--serif);
   /* Eine Grotesk traegt bei gleichem Grad mehr Flaeche als eine Serif.
      Deshalb eine Stufe unter dem Grad der Vorlage. */
-  font-size: clamp(1rem, 0.95rem + 0.25vw, 1.125rem);
+  font-size: var(--grad-text);
   line-height: 1.58;
   text-wrap: pretty;
   -webkit-font-smoothing: antialiased;
@@ -298,7 +321,7 @@ body.nx-custom-header-active {
 /* ══ Marginalie ═══════════════════════════════════════════════ */
 
 .doku .marg .note {
-  font-size: 0.82rem;
+  font-size: var(--grad-klein);
   line-height: 1.55;
   color: var(--grau);
   padding-top: var(--s0);
@@ -332,13 +355,13 @@ body.nx-custom-header-active {
 .doku [id] { scroll-margin-top: calc(var(--leiste-h) + var(--s3)); }
 
 .doku h2.kopf {
-  font-size: clamp(1.85rem, 1.3rem + 2.4vw, 3.1rem);
+  font-size: var(--grad-h2);
   letter-spacing: -0.022em;
   max-width: 20ch;
 }
 
 .doku h2.kopf.leise {
-  font-size: clamp(1.5rem, 1.2rem + 1.4vw, 2.2rem);
+  font-size: var(--grad-h2-leise);
   max-width: 24ch;
 }
 
@@ -380,7 +403,7 @@ body.nx-custom-header-active {
   text-transform: uppercase;
   font-weight: 500;
   border: 1px solid var(--stempel);
-  border-radius: 0;
+  border-radius: var(--r0);
   cursor: pointer;
   transition:
     background-color var(--t-mikro) ease,
@@ -488,7 +511,7 @@ body.nx-custom-header-active {
 }
 
 .doku h1 {
-  font-size: clamp(2.1rem, 1.3rem + 4vw, 4.4rem);
+  font-size: var(--grad-h1);
   letter-spacing: -0.028em;
   line-height: 1.04;
   max-width: 17ch;

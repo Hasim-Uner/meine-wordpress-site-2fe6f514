@@ -22,7 +22,12 @@ Die Schichten sind verbindlich:
 - Layout: `--rand`, `--marg`, `--satz`
 - Abstand: `--s0` bis `--s6`
 - Mono-Stufen: `--mono-s`, `--mono-m`, `--mono-l`
+- Radius: `--r0` (0, für alles), `--r1` (3 px, nur Tafel und Eingabefelder); `50%` nur für Punkte
+- Schriftgrade: `--grad-h1`, `--grad-h2`, `--grad-h2-leise`, `--grad-text`, `--grad-klein`
+- Tür (Kopf und Fuß): `--tuer-h`, `--tuer-schrift`
 - Motion: `--ease-aus`, `--ease-weich`, `--t-mikro`, `--t-norm`, `--t-gross`
+
+Radius, Schriftgrade und Tür-Maße gehören `system.css` allein: Sie stehen nicht im Übergangsspiegel von `anfragestrecke.css`, und keine andere Datei darf sie neu definieren (`CORE_TOKENS` in `audit-css-architecture.py`).
 
 Die dunkle `.tafel` ist Teil desselben Systems. Sie überschreibt die semantischen Tokens lokal; sie ist kein zweites Theme.
 
@@ -181,10 +186,15 @@ Lokale Checks:
 ```bash
 python3 scripts/audit-css-architecture.py
 python3 scripts/audit-legacy-nx-css.py
+python3 scripts/audit-css-values.py
 bash scripts/lint-css-spacing.sh
 bash scripts/lint-css-motion.sh
 ```
 
+`npm run lint:css-architecture` führt `audit-css-architecture.py` und `audit-css-values.py` nacheinander aus; `npm run build:theme` ebenfalls, damit kein Deploy am Wächter vorbeigeht.
+
 `audit-css-architecture.py` schützt die neue Canon-Token-Familie und die exakt eingefrorenen Übergangsausnahmen.
 
 `audit-legacy-nx-css.py` schützt den Abbaupfad: Neue NX-Verbraucher scheitern, und sobald eine Datei bereinigt ist, wird ihre Baseline-Zeile als veraltet gemeldet. Die Baseline ist damit kein Zielwert, sondern eine Obergrenze, die nur sinken darf. Zusätzlich zeigt der Audit, welche Dateien den Legacy-Provider wirklich benötigen und welche lediglich alte NX-Namen tragen.
+
+`audit-css-values.py` zählt je Stylesheet drei Kategorien außerhalb von `:root` und `.tafel`: literale Farbwerte (Hex, `rgb()`/`hsl()` ohne `var()`), Radiuswerte außer `var(--r0)`, `var(--r1)`, `0` und `50%`, und `font-family`-Literale statt `--serif`/`--serif-display`/`--mono`. Gezählt wird je Vorkommen, nicht je verschiedenem Wert. `scripts/baselines/css-values.tsv` ist eine Schrumpf-Baseline mit derselben Mechanik wie die NX-Baseline: Ein Anstieg bricht den Build; sinkt ein Wert, muss die Baseline nachgezogen werden (`python3 scripts/audit-css-values.py --write-baseline`, das keinen Anstieg schreibt). Eine Datei, die nicht in der Baseline steht, zählt in jeder Kategorie als 0. Ausnahmen gibt es nicht über die Baseline, sondern über einen Token in `system.css`.
