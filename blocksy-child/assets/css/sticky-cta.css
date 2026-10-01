@@ -138,7 +138,8 @@ body {
    White-Label-Seite: zwei Anfrage-Buttons auf einem Handybildschirm waeren
    einer zu viel. Im Klappblatt bleibt er. */
 @media (max-width: 760px) {
-	.leiste[data-leiste-bereit] .rechts > a.tun {
+	.leiste[data-leiste-bereit] .rechts > a.tun,
+	.leiste--voll[data-leiste-bereit] .rechts > a.tuer {
 		display: none;
 	}
 }

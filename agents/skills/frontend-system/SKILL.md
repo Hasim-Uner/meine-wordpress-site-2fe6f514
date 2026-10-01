@@ -27,6 +27,7 @@ Validation:
 ```bash
 python3 scripts/audit-css-architecture.py
 python3 scripts/audit-legacy-nx-css.py
+python3 scripts/audit-css-values.py
 bash scripts/lint-css-motion.sh
 bash scripts/lint-css-spacing.sh
 npm run lint:php

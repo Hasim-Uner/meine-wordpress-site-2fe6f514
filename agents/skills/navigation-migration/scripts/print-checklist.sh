@@ -19,9 +19,12 @@ foreach ( hu_get_primary_navigation_contract() as $item ) {
 	printf( "- %s -> %s [%s]\n", $item["label"], $path( $item["url"] ), $item["track"] );
 }
 $footer = hu_get_site_footer_navigation_contract();
-echo "\nFooter ways (hu_get_site_footer_navigation_contract):\n";
-foreach ( $footer["picks"] as $pick ) {
-	printf( "- %s -> %s [%s]\n", trim( $pick["strong"] ), $path( $pick["url"] ), $pick["track"] );
+$doors  = hu_funnel_doors();
+echo "\nFooter door register (hu_get_site_footer_navigation_contract + hu_funnel_doors):\n";
+foreach ( $footer["routes"] as $way ) {
+	foreach ( $way["doors"] as $key ) {
+		printf( "- %s: %s -> %s [cta_footer_door_%s]\n", trim( $way["strong"] ), $doors[ $key ]["footer_label"], $path( $doors[ $key ]["url"] ), $key );
+	}
 }
 echo "\nFooter directory:\n";
 foreach ( $footer["directory"] as $group ) {

@@ -21,6 +21,10 @@ fi
 # started redefining the same core token family.
 python3 "$root_dir/scripts/audit-css-architecture.py"
 
+# Fail before packaging if a stylesheet gained literal colour, radius or
+# typeface values. The counts are shrink-only (scripts/baselines/css-values.tsv).
+python3 "$root_dir/scripts/audit-css-values.py"
+
 # Fail before packaging if a forbidden fact literal is anywhere in the repo.
 # Der Guard sitzt hier und nicht nur in der CI, weil deploy.yml per
 # workflow_dispatch ohne den CI-Job laufen kann — beide Wege gehen aber durch

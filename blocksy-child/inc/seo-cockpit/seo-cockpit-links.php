@@ -568,13 +568,7 @@ function nexus_get_seo_cockpit_sitewide_source_definitions() {
 	$imprint_url    = $primary_urls['impressum'] ?? home_url( '/impressum/' );
 	$privacy_url    = $primary_urls['datenschutz'] ?? home_url( '/datenschutz/' );
 	$primary_links  = nexus_get_seo_cockpit_primary_menu_links();
-	$footer_contract       = function_exists( 'hu_get_site_footer_navigation_contract' ) ? hu_get_site_footer_navigation_contract() : [];
-	$footer_pick_urls      = array_values( array_filter( array_map(
-		static function ( $pick ) {
-			return (string) ( $pick['url'] ?? '' );
-		},
-		(array) ( $footer_contract['picks'] ?? [] )
-	) ) );
+	$footer_pick_urls      = function_exists( 'hu_get_site_footer_door_urls' ) ? hu_get_site_footer_door_urls() : [];
 	$footer_directory_urls = function_exists( 'hu_get_site_footer_directory_urls' )
 		? hu_get_site_footer_directory_urls()
 		: [ $about_url, $e3_url, $blog_url, $glossary_url, $imprint_url, $privacy_url ];
@@ -631,9 +625,9 @@ function nexus_get_seo_cockpit_sitewide_source_definitions() {
 				$cases_url,
 			],
 		],
-		// Wege und Verzeichnis kommen aus demselben Contract, den
-		// template-parts/site-footer.php rendert. Die Startseite zeigt die
-		// Wege nicht; auf den anderen Seiten entfaellt nur der eigene Weg.
+		// Tuerregister und Verzeichnis kommen aus demselben Contract, den
+		// template-parts/site-footer.php rendert. Das Register steht auf jeder
+		// Seite ausser /kontakt/; der eigene Weg ist dort markiert, nicht ausgeblendet.
 		'site_footer' => [
 			'key'   => 'site_footer',
 			'label' => 'Footer',

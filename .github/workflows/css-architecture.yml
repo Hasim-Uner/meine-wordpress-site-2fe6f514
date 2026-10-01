@@ -8,7 +8,9 @@ on:
       - 'blocksy-child/style.css'
       - 'scripts/audit-css-architecture.py'
       - 'scripts/audit-legacy-nx-css.py'
+      - 'scripts/audit-css-values.py'
       - 'scripts/baselines/legacy-nx-consumers.txt'
+      - 'scripts/baselines/css-values.tsv'
       - 'scripts/collapse-gutachten-token-mirror.py'
       - 'scripts/build-theme-dist.sh'
       - 'docs/architecture/CSS_ARCHITECTURE.md'
@@ -19,7 +21,9 @@ on:
       - 'blocksy-child/style.css'
       - 'scripts/audit-css-architecture.py'
       - 'scripts/audit-legacy-nx-css.py'
+      - 'scripts/audit-css-values.py'
       - 'scripts/baselines/legacy-nx-consumers.txt'
+      - 'scripts/baselines/css-values.tsv'
       - 'scripts/collapse-gutachten-token-mirror.py'
       - 'scripts/build-theme-dist.sh'
       - 'docs/architecture/CSS_ARCHITECTURE.md'
@@ -40,3 +44,6 @@ jobs:
 
       - name: Inventory legacy NX consumers
         run: python3 scripts/audit-legacy-nx-css.py
+
+      - name: Guard literal design values
+        run: python3 scripts/audit-css-values.py

@@ -2,26 +2,36 @@
 /**
  * Global site header.
  *
- * Die Standardvariante ist seit 2026-09 die Leiste aus dem Designsystem:
- * eine schlanke Zeile, Wortmarke links, Navigation rechts, eine Haarlinie
- * als Abschluss. Sie steht im Fluss (sticky) statt darueber (fixed) — eine
- * dauerhaft sichtbare fixierte Leiste zwaenge jede Route zu einem eigenen
+ * Die Leiste aus dem Designsystem: eine schlanke Zeile, Wortmarke links, eine
+ * Haarlinie als Abschluss. Sie steht im Fluss (sticky) statt darueber (fixed) —
+ * eine dauerhaft sichtbare fixierte Leiste zwaenge jede Route zu einem eigenen
  * Ausgleich oben, und genau daran haengen heute noch mehrere Stylesheets.
  * `body.nx-custom-header-active` setzt die beiden Hoehen-Tokens deshalb auf
  * 0; siehe system.css.
  *
- * Ersatzlos entfallen: das Vollflaechen-Sheet mit Routenbeschreibungen,
- * Gruppenspalten und Kontaktblock, der Statusstreifen neben der Wortmarke
- * und der Scanline-Strich. Das Sheet war eine zweite Startseite im Kopf —
- * drei Routen mit je zwei Zeilen Beschreibung, bevor die Seite darunter
- * ueberhaupt sprechen durfte. Die Beschreibungen stehen jetzt dort, wo
- * entschieden wird: in Abschnitt 01 der Startseite.
+ * Modus und Tuer entscheidet hu_funnel_context() (inc/funnel-doors.php), nicht
+ * dieses Template; der Fuss liest dieselbe Entscheidung:
  *
- * Blog- und Energy-Kontexte erreichen diese Datei nicht (siehe inc/header.php).
- * Der fruehere Growth-Audit-Sonderheader ist retired und entfernt.
+ * - voll:  Wortmarke, vier Wege, Haarlinie, Ergebnisse, Tuer, Menue. "Ueber
+ *          Hasim" steht nur im Klappblatt und im Fuss.
+ * - leser: Wortmarke, Artikelpfad (Wissen / Dossier), Tuer. Kein Hauptmenue.
+ *          Einzelbeitraege tragen ueber dieses Template keinen zweiten Kopf
+ *          mehr; blog-header.php ruft es auf. Die Klasse
+ *          `nexus-article-reader-header` bleibt als Haken fuer die
+ *          Geschwister-Selektoren der Artikel-Stylesheets und die Reader-
+ *          Skripte; sie traegt keine eigene Regel mehr.
+ * - fokus: Solar-Seite, eigene Leiste (siehe inc/header.php), folgt mit der
+ *          Solar-Strecke.
+ *
+ * Auf der Kontaktseite zeigt die Leiste keine Tuer: sie zeigt auf die Seite,
+ * auf der man schon steht. Der Contract behaelt den CTA unveraendert — er speist
+ * auch das gespeicherte WordPress-Menue (inc/menu-setup.php).
+ *
+ * Blog-Index und Archive laufen im Modus voll; Einzelbeitraege im Modus leser.
  *
  * Die data-track-Werte sind unveraendert uebernommen, damit die Zeitreihe
- * ueber den Umbau hinweg vergleichbar bleibt.
+ * ueber den Umbau hinweg vergleichbar bleibt. Neue Tueren tragen
+ * `nav_header_door_*` und `data-door`.
  *
  * @package Blocksy_Child
  */
@@ -31,15 +41,12 @@ if ( ! defined( 'ABSPATH' ) ) {
 }
 
 $brand_text = function_exists( 'hu_get_site_wordmark_text' ) ? hu_get_site_wordmark_text() : 'HAŞIM ÜNER';
-$routes     = function_exists( 'hu_get_commercial_route_map' ) ? hu_get_commercial_route_map() : [];
 $home_label = sprintf(
 	/* translators: %s: site or brand name. */
 	__( 'Startseite - %s', 'blocksy-child' ),
 	$brand_text
 );
-?>
 
-<?php
 $blatt_id        = 'leiste-blatt';
 $header_contract = function_exists( 'hu_get_site_header_navigation_contract' )
 	? hu_get_site_header_navigation_contract()
@@ -47,43 +54,26 @@ $header_contract = function_exists( 'hu_get_site_header_navigation_contract' )
 $route_items       = isset( $header_contract['routes'] ) && is_array( $header_contract['routes'] ) ? $header_contract['routes'] : [];
 $navigation_groups = isset( $header_contract['groups'] ) && is_array( $header_contract['groups'] ) ? $header_contract['groups'] : [];
 $meta              = isset( $header_contract['meta'] ) && is_array( $header_contract['meta'] ) ? $header_contract['meta'] : [];
-$project_url       = $routes['project_request'] ?? ( function_exists( 'hu_get_navigation_project_request_url' )
-	? hu_get_navigation_project_request_url()
-	: home_url( '/kontakt/' ) );
-$cta_item          = isset( $header_contract['cta'] ) && is_array( $header_contract['cta'] )
-	? $header_contract['cta']
-	: [
-		'label'       => __( 'Projekt anfragen', 'blocksy-child' ),
-		'short_label' => __( 'Anfragen', 'blocksy-child' ),
-		'url'         => $project_url,
-		'track'       => 'nav_header_project',
-		'category'    => 'lead_gen',
-		'section'     => 'header',
-	];
 
-$cta_url         = (string) ( $cta_item['url'] ?? $project_url );
-$cta_label       = (string) ( $cta_item['label'] ?? 'Projekt anfragen' );
-$cta_short_label = (string) ( $cta_item['short_label'] ?? $cta_label );
-
-/*
- * Auf der Kontaktseite entfaellt der Anfrage-Button: er zeigt auf die Seite,
- * auf der man schon steht. Ein Ausgang, der zurueck auf sich selbst fuehrt,
- * ist kein Angebot, sondern eine Sackgasse neben dem Formular.
- *
- * Der Contract behaelt den CTA unveraendert — er speist auch das gespeicherte
- * WordPress-Menue (inc/menu-setup.php). Ausgeblendet wird nur die Ausgabe.
- */
-$shows_cta = ! ( function_exists( 'nexus_is_contact_page' ) && nexus_is_contact_page() )
-	&& '' !== $cta_label;
+$funnel_context = function_exists( 'hu_funnel_context' )
+	? hu_funnel_context()
+	: [ 'mode' => 'voll', 'door' => 'projekt', 'route' => '' ];
+$funnel_doors   = function_exists( 'hu_funnel_doors' ) ? hu_funnel_doors() : [];
+$leiste_modus   = 'leser' === $funnel_context['mode'] ? 'leser' : 'voll';
+$funnel_door    = ( null !== $funnel_context['door'] && isset( $funnel_doors[ $funnel_context['door'] ] ) )
+	? $funnel_doors[ $funnel_context['door'] ]
+	: null;
 
 /*
  * Eine Liste fuer beide Ausgaben. Die Zeile zeigt sie waagerecht, das
- * Klappblatt senkrecht — dieselben Ziele in derselben Reihenfolge. Die
- * wechselnde Reihenfolge zwischen Kopf, Seite und Fuss war genau das,
- * was jeder Anordnung ihre Aussage genommen hat.
+ * Klappblatt senkrecht — dieselben Ziele in derselben Reihenfolge, das
+ * Blatt zusaetzlich mit den Punkten, die nicht in der Zeile stehen (`row`
+ * false). Die wechselnde Reihenfolge zwischen Kopf, Seite und Fuss war genau
+ * das, was jeder Anordnung ihre Aussage genommen hat.
  *
  * `current` ist ein aria-current-Wert: `page`, wenn der Link genau diese
  * Seite ist, `true`, wenn die Seite nur im Bereich des Punkts liegt.
+ * `beleg` markiert den ersten Punkt hinter der Haarlinie.
  */
 $leiste_links = [];
 $nav_items    = $route_items;
@@ -101,14 +91,69 @@ foreach ( $nav_items as $nav_item ) {
 		'current'  => in_array( $current, [ 'page', 'true' ], true ) ? $current : ( true === $current ? 'page' : '' ),
 		'track'    => (string) ( $nav_item['track'] ?? '' ),
 		'category' => (string) ( $nav_item['category'] ?? 'navigation' ),
+		'row'      => ! array_key_exists( 'row', $nav_item ) || ! empty( $nav_item['row'] ),
+		'beleg'    => 'group' === ( $nav_item['kind'] ?? '' ) && ! empty( $nav_item['row'] ),
 	];
 }
 
+$row_links = array_values(
+	array_filter(
+		$leiste_links,
+		static function ( $link ) {
+			return $link['row'];
+		}
+	)
+);
+
+/**
+ * Print one door: label, short label and amount.
+ *
+ * Bezeichnung und Kurztext liegen beide im Markup; CSS blendet je Breite
+ * einen aus (ausgeblendete Varianten zaehlen nicht zum Namen des Links). Ohne
+ * Betrag steht nur ein Feld.
+ *
+ * @param array<string, string> $door Door record from hu_funnel_doors().
+ * @return void
+ */
+$render_door = static function ( array $door ) {
+	?>
+	<a
+		class="tuer"
+		href="<?php echo esc_url( $door['url'] ); ?>"
+		data-door="<?php echo esc_attr( $door['key'] ); ?>"
+		data-track-action="<?php echo esc_attr( $door['track'] ); ?>"
+		data-track-category="lead_gen"
+		data-track-section="header"
+	><span class="lang"><?php echo esc_html( $door['label'] ); ?><i class="pf" aria-hidden="true">&rarr;</i></span><span class="kurz"><?php echo esc_html( $door['short'] ); ?></span><?php
+		if ( '' !== $door['amount'] ) :
+			?><span class="preis"><?php echo esc_html( $door['amount'] ); ?></span><?php
+		endif;
+	?></a>
+	<?php
+};
+
 $response_promise = function_exists( 'hu_response_promise' ) ? hu_response_promise( 'compact' ) : '';
 $leiste_location  = (string) ( $meta['location'] ?? '' );
+
+$reader_attributes = '';
+$reader_dossier    = null;
+
+if ( 'leser' === $leiste_modus && function_exists( 'hu_funnel_reader_dossier' ) ) {
+	$reader_slug       = (string) get_post_field( 'post_name', get_queried_object_id() );
+	$reader_dossier    = hu_funnel_reader_dossier( $reader_slug );
+	$primary_urls      = function_exists( 'nexus_get_primary_public_url_map' ) ? nexus_get_primary_public_url_map() : [];
+	$reader_blog_url   = $primary_urls['blog'] ?? home_url( '/blog/' );
+	$reader_attributes = ' data-article-system-v1 data-article-system="v2" data-reader-dossier="' . esc_attr( $reader_dossier['slug'] ) . '"';
+}
 ?>
 
-<header class="leiste" data-leiste role="banner">
+<header
+	class="leiste leiste--<?php echo esc_attr( $leiste_modus ); ?><?php echo null !== $reader_dossier ? ' nexus-article-reader-header' : ''; // raw-ok -- static class. ?>"
+	data-leiste
+	data-leiste-modus="<?php echo esc_attr( $leiste_modus ); ?>"
+	role="banner"
+	<?php echo $reader_attributes; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- built from static attribute names and an escaped slug. ?>
+>
 	<div class="blatt in" data-leiste-zeile>
 		<a
 			class="sig site-logo"
@@ -121,8 +166,61 @@ $leiste_location  = (string) ( $meta['location'] ?? '' );
 			data-track-section="header"
 		><?php echo esc_html( $brand_text ); ?><i aria-hidden="true">.</i></a>
 
+		<?php if ( 'leser' === $leiste_modus && null !== $reader_dossier ) : ?>
+			<nav class="pfad" aria-label="<?php esc_attr_e( 'Artikelpfad', 'blocksy-child' ); ?>">
+				<a href="<?php echo esc_url( $reader_blog_url ); ?>" data-track-action="article_reader_back_blog" data-track-category="navigation" data-track-section="article_reader_header"><?php esc_html_e( 'Wissen', 'blocksy-child' ); ?></a>
+				<span aria-hidden="true">/</span>
+				<a href="<?php echo esc_url( $reader_dossier['url'] ); ?>" data-track-action="article_reader_open_dossier" data-track-category="navigation" data-track-section="article_reader_header"><?php echo esc_html( $reader_dossier['label'] ); ?></a>
+			</nav>
+		<?php endif; ?>
+
 		<div class="rechts">
-			<nav aria-label="<?php esc_attr_e( 'Hauptnavigation', 'blocksy-child' ); ?>">
+			<?php if ( 'voll' === $leiste_modus ) : ?>
+				<nav aria-label="<?php esc_attr_e( 'Hauptnavigation', 'blocksy-child' ); ?>">
+					<?php foreach ( $row_links as $leiste_link ) : ?>
+						<a
+							<?php echo $leiste_link['beleg'] ? ' class="beleg"' : ''; // raw-ok -- static attribute. ?>
+							href="<?php echo esc_url( $leiste_link['url'] ); ?>"
+							<?php echo '' !== $leiste_link['current'] ? ' aria-current="' . esc_attr( $leiste_link['current'] ) . '"' : ''; ?>
+							data-track-action="<?php echo esc_attr( $leiste_link['track'] ); ?>"
+							data-track-category="<?php echo esc_attr( $leiste_link['category'] ); ?>"
+							data-track-section="header"
+						><?php echo esc_html( $leiste_link['label'] ); ?></a>
+					<?php endforeach; ?>
+				</nav>
+			<?php endif; ?>
+
+			<?php
+			if ( null !== $funnel_door ) {
+				$render_door( $funnel_door );
+			}
+			?>
+
+			<?php if ( 'voll' === $leiste_modus ) : ?>
+				<button
+					type="button"
+					class="klappe"
+					data-leiste-klappe
+					aria-expanded="false"
+					aria-controls="<?php echo esc_attr( $blatt_id ); ?>"
+					data-track-action="nav_menu_toggle"
+					data-track-category="navigation"
+					data-track-section="header"
+				>
+					<span
+						data-leiste-wort
+						data-wort-auf="<?php esc_attr_e( 'Menü', 'blocksy-child' ); ?>"
+						data-wort-zu="<?php esc_attr_e( 'Schließen', 'blocksy-child' ); ?>"
+					><?php esc_html_e( 'Menü', 'blocksy-child' ); ?></span>
+					<span class="balken" aria-hidden="true"></span>
+				</button>
+			<?php endif; ?>
+		</div>
+	</div>
+
+	<?php if ( 'voll' === $leiste_modus ) : ?>
+		<div class="blatt blatt-klapp" id="<?php echo esc_attr( $blatt_id ); ?>" data-leiste-blatt>
+			<nav aria-label="<?php esc_attr_e( 'Navigation', 'blocksy-child' ); ?>">
 				<?php foreach ( $leiste_links as $leiste_link ) : ?>
 					<a
 						href="<?php echo esc_url( $leiste_link['url'] ); ?>"
@@ -134,84 +232,41 @@ $leiste_location  = (string) ( $meta['location'] ?? '' );
 				<?php endforeach; ?>
 			</nav>
 
-			<?php if ( $shows_cta ) : ?>
-				<a
-					class="tun"
-					href="<?php echo esc_url( $cta_url ); ?>"
-					data-track-action="<?php echo esc_attr( (string) ( $cta_item['track'] ?? 'nav_header_project' ) ); ?>"
-					data-track-category="<?php echo esc_attr( (string) ( $cta_item['category'] ?? 'lead_gen' ) ); ?>"
-					data-track-section="<?php echo esc_attr( (string) ( $cta_item['section'] ?? 'header' ) ); ?>"
-				><?php
-					/*
-					 * Unter 1081 px steht der Button weiter in der Zeile, damit
-					 * die Anfrage auf dem Handy nicht erst hinter "Menü" liegt;
-					 * auf schmalen Schirmen mit der Kurzform. Ausgeblendete
-					 * Varianten (display:none) zaehlen nicht zum Namen des Links.
-					 */
-					if ( $cta_short_label !== $cta_label ) :
-						?><span class="tun-lang"><?php echo esc_html( $cta_label ); ?></span><span class="tun-kurz"><?php echo esc_html( $cta_short_label ); ?></span><?php
-					else :
-						echo esc_html( $cta_label );
-					endif;
-				?></a>
-			<?php endif; ?>
+			<?php
+			if ( null !== $funnel_door ) {
+				$render_door( $funnel_door );
+			}
+			?>
 
-			<button
-				type="button"
-				class="klappe"
-				data-leiste-klappe
-				aria-expanded="false"
-				aria-controls="<?php echo esc_attr( $blatt_id ); ?>"
-				data-track-action="nav_menu_toggle"
-				data-track-category="navigation"
-				data-track-section="header"
-			>
-				<span
-					data-leiste-wort
-					data-wort-auf="<?php esc_attr_e( 'Menü', 'blocksy-child' ); ?>"
-					data-wort-zu="<?php esc_attr_e( 'Schließen', 'blocksy-child' ); ?>"
-				><?php esc_html_e( 'Menü', 'blocksy-child' ); ?></span>
-				<span class="balken" aria-hidden="true"></span>
-			</button>
-		</div>
-	</div>
-
-	<div class="blatt blatt-klapp" id="<?php echo esc_attr( $blatt_id ); ?>" data-leiste-blatt>
-		<nav aria-label="<?php esc_attr_e( 'Navigation', 'blocksy-child' ); ?>">
-			<?php foreach ( $leiste_links as $leiste_link ) : ?>
-				<a
-					href="<?php echo esc_url( $leiste_link['url'] ); ?>"
-					<?php echo '' !== $leiste_link['current'] ? ' aria-current="' . esc_attr( $leiste_link['current'] ) . '"' : ''; ?>
-					data-track-action="<?php echo esc_attr( $leiste_link['track'] ); ?>"
-					data-track-category="<?php echo esc_attr( $leiste_link['category'] ); ?>"
-					data-track-section="header"
-				><?php echo esc_html( $leiste_link['label'] ); ?></a>
-			<?php endforeach; ?>
-		</nav>
-
-		<?php if ( $shows_cta ) : ?>
-			<a
-				class="tun"
-				href="<?php echo esc_url( $cta_url ); ?>"
-				data-track-action="<?php echo esc_attr( (string) ( $cta_item['track'] ?? 'nav_header_project' ) ); ?>"
-				data-track-category="<?php echo esc_attr( (string) ( $cta_item['category'] ?? 'lead_gen' ) ); ?>"
-				data-track-section="header"
-			><?php echo esc_html( $cta_label ); ?> <span class="pf" aria-hidden="true">&rarr;</span></a>
-		<?php endif; ?>
-
-		<?php if ( '' !== $leiste_location || '' !== $response_promise ) : ?>
-			<span class="wo">
-				<?php
-				echo esc_html(
-					trim(
-						implode(
-							' · ',
-							array_filter( [ $leiste_location, $response_promise ] )
+			<?php if ( '' !== $leiste_location || '' !== $response_promise ) : ?>
+				<span class="wo">
+					<?php
+					echo esc_html(
+						trim(
+							implode(
+								' · ',
+								array_filter( [ $leiste_location, $response_promise ] )
+							)
 						)
-					)
-				);
-				?>
-			</span>
-		<?php endif; ?>
-	</div>
+					);
+					?>
+				</span>
+			<?php endif; ?>
+		</div>
+	<?php endif; ?>
 </header>
+
+<?php if ( null !== $reader_dossier ) : ?>
+	<?php
+	$reader_share_js_url  = get_stylesheet_directory_uri() . '/assets/js/article-reader-share.js';
+	$reader_share_js_path = get_stylesheet_directory() . '/assets/js/article-reader-share.js';
+	$reader_share_version = function_exists( 'hu_get_asset_version' ) ? hu_get_asset_version( $reader_share_js_path ) : wp_get_theme()->get( 'Version' );
+	?>
+	<script id="nexus-article-reader-share-loader" src="<?php echo esc_url( add_query_arg( 'ver', rawurlencode( (string) $reader_share_version ), $reader_share_js_url ) ); ?>"></script>
+
+	<style id="nexus-article-reader-dossier-label">
+		.nexus-article-reader-header ~ .nexus-single-container .nexus-article-hero--editorial::before {
+			content: <?php echo wp_json_encode( $reader_dossier['label'] ); ?>;
+		}
+	</style>
+<?php endif; ?>

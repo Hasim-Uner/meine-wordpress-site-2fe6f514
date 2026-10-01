@@ -356,7 +356,7 @@
   margin-top: var(--s5);
   padding: var(--s3);
   border: 1px solid var(--tinte);
-  border-radius: 3px;
+  border-radius: var(--r0);
   scroll-margin-top: calc(var(--leiste-h) + var(--s2));
 }
 

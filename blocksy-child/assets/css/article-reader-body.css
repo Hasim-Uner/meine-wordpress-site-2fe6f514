@@ -1,14 +1,20 @@
 /* ══════════════════════════════════════════════════════════════
    ARTICLE SYSTEM — Reader im gemeinsamen Gutachten-Mantel
 
-   Diese Datei wird aus article-reader-header.php nach wp_head() inline
-   ausgegeben und ist deshalb bewusst die letzte visuelle Schicht auf Single
-   Posts. Alte Single-/Editorial-CSS bleibt als funktionaler Fallback im Repo,
+   Diese Datei wird ueber inc/article-reader-toc.php eingebunden und ist
+   deshalb bewusst die letzte visuelle Schicht auf Single Posts. Alte Single-/Editorial-CSS bleibt als funktionaler Fallback im Repo,
    wird hier aber für alle Reader-Flächen neutralisiert.
 
    Keine eigene Palette, keine zweite Abstandsskala, keine Glassmorphism-Karten.
    modern-web-guidance: css-layout
    ══════════════════════════════════════════════════════════════ */
+
+/* Die Leiste im Lesemodus (system.css, site-header.php) traegt die Klasse
+   nexus-article-reader-header als Haken fuer die Geschwister-Selektoren dieser
+   Datei. Sie liegt wie der fruehere Lesekopf ueber den Reader-Ebenen. */
+.leiste.nexus-article-reader-header {
+	z-index: 60;
+}
 
 /* ── Dokumentfläche ─────────────────────────────────────────── */
 

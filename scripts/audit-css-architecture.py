@@ -6,6 +6,8 @@ routes are being migrated. This guard does not pretend they are one system.
 It protects the new Gutachten core instead:
 
 - system.css owns the canonical Gutachten tokens.
+- CORE_TOKENS (radius, type grades, door) are owned by system.css alone and are
+  never mirrored.
 - anfragestrecke.css is the only temporary value-identical mirror.
 - known scoped legacy collisions are frozen to exact selectors and values.
 - no other stylesheet may redefine those canonical token names.
@@ -58,6 +60,21 @@ CANONICAL_TOKENS = (
     "--t-mikro",
     "--t-norm",
     "--t-gross",
+)
+
+# Added after the Solar mirror was frozen. system.css owns them, no stylesheet
+# may redefine them, and anfragestrecke.css does not mirror them: it consumes
+# system.css, which loads on every route.
+CORE_TOKENS = (
+    "--r0",
+    "--r1",
+    "--grad-h1",
+    "--grad-h2",
+    "--grad-h2-leise",
+    "--grad-text",
+    "--grad-klein",
+    "--tuer-h",
+    "--tuer-schrift",
 )
 
 # These names predate system.css and are deliberately local to an older
@@ -117,7 +134,7 @@ def main() -> int:
         return 1
 
     owner = declarations(CANONICAL_OWNER)
-    missing = [token for token in CANONICAL_TOKENS if token not in owner]
+    missing = [token for token in (*CANONICAL_TOKENS, *CORE_TOKENS) if token not in owner]
     if missing:
         errors.append(
             "system.css is missing canonical tokens: " + ", ".join(missing)
@@ -125,6 +142,7 @@ def main() -> int:
 
     css_files = sorted(CSS_DIR.rglob("*.css"))
     canonical_set = set(CANONICAL_TOKENS)
+    core_set = set(CORE_TOKENS)
     redefiners: dict[Path, set[str]] = {}
     file_declarations: dict[Path, dict[str, set[str]]] = {}
 
@@ -133,12 +151,18 @@ def main() -> int:
         file_declarations[path] = defined_all
         if path == CANONICAL_OWNER:
             continue
-        defined = canonical_set.intersection(defined_all)
+        defined = (canonical_set | core_set).intersection(defined_all)
         if defined:
             redefiners[path] = defined
 
     for path, tokens in redefiners.items():
         if path in TRANSITIONAL_MIRRORS:
+            mirrored_core = tokens & core_set
+            if mirrored_core:
+                errors.append(
+                    f"{relative(path)} mirrors core tokens that system.css owns alone: "
+                    + ", ".join(sorted(mirrored_core))
+                )
             continue
 
         legacy = SCOPED_LEGACY_COLLISIONS.get(path)
