@@ -395,3 +395,81 @@ test('footer register: keyboard reaches the six doors in header order after the 
   expect(doors.map(([door]) => door)).toEqual(['projekt', 'tracking', 'aufgabe', 'marktcheck', 'analyse', 'sofort']);
   for (const [, outline] of doors) expect(outline).not.toBe('none');
 });
+
+// Focus mode (Solar page): wordmark and the ladder of the page, no main menu, not sticky, at most 56 px.
+const ladder = page => page.getByRole('navigation', { name: 'Einstiege auf dieser Seite' });
+
+for (const width of [768, 1024, 1280, 1440]) {
+  test(`solar focus ${width}: three steps with amounts, no menu, one row, not sticky`, async ({ page }) => {
+    await open(page, 'solar', { width, height: 800 });
+    await expect(leiste(page)).toHaveAttribute('data-leiste-modus', 'fokus');
+    await expect(klappe(page)).toHaveCount(0);
+    await expect(rowNav(page)).toHaveCount(0);
+    await expect(ladder(page).getByRole('link')).toHaveText([/^Marktcheck 0 €$/, /^Analyse \d[\d.]* €$/, /^Sofortkontakt \d[\d.]* €$/]);
+    expect(await ladder(page).getByRole('link').evaluateAll(els => els.map(el => el.getAttribute('href')))).toEqual(['#marktcheck', '#einstieg', '#einstieg']);
+    const tops = await ladder(page).getByRole('link').evaluateAll(els => els.map(el => Math.round(el.getBoundingClientRect().top)));
+    expect(new Set(tops).size).toBe(1);
+    expect(await rowHeight(page)).toBeLessThanOrEqual(56);
+    expect(await leiste(page).evaluate(el => getComputedStyle(el).position)).toBe('static');
+    expect(await leiste(page).evaluate(el => getComputedStyle(el).borderBottomWidth)).toBe('1px');
+    expect(await noHorizontalScroll(page)).toBe(true);
+  });
+}
+
+for (const width of [360, 390, 414, 560]) {
+  test(`solar focus ${width}: only Sofortkontakt stays, in one row with the wordmark`, async ({ page }) => {
+    await open(page, 'solar', { width, height: 800 });
+    await expect(ladder(page).getByRole('link', { name: /^Sofortkontakt/ })).toBeVisible();
+    await expect(ladder(page).getByRole('link', { name: /^Marktcheck/ })).toBeHidden();
+    await expect(ladder(page).getByRole('link', { name: /^Analyse/ })).toBeHidden();
+    await expect(page.locator('.leiste .leiter .trenn:visible')).toHaveCount(0);
+    const [sig, link] = await Promise.all([page.locator('.leiste .sig'), ladder(page).getByRole('link', { name: /^Sofortkontakt/ })].map(l => l.evaluate(el => {
+      const r = el.getBoundingClientRect();
+      return { mid: r.top + r.height / 2, left: r.left, right: r.right };
+    })));
+    expect(Math.abs(sig.mid - link.mid)).toBeLessThanOrEqual(6);
+    expect(sig.right).toBeLessThanOrEqual(link.left);
+    expect(await rowHeight(page)).toBeLessThanOrEqual(56);
+    expect(await noHorizontalScroll(page)).toBe(true);
+  });
+}
+
+test('solar focus: the footer register marks the Energy way and uses the same anchors', async ({ page }) => {
+  await open(page, 'solar', { width: 1280, height: 900 });
+  expect(await register(page).locator('.weg.ist-hier').getByRole('link').evaluateAll(els => els.map(el => el.getAttribute('href')))).toEqual(await ladder(page).getByRole('link').evaluateAll(els => els.map(el => el.getAttribute('href'))));
+});
+
+// White-Label landing page: its own header (page anchors) with the Test-Sprint door.
+const wlDoor = page => page.locator('.wl-site-header .rechts > .tuer');
+
+for (const width of [1081, 1280, 1440]) {
+  test(`white-label header ${width}: wordmark, five anchors and the door in one row`, async ({ page }) => {
+    await open(page, 'whitelabel:own', { width, height: 800 });
+    await expect(page.getByRole('navigation', { name: 'Navigation auf dieser Seite' }).getByRole('link')).toHaveText(['Leistungen', 'Belege', 'Preise', 'Ablauf', 'Fragen']);
+    await expect(wlDoor(page)).toBeVisible();
+    await expect(wlDoor(page)).toHaveAccessibleName(/^Test-Sprint anfragen \d[\d.]* €$/);
+    await expect(wlDoor(page)).toHaveAttribute('data-track-action', 'cta_whitelabel_header_task_brief');
+    const tops = await page.locator('.wl-site-header .rechts > nav a, .wl-site-header .rechts > .tuer').evaluateAll(els => els.map(el => Math.round(el.getBoundingClientRect().top + el.getBoundingClientRect().height / 2)));
+    expect(Math.max(...tops) - Math.min(...tops)).toBeLessThanOrEqual(8);
+    expect(await page.locator('.wl-site-header .in').evaluate(el => el.getBoundingClientRect().height)).toBeLessThanOrEqual(60);
+    expect(await noHorizontalScroll(page)).toBe(true);
+  });
+}
+
+for (const width of [768, 1024, 1080]) {
+  test(`white-label header ${width}: anchors fold away, the door stays`, async ({ page }) => {
+    await open(page, 'whitelabel:own', { width, height: 800 });
+    await expect(page.getByRole('navigation', { name: 'Navigation auf dieser Seite' })).toBeHidden();
+    await expect(wlDoor(page)).toBeVisible();
+    expect(await noHorizontalScroll(page)).toBe(true);
+  });
+}
+
+for (const width of [360, 390, 767]) {
+  test(`white-label header ${width}: the sticky bar carries the request, the header keeps only the wordmark`, async ({ page }) => {
+    await open(page, 'whitelabel:own', { width, height: 800 });
+    await expect(wlDoor(page)).toBeHidden();
+    await expect(page.locator('.wl-site-header .sig')).toBeVisible();
+    expect(await noHorizontalScroll(page)).toBe(true);
+  });
+}

@@ -143,6 +143,58 @@ function hu_funnel_doors() {
 }
 
 /**
+ * Render one door as the link of a header: label, short label and amount.
+ *
+ * Eine Ausgabe fuer jeden Kopf, der eine Tuer traegt (site-header.php und der
+ * Kopf der White-Label-Seite), damit Markup, Klassen und data-door nicht
+ * auseinanderlaufen. Bezeichnung und Kurztext liegen beide im Markup; CSS
+ * blendet je Breite einen aus (ausgeblendete Varianten zaehlen nicht zum Namen
+ * des Links). Ohne Betrag steht nur ein Feld.
+ *
+ * `track` und `section` ueberschreiben die Tracking-Werte der Tuer, wenn ein
+ * Kopf seine bestehende Action behalten muss (White-Label:
+ * cta_whitelabel_header_task_brief). `href` ersetzt das Ziel; `attributes`
+ * haengt weitere Attribute an (Name => Wert, leerer Wert = boolesches Attribut).
+ * Alle Werte werden hier escaped.
+ *
+ * @param array<string, string>               $door Door record from hu_funnel_doors().
+ * @param array<string, string|array<string>> $args Optional: track, section, href, attributes.
+ * @return string
+ */
+function hu_funnel_door_link( array $door, array $args = [] ) {
+	$args = array_merge(
+		[
+			'track'      => $door['track'],
+			'section'    => 'header',
+			'href'       => $door['url'],
+			'attributes' => [],
+		],
+		$args
+	);
+
+	$extra = '';
+
+	foreach ( (array) $args['attributes'] as $name => $value ) {
+		$extra .= ' ' . sanitize_key( (string) $name ) . ( '' !== (string) $value ? '="' . esc_attr( (string) $value ) . '"' : '' );
+	}
+
+	$html  = '<a class="tuer" href="' . esc_url( (string) $args['href'] ) . '"';
+	$html .= ' data-door="' . esc_attr( $door['key'] ) . '"';
+	$html .= $extra;
+	$html .= ' data-track-action="' . esc_attr( (string) $args['track'] ) . '"';
+	$html .= ' data-track-category="lead_gen"';
+	$html .= ' data-track-section="' . esc_attr( (string) $args['section'] ) . '">';
+	$html .= '<span class="lang">' . esc_html( $door['label'] ) . '<i class="pf" aria-hidden="true">&rarr;</i></span>';
+	$html .= '<span class="kurz">' . esc_html( $door['short'] ) . '</span>';
+
+	if ( '' !== $door['amount'] ) {
+		$html .= '<span class="preis">' . esc_html( $door['amount'] ) . '</span>';
+	}
+
+	return $html . '</a>';
+}
+
+/**
  * Return the slugs of the portal assessments (Checkfox, Aroundhome, Wattfox, DAA).
  *
  * Wer eine dieser Einordnungen liest, kauft heute Portal-Anfragen: der Kopf

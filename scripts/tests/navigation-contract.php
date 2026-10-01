@@ -241,10 +241,6 @@ foreach ( nav_test_contexts() as $context => $definition ) {
 		nav_check( [ '#marktcheck', '#einstieg', '#einstieg' ] === array_slice( array_column( $register, 'href' ), 3 ), 'solar: Energy doors point at anchors of the page' );
 	}
 
-	if ( false === ( $definition['render'] ?? true ) ) {
-		continue;
-	}
-
 	$header_html = nav_test_render( 'template-parts/site-header.php' );
 	$row         = nav_links( $header_html, '//nav[@aria-label="Hauptnavigation"]//a' );
 	$sheet       = nav_links( $header_html, '//div[@data-leiste-blatt]//nav//a' );
@@ -276,10 +272,22 @@ foreach ( nav_test_contexts() as $context => $definition ) {
 				&& 1 === $header_x->query( '//*[@id="' . $toggle->getAttribute( 'aria-controls' ) . '"]' )->length,
 			"{$context}: menu button controls an existing sheet"
 		);
+	} elseif ( 'fokus' === $mode ) {
+		$ladder = nav_links( $header_html, '//nav[@class="leiter"]//a' );
+		nav_check( [] === $row && [] === $sheet && 0 === $header_x->query( '//button[@data-leiste-klappe]' )->length, "{$context}: focus mode has no main menu, sheet or menu button" );
+		nav_check( [ 'marktcheck', 'analyse', 'sofort' ] === array_column( $ladder, 'door' ), "{$context}: focus ladder is Marktcheck, Analyse, Sofortkontakt" );
+		nav_check( [ '#marktcheck', '#einstieg', '#einstieg' ] === array_column( $ladder, 'href' ), "{$context}: focus ladder points at anchors of the page" );
+		nav_check( [ 'nav_header_door_marktcheck', 'nav_header_door_analyse', 'nav_header_door_sofortkontakt' ] === array_column( $ladder, 'track' ), "{$context}: focus ladder keeps the nav_header_door_* actions" );
+		nav_check(
+			[ 'Marktcheck ' . $door_spec['marktcheck'][2], 'Analyse ' . $door_spec['analyse'][2], 'Sofortkontakt ' . $door_spec['sofort'][2] ] === array_column( $ladder, 'text' ),
+			"{$context}: focus ladder shows each step with its canon amount"
+		);
 	} else {
 		nav_check( [] === $row && [] === $sheet && 0 === $header_x->query( '//button[@data-leiste-klappe]' )->length, "{$context}: reader mode has no main menu, sheet or menu button" );
 		nav_check( [ 'Wissen' ] === [ $trail[0]['text'] ?? '' ] && [ 'article_reader_back_blog', 'article_reader_open_dossier' ] === array_column( $trail, 'track' ), "{$context}: article path Wissen / dossier keeps its tracking" );
 		nav_check( $header_el && false !== strpos( $header_el->getAttribute( 'class' ), 'nexus-article-reader-header' ), "{$context}: reader hook class stays for the article stylesheets" );
+		// Das Dossier-Etikett steht als CSS-String im Beitrag: Umlaute roh, kein JSON-Escape (\u00f6 ist in CSS kein Escape).
+		nav_check( 1 === preg_match( '/content: "([^"]*)";/', $header_html, $label_match ) && false === strpos( $label_match[1], '\\u' ) && html_entity_decode( strip_tags( $trail[1]['text'] ?? '' ) ) === $label_match[1], "{$context}: dossier label is a plain CSS string equal to the path label" );
 	}
 
 	// One door per context, the same one in the row and in the sheet.
@@ -348,6 +356,29 @@ foreach ( nav_test_contexts() as $context => $definition ) {
 	nav_check( [] === $generic_to_specialist, "{$context}: plain \"Tracking\" never points at the specialist page" );
 }
 
+// --- 2b. White-Label landing page keeps its own header and its tracking, carries the same door ----
+
+nav_test_use_context( 'whitelabel' );
+ob_start();
+get_template_part( 'template-parts/whitelabel-header', null, [
+	'home_url'   => home_url( '/' ),
+	'brand'      => 'HAŞIM ÜNER',
+	'home_label' => 'Startseite',
+	'form_url'   => home_url( '/whitelabel-retainer/?case=aufgabe#aufgabe' ),
+	'nav'        => [ [ '#lieferfelder', 'Leistungen', 'nav_whitelabel_services' ], [ '#faq', 'Fragen', 'nav_whitelabel_faq' ] ],
+] );
+$wl_header = (string) ob_get_clean();
+$wl_x      = nav_dom( $wl_header );
+$wl_door   = $wl_x->query( '//a[contains(@class,"tuer")]' )->item( 0 );
+nav_check( null !== $wl_door && 'aufgabe' === $wl_door->getAttribute( 'data-door' ), 'white-label header carries the Test-Sprint door with data-door' );
+nav_check( null !== $wl_door && 'cta_whitelabel_header_task_brief' === $wl_door->getAttribute( 'data-track-action' ) && 'whitelabel_header' === $wl_door->getAttribute( 'data-track-section' ), 'white-label door keeps its existing tracking action' );
+nav_check( null !== $wl_door && $wl_door->hasAttribute( 'data-wl-form-link' ), 'white-label door keeps data-wl-form-link for whitelabel.js' );
+nav_check( null !== $wl_door && str_ends_with( $wl_door->getAttribute( 'href' ), '#aufgabe' ), 'white-label door targets the form anchor' );
+nav_check( null !== $wl_door && $door_spec['aufgabe'][2] === trim( (string) $wl_x->query( './/span[@class="preis"]', $wl_door )->item( 0 )->textContent ), 'white-label door amount comes from the canon' );
+nav_check( [ 'nav_whitelabel_services', 'nav_whitelabel_faq' ] === array_column( nav_links( $wl_header, '//nav[@data-wl-anker]//a' ), 'track' ), 'white-label page anchors keep their nav_whitelabel_* actions' );
+nav_check( 'nav_whitelabel_home' === ( nav_links( $wl_header, '//a[contains(@class,"sig")]' )[0]['track'] ?? '' ), 'white-label wordmark keeps nav_whitelabel_home' );
+nav_check( false !== strpos( (string) file_get_contents( get_stylesheet_directory() . '/page-whitelabel-retainer.php' ), "'template-parts/whitelabel-header'" ), 'white-label template renders its header through the partial' );
+
 // --- 3. 404 recovery links ----------------------------------------------------
 
 nav_test_use_context( 'not_found' );
@@ -355,6 +386,15 @@ $not_found = nav_links( nav_test_render( '404.php' ), '//div[contains(@class,"ne
 nav_check( [ 'Startseite', 'Projekte', 'Tracking', 'White-Label', 'Solar & Wärmepumpe', 'Blog' ] === array_column( $not_found, 'text' ), '404: recovery links mirror the header routes' );
 nav_check( ! preg_grep( '/marktcheck/i', array_column( $not_found, 'href' ) ), '404: no sitewide Marktcheck link' );
 nav_check( count( $not_found ) === count( array_unique( array_column( $not_found, 'track' ) ) ), '404: tracking actions are unique' );
+
+// Die Solar-Seite hat genau einen Kopf: die Leiste im Modus fokus. Die frueher im Template
+// stehende Kopfzeile (.strecke-kopfleiste) wuerde sie verdoppeln.
+$solar_template = (string) file_get_contents( get_stylesheet_directory() . '/page-solar-waermepumpen-leadgenerierung.php' );
+nav_check( false === strpos( $solar_template, '<header' ) && false === strpos( $solar_template, 'strecke-kopfleiste' ), 'solar: the page template carries no header of its own' );
+nav_check( false === strpos( (string) file_get_contents( get_stylesheet_directory() . '/assets/css/anfragestrecke.css' ), 'strecke-kopfleiste' ), 'solar: no leftover Kopfleiste styles' );
+// Am Render-Ergebnis: Kopf der Harness (Leiste, Modus fokus) plus das echte Seitentemplate.
+$solar_page = (string) shell_exec( 'php ' . escapeshellarg( __DIR__ . '/render-page.php' ) . ' solar page-solar-waermepumpen-leadgenerierung.php assets/css/system.css 2>/dev/null' );
+nav_check( '' !== $solar_page && 1 === preg_match_all( '/<header\b[^>]*\bclass="leiste\b/s', $solar_page ) && false === strpos( $solar_page, 'strecke-kopfleiste' ), 'solar: the rendered page has exactly one header, the bar in mode fokus' );
 
 echo $failures ? "\n{$failures} navigation invariant(s) failed.\n" : "\nNavigation contract ok.\n";
 exit( $failures ? 1 : 0 );

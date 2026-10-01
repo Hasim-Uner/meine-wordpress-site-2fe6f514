@@ -18,13 +18,13 @@
    und Button; die fuenf Anker blendet system.css unter 1081 px aus. */
 
 @media (max-width: 1080px) {
-  .wl-site-header .rechts > .tun { display: inline-flex; }
+  .wl-site-header .rechts > .tuer { display: inline-flex; }
 }
 
 /* Unter 768 px traegt der Button am unteren Rand den Weg zum Formular;
    zwei gleiche Buttons auf einem Handybildschirm waeren einer zu viel. */
 @media (max-width: 767px) {
-  .wl-site-header .rechts > .tun { display: none; }
+  .wl-site-header .rechts > .tuer { display: none; }
 }
 
 /* Die globale Sprungmarke fuehrt auf #main; sie bleibt die einzige. */

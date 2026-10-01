@@ -968,7 +968,7 @@ body.nx-custom-header-active {
 }
 
 @media (max-width: 1080px) {
-  .leiste .rechts > nav,
+  .leiste .rechts > nav:not(.leiter),
   .leiste .rechts > .tun { display: none; }
   .leiste[data-leiste-bereit] .klappe { display: inline-flex; }
 
@@ -1106,6 +1106,58 @@ body.nx-custom-header-active {
 .leiste .pfad a:first-child { flex: none; }
 .leiste .pfad a:hover { color: var(--tinte); }
 
+/* ── Fokusmodus: die Leiter der Seite statt Hauptmenue ──────────
+   Solar-Seite. Wortmarke links, rechts drei Textlinks mit Betrag auf die
+   Anker der Seite. Nicht sticky (die Kapitel-Leiste der Seite ist es),
+   hoechstens 56 px, Haarlinie unten wie bei jeder Leiste. Unter 561 px nur
+   der letzte Eintrag. */
+
+.leiste--fokus {
+  position: static;
+}
+
+.leiste--fokus .in {
+  max-height: 56px;
+  justify-content: space-between;
+}
+
+.leiste .leiter,
+.leiste .rechts > .leiter {
+  display: flex;
+  align-items: center;
+  gap: var(--s2);
+}
+
+/* Die Regeln fuer Hauptnavigations-Links (.leiste nav a) gelten auch hier;
+   die Leiter ist Mono in Normalschrift mit Betrag in --tinte, ohne
+   Hover-Linie, und bleibt auch unter 1081 px in der Zeile. */
+.leiste .leiter a {
+  padding-block: var(--s1);
+  font-family: var(--mono);
+  font-size: var(--mono-m);
+  letter-spacing: 0.06em;
+  text-transform: none;
+  color: var(--grau);
+  white-space: nowrap;
+}
+
+.leiste .leiter a::after { display: none; }
+
+.leiste .leiter a b {
+  font-weight: 500;
+  color: var(--tinte);
+  font-variant-numeric: tabular-nums;
+}
+
+.leiste .leiter a:hover,
+.leiste .leiter a:hover b { color: var(--stempel); }
+
+.leiste .leiter .trenn {
+  width: 1px;
+  height: 14px;
+  background: var(--haar);
+}
+
 /* ── Tuer im Klappblatt: volle Breite, beide Felder ─────────── */
 
 .leiste .blatt-klapp .tuer {
@@ -1134,6 +1186,8 @@ body.nx-custom-header-active {
 }
 
 @media (max-width: 560px) {
+  .leiste .leiter .opt,
+  .leiste .leiter .trenn { display: none; }
   .leiste .rechts > .tuer .lang { display: none; }
   .leiste .rechts > .tuer .kurz { display: flex; }
   .leiste .rechts > .tuer span { padding-inline: 0.6rem; }

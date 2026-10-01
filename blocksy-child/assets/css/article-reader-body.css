@@ -322,7 +322,9 @@
 .nexus-article-reader-header ~ .nexus-single-container .nexus-article-context__link--primary {
 	border-color: var(--stempel);
 	background: var(--stempel);
-	color: var(--papier);
+	/* single-editorial.css setzt den Text dieses Knopfes mit !important dunkel
+	   (für den früheren hellen Akzent); auf dem Stempel ist er Papier. */
+	color: var(--papier) !important;
 }
 
 .nexus-article-reader-header ~ .nexus-single-container .nexus-article-context__link:hover,
@@ -336,7 +338,7 @@
 .nexus-article-reader-header ~ .nexus-single-container .nexus-article-context__link--primary:hover,
 .nexus-article-reader-header ~ .nexus-single-container .nexus-article-context__link--primary:focus-visible {
 	background: transparent;
-	color: var(--stempel);
+	color: var(--stempel) !important;
 }
 
 /* ── Lesespalte + Inhaltsverzeichnis ─────────────────────────── */
@@ -487,7 +489,7 @@
 	font-weight: 650;
 }
 
-.nexus-article-reader-header ~ .nexus-single-container .nexus-article-content a:not(.nexus-btn):not(.nexus-inline-cta__btn):not(.callout-cta) {
+.nexus-article-reader-header ~ .nexus-single-container .nexus-article-content a:not(.nexus-btn):not(.nexus-inline-cta__btn):not(.callout-cta):not(.hu-checkfox__button):not(.hu-aroundhome__button):not(.hu-cpo-calculator__cta) {
 	color: var(--tinte);
 	text-decoration-line: underline;
 	text-decoration-color: var(--stempel);
@@ -495,8 +497,8 @@
 	text-underline-offset: 0.18em;
 }
 
-.nexus-article-reader-header ~ .nexus-single-container .nexus-article-content a:not(.nexus-btn):not(.nexus-inline-cta__btn):not(.callout-cta):hover,
-.nexus-article-reader-header ~ .nexus-single-container .nexus-article-content a:not(.nexus-btn):not(.nexus-inline-cta__btn):not(.callout-cta):focus-visible {
+.nexus-article-reader-header ~ .nexus-single-container .nexus-article-content a:not(.nexus-btn):not(.nexus-inline-cta__btn):not(.callout-cta):not(.hu-checkfox__button):not(.hu-aroundhome__button):not(.hu-cpo-calculator__cta):hover,
+.nexus-article-reader-header ~ .nexus-single-container .nexus-article-content a:not(.nexus-btn):not(.nexus-inline-cta__btn):not(.callout-cta):not(.hu-checkfox__button):not(.hu-aroundhome__button):not(.hu-cpo-calculator__cta):focus-visible {
 	color: var(--stempel);
 }
 

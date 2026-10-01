@@ -46,7 +46,10 @@ Abschnitt anzuhängen; der Verlauf gehört in Commit-Nachrichten.
   Artikelpfad „Wissen / Dossier“, die Tür, kein Hauptmenü; der frühere
   Lesekopf (`article-reader-header.php`, `blog-header.css`) ist entfallen, die
   Klasse `nexus-article-reader-header` bleibt als Haken für die Artikel-
-  Stylesheets. Die Tür ist kontextabhängig (Matrix in
+  Stylesheets. Modus `fokus` (Solar-Seite, `inc/header.php` rendert die Leiste
+  dort): Wortmarke und die Leiter Marktcheck · Analyse · Sofortkontakt mit
+  Betrag auf die Anker der Seite, nicht sticky, höchstens 56 px, unter 561 px
+  nur Sofortkontakt. Die Tür ist kontextabhängig (Matrix in
   `docs/architecture/CONVERSION_ROUTING.md`): Projekt anfragen (ohne Betrag),
   Tracking anfragen („ab“ Messung-Setup), Test-Sprint anfragen, Marktcheck
   (kostenlos) oder Sofortkontakt; Beträge kommen aus dem Kanon. Quelle der
@@ -64,7 +67,9 @@ Abschnitt anzuhängen; der Verlauf gehört in Commit-Nachrichten.
   `HU_FEATURE_SOLAR_DOORS` (Vorgabe `false`, `inc/feature-flags.php`) hält die
   Türen Analyse und Sofortkontakt bis zur Solar-Strecke auf `#einstieg`.
   `/whitelabel-retainer/` hat eine eigene Seitennavigation aus derselben
-  `.leiste`, ohne Klappblatt und ohne Tür aus `hu_funnel_doors()`.
+  `.leiste` (`template-parts/whitelabel-header.php`), ohne Klappblatt, mit der
+  Tür „Test-Sprint anfragen“ aus `hu_funnel_doors()` (Action
+  `cta_whitelabel_header_task_brief` bleibt, `data-door="aufgabe"`).
   Auf der Startseite (über `startseite-strecke.css/.js`) ist „Projekte“ nur
   aktiv, solange `#angebote` im Blick ist (`aria-current="location"`), ohne
   JavaScript neutral; die Wortmarke trägt `aria-current="page"`. Der
@@ -257,6 +262,10 @@ Abschnitt anzuhängen; der Verlauf gehört in Commit-Nachrichten.
   (`cta_package_to_measurement`). Seitenweit verlinkt
   im Fuß als „Server-Side Tracking“ (Route `tracking_b2b`). Beide
   Tracking-Seiten gelten als ein Kontext (`hu_is_tracking_route_context()`).
+  Seit 2026-10-01 steht die Route auf `system.css`: ein Stylesheet
+  (`server-side-tracking.css`) statt fünf Schichten, kein
+  `design-system.css`, keine `--sst-*`/`--vp-*`-Tokens, kein Orange außer
+  `--stempel`; die Sticky-CTA-Leiste ist eine `.tafel`.
 - **`/wordpress-agentur-hannover/`** (`page-wordpress-agentur.php`):
   Entscheidungsseite „Agentur oder direkte Umsetzung“ mit den Ankern
   `#entscheidung`, `#technik`, `#zusammenarbeit`, `#belege`, `#hannover`, `#faq`,
@@ -293,11 +302,14 @@ Abschnitt anzuhängen; der Verlauf gehört in Commit-Nachrichten.
   in Balken mit gemeinsamem Maßstab. Der Messschrieb zeigt ausschließlich
   dokumentierte CPL-Bandbreiten nach Projektphase, ohne Monatsmesskurve;
   Hover und Tastaturfokus auf den Fallphasen heben die passenden Stufen hervor.
-  Eine 56-px-Kopfleiste im Dokumentfluss verlinkt Startseite und Marktcheck;
-  der globale Header bleibt auf dieser Route serverseitig unterdrückt. Der
+  Den Kopf trägt die Leiste im Modus `fokus` (Wortmarke und Leiter
+  Marktcheck · Analyse · Sofortkontakt auf die Anker der Seite); die Seite
+  selbst hat keine Kopfzeile mehr. Der
   Marktcheck hat eine harte Papier-/Tafel-Kante ohne Verlauf. `solar-events.js`
   zählt CTA-Klicks und Formularereignisse der drei Türen über anonyme UTC-
-  Tageszähler (`nexus/v1/solar-events`); Details in `PRIVACY.md`.
+  Tageszähler (`nexus/v1/solar-events`); Details in `PRIVACY.md`. Die Türen
+  der Leiste liest er über `data-door` (`sofort` zählt als `sofortkontakt`)
+  unter den Ereignissen `nav_header_door_*`.
 - **Energie-Cluster** (`.hu-intercept`, Pfade in
   `hu_get_solar_seo_subpage_paths()`): `/solar-leads-kaufen-alternative/`,
   `/waermepumpen-leads/`, `/b2b-solar-leads/`,
@@ -309,7 +321,9 @@ Abschnitt anzuhängen; der Verlauf gehört in Commit-Nachrichten.
 - **Nachweise:** `/case-study-solar-leadgenerierung/` ist die Fallstudie; sie
   bleibt `noindex, follow`, bis die Freigabe vorliegt. Unter dem Marktcheck
   steht seit 2026-09-26 ein zweiter, leiser Weg in die Projektanfrage für
-  Leser ohne Energiebetrieb (`cta_case_study_to_project`). Eigenes og:image
+  Leser ohne Energiebetrieb (`cta_case_study_to_project`). Seit 2026-10-01
+  steht die Seite auf `system.css` und `e3-case-v2.css` (vier `.tafel`-Flächen,
+  kein `design-system.css`, kein `energy-systems.css`). Eigenes og:image
   `assets/img/fallstudie-og.jpg` (1200 × 630, JPG, nur Kanonwerte), das auch
   das Beitragsbild im Schema ersetzt. Der Hub `/ergebnisse/` ist seit 2026-09-25
   stillgelegt: 301 auf die Fallstudie (`nexus_redirect_legacy_results_path()`),
