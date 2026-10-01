@@ -76,9 +76,12 @@ zusammen.
 
 Seit der Betreiberentscheidung vom 2026-09-13 übernimmt `/` die Inhalte und
 Suchintention der früheren Freelancer-Route. Seit 2026-09-24 ist die Seite als
-Strecke gebaut: Hero mit Messprotokoll, Prüfstand, die sechs Stationen einer
-Anfrage, drei Leistungen mit Preisen, Arbeiten, Übergabe, Fragen und der
-Anfrageblock als Ende der Messlinie. White-Label und Solar/Wärmepumpe sind
+Strecke gebaut: Hero mit Messprotokoll, die sechs Stationen einer Anfrage,
+fünf Leistungen mit Preisen, Arbeiten, Prüfstand, Übergabe, Fragen und der
+Anfrageblock als Ende der Messlinie. Der Prüfstand stand bis 2026-10-01 als
+dunkle Tafel direkt unter dem Hero und ist seitdem ein schmaler heller Streifen
+hinter den Arbeiten (Anker `#pruefstand` und alle `home_proof_*`-Hooks
+unverändert). White-Label und Solar/Wärmepumpe sind
 leise Nebenausgänge unter den Leistungen (Hooks `home_door_whitelabel`,
 `home_door_energy`), keine Weiche im Hero. Der Ausgang für Agenturen heißt seit
 2026-09-25 „Für Agenturen und Webdesigner“ mit dem Link „Technik und Tracking
@@ -90,15 +93,26 @@ Hero führen auf Fall, Referenzen und seit 2026-09-25 auf die Preise
 Die Hero- und Abschluss-CTAs führen zur kanonischen Projektanfrage
 `/kontakt/?type=project` **ohne** vorbelegtes Thema (seit 2026-09-22): Die
 Kontaktseite zeigt dann die Themenwahl und die Weiche zu White-Label und
-Marktcheck. Nur die drei Leistungen verwenden
-`hu_get_contact_intake_url('project', focus)` mit `relaunch`, `tracking` oder
-`implementation_scope` (Übernahme-Check); dort ist die Themenfrage schon
-beantwortet, und der Kontaktablauf überspringt sie. Die Homepage hat kein
+Marktcheck. Nur die fünf Leistungen verwenden vorbelegte Themen; dort ist die
+Themenfrage schon beantwortet, und der Kontaktablauf überspringt sie:
+
+| Zeile | Anfrage-Hook (`lead_gen`) | Ziel | Sub-CTA „Was drinsteckt“ (`navigation`) |
+| --- | --- | --- | --- |
+| 01 Website und Relaunch | `home_offer_relaunch` | `/kontakt/?type=project&focus=relaunch` | `home_offer_website_detail` → `/wordpress-website-erstellen-lassen/` |
+| 02 Landingpage | `home_offer_landingpage` | `/kontakt/?type=project&focus=conversion` | `home_offer_landingpage_detail` → `/landingpage-erstellen-lassen/` |
+| 03 Conversion-Optimierung | `home_offer_analysis` | `/kontakt/?type=analysis&focus=conversion` | `home_offer_analysis_detail` → `/conversion-optimierung/` |
+| 04 Tracking | `home_offer_tracking` | `/kontakt/?type=project&focus=tracking` | `home_offer_tracking_detail` → `/ga4-tracking-setup/` |
+| 05 Übernahme-Check | `home_offer_takeover` | `/kontakt/?type=project&focus=implementation_scope` | keiner (keine Produktseite) |
+
+Der Hook `home_offer_conversion` aus der Konsolidierungsentscheidung vom
+2026-09-13 steht nicht mehr im Template und wird nicht wiederverwendet, damit ein
+Eventname in GA4 nie zwei Angebote trägt; die Analyse läuft unter
+`home_offer_analysis`. Die Homepage hat kein
 eigenes Formular; die Messlinie endet am Anfrageblock, dessen Buttons auf
 `/kontakt/` führen. `#anfrage` und `#kontakt` bleiben als Anker des
 Abschlussblocks erhalten. `#angebot-funnel` (früher das Angebot
 „Anfragestrecken“, sitewide von CRO-Links verlinkt) sitzt seit 2026-09-24 auf
-der Stationsliste in Abschnitt 03.
+der Stationsliste in Abschnitt 02.
 
 **Versuch Ersteinschätzung (gezählt 2026-09-25 bis 2026-11-20, Schalter
 `HU_EXPERIMENT_ERSTEINSCHAETZUNG` im Kanon `inc/canon/messaging-canon.php`):**
@@ -554,16 +568,16 @@ Neu seit 2026-09-26: `cta_footer_nav_landingpage` für das Festpreis-Angebot
 
 Neu seit 2026-09-30: `cta_footer_nav_conversion` für `/conversion-optimierung/`,
 als letzter Eintrag der Gruppe Leistungen. Die Kopfnavigation führt die Seite
-nicht (ihr Punkt „Leistungen“ ist ein Anker auf der Startseite); der Satzlink
-im Leistungsabschnitt der Startseite folgt nach dem Versuch Ersteinschätzung
-(2026-11-20).
+nicht (ihr Punkt „Leistungen“ ist ein Anker auf der Startseite); die
+Startseite führt die Seite seit 2026-10-01 in der Preisliste
+(`home_offer_analysis_detail`).
 
 Neu seit 2026-10-01: `cta_footer_nav_website_offer` für das Festpreis-Angebot
 `/wordpress-website-erstellen-lassen/`, als letzter Eintrag der Gruppe Leistungen.
 Auf `/landingpage-erstellen-lassen/` führt die Zusatzzeile „Website“ jetzt dorthin
 (`lp_offer_to_website_offer`; der frühere `lp_offer_to_website` → `/#angebot-website`
-ist stillgelegt). Der Link von der Startseite folgt nach dem Versuch
-Ersteinschätzung (2026-11-20).
+ist stillgelegt). Die Startseite verlinkt die Seite seit 2026-10-01 aus der
+Preisliste (`home_offer_website_detail`).
 
 Retired with the CTA band and the merged minimal footers:
 `cta_footer_primary`, `cta_footer_primary_mobile`, `cta_footer_route_*`,

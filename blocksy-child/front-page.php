@@ -28,6 +28,7 @@ $energy_url     = $routes['energy'];
 $tracking_url   = $routes['tracking_setup'];
 $landing_url    = $routes['landingpage'];
 $conversion_url = $routes['conversion'];
+$website_url    = $routes['website'];
 $about_url      = $routes['about'];
 $privacy_url    = home_url( '/datenschutz/#privacy-cookies' );
 $github_url     = 'https://github.com/Hasim-Uner/meine-wordpress-site-2fe6f514';
@@ -148,10 +149,9 @@ $stations = [
  * Service-Schema (inc/schema-positioning.php); scripts/lint-entity-crawler-signals.php
  * prueft, dass jeder Schema-Anker hier als 'id' => '…' steht.
  *
- * 'detail' ist die Produktseite zur Vertiefung (Sub-CTA neben der Anfrage).
- * Wo es sie noch nicht gibt (Website/Relaunch, Uebernahme-Check), steht nur
- * die direkte Anfrage und die Zeile traegt ihren Umfang selbst; 'scope' bleibt
- * dort gefuellt, bei Zeilen mit Produktseite leer.
+ * 'detail' ist die Produktseite zur Vertiefung (Sub-CTA neben der Anfrage). Sie
+ * traegt den Umfang; die Zeile bleibt kurz. Nur wo es keine Produktseite gibt
+ * (Uebernahme-Check), nennt der Text den Umfang selbst.
  */
 $offers = [
 	[
@@ -162,11 +162,10 @@ $offers = [
 		'price'   => sprintf( 'ab %s netto', $website_price ),
 		'text'    => 'Neubau oder Relaunch auf WordPress, gebaut auf einer Testumgebung und erst nach Ihrer Abnahme live. Beim Relaunch bekommt jede alte URL eine Weiterleitung, damit bestehende Links und Suchergebnisse weiter ankommen.',
 		'more'    => $fest( hu_freelancer_website_scope_display() ) . '.',
-		'scope'   => 'Seitenstruktur · Entwicklung · Landingpages · Weiterleitungsplan · Title, Canonical, Schema · Dokumentation',
 		'request' => $project_link( 'relaunch' ),
 		'hook'    => 'home_offer_relaunch',
 		'cta'     => 'Website-Projekt anfragen',
-		'detail'  => null,
+		'detail'  => [ 'url' => $website_url, 'hook' => 'home_offer_website_detail' ],
 	],
 	[
 		'id' => 'angebot-landingpage',
@@ -176,7 +175,6 @@ $offers = [
 		'price'   => sprintf( 'Festpreis %s netto', $landing_price ),
 		'text'    => 'Eine Seite für ein Angebot, mit Konzept, Text, Anfrageformular und Herkunft jeder Anfrage. Sie geben zweimal frei: den Text und die fertige Seite.',
 		'more'    => 'Tracking und Website sind eigene Zusätze mit eigenem Preis.',
-		'scope'   => '',
 		'request' => $project_link( 'conversion' ),
 		'hook'    => 'home_offer_landingpage',
 		'cta'     => 'Landingpage anfragen',
@@ -190,11 +188,10 @@ $offers = [
 		'price'   => sprintf( 'Analyse %s netto · %d Werktage', $analysis_price, $analysis_days ),
 		'text'    => 'Besucher kommen, aber zu wenige passende Anfragen? Die Analyse liefert einen schriftlichen Befund der Strecke vom Besuch bis zur Rückmeldung im Vertrieb. Umgesetzt wird danach nur, was im Befund steht, zu festen Preisen.',
 		'more'    => sprintf( 'Die %s der Analyse werden bei einer Umsetzung angerechnet.', $analysis_price ),
-		'scope'   => '',
 		'request' => hu_get_contact_intake_url( 'analysis', 'conversion' ),
-		'hook'    => 'home_offer_conversion',
+		'hook'    => 'home_offer_analysis',
 		'cta'     => 'Analyse anfragen',
-		'detail'  => [ 'url' => $conversion_url, 'hook' => 'home_offer_conversion_detail' ],
+		'detail'  => [ 'url' => $conversion_url, 'hook' => 'home_offer_analysis_detail' ],
 	],
 	[
 		'id' => 'angebot-tracking',
@@ -204,7 +201,6 @@ $offers = [
 		'price'   => sprintf( 'Festpreis %s netto', $tracking_price ),
 		'text'    => 'Ein Messplan, sauber eingerichtete Conversions und ein Abnahmeprotokoll mit Testfällen. Gemessen wird im Browser, ohne eigenen Server.',
 		'more'    => sprintf( 'Die Stufen darüber: %s.', $fest( hu_tracking_ladder_display( 2 ) ) ),
-		'scope'   => '',
 		'request' => $project_link( 'tracking' ),
 		'hook'    => 'home_offer_tracking',
 		'cta'     => 'Tracking-Projekt anfragen',
@@ -218,7 +214,6 @@ $offers = [
 		'price'   => sprintf( 'Übernahme-Check %s netto', $takeover_price ),
 		'text'    => 'Ich prüfe Theme, Plugins, Updates, Backups, Zugänge und Ladezeit. Sie bekommen einen schriftlichen Befund mit Festpreis für den nächsten Schritt. Beauftragen Sie mich danach, wird der Check verrechnet. Der Befund gehört Ihnen, auch wenn Sie mit jemand anderem weiterarbeiten.',
 		'more'    => sprintf( 'Danach Weiterentwicklung im Monatskontingent: %s, monatlich kündbar.', $retainer ),
-		'scope'   => '',
 		'request' => $project_link( 'implementation_scope' ),
 		'hook'    => 'home_offer_takeover',
 		'cta'     => 'Übernahme-Check anfragen',
@@ -409,9 +404,6 @@ get_header();
 							<?php if ( '' !== $offer['more'] ) : ?>
 								<p class="st-angebot__mehr"><?php echo esc_html( $offer['more'] ); ?></p>
 							<?php endif; ?>
-							<?php if ( '' !== $offer['scope'] ) : ?>
-								<p class="st-angebot__umfang"><?php echo esc_html( $liste( $offer['scope'] ) ); ?></p>
-							<?php endif; ?>
 							<p class="st-angebot__wege">
 								<a class="st-link st-link--stark" href="<?php echo esc_url( $offer['request'] ); ?>" data-track-action="<?php echo esc_attr( $offer['hook'] ); ?>" data-track-category="lead_gen" data-track-section="angebote"><?php echo esc_html( $offer['cta'] ); ?>&nbsp;<span aria-hidden="true">→</span></a>
 								<?php if ( ! empty( $offer['detail'] ) ) : ?>
@@ -468,8 +460,10 @@ get_header();
 	<section class="st-abschnitt st-pruefstand st-pruefstand--leise" id="pruefstand" aria-labelledby="pruefstand-h" data-st-abschnitt="05" data-track-section="pruefstand">
 		<?php echo $marke( '05', 'Prüfstand' ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- escaped inside the helper. ?>
 		<div class="st-inhalt">
-			<h2 class="st-h2" id="pruefstand-h">Prüfen Sie mich, <span class="st-leise">bevor Sie mir schreiben.</span></h2>
-			<p class="st-vorspann">Diese Website ist mein Arbeitsbeleg: Der Code liegt offen, jede Änderung wird vor dem Livegang automatisch geprüft, und die Ladezeit messen Sie selbst.</p>
+			<div class="st-pruefstand__kopf">
+				<h2 class="st-h2" id="pruefstand-h">Prüfen Sie mich, <span class="st-leise">bevor Sie mir schreiben.</span></h2>
+				<p class="st-vorspann">Diese Website ist mein Arbeitsbeleg: Der Code liegt offen, jede Änderung wird vor dem Livegang automatisch geprüft, und die Ladezeit messen Sie selbst.</p>
+			</div>
 			<?php // Icons: Strich in currentColor, ohne eigene Farbe; nur die Ladezeit traegt den Akzent, weil sie ein Messwert ist. ?>
 			<ol class="st-pruefungen">
 				<li>

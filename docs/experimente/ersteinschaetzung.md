@@ -12,7 +12,7 @@ Schalter vollständig zurücknehmen.
 | Schalter an | 2026-09-23 (#440) |
 | Zählung ab | 2026-09-25: Relaunch der Startseite als Strecke (#453, #455). Was vorher einging, lief auf einer anderen Seite und zählt nicht mit. |
 | Ende | Zählbeginn + 8 Wochen: 2026-11-20 |
-| Startseite eingefroren | bis zum Ende. Änderungen an Hero, Reihenfolge, Leistungen oder Abschluss verfälschen den Versuch; Preis- und Textkorrekturen, die für alle Wege gleich gelten, sind ausgenommen. |
+| Startseite eingefroren | bis zum Ende. Änderungen an Hero, Reihenfolge, Leistungen oder Abschluss verfälschen den Versuch; Preis- und Textkorrekturen, die für alle Wege gleich gelten, sind ausgenommen. **Am 2026-10-01 vom Betreiber für Reihenfolge und Leistungen aufgehoben** (Abschnitt „Umbau der Startseite am 2026-10-01“). Hero und Abschluss bleiben unverändert. |
 
 ## Entscheidung am Ende
 
@@ -79,6 +79,26 @@ weitere Seite zum Zusatzpreis (Werte im Kanon, Herleitung und alter Betrag in
 eine Preiskorrektur für alle Wege und nach der Regel oben erlaubt. Ein
 niedrigerer Preis kann die Zahl direkter Projektanfragen erhöhen. Bei der
 Auswertung Anfragen vor und nach dem 2026-09-26 getrennt ansehen.
+
+### Umbau der Startseite am 2026-10-01
+
+Der Betreiber hat den Freeze für Reihenfolge und Leistungen aufgehoben. Geändert
+ab Deploy: Der Prüfstand wandert von Position 02 hinter die Arbeiten und wird ein
+schmaler heller Streifen statt einer dunklen Tafel. Die drei Leistungskarten
+werden fünf Zeilen (neu: Landingpage, Conversion-Optimierung); Zeilen mit
+Produktseite bekommen neben der Anfrage den Sub-CTA „Was drinsteckt“. Hero und
+Abschluss, also die beiden Buttons des Versuchs, bleiben unverändert.
+
+Die Änderung ging in zwei Deploys live. **Trennpunkt für die Auswertung ist der
+erste Deploy: 2026-10-01, 23:16 Uhr MESZ (21:16 UTC), Pull Request 511.** Er
+brachte die neue Reihenfolge (Prüfstand hinter den Arbeiten) und die fünf Zeilen.
+Pull Request 513 folgte danach mit dem schmalen Prüfstand-Streifen, dem Link der
+Website-Zeile auf die neue Produktseite und den eindeutigen Hook-Namen; er ändert
+nichts mehr an der Reihenfolge. Einsendungen vor und nach dem ersten Deploy
+getrennt ansehen. Die Entscheidungsregel gilt unverändert; die Zählung danach
+läuft auf einer anderen Seitenstruktur und ist mit der davor nur eingeschränkt
+vergleichbar. Ein längerer Weg bis zu den Preisen oder neue
+Ausgänge zu Produktseiten können Anfragen vom Hero-Button wegziehen.
 
 ## Wo was steht
 

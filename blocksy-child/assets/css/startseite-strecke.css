@@ -779,11 +779,59 @@
   color: var(--matt);
 }
 
-/* Startseite: Der Pruefstand steht als leiser Beleg hinter den Arbeiten,
-   ohne Tafel und ohne Kachelflaeche. Die Tafel (.tafel) bleibt der
-   White-Label-Seite; dieselben Kacheln, nur ohne Gewicht. */
-.st .st-pruefstand--leise .st-pruefungen { margin-top: var(--s4); }
-.st .st-pruefstand--leise .st-pruefungen li { background: transparent; }
+/* Startseite: Der Pruefstand steht als schmaler Streifen hinter den
+   Arbeiten, ohne Tafel und ohne Kacheln. Kopf: Ueberschrift und Satz
+   nebeneinander. Drei Spalten mit Haarlinie oben; Icon und Marke in
+   einer Zeile, der Link direkt unter dem Satz, kein Leerraum bis zum
+   Kachelrand. Die Tafel (.tafel) bleibt der White-Label-Seite. */
+.st .st-pruefstand__kopf {
+  display: grid;
+  gap: var(--s2);
+}
+
+.st .st-pruefstand--leise .st-vorspann { margin-top: 0; }
+.st .st-pruefstand--leise .st-pruefungen { margin-top: var(--s4); gap: 0 var(--s4); }
+
+.st .st-pruefstand--leise .st-pruefungen li {
+  display: grid;
+  grid-template-columns: auto minmax(0, 1fr);
+  align-content: start;
+  align-items: center;
+  column-gap: var(--s1);
+  padding: var(--s2) 0 var(--s3);
+  border: 0;
+  border-top: 1px solid var(--haar);
+  border-radius: 0;
+  background: transparent;
+}
+
+.st .st-pruefstand--leise .st-pruefungen li:hover {
+  border-color: var(--haar);
+  transform: none;
+}
+
+.st .st-pruefstand--leise .st-pruefungen__icon { margin-bottom: 0; }
+
+.st .st-pruefstand--leise .st-pruefungen__text,
+.st .st-pruefstand--leise .st-pruefungen__messung,
+.st .st-pruefstand--leise .st-pruefungen__klein,
+.st .st-pruefstand--leise .st-pruefungen .st-link {
+  grid-column: 1 / -1;
+}
+
+.st .st-pruefstand--leise .st-pruefungen .st-link {
+  justify-self: start;
+  margin-top: 0;
+  padding-top: var(--s1);
+}
+
+@media (min-width: 1024px) {
+  .st .st-pruefstand__kopf {
+    grid-template-columns: minmax(0, 7fr) minmax(0, 5fr);
+    column-gap: var(--s5);
+    align-items: end;
+  }
+}
 
 @media (min-width: 1024px) {
   .st .st-pruefungen { grid-template-columns: repeat(3, minmax(0, 1fr)); }
