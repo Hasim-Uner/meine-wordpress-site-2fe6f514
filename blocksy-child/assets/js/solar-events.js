@@ -63,6 +63,17 @@
     if (action) send(action.getAttribute('data-track-action'), door);
     if (door) formEvent('form_opened', door);
   });
+  // Der Kopf der Seite (Leiste im Modus fokus) steht ausserhalb von .strecke-doc.
+  // Seine Tueren tragen data-door; die Messung liest sie wie jede andere Tuer.
+  var headerDoors = { marktcheck: 'marktcheck', analyse: 'analyse', sofort: 'sofortkontakt' };
+  document.addEventListener('click', function (event) {
+    var link = event.target && typeof event.target.closest === 'function' ? event.target.closest('.leiste [data-door]') : null;
+    if (!link) return;
+    var door = headerDoors[link.getAttribute('data-door')] || '';
+    var action = link.getAttribute('data-track-action');
+    if (action) send(action, door);
+    if (door) formEvent('form_opened', door);
+  });
   root.addEventListener('focusin', function (event) {
     if (!event.target.closest('[data-order-form], #sol-quiz-mount')) return;
     var door = doorFor(event.target);

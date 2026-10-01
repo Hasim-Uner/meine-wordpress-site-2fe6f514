@@ -387,5 +387,11 @@ nav_check( [ 'Startseite', 'Projekte', 'Tracking', 'White-Label', 'Solar & Wärm
 nav_check( ! preg_grep( '/marktcheck/i', array_column( $not_found, 'href' ) ), '404: no sitewide Marktcheck link' );
 nav_check( count( $not_found ) === count( array_unique( array_column( $not_found, 'track' ) ) ), '404: tracking actions are unique' );
 
+// Die Solar-Seite hat genau einen Kopf: die Leiste im Modus fokus. Die frueher im Template
+// stehende Kopfzeile (.strecke-kopfleiste) wuerde sie verdoppeln.
+$solar_template = (string) file_get_contents( get_stylesheet_directory() . '/page-solar-waermepumpen-leadgenerierung.php' );
+nav_check( false === strpos( $solar_template, '<header' ) && false === strpos( $solar_template, 'strecke-kopfleiste' ), 'solar: the page template carries no header of its own' );
+nav_check( false === strpos( (string) file_get_contents( get_stylesheet_directory() . '/assets/css/anfragestrecke.css' ), 'strecke-kopfleiste' ), 'solar: no leftover Kopfleiste styles' );
+
 echo $failures ? "\n{$failures} navigation invariant(s) failed.\n" : "\nNavigation contract ok.\n";
 exit( $failures ? 1 : 0 );

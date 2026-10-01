@@ -683,26 +683,6 @@
   align-items: center;
 }
 
-/* Die globale Kopfleiste wird für diese Route serverseitig ausgelassen. */
-.strecke-doc .strecke-kopfleiste {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: var(--s2);
-  height: 56px;
-  padding-inline: clamp(1.25rem, 4vw, 3rem);
-  box-sizing: border-box;
-  border-bottom: 1px solid var(--haar);
-}
-
-.strecke-doc .strecke-kopfleiste a {
-  display: inline-flex;
-  align-items: center;
-  min-height: 44px;
-  white-space: nowrap;
-  font-size: 1rem;
-}
-
 /* ══ Messschrieb ══════════════════════════════════════════════ */
 
 .strecke-doc .schrieb { margin-top: var(--s5); }

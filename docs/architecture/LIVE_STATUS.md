@@ -302,11 +302,14 @@ Abschnitt anzuhängen; der Verlauf gehört in Commit-Nachrichten.
   in Balken mit gemeinsamem Maßstab. Der Messschrieb zeigt ausschließlich
   dokumentierte CPL-Bandbreiten nach Projektphase, ohne Monatsmesskurve;
   Hover und Tastaturfokus auf den Fallphasen heben die passenden Stufen hervor.
-  Eine 56-px-Kopfleiste im Dokumentfluss verlinkt Startseite und Marktcheck;
-  der globale Header bleibt auf dieser Route serverseitig unterdrückt. Der
+  Den Kopf trägt die Leiste im Modus `fokus` (Wortmarke und Leiter
+  Marktcheck · Analyse · Sofortkontakt auf die Anker der Seite); die Seite
+  selbst hat keine Kopfzeile mehr. Der
   Marktcheck hat eine harte Papier-/Tafel-Kante ohne Verlauf. `solar-events.js`
   zählt CTA-Klicks und Formularereignisse der drei Türen über anonyme UTC-
-  Tageszähler (`nexus/v1/solar-events`); Details in `PRIVACY.md`.
+  Tageszähler (`nexus/v1/solar-events`); Details in `PRIVACY.md`. Die Türen
+  der Leiste liest er über `data-door` (`sofort` zählt als `sofortkontakt`)
+  unter den Ereignissen `nav_header_door_*`.
 - **Energie-Cluster** (`.hu-intercept`, Pfade in
   `hu_get_solar_seo_subpage_paths()`): `/solar-leads-kaufen-alternative/`,
   `/waermepumpen-leads/`, `/b2b-solar-leads/`,

@@ -8,8 +8,11 @@ test('Solar counters send only daily aggregates, without cookies or form values'
   await context.addCookies([{ name: 'existing', value: 'fixture', domain: 'example.test', path: '/' }]);
   await page.route('**/*', route => route.fulfill({ contentType: 'text/html', body: '<html></html>' }));
   await page.goto('https://example.test/solar-waermepumpen-leadgenerierung/?email=private@example.test');
-  await page.setContent(`<div class="strecke-doc">
-    <a href="#marktcheck" data-track-action="cta_strecke_header_to_marktcheck">Marktcheck</a>
+  // Kopf der Seite (Leiste im Modus fokus): steht ausserhalb von .strecke-doc, die Tueren tragen data-door.
+  await page.setContent(`<header class="leiste leiste--fokus">
+    <a href="#marktcheck" data-door="marktcheck" data-track-action="nav_header_door_marktcheck">Marktcheck</a>
+    <a href="#einstieg" data-door="sofort" data-track-action="nav_header_door_sofortkontakt">Sofortkontakt</a></header>
+    <div class="strecke-doc">
     <a href="#analyse" data-track-action="cta_strecke_leiter_to_analyse">Analyse</a>
     <form data-order-form="analyse"><input name="company" required><input name="email" required>
       <button>Absenden</button></form><div id="sol-quiz-mount"></div></div>`);
@@ -28,6 +31,7 @@ test('Solar counters send only daily aggregates, without cookies or form values'
   expect(records).toHaveLength(0); // Focusing a CTA has not opened the form.
   await page.locator('a[href="#marktcheck"]').click();
   await page.locator('a[href="#marktcheck"]').click();
+  await page.locator('a[data-door="sofort"]').click();
   await page.locator('a[href="#analyse"]').click();
   await page.locator('button').click(); // Multiple invalid controls: one failed attempt.
   await page.locator('[name="email"]').fill('private@example.test');
@@ -40,6 +44,10 @@ test('Solar counters send only daily aggregates, without cookies or form values'
   await expect.poll(() => records.filter(r => r.event === 'form_submitted').length).toBe(1);
   expect(records.filter(r => r.event === 'form_opened' && r.door === 'marktcheck')).toHaveLength(1);
   expect(records.filter(r => r.event === 'form_opened' && r.door === 'analyse')).toHaveLength(1);
+  // Die Tueren des Kopfes zaehlen unter dem Namen der Tuer der Seite (sofort -> sofortkontakt).
+  expect(records.filter(r => r.event === 'nav_header_door_marktcheck' && r.door === 'marktcheck')).toHaveLength(2);
+  expect(records.filter(r => r.event === 'nav_header_door_sofortkontakt' && r.door === 'sofortkontakt')).toHaveLength(1);
+  expect(records.filter(r => r.event === 'form_opened' && r.door === 'sofortkontakt')).toHaveLength(1);
   expect(records.filter(r => r.event === 'form_step_two')).toHaveLength(1);
   expect(records.filter(r => r.event === 'form_validation_error')).toHaveLength(1);
   for (const record of records) {
