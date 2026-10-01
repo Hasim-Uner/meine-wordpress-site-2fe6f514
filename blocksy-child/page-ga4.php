@@ -157,7 +157,7 @@ get_header();
 			<div class="haupt">
 				<p class="mono stempelfarbe">Wenn Messung technisch vorhanden ist, aber geschäftlich nichts erklärt</p>
 				<h2 class="kopf">Die Events feuern. Die Zahlen passen trotzdem nicht zusammen.</h2>
-				<p class="vorspann">Ein Tracking-Setup ist erst dann brauchbar, wenn klar ist, welche Conversion gezählt wurde, unter welchem Consent-Zustand sie entstand und ob daraus im Vertrieb überhaupt ein relevanter Lead wurde.</p>
+				<p class="vorspann">Ein Tracking-Setup ist erst dann brauchbar, wenn klar ist, welche Conversion gezählt wurde, unter welchem Consent-Zustand sie entstand und ob daraus im Vertrieb überhaupt ein relevanter Lead wurde. Wird sauber gemessen und es kommen trotzdem zu wenig passende Anfragen, liegt der Verlust woanders: <a class="satzlink" href="<?php echo esc_url( home_url( '/conversion-optimierung/' ) ); ?>" data-track-action="tracking_problems_to_conversion" data-track-category="navigation" data-track-section="tracking_problems">Conversion-Optimierung für B2B-Websites mit wenig Traffic</a>.</p>
 				<div class="protokoll" aria-label="Typische Tracking-Probleme">
 					<div class="z"><span>01</span><b>GA4 und Google Ads zeigen unterschiedliche Conversion-Zahlen.</b></div>
 					<div class="z"><span>02</span><b>Formulare fehlen in der Messung oder werden mehrfach gezählt.</b></div>

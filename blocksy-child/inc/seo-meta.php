@@ -295,6 +295,13 @@ function hu_get_forced_singular_seo_map() {
 				'title'       => 'Landingpage erstellen lassen: Festpreis mit Text & Messung',
 				'description' => sprintf( 'Landingpage erstellen lassen zum Festpreis von %s: Konzept, Text, WordPress, Anfrageformular und Herkunft jeder Anfrage. Live nach Ihrer Abnahme.', hu_landingpage_price( true ) ),
 			],
+			// Query-Owner "conversion optimierung b2b" (docs/seo/query-ownership.csv).
+			// Die Dauer der Analyse kommt aus dem Kanon, damit Snippet und Seite
+			// dieselbe Zahl nennen.
+			'conversion-optimierung' => [
+				'title'       => 'Conversion-Optimierung B2B: mehr Anfragen | Haşim Üner',
+				'description' => sprintf( 'Conversion-Optimierung für B2B-Websites mit wenig Traffic: schriftlicher Befund der Anfragestrecke in %d Werktagen, danach Umsetzung zu festen Preisen.', (int) hu_diagnose_canon()['primary_days'] ),
+			],
 			// "Consent" statt "CAPI" im Title haelt das Signal fuer die vier
 			// DSGVO-Queries, die diese Seite laut docs/seo/query-ownership.csv
 			// besitzt. CAPI steht dafuer in der Description.

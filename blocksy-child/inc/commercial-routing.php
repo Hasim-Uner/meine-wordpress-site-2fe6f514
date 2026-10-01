@@ -98,6 +98,10 @@ function hu_get_commercial_route_map() {
 		'landingpage'     => function_exists( 'nexus_get_page_url' )
 			? nexus_get_page_url( [ 'landingpage-erstellen-lassen' ], home_url( '/landingpage-erstellen-lassen/' ) )
 			: home_url( '/landingpage-erstellen-lassen/' ),
+		// Conversion-Optimierung fuer B2B-Websites mit wenig Traffic (seit 2026-09-30).
+		'conversion'      => function_exists( 'nexus_get_page_url' )
+			? nexus_get_page_url( [ 'conversion-optimierung' ], home_url( '/conversion-optimierung/' ) )
+			: home_url( '/conversion-optimierung/' ),
 		'agentur_local'   => function_exists( 'nexus_get_page_url' )
 			? nexus_get_page_url( [ 'wordpress-agentur-hannover', 'wordpress-agentur' ], home_url( '/wordpress-agentur-hannover/' ) )
 			: home_url( '/wordpress-agentur-hannover/' ),
@@ -459,6 +463,12 @@ function hu_get_site_footer_navigation_contract() {
 						'label'    => __( 'Landingpage erstellen lassen', 'blocksy-child' ),
 						'url'      => $routes['landingpage'],
 						'track'    => 'cta_footer_nav_landingpage',
+						'category' => 'navigation',
+					],
+					[
+						'label'    => __( 'Conversion-Optimierung', 'blocksy-child' ),
+						'url'      => $routes['conversion'],
+						'track'    => 'cta_footer_nav_conversion',
 						'category' => 'navigation',
 					],
 				],

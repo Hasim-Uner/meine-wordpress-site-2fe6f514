@@ -678,6 +678,49 @@ body.nx-custom-header-active {
   }
 }
 
+/* ══ Pruefen-Tabelle ══════════════════════════════════════════
+   Mehrspaltige Aufstellung (Station, Befund, Beispielfall). Die Huelle
+   .tabelle ist ein eigener Scrollkontext: unter etwa 38rem scrollt die
+   Tabelle in sich, die Seite bleibt bei 360 px ohne seitliches Scrollen.
+   Farben kommen aus den Tokens, deshalb stimmt sie auch auf der .tafel. */
+
+.doku .tabelle {
+  margin-top: var(--s3);
+  overflow-x: auto;
+  overscroll-behavior-x: contain;
+}
+
+.doku .tabelle:focus-visible {
+  outline: 2px solid var(--stempel);
+  outline-offset: 2px;
+}
+
+.doku .tabelle table { min-width: 40rem; }
+
+.doku .tabelle th,
+.doku .tabelle td {
+  padding: var(--s1) var(--s2) var(--s1) 0;
+  border-bottom: 1px solid var(--haar);
+  text-align: left;
+  vertical-align: top;
+  font-size: 0.95rem;
+  line-height: 1.45;
+}
+
+.doku .tabelle thead th {
+  font-family: var(--mono);
+  font-size: var(--mono-s);
+  font-weight: 500;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--matt);
+  white-space: nowrap;
+}
+
+.doku .tabelle tbody th { font-weight: 600; }
+.doku .tabelle td { color: var(--grau); }
+.doku .tabelle td strong { color: var(--tinte); font-weight: 600; }
+
 /* ══ Abschluss ════════════════════════════════════════════════ */
 
 .doku .abschluss {

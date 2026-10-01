@@ -122,6 +122,11 @@ function nexus_get_llms_txt_sections() {
 					'description' => 'Festpreis-Angebot für Direktkunden: eine Seite für ein Angebot mit Konzept, Text, Anfrageformular, Herkunft jeder Anfrage und Abnahme. Tracking, Website und Weiterentwicklung als eigene Zusätze.',
 				],
 				[
+					'label'       => 'Conversion-Optimierung für B2B',
+					'url'         => $urls['conversion'] ?? home_url( '/conversion-optimierung/' ),
+					'description' => 'Conversion-Optimierung für B2B-Websites mit wenig Traffic: schriftlicher Befund der Strecke vom Besuch bis zur Rückmeldung im Vertrieb, danach Umsetzung zu festen Preisen. Einstieg ist die Anfragesystem-Analyse, ohne A/B-Tests.',
+				],
+				[
 					'label'       => 'Conversion Tracking einrichten lassen',
 					'url'         => $urls['tracking'] ?? home_url( '/ga4-tracking-setup/' ),
 					'description' => 'Das Tracking-Angebot: GA4, Google Tag Manager, Consent Mode und Google Ads als abgegrenztes Setup mit Messplan und Abnahmeprotokoll. Server-Side, Meta CAPI und CRM kommen nur nach technischem Bedarf dazu.',

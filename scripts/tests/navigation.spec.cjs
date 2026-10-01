@@ -163,7 +163,7 @@ for (const [width, columns] of [[390, 2], [1280, 4]]) {
     await open(page, 'imprint', { width, height: 900 });
     const directory = page.getByRole('navigation', { name: 'Weitere Seiten' });
     await expect(directory.getByRole('list')).toHaveCount(4);
-    await expect(directory.getByRole('list', { name: 'Leistungen' }).getByRole('link')).toHaveText(['Server-Side Tracking', 'Performance Marketing', 'WordPress Agentur Hannover', 'Landingpage erstellen lassen']);
+    await expect(directory.getByRole('list', { name: 'Leistungen' }).getByRole('link')).toHaveText(['Server-Side Tracking', 'Performance Marketing', 'WordPress Agentur Hannover', 'Landingpage erstellen lassen', 'Conversion-Optimierung']);
     await expect(directory.getByRole('link', { name: 'Impressum' })).toHaveAttribute('aria-current', 'page');
     const tracks = await directory.evaluate(el => getComputedStyle(el).gridTemplateColumns.split(' ').length);
     expect(tracks).toBe(columns);

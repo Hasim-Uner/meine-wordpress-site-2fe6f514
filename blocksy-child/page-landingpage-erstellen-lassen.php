@@ -119,6 +119,12 @@ $occasions = [
 	'Anfragen kommen, aber Sie wissen nicht, über welche Anzeige oder Seite.',
 ];
 
+// Anlass 04 gehört nicht mehr zur Landingpage, sondern zur bestehenden Website:
+// dort führt der Satz zur Conversion-Optimierung.
+$occasion_links = [
+	3 => $routes['conversion'],
+];
+
 // Ablauf in vier Stationen; der Termin wird vor dem Start schriftlich festgelegt.
 $process = [
 	[ '01 · Auftakt', 'Gespräch und Fragebogen. Danach stehen Umfang und Termin schriftlich fest.' ],
@@ -166,7 +172,13 @@ get_header();
 				<p class="vorspann">Eine Startseite spricht alle Besucher gleichzeitig an. Wer auf eine Anzeige oder einen Link zu einem bestimmten Angebot klickt, sucht aber genau dieses Angebot und den nächsten Schritt dorthin.</p>
 				<div class="protokoll posten" aria-label="Typische Anlässe">
 					<?php foreach ( $occasions as $i => $occasion ) : ?>
-						<div class="z"><span><?php echo esc_html( sprintf( '%02d', $i + 1 ) ); ?></span><b><?php echo esc_html( $occasion ); ?></b></div>
+						<div class="z"><span><?php echo esc_html( sprintf( '%02d', $i + 1 ) ); ?></span><b>
+							<?php if ( isset( $occasion_links[ $i ] ) ) : ?>
+								<a class="satzlink" href="<?php echo esc_url( $occasion_links[ $i ] ); ?>" data-track-action="lp_offer_occasion_to_conversion" data-track-category="navigation" data-track-section="lp_offer_occasion"><?php echo esc_html( $occasion ); ?></a>
+							<?php else : ?>
+								<?php echo esc_html( $occasion ); ?>
+							<?php endif; ?>
+						</b></div>
 					<?php endforeach; ?>
 				</div>
 			</div>
