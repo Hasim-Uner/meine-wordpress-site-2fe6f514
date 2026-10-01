@@ -698,6 +698,7 @@
 }
 
 .strecke-doc h1 em {
+  display: block;
   font-style: italic;
   font-weight: 300;
 }
@@ -1105,87 +1106,69 @@
   }
 }
 
-/* ══ Stationen ════════════════════════════════════════════════ */
-
-.strecke-doc .strecke {
-  margin-top: var(--s4);
-  border-top: 1px solid var(--strich);
+/* ══ Anfragewege: serverseitiger Endzustand, Bewegung als Zusatz ══ */
+.strecke-doc .streckenmodul { margin-top: var(--s4); display: grid; gap: var(--s3); overflow: hidden; }
+.strecke-doc .modul-kopf { display: flex; align-items: end; justify-content: space-between; flex-wrap: wrap; gap: var(--s2); padding-bottom: var(--s2); border-bottom: 1px solid var(--haar); }
+.strecke-doc .modul-kopf h3 { font-size: clamp(1.3rem, 2.5vw, 1.9rem); line-height: 1.15; }
+.strecke-doc .modul-kopf .mono, .strecke-doc .modul-ende .mono, .strecke-doc .modul-panel .mono { color: var(--matt); }
+.strecke-doc .modul-buehne { position: relative; width: 100%; }
+.strecke-doc .modul-svg { width: 100%; height: auto; display: block; }
+.strecke-doc .modul-svg--narrow { display: none; }
+.strecke-doc .modul-raster line { stroke: var(--haar); stroke-width: 1; stroke-dasharray: 2 5; vector-effect: non-scaling-stroke; }
+.strecke-doc .modul-raster line[data-station].is-selected { stroke: var(--stempel); stroke-dasharray: none; stroke-opacity: 0.65; }
+.strecke-doc .modul-raster .modul-linie { stroke-dasharray: none; stroke-opacity: 0.6; }
+.strecke-doc .modul-raster .modul-linie--a { stroke: #a9a199; }
+.strecke-doc .modul-raster .modul-linie--b { stroke: var(--stempel); }
+.strecke-doc .modul-punkt--a { fill: #a9a199; opacity: 0.3; }
+.strecke-doc .modul-punkt--b { fill: var(--stempel); opacity: 0.3; }
+.strecke-doc .modul-punkt[data-last="4"] { opacity: 1; }
+.strecke-doc .modul-labels { position: absolute; inset: 0; pointer-events: none; font-family: var(--mono); }
+.strecke-doc .modul-way { position: absolute; left: 1%; color: var(--matt); font-size: var(--mono-s); }
+.strecke-doc .modul-labels-row--a .modul-way { top: 11%; }
+.strecke-doc .modul-labels-row--b .modul-way { top: 57%; color: var(--stempel); }
+.strecke-doc .modul-counts { position: absolute; left: 1%; width: 90%; display: grid; grid-template-columns: repeat(5, minmax(0, 1fr)); text-align: center; color: var(--tinte); font-size: var(--mono-l); font-variant-numeric: tabular-nums; }
+.strecke-doc .modul-labels-row--a .modul-counts { top: 42%; }
+.strecke-doc .modul-labels-row--b .modul-counts { top: 88%; }
+.strecke-doc .streckenmodul.is-animating .modul-count { opacity: 0; }
+.strecke-doc .streckenmodul.is-animating .modul-count.reached { opacity: 1; }
+.strecke-doc .modul-ende { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: var(--s2); border-top: 1px solid var(--haar); padding-top: var(--s2); }
+.strecke-doc .modul-ende > div { display: grid; align-content: start; gap: 0.2rem; min-width: 0; }
+.strecke-doc .modul-ende b { font-family: var(--mono); font-size: clamp(1.5rem, 3.4vw, 2.3rem); font-weight: 500; line-height: 1.1; font-variant-numeric: tabular-nums; }
+.strecke-doc .modul-ende-b b { color: var(--stempel); }
+.strecke-doc .modul-ende small { color: var(--matt); font-size: 0.82rem; }
+.strecke-doc .streckenmodul.is-animating .modul-ende b { opacity: 0.25; }
+.strecke-doc .streckenmodul.is-animating.is-finished .modul-ende b { opacity: 1; }
+.strecke-doc .modul-tabs { display: grid; grid-template-columns: repeat(5, minmax(0, 1fr)); border-top: 1px solid var(--haar); }
+.strecke-doc .modul-tabs button { appearance: none; background: transparent; color: var(--matt); border: 0; border-top: 2px solid transparent; margin-top: -1px; padding: var(--s2) var(--s1) var(--s2) 0; text-align: left; display: grid; align-content: start; gap: 0.25rem; min-width: 0; min-height: 44px; cursor: pointer; font: inherit; }
+.strecke-doc .modul-tabs button[aria-selected="true"] { border-top-color: var(--stempel); color: var(--tinte); }
+.strecke-doc .modul-tabs button:hover { color: var(--tinte); }
+.strecke-doc .modul-tabs button:focus-visible, .strecke-doc .modul-replay:focus-visible { outline: 2px solid var(--stempel); outline-offset: 2px; }
+.strecke-doc .modul-tabs button .mono { font-size: var(--mono-s); }
+.strecke-doc .modul-tab-name { font-size: 0.9rem; line-height: 1.3; }
+.strecke-doc .modul-panel { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: var(--s3); min-height: 9.5rem; }
+.strecke-doc .modul-panel > div { display: grid; align-content: start; gap: 0.4rem; min-width: 0; }
+.strecke-doc .modul-panel p { font-size: 0.95rem; line-height: 1.5; }
+.strecke-doc .modul-panel > div:first-of-type .mono { color: var(--stempel); }
+.strecke-doc .modul-panel-name { display: none; grid-column: 1 / -1; color: var(--tinte); }
+.strecke-doc .modul-leiste { display: flex; flex-wrap: wrap; justify-content: space-between; align-items: center; gap: var(--s2); border-top: 1px solid var(--haar); padding-top: var(--s2); }
+.strecke-doc .modul-leiste p { color: var(--matt); font-size: 0.78rem; max-width: 62ch; }
+.strecke-doc .modul-replay { display: none; background: transparent; color: var(--tinte); border: 1px solid var(--matt); min-height: 44px; padding: 0.7rem 1rem; font: 0.7rem var(--mono); text-transform: uppercase; letter-spacing: 0.08em; cursor: pointer; }
+.strecke-doc .streckenmodul.js-ready .modul-replay { display: block; }
+.strecke-doc .passung-untertitel { margin-top: var(--s4); font-size: clamp(1.35rem, 2.3vw, 1.75rem); }
+@media (max-width: 760px) { .strecke-doc .modul-panel { grid-template-columns: 1fr; min-height: 0; gap: var(--s2); } }
+@media (max-width: 599px) {
+  .strecke-doc .modul-svg--wide { display: none; }
+  .strecke-doc .modul-svg--narrow { display: block; }
+  .strecke-doc .modul-labels-row--a .modul-way { top: 7%; }
+  .strecke-doc .modul-labels-row--b .modul-way { top: 57%; }
+  .strecke-doc .modul-labels-row--a .modul-counts { top: 34%; }
+  .strecke-doc .modul-labels-row--b .modul-counts { top: 84%; }
+  .strecke-doc .modul-tab-name { display: none; }
+  .strecke-doc .modul-tabs button .mono { font-size: var(--mono-l); }
+  .strecke-doc .modul-panel-name { display: block; }
+  .strecke-doc .modul-ende { grid-template-columns: 1fr; }
 }
-
-.strecke-doc .station {
-  display: grid;
-  grid-template-columns: 2.5rem minmax(0, 1.05fr) minmax(0, 0.95fr);
-  gap: clamp(1rem, 2.5vw, 2.25rem);
-  padding-block: 1.85rem;
-  border-bottom: 1px solid var(--haar);
-  align-items: start;
-}
-
-.strecke-doc .station .i {
-  font-family: var(--mono);
-  font-size: var(--mono-l);
-  font-weight: 600;
-  color: var(--stempel);
-  padding-top: 0.28rem;
-  font-variant-numeric: tabular-nums;
-}
-
-.strecke-doc .station h3 {
-  font-size: 1.28rem;
-  font-weight: 500;
-  margin-bottom: 0.55rem;
-  letter-spacing: -0.012em;
-}
-
-.strecke-doc .station .bau {
-  color: var(--grau);
-  font-size: 0.97rem;
-}
-
-.strecke-doc .station .sicht {
-  padding-left: 1.15rem;
-  border-left: 2px solid var(--stempel);
-}
-
-.strecke-doc .station .sicht .l {
-  font-family: var(--mono);
-  font-size: var(--mono-s);
-  letter-spacing: 0.15em;
-  text-transform: uppercase;
-  color: var(--stempel);
-  display: block;
-  margin-bottom: 0.4rem;
-  font-weight: 500;
-}
-
-.strecke-doc .station .sicht p { font-size: 0.97rem; }
-
-.strecke-doc .station .fehlt {
-  grid-column: 2 / -1;
-  margin-top: 0.45rem;
-  font-size: 0.9rem;
-  color: var(--grau);
-  font-style: italic;
-}
-
-.strecke-doc .station .fehlt b {
-  font-style: normal;
-  font-family: var(--mono);
-  font-size: 0.62rem;
-  letter-spacing: 0.14em;
-  text-transform: uppercase;
-  color: var(--matt);
-  display: block;
-  margin-bottom: 0.25rem;
-  font-weight: 500;
-}
-
-@media (max-width: 760px) {
-  .strecke-doc .station { grid-template-columns: 2rem 1fr; }
-  .strecke-doc .station .sicht,
-  .strecke-doc .station .fehlt { grid-column: 2; }
-  .strecke-doc .station .sicht { margin-top: 0.9rem; }
-}
+@media (prefers-reduced-motion: reduce) { .strecke-doc .streckenmodul *, .strecke-doc .streckenmodul *::before, .strecke-doc .streckenmodul *::after { animation: none !important; transition: none !important; } }
 
 /* ══ Voraussetzungen ══════════════════════════════════════════ */
 

@@ -230,7 +230,7 @@ get_header();
 				   data-track-action="cta_marktcheck"
 				   data-track-category="study_solar_leads_kosten"
 				   data-track-section="hero">
-					Marktcheck mit Fit-Entscheid starten
+					Marktcheck starten
 				</a>
 				<a class="hu-intercept__cta-secondary"
 				   href="#cpo"
@@ -375,7 +375,7 @@ get_header();
 				   data-track-action="cta_marktcheck"
 				   data-track-category="study_solar_leads_kosten"
 				   data-track-section="final">
-					Marktcheck mit Fit-Entscheid starten
+					Marktcheck starten
 				</a>
 				<a class="hu-intercept__cta-secondary"
 				   href="<?php echo esc_url( home_url( '/solar-leads-kaufen-alternative/' ) ); ?>"

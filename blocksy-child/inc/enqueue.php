@@ -373,6 +373,7 @@ function hu_enqueue_assets() {
 	if ( is_page( 'solar-waermepumpen-leadgenerierung' ) || is_page_template( 'page-solar-waermepumpen-leadgenerierung.php' ) ) {
 		hu_enqueue_css( 'nexus-anfragestrecke-css', 'anfragestrecke.css', [ 'nexus-design-system' ] );
 		hu_enqueue_js( 'nexus-anfragestrecke-js', 'anfragestrecke.js', [] );
+		hu_enqueue_js( 'nexus-solar-streckenmodul-js', 'solar-streckenmodul.js', [] );
 		hu_enqueue_js( 'nexus-solar-leadgen-solara-js', 'solar-leadgenerierung-solara.js', [ 'nexus-core-js' ] );
 
 		$marktcheck_cfg = [

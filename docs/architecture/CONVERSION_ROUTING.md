@@ -213,6 +213,7 @@ Use the Marktcheck as primary next action when the page is clearly about:
 - Solar-specific funnel architecture and qualification
 
 On the four provider decision articles for Aroundhome, Checkfox, Wattfox and DAA, the primary context CTA goes to `/solar-waermepumpen-leadgenerierung/#sofortkontakt` for businesses already buying leads. The secondary CTA remains the Marktcheck. Other Energy-cluster routes retain the Marktcheck as their primary destination.
+On the Solar money page itself, the primary hero CTA stays on `#marktcheck`; the secondary hero CTA addresses existing lead buyers and goes to `#sofortkontakt`. Editorial links from the ten related guides open the page without a form anchor; explicit „Marktcheck starten“ CTAs keep `#marktcheck`.
 
 Examples:
 

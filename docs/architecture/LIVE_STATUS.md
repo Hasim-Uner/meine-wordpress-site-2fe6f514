@@ -269,7 +269,11 @@ Abschnitt anzuhängen; der Verlauf gehört in Commit-Nachrichten.
   `#analyse` und `#sofortkontakt`; beide senden über `audit-request` mit
   getrennten `intake_variant`-Werten. Die vier Portal-Einordnungen Aroundhome,
   Checkfox, Wattfox und DAA führen im ersten Kontext-CTA zum Sofortkontakt,
-  danach zum Marktcheck.
+  danach zum Marktcheck. Abschnitt 01 zeigt als interaktives Strecken-Modul
+  zwei Anfragewege mit Rechnerwerten und schematischen Zwischenstufen;
+  ohne JavaScript steht der Endzustand bereit. Danach folgen Rechnung, Fall,
+  Einstieg, der gemeinsame Abschnitt „Was es braucht“, Marktcheck, Fragen und
+  Verweise. `#anteil` und `#passung` führen beide zu „Was es braucht“.
 - **Energie-Cluster** (`.hu-intercept`, Pfade in
   `hu_get_solar_seo_subpage_paths()`): `/solar-leads-kaufen-alternative/`,
   `/waermepumpen-leads/`, `/b2b-solar-leads/`,
