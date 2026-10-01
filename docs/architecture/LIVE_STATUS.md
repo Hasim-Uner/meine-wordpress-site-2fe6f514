@@ -80,6 +80,8 @@ Abschnitt anzuhängen; der Verlauf gehört in Commit-Nachrichten.
   2026-10-01 ein Türregister: vier Wege in Kopf-Reihenfolge (Website,
   Tracking, Agentur, Energie), je Tür eine Zeile mit Bezeichnung, Betrag
   (aus dem Kanon) und Pfeil, Tracking `cta_footer_door_<schlüssel>`. Die
+  Tracking-Tür im Fuß liest den Server-Side-Setup-Anker über `footer_amount`
+  (`standard/setup`); andere Tracking-Türen behalten den Messung-Einstieg.
   eigene Route ist markiert („Ihr Weg“), nicht ausgeblendet; das Register
   erscheint auch auf Startseite und Energie-Seite, nur `/kontakt/` und die
   Seiten aus `hu_footer_register_suppressed_templates()` (`inc/funnel-doors.php`,

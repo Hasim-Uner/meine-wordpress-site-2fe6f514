@@ -90,6 +90,8 @@ function hu_funnel_doors() {
 			'label'        => __( 'Tracking anfragen', 'blocksy-child' ),
 			'short'        => __( 'Tracking', 'blocksy-child' ),
 			'footer_label' => __( 'Tracking-Projekt anfragen', 'blocksy-child' ),
+			// Der globale Footer nennt den Server-Side-Endkundenpreis.
+			'footer_amount' => 'ab ' . hu_tracking_price( 'standard', 'setup' ),
 			'amount'       => 'ab ' . hu_tracking_price( 'measurement', 'setup' ),
 			'tier'         => 'paid',
 			'url'          => hu_get_contact_intake_url( 'project', 'tracking' ),

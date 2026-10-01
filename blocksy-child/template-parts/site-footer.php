@@ -206,6 +206,7 @@ $sender_right = [
 								}
 
 								$door = $funnel_doors[ $door_key ];
+								$amount = (string) ( $door['footer_amount'] ?? $door['amount'] );
 								?>
 								<a
 									class="<?php echo 'paid' === $door['tier'] ? 'bezahlt' : 'ohne-betrag'; ?>"
@@ -216,7 +217,7 @@ $sender_right = [
 									data-track-section="footer"
 								>
 									<span class="wie"><?php echo esc_html( $door['footer_label'] ); ?></span>
-									<span class="betrag"><?php echo esc_html( '' !== $door['amount'] ? $door['amount'] : __( 'nach Umfang', 'blocksy-child' ) ); ?></span>
+									<span class="betrag"><?php echo esc_html( '' !== $amount ? $amount : __( 'nach Umfang', 'blocksy-child' ) ); ?></span>
 									<span class="pf" aria-hidden="true">&rarr;</span>
 								</a>
 							<?php endforeach; ?>

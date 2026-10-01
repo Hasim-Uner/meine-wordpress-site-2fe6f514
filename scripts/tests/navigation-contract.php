@@ -236,7 +236,8 @@ foreach ( nav_test_contexts() as $context => $definition ) {
 			$on_page  = 0 === strpos( $target, '#' ) && str_ends_with( $spec_row[3], $target ) && 0 === strpos( $spec_row[3], nav_path( $definition['path'] ) );
 			nav_check( $spec_row[3] === $target || $on_page, "{$context}: footer door {$door_link['door']} targets " . ( $on_page ? "the anchor {$target} of its own page" : $spec_row[3] ) );
 			$amount_node = $footer_x->query( '(//nav[@class="register"]//a)[' . ( $index + 1 ) . ']/span[@class="betrag"]' )->item( 0 );
-			nav_check( $amount_node && ( '' === $spec_row[2] ? 'nach Umfang' : $spec_row[2] ) === trim( $amount_node->textContent ), "{$context}: footer door {$door_link['door']} amount " . ( '' === $spec_row[2] ? 'nach Umfang' : 'from the canon' ) );
+			$expected_amount = 'tracking' === $door_link['door'] ? 'ab ' . hu_tracking_price( 'standard', 'setup' ) : $spec_row[2];
+			nav_check( $amount_node && ( '' === $expected_amount ? 'nach Umfang' : $expected_amount ) === trim( $amount_node->textContent ), "{$context}: footer door {$door_link['door']} amount " . ( '' === $expected_amount ? 'nach Umfang' : 'from the canon' ) );
 		}
 	}
 

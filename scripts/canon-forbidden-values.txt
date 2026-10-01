@@ -92,6 +92,12 @@ rule	preis-landingpage	(^|[^0-9.,])1\.?990[[:space:]]*(€|&nbsp;€|&euro;|Euro
 # selbst beschriftet haben (docs/decisions/tracking-preisleiter.md). Der
 # Kontext trifft Tracking-Begriffe in der Zeile oder "tracking" im Pfad.
 rule	preis-tracking-leiter	(^|[^0-9.,])(890|1\.?290|1\.?900|3\.?500)[[:space:]]*(€|&nbsp;€|&euro;|Euro)	[Tt]racking|Server-Side|Conversion|GA4|Messung|Setup	Preis kommt aus hu_tracking_price() / hu_tracking_product_ladder().
+# Der Footer liest einen Preis zur Laufzeit; Literalsuche allein erkennt
+# keinen falschen Paketschluessel. navigation-contract.php prueft deshalb
+# auch den gerenderten Footer gegen standard/setup. Diese Regel erfasst
+# alte Literale, selbst wenn Bezeichnung und Betrag auf getrennten Zeilen
+# im Footer stehen. Die clientseitige measurement-Stufe bleibt gueltig.
+rule	preis-tracking-footer-alt	[Aa]b([[:space:]]| |&nbsp;|&#160;|&#x[Aa]0;)+890([[:space:]]| |&nbsp;|&#160;|&#x[Aa]0;)*(€|&euro;|EUR|Euro)([^[:alnum:]]|$)	[Tt]racking|Server-Side|^blocksy-child/(template-parts/|[^:]*footer)	Footer-Endkundenpreis aus hu_tracking_price( 'standard', 'setup' ); clientseitiges Conversion-Tracking separat belassen.
 
 # ── Startseite ────────────────────────────────────────────────────────────
 # Die Startseite ist die Money Page mit den meisten Erstkontakten. Diese
