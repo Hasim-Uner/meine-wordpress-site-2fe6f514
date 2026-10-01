@@ -41,6 +41,7 @@ und speichern im WordPress-Backend. Kein Browser-Submit an Drittanbieter.
 | `/kontakt/`, Server-Side-Formular | `contact-request` | `nexus_contact` mit Name, E-Mail, Anfrageangaben, Herkunft; Aktivität `inbound_inquiry` mit Anfragetext | Pflicht-Checkbox `consent`, serverseitig geprüft |
 | `/whitelabel-retainer/` | `whitelabel-request` | `nexus_contact` (Quelle `whitelabel_request`) mit E-Mail, Aufgabe, Zeitrahmen, Zugängen, Herkunft; Aktivität mit Aufgabentext | Hinweis unter dem Formular (vorvertragliche Anfrage) |
 | Marktcheck | `audit-request` | `nexus_review_request` mit Kontaktdaten, Antworten und Herkunft; Spiegelung in `nexus_contact` | Pflicht-Checkbox `consent_privacy` (`accepted`) |
+| Solar-Analyse und Sofortkontakt | `audit-request` | `nexus_review_request` mit Kontaktdaten, Anfragequellen und auftragsbezogenen Antworten; Spiegelung in `nexus_contact` | Pflicht-Checkbox `consent_privacy` (`accepted`) |
 | Blog-Abo | Blog-Notify-Route | Pending-Eintrag bis zur Bestätigung, danach `nexus_contact` | Double-Opt-in |
 | Anfragesystem-Analyse | `analysis-submit` | standardmäßig abgeschaltet (`HU_FEATURE_READINESS_SUBMIT`) | – |
 

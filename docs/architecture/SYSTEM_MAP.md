@@ -91,6 +91,7 @@ Marktcheck / System-Diagnose-Legacy:
 - Contract: aktiver REST-Contract `2026-05-26.audit-request.v1`; historischer n8n-Contract `automations/n8n/data-models/readiness-diagnosis-payload.v1.contract.json` bleibt nur für Legacy-Kontext intern stabil
 - Status: B2B-System-Intake im Marktcheck-Abschnitt der Solar-Landingpage, sichtbar in zwei Schritten (`HU_MARKETCHECK_VISIBLE_STEPS`), intern fünf Datengruppen (`HU_MARKETCHECK_STEPS`); vier tatsächliche Fit-Signale (`solution_focus`, `business_fit`, `sales_team_size`, `project_timing`) führen zu den geschäftlichen Kontaktdaten. CPL, Anfragevolumen oder Engpass werden nicht aus anderen Antworten abgeleitet; die Firmen-PLZ bleibt Pflicht für die regionale Einordnung. Die frühere Audit-/Instant-Results-UI ist aus der Runtime entfernt
 - WordPress REST: `/wp-json/nexus/v1/audit-request`; Antworten tragen `contractVersion`, `traceId` sowie `X-Nexus-Contract-Version`/`X-Nexus-Trace-Id`
+- Bezahlte Energie-Einstiege: `#analyse` und `#sofortkontakt` senden als getrennte `intake_variant`-Werte an denselben Endpunkt; `solar-order-forms.js` nutzt den gemeinsamen, cachefesten Submit-Helfer. Die vier Portal-Entscheidungsbeiträge führen primär zum Sofortkontakt und sekundär zum Marktcheck.
 - CRM: `nexus_review_request`, Audit-Typ `B2B-System-Intake`; Legacy-Energy-Intakes bleiben als `Marktcheck` rückwärtskompatibel
 - Mail: interne Admin-Benachrichtigung und Lead-Bestätigung über zentrale Brevo-/`wp_mail`-Schicht
 - n8n-Route: nicht angebunden; erst nach neuer Contract-/Consent-/Feature-Flag-Freigabe

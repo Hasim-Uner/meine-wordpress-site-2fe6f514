@@ -90,6 +90,8 @@ function nexus_get_audit_request_type_options() {
 		'b2b_system_intake' => 'Marktcheck',
 		'growth_blueprint' => 'Growth Blueprint',
 		'implementation'   => 'Umsetzung / Weiterentwicklung',
+		'anfragesystem_analyse' => 'Anfragesystem-Analyse',
+		'sofortkontakt_setup' => 'Sofortkontakt-Setup',
 	];
 }
 
@@ -892,7 +894,7 @@ function nexus_get_review_request_rest_schema() {
 			],
 			'intake_variant'     => [
 				'type' => 'string',
-				'enum' => [ 'energy_systems', 'growth_audit_simple' ],
+				'enum' => [ 'energy_systems', 'growth_audit_simple', 'analyse', 'sofortkontakt' ],
 			],
 			'audit_type'         => [
 				'type' => 'string',
@@ -923,6 +925,14 @@ function nexus_get_review_request_rest_schema() {
 			'position'           => [ 'type' => 'string' ],
 			'email'              => [ 'type' => 'string', 'format' => 'email' ],
 			'phone'              => [ 'type' => 'string' ],
+			'request_sources'    => [ 'type' => 'array', 'items' => [ 'type' => 'string' ] ],
+			'lead_volume'       => [ 'type' => 'string' ],
+			'lead_destination'  => [ 'type' => 'string' ],
+			'crm_name'          => [ 'type' => 'string' ],
+			'callback_name'     => [ 'type' => 'string' ],
+			'callback_mobile'   => [ 'type' => 'string' ],
+			'desired_start'     => [ 'type' => 'string' ],
+			'analysis_question' => [ 'type' => 'string', 'maxLength' => 500 ],
 			'postal_code'        => [ 'type' => 'string', 'pattern' => '^[0-9]{4,5}$' ],
 			'page_url'           => [ 'type' => 'string', 'format' => 'uri' ],
 			'consent_privacy'    => [ 'type' => 'string', 'enum' => [ 'accepted' ] ],
@@ -944,6 +954,9 @@ function nexus_get_review_request_rest_schema() {
  */
 function nexus_get_review_request_success_message( $payload ) {
 	$variant = isset( $payload['intake_variant'] ) ? sanitize_key( (string) $payload['intake_variant'] ) : '';
+	if ( in_array( $variant, [ 'analyse', 'sofortkontakt' ], true ) ) {
+		return 'Angekommen. Ich melde mich ' . hu_response_promise( 'window' ) . '.';
+	}
 
 	if ( 'energy_systems' === $variant ) {
 		return 'Eingegangen. Ihre Standortbestimmung liegt in der Bearbeitung. Sie erhalten ' . hu_response_promise( 'window' ) . ' eine E-Mail von ' . hu_get_contact_email() . ' — bei Eignung mit Vorschlag für ein 30-minütiges Erstgespräch, bei Nicht-Eignung mit konkretem Hinweis auf eine realistischere Alternative.';
@@ -1090,6 +1103,19 @@ function nexus_format_intake_ticket_id( $post_id ) {
  * @return array
  */
 function nexus_build_qualification_screen( $qualification, $validated, $post_id = 0 ) {
+	if ( in_array( $validated['intake_variant'] ?? '', [ 'analyse', 'sofortkontakt' ], true ) ) {
+		$deadline = nexus_compute_intake_response_deadline();
+		return [
+			'status' => $qualification['status'],
+			'reason' => $qualification['reason'],
+			'headline' => 'Angekommen.',
+			'message' => nexus_get_review_request_success_message( $validated ),
+			'ticket_id' => nexus_format_intake_ticket_id( $post_id ),
+			'response_deadline_iso' => $deadline['iso'],
+			'response_deadline_human' => $deadline['human'],
+			'proof' => null,
+		];
+	}
 	$first_name = '';
 	$name       = isset( $validated['name'] ) ? trim( (string) $validated['name'] ) : '';
 	if ( '' !== $name ) {
@@ -1458,8 +1484,113 @@ function nexus_sanitize_review_request_referrer_url( $url ) {
  * @param array $payload Raw request payload.
  * @return array|WP_Error
  */
+function nexus_validate_energy_order_request_payload( $payload, $variant ) {
+	$scalar = static function ( $key ) use ( $payload ) {
+		return isset( $payload[ $key ] ) && is_scalar( $payload[ $key ] ) ? (string) $payload[ $key ] : '';
+	};
+	$sources = [ 'aroundhome', 'daa', 'wattfox', 'check24_checkfox', 'eigene_website', 'andere' ];
+	$volumes = [ 'bis_20', '20_50', '50_100', 'ueber_100' ];
+	$destinations = [ 'email', 'portal', 'crm', 'tabelle' ];
+	$starts = [ 'diese_woche', 'naechste_woche', 'spaeter' ];
+	$raw_sources = isset( $payload['request_sources'] ) && is_array( $payload['request_sources'] ) ? $payload['request_sources'] : [];
+	if ( count( $raw_sources ) > count( $sources ) || array_filter( $raw_sources, 'is_string' ) !== $raw_sources ) {
+		return new WP_Error( 'invalid_request_sources', 'Bitte mindestens eine Anfragequelle auswählen.', [ 'field' => 'request_sources' ] );
+	}
+	$selected_sources = array_values( array_unique( array_map( 'sanitize_key', $raw_sources ) ) );
+	$company = sanitize_text_field( $scalar( 'company' ) );
+	$email = sanitize_email( $scalar( 'email' ) );
+	$phone = sanitize_text_field( $scalar( 'phone' ) );
+	$consent = sanitize_key( $scalar( 'consent_privacy' ) );
+	$callback_name = sanitize_text_field( $scalar( 'callback_name' ) );
+	$callback_mobile = sanitize_text_field( $scalar( 'callback_mobile' ) );
+	$lead_volume = sanitize_key( $scalar( 'lead_volume' ) );
+	$lead_destination = sanitize_key( $scalar( 'lead_destination' ) );
+	$crm_name = sanitize_text_field( $scalar( 'crm_name' ) );
+	$desired_start = sanitize_key( $scalar( 'desired_start' ) );
+	$analysis_question = sanitize_textarea_field( $scalar( 'analysis_question' ) );
+	$page_url = trim( $scalar( 'page_url' ) );
+
+	if ( '' === $company || mb_strlen( $company ) > 150 ) {
+		return new WP_Error( 'invalid_company', 'Bitte Ihre Firma angeben.', [ 'field' => 'company' ] );
+	}
+	if ( ! is_email( $email ) ) {
+		return new WP_Error( 'invalid_email', 'Bitte eine gültige E-Mail-Adresse angeben.', [ 'field' => 'email' ] );
+	}
+	if ( 'accepted' !== $consent ) {
+		return new WP_Error( 'missing_consent_privacy', 'Bitte den Datenschutzhinweis bestätigen.', [ 'field' => 'consent_privacy' ] );
+	}
+	if ( count( $selected_sources ) < 1 || count( $selected_sources ) > count( $sources ) || array_diff( $selected_sources, $sources ) ) {
+		return new WP_Error( 'invalid_request_sources', 'Bitte mindestens eine Anfragequelle auswählen.', [ 'field' => 'request_sources' ] );
+	}
+	if ( mb_strlen( $phone ) > 80 || mb_strlen( $crm_name ) > 100 || mb_strlen( $analysis_question ) > 500 ) {
+		return new WP_Error( 'invalid_field_length', 'Bitte die Länge Ihrer Angaben prüfen.' );
+	}
+	if ( 'sofortkontakt' === $variant ) {
+		if ( ! in_array( $lead_volume, $volumes, true ) || ! in_array( $lead_destination, $destinations, true ) || ! in_array( $desired_start, $starts, true ) ) {
+			return new WP_Error( 'missing_setup_details', 'Bitte Anfragezahl, Eingang und Wunschstart auswählen.' );
+		}
+		if ( '' === $callback_name || '' === $callback_mobile || '' === $phone || mb_strlen( $callback_name ) > 120 || mb_strlen( $callback_mobile ) > 80 ) {
+			return new WP_Error( 'missing_callback_contact', 'Bitte Rückrufperson, Mobilnummer und Kontakttelefon angeben.' );
+		}
+		if ( 'crm' === $lead_destination && '' === $crm_name ) {
+			return new WP_Error( 'missing_crm_name', 'Bitte Ihr CRM benennen.', [ 'field' => 'crm_name' ] );
+		}
+		$page_url = '';
+	} else {
+		$page_url = esc_url_raw( $page_url );
+		if ( ! $page_url || ! wp_http_validate_url( $page_url ) || ! in_array( wp_parse_url( $page_url, PHP_URL_SCHEME ), [ 'http', 'https' ], true ) ) {
+			return new WP_Error( 'invalid_page_url', 'Bitte eine gültige Website-Adresse angeben.', [ 'field' => 'page_url' ] );
+		}
+	}
+
+	$audit_type = 'sofortkontakt' === $variant ? 'sofortkontakt_setup' : 'anfragesystem_analyse';
+	$type_options = nexus_get_audit_request_type_options();
+	$referrer_url = nexus_sanitize_review_request_referrer_url( $scalar( 'referrer_url' ) );
+
+	return [
+		'intake_variant' => $variant,
+		'intake_variant_label' => $type_options[ $audit_type ],
+		'audit_type' => $audit_type,
+		'audit_type_label' => $type_options[ $audit_type ],
+		'page_url' => $page_url,
+		'domain' => $page_url ? (string) wp_parse_url( $page_url, PHP_URL_HOST ) : ( nexus_is_review_request_freemail_address( $email ) ? '' : nexus_get_review_request_domain_from_email( $email ) ),
+		'company' => $company,
+		'focus_area' => '',
+		'focus_area_label' => '',
+		'current_challenge' => $analysis_question,
+		'primary_goal' => '',
+		'primary_goal_label' => '',
+		'extra_context' => '',
+		'name' => 'sofortkontakt' === $variant ? $callback_name : $company,
+		'position' => '',
+		'email' => $email,
+		'email_freemail' => nexus_is_review_request_freemail_address( $email ),
+		'phone' => $phone,
+		'linkedin' => '',
+		'consent_privacy' => $consent,
+		'request_sources' => $selected_sources,
+		'lead_volume' => 'sofortkontakt' === $variant ? $lead_volume : '',
+		'lead_destination' => 'sofortkontakt' === $variant ? $lead_destination : '',
+		'crm_name' => $crm_name,
+		'callback_name' => 'sofortkontakt' === $variant ? $callback_name : '',
+		'callback_mobile' => 'sofortkontakt' === $variant ? $callback_mobile : '',
+		'desired_start' => 'sofortkontakt' === $variant ? $desired_start : '',
+		'analysis_question' => 'analyse' === $variant ? $analysis_question : '',
+		'ads_source' => sanitize_text_field( $scalar( 'ads_source' ) ),
+		'ads_keyword' => sanitize_text_field( $scalar( 'ads_keyword' ) ),
+		'landing_page_url' => nexus_sanitize_review_request_internal_url( $scalar( 'landing_page_url' ) ),
+		'entry_page_url' => nexus_sanitize_review_request_internal_url( $scalar( 'entry_page_url' ) ),
+		'previous_internal_url' => nexus_sanitize_review_request_internal_url( $scalar( 'previous_internal_url' ) ),
+		'referrer_url' => $referrer_url,
+		'referrer_host' => $referrer_url ? sanitize_text_field( strtolower( (string) wp_parse_url( $referrer_url, PHP_URL_HOST ) ) ) : '',
+	];
+}
+
 function nexus_validate_review_request_payload( $payload ) {
 	$intake_variant = isset( $payload['intake_variant'] ) ? sanitize_key( (string) $payload['intake_variant'] ) : '';
+	if ( in_array( $intake_variant, [ 'analyse', 'sofortkontakt' ], true ) ) {
+		return nexus_validate_energy_order_request_payload( $payload, $intake_variant );
+	}
 
 	if ( nexus_is_growth_audit_simple_intake_variant( $intake_variant ) ) {
 		return nexus_validate_growth_audit_simple_review_request_payload( $payload );
@@ -1979,9 +2110,11 @@ function nexus_create_review_request_post( $payload ) {
 	update_post_meta(
 		$post_id,
 		'_nexus_review_source',
-		'energy_systems' === ( $payload['intake_variant'] ?? '' )
+		in_array( $payload['intake_variant'] ?? '', [ 'analyse', 'sofortkontakt' ], true )
+			? 'energy_order_landing'
+			: ( 'energy_systems' === ( $payload['intake_variant'] ?? '' )
 			? 'energy_systems_landing'
-			: ( nexus_is_growth_audit_simple_intake_variant( $payload['intake_variant'] ?? '' ) ? 'growth_audit_landing' : 'growth_audit_funnel' )
+			: ( nexus_is_growth_audit_simple_intake_variant( $payload['intake_variant'] ?? '' ) ? 'growth_audit_landing' : 'growth_audit_funnel' ) )
 	);
 	update_post_meta( $post_id, '_nexus_review_ads_source', sanitize_text_field( (string) ( $payload['ads_source'] ?? '' ) ) );
 	update_post_meta( $post_id, '_nexus_review_ads_keyword', sanitize_text_field( (string) ( $payload['ads_keyword'] ?? '' ) ) );
@@ -1992,6 +2125,12 @@ function nexus_create_review_request_post( $payload ) {
 	update_post_meta( $post_id, '_nexus_review_referrer_host', sanitize_text_field( (string) ( $payload['referrer_host'] ?? '' ) ) );
 	update_post_meta( $post_id, '_nexus_review_contract_version', sanitize_text_field( (string) ( $payload['contract_version'] ?? '' ) ) );
 	update_post_meta( $post_id, '_nexus_review_trace_id', sanitize_key( (string) ( $payload['trace_id'] ?? '' ) ) );
+	if ( in_array( $payload['intake_variant'] ?? '', [ 'analyse', 'sofortkontakt' ], true ) ) {
+		foreach ( [ 'lead_volume', 'lead_destination', 'crm_name', 'callback_name', 'callback_mobile', 'desired_start', 'analysis_question' ] as $field ) {
+			update_post_meta( $post_id, '_nexus_review_order_' . $field, (string) ( $payload[ $field ] ?? '' ) );
+		}
+		update_post_meta( $post_id, '_nexus_review_order_request_sources', implode( ', ', $payload['request_sources'] ) );
+	}
 
 	if ( 'energy_systems' === ( $payload['intake_variant'] ?? '' ) ) {
 		update_post_meta( $post_id, '_nexus_review_energy_postal_code', sanitize_text_field( (string) ( $payload['postal_code'] ?? '' ) ) );
@@ -2250,7 +2389,25 @@ function nexus_get_review_request_detail_rows( $payload ) {
 	$variant = isset( $payload['intake_variant'] ) ? sanitize_key( (string) $payload['intake_variant'] ) : '';
 	$rows    = [];
 
-	if ( nexus_is_growth_audit_simple_intake_variant( $variant ) ) {
+	if ( in_array( $variant, [ 'analyse', 'sofortkontakt' ], true ) ) {
+		$source_labels = [ 'aroundhome' => 'Aroundhome', 'daa' => 'DAA', 'wattfox' => 'Wattfox', 'check24_checkfox' => 'Check24/Checkfox', 'eigene_website' => 'eigene Website', 'andere' => 'andere' ];
+		$volume_labels = [ 'bis_20' => 'bis 20', '20_50' => '20–50', '50_100' => '50–100', 'ueber_100' => 'über 100' ];
+		$destination_labels = [ 'email' => 'E-Mail-Postfach', 'portal' => 'Portal-Oberfläche', 'crm' => 'CRM', 'tabelle' => 'Tabelle' ];
+		$start_labels = [ 'diese_woche' => 'diese Woche', 'naechste_woche' => 'nächste Woche', 'spaeter' => 'später' ];
+		$source_values = isset( $payload['request_sources'] ) && is_array( $payload['request_sources'] ) ? $payload['request_sources'] : [];
+		$rows = [
+			[ 'label' => 'Anfragequellen', 'value' => implode( ', ', array_map( static function ( $value ) use ( $source_labels ) { return $source_labels[ $value ] ?? $value; }, $source_values ) ) ],
+			[ 'label' => 'Anfragen im Monat', 'value' => $volume_labels[ $payload['lead_volume'] ?? '' ] ?? '' ],
+			[ 'label' => 'Eingang heute', 'value' => $destination_labels[ $payload['lead_destination'] ?? '' ] ?? '' ],
+			[ 'label' => 'CRM', 'value' => (string) ( $payload['crm_name'] ?? '' ) ],
+			[ 'label' => 'Rückrufperson', 'value' => (string) ( $payload['callback_name'] ?? '' ) ],
+			[ 'label' => 'Alarm-Mobilnummer', 'value' => (string) ( $payload['callback_mobile'] ?? '' ) ],
+			[ 'label' => 'Telefon', 'value' => (string) ( $payload['phone'] ?? '' ) ],
+			[ 'label' => 'Wunschstart', 'value' => $start_labels[ $payload['desired_start'] ?? '' ] ?? '' ],
+			[ 'label' => 'Website', 'value' => (string) ( $payload['page_url'] ?? '' ) ],
+			[ 'label' => 'Analyse-Frage', 'value' => (string) ( $payload['analysis_question'] ?? '' ) ],
+		];
+	} elseif ( nexus_is_growth_audit_simple_intake_variant( $variant ) ) {
 		$rows = [
 			[
 				'label' => 'URL',
@@ -2571,6 +2728,10 @@ function nexus_send_review_request_confirmation( $payload ) {
 	$subject  = sprintf( '[%s] %s angefragt', wp_specialchars_decode( get_bloginfo( 'name' ), ENT_QUOTES ), $payload['audit_type_label'] );
 	$detail_rows = nexus_get_review_request_detail_rows( $payload );
 	$detail_html = nexus_render_review_request_detail_rows_html( $detail_rows );
+	$is_order = in_array( $payload['intake_variant'] ?? '', [ 'analyse', 'sofortkontakt' ], true );
+	$next_step = $is_order
+		? 'Sie bekommen ' . hu_response_promise( 'window' ) . ' einen Starttermin und die Liste der Zugänge, die ich brauche.'
+		: 'Ich ordne Seite, Angebot und Anfragepfad gegen den nächsten sinnvollen Schritt ein.';
 
 	$content  = sprintf(
 		'<table role="presentation" width="100%%" cellspacing="0" cellpadding="0" border="0" style="margin:0 0 20px 0; border-collapse:separate; border-spacing:0 10px;">
@@ -2579,7 +2740,7 @@ function nexus_send_review_request_confirmation( $payload ) {
 					<div style="font-size:11px; letter-spacing:0.08em; text-transform:uppercase; color:#9ea8b2; margin-bottom:6px;">Was jetzt passiert</div>
 					<div style="font-size:14px; line-height:1.8; color:#c5ced7;">
 						<strong style="color:#f7f3ee;">1.</strong> Ihre Anfrage ist sauber im System.<br>
-						<strong style="color:#f7f3ee;">2.</strong> Ich ordne Seite, Angebot und Anfragepfad gegen den nächsten sinnvollen Schritt ein.<br>
+						<strong style="color:#f7f3ee;">2.</strong> %2$s<br>
 						<strong style="color:#f7f3ee;">3.</strong> Sie erhalten die Rückmeldung per E-Mail.
 					</div>
 				</td>
@@ -2595,15 +2756,16 @@ function nexus_send_review_request_confirmation( $payload ) {
 			Sie müssen jetzt nichts weiter vorbereiten. Wenn es eine Frist, Kampagne oder interne Deadline gibt,
 			antworten Sie einfach kurz auf diese E-Mail.
 		</p>',
-		$detail_html
+		$detail_html,
+		esc_html( $next_step )
 	);
 
 	$html = nexus_get_audit_email_shell(
 		[
-			'preheader' => 'Ihre Anfrage für den ' . $payload['audit_type_label'] . ' ist eingegangen.',
+			'preheader' => $is_order ? 'Ihre Anfrage für ' . $payload['audit_type_label'] . ' ist eingegangen.' : 'Ihre Anfrage für den ' . $payload['audit_type_label'] . ' ist eingegangen.',
 			'eyebrow'   => $payload['audit_type_label'],
-			'headline'  => 'Ihr ' . $payload['audit_type_label'] . ' ist im System.',
-			'intro'     => 'Danke, ' . $payload['name'] . '. Ich prüfe die Seite und melde mich ' . hu_response_promise( 'window' ) . ' per E-Mail.',
+			'headline'  => $is_order ? 'Ihre Anfrage ist im System.' : 'Ihr ' . $payload['audit_type_label'] . ' ist im System.',
+			'intro'     => $is_order ? 'Angekommen. Ich melde mich ' . hu_response_promise( 'window' ) . '.' : 'Danke, ' . $payload['name'] . '. Ich prüfe die Seite und melde mich ' . hu_response_promise( 'window' ) . ' per E-Mail.',
 			'content'   => $content,
 			'footer'    => 'Viele Grüße, Haşim Üner',
 		]
@@ -2684,6 +2846,16 @@ function nexus_render_review_request_details_meta_box( $post ) {
 	$issue_label       = (string) get_post_meta( $post->ID, '_nexus_review_biggest_issue_label', true );
 	$is_simple_intake  = nexus_is_growth_audit_simple_intake_variant( $intake_variant );
 	$is_energy_intake  = 'energy_systems' === $intake_variant;
+	$is_order_intake = in_array( $intake_variant, [ 'analyse', 'sofortkontakt' ], true );
+	$order_details = [];
+	if ( $is_order_intake ) {
+		$order_payload = [ 'intake_variant' => $intake_variant, 'page_url' => $page_url, 'phone' => $phone ];
+		foreach ( [ 'lead_volume', 'lead_destination', 'crm_name', 'callback_name', 'callback_mobile', 'desired_start', 'analysis_question' ] as $field ) {
+			$order_payload[ $field ] = (string) get_post_meta( $post->ID, '_nexus_review_order_' . $field, true );
+		}
+		$order_payload['request_sources'] = array_filter( array_map( 'trim', explode( ',', (string) get_post_meta( $post->ID, '_nexus_review_order_request_sources', true ) ) ) );
+		$order_details = nexus_get_review_request_detail_rows( $order_payload );
+	}
 	$has_new_intake    = $is_simple_intake || $is_energy_intake || '' !== trim( $focus_area_label . $current_challenge . $primary_goal_label . $linkedin );
 	$energy_postal_code = (string) get_post_meta( $post->ID, '_nexus_review_energy_postal_code', true );
 	$energy_solution     = (string) get_post_meta( $post->ID, '_nexus_review_energy_solution_focus_label', true );
@@ -2768,6 +2940,13 @@ function nexus_render_review_request_details_meta_box( $post ) {
 				<p>Nicht angegeben</p>
 			<?php endif; ?>
 		</div>
+		<?php foreach ( $order_details as $detail ) : ?>
+			<?php if ( in_array( $detail['label'], [ 'Telefon', 'Website' ], true ) ) { continue; } ?>
+			<div class="nexus-review-meta-group">
+				<strong><?php echo esc_html( $detail['label'] ); ?></strong>
+				<p><?php echo esc_html( $detail['value'] ); ?></p>
+			</div>
+		<?php endforeach; ?>
 		<?php if ( '' !== $landing_page_url || '' !== $entry_page_url || '' !== $previous_page_url || '' !== $referrer_url ) : ?>
 			<div class="nexus-review-meta-group">
 				<strong>Attribution</strong>

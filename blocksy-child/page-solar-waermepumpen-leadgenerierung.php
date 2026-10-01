@@ -100,6 +100,9 @@ $contact_email = function_exists( 'hu_get_contact_email' ) ? hu_get_contact_emai
 // Ausweichweg fuer den Marktcheck-Mount ohne JavaScript: ein echtes
 // Formular auf /kontakt/, kein mailto. Siehe Abschnitt 07.
 $contact_url = function_exists( 'nexus_get_contact_url' ) ? nexus_get_contact_url() : home_url( '/kontakt/' );
+$privacy_url = home_url( '/datenschutz/' );
+$order_reply = hu_response_promise( 'window' );
+$order_sources = [ 'aroundhome' => 'Aroundhome', 'daa' => 'DAA', 'wattfox' => 'Wattfox', 'check24_checkfox' => 'Check24/Checkfox', 'eigene_website' => 'eigene Website', 'andere' => 'andere' ];
 
 // ── Fremde Marktzahlen (Market-Canon) ──────────────────────────
 $market_figures    = function_exists( 'hu_market_figures' ) ? hu_market_figures() : [];
@@ -970,7 +973,58 @@ get_header();
 									<span class="p zahl"><?php echo esc_html( $rung['preis'] ); ?></span>
 									<span class="n"><?php echo esc_html( $rung['note'] ); ?></span>
 								</div>
+								<?php if ( 'stufe-marktcheck' === $rung['id'] ) : ?>
+									<a class="textlink stufe-aktion" href="#marktcheck" data-track-action="cta_strecke_leiter_to_marktcheck" data-track-category="lead_gen" data-track-section="einstieg">Marktcheck starten →</a>
+								<?php elseif ( 'stufe-analyse' === $rung['id'] ) : ?>
+									<a class="textlink stufe-aktion" href="#analyse" data-track-action="cta_strecke_leiter_to_analyse" data-track-category="lead_gen" data-track-section="einstieg">Analyse anfragen →</a>
+								<?php elseif ( 'stufe-sofortkontakt' === $rung['id'] ) : ?>
+									<a class="textlink stufe-aktion" href="#sofortkontakt" data-track-action="cta_strecke_leiter_to_sofortkontakt" data-track-category="lead_gen" data-track-section="einstieg">Sofortkontakt anfragen →</a>
+								<?php else : ?>
+									<p class="stufe-aktion">Nach der Analyse. Der Preis der Analyse wird angerechnet.</p>
+								<?php endif; ?>
 							</article>
+						<?php endforeach; ?>
+					</div>
+
+					<div class="auftragsformulare">
+						<?php foreach ( [ 'analyse', 'sofortkontakt' ] as $order_variant ) : ?>
+							<?php $is_setup = 'sofortkontakt' === $order_variant; ?>
+							<section class="auftragsformular tafel" id="<?php echo esc_attr( $order_variant ); ?>" aria-labelledby="<?php echo esc_attr( $order_variant ); ?>-titel">
+								<p class="mono">Direkte Anfrage · <?php echo esc_html( $is_setup ? $setup_price : $analysis_price ); ?> netto</p>
+								<h3 id="<?php echo esc_attr( $order_variant ); ?>-titel"><?php echo esc_html( $is_setup ? 'Sofortkontakt-Setup anfragen' : 'Anfragesystem-Analyse anfragen' ); ?></h3>
+								<form data-order-form="<?php echo esc_attr( $order_variant ); ?>" novalidate>
+									<?php if ( ! $is_setup ) : ?>
+										<label>Website-Adresse <input name="page_url" type="url" inputmode="url" autocomplete="url" placeholder="https://beispiel.de" required></label>
+									<?php endif; ?>
+									<fieldset><legend>Woher kommen Ihre Anfragen?</legend><div class="auftragsformular-auswahl">
+										<?php foreach ( $order_sources as $source_value => $source_label ) : ?>
+											<label><input type="checkbox" name="request_sources[]" value="<?php echo esc_attr( $source_value ); ?>"> <?php echo esc_html( $source_label ); ?></label>
+										<?php endforeach; ?>
+									</div></fieldset>
+									<?php if ( $is_setup ) : ?>
+										<label>Wie viele Anfragen im Monat? <select name="lead_volume" required><option value="">Bitte wählen</option><option value="bis_20">bis 20</option><option value="20_50">20–50</option><option value="50_100">50–100</option><option value="ueber_100">über 100</option></select></label>
+										<label>Wo landen sie heute? <select name="lead_destination" required><option value="">Bitte wählen</option><option value="email">E-Mail-Postfach</option><option value="portal">Portal-Oberfläche</option><option value="crm">CRM</option><option value="tabelle">Tabelle</option></select></label>
+										<label data-crm-only hidden>Welches CRM? <input name="crm_name" type="text" maxlength="100"></label>
+										<label>Wer ruft zurück? <input name="callback_name" type="text" autocomplete="name" maxlength="120" required></label>
+										<label>Mobilnummer für den Alarm <input name="callback_mobile" type="tel" autocomplete="tel" maxlength="80" required></label>
+									<?php else : ?>
+										<label>Welches CRM? <span>(optional)</span><input name="crm_name" type="text" maxlength="100"></label>
+										<label>Was soll die Analyse klären? <span>(optional)</span><textarea name="analysis_question" maxlength="500" rows="3"></textarea></label>
+									<?php endif; ?>
+									<label>Firma <input name="company" type="text" autocomplete="organization" maxlength="150" required></label>
+									<label>E-Mail <input name="email" type="email" autocomplete="email" required></label>
+									<label>Telefon <?php if ( ! $is_setup ) : ?><span>(optional)</span><?php endif; ?><input name="phone" type="tel" autocomplete="tel" maxlength="80" <?php echo $is_setup ? 'required' : ''; ?>></label>
+									<?php if ( $is_setup ) : ?>
+										<label>Wunschstart <select name="desired_start" required><option value="">Bitte wählen</option><option value="diese_woche">diese Woche</option><option value="naechste_woche">nächste Woche</option><option value="spaeter">später</option></select></label>
+									<?php endif; ?>
+									<div class="auftragsformular-honig" aria-hidden="true"><label>Website <input name="company_website" type="text" tabindex="-1" autocomplete="off"></label></div>
+									<label class="auftragsformular-datenschutz"><input name="consent_privacy" type="checkbox" required> <span>Ich akzeptiere die <a href="<?php echo esc_url( $privacy_url ); ?>" target="_blank" rel="noopener">Datenschutzhinweise</a> und möchte zu meiner Anfrage kontaktiert werden.</span></label>
+									<p class="auftragsformular-status" role="status" aria-live="polite" hidden></p>
+									<button class="tun" type="submit" data-track-action="<?php echo esc_attr( $is_setup ? 'cta_strecke_sofortkontakt_submit' : 'cta_strecke_analyse_submit' ); ?>" data-track-category="lead_gen" data-track-section="<?php echo esc_attr( $order_variant ); ?>"><?php echo esc_html( $is_setup ? 'Sofortkontakt-Setup anfragen' : 'Analyse anfragen' ); ?> <span class="pf" aria-hidden="true">→</span></button>
+									<p class="auftragsformular-hinweis">Absenden ist noch keine Buchung. Sie bekommen <?php echo esc_html( $order_reply ); ?> einen Starttermin und die Liste der Zugänge, die ich brauche.</p>
+								</form>
+								<noscript><p>Für eine Anfrage ohne JavaScript nutzen Sie bitte das <a href="<?php echo esc_url( $contact_url ); ?>">Kontaktformular</a>.</p></noscript>
+							</section>
 						<?php endforeach; ?>
 					</div>
 
@@ -1192,11 +1246,11 @@ get_header();
 								data-track-category="lead_gen"
 								data-track-section="abschluss"
 							>Kostenlosen Marktcheck starten <span class="pf" aria-hidden="true">→</span></a>
-							<a class="tun still" href="#einstieg"
-								data-track-action="cta_strecke_abschluss_to_leiter"
-								data-track-category="offer"
+							<a class="tun still" href="#sofortkontakt"
+								data-track-action="cta_strecke_abschluss_to_sofortkontakt"
+								data-track-category="lead_gen"
 								data-track-section="abschluss"
-							>Einstieg ab <?php echo esc_html( $entry_price ); ?></a>
+							>Sie kaufen schon Leads? Sofortkontakt</a>
 						</div>
 					</div>
 					<div class="marg">

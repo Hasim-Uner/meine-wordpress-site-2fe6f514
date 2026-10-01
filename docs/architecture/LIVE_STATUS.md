@@ -265,6 +265,11 @@ Abschnitt anzuhängen; der Verlauf gehört in Commit-Nachrichten.
   Die Angebotsleiter ist nach Marktcheck, Analyse, Sofortkontakt-Setup und
   Aufbau in aufsteigender Preisfolge sortiert. Der Marktcheck akzeptiert
   Freemail-Adressen und markiert sie im CRM als solche.
+  Die Analyse und das Sofortkontakt-Setup haben nun eigene kurze Formulare bei
+  `#analyse` und `#sofortkontakt`; beide senden über `audit-request` mit
+  getrennten `intake_variant`-Werten. Die vier Portal-Einordnungen Aroundhome,
+  Checkfox, Wattfox und DAA führen im ersten Kontext-CTA zum Sofortkontakt,
+  danach zum Marktcheck.
 - **Energie-Cluster** (`.hu-intercept`, Pfade in
   `hu_get_solar_seo_subpage_paths()`): `/solar-leads-kaufen-alternative/`,
   `/waermepumpen-leads/`, `/b2b-solar-leads/`,
