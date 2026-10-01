@@ -122,6 +122,11 @@ function nexus_get_llms_txt_sections() {
 					'description' => 'Festpreis-Angebot für Direktkunden: eine Seite für ein Angebot mit Konzept, Text, Anfrageformular, Herkunft jeder Anfrage und Abnahme. Tracking, Website und Weiterentwicklung als eigene Zusätze.',
 				],
 				[
+					'label'       => 'WordPress-Website erstellen lassen',
+					'url'         => $urls['website'] ?? home_url( '/wordpress-website-erstellen-lassen/' ),
+					'description' => 'Festpreis-Angebot Website Kompakt für Direktkunden: Neubau oder Relaunch auf WordPress, gebaut auf einer Testumgebung und live nach Abnahme. Beim Relaunch bekommt jede alte URL eine Weiterleitung. Tracking, Landingpage, Übernahme-Check und Weiterentwicklung als eigene Zusätze.',
+				],
+				[
 					'label'       => 'Conversion-Optimierung für B2B',
 					'url'         => $urls['conversion'] ?? home_url( '/conversion-optimierung/' ),
 					'description' => 'Conversion-Optimierung für B2B-Websites mit wenig Traffic: schriftlicher Befund der Strecke vom Besuch bis zur Rückmeldung im Vertrieb, danach Umsetzung zu festen Preisen. Einstieg ist die Anfragesystem-Analyse, ohne A/B-Tests.',

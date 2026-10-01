@@ -85,7 +85,8 @@ Abschnitt anzuhängen; der Verlauf gehört in Commit-Nachrichten.
   Seiten aus `hu_footer_register_suppressed_templates()` (`inc/funnel-doors.php`,
   derzeit `/conversion-optimierung/`) zeigen es nicht. Darunter Direktzeile und Verzeichnis in vier Gruppen: Leistungen
   (Server-Side Tracking, Performance Marketing, WordPress Agentur Hannover,
-  Landingpage erstellen lassen, Conversion-Optimierung), Belege & Person
+  Landingpage erstellen lassen, Conversion-Optimierung, WordPress-Website
+  erstellen lassen), Belege & Person
   (Solar-Fallstudie, Über Haşim), Wissen (Blog, Glossar), Rechtliches
   (Impressum, Datenschutz). Der frühere `<style>`-Block im Template
   (Kontaktseite) steht jetzt in `contact.css`.
@@ -252,6 +253,29 @@ Abschnitt anzuhängen; der Verlauf gehört in Commit-Nachrichten.
   für 301 statt 410 konnte nicht abgeschlossen werden (DataForSEO ohne
   Guthaben, Bing-Linkdaten nicht angebunden, im Repo nur Domain-Summary:
   31 Backlinks, 25 verweisende Domains); Entscheidung offen.
+- **`/wordpress-website-erstellen-lassen/`** (`page-wordpress-website-erstellen-lassen.php`,
+  Gutachten-Layout wie `/landingpage-erstellen-lassen/`, seit 2026-10-01):
+  Festpreis-Angebot Website Kompakt für Direktkunden, Relaunch als Block, nicht
+  als Seitenfokus. Preis, Seitenzahl und Zusatzseite aus
+  `hu_freelancer_website_price()`, `HU_FREELANCER_WEBSITE_PAGES` und
+  `hu_freelancer_website_extra_page_price()`; Zusätze (Tracking-Leiter,
+  Landingpage, Übernahme-Check, Weiterentwicklungs-Kontingent) mit eigenem Preis
+  aus dem Kanon. Aufbau: Kopf, Anlass, Umfang mit „Nicht dazu“, Ablauf,
+  Relaunch (Weiterleitungsplan für jede alte URL, Testumgebung, Title/Canonical/
+  Schema), Zusätze, Beleg, Fragen, Abschluss. Keine eigene CSS-Datei: Das
+  Angebotsblatt nutzt `assets/css/landingpage-offer.css` über die Klasse
+  `lp-offer-page`. FAQ und FAQPage-Schema aus `nexus_get_website_faq_items()`,
+  Service mit Offer (Preis = `HU_FREELANCER_WEBSITE_MIN`) in `inc/org-schema.php`,
+  Title/Description in `inc/seo-meta.php`, Eintrag in `inc/llms-txt.php` und
+  `llms.txt`. CTAs auf `/kontakt/?type=project&focus=relaunch`, alle
+  Tracking-Werte mit Präfix `cta_website_offer_` bzw. Abschnitt
+  `website_offer_*`, kein Marktcheck-CTA, keine Ersteinschätzung. Route
+  `website`, Seitenanlage über `nexus_get_provisioned_pages()`. Query-Owner für
+  `wordpress website erstellen lassen`; `website relaunch` bleibt beim Beitrag
+  `/website-relaunch/`. Eingehende Links: Fuß (Gruppe Leistungen,
+  `cta_footer_nav_website_offer`) und `/landingpage-erstellen-lassen/` (Zusatz
+  „Website“). Die Startseite verlinkt die Seite noch nicht: Sie ist bis
+  2026-11-20 eingefroren (Versuch Ersteinschätzung); der Link folgt danach.
 - **`/ga4-tracking-setup/`** (`page-ga4.php`, virtuelle Cluster-Route):
   Das Tracking-Angebot. Zeigt alle vier Stufen der Tracking-Leiter aus
   `hu_tracking_product_ladder()` als Karten `#stufe-1` bis `#stufe-4` (Raster

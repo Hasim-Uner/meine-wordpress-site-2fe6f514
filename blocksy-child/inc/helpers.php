@@ -583,6 +583,10 @@ function nexus_get_primary_public_url_map() {
 			[ 'conversion-optimierung' ],
 			home_url( '/conversion-optimierung/' )
 		),
+		'website'              => nexus_get_page_url(
+			[ 'wordpress-website-erstellen-lassen' ],
+			home_url( '/wordpress-website-erstellen-lassen/' )
+		),
 		'tools'                => $request_url,
 		'performance_analysis' => $request_url,
 		'about'                => nexus_get_page_url(
@@ -756,6 +760,57 @@ function nexus_get_landingpage_faq_items() {
 			'key'      => 'pflege',
 			'question' => 'Kann ich die Seite danach selbst ändern?',
 			'answer'   => 'Ja. Texte und Bilder pflegen Sie im WordPress-Editor, und bei der Übergabe zeige ich Ihnen, wie. Größere Änderungen übernehme ich auf Wunsch im Monatskontingent.',
+		],
+	];
+}
+
+/**
+ * Return the FAQ set for the website offer /wordpress-website-erstellen-lassen/.
+ *
+ * Shared between the page template and the FAQPage node in inc/org-schema.php.
+ * Preise und Umfang kommen aus dem Kanon; der Wortlaut zu Zeitrahmen, Konten
+ * und Übernahme folgt der Startseite, der zu Weiterleitungen dem Relaunch-
+ * Angebot dort. Eine Lieferzeit wird nicht zugesagt, sondern mit dem Angebot
+ * genannt.
+ *
+ * @return array<int, array{key: string, question: string, answer: string}>
+ */
+function nexus_get_website_faq_items() {
+	return [
+		[
+			'key'      => 'kosten',
+			'question' => 'Was kostet es, eine WordPress-Website erstellen zu lassen?',
+			'answer'   => sprintf( 'Ab %1$s. %2$s. Die Texte liefern Sie, Struktur und Feinschliff sind enthalten. Shop, Schnittstellen und Relaunches mit vielen Seiten kalkuliere ich separat. Umfang und Endpreis stehen vor dem Start schriftlich fest.', hu_freelancer_website_price( true ), hu_freelancer_website_scope_display() ),
+		],
+		[
+			'key'      => 'dauer',
+			'question' => 'Wie lange dauert ein Projekt, und was brauchen Sie von uns?',
+			'answer'   => 'Den Zeitrahmen nenne ich mit dem Angebot. Darin steht auch, wann ich Texte, Bilder und Freigaben von Ihnen brauche. Auf Ihrer Seite braucht es eine Person, die entscheidet und freigibt.',
+		],
+		[
+			'key'      => 'text',
+			'question' => 'Wer schreibt die Texte?',
+			'answer'   => 'Die Texte liefern Sie. Struktur und Feinschliff sind im Festpreis enthalten.',
+		],
+		[
+			'key'      => 'relaunch',
+			'question' => 'Was passiert beim Relaunch mit den alten URLs?',
+			'answer'   => 'Jede alte URL bekommt eine Weiterleitung, damit bestehende Links und Suchergebnisse weiter ankommen. Dafür gibt es einen Weiterleitungsplan. Gebaut wird auf einer Testumgebung, live geht die Website erst nach Ihrer Abnahme.',
+		],
+		[
+			'key'      => 'uebernahme',
+			'question' => 'Übernehmen Sie eine bestehende WordPress-Website?',
+			'answer'   => sprintf( 'Ja, nach einem Übernahme-Check für %s. Ich prüfe Theme, Plugins, Updates, Backups, Zugänge und Ladezeit und schicke Ihnen den Befund schriftlich, mit einem Festpreis für den nächsten Schritt. Beauftragen Sie mich danach, verrechne ich den Check. Der Befund gehört Ihnen, auch wenn Sie mit jemand anderem weiterarbeiten.', hu_freelancer_takeover_check_price( true ) ),
+		],
+		[
+			'key'      => 'eigentum',
+			'question' => 'Gehören Website, Konten und Code danach uns?',
+			'answer'   => sprintf( 'Ja, von Anfang an. Domain, Hosting, Konten und Repository laufen auf Ihren Namen. Wer danach weiterentwickeln lassen will, bucht ein Kontingent: %s, monatlich kündbar. Voraussetzung ist das nicht.', hu_freelancer_retainer_display() ),
+		],
+		[
+			'key'      => 'landingpage',
+			'question' => 'Reicht mir eine Landingpage statt einer Website?',
+			'answer'   => sprintf( 'Wenn Sie ein einzelnes Angebot haben, auf das Sie Besucher gezielt schicken, ja. Die Landingpage kostet %s als Festpreis, mit Text, Anfrageformular und Herkunft jeder Anfrage. Für mehrere Leistungen oder eine Website, die es noch nicht gibt, ist die Website die bessere Wahl.', hu_landingpage_price( true ) ),
 		],
 	];
 }
@@ -1475,6 +1530,12 @@ function nexus_get_provisioned_pages() {
 			'title'    => 'Conversion-Optimierung für B2B',
 			'excerpt'  => 'Conversion-Optimierung für B2B-Websites mit wenig Traffic: schriftlicher Befund der Anfragestrecke, danach Umsetzung zu festen Preisen.',
 			'template' => 'page-conversion-optimierung.php',
+		],
+		[
+			'slug'     => 'wordpress-website-erstellen-lassen',
+			'title'    => 'WordPress-Website erstellen lassen',
+			'excerpt'  => 'WordPress-Website zum Festpreis: Neubau oder Relaunch auf einer Testumgebung, live nach Ihrer Abnahme. Jede alte URL bekommt eine Weiterleitung.',
+			'template' => 'page-wordpress-website-erstellen-lassen.php',
 		],
 		[
 			'slug'     => 'qualifizierte-pv-anfragen',

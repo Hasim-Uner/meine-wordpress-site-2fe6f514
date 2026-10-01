@@ -295,6 +295,14 @@ function hu_get_forced_singular_seo_map() {
 				'title'       => 'Landingpage erstellen lassen: Festpreis mit Text & Messung',
 				'description' => sprintf( 'Landingpage erstellen lassen zum Festpreis von %s: Konzept, Text, WordPress, Anfrageformular und Herkunft jeder Anfrage. Live nach Ihrer Abnahme.', hu_landingpage_price( true ) ),
 			],
+			// Query-Owner "wordpress website erstellen lassen" (docs/seo/query-ownership.csv).
+			// Preis und Seitenzahl aus dem Kanon, damit Snippet und Seite denselben
+			// Umfang nennen. Der Relaunch ist ein Block der Seite, nicht ihr Fokus;
+			// "website relaunch" gehoert dem Beitrag /website-relaunch/.
+			'wordpress-website-erstellen-lassen' => [
+				'title'       => 'WordPress-Website erstellen lassen: Festpreis | Haşim Üner',
+				'description' => sprintf( 'WordPress-Website erstellen lassen ab %1$s: bis zu %2$s Seiten mit Kontaktformular, Neubau oder Relaunch. Live erst nach Ihrer Abnahme.', hu_freelancer_website_price( true ), hu_pricing_count_word( HU_FREELANCER_WEBSITE_PAGES ) ),
+			],
 			// Query-Owner "conversion optimierung b2b" (docs/seo/query-ownership.csv).
 			// Die Dauer der Analyse kommt aus dem Kanon, damit Snippet und Seite
 			// dieselbe Zahl nennen.
