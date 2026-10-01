@@ -112,6 +112,12 @@ Abschnitt anzuhängen; der Verlauf gehört in Commit-Nachrichten.
 - Dashboard V3 zeigt vor den analytischen Detailsektionen maximal drei
   handlungsfähige Entscheidungen aus `Jetzt tun` und `Prüfen & planen`;
   Beobachtungssignale bleiben in der vollständigen Content-Chancen-Ansicht.
+- Audit-Titel mit Präfix `TEST` (case-insensitive) bleiben gespeichert und
+  sind aus Lead-Zählern, Attribution und Action-Hub-/Revenue-Priorisierung
+  ausgeschlossen. `/whitelabel-retainer/` hat die Rolle `Service`; der
+  Maßnahmenhinweis nennt das Agentur-Angebot und die Aufgabenanfrage.
+  Performance Pulse nutzt den letzten tatsächlich gelieferten Datentag
+  statt der Nullwerte eines ergänzten fehlenden Tages.
 - `Research` heißt im Menü `Datenbasis` und steht hinter den operativen
   Bereichen. Dort bleiben CrUX, Energy-Charts, Destatis und Eurostat als
   Primär-/Felddaten vollständig zugänglich.

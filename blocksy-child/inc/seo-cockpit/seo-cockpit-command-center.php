@@ -209,8 +209,13 @@ function nexus_resolve_revenue_command_center_insight_action( $insight, $context
 	];
 
 	if ( 'MONEY_PAGE_UNDERPERFORMING' === $type ) {
+		$primary_urls = function_exists( 'nexus_get_primary_public_url_map' ) ? nexus_get_primary_public_url_map() : [];
+		$is_whitelabel = 'service' === $page_role && nexus_get_seo_cockpit_url_path( (string) ( $insight['url'] ?? '' ) )
+			=== nexus_get_seo_cockpit_url_path( (string) ( $primary_urls['whitelabel'] ?? home_url( '/whitelabel-retainer/' ) ) );
 		$action['type']              = 'CTA';
-		$action['next_action']       = 'CTA, Proof/E3-Nähe und Marktcheck-Brücke auf dieser Seite prüfen.';
+		$action['next_action']       = $is_whitelabel
+			? 'Agentur-Angebot, Erstprojekt-CTA und Weg zur Aufgabenanfrage auf dieser Seite prüfen.'
+			: 'CTA, Proof/E3-Nähe und Marktcheck-Brücke auf dieser Seite prüfen.';
 		$action['expected_leverage'] = 'hoher Anfrage-Hebel';
 		$action['risk']              = 'mittel';
 	} elseif ( 'WEAK_FUNNEL_BRIDGE' === $type ) {
@@ -390,7 +395,8 @@ function nexus_get_revenue_command_center_lead_rows( $stored_statuses, $limit = 
 		[
 			'post_type'              => 'nexus_review_request',
 			'post_status'            => 'private',
-			'posts_per_page'         => max( 1, absint( $limit ) ),
+			// Filter test records before limiting; they must not hide older real leads.
+			'posts_per_page'         => -1,
 			'orderby'                => 'date',
 			'order'                  => 'DESC',
 			'no_found_rows'          => true,
@@ -400,6 +406,7 @@ function nexus_get_revenue_command_center_lead_rows( $stored_statuses, $limit = 
 	);
 	$rows  = [];
 	$now   = current_time( 'timestamp', true );
+	$posts = array_slice( array_filter( (array) $posts, 'nexus_is_seo_cockpit_lead_signal' ), 0, max( 1, absint( $limit ) ) );
 
 	foreach ( $posts as $post ) {
 		if ( ! ( $post instanceof WP_Post ) ) {

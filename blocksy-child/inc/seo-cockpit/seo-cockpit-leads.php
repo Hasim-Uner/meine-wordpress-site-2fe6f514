@@ -10,6 +10,18 @@ if ( ! defined( 'ABSPATH' ) ) {
 }
 
 /**
+ * Only real CRM requests contribute to cockpit lead signals.
+ *
+ * Test records remain in the CRM; their raw title prefix controls reporting.
+ *
+ * @param mixed $post Candidate CRM request.
+ * @return bool
+ */
+function nexus_is_seo_cockpit_lead_signal( $post ) {
+	return $post instanceof WP_Post && 0 !== stripos( (string) $post->post_title, 'TEST' );
+}
+
+/**
  * Return one normalized internal URL for lead attribution.
  *
  * @param string $url Raw URL.
@@ -386,7 +398,7 @@ function nexus_get_seo_cockpit_lead_snapshot_data( $ranges ) {
 	$progressed   = nexus_get_seo_cockpit_progressed_review_statuses();
 
 	foreach ( (array) $posts as $post ) {
-		if ( ! ( $post instanceof WP_Post ) ) {
+		if ( ! nexus_is_seo_cockpit_lead_signal( $post ) ) {
 			continue;
 		}
 
