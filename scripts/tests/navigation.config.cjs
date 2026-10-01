@@ -6,7 +6,7 @@ const executablePath = process.env.PLAYWRIGHT_CHROMIUM_EXECUTABLE_PATH || (exist
 
 module.exports = defineConfig({
   testDir: __dirname,
-  testMatch: 'navigation.spec.cjs',
+  testMatch: ['navigation.spec.cjs', 'legal-modal.spec.cjs'],
   outputDir: '../../.build/navigation-test-results',
   // Each test owns its page and mocked routes; CI can shard individual tests.
   fullyParallel: true,

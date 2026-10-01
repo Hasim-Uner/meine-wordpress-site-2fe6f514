@@ -43,7 +43,7 @@ while ( have_posts() ) :
 						</div>
 
 						<div class="privacy-actions">
-							<a class="privacy-button privacy-button--primary" href="<?php echo esc_url( $imprint_url ); ?>">Zum Impressum</a>
+							<a class="privacy-button privacy-button--primary" href="<?php echo esc_url( $imprint_url . '#impressum-inhalt' ); ?>">Zum Impressum</a>
 							<a class="privacy-button" href="<?php echo esc_url( $rights_url ); ?>">Ihre Rechte</a>
 							<a class="privacy-button" href="<?php echo esc_url( $contact_url ); ?>">Kontakt</a>
 						</div>
@@ -130,7 +130,7 @@ while ( have_posts() ) :
 					</div>
 				</aside>
 
-				<div class="privacy-sections">
+				<div class="privacy-sections" id="datenschutz-inhalt">
 					<section class="privacy-section" aria-labelledby="privacy-controller">
 						<h2 id="privacy-controller">1. Verantwortlicher</h2>
 						<p>

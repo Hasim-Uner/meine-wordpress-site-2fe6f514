@@ -89,6 +89,14 @@ liefert `system.css`, Schriften und `leiste.js` aus dem Arbeitsbaum aus. Ein
 abweichendes vorinstalliertes Chromium lässt sich über
 `PLAYWRIGHT_CHROMIUM_EXECUTABLE_PATH` setzen. CI führt beide Prüfungen aus.
 
+Die Browser-Suite prüft außerdem das Impressum-/Datenschutz-Popup mit den echten
+PHP-Templates und Assets. Abgedeckt sind Dokumentwechsel zum Text, Inhaltslinks,
+„Ihre Rechte“, Hover-Kontrast, Tastaturfokus, Hintergrundposition, verspätete
+Antworten und der Rückfall auf die normale URL. Desktop, Mobilansicht, reduzierte
+Bewegung und Dokumentwechsel ohne JavaScript werden getrennt geprüft. Die
+WordPress-Elternschicht wird für den Kontrasttest durch eine globale Linkfarbe
+simuliert; alle Anfragen bleiben in den lokalen Browser-Fixtures.
+
 Formular- und Navigationstests verwenden getrennte Browser-Pages und
 Netzwerk-Doubles. Beide Konfigurationen nutzen `fullyParallel` mit einem Worker;
 CI verteilt jede Suite mit `--shard=N/4` auf dieselben vier Runner. Lokal läuft
