@@ -626,9 +626,20 @@
    Ohne Skript und bei reduzierter Bewegung steht das Band still und
    schneidet rechts ab. */
 .st .st-band {
+  position: relative;
   overflow: hidden;
+}
+
+.st .st-band__fenster {
   padding: var(--s2) 0;
   border-radius: 0;
+}
+
+/* Die Linie liegt ueber dem Band, auf derselben Achse wie die Abschnitte.
+   Ausserhalb der Tafel behaelt sie den unveraenderten Streckenfarbton. */
+.st .st-band > .st-rail {
+  left: calc(max(0px, (100% - var(--st-max)) / 2) + var(--st-linie-x));
+  z-index: 1;
 }
 
 .st .st-band__zug {
