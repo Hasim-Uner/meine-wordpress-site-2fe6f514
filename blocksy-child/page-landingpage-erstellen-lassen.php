@@ -8,8 +8,9 @@
  * klare Grenze dessen, was nicht dazugehört. Herleitung des Preises:
  * docs/decisions/preise-website-landingpage.md.
  *
- * Layout wie /performance-marketing/ (Gutachten-System aus system.css), keine
- * eigene Stylesheet-Datei. Fakten kommen aus dem Kanon: Preis aus
+ * Layout wie /performance-marketing/ (Gutachten-System aus system.css). Nur das
+ * Angebotsblatt im Abschnitt „Umfang“ (Preiskarte, Leistungsraster) hat ein
+ * Delta in assets/css/landingpage-offer.css. Fakten kommen aus dem Kanon: Preis aus
  * hu_landingpage_price(), Zusätze aus der Tracking-Leiter und der
  * Freelancer-Preisliste, Antwortzeit aus hu_response_promise(), Fallzahlen aus
  * hu_e3_metric(). Fragen und FAQPage-Schema lesen nexus_get_landingpage_faq_items(),
@@ -41,6 +42,7 @@ add_action(
 	static function () {
 		if ( function_exists( 'hu_enqueue_css' ) ) {
 			hu_enqueue_css( 'hu-navigation-ecosystem', 'navigation-ecosystem.css', [ 'nexus-system-css' ] );
+			hu_enqueue_css( 'hu-landingpage-offer', 'landingpage-offer.css', [ 'nexus-system-css' ] );
 		}
 
 		if ( function_exists( 'hu_enqueue_js' ) ) {
@@ -109,7 +111,26 @@ $scope = [
 ];
 
 // Was bewusst nicht dazugehört; daraus entsteht der Festpreis.
-$not_included = 'Anzeigen schalten und betreuen, Foto- und Videoproduktion, mehrere Varianten der Seite, Anbindung an ein CRM, Shop oder Checkout, Mehrsprachigkeit.';
+$not_included = [
+	'Anzeigen schalten und betreuen',
+	'Foto- und Videoproduktion',
+	'Mehrere Varianten der Seite',
+	'Anbindung an ein CRM, Shop oder Checkout',
+	'Mehrsprachigkeit',
+];
+
+// Die Preiskarte setzt Betrag und Währung getrennt, damit das Zeichen leiser steht.
+$price_parts  = preg_split( '/[\s\x{00A0}]+/u', $price, 2 );
+$price_amount = $price_parts[0];
+$price_unit   = $price_parts[1] ?? '';
+
+// Kurzfassung in der Preiskarte; die Einzelheiten stehen im Raster darunter.
+$price_facts = [
+	'Text inklusive',
+	'Formular mit Herkunft jeder Anfrage',
+	'Zwei Korrekturschleifen',
+	'Live erst nach Ihrer Abnahme',
+];
 
 // Wann sich eine eigene Seite lohnt.
 $occasions = [
@@ -190,19 +211,44 @@ get_header();
 		<div class="blatt reihe">
 			<div class="spalte-links"><div class="kapitel" aria-hidden="true"><span class="nr">02</span><span class="titel">Umfang</span><span class="strich"></span></div></div>
 			<div class="voll">
-				<div class="tafel">
-					<p class="mono stempelfarbe">Festpreis <?php echo esc_html( $price ); ?> netto</p>
-					<h2 class="kopf">Das steckt im Festpreis.</h2>
-					<p class="vorspann">Der Preis steht, bevor ich anfange. Er gilt für eine Seite zu einem Angebot, mit allem, was sie braucht, um Anfragen anzunehmen und ihre Herkunft zu zeigen.</p>
-					<div class="protokoll posten" aria-label="Leistungsumfang">
-						<?php foreach ( $scope as $item ) : ?>
-							<div class="z"><span><?php echo esc_html( $item[0] ); ?></span><b><?php echo esc_html( $item[1] ); ?></b></div>
+				<div class="tafel angebot">
+					<div class="angebot-kopf">
+						<div class="angebot-titel">
+							<p class="mono stempelfarbe">Angebot im Detail</p>
+							<h2 class="kopf">Das steckt im Festpreis.</h2>
+							<p class="vorspann">Der Preis steht, bevor ich anfange. Er gilt für eine Seite zu einem Angebot, mit allem, was sie braucht, um Anfragen anzunehmen und ihre Herkunft zu zeigen.</p>
+						</div>
+						<div class="angebot-preis" role="group" aria-label="Festpreis">
+							<p class="mono">Festpreis</p>
+							<p class="betrag"><span class="summe"><?php echo esc_html( $price_amount ); ?></span><?php if ( '' !== $price_unit ) : ?><span class="einheit"><?php echo esc_html( $price_unit ); ?></span><?php endif; ?></p>
+							<p class="netto">netto, fest vereinbart vor dem Start</p>
+							<ul class="haken" role="list">
+								<?php foreach ( $price_facts as $fact ) : ?>
+									<li><?php echo esc_html( $fact ); ?></li>
+								<?php endforeach; ?>
+							</ul>
+							<a class="tun" href="<?php echo esc_url( $contact_url ); ?>" data-track-action="cta_lp_offer_scope_project" data-track-category="lead_gen" data-track-section="lp_offer_scope">Landingpage anfragen <span class="pf" aria-hidden="true">→</span></a>
+							<p class="mono antwort"><?php echo esc_html( $response ); ?></p>
+						</div>
+					</div>
+					<ul class="angebot-posten" role="list" aria-label="Leistungsumfang">
+						<?php foreach ( $scope as $i => $item ) : ?>
+							<li>
+								<span class="nr" aria-hidden="true"><?php echo esc_html( sprintf( '%02d', $i + 1 ) ); ?></span>
+								<h3><?php echo esc_html( $item[0] ); ?></h3>
+								<p><?php echo esc_html( $item[1] ); ?></p>
+							</li>
 						<?php endforeach; ?>
-						<div class="z"><span>Nicht dazu</span><b><?php echo esc_html( $not_included ); ?></b></div>
-					</div>
-					<div class="ausgang">
-						<a class="tun" href="<?php echo esc_url( $contact_url ); ?>" data-track-action="cta_lp_offer_scope_project" data-track-category="lead_gen" data-track-section="lp_offer_scope">Landingpage anfragen <span class="pf" aria-hidden="true">→</span></a>
-					</div>
+						<li class="grenze">
+							<span class="nr" aria-hidden="true">×</span>
+							<h3>Nicht dazu</h3>
+							<ul role="list">
+								<?php foreach ( $not_included as $excluded ) : ?>
+									<li><?php echo esc_html( $excluded ); ?></li>
+								<?php endforeach; ?>
+							</ul>
+						</li>
+					</ul>
 				</div>
 			</div>
 		</div>

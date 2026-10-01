@@ -116,6 +116,15 @@ Dokumentkopf und im Umbruch der Ausgänge. Alle Bausteine kommen aus dem Core;
 die Datei hängt an `nexus-system-css`, steht nicht mehr in der Legacy-Baseline,
 und das alte `cluster-pillar.css` ist entfernt.
 
+### Landingpage erstellen lassen
+
+`/landingpage-erstellen-lassen/` läuft auf `system.css`. `landingpage-offer.css`
+ist ein Delta für das Angebotsblatt im Abschnitt „Umfang“ (Preiskarte,
+Leistungsraster, Grenze „Nicht dazu“). Es definiert keinen Farbwert und keine
+Abstandsskala und hängt an `nexus-system-css`; das Layout reagiert per
+Container Query auf die Breite der `.tafel`, nicht auf das Fenster. Das
+Template lädt die Datei selbst, wie `navigation-ecosystem.css`.
+
 ## 4. Bewusste lokale Systeme
 
 ### `energy-systems.css`

@@ -1,5 +1,14 @@
 # CHANGELOG
 
+## 2026-10
+
+### Landingpage erstellen lassen: Umfang als Angebotsblatt
+
+- **Abschnitt „Umfang“ (`#umfang`):** Die flache Protokoll-Liste in der dunklen Tafel ist ersetzt durch ein Angebotsblatt. Links Titel und Vorspann, rechts eine Preiskarte mit dem Betrag groß gesetzt (Betrag und Währung getrennt aus `hu_landingpage_price()`), vier Haken und dem Button direkt am Preis. Darunter ein Raster aus den sieben Leistungen (Titel, Nummer, Text) und der Grenze „Nicht dazu“ als achtem, gefülltem Feld mit einer Zeile je Ausschluss.
+- **Unverändert:** Wortlaut der Leistungen und Ausschlüsse, Anker `#umfang`, `data-track-section="lp_offer_scope"` und das Event `cta_lp_offer_scope_project`; der Button ist weiterhin der eine primäre Ausgang des Abschnitts.
+- **CSS:** neue Datei `assets/css/landingpage-offer.css` als Delta auf `system.css` (nur Tokens, kein eigener Farbwert, keine Bewegung). Das Layout folgt der Breite der Tafel per Container Query; ohne Unterstützung steht alles einspaltig untereinander.
+- **Hinweis:** `$not_included` im Template ist jetzt eine Liste statt eines Satzes.
+
 ## 2026-09
 
 ### Neue Seite: Conversion-Optimierung
