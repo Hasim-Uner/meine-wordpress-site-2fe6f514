@@ -553,6 +553,10 @@ get_header();
 	// Setups dieser Datei greifen ins Leere und tun still nichts.
 	?>
 	<div class="solara-landing strecke-doc" data-track-section="anfragestrecke">
+		<header class="strecke-kopfleiste">
+			<a href="<?php echo esc_url( home_url( '/' ) ); ?>">Haşim Üner</a>
+			<a href="#marktcheck" data-track-action="cta_strecke_header_to_marktcheck" data-track-category="lead_gen" data-track-section="header">Marktcheck</a>
+		</header>
 
 		<?php
 		// ════════ Kapitelregister ════════

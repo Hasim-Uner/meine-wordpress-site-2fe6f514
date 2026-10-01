@@ -1,6 +1,6 @@
 # Privacy
 
-Stand: 2026-09-23. Technische Sicht auf die Datenverarbeitung im Theme. Die
+Stand: 2026-10-01. Technische Sicht auf die Datenverarbeitung im Theme. Die
 rechtliche Fassung für Besucher steht in `blocksy-child/page-datenschutz.php`;
 Änderungen an Formularen, Speicherung oder Drittanbietern müssen dort
 nachgezogen werden.
@@ -30,6 +30,30 @@ nachgezogen werden.
   `wpEmojiSettingsSupports` in den `sessionStorage` und kann Bilder von
   `s.w.org` nachladen. Nach WordPress-Updates prüfen, dass `_wpemojiSettings`
   nicht wieder im HTML steht.
+
+## Anonyme Solar-Tageszähler
+
+`assets/js/solar-events.js` zählt nur auf der Solar-Money-Page CTA-Klicks und
+Formularereignisse für `marktcheck`, `analyse` und `sofortkontakt`. Öffnen zählt
+bei erster Aktivierung eines Tür-Links, erster Formularinteraktion oder einem
+direkten Tür-Anker; Schritt 2 zählt einmal je Seitenladung, nur beim Marktcheck.
+„Abgesendet“ zählt nach erfolgreicher REST-Annahme. Allgemeine Inhaltsklicks
+haben eine leere Tür. Übertragen werden exakt `event`, `door`, `page`, `day`
+(UTC), ohne Query, Fragment, Referrer, Formularwerte, Cookies oder Kennung.
+`fetch` verwendet `credentials: omit` und `referrerPolicy: no-referrer`.
+
+`inc/solar-events.php` akzeptiert ausschließlich feste Ereignisnamen und den
+kanonischen Seitenpfad. Es speichert atomare Zähler pro Tag/Ereignis/Tür/Seite
+in `<prefix>nexus_solar_events`, ohne Einzelereignisse oder Besucherverknüpfung.
+Ein gemeinsames Minutenlimit in kurzlebigen Transients enthält nur eine Anzahl,
+keine IP oder Besucherkennung. Die bestehende API-Fehlertelemetrie nimmt diesen
+Endpunkt vollständig aus, damit auch abgewiesene Ereignisse keine IP-Hashes
+oder Trace-IDs bekommen. Lesen per GET auf `nexus/v1/solar-events` erfordert
+`manage_options` und liefert die letzten 31 Tage. Die bestehenden Formular-
+Payloads, Einwilligungen, CRM-Einträge und Koko-Statistik bleiben getrennt.
+
+Die Besucherinformation steht in `page-datenschutz.php`. Vor dem Merge des
+zugehörigen PRs ist Hasims Bestätigung zur cookiefreien Linie erforderlich.
 
 ## Formulare und Speicherung
 

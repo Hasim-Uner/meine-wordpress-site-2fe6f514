@@ -13,6 +13,10 @@
     var crmField = form.querySelector('[data-crm-only]');
     var busy = false;
 
+    function count(event) {
+      window.dispatchEvent(new CustomEvent('nexus:solar-form', { detail: { event: event, door: variant } }));
+    }
+
     function value(name) {
       var control = form.elements.namedItem(name);
       return control ? control.value.trim() : '';
@@ -41,6 +45,7 @@
         return input.value;
       });
       if (!sources.length) {
+        count('form_validation_error');
         showStatus('Bitte mindestens eine Anfragequelle auswählen.', false);
         form.querySelector('[name="request_sources[]"]').focus();
         return;
@@ -82,10 +87,12 @@
         body: JSON.stringify(payload)
       }).then(function (result) {
         if (!result.ok || !result.data || result.data.ok !== true) {
+          if (result.data && result.data.error_details && result.data.error_details.field) count('form_validation_error');
           throw new Error(result.data && result.data.message ? result.data.message : 'Senden fehlgeschlagen. Bitte erneut versuchen.');
         }
         showStatus(result.data.message || ('Angekommen. Ich melde mich ' + (config.replyPromise || 'bald') + '.'), true);
         form.classList.add('ist-gesendet');
+        count('form_submitted');
         button.hidden = true;
       }).catch(function (error) {
         showStatus(error.message || 'Senden fehlgeschlagen. Bitte erneut versuchen.', false);

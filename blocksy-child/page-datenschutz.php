@@ -163,6 +163,14 @@ while ( have_posts() ) :
 							für eingeloggte Nutzer entstehen.
 						</div>
 
+						<h3>Tageszähler für die Solar-Anfragewege</h3>
+						<p>
+							Auf der Solar- und Wärmepumpen-Seite zählen wir Klicks und die Nutzung der
+							Anfrageformulare als zusammengefasste Tageszahlen. Übertragen werden nur
+							Ereignis, Anfrageweg, Seitenpfad und Tag. Der Zähler speichert keine
+							Formularinhalte, Besucherkennung, IP-Adresse oder Browserkennung und nutzt
+							keine Cookies oder Browser-Speicherung. Die Zahlen bleiben auf unserem Server.
+						</p>
 						<h3>Besucherstatistik mit Koko Analytics</h3>
 						<p>
 							Um zu sehen, welche Seiten gelesen werden, nutzen wir Koko Analytics, eine

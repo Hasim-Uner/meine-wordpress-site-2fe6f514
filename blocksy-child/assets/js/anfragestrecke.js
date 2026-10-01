@@ -42,7 +42,7 @@
       '/assets/js/anfragestrecke.js',
       '/assets/css/anfragestrecke-marketcheck.css'
     );
-    href += (href.indexOf('?') === -1 ? '?' : '&') + 'mc=e4d2c1c';
+    href += (href.indexOf('?') === -1 ? '?' : '&') + 'mc=20261001-kante';
 
     var link = document.createElement('link');
     link.rel = 'stylesheet';
@@ -60,19 +60,10 @@
     ruhig = false;
   }
 
-  /* ── Energy-Header + Kapitelregister ───────────────────────────
-     Der globale Header-Controller besitzt bereits einen Pin-Vertrag.
-     Die Money-Page nutzt ihn explizit: der Header bleibt sichtbar und
-     seine tatsaechlich gemessene Hoehe wird zum Offset fuer Register,
-     Kapitelmarken und Sprungziele. Damit konkurrieren nicht mehr ein
-     64-px-Annahmewert und ein hoeherer Energy-Header miteinander.
-
-     Auf dem Telefon bleibt das Register bewusst im Dokumentfluss. Eine
-     zweite sticky Leiste unter dem festen Header kostet dort zu viel
-     Nutzflaeche und fuehrt beim Ankersprung zu einem doppelten Offset. */
+  /* Die schmale Kopfleiste bleibt im Dokumentfluss. Das Register
+     behält seine eigenen Sprungabstände, ohne einen festen Header-Offset. */
 
   function kopfUndRegister() {
-    var header = document.querySelector('[data-site-header].nx-site-header--energy');
     var register = wurzel.querySelector('[data-strecke-leiste]');
     var mobil = null;
     var breit = null;
@@ -85,32 +76,8 @@
       breit = null;
     }
 
-    if (header) {
-      header.setAttribute('data-site-header-pin', '');
-      header.classList.add('is-visible');
-
-      try {
-        header.dispatchEvent(new CustomEvent('nexus:header-pin'));
-      } catch (e) {
-        try {
-          header.dispatchEvent(new Event('nexus:header-pin'));
-        } catch (ignored) {}
-      }
-    }
-
     function sync() {
-      var headerHoehe = 64;
-
-      if (header) {
-        var rect = header.getBoundingClientRect();
-        var top = 0;
-        try {
-          top = parseFloat(window.getComputedStyle(header).top) || 0;
-        } catch (e) {
-          top = 0;
-        }
-        headerHoehe = Math.max(64, Math.ceil(rect.height + Math.max(0, top)));
-      }
+      var headerHoehe = 0;
 
       wurzel.style.setProperty('--strecke-header-height', headerHoehe + 'px');
 
@@ -156,9 +123,7 @@
       }
     }
 
-    if (header && 'ResizeObserver' in window) {
-      new ResizeObserver(sync).observe(header);
-    }
+
   }
 
   /* ── Rechner ───────────────────────────────────────────────────

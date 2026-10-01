@@ -378,6 +378,11 @@ function hu_enqueue_assets() {
 		hu_enqueue_css( 'nexus-anfragestrecke-css', 'anfragestrecke.css', [ 'nexus-design-system' ] );
 		hu_enqueue_js( 'nexus-anfragestrecke-js', 'anfragestrecke.js', [] );
 		hu_enqueue_js( 'nexus-solar-streckenmodul-js', 'solar-streckenmodul.js', [] );
+		hu_enqueue_js( 'nexus-solar-events-js', 'solar-events.js', [] );
+		wp_localize_script( 'nexus-solar-events-js', 'NexusSolarEventsConfig', [
+			'endpoint' => esc_url_raw( rest_url( 'nexus/v1/solar-events' ) ),
+			'page' => nexus_solar_event_page(),
+		] );
 		hu_enqueue_js( 'nexus-solar-leadgen-solara-js', 'solar-leadgenerierung-solara.js', [ 'nexus-core-js' ] );
 
 		$marktcheck_cfg = [

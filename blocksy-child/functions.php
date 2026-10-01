@@ -49,6 +49,7 @@ $modules = [
 	'acf.php',            // ACF Feldgruppen-Registrierung (SEO, KPI, Comparison)
 	'header.php',         // Eigener globaler Header + Navigation
 	'review-crm.php',     // Marktcheck-Intake + WordPress CRM
+	'solar-events.php',   // Anonyme Tageszähler der drei Solar-Türen
 	'contact-page.php',   // Kontakt-Route, schlanke Kontaktform und Mailversand
 	'whitelabel-request.php', // Vierfeldriges Agentur-Formular der White-Label-Route
 	'system-diagnose-page.php', // Deutsche Analyse-Route plus Legacy-Redirect
