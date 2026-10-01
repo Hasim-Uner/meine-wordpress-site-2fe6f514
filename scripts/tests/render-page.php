@@ -7,6 +7,7 @@
  *
  * <context>  key from nav_test_contexts() (request path, page slug)
  * <template> file name below blocksy-child/ (page-server-side-tracking-b2b.php)
+ * PAGE_WRAP  (env, optional) classes of a wrapper div around the template output
  * <css>      comma-separated stylesheet paths below blocksy-child/, in load order
  *            (the route's real enqueue order, see inc/enqueue.php)
  *
@@ -29,6 +30,14 @@ if ( ! function_exists( 'rest_url' ) ) {
 
 // Templates enqueue their own stylesheet and call get_header()/get_footer();
 // this script prints the header, footer and the stylesheet list itself.
+// Article-level template tags used by the decision cockpits.
+if ( ! function_exists( 'get_the_modified_date' ) ) {
+	function get_the_modified_date() { return '1. September 2026'; }
+}
+if ( ! function_exists( 'get_the_author' ) ) {
+	function get_the_author() { return 'Haşim Üner'; }
+}
+
 foreach ( [ 'wp_enqueue_style', 'wp_enqueue_script', 'get_header', 'get_footer' ] as $noop ) {
 	if ( ! function_exists( $noop ) ) {
 		eval( "function {$noop}() {}" ); // phpcs:ignore Squiz.PHP.Eval.Discouraged -- test double.
@@ -60,7 +69,10 @@ $body = (string) ob_get_clean();
 </head>
 <body class="nx-custom-header-active">
 <?php echo nav_test_render( 'template-parts/site-header.php' ); // phpcs:ignore -- rendered template. ?>
-<main id="main"><?php echo $body; // phpcs:ignore -- rendered template. ?></main>
+<main id="main"><?php
+$wrap = (string) getenv( 'PAGE_WRAP' ); // Optional wrapper classes, e.g. the article shell.
+echo '' !== $wrap ? '<div class="' . esc_attr( $wrap ) . '">' . $body . '</div>' : $body; // phpcs:ignore -- rendered template.
+?></main>
 <?php echo nav_test_render( 'template-parts/site-footer.php' ); // phpcs:ignore -- rendered template. ?>
 </body>
 </html>

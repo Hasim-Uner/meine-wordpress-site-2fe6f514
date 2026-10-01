@@ -45,7 +45,7 @@ Der Ausgangsstand vom 14.09.2026 betrug **39 CSS-Dateien mit NX-Namen** außerha
 
 Der provider-unabhängige NX-Abbau ist abgeschlossen. `b2b-solar-leads-page.css` und `solar-leads-kaufen-alternative-page.css` verwenden jetzt die kanonischen Typografie-Rollen. Die Anfragestrecke besitzt für ihre von JavaScript gemessene Energy-Header-Höhe den route-lokalen Token `--strecke-header-height` statt eines global benannten NX-Tokens.
 
-Die shrink-only Baseline steht aktuell bei **19 NX-Verbraucherdateien**. `site-header.css` und `site-header.js` sind mit dem retired Growth-Audit-Sonderheader entfernt; das verwaiste `audit.css` ebenfalls. `style.css` konsumiert keine `--nx-*`-Variablen mehr und ist aus der Baseline entfernt. Jeder verbleibende Verbraucher nutzt mindestens ein Token des Legacy-Providers; die Zahl darf nur sinken.
+Die shrink-only Baseline steht aktuell bei **17 NX-Verbraucherdateien**. `site-header.css` und `site-header.js` sind mit dem retired Growth-Audit-Sonderheader entfernt; das verwaiste `audit.css` ebenfalls. `style.css` konsumiert keine `--nx-*`-Variablen mehr und ist aus der Baseline entfernt. Jeder verbleibende Verbraucher nutzt mindestens ein Token des Legacy-Providers; die Zahl darf nur sinken.
 
 Die ehemalige Meta-Ads-Service-Route ist ebenfalls retired: `page-meta-ads.php` und `meta-ads.css` sind entfernt. Der aktive redaktionelle Beitrag `meta-ads-fuer-b2b` läuft über die normale Single-/Editorial-Architektur und benötigt dieses Service-CSS nicht.
 
@@ -67,6 +67,12 @@ Das unmittelbare Ziel ist daher nicht, `design-system.css` mit `system.css` zu v
 Farben stehen nur noch als Token: Kupferstufen sind `--stempel`, Flächen `--papier`/`--zone`/`--zone2`, Text `--tinte`/`--grau`/`--matt`, Linien `--haar`, Transparenzen `color-mix(in srgb, <Token> N%, transparent)`. Radien sind `--r0` (Formularfelder `--r1`), Schatten und Verläufe als Fläche entfallen. Die Autorenzeile (`.hu-intercept__byline`) trägt die Route selbst, weil ihre Grundregeln auf dunklem Grund gesetzt waren.
 
 Die gemeinsame Sticky-CTA-Leiste (`sticky-cta.css`, `template-parts/seo-subpage-sticky-cta.php`) trägt die Klasse `.tafel` und steht damit auf der dunklen Fläche für Handlung. Die Money-Page-Hülle (`.hu-money-*`, Rail und mobiles Inhaltsverzeichnis) lag bis dahin in `sticky-cta.css` und gehört jetzt zur SST-Datei, weil nur diese Route sie nutzt.
+
+### 3b. Portal-Einordnungen: Beitragsmodule auf Tokens
+
+Die vier Portal-Einordnungen (Checkfox, Aroundhome, Wattfox, DAA) laufen im gemeinsamen Leser (`template-parts/single-reader.php`, `article-reader-body.css`, `single-reader-unified.css`). Seit 2026-10-01 stehen ihre beitragsspezifischen Module auf `system.css`: `checkfox-decision.css`, `aroundhome-decision.css` und `cpo-calculator.css` enthalten weder Farbwert noch Radius noch `--nx-*`. Die Modulfarben (`--checkfox-*`, `--ah-*`) sind aufgelöst; die toten Regeln auf `[data-theme='light']`/`[data-nx-theme='light']` entfallen, weil `nexus-core.js` die Wurzel fest auf `dark` setzt. Die Seite ist hell; wo ein Baustein den Stempel als Fläche trägt (Knöpfe, CPO-Ergebnis), setzt es den Text ausdrücklich auf `--papier`, weil der Leser Links und `strong` im Artikel sonst dunkel färbt.
+
+**Offen:** Die Beiträge laden weiter den Legacy-Provider, denn der Leser-Unterbau (`single.css`, `single-editorial.css`, `related-content.css`, `footer-cta.css`, `post-visual.css`, `blog-notify.css`, `wgos-bridge.css`) ist für alle Beiträge gemeinsam. Ihn auf Tokens zu ziehen ändert jeden Artikel des Blogs und ist deshalb ein eigener Auftrag (Cluster 4 unten). `single-reader-unified.css` neutralisiert ihn heute mit `!important`.
 
 ### Gemessene Legacy-Cluster
 

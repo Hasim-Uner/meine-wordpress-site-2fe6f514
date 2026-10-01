@@ -1,8 +1,6 @@
 # Legacy --nx-* consumer files frozen on 2026-09-14.
 # Shrink only. New files must use the canonical system.css architecture.
-blocksy-child/assets/css/aroundhome-decision.css
 blocksy-child/assets/css/audit-results.css
-blocksy-child/assets/css/checkfox-decision.css
 blocksy-child/assets/css/cro.css
 blocksy-child/assets/css/cwv.css
 blocksy-child/assets/css/deep-dive.css

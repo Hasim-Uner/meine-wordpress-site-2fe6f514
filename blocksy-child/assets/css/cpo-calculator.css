@@ -1,11 +1,11 @@
 .hu-cpo-calculator {
 	margin: 38px 0;
 	padding: 24px;
-	border: 1px solid rgba(180, 106, 60, 0.28);
-	border-radius: 8px;
-	background: #101316;
-	color: #f7f0e8;
-	box-shadow: 0 18px 60px rgba(0, 0, 0, 0.18);
+	border: 1px solid color-mix(in srgb, var(--stempel) 28%, transparent);
+	border-radius: var(--r0);
+	background: var(--papier);
+	color: var(--tinte);
+	box-shadow: none;
 }
 
 .hu-cpo-calculator__intro {
@@ -15,7 +15,7 @@
 
 .hu-cpo-calculator__eyebrow {
 	margin: 0 0 8px;
-	color: #d89a70;
+	color: var(--stempel);
 	font-size: 0.78rem;
 	font-weight: 700;
 	text-transform: uppercase;
@@ -24,14 +24,14 @@
 
 .hu-cpo-calculator__title {
 	margin: 0 0 10px;
-	color: #fff7ee;
+	color: var(--tinte);
 	font-size: clamp(1.35rem, 2vw, 1.85rem);
 	line-height: 1.18;
 }
 
 .hu-cpo-calculator__text {
 	margin: 0;
-	color: rgba(247, 240, 232, 0.78);
+	color: color-mix(in srgb, var(--tinte) 78%, transparent);
 }
 
 /* Gemeinsame Annahme (Auftragswert) */
@@ -39,9 +39,9 @@
 	max-width: 340px;
 	margin-bottom: 20px;
 	padding: 12px 14px;
-	border: 1px dashed rgba(216, 154, 112, 0.4);
-	border-radius: 8px;
-	background: rgba(216, 154, 112, 0.06);
+	border: 1px dashed color-mix(in srgb, var(--stempel) 40%, transparent);
+	border-radius: var(--r0);
+	background: color-mix(in srgb, var(--stempel) 6%, transparent);
 }
 
 .hu-cpo-calculator__scenarios {
@@ -52,9 +52,9 @@
 
 .hu-cpo-calculator__scenario {
 	padding: 18px;
-	border: 1px solid rgba(247, 240, 232, 0.14);
-	border-radius: 8px;
-	background: rgba(255, 255, 255, 0.035);
+	border: 1px solid color-mix(in srgb, var(--haar) 14%, transparent);
+	border-radius: var(--r0);
+	background: color-mix(in srgb, var(--papier) 4%, transparent);
 }
 
 .hu-cpo-calculator__scenario-head {
@@ -65,17 +65,17 @@
 
 .hu-cpo-calculator__scenario-head h4 {
 	margin: 0;
-	color: #fff7ee;
+	color: var(--tinte);
 	font-size: 1.05rem;
 }
 
 .hu-cpo-calculator input {
 	width: 100%;
 	min-height: 42px;
-	border: 1px solid rgba(247, 240, 232, 0.18);
-	border-radius: 6px;
-	background: rgba(0, 0, 0, 0.24);
-	color: #fff7ee;
+	border: 1px solid color-mix(in srgb, var(--haar) 18%, transparent);
+	border-radius: var(--r1);
+	background: color-mix(in srgb, var(--papier) 24%, transparent);
+	color: var(--tinte);
 	font: inherit;
 }
 
@@ -85,7 +85,7 @@
 }
 
 .hu-cpo-calculator input:focus {
-	outline: 2px solid rgba(216, 154, 112, 0.72);
+	outline: 2px solid color-mix(in srgb, var(--stempel) 72%, transparent);
 	outline-offset: 2px;
 }
 
@@ -96,7 +96,7 @@
 	padding: 0;
 	border: 0;
 	background: transparent;
-	accent-color: #cf7c49;
+	accent-color: var(--stempel);
 	cursor: pointer;
 }
 
@@ -127,7 +127,7 @@
 }
 
 .hu-cpo-calculator label span {
-	color: rgba(247, 240, 232, 0.72);
+	color: color-mix(in srgb, var(--tinte) 72%, transparent);
 	font-size: 0.82rem;
 	font-weight: 650;
 }
@@ -141,7 +141,7 @@
 }
 
 .hu-cpo-calculator__field-label b {
-	color: #e6a878;
+	color: var(--stempel);
 	font-size: 1rem;
 	font-weight: 800;
 }
@@ -149,7 +149,7 @@
 .hu-cpo-calculator__hint {
 	display: block;
 	margin-top: 6px;
-	color: rgba(247, 240, 232, 0.55);
+	color: color-mix(in srgb, var(--tinte) 55%, transparent);
 	font-size: 0.75rem;
 	font-weight: 500;
 	letter-spacing: 0;
@@ -160,14 +160,14 @@
 .hu-cpo-calculator__hero {
 	margin-top: 16px;
 	padding: 14px 16px;
-	border: 1px solid rgba(216, 154, 112, 0.45);
-	border-radius: 8px;
-	background: linear-gradient(135deg, rgba(207, 124, 73, 0.18), rgba(0, 0, 0, 0.25));
+	border: 1px solid color-mix(in srgb, var(--stempel) 45%, transparent);
+	border-radius: var(--r0);
+	background: none;
 }
 
 .hu-cpo-calculator__hero span {
 	display: block;
-	color: rgba(247, 240, 232, 0.7);
+	color: color-mix(in srgb, var(--tinte) 70%, transparent);
 	font-size: 0.76rem;
 	font-weight: 700;
 	text-transform: uppercase;
@@ -177,7 +177,7 @@
 .hu-cpo-calculator__hero strong {
 	display: block;
 	margin-top: 4px;
-	color: #fff7ee;
+	color: var(--tinte);
 	font-size: clamp(1.7rem, 3vw, 2.1rem);
 	line-height: 1.1;
 }
@@ -185,14 +185,14 @@
 /* Eingeklappte Details */
 .hu-cpo-calculator__details {
 	margin-top: 14px;
-	border-top: 1px solid rgba(247, 240, 232, 0.1);
+	border-top: 1px solid color-mix(in srgb, var(--haar) 10%, transparent);
 	padding-top: 4px;
 }
 
 .hu-cpo-calculator__details summary {
 	cursor: pointer;
 	padding: 8px 0;
-	color: #d89a70;
+	color: var(--stempel);
 	font-size: 0.85rem;
 	font-weight: 700;
 	list-style: none;
@@ -219,9 +219,9 @@
 
 .hu-cpo-calculator__results div,
 .hu-cpo-calculator__summary {
-	border: 1px solid rgba(247, 240, 232, 0.12);
-	border-radius: 7px;
-	background: rgba(0, 0, 0, 0.22);
+	border: 1px solid color-mix(in srgb, var(--haar) 12%, transparent);
+	border-radius: var(--r0);
+	background: color-mix(in srgb, var(--papier) 22%, transparent);
 }
 
 .hu-cpo-calculator__results div {
@@ -231,7 +231,7 @@
 .hu-cpo-calculator__results span,
 .hu-cpo-calculator__summary span {
 	display: block;
-	color: rgba(247, 240, 232, 0.62);
+	color: color-mix(in srgb, var(--tinte) 62%, transparent);
 	font-size: 0.76rem;
 	font-weight: 700;
 	text-transform: uppercase;
@@ -242,7 +242,7 @@
 .hu-cpo-calculator__summary strong {
 	display: block;
 	margin-top: 4px;
-	color: #fff7ee;
+	color: var(--tinte);
 	font-size: 1.04rem;
 	line-height: 1.18;
 }
@@ -258,7 +258,7 @@
 
 .hu-cpo-calculator__summary p {
 	margin: 0;
-	color: rgba(247, 240, 232, 0.78);
+	color: color-mix(in srgb, var(--tinte) 78%, transparent);
 }
 
 .hu-cpo-calculator__cta {
@@ -270,9 +270,9 @@
 	min-height: 44px;
 	max-width: 100%;
 	padding: 0.6em 22px;
-	border-radius: 6px;
-	background: #b46a3c;
-	color: #fff7ee;
+	border-radius: var(--r0);
+	background: var(--stempel);
+	color: var(--papier);
 	font-weight: 800;
 	text-align: center;
 	text-decoration: none;
@@ -281,8 +281,8 @@
 
 .hu-cpo-calculator__cta:hover,
 .hu-cpo-calculator__cta:focus {
-	background: #cf7c49;
-	color: #fff;
+	background: var(--tinte);
+	color: var(--papier);
 }
 
 @media (max-width: 860px) {
@@ -307,4 +307,12 @@
 		white-space: normal;
 		text-align: center;
 	}
+}
+
+/* Im Artikel gewinnt sonst die Linkfarbe des Lesers über den Knopf; die
+   Verdopplung der Klasse hebt die Spezifität über die Linkregel des Editorials. */
+.nexus-article-content.nexus-article-content .hu-cpo-calculator a.hu-cpo-calculator__cta,
+.nexus-article-content.nexus-article-content .hu-cpo-calculator a.hu-cpo-calculator__cta:hover,
+.nexus-article-content.nexus-article-content .hu-cpo-calculator a.hu-cpo-calculator__cta:focus {
+	color: var(--papier);
 }

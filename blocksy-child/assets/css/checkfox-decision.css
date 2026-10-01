@@ -1,18 +1,10 @@
 /* Checkfox decision page: compact hero, sticky in-page nav, five sections. */
 
 .hu-checkfox {
-	--checkfox-bg: #0b0f12;
-	--checkfox-surface: #11161a;
-	--checkfox-surface-2: #171d22;
-	--checkfox-line: #303940;
-	--checkfox-text: #f2ebdd;
-	--checkfox-muted: #b9b1a3;
-	--checkfox-copper: #b46a3c;
-	--checkfox-copper-light: #dd9668;
 	--checkfox-nav-height: 52px;
 	width: min(1180px, calc(100vw - 48px));
 	margin: 0 auto;
-	color: var(--checkfox-text);
+	color: var(--tinte);
 }
 
 .hu-checkfox *,
@@ -32,7 +24,7 @@
 
 .hu-checkfox :where(a, button, input, summary):focus-visible,
 .hu-checkfox [tabindex="-1"]:focus-visible {
-	outline: 3px solid var(--checkfox-copper-light);
+	outline: 3px solid var(--stempel);
 	outline-offset: 3px;
 }
 
@@ -53,8 +45,8 @@
 
 .hu-checkfox__eyebrow {
 	margin-bottom: 14px;
-	color: var(--checkfox-copper-light);
-	font-family: var(--font-mono, ui-monospace, monospace);
+	color: var(--stempel);
+	font-family: var(--mono);
 	font-size: 0.75rem;
 	font-weight: 700;
 	letter-spacing: 0.08em;
@@ -64,8 +56,8 @@
 .hu-checkfox__hero h1 {
 	max-width: 26ch;
 	margin-bottom: 18px;
-	color: var(--checkfox-text);
-	font-family: var(--font-display, sans-serif);
+	color: var(--tinte);
+	font-family: var(--serif-display);
 	font-size: clamp(2.05rem, 3.2vw, 3.25rem);
 	font-weight: 730;
 	letter-spacing: -0.035em;
@@ -76,7 +68,7 @@
 .hu-checkfox__hero-lead {
 	max-width: 58ch;
 	margin-bottom: 22px;
-	color: var(--checkfox-muted);
+	color: var(--grau);
 	font-size: clamp(1.02rem, 1.4vw, 1.15rem) !important;
 }
 
@@ -88,7 +80,7 @@
 
 .hu-checkfox__hero-note {
 	margin: 16px 0 0;
-	color: #918a7e;
+	color: var(--matt);
 	font-size: 0.85rem !important;
 }
 
@@ -99,7 +91,7 @@
 	min-height: 44px;
 	padding: 11px 20px;
 	border: 1px solid transparent;
-	border-radius: 8px;
+	border-radius: var(--r0);
 	font-weight: 760;
 	line-height: 1.25;
 	text-align: center;
@@ -107,24 +99,24 @@
 }
 
 .hu-checkfox__button--primary {
-	background: var(--checkfox-copper);
-	color: #fffaf5;
+	background: var(--stempel);
+	color: var(--papier);
 }
 
 .hu-checkfox__button--primary:hover {
-	background: #ca7b49;
-	color: #fff;
+	background: var(--tinte);
+	color: var(--papier);
 }
 
 .hu-checkfox__button--secondary {
-	border-color: #58636b;
-	background: rgba(255, 255, 255, 0.03);
-	color: var(--checkfox-text);
+	border-color: var(--haar);
+	background: color-mix(in srgb, var(--papier) 3%, transparent);
+	color: var(--tinte);
 }
 
 .hu-checkfox__button--secondary:hover {
-	border-color: var(--checkfox-copper-light);
-	color: #fff;
+	border-color: var(--stempel);
+	color: var(--tinte);
 }
 
 .hu-checkfox__decision-visual {
@@ -133,9 +125,9 @@
 	gap: 10px;
 	margin: 0;
 	padding: 18px;
-	border: 1px solid var(--checkfox-line);
-	border-radius: 14px;
-	background: var(--checkfox-surface);
+	border: 1px solid var(--haar);
+	border-radius: var(--r0);
+	background: var(--zone);
 }
 
 .hu-checkfox__decision-side {
@@ -143,20 +135,20 @@
 	flex-direction: column;
 	gap: 4px;
 	padding: 10px 12px;
-	border-radius: 10px;
-	background: var(--checkfox-surface-2);
+	border-radius: var(--r0);
+	background: var(--zone2);
 }
 
 .hu-checkfox__decision-number {
-	color: var(--checkfox-copper-light);
-	font-family: var(--font-mono, ui-monospace, monospace);
+	color: var(--stempel);
+	font-family: var(--mono);
 	font-size: 0.72rem;
 	font-weight: 700;
 	letter-spacing: 0.08em;
 }
 
 .hu-checkfox__decision-side strong {
-	color: var(--checkfox-text);
+	color: var(--tinte);
 	font-size: 1rem;
 	font-weight: 700;
 	line-height: 1.25;
@@ -166,7 +158,7 @@
 }
 
 .hu-checkfox__decision-side small {
-	color: var(--checkfox-muted);
+	color: var(--grau);
 	font-size: 0.8rem;
 	line-height: 1.4;
 }
@@ -181,7 +173,7 @@
 .hu-checkfox__decision-divider::after {
 	content: '';
 	height: 1px;
-	background: linear-gradient(90deg, transparent, var(--checkfox-copper), transparent);
+	background: none;
 }
 
 .hu-checkfox__decision-divider span {
@@ -189,11 +181,11 @@
 	height: 7px;
 	margin: 0 8px;
 	border-radius: 50%;
-	background: var(--checkfox-copper);
+	background: var(--stempel);
 }
 
 .hu-checkfox__decision-visual figcaption {
-	color: var(--checkfox-muted);
+	color: var(--grau);
 	font-size: 0.8rem;
 	line-height: 1.45;
 }
@@ -208,16 +200,16 @@
 	align-items: center;
 	gap: 12px;
 	margin-bottom: clamp(28px, 4vw, 44px);
-	border-block: 1px solid var(--checkfox-line);
+	border-block: 1px solid var(--haar);
 	/* Deckend: der Artikeltext darf nicht durch die Leiste scheinen. */
-	background: var(--checkfox-bg);
+	background: var(--papier);
 }
 
 /* Der globale Header wird am Seitenende wieder eingeblendet und liegt auf
    z-index 1004. Solange er sichtbar ist, rutscht die Leiste darunter. */
 html:has(.nexus-blog-header.is-visible) .hu-checkfox__bar,
 html:has(.nexus-blog-header.is-open) .hu-checkfox__bar {
-	top: var(--nx-header-height, 88px);
+	top: var(--leiste-h, 0px);
 }
 
 /* Am Seitenende uebernimmt der globale Header die Orientierung. */
@@ -239,9 +231,9 @@ html:has(.nexus-blog-header.is-open) .hu-checkfox__bar {
 	min-height: 44px;
 	margin-right: 2px;
 	padding: 0 18px;
-	border-radius: 999px;
-	background: var(--checkfox-copper);
-	color: #fffaf5;
+	border-radius: var(--r0);
+	background: var(--stempel);
+	color: var(--papier);
 	font-size: 0.9rem;
 	font-weight: 760;
 	text-decoration: none;
@@ -249,8 +241,8 @@ html:has(.nexus-blog-header.is-open) .hu-checkfox__bar {
 }
 
 .hu-checkfox__bar-cta:hover {
-	background: #ca7b49;
-	color: #fff;
+	background: var(--stempel);
+	color: var(--papier);
 }
 
 .hu-checkfox__toc ul {
@@ -280,7 +272,7 @@ html:has(.nexus-blog-header.is-open) .hu-checkfox__bar {
 	min-height: 44px;
 	padding: 4px 14px;
 	border-bottom: 2px solid transparent;
-	color: var(--checkfox-muted);
+	color: var(--grau);
 	font-size: 0.9rem;
 	font-weight: 650;
 	text-decoration: none;
@@ -288,12 +280,12 @@ html:has(.nexus-blog-header.is-open) .hu-checkfox__bar {
 }
 
 .hu-checkfox__toc a:hover {
-	color: var(--checkfox-text);
+	color: var(--tinte);
 }
 
 .hu-checkfox__toc a[aria-current='true'] {
-	border-bottom-color: var(--checkfox-copper);
-	color: var(--checkfox-copper-light);
+	border-bottom-color: var(--stempel);
+	color: var(--stempel);
 }
 
 .hu-checkfox__toc a:focus-visible {
@@ -305,7 +297,7 @@ html:has(.nexus-blog-header.is-open) .hu-checkfox__bar {
 .hu-checkfox__section,
 .hu-checkfox__final {
 	padding-bottom: clamp(28px, 4vw, 44px);
-	border-bottom: 1px solid var(--checkfox-line);
+	border-bottom: 1px solid var(--haar);
 }
 
 .hu-checkfox__section + .hu-checkfox__section,
@@ -317,7 +309,7 @@ html:has(.nexus-blog-header.is-open) .hu-checkfox__bar {
 .hu-checkfox__final h2 {
 	max-width: 36ch;
 	margin-bottom: 12px;
-	font-family: var(--font-display, sans-serif);
+	font-family: var(--serif-display);
 	font-size: clamp(1.5rem, 2.4vw, 2rem);
 	font-weight: 720;
 	letter-spacing: -0.025em;
@@ -327,7 +319,7 @@ html:has(.nexus-blog-header.is-open) .hu-checkfox__bar {
 .hu-checkfox__section-lead {
 	max-width: 72ch;
 	margin-bottom: 18px;
-	color: var(--checkfox-muted);
+	color: var(--grau);
 }
 
 /* ── Cost calculator (shared partial, densified here) ───── */
@@ -335,9 +327,9 @@ html:has(.nexus-blog-header.is-open) .hu-checkfox__bar {
 .hu-checkfox .hu-cpo-calculator--portal {
 	margin: 0;
 	padding: clamp(18px, 2.4vw, 26px);
-	border: 1px solid var(--checkfox-line);
-	border-radius: 14px;
-	background: var(--checkfox-surface);
+	border: 1px solid var(--haar);
+	border-radius: var(--r0);
+	background: var(--zone);
 }
 
 .hu-cpo-calculator--portal .hu-cpo-calculator__intro {
@@ -347,10 +339,10 @@ html:has(.nexus-blog-header.is-open) .hu-checkfox__bar {
 .hu-cpo-calculator--portal .hu-cpo-calculator__example {
 	margin: 10px 0 0;
 	padding: 9px 12px;
-	border: 1px solid var(--checkfox-line);
-	border-radius: 8px;
-	background: var(--checkfox-surface-2);
-	color: var(--checkfox-muted);
+	border: 1px solid var(--haar);
+	border-radius: var(--r0);
+	background: var(--zone2);
+	color: var(--grau);
 	font-size: 0.85rem;
 	line-height: 1.5;
 }
@@ -378,13 +370,13 @@ html:has(.nexus-blog-header.is-open) .hu-checkfox__bar {
 	flex-direction: column;
 	gap: 3px;
 	padding: 12px 14px;
-	border: 1px solid var(--checkfox-line);
-	border-radius: 10px;
-	background: var(--checkfox-surface-2);
+	border: 1px solid var(--haar);
+	border-radius: var(--r0);
+	background: var(--zone2);
 }
 
 .hu-cpo-calculator__portal-results span {
-	color: var(--checkfox-muted);
+	color: var(--grau);
 	font-size: 0.78rem;
 	font-weight: 600;
 	letter-spacing: 0.02em;
@@ -392,15 +384,15 @@ html:has(.nexus-blog-header.is-open) .hu-checkfox__bar {
 }
 
 .hu-cpo-calculator__portal-results strong {
-	color: var(--checkfox-text);
+	color: var(--tinte);
 	font-size: 1.2rem;
 	font-weight: 720;
 	line-height: 1.2;
 }
 
 .hu-cpo-calculator__portal-results .hu-cpo-calculator__portal-result-main {
-	border-color: var(--checkfox-copper);
-	background: rgba(180, 106, 60, 0.1);
+	border-color: var(--stempel);
+	background: color-mix(in srgb, var(--stempel) 10%, transparent);
 }
 
 .hu-cpo-calculator__portal-result-main strong {
@@ -422,16 +414,16 @@ html:has(.nexus-blog-header.is-open) .hu-checkfox__bar {
 .hu-cpo-calculator__portal-next p {
 	flex: 1 1 260px;
 	margin: 0;
-	color: var(--checkfox-muted);
+	color: var(--grau);
 	font-size: 0.85rem !important;
 }
 
 /* ── Contract disclosure ────────────────────────────────── */
 
 .hu-checkfox__contract {
-	border: 1px solid var(--checkfox-line);
-	border-radius: 14px;
-	background: var(--checkfox-surface);
+	border: 1px solid var(--haar);
+	border-radius: var(--r0);
+	background: var(--zone);
 }
 
 .hu-checkfox__contract > summary {
@@ -440,7 +432,7 @@ html:has(.nexus-blog-header.is-open) .hu-checkfox__bar {
 	gap: 10px;
 	min-height: 52px;
 	padding: 12px 18px;
-	color: var(--checkfox-text);
+	color: var(--tinte);
 	font-weight: 700;
 	cursor: pointer;
 	list-style: none;
@@ -458,9 +450,9 @@ html:has(.nexus-blog-header.is-open) .hu-checkfox__bar {
 	width: 24px;
 	height: 24px;
 	flex: 0 0 auto;
-	border: 1px solid var(--checkfox-copper);
-	border-radius: 6px;
-	color: var(--checkfox-copper-light);
+	border: 1px solid var(--stempel);
+	border-radius: var(--r0);
+	color: var(--stempel);
 	font-size: 1rem;
 	line-height: 1;
 }
@@ -481,7 +473,7 @@ html:has(.nexus-blog-header.is-open) .hu-checkfox__bar {
 
 .hu-checkfox__contract legend {
 	padding: 0 0 10px;
-	color: var(--checkfox-muted);
+	color: var(--grau);
 	font-size: 0.85rem;
 	font-weight: 650;
 }
@@ -521,7 +513,7 @@ html:has(.nexus-blog-header.is-open) .hu-checkfox__bar {
 	width: 100%;
 	min-height: 44px;
 	padding: 6px 0;
-	color: var(--checkfox-text);
+	color: var(--tinte);
 	font-size: 0.95rem;
 	line-height: 1.35;
 	cursor: pointer;
@@ -532,18 +524,18 @@ html:has(.nexus-blog-header.is-open) .hu-checkfox__bar {
 	width: 22px;
 	height: 22px;
 	flex: 0 0 auto;
-	border: 1px solid #6a747c;
-	border-radius: 6px;
-	background: var(--checkfox-surface-2);
+	border: 1px solid var(--haar);
+	border-radius: var(--r0);
+	background: var(--zone2);
 }
 
 .hu-checkfox__contract-list input:checked + label::before {
-	border-color: var(--checkfox-copper);
-	background: var(--checkfox-copper) url("data:image/svg+xml;charset=utf-8,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23fffaf5' stroke-width='3.5' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='m5 12.5 4.5 4.5L19 7.5'/%3E%3C/svg%3E") center / 15px no-repeat;
+	border-color: var(--stempel);
+	background: var(--stempel) url("data:image/svg+xml;charset=utf-8,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23fffaf5' stroke-width='3.5' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='m5 12.5 4.5 4.5L19 7.5'/%3E%3C/svg%3E") center / 15px no-repeat;
 }
 
 .hu-checkfox__contract-list input:focus-visible + label::before {
-	outline: 3px solid var(--checkfox-copper-light);
+	outline: 3px solid var(--stempel);
 	outline-offset: 3px;
 }
 
@@ -554,20 +546,20 @@ html:has(.nexus-blog-header.is-open) .hu-checkfox__bar {
 	gap: 4px 12px;
 	margin: 16px 0 0;
 	padding: 12px 14px;
-	border: 1px solid var(--checkfox-line);
-	border-radius: 10px;
-	background: var(--checkfox-surface-2);
+	border: 1px solid var(--haar);
+	border-radius: var(--r0);
+	background: var(--zone2);
 }
 
 .hu-checkfox__contract-result strong {
-	color: var(--checkfox-text);
+	color: var(--tinte);
 	font-size: 1.05rem;
 	font-weight: 720;
 }
 
 .hu-checkfox__contract-result span {
 	flex: 1 1 240px;
-	color: var(--checkfox-muted);
+	color: var(--grau);
 	font-size: 0.88rem;
 	line-height: 1.5;
 }
@@ -582,9 +574,9 @@ html:has(.nexus-blog-header.is-open) .hu-checkfox__bar {
 
 .hu-checkfox__compare-lane {
 	padding: 20px;
-	border: 1px solid var(--checkfox-line);
-	border-radius: 14px;
-	background: var(--checkfox-surface);
+	border: 1px solid var(--haar);
+	border-radius: var(--r0);
+	background: var(--zone);
 }
 
 .hu-checkfox__compare-lane h3 {
@@ -595,15 +587,15 @@ html:has(.nexus-blog-header.is-open) .hu-checkfox__bar {
 
 .hu-checkfox__compare-path {
 	margin-bottom: 14px;
-	color: var(--checkfox-copper-light);
-	font-family: var(--font-mono, ui-monospace, monospace);
+	color: var(--stempel);
+	font-family: var(--mono);
 	font-size: 0.82rem !important;
 	line-height: 1.5 !important;
 }
 
 .hu-checkfox__compare-fit {
 	margin-bottom: 8px;
-	color: var(--checkfox-text);
+	color: var(--tinte);
 	font-size: 0.88rem !important;
 	font-weight: 700;
 }
@@ -611,7 +603,7 @@ html:has(.nexus-blog-header.is-open) .hu-checkfox__bar {
 .hu-checkfox__compare-lane ul {
 	margin: 0;
 	padding-left: 18px;
-	color: var(--checkfox-muted);
+	color: var(--grau);
 }
 
 .hu-checkfox__compare-lane li {
@@ -625,7 +617,7 @@ html:has(.nexus-blog-header.is-open) .hu-checkfox__bar {
 	max-width: 78ch;
 	margin: 0;
 	padding-left: 18px;
-	color: var(--checkfox-muted);
+	color: var(--grau);
 }
 
 .hu-checkfox__sources li {
@@ -634,11 +626,11 @@ html:has(.nexus-blog-header.is-open) .hu-checkfox__bar {
 }
 
 .hu-checkfox__sources strong {
-	color: var(--checkfox-text);
+	color: var(--tinte);
 }
 
 .hu-checkfox__sources a {
-	color: var(--checkfox-copper-light);
+	color: var(--stempel);
 	text-underline-offset: 3px;
 }
 
@@ -652,12 +644,12 @@ html:has(.nexus-blog-header.is-open) .hu-checkfox__bar {
 .hu-checkfox__final-copy > p:not(.hu-checkfox__byline) {
 	max-width: 62ch;
 	margin-bottom: 18px;
-	color: var(--checkfox-muted);
+	color: var(--grau);
 }
 
 .hu-checkfox__byline {
 	margin: 20px 0 0;
-	color: #918a7e;
+	color: var(--matt);
 	font-size: 0.85rem !important;
 }
 
@@ -693,7 +685,7 @@ html:has(.nexus-blog-header.is-open) .hu-checkfox__bar {
 		width: 1px;
 		height: auto;
 		justify-self: center;
-		background: linear-gradient(180deg, transparent, var(--checkfox-copper), transparent);
+		background: none;
 	}
 
 	.hu-checkfox__decision-divider span {
@@ -719,7 +711,7 @@ html:has(.nexus-blog-header.is-open) .hu-checkfox__bar {
 	.hu-checkfox__decision-divider::after {
 		width: auto;
 		height: 1px;
-		background: linear-gradient(90deg, transparent, var(--checkfox-copper), transparent);
+		background: none;
 	}
 
 	.hu-checkfox__decision-divider span {
@@ -766,9 +758,9 @@ html:has(.nexus-blog-header.is-open) .hu-checkfox__bar {
 }
 
 .hu-checkfox__faq > details {
-	border: 1px solid var(--checkfox-line);
-	border-radius: 14px;
-	background: var(--checkfox-surface);
+	border: 1px solid var(--haar);
+	border-radius: var(--r0);
+	background: var(--zone);
 }
 
 .hu-checkfox__faq > details > summary {
@@ -777,7 +769,7 @@ html:has(.nexus-blog-header.is-open) .hu-checkfox__bar {
 	gap: 10px;
 	min-height: 52px;
 	padding: 12px 18px;
-	color: var(--checkfox-text);
+	color: var(--tinte);
 	font-weight: 700;
 	cursor: pointer;
 	list-style: none;
@@ -795,9 +787,9 @@ html:has(.nexus-blog-header.is-open) .hu-checkfox__bar {
 	width: 24px;
 	height: 24px;
 	flex: 0 0 auto;
-	border: 1px solid var(--checkfox-copper);
-	border-radius: 6px;
-	color: var(--checkfox-copper-light);
+	border: 1px solid var(--stempel);
+	border-radius: var(--r0);
+	color: var(--stempel);
 	font-size: 1rem;
 	line-height: 1;
 }
@@ -809,5 +801,28 @@ html:has(.nexus-blog-header.is-open) .hu-checkfox__bar {
 .hu-checkfox__faq > details > p {
 	margin: 0;
 	padding: 0 18px 18px;
-	color: var(--checkfox-muted);
+	color: var(--grau);
+}
+
+/* single.css färbt jede details-Zeile im Artikel für den dunklen Legacy-Grund
+   (helle Textfarbe) und hängt ein zweites Plus an. Die Vertragsprüfung und die
+   FAQ tragen ihr Zeichen selbst (::before) und stehen auf Papier. */
+.nexus-article-content .hu-checkfox__contract > summary,
+.nexus-article-content .hu-checkfox__faq > details > summary {
+	justify-content: flex-start;
+	color: var(--tinte);
+}
+
+.nexus-article-content .hu-checkfox__contract > summary::after,
+.nexus-article-content .hu-checkfox__faq > details > summary::after {
+	content: none;
+}
+
+/* Der Leser färbt Links im Artikel (article-reader-body.css, single-editorial.css,
+   single-reader-unified.css) und damit auch den Text dieses Knopfes. Die
+   Verdopplung der Klasse hebt die Spezifität über die Linkregel des Editorials. */
+.single-post .nexus-article-content.nexus-article-content--decision a.hu-checkfox__button--primary,
+.single-post .nexus-article-content.nexus-article-content--decision a.hu-checkfox__button--primary:hover,
+.single-post .nexus-article-content.nexus-article-content--decision a.hu-checkfox__button--primary:focus-visible {
+	color: var(--papier);
 }
