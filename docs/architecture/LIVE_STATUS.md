@@ -67,7 +67,9 @@ Abschnitt anzuhängen; der Verlauf gehört in Commit-Nachrichten.
   `HU_FEATURE_SOLAR_DOORS` (Vorgabe `false`, `inc/feature-flags.php`) hält die
   Türen Analyse und Sofortkontakt bis zur Solar-Strecke auf `#einstieg`.
   `/whitelabel-retainer/` hat eine eigene Seitennavigation aus derselben
-  `.leiste`, ohne Klappblatt und ohne Tür aus `hu_funnel_doors()`.
+  `.leiste` (`template-parts/whitelabel-header.php`), ohne Klappblatt, mit der
+  Tür „Test-Sprint anfragen“ aus `hu_funnel_doors()` (Action
+  `cta_whitelabel_header_task_brief` bleibt, `data-door="aufgabe"`).
   Auf der Startseite (über `startseite-strecke.css/.js`) ist „Projekte“ nur
   aktiv, solange `#angebote` im Blick ist (`aria-current="location"`), ohne
   JavaScript neutral; die Wortmarke trägt `aria-current="page"`. Der

@@ -108,30 +108,14 @@ $row_links = array_values(
 );
 
 /**
- * Print one door: label, short label and amount.
- *
- * Bezeichnung und Kurztext liegen beide im Markup; CSS blendet je Breite
- * einen aus (ausgeblendete Varianten zaehlen nicht zum Namen des Links). Ohne
- * Betrag steht nur ein Feld.
+ * Print one door (hu_funnel_door_link(), inc/funnel-doors.php). Row und Blatt
+ * tragen dieselbe Tuer.
  *
  * @param array<string, string> $door Door record from hu_funnel_doors().
  * @return void
  */
 $render_door = static function ( array $door ) {
-	?>
-	<a
-		class="tuer"
-		href="<?php echo esc_url( $door['url'] ); ?>"
-		data-door="<?php echo esc_attr( $door['key'] ); ?>"
-		data-track-action="<?php echo esc_attr( $door['track'] ); ?>"
-		data-track-category="lead_gen"
-		data-track-section="header"
-	><span class="lang"><?php echo esc_html( $door['label'] ); ?><i class="pf" aria-hidden="true">&rarr;</i></span><span class="kurz"><?php echo esc_html( $door['short'] ); ?></span><?php
-		if ( '' !== $door['amount'] ) :
-			?><span class="preis"><?php echo esc_html( $door['amount'] ); ?></span><?php
-		endif;
-	?></a>
-	<?php
+	echo hu_funnel_door_link( $door ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- escaped inside hu_funnel_door_link().
 };
 
 /*

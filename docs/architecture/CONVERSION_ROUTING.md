@@ -403,10 +403,14 @@ Menüs, `fokus` die Leiter der Solar-Seite):
 | Solar-Seite | fokus | Leiter der Seite: Marktcheck · Analyse · Sofortkontakt | kostenlos · Analyse · Sofortkontakt-Setup (je aus dem Kanon) | Anker der Seite (`#marktcheck`; `#analyse` und `#sofortkontakt`, bis `HU_FEATURE_SOLAR_DOORS` an ist `#einstieg`) | `nav_header_door_marktcheck`, `nav_header_door_analyse`, `nav_header_door_sofortkontakt` |
 | Kontakt | voll | keine Tür | | | |
 
-Die Zeile „White-Label“ gilt für `site-header.php`. Die Hauptseite
-`/whitelabel-retainer/` rendert einen eigenen Kopf (`cta_whitelabel_header_task_brief`)
-und zeigt diese Tür nicht; die Zeile wirkt dort, wo das Template den
-globalen Kopf lässt (`whitelabel-retainer-proof`, `whitelabel`). Ein Beitrag
+Die Zeile „White-Label“ gilt für `site-header.php` und für den eigenen Kopf der
+Hauptseite `/whitelabel-retainer/` (`template-parts/whitelabel-header.php`,
+Landeseite der Akquise-Mails mit fünf Ankern der Seite). Beide rendern die
+Tür über `hu_funnel_door_link()`. Der Kopf der Hauptseite behält die Action
+`cta_whitelabel_header_task_brief` (statt `nav_header_door_whitelabel`), damit
+die Zeitreihe der Landeseite nicht abreißt; `data-door="aufgabe"` trägt er
+trotzdem, die Messung liest ihn ohne Sonderfall. Auch dort steht die
+Bezeichnung „Test-Sprint anfragen“ mit Betrag statt „Aufgabe beschreiben“. Ein Beitrag
 ohne Dossier-Kategorie bekommt „Projekt anfragen“: der Rückfall auf das Dossier
 „Leadgenerierung“ beschriftet nur den Artikelpfad.
 
@@ -453,8 +457,10 @@ Tracking, Fallstudie unter Ergebnisse), steht `aria-current="true"`.
 Unter 1081 px bleibt die Tür in der Kopfzeile sichtbar, unter 561 px als
 Kurztext, unter 371 px ohne Betrag. Nur im Klappblatt steht sie unter 340 px
 und auf Seiten mit eigener Sticky-CTA-Leiste (unter 761 px). Ohne JavaScript
-ist das Klappblatt offen. `/whitelabel-retainer/` rendert einen eigenen Kopf
-(`cta_whitelabel_header_task_brief`) und nutzt diese Türen nicht.
+ist das Klappblatt offen. Der Kopf von `/whitelabel-retainer/` zeigt die Tür
+zwischen 768 und 1080 px neben der Wortmarke und über 1080 px neben den Ankern;
+unter 768 px trägt die Sticky-Leiste am unteren Rand den Weg zum Formular. Die
+Seite rendert einen eigenen, reduzierten Fuß ohne Türregister (Landeseite).
 
 ### Footer: Türregister (seit 2026-10-01)
 

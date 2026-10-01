@@ -354,6 +354,29 @@ foreach ( nav_test_contexts() as $context => $definition ) {
 	nav_check( [] === $generic_to_specialist, "{$context}: plain \"Tracking\" never points at the specialist page" );
 }
 
+// --- 2b. White-Label landing page keeps its own header and its tracking, carries the same door ----
+
+nav_test_use_context( 'whitelabel' );
+ob_start();
+get_template_part( 'template-parts/whitelabel-header', null, [
+	'home_url'   => home_url( '/' ),
+	'brand'      => 'HAŞIM ÜNER',
+	'home_label' => 'Startseite',
+	'form_url'   => home_url( '/whitelabel-retainer/?case=aufgabe#aufgabe' ),
+	'nav'        => [ [ '#lieferfelder', 'Leistungen', 'nav_whitelabel_services' ], [ '#faq', 'Fragen', 'nav_whitelabel_faq' ] ],
+] );
+$wl_header = (string) ob_get_clean();
+$wl_x      = nav_dom( $wl_header );
+$wl_door   = $wl_x->query( '//a[contains(@class,"tuer")]' )->item( 0 );
+nav_check( null !== $wl_door && 'aufgabe' === $wl_door->getAttribute( 'data-door' ), 'white-label header carries the Test-Sprint door with data-door' );
+nav_check( null !== $wl_door && 'cta_whitelabel_header_task_brief' === $wl_door->getAttribute( 'data-track-action' ) && 'whitelabel_header' === $wl_door->getAttribute( 'data-track-section' ), 'white-label door keeps its existing tracking action' );
+nav_check( null !== $wl_door && $wl_door->hasAttribute( 'data-wl-form-link' ), 'white-label door keeps data-wl-form-link for whitelabel.js' );
+nav_check( null !== $wl_door && str_ends_with( $wl_door->getAttribute( 'href' ), '#aufgabe' ), 'white-label door targets the form anchor' );
+nav_check( null !== $wl_door && $door_spec['aufgabe'][2] === trim( (string) $wl_x->query( './/span[@class="preis"]', $wl_door )->item( 0 )->textContent ), 'white-label door amount comes from the canon' );
+nav_check( [ 'nav_whitelabel_services', 'nav_whitelabel_faq' ] === array_column( nav_links( $wl_header, '//nav[@data-wl-anker]//a' ), 'track' ), 'white-label page anchors keep their nav_whitelabel_* actions' );
+nav_check( 'nav_whitelabel_home' === ( nav_links( $wl_header, '//a[contains(@class,"sig")]' )[0]['track'] ?? '' ), 'white-label wordmark keeps nav_whitelabel_home' );
+nav_check( false !== strpos( (string) file_get_contents( get_stylesheet_directory() . '/page-whitelabel-retainer.php' ), "'template-parts/whitelabel-header'" ), 'white-label template renders its header through the partial' );
+
 // --- 3. 404 recovery links ----------------------------------------------------
 
 nav_test_use_context( 'not_found' );
