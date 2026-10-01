@@ -73,6 +73,7 @@ get_template_part( 'template-parts/blog-header' );
 			'leadfluss-pv-leads-einordnung',
 		];
 		$is_provider_post = in_array( $post_slug, $provider_post_slugs, true );
+		$is_solar_portal_cta = in_array( $post_slug, [ 'aroundhome-solar-einordnung', 'checkfox-solar-waermepumpe-einordnung', 'wattfox-solar-leads-einordnung', 'daa-photovoltaik-leads-einordnung' ], true );
 
 		// Neutraler Standard: Der Marktcheck gehört laut CONVERSION_ROUTING.md
 		// nur in den Energie-Pfad. Beiträge ohne passende Kategorie führen
@@ -97,6 +98,17 @@ get_template_part( 'template-parts/blog-header' );
 				'secondary_label' => __( 'Regionalen Marktcheck starten', 'blocksy-child' ),
 				'secondary_url'   => $audit_url,
 			];
+			if ( $is_solar_portal_cta ) {
+				$solar_pricing = function_exists( 'hu_pricing_canon' ) ? hu_pricing_canon() : [];
+				$solar_setup_price = (int) ( $solar_pricing['entry_setup_price'] ?? 790 );
+				$solar_setup_days = (int) ( $solar_pricing['entry_setup_business_days'] ?? 5 );
+				$article_context['title'] = __( 'Ihre Portal-Anfragen in unter 60 Sekunden anrufen', 'blocksy-child' );
+				$article_context['text'] = sprintf( '%s netto einmalig, %d Werktage, wirkt auf die Anfragen, die Sie heute schon kaufen.', function_exists( 'hu_format_eur' ) ? hu_format_eur( $solar_setup_price ) : number_format( $solar_setup_price, 0, ',', '.' ) . ' €', $solar_setup_days );
+				$article_context['primary_label'] = __( 'Sofortkontakt-Setup ansehen', 'blocksy-child' );
+				$article_context['primary_url'] = home_url( '/solar-waermepumpen-leadgenerierung/#sofortkontakt' );
+				$article_context['secondary_label'] = __( 'Lohnt sich ein eigener Anfrageweg? Marktcheck', 'blocksy-child' );
+				$article_context['secondary_url'] = $audit_url;
+			}
 		} elseif ( array_intersect( [ 'markteinordnung', 'owned-leads' ], $post_cat_slugs ) ) {
 			$article_context = [
 				'eyebrow'         => __( 'Portal-Abhängigkeit', 'blocksy-child' ),
@@ -235,8 +247,8 @@ get_template_part( 'template-parts/blog-header' );
 				<p class="nexus-article-context__text"><?php echo esc_html( $article_context['text'] ); ?></p>
 			</div>
 			<div class="nexus-article-context__actions">
-				<a class="nexus-article-context__link nexus-article-context__link--primary" href="<?php echo esc_url( $article_context['primary_url'] ); ?>"><?php echo esc_html( $article_context['primary_label'] ); ?></a>
-				<a class="nexus-article-context__link" href="<?php echo esc_url( $article_context['secondary_url'] ); ?>"><?php echo esc_html( $article_context['secondary_label'] ); ?></a>
+				<a class="nexus-article-context__link nexus-article-context__link--primary" href="<?php echo esc_url( $article_context['primary_url'] ); ?>"<?php if ( $is_solar_portal_cta ) : ?> data-track-action="cta_portal_to_sofortkontakt" data-track-category="lead_gen" data-track-section="article_context_bridge"<?php endif; ?>><?php echo esc_html( $article_context['primary_label'] ); ?></a>
+				<a class="nexus-article-context__link" href="<?php echo esc_url( $article_context['secondary_url'] ); ?>"<?php if ( $is_solar_portal_cta ) : ?> data-track-action="cta_portal_to_marktcheck" data-track-category="lead_gen" data-track-section="article_context_bridge"<?php endif; ?>><?php echo esc_html( $article_context['secondary_label'] ); ?></a>
 			</div>
 		</section>
 		<?php endif; ?>

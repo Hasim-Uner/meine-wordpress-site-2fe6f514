@@ -397,6 +397,7 @@ function hu_enqueue_assets() {
 				: home_url( '/solar-waermepumpen-leadgenerierung/' ),
 		];
 		wp_localize_script( 'nexus-solar-leadgen-solara-js', 'NexusMarktcheckConfig', $marktcheck_cfg );
+		hu_enqueue_js( 'nexus-solar-order-forms-js', 'solar-order-forms.js', [ 'nexus-solar-leadgen-solara-js' ] );
 	}
 
 	// ── F1a-int) SEO-Sub-Pages mit gemeinsamem .hu-intercept-System ──

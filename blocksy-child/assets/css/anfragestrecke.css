@@ -1588,6 +1588,108 @@
   line-height: 1.5;
 }
 
+.strecke-doc .stufe .stufe-aktion {
+  grid-column: 2 / -1;
+  margin: 0;
+  font-size: 0.85rem;
+}
+
+.strecke-doc .auftragsformulare {
+  display: grid;
+  gap: var(--s3);
+  max-width: 48rem;
+  margin-top: var(--s5);
+}
+
+.strecke-doc .auftragsformular {
+  scroll-margin-top: 2rem;
+}
+
+.strecke-doc .auftragsformular h3 {
+  margin: var(--s1) 0 var(--s3);
+  font-size: clamp(1.4rem, 3vw, 2rem);
+}
+
+.strecke-doc .auftragsformular form {
+  display: grid;
+  gap: 1rem;
+}
+
+.strecke-doc .auftragsformular form > label,
+.strecke-doc .auftragsformular fieldset {
+  min-width: 0;
+  margin: 0;
+  color: var(--tinte);
+}
+
+.strecke-doc .auftragsformular form > label { display: block; }
+.strecke-doc .auftragsformular fieldset {
+  display: grid;
+  gap: 0.45rem;
+  border: 0;
+  padding: 0;
+}
+
+.strecke-doc .auftragsformular legend { margin-bottom: 0.65rem; }
+.strecke-doc .auftragsformular label span { color: var(--grau); }
+
+.strecke-doc .auftragsformular input:not([type="checkbox"]),
+.strecke-doc .auftragsformular select,
+.strecke-doc .auftragsformular textarea {
+  width: 100%;
+  min-width: 0;
+  min-height: 46px;
+  padding: 0.65rem 0.75rem;
+  border: 1px solid var(--grau);
+  border-radius: 2px;
+  background: var(--zone);
+  color: var(--tinte);
+  font: inherit;
+  margin-top: 0.45rem;
+}
+
+.strecke-doc .auftragsformular input:focus-visible,
+.strecke-doc .auftragsformular select:focus-visible,
+.strecke-doc .auftragsformular textarea:focus-visible,
+.strecke-doc .auftragsformular button:focus-visible,
+.strecke-doc .auftragsformular a:focus-visible {
+  outline: 2px solid var(--stempel);
+  outline-offset: 3px;
+}
+
+.strecke-doc .auftragsformular-auswahl {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 0.4rem 1rem;
+}
+
+.strecke-doc .auftragsformular-auswahl label,
+.strecke-doc .auftragsformular form > label.auftragsformular-datenschutz {
+  display: flex;
+  gap: 0.6rem;
+  align-items: start;
+  min-height: 44px;
+}
+
+.strecke-doc .auftragsformular input[type="checkbox"] {
+  flex: none;
+  width: 18px;
+  height: 18px;
+  margin-top: 0.25rem;
+  accent-color: var(--stempel);
+}
+
+.strecke-doc .auftragsformular [hidden] { display: none !important; }
+.strecke-doc .auftragsformular-honig { position: absolute; width: 1px; height: 1px; overflow: hidden; clip-path: inset(50%); }
+.strecke-doc .auftragsformular-status { margin: 0; color: var(--stempel); }
+.strecke-doc .auftragsformular-status.ist-erfolg { color: var(--tinte); }
+.strecke-doc .auftragsformular-hinweis { margin: 0; max-width: 48ch; color: var(--grau); font-size: 0.85rem; }
+
+@media (max-width: 560px) {
+  .strecke-doc .auftragsformular-auswahl { grid-template-columns: minmax(0, 1fr); }
+  .strecke-doc .auftragsformular .tun { width: 100%; justify-content: center; text-align: center; }
+}
+
 /* Die Vorlage hatte hier `.stufe@media (max-width:760px)` stehen — ein
    ungueltiger Selektor, der den gesamten Block verschluckt hat. Auf dem
    Telefon blieb die Leiter dadurch vierspaltig und lief aus dem Bild. */

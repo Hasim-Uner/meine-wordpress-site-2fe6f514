@@ -21,7 +21,7 @@ A page can remain the canonical SEO destination for its query while its CTA rout
 | `/` | Brand and direct WordPress/Freelancer intent | Homepage and direct WordPress money page | `Projekt anfragen` with offer-specific focus; while the Ersteinschätzung experiment is switched on, hero and close lead with it (`/kontakt/?focus=ersteinschaetzung`) and keep the project request beside it | Proof / White-Label / Solar / tracking specialist |
 | `/wordpress-freelancer-hannover/` | Retired direct-client route | 301 to `/`; excluded from sitemap | Homepage takes over content and query ownership | Legacy content anchors remain on `/` |
 | `/whitelabel-retainer/` | Agencies seeking delivery capacity | Agency money page | White-Label request form (`?case=aufgabe` / `?case=angebotsphase` / `?case=vormerken`) or scoped first project | 30-minute call / proof |
-| `/solar-waermepumpen-leadgenerierung/` | Solar, heat-pump and storage businesses | Energy vertical money page | Marktcheck | Solar proof / case study |
+| `/solar-waermepumpen-leadgenerierung/` | Solar, heat-pump and storage businesses | Energy vertical money page | Marktcheck for cold intent; `#analyse` and `#sofortkontakt` for direct purchase intent | Solar proof / case study |
 | `/server-side-tracking-b2b/` | Server-Side Tracking commercial intent | Specialist tracking money page (route `tracking_b2b`); linked as „Server-Side Tracking“, never as plain „Tracking“ | Tracking project request / scope clarification | White-Label bridge for agencies |
 | `/ga4-tracking-setup/` | Tracking purchase intent: GA4/GTM setup, consent, ads conversions | Tracking offer page; target of the header item „Tracking“ and the footer way (route `tracking_setup`) | `Tracking-Projekt anfragen` → `/kontakt/?type=project&focus=tracking` | Tracking specialist / project evidence |
 | `/performance-marketing/` | B2B companies running Google Ads or Meta | Paid-demand money page (measurement → landing page → budget) | `Ausgangslage prüfen lassen` → `/kontakt/?type=project` | Tracking setup, landing page offer (`/landingpage-erstellen-lassen/`, `perf_to_landingpage_offer`; the former `perf_to_landingpages` → `/#angebot-funnel` is retired), case study; performance agencies → White-Label task (`?type=whitelabel&case=aufgabe`) |
@@ -211,6 +211,8 @@ Use the Marktcheck as primary next action when the page is clearly about:
 - provider comparisons such as Aroundhome, Checkfox, Wattfox, DAA
 - Solar lead costs, CPO/CPL and own lead generation versus portals
 - Solar-specific funnel architecture and qualification
+
+On the four provider decision articles for Aroundhome, Checkfox, Wattfox and DAA, the primary context CTA goes to `/solar-waermepumpen-leadgenerierung/#sofortkontakt` for businesses already buying leads. The secondary CTA remains the Marktcheck. Other Energy-cluster routes retain the Marktcheck as their primary destination.
 
 Examples:
 
