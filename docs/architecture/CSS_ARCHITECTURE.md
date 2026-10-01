@@ -27,23 +27,15 @@ Die Schichten sind verbindlich:
 - Tür (Kopf und Fuß): `--tuer-h`, `--tuer-schrift`
 - Motion: `--ease-aus`, `--ease-weich`, `--t-mikro`, `--t-norm`, `--t-gross`
 
-Radius, Schriftgrade und Tür-Maße gehören `system.css` allein: Sie stehen nicht im Übergangsspiegel von `anfragestrecke.css`, und keine andere Datei darf sie neu definieren (`CORE_TOKENS` in `audit-css-architecture.py`).
+Radius, Schriftgrade und Tür-Maße gehören `system.css` allein; keine andere Datei darf sie neu definieren (`CANONICAL_TOKENS` in `audit-css-architecture.py`).
 
 Die dunkle `.tafel` ist Teil desselben Systems. Sie überschreibt die semantischen Tokens lokal; sie ist kein zweites Theme.
 
 Neue Seiten verwenden diese Tokens. Sie definieren weder eine zweite Abstandsskala noch einen zweiten Satz an Farben unter anderem Namen, wenn die vorhandene Semantik passt.
 
-## 2. Übergang: `anfragestrecke.css`
+## 2. Solar-Anfragestrecke: `anfragestrecke.css`
 
-`anfragestrecke.css` enthält noch einen historischen, wertgleichen Spiegel des Gutachten-Token-Satzes. Das ist die letzte bekannte wertgleiche produktive Doppeldefinition dieser Canon-Tokens.
-
-Dieser Spiegel ist **transitional**, nicht eine zweite Quelle der Wahrheit:
-
-- `scripts/audit-css-architecture.py` vergleicht alle Werte mit `system.css` und bricht bei Drift ab.
-- Der Deployment-Build entfernt die gespiegelten Custom Properties aus `anfragestrecke.css`, nachdem ihre Gleichheit validiert wurde.
-- Die nächste physische Migration entfernt den Spiegel auch aus dem Authoring-Source und lässt die Route den Core direkt konsumieren.
-
-Bis dahin dürfen dort keine abweichenden Werte entstehen.
+`anfragestrecke.css` konsumiert `system.css` direkt. Der frühere, wertgleiche Token-Spiegel (39 Custom Properties unter `.strecke-doc` und `.strecke-doc .tafel`) ist seit 2026-10-01 auch aus dem Authoring-Source entfernt; der Deployment-Build hatte ihn ohnehin schon entfernt, der Build-Output ist deshalb unverändert. Mit ihm entfielen `TRANSITIONAL_MIRRORS` in `audit-css-architecture.py` und `scripts/collapse-gutachten-token-mirror.py`; der Guard bricht jetzt bei jeder Neudefinition der Canon-Tokens in dieser Datei (auch bei einzeiligen Deklarationen). Die Regel `.strecke-doc .tafel`, die `system.css` (`.tafel`) wertgleich wiederholte, entfällt ebenfalls. Die Datei zählt in `css-values.tsv` 0 in allen drei Kategorien.
 
 ## 3. Legacy Compatibility: `design-system.css`
 
@@ -183,7 +175,7 @@ Route-CSS soll **nicht** enthalten:
 
 1. **Globale Shell (NX erledigt):** Die retired Audit-Header-Schicht ist vollständig entfernt; `style.css` ist von `--nx-*` entkoppelt. Der Provider-Audit hat unpräfixierte Legacy-Tokens und globale Selektorwirkungen bestätigt; deshalb ist `design-system.css` zunächst auf Startseite, Personenseite und Ergebnisse-Hub abgeschaltet. Weitere Routen werden einzeln entkoppelt.
 2. **Provider-unabhängige NX-Reste (erledigt):** reine Typografie-Aliase sind auf Canon-Tokens migriert; die Anfragestrecke nutzt für ihre gemessene Energy-Header-Höhe einen route-lokalen Token.
-3. **Solar-Anfragestrecke:** Token-Spiegel physisch entfernen; gemeinsame Gutachten-Primitives aus `system.css` konsumieren, nur echte Solar-Deltas behalten. Das JS-gemessene Header-/Register-Token wird gemeinsam mit seinen CSS-Verbrauchern migriert, nicht isoliert umbenannt.
+3. **Solar-Anfragestrecke (Token-Spiegel erledigt 2026-10-01):** gemeinsame Gutachten-Primitives aus `system.css` konsumieren, nur echte Solar-Deltas behalten. Das JS-gemessene Header-/Register-Token `--strecke-header-height` sucht noch einen Energy-Header, den es nicht mehr gibt (Rückfall 64 px); es wird gemeinsam mit seinen CSS-Verbrauchern migriert, nicht isoliert umbenannt.
 4. **Editorial-Solar-Legacy:** die generischen `.solar-page`-Variablen `--serif`/`--mono` eindeutig umbenennen oder auf Core-Rollen migrieren; eingefrorene Guard-Ausnahme danach löschen.
 5. **Service-Routen:** aktive `cro.css`, `ga4.css`, `seo-cornerstone.css` nach Nutzung und Geschäftswert einzeln migrieren oder stilllegen (`performance.css` erledigt).
 6. **Blog / Editorial:** `single.css` und die verbleibenden Reader-/CTA-Layer auf Gutachten-Primitives ziehen; neue Blog-Schichten bauen bereits auf dem neuen System auf und dürfen nicht zurück auf NX driften.
@@ -206,7 +198,7 @@ bash scripts/lint-css-motion.sh
 
 `npm run lint:css-architecture` führt `audit-css-architecture.py` und `audit-css-values.py` nacheinander aus; `npm run build:theme` ebenfalls, damit kein Deploy am Wächter vorbeigeht.
 
-`audit-css-architecture.py` schützt die neue Canon-Token-Familie und die exakt eingefrorenen Übergangsausnahmen.
+`audit-css-architecture.py` schützt die Canon-Token-Familie und die exakt eingefrorene Legacy-Kollision in `energy-systems.css`.
 
 `audit-legacy-nx-css.py` schützt den Abbaupfad: Neue NX-Verbraucher scheitern, und sobald eine Datei bereinigt ist, wird ihre Baseline-Zeile als veraltet gemeldet. Die Baseline ist damit kein Zielwert, sondern eine Obergrenze, die nur sinken darf. Zusätzlich zeigt der Audit, welche Dateien den Legacy-Provider wirklich benötigen und welche lediglich alte NX-Namen tragen.
 

@@ -4,80 +4,22 @@
 
    Ein Dokument, keine Landingpage. Weisser Grund, Serif im Fliesstext,
    Randspalte fuer die laufende Nummer, Marginalie fuer Anmerkungen.
-   Keine Karten, kein Verlauf, Radius 3 px.
+   Keine Karten, kein Verlauf, Radius --r0 (die Tafel --r1).
 
    Das eine eigene Gestaltungselement: die laufende Kapitelnummer in der
    Randspalte, deren Strich sich streckt und faerbt, sobald der Abschnitt
    im Blickfeld steht. Es ist das einzige Element der Seite, das mitlaeuft.
 
-   Alles ist unter .strecke-doc eingesperrt. Header und Footer bringen ihre
-   eigenen Tokens mit und bleiben unberuehrt, bis sie in einem eigenen
-   Schritt nachziehen.
+   Alles ist unter .strecke-doc eingesperrt. Die Tokens liefert system.css;
+   Kopf und Fuss lesen dieselben.
    ══════════════════════════════════════════════════════════════ */
 
 .strecke-doc {
   color-scheme: light;
 
-  /* ── Farbe. 60 Papier / 30 Tinte und Grau / 10 Stempel. ────────
-     Der Stempel ist der einzige Akzent und traegt nie eine Flaeche
-     groesser als eine Schaltflaeche. */
-  --papier: #ffffff;
-  --zone: #f7f6f3;
-  --zone2: #efece6;
-  --tinte: #171412;
-  --grau: #5b554d;
-  /* --matt war in der Vorlage #8a837a und lag auf Weiss bei 3,74:1.
-     Er traegt aber den Quellenhinweis unter der Marktzeile und die
-     Methodikzeile unter der Fall-Tabelle — beides Pflichtangaben in
-     Kleinschrift. #736b62 bringt 5,24:1 auf Papier und 4,85:1 auf
-     --zone und bleibt sichtbar leichter als --grau (7,36:1). */
-  --matt: #736b62;
-  --stempel: #b8420f;
-  --haar: #dedad3;
-  --strich: #171412;
-
-  /* Die Textschrift ist die Hausschrift der Domain, nicht mehr Newsreader.
-     Die Serif war der Vorlage treu, lief auf dem Schirm aber weniger klar
-     als Satoshi — bei kleinen Graden verliert eine Schrift mit hohem
-     Strichkontrast genau die Schaerfe, auf der die uebrige Domain steht.
-
-     Der Tokenname bleibt --serif, damit dieser Wechsel nicht durch jede
-     Regel der Datei laeuft. Er benennt die Rolle (Textschrift), nicht die
-     Gattung. */
-  --serif: var(--theme-font-family, "Figtree", -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif);
-  --serif-display: var(--theme-font-heading, "Satoshi", "Figtree", sans-serif);
-
-  /* Mono bleibt. Ziffern, Marken und Tabellenspalten haengen an den
-     tabellarischen Ziffern von IBM Plex Mono: mit einer Proportionalschrift
-     flattern Rechner-, Leiter- und Fallspalten sichtbar untereinander. */
-  --mono: "IBM Plex Mono", ui-monospace, "SF Mono", monospace;
-
-  --rand: 11.5rem;
-  --marg: 12.5rem;
-  --satz: 62ch;
-
-  /* ── Abstandsskala. Jeder Abstand im Dokument stammt hieraus. ── */
-  --s0: 0.35rem;
-  --s1: 0.7rem;
-  --s2: 1.1rem;
-  --s3: 1.75rem;
-  --s4: 2.75rem;
-  --s5: clamp(2.5rem, 5vw, 3.75rem);
-  --s6: clamp(3.5rem, 7.5vw, 6.5rem);
-
-  /* ── Mono-Stufen. Drei, nicht sieben. ───────────────────────── */
-  --mono-s: 0.62rem;
-  --mono-m: 0.7rem;
-  --mono-l: 0.82rem;
-
-  /* ── Bewegung ─────────────────────────────────────────────────
-     --ease-aus fuer alles, was erscheint oder vom Nutzer ausgeloest
-     wird. --ease-weich fuer Farb- und Zustandswechsel. */
-  --ease-aus: cubic-bezier(0.22, 1, 0.36, 1);
-  --ease-weich: cubic-bezier(0.4, 0, 0.2, 1);
-  --t-mikro: 130ms;
-  --t-norm: 200ms;
-  --t-gross: 620ms;
+  /* Farbe, Schrift, Abstand, Mono-Stufen und Bewegung kommen aus system.css
+     (Tokens auf :root, dunkle Flaeche ueber .tafel). Dieses Stylesheet
+     definiert keinen dieser Tokens neu. */
 
   background: var(--papier);
   color: var(--tinte);
@@ -94,29 +36,6 @@
      und Prozentwerte — die sollen wie Zahlen aussehen, nicht wie Text. */
   font-variant-numeric: normal;
   -webkit-font-smoothing: antialiased;
-}
-
-/* ── Tafel: dunkle Flaeche fuer Beweis und Handlung ─────────────
-   Die Tokens werden lokal umdefiniert, nicht ueberschrieben. Dadurch
-   stimmen alle Kindelemente automatisch und es gibt keinen zweiten
-   Komponentensatz fuer "dunkel". Vier Tafeln im Dokument, plus der
-   Abschluss — das ist Absicht und bleibt in jeder Umgebung dunkel.
-   Kein Dark Mode, keine prefers-color-scheme-Umschaltung. */
-.strecke-doc .tafel {
-  --papier: #17140f;
-  --zone: #211d18;
-  --zone2: #2b261f;
-  --tinte: #f4f1ec;
-  --grau: #a9a199;
-  --matt: #9c948a;
-  --stempel: #ef8b4d;
-  --haar: #332e28;
-  --strich: #f4f1ec;
-
-  background: #17140f;
-  color: #f4f1ec;
-  border-radius: 3px;
-  padding: clamp(1.4rem, 3.5vw, 2.4rem);
 }
 
 .strecke-doc *,
@@ -568,7 +487,7 @@
     background: var(--papier);
     border: 1px solid var(--haar);
     border-left: 0;
-    border-radius: 0 3px 3px 0;
+    border-radius: var(--r0);
     transition: width var(--t-norm) var(--ease-aus);
   }
 
@@ -1130,9 +1049,9 @@
 .strecke-doc .modul-raster line { stroke: var(--haar); stroke-width: 1; stroke-dasharray: 2 5; vector-effect: non-scaling-stroke; }
 .strecke-doc .modul-raster line[data-station].is-selected { stroke: var(--stempel); stroke-dasharray: none; stroke-opacity: 0.65; }
 .strecke-doc .modul-raster .modul-linie { stroke-dasharray: none; stroke-opacity: 0.6; }
-.strecke-doc .modul-raster .modul-linie--a { stroke: #a9a199; }
+.strecke-doc .modul-raster .modul-linie--a { stroke: var(--grau); }
 .strecke-doc .modul-raster .modul-linie--b { stroke: var(--stempel); }
-.strecke-doc .modul-punkt--a { fill: #a9a199; opacity: 0.3; }
+.strecke-doc .modul-punkt--a { fill: var(--grau); opacity: 0.3; }
 .strecke-doc .modul-punkt--b { fill: var(--stempel); opacity: 0.3; }
 .strecke-doc .modul-punkt[data-last="4"] { opacity: 1; }
 .strecke-doc .modul-labels { position: absolute; inset: 0; pointer-events: none; font-family: var(--mono); }
@@ -1677,7 +1596,7 @@
   min-height: 46px;
   padding: 0.65rem 0.75rem;
   border: 1px solid var(--grau);
-  border-radius: 2px;
+  border-radius: var(--r1);
   background: var(--zone);
   color: var(--tinte);
   font: inherit;
@@ -1830,7 +1749,7 @@
   margin-top: var(--s4);
   background: var(--zone);
   padding: clamp(1.5rem, 4vw, 2.2rem);
-  border-radius: 3px;
+  border-radius: var(--r0);
   display: grid;
   grid-template-columns: minmax(0, 1.15fr) minmax(0, 0.85fr);
   gap: clamp(1.5rem, 4vw, 3rem);
@@ -2570,7 +2489,7 @@
   margin-top: 0.6rem;
   padding: 0.65rem 1.15rem;
   background: var(--stempel);
-  color: #17140f;
+  color: var(--papier);
   font-family: var(--mono);
   font-size: 0.78rem;
   letter-spacing: 0.1em;
@@ -2778,7 +2697,7 @@
 
 .strecke-doc .sol-quiz-success-row a.is-primary {
   background: var(--stempel);
-  color: #17140f;
+  color: var(--papier);
 }
 
 .strecke-doc .sol-quiz-success-row a.is-primary:hover {
