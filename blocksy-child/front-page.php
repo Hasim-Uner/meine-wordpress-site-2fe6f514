@@ -151,7 +151,7 @@ $stations = [
  *
  * 'detail' ist die Produktseite zur Vertiefung (Sub-CTA neben der Anfrage). Sie
  * traegt den Umfang; die Zeile bleibt kurz. Nur wo es keine Produktseite gibt
- * (Uebernahme-Check), steht die Zeile allein und nennt ihren Umfang selbst.
+ * (Uebernahme-Check), nennt der Text den Umfang selbst.
  */
 $offers = [
 	[
@@ -162,7 +162,6 @@ $offers = [
 		'price'   => sprintf( 'ab %s netto', $website_price ),
 		'text'    => 'Neubau oder Relaunch auf WordPress, gebaut auf einer Testumgebung und erst nach Ihrer Abnahme live. Beim Relaunch bekommt jede alte URL eine Weiterleitung, damit bestehende Links und Suchergebnisse weiter ankommen.',
 		'more'    => $fest( hu_freelancer_website_scope_display() ) . '.',
-		'scope'   => '',
 		'request' => $project_link( 'relaunch' ),
 		'hook'    => 'home_offer_relaunch',
 		'cta'     => 'Website-Projekt anfragen',
@@ -176,7 +175,6 @@ $offers = [
 		'price'   => sprintf( 'Festpreis %s netto', $landing_price ),
 		'text'    => 'Eine Seite für ein Angebot, mit Konzept, Text, Anfrageformular und Herkunft jeder Anfrage. Sie geben zweimal frei: den Text und die fertige Seite.',
 		'more'    => 'Tracking und Website sind eigene Zusätze mit eigenem Preis.',
-		'scope'   => '',
 		'request' => $project_link( 'conversion' ),
 		'hook'    => 'home_offer_landingpage',
 		'cta'     => 'Landingpage anfragen',
@@ -190,7 +188,6 @@ $offers = [
 		'price'   => sprintf( 'Analyse %s netto · %d Werktage', $analysis_price, $analysis_days ),
 		'text'    => 'Besucher kommen, aber zu wenige passende Anfragen? Die Analyse liefert einen schriftlichen Befund der Strecke vom Besuch bis zur Rückmeldung im Vertrieb. Umgesetzt wird danach nur, was im Befund steht, zu festen Preisen.',
 		'more'    => sprintf( 'Die %s der Analyse werden bei einer Umsetzung angerechnet.', $analysis_price ),
-		'scope'   => '',
 		'request' => hu_get_contact_intake_url( 'analysis', 'conversion' ),
 		'hook'    => 'home_offer_analysis',
 		'cta'     => 'Analyse anfragen',
@@ -204,7 +201,6 @@ $offers = [
 		'price'   => sprintf( 'Festpreis %s netto', $tracking_price ),
 		'text'    => 'Ein Messplan, sauber eingerichtete Conversions und ein Abnahmeprotokoll mit Testfällen. Gemessen wird im Browser, ohne eigenen Server.',
 		'more'    => sprintf( 'Die Stufen darüber: %s.', $fest( hu_tracking_ladder_display( 2 ) ) ),
-		'scope'   => '',
 		'request' => $project_link( 'tracking' ),
 		'hook'    => 'home_offer_tracking',
 		'cta'     => 'Tracking-Projekt anfragen',
@@ -218,7 +214,6 @@ $offers = [
 		'price'   => sprintf( 'Übernahme-Check %s netto', $takeover_price ),
 		'text'    => 'Ich prüfe Theme, Plugins, Updates, Backups, Zugänge und Ladezeit. Sie bekommen einen schriftlichen Befund mit Festpreis für den nächsten Schritt. Beauftragen Sie mich danach, wird der Check verrechnet. Der Befund gehört Ihnen, auch wenn Sie mit jemand anderem weiterarbeiten.',
 		'more'    => sprintf( 'Danach Weiterentwicklung im Monatskontingent: %s, monatlich kündbar.', $retainer ),
-		'scope'   => '',
 		'request' => $project_link( 'implementation_scope' ),
 		'hook'    => 'home_offer_takeover',
 		'cta'     => 'Übernahme-Check anfragen',
@@ -408,9 +403,6 @@ get_header();
 							<p><?php echo esc_html( $offer['text'] ); ?></p>
 							<?php if ( '' !== $offer['more'] ) : ?>
 								<p class="st-angebot__mehr"><?php echo esc_html( $offer['more'] ); ?></p>
-							<?php endif; ?>
-							<?php if ( '' !== $offer['scope'] ) : ?>
-								<p class="st-angebot__umfang"><?php echo esc_html( $liste( $offer['scope'] ) ); ?></p>
 							<?php endif; ?>
 							<p class="st-angebot__wege">
 								<a class="st-link st-link--stark" href="<?php echo esc_url( $offer['request'] ); ?>" data-track-action="<?php echo esc_attr( $offer['hook'] ); ?>" data-track-category="lead_gen" data-track-section="angebote"><?php echo esc_html( $offer['cta'] ); ?>&nbsp;<span aria-hidden="true">→</span></a>
