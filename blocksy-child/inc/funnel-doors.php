@@ -164,10 +164,15 @@ function hu_funnel_portal_post_slugs() {
  *
  * Eine Funktion fuer Lesemodus der Leiste und Tuerentscheidung. Reihenfolge:
  * feste Zuordnung je Beitrag, dann die erste passende Kategorie in der
- * Prioritaet unten, sonst "leadgenerierung".
+ * Prioritaet unten, sonst "leadgenerierung" als Beschriftung des Pfads.
+ *
+ * `matched` sagt, ob die Zuordnung belegt ist (Zuordnung je Beitrag oder
+ * Kategorie). Der Rueckfall auf "leadgenerierung" beschriftet nur den Pfad;
+ * eine Tuer entscheidet er nicht: ein Beitrag ohne Dossier-Kategorie bekommt
+ * keine Energie-Tuer.
  *
  * @param string $post_slug Post slug.
- * @return array{slug: string, label: string, url: string}
+ * @return array{slug: string, label: string, url: string, matched: bool}
  */
 function hu_funnel_reader_dossier( $post_slug = '' ) {
 	$post_slug    = sanitize_title( (string) $post_slug );
@@ -219,14 +224,17 @@ function hu_funnel_reader_dossier( $post_slug = '' ) {
 		}
 	}
 
-	if ( '' === $slug ) {
+	$matched = '' !== $slug;
+
+	if ( ! $matched ) {
 		$slug = 'leadgenerierung';
 	}
 
 	return [
-		'slug'  => $slug,
-		'label' => $labels[ $slug ] ?? 'Werkstatt',
-		'url'   => function_exists( 'nexus_get_category_url' ) ? (string) nexus_get_category_url( $slug, $blog_url ) : (string) $blog_url,
+		'slug'    => $slug,
+		'label'   => $labels[ $slug ] ?? 'Werkstatt',
+		'url'     => function_exists( 'nexus_get_category_url' ) ? (string) nexus_get_category_url( $slug, $blog_url ) : (string) $blog_url,
+		'matched' => $matched,
 	];
 }
 
@@ -257,7 +265,8 @@ function hu_funnel_context() {
 
 	if ( is_singular( 'post' ) ) {
 		$slug    = (string) get_post_field( 'post_name', get_queried_object_id() );
-		$dossier = hu_funnel_reader_dossier( $slug )['slug'];
+		$reader  = hu_funnel_reader_dossier( $slug );
+		$dossier = $reader['matched'] ? $reader['slug'] : '';
 
 		if ( in_array( $slug, hu_funnel_portal_post_slugs(), true ) ) {
 			return [ 'mode' => 'leser', 'door' => 'sofort', 'route' => 'energy' ];

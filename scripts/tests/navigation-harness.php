@@ -40,6 +40,8 @@ function nav_test_contexts() {
 		'portal'        => [ 'path' => '/blog/checkfox-solar-waermepumpe-einordnung/', 'front' => false, 'page' => '', 'template' => '', 'post' => [ 'slug' => 'checkfox-solar-waermepumpe-einordnung', 'categories' => [ 'leadgenerierung' ] ] ],
 		'article_lead'  => [ 'path' => '/blog/anfragen-statt-portale/', 'front' => false, 'page' => '', 'template' => '', 'post' => [ 'slug' => 'anfragen-statt-portale', 'categories' => [ 'leadgenerierung' ] ] ],
 		'article_track' => [ 'path' => '/blog/ga4-consent-mode/', 'front' => false, 'page' => '', 'template' => '', 'post' => [ 'slug' => 'ga4-consent-mode', 'categories' => [ 'tracking' ] ] ],
+		// Beitrag ohne Dossier-Kategorie: der Pfad faellt auf "leadgenerierung" zurueck, die Tuer nicht.
+		'article_plain' => [ 'path' => '/blog/ohne-dossier/', 'front' => false, 'page' => '', 'template' => '', 'post' => [ 'slug' => 'ohne-dossier', 'categories' => [ 'allgemein' ] ] ],
 		'article_cro'   => [ 'path' => '/blog/b2b-landingpage-optimieren/', 'front' => false, 'page' => '', 'template' => '', 'post' => [ 'slug' => 'b2b-landingpage-optimieren', 'categories' => [ 'cro' ] ] ],
 	];
 }

@@ -1154,7 +1154,7 @@ body.nx-custom-header-active {
 }
 
 /* ══ Fuss ═════════════════════════════════════════════════════
-   Zwei Lautstaerken. Laut die Wege, leise Verzeichnis und
+   Zwei Lautstaerken. Laut das Tuerregister, leise Verzeichnis und
    Absenderzeile. Keine vier gleich schweren Bloecke. */
 
 .fuss {
@@ -1165,47 +1165,121 @@ body.nx-custom-header-active {
   padding-block: var(--s6) var(--s4);
 }
 
-.fuss .wahl {
+/* ── Tuerregister ───────────────────────────────────────────────
+   Vier Wege, je ein Selbstauskunftssatz und darunter die Tueren als Zeilen:
+   Bezeichnung, Betrag (Mono, tabellarische Ziffern), Pfeil. Die Tuer ohne
+   Betrag zeigt "nach Umfang" in --matt, ebenso der Marktcheck (kostenlos).
+   Die eigene Route ist markiert (3-px-Kante in --stempel, Etikett "Ihr Weg"),
+   nicht ausgeblendet. Keine Schatten: die Kante ist ein Rahmen. */
+
+.fuss .register {
   border-top: 1px solid var(--strich);
   margin-bottom: var(--s4);
 }
 
-.fuss .wahl > .mono {
-  display: block;
-  padding-block: var(--s2);
-  color: var(--matt);
-}
-
-.fuss .wahl ul {
-  margin: 0;
-  padding: 0;
-  list-style: none;
-}
-
-.fuss .wahl li { border-top: 1px solid var(--haar); }
-
-.fuss .wahl a {
+.fuss .register-kopf {
   display: flex;
-  align-items: baseline;
+  flex-wrap: wrap;
   justify-content: space-between;
-  gap: var(--s2);
-  padding-block: var(--s2);
-  text-decoration: none;
-  color: var(--tinte);
-  font-size: 1.02rem;
-  transition: color var(--t-norm) var(--ease-weich);
-}
-
-.fuss .wahl a b { font-weight: 500; }
-.fuss .wahl a:hover { color: var(--stempel); }
-
-.fuss .wahl a .pf {
-  color: var(--stempel);
+  gap: var(--s0) var(--s2);
+  padding-block: var(--s1);
   font-family: var(--mono);
-  transition: transform var(--t-norm) var(--ease-aus);
+  font-size: var(--mono-s);
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--grau);
 }
 
-.fuss .wahl a:hover .pf { transform: translateX(4px); }
+.fuss .weg {
+  display: grid;
+  grid-template-columns: minmax(0, 1.05fr) minmax(0, 1fr);
+  align-items: center;
+  gap: var(--s1) var(--s3);
+  padding-block: var(--s2);
+  border-top: 1px solid var(--haar);
+}
+
+.fuss .weg .satz {
+  max-width: 36ch;
+  margin: 0;
+  font-size: clamp(1rem, 0.95rem + 0.5vw, 1.2rem);
+  line-height: 1.4;
+}
+
+.fuss .weg .satz b { font-weight: 600; }
+
+.fuss .weg .hier {
+  display: inline-block;
+  margin-left: var(--s1);
+  font-family: var(--mono);
+  font-size: var(--mono-s);
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--stempel);
+  vertical-align: 0.15em;
+}
+
+/* Die Kante ist ein Streifen am Rand der Zeile, kein Schatten und kein
+   Innenabstand: so bleibt die Tuerspalte in allen vier Zeilen buendig. */
+.fuss .weg.ist-hier { position: relative; }
+
+.fuss .weg.ist-hier::before {
+  content: "";
+  position: absolute;
+  top: -1px;
+  bottom: 0;
+  left: 0;
+  width: 3px;
+  background: var(--stempel);
+}
+
+.fuss .weg.ist-hier .satz { padding-left: var(--s2); }
+
+.fuss .tueren { display: grid; }
+
+.fuss .tueren a {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto auto;
+  align-items: center;
+  gap: var(--s2);
+  min-height: 44px;
+  padding-block: 0.6rem;
+  border-bottom: 1px solid var(--haar);
+  color: var(--tinte);
+  text-decoration: none;
+}
+
+.fuss .tueren a:last-child { border-bottom: 0; }
+
+.fuss .tueren .wie {
+  font-size: 0.92rem;
+  transition: color var(--t-mikro) ease;
+}
+
+.fuss .tueren .betrag {
+  min-width: 7ch;
+  font-family: var(--mono);
+  font-size: var(--mono-l);
+  font-variant-numeric: tabular-nums;
+  text-align: right;
+  color: var(--tinte);
+}
+
+.fuss .tueren .ohne-betrag .betrag { color: var(--matt); }
+
+.fuss .tueren .pf {
+  color: var(--matt);
+  transition:
+    transform 180ms var(--ease-aus),
+    color var(--t-mikro) ease;
+}
+
+.fuss .tueren a:hover .wie { color: var(--stempel); }
+
+.fuss .tueren a:hover .pf {
+  transform: translateX(3px);
+  color: var(--stempel);
+}
 
 .fuss .direkt {
   display: flex;
@@ -1332,6 +1406,9 @@ body.nx-custom-header-active {
 @media (max-width: 760px) {
   .fuss .absender { grid-template-columns: minmax(0, 1fr); }
   .fuss .verzeichnis { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .fuss .weg { grid-template-columns: minmax(0, 1fr); }
+  .fuss .weg.ist-hier .satz,
+  .fuss .weg.ist-hier .tueren { padding-left: var(--s1); }
 }
 
 /* ══ Schmale Schirme: Randspalten aufloesen ═══════════════════ */

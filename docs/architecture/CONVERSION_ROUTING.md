@@ -400,6 +400,13 @@ Menüs, `fokus` die Leiter der Solar-Seite):
 | Solar-Seite | fokus | Leiter der Seite (folgt mit der Solar-Strecke) | | Anker der Seite | `nav_header_door_*` |
 | Kontakt | voll | keine Tür | | | |
 
+Die Zeile „White-Label“ gilt für `site-header.php`. Die Hauptseite
+`/whitelabel-retainer/` rendert einen eigenen Kopf (`cta_whitelabel_header_task_brief`)
+und zeigt diese Tür nicht; die Zeile wirkt dort, wo das Template den
+globalen Kopf lässt (`whitelabel-retainer-proof`, `whitelabel`). Ein Beitrag
+ohne Dossier-Kategorie bekommt „Projekt anfragen“: der Rückfall auf das Dossier
+„Leadgenerierung“ beschriftet nur den Artikelpfad.
+
 Jede Tür trägt zusätzlich `data-door="<schlüssel>"` (`projekt`, `tracking`,
 `aufgabe`, `marktcheck`, `analyse`, `sofort`), `data-track-category="lead_gen"`
 und `data-track-section="header"`. Die Beträge kommen ausschließlich aus
@@ -440,24 +447,49 @@ und auf Seiten mit eigener Sticky-CTA-Leiste (unter 761 px). Ohne JavaScript
 ist das Klappblatt offen. `/whitelabel-retainer/` rendert einen eigenen Kopf
 (`cta_whitelabel_header_task_brief`) und nutzt diese Türen nicht.
 
-### Footer: Selbstauskunft statt Sammel-CTA
+### Footer: Türregister (seit 2026-10-01)
 
 Quelle: `hu_get_site_footer_navigation_contract()` in
-`blocksy-child/inc/commercial-routing.php`, gerendert von
-`template-parts/site-footer.php`. Der Fuß trägt keinen Sammel-CTA. Er fragt,
-wer der Besucher ist, in derselben Reihenfolge wie der Kopf:
+`blocksy-child/inc/commercial-routing.php` (Wege, Selbstauskunftssätze,
+Türschlüssel) und `hu_funnel_doors()` in `blocksy-child/inc/funnel-doors.php`
+(Bezeichnung, Betrag, Ziel), gerendert von `template-parts/site-footer.php`.
+Der Fuß trägt keinen Sammel-CTA. Er fragt, wer der Besucher ist, in derselben
+Reihenfolge wie der Kopf, und führt jeden Weg auf seine Türen statt auf eine
+Landingpage. Kopfzeile des Registers: links „Welcher Weg passt?“, rechts
+„Preise netto · “ plus `hu_response_promise()`.
 
-| Satz | Ziel | Event |
+| Satz | Türen (Schlüssel) | Event je Tür |
 |---|---|---|
-| Ich habe **eine Website** … | `/` | `cta_footer_pick_project` |
-| Ich brauche **belastbare Messung** … | `/ga4-tracking-setup/` | `cta_footer_pick_tracking` |
-| Ich bin **Agentur** … | `/whitelabel-retainer/` | `cta_footer_pick_agency` |
-| Ich bin **Solar- oder Wärmepumpenbetrieb** … | `/solar-waermepumpen-leadgenerierung/` | `cta_footer_pick_energy` |
+| Ich habe **eine Website** … | Projekt anfragen (`projekt`, „nach Umfang“) | `cta_footer_door_projekt` |
+| Ich brauche **belastbare Messung** … | Tracking-Projekt anfragen (`tracking`, „ab“ Messung-Setup) | `cta_footer_door_tracking` |
+| Ich bin **Agentur** … | Test-Sprint anfragen (`aufgabe`) | `cta_footer_door_aufgabe` |
+| Ich bin **Solar- oder Wärmepumpenbetrieb** und kaufe heute Portal-Anfragen. | Marktcheck, regional (`marktcheck`, kostenlos) · Anfragesystem-Analyse (`analyse`) · Sofortkontakt-Setup (`sofort`) | `cta_footer_door_marktcheck`, `cta_footer_door_analyse`, `cta_footer_door_sofort` |
 
-Alle tragen `data-track-category="lead_gen"` und `data-track-section="footer"`.
-Der eigene Weg entfällt auf seiner Route (beide Tracking-Seiten zählen als
-Tracking). Auf `/`, `/kontakt/` und der Energie-Money-Page entfällt die Wahl
-ganz. Darunter die Direktzeile, ebenfalls `lead_gen`:
+Jede Tür ist eine Zeile mit Bezeichnung, Betrag (Mono, tabellarische Ziffern)
+und Pfeil; die Beträge kommen aus dem Kanon (`hu_funnel_doors()`), kein
+Preisliteral steht im Template. Die Tür ohne Betrag zeigt „nach Umfang“.
+Alle tragen `data-door="<schlüssel>"`, `data-track-category="lead_gen"` und
+`data-track-section="footer"`. Die früheren `cta_footer_pick_project|tracking|
+agency|energy` entfallen; ältere Zeitreihen enden am 2026-10-01.
+
+Die eigene Route wird nicht mehr ausgeblendet, sondern markiert (3-px-Kante in
+`--stempel`, Etikett „Ihr Weg“); `hu_funnel_context()` liefert sie (beide
+Tracking-Seiten zählen als Tracking; Fallstudie, Portal-Einordnungen und das
+Dossier „Leadgenerierung“ als Energie; Dossier „Tracking“ als Tracking). Auf
+der Seite, die den Anker besitzt, zeigt die Tür auf den Anker der Seite
+(Energie-Seite: `#marktcheck`, `#einstieg`). Das Register erscheint damit auch
+auf der Startseite und der Energie-Seite; auf `/kontakt/` bleibt es weg, die
+Seite ist das Ziel jeder Tür. `/whitelabel-retainer/` rendert einen eigenen
+Fuß und zeigt das Register nicht.
+
+Die Energie-Zeile führt den Marktcheck damit auf jeder Seite (außer Kontakt
+und White-Label) als eine von drei Türen der Energie-Betriebe. Das ist die
+Vorgabe des Auftrags; `AGENTS.md` nennt sitewide Marktcheck-Routing als nicht
+wieder einzuführen. Offen, ob die Energie-Zeile davon ausgenommen sein soll
+(Entscheidung bei Haşim). Der Kopf zeigt den Marktcheck weiter nur im
+Energie-Kontext.
+
+Darunter die Direktzeile, ebenfalls `lead_gen`:
 
 | Direct path | Destination | Event |
 |---|---|---|

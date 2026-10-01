@@ -217,8 +217,8 @@ function hu_nav_current_state( $is_target, $in_section = false ) {
  * Reihenfolge seit 2026-09-25: erst was ich anbiete (Projekte, Tracking),
  * dann die beiden Wege fuer bestimmte Absender (White-Label fuer Agenturen,
  * Solar & Waermepumpe fuer Energiebetriebe), dann Belege und Person. Der
- * Fuss (template-parts/site-footer.php) bietet seine vier Wege in derselben
- * Reihenfolge an. Tracking stand vorher zwischen White-Label und Solar und
+ * Fuss (template-parts/site-footer.php) fuehrt seine vier Wege als Tuerregister in
+ * derselben Reihenfolge. Tracking stand vorher zwischen White-Label und Solar und
  * trennte damit die beiden direkten Leistungen voneinander.
  *
  * Seit 2026-10-01 zeigt die Zeile die vier Wege, eine Haarlinie und
@@ -392,11 +392,18 @@ function hu_get_primary_navigation_contract() {
 /**
  * Return the repo-owned footer navigation contract.
  *
- * Der Fuss hat zwei Lautstaerken. Laut sind die vier Wege (`picks`) in der
- * Reihenfolge des Kopfs: Website, Tracking, Agentur, Energie. Leise ist das
- * Verzeichnis (`directory`) in vier kleinen Gruppen. Es fuehrt, was der Kopf
- * nicht fuehrt: die Fachseiten, die eigene Suchanfragen besitzen
- * (docs/seo/query-ownership.csv), Belege, Wissen und Rechtliches.
+ * Der Fuss hat zwei Lautstaerken. Laut ist das Tuerregister (`routes`): vier
+ * Wege in der Reihenfolge des Kopfs (Website, Tracking, Agentur, Energie),
+ * jeder mit seinem Selbstauskunftssatz und den Tuerschluesseln aus
+ * hu_funnel_doors() (inc/funnel-doors.php). Betrag, Ziel und Tracking-Action
+ * liefert die Tuer, nicht dieser Contract: Kopf und Fuss lesen dieselbe
+ * Entscheidung. Leise ist das Verzeichnis (`directory`) in vier kleinen
+ * Gruppen. Es fuehrt, was der Kopf nicht fuehrt: die Fachseiten, die eigene
+ * Suchanfragen besitzen (docs/seo/query-ownership.csv), Belege, Wissen und
+ * Rechtliches.
+ *
+ * Die frueheren Wege (`picks`, `cta_footer_pick_*`) fuehrten auf Landing-
+ * pages und sind entfallen; die Tueren tragen `cta_footer_door_<schluessel>`.
  *
  * "Server-Side Tracking" steht hier mit genau diesem Namen, weil der
  * Kopfpunkt "Tracking" seit 2026-09-25 auf das breite Tracking-Angebot zeigt;
@@ -407,45 +414,41 @@ function hu_get_primary_navigation_contract() {
  * template-parts/site-footer.php rendert diese Struktur, das SEO Cockpit
  * zaehlt sie als seitenweite Linkquelle.
  *
- * @return array{picks: array<int, array<string, string>>, directory: array<int, array<string, mixed>>}
+ * @return array{routes: array<int, array<string, mixed>>, directory: array<int, array<string, mixed>>}
  */
 function hu_get_site_footer_navigation_contract() {
 	$routes = hu_get_commercial_route_map();
 	$urls   = function_exists( 'nexus_get_primary_public_url_map' ) ? nexus_get_primary_public_url_map() : [];
 
 	return [
-		'picks'     => [
+		'routes'    => [
 			[
 				'route'  => 'freelancer',
 				'pre'    => 'Ich habe ',
 				'strong' => 'eine Website',
 				'post'   => ', die neu gebaut oder besser werden soll.',
-				'url'    => $routes['freelancer'],
-				'track'  => 'cta_footer_pick_project',
+				'doors'  => [ 'projekt' ],
 			],
 			[
 				'route'  => 'tracking',
 				'pre'    => 'Ich brauche ',
 				'strong' => 'belastbare Messung',
 				'post'   => ' für Anfragen, Kampagnen und CRM.',
-				'url'    => $routes['tracking_setup'],
-				'track'  => 'cta_footer_pick_tracking',
+				'doors'  => [ 'tracking' ],
 			],
 			[
 				'route'  => 'whitelabel',
 				'pre'    => 'Ich bin ',
 				'strong' => 'Agentur',
 				'post'   => ' und brauche Technik unter meinem Namen.',
-				'url'    => $routes['whitelabel'],
-				'track'  => 'cta_footer_pick_agency',
+				'doors'  => [ 'aufgabe' ],
 			],
 			[
 				'route'  => 'energy',
 				'pre'    => 'Ich bin ',
 				'strong' => 'Solar- oder Wärmepumpenbetrieb',
-				'post'   => ' und will eigene Anfragen statt Portalleads.',
-				'url'    => $routes['energy'],
-				'track'  => 'cta_footer_pick_energy',
+				'post'   => ' und kaufe heute Portal-Anfragen.',
+				'doors'  => [ 'marktcheck', 'analyse', 'sofort' ],
 			],
 		],
 		'directory' => [
@@ -541,6 +544,28 @@ function hu_get_site_footer_navigation_contract() {
 			],
 		],
 	];
+}
+
+/**
+ * Return every door URL of the footer register, in rendered order.
+ *
+ * Das SEO Cockpit zaehlt diese Ziele als seitenweite Linkquelle des Fusses.
+ *
+ * @return array<int, string>
+ */
+function hu_get_site_footer_door_urls() {
+	$doors = hu_funnel_doors();
+	$urls  = [];
+
+	foreach ( hu_get_site_footer_navigation_contract()['routes'] as $route ) {
+		foreach ( (array) ( $route['doors'] ?? [] ) as $key ) {
+			if ( isset( $doors[ $key ] ) ) {
+				$urls[] = (string) $doors[ $key ]['url'];
+			}
+		}
+	}
+
+	return array_values( array_unique( array_filter( $urls ) ) );
 }
 
 /**

@@ -6,21 +6,23 @@
  * Designsystem (`assets/css/system.css`) statt auf einem eigenen
  * Farbsystem — `site-footer.css` ist damit abgeloest, nicht ergaenzt.
  *
- * Zwei Lautstaerken bleiben. Laut sind die vier kommerziellen Wege:
- * direktes WordPress-Projekt, Tracking, White-Label und Solar/Waermepumpe.
- * Leise sind das gruppierte Verzeichnis (Leistungen, Belege & Person, Wissen,
- * Rechtliches) und die Absenderzeile. Wege und Verzeichnis kommen aus
- * hu_get_site_footer_navigation_contract() (inc/commercial-routing.php);
- * dieses Template entscheidet nur, was auf der aktuellen Route erscheint.
+ * Zwei Lautstaerken bleiben. Laut ist das Tuerregister: vier Wege mit ihrem
+ * Selbstauskunftssatz, darunter je Tuer eine Zeile mit Bezeichnung, Betrag und
+ * Pfeil. Leise sind das gruppierte Verzeichnis (Leistungen, Belege & Person,
+ * Wissen, Rechtliches) und die Absenderzeile. Wege kommen aus
+ * hu_get_site_footer_navigation_contract() (inc/commercial-routing.php), Tueren
+ * aus hu_funnel_doors() (inc/funnel-doors.php) — dieselben wie im Kopf. Dieses
+ * Template entscheidet nur, was auf der aktuellen Route erscheint.
  *
- * Die Route, auf der sich jemand bereits befindet, wird in der lauten Wahl
- * nicht noch einmal angeboten. Der Footer bleibt damit ein Orientierungs-
- * und Wechselpunkt statt einer Sammlung von Selbstlinks.
+ * Die Route, auf der sich jemand bereits befindet, wird nicht mehr ausgeblendet,
+ * sondern markiert (Kante in --stempel, Etikett "Ihr Weg"); hu_funnel_context()
+ * liefert sie. Auf der Seite selbst zeigen ihre Tueren auf Anker der Seite.
+ * Das Register erscheint damit auch auf der Startseite und der Solar-Seite. Nur
+ * /kontakt/ zeigt es nicht: die Seite ist das Ziel jeder Tuer. Die Betraege
+ * kommen aus dem Kanon; keine Zahl steht in diesem Template.
  *
- * Drei Routen zeigen die laute Wahl gar nicht: die Startseite fuehrt den
- * direkten Freelancer-Pfad bereits aus, die Kontaktseite ist das Ziel jedes
- * Wegs, und die Solar-/Waermepumpen-Money-Page endet in ihrem eigenen
- * Marktcheck. Kontakt laeuft ueber die gemeinsame Route.
+ * Tracking: `cta_footer_door_<schluessel>` mit `data-door`. Die frueheren
+ * `cta_footer_pick_*` sind entfallen.
  *
  * @package Blocksy_Child
  */
@@ -34,18 +36,20 @@ $primary_urls    = function_exists( 'nexus_get_primary_public_url_map' ) ? nexus
 $routes          = function_exists( 'hu_get_commercial_route_map' ) ? hu_get_commercial_route_map() : [];
 $footer_contract = function_exists( 'hu_get_site_footer_navigation_contract' )
 	? hu_get_site_footer_navigation_contract()
-	: [ 'picks' => [], 'directory' => [] ];
+	: [ 'routes' => [], 'directory' => [] ];
+$funnel_context  = function_exists( 'hu_funnel_context' )
+	? hu_funnel_context()
+	: [ 'mode' => 'voll', 'door' => 'projekt', 'route' => '' ];
+$funnel_doors    = function_exists( 'hu_funnel_doors' ) ? hu_funnel_doors() : [];
 
 /*
- * Drei Seiten stellen die Wegefrage nicht noch einmal: die Startseite fuehrt
- * den direkten Pfad bereits aus, die Kontaktseite ist das Ziel jedes Wegs,
- * und die Solar-/Waermepumpen-Money-Page endet in ihrem eigenen Marktcheck.
- * Wer dort unten ankommt, hat gewaehlt — eine erneute Auswahl macht aus dem
- * Abschluss einen Ausgang zurueck in die Orientierung.
+ * Das Register steht auf jeder Seite, nur nicht auf der Kontaktseite: sie ist
+ * das Ziel jeder Tuer, eine erneute Auswahl macht aus dem Abschluss einen
+ * Ausgang zurueck in die Orientierung.
  */
-$shows_picks = ! is_front_page()
-	&& ! ( function_exists( 'nexus_is_contact_page' ) && nexus_is_contact_page() )
-	&& ! ( function_exists( 'nexus_is_energy_systems_context' ) && nexus_is_energy_systems_context() );
+$shows_register = ! ( function_exists( 'nexus_is_contact_page' ) && nexus_is_contact_page() );
+$register       = (array) ( $footer_contract['routes'] ?? [] );
+$current_route  = (string) $funnel_context['route'];
 
 $contact_url = $routes['contact'] ?? ( $primary_urls['contact'] ?? nexus_get_contact_url() );
 $form_url    = $contact_url;
@@ -53,38 +57,6 @@ $form_url    = $contact_url;
 $contact_email = function_exists( 'hu_get_contact_email' ) ? hu_get_contact_email() : 'kontakt@hasimuener.de';
 $phone_link    = function_exists( 'hu_get_contact_phone' ) ? hu_get_contact_phone( 'link' ) : '';
 $phone_display = function_exists( 'hu_get_contact_phone' ) ? hu_get_contact_phone( 'display' ) : '';
-
-$current_pick_route = '';
-
-if ( function_exists( 'hu_is_tracking_route_context' ) && hu_is_tracking_route_context() ) {
-	// Gilt fuer beide Tracking-Seiten: Die Server-Side-Fachseite gehoert zum
-	// selben Weg wie das Tracking-Angebot und bietet ihn unten nicht erneut an.
-	$current_pick_route = 'tracking';
-} elseif ( is_page( 'whitelabel-retainer' ) || is_page_template( 'page-whitelabel-retainer.php' ) ) {
-	$current_pick_route = 'whitelabel';
-} elseif ( is_page( 'solar-waermepumpen-leadgenerierung' ) || is_page_template( 'page-solar-waermepumpen-leadgenerierung.php' ) ) {
-	$current_pick_route = 'energy';
-} elseif ( is_front_page() ) {
-	$current_pick_route = 'freelancer';
-}
-
-/*
- * Die vier Wege folgen derselben Reihenfolge wie der globale Header:
- * direkte Umsetzung, Messung, Agentur-Partnerschaft, Spezialisierung.
- * Das ist absichtlich task-first statt rein zielgruppenbasiert.
- */
-$picks = (array) ( $footer_contract['picks'] ?? [] );
-
-if ( '' !== $current_pick_route ) {
-	$picks = array_values(
-		array_filter(
-			$picks,
-			static function ( $pick ) use ( $current_pick_route ) {
-				return (string) $pick['route'] !== $current_pick_route;
-			}
-		)
-	);
-}
 
 /*
  * Direktzeile: drei Wege, kein Formularzwang. "Kontaktformular" statt
@@ -137,6 +109,22 @@ $is_here      = static function ( $url ) use ( $request_path ) {
 };
 
 /*
+ * Auf der Seite, auf der die Tuer liegt, zeigt sie auf den Anker der Seite
+ * statt auf sich selbst (Solar-Seite: #marktcheck, #einstieg). Auf jeder
+ * anderen Seite bleibt das Ziel unveraendert.
+ */
+$door_href = static function ( $url ) use ( $request_path ) {
+	$fragment = (string) wp_parse_url( (string) $url, PHP_URL_FRAGMENT );
+	$path     = (string) wp_parse_url( (string) $url, PHP_URL_PATH );
+
+	if ( '' !== $fragment && '' !== $request_path && trailingslashit( $path ) === $request_path ) {
+		return '#' . $fragment;
+	}
+
+	return (string) $url;
+};
+
+/*
  * Absenderzeile, zwei Spalten, eine Zeile je Angabe. Die Antwortzeit kommt
  * aus dem Messaging-Canon, damit sie nicht ein weiteres Mal irgendwo hart
  * steht und beim naechsten Wechsel gegen /kontakt/ auseinanderlaeuft.
@@ -182,123 +170,54 @@ $sender_right = [
 	],
 ];
 
-$pick_arrow = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" width="16" height="16" aria-hidden="true" focusable="false"><path d="M5 12h14M13 6l6 6-6 6"></path></svg>';
 ?>
-
-<?php if ( is_page( 'kontakt' ) ) : ?>
-	<style id="contact-density-polish">
-		.contact-page.contact-page--scoped {
-			padding-top: clamp(2.25rem, 3.8vw, 3.5rem);
-			padding-bottom: 0;
-		}
-
-		.contact-page--scoped .contact-page__shell {
-			width: min(100%, 84rem);
-			grid-template-columns: minmax(13.25rem, 0.42fr) minmax(0, 1.58fr);
-			gap: clamp(2rem, 3.6vw, 3.25rem);
-		}
-
-		.contact-page--scoped .contact-title {
-			max-width: 12ch;
-			font-size: clamp(2.35rem, 1.7rem + 1.8vw, 3.5rem);
-			line-height: 1.01;
-			letter-spacing: -0.04em;
-		}
-
-		.contact-page--scoped .contact-lead {
-			max-width: 32ch;
-			font-size: 0.9rem;
-			line-height: 1.58;
-		}
-
-		.contact-page--scoped .contact-intro__facts {
-			margin-top: 1.15rem;
-		}
-
-		.contact-page--scoped .contact-intro__facts p {
-			padding-block: 0.66rem;
-			font-size: 0.79rem;
-		}
-
-		.contact-page--scoped .contact-direct-mail {
-			margin-top: 1rem;
-		}
-
-		.fuss {
-			padding-top: 0;
-			border-top: 0;
-		}
-
-		.fuss > .blatt {
-			max-width: 84rem;
-			padding-inline: clamp(1.25rem, 4vw, 3rem);
-		}
-
-		.fuss .wahl {
-			margin-top: 0;
-			margin-bottom: var(--s3);
-			padding-top: clamp(1.1rem, 2vw, 1.5rem);
-		}
-
-		.fuss .wahl > .mono {
-			padding-block: var(--s1);
-		}
-
-		@media (max-width: 980px) and (min-width: 821px) {
-			.contact-page--scoped .contact-page__shell {
-				width: min(100%, 72rem);
-				grid-template-columns: minmax(13rem, 0.55fr) minmax(0, 1.45fr);
-				gap: 2rem;
-			}
-
-			.contact-page--scoped .contact-title {
-				font-size: clamp(2.3rem, 4.2vw, 3.15rem);
-			}
-		}
-
-		@media (max-width: 820px) {
-			.contact-page.contact-page--scoped {
-				padding-top: 2rem;
-				padding-bottom: 0;
-			}
-
-			.contact-page--scoped .contact-page__shell {
-				grid-template-columns: 1fr;
-				gap: 2.25rem;
-			}
-
-			.fuss {
-				padding-top: 0;
-			}
-		}
-	</style>
-<?php endif; ?>
 
 <footer id="footer" class="fuss" role="contentinfo">
 	<div class="blatt">
-		<?php if ( $shows_picks && ! empty( $picks ) ) : ?>
-			<nav class="wahl" aria-labelledby="fuss-wahl">
-				<span class="mono" id="fuss-wahl">Welcher Weg passt?</span>
+		<?php if ( $shows_register && ! empty( $register ) ) : ?>
+			<nav class="register" aria-labelledby="fuss-wahl">
+				<div class="register-kopf">
+					<span id="fuss-wahl">Welcher Weg passt?</span>
+					<span>Preise netto · <?php echo esc_html( function_exists( 'hu_response_promise' ) ? hu_response_promise() : '' ); ?></span>
+				</div>
 
-				<ul>
-					<?php foreach ( $picks as $pick ) : ?>
-						<li>
-							<a
-								href="<?php echo esc_url( (string) $pick['url'] ); ?>"
-								data-track-action="<?php echo esc_attr( (string) $pick['track'] ); ?>"
-								data-track-category="lead_gen"
-								data-track-section="footer"
-							>
-								<span><?php
-									echo esc_html( (string) $pick['pre'] );
-									?><b><?php echo esc_html( (string) $pick['strong'] ); ?></b><?php
-									echo esc_html( (string) $pick['post'] );
-								?></span>
-								<span class="pf" aria-hidden="true"><?php echo $pick_arrow; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- static inline SVG ?></span>
-							</a>
-						</li>
-					<?php endforeach; ?>
-				</ul>
+				<?php foreach ( $register as $way ) : ?>
+					<?php $is_current_way = '' !== $current_route && (string) $way['route'] === $current_route; ?>
+					<div class="weg<?php echo $is_current_way ? ' ist-hier' : ''; // raw-ok -- static class. ?>" role="group" aria-labelledby="fuss-weg-<?php echo esc_attr( (string) $way['route'] ); ?>">
+						<p class="satz" id="fuss-weg-<?php echo esc_attr( (string) $way['route'] ); ?>"><?php
+							echo esc_html( (string) $way['pre'] );
+							?><b><?php echo esc_html( (string) $way['strong'] ); ?></b><?php
+							echo esc_html( (string) $way['post'] );
+							if ( $is_current_way ) :
+								?><span class="hier">Ihr Weg</span><?php
+							endif;
+						?></p>
+
+						<div class="tueren">
+							<?php foreach ( (array) $way['doors'] as $door_key ) : ?>
+								<?php
+								if ( ! isset( $funnel_doors[ $door_key ] ) ) {
+									continue;
+								}
+
+								$door = $funnel_doors[ $door_key ];
+								?>
+								<a
+									class="<?php echo 'paid' === $door['tier'] ? 'bezahlt' : 'ohne-betrag'; ?>"
+									href="<?php echo esc_url( $door_href( $door['url'] ) ); ?>"
+									data-door="<?php echo esc_attr( $door['key'] ); ?>"
+									data-track-action="<?php echo esc_attr( 'cta_footer_door_' . $door['key'] ); ?>"
+									data-track-category="lead_gen"
+									data-track-section="footer"
+								>
+									<span class="wie"><?php echo esc_html( $door['footer_label'] ); ?></span>
+									<span class="betrag"><?php echo esc_html( '' !== $door['amount'] ? $door['amount'] : __( 'nach Umfang', 'blocksy-child' ) ); ?></span>
+									<span class="pf" aria-hidden="true">&rarr;</span>
+								</a>
+							<?php endforeach; ?>
+						</div>
+					</div>
+				<?php endforeach; ?>
 			</nav>
 		<?php endif; ?>
 

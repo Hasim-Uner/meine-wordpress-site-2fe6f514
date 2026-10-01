@@ -106,7 +106,7 @@ for (const [width, door] of [[320, null], [360, 'Projekt'], [390, 'Projekt'], [4
 
 // Spec: unter 560 px Kurztext, unter 370 px ohne Betrag; bei 360 px bleiben Wortmarke, Tuer und Menue in einer Zeile.
 for (const context of ['tracking', 'whitelabel', 'case_study']) {
-  for (const width of [360, 390, 414, 560, 561, 768]) {
+  for (const width of [360, 371, 375, 380, 390, 400, 414, 560, 561, 768]) {
     test(`narrow ${width} (${context}): wordmark, door and menu share one row`, async ({ page }) => {
       await open(page, context, { width, height: 800 });
       const boxes = await Promise.all([page.locator('.leiste .sig'), rowDoor(page), klappe(page)].map(l => l.evaluate(el => {
@@ -297,3 +297,101 @@ for (const [width, columns] of [[390, 2], [1280, 4]]) {
     expect(await noHorizontalScroll(page)).toBe(true);
   });
 }
+
+// Door register in the footer: six doors on every page except /kontakt/, own way marked, one column on a phone.
+const register = page => page.getByRole('navigation', { name: 'Welcher Weg passt?' });
+
+for (const [width, tracks] of [[390, 1], [768, 2], [1280, 2]]) {
+  test(`footer register ${width}: ${tracks} column(s) per way, no overflow, every door one click away`, async ({ page }) => {
+    await open(page, 'imprint', { width, height: 900 });
+    await expect(register(page).locator('.weg')).toHaveCount(4);
+    await expect(register(page).getByRole('link')).toHaveCount(6);
+    const columns = await register(page).locator('.weg').first().evaluate(el => getComputedStyle(el).gridTemplateColumns.split(' ').length);
+    expect(columns).toBe(tracks);
+    const rows = await register(page).getByRole('link').evaluateAll(els => els.map(el => Math.round(el.getBoundingClientRect().height)));
+    for (const height of rows) expect(height).toBeGreaterThanOrEqual(44);
+    expect(await noHorizontalScroll(page)).toBe(true);
+    // Each row keeps label, amount and arrow on one line.
+    const lines = await register(page).getByRole('link').evaluateAll(els => els.map(el => [...el.children].map(c => Math.round(c.getBoundingClientRect().top)).every((top, i, all) => Math.abs(top - all[0]) <= 8)));
+    expect(lines.every(Boolean)).toBe(true);
+  });
+}
+
+test('footer register: amounts in mono with tabular figures, "nach Umfang" and free door in --matt', async ({ page }) => {
+  await open(page, 'imprint', { width: 1280, height: 900 });
+  const info = await register(page).locator('.betrag').evaluateAll(els => els.map(el => {
+    const cs = getComputedStyle(el);
+    return { text: el.textContent.trim(), family: cs.fontFamily, tabular: cs.fontVariantNumeric, color: cs.color };
+  }));
+  expect(info.map(i => i.text)).toEqual(['nach Umfang', expect.stringMatching(/^ab \d[\d.]* €$/), expect.stringMatching(/^\d[\d.]* €$/), '0 €', expect.stringMatching(/^\d[\d.]* €$/), expect.stringMatching(/^\d[\d.]* €$/)]);
+  for (const entry of info) {
+    expect(entry.family).toContain('IBM Plex Mono');
+    expect(entry.tabular).toContain('tabular-nums');
+  }
+  const muted = info[0].color;
+  expect(info[3].color).toBe(muted);
+  expect(info[1].color).not.toBe(muted);
+});
+
+test('footer register: the own way is marked with a 3 px edge and "Ihr Weg", not hidden', async ({ page }) => {
+  await open(page, 'tracking', { width: 1280, height: 900 });
+  const marked = register(page).locator('.weg.ist-hier');
+  await expect(marked).toHaveCount(1);
+  await expect(marked.locator('.hier')).toHaveText('Ihr Weg');
+  await expect(marked.getByRole('link')).toHaveAttribute('data-door', 'tracking');
+  const edge = await marked.evaluate(el => {
+    const edgeStyle = getComputedStyle(el, '::before');
+    const stempel = getComputedStyle(el.querySelector('.hier')).color;
+    return { width: edgeStyle.width, color: edgeStyle.backgroundColor, stempel, shadow: getComputedStyle(el).boxShadow };
+  });
+  expect(edge.width).toBe('3px');
+  expect(edge.color).toBe(edge.stempel);
+  expect(edge.shadow).toBe('none');
+  // The door column stays flush with the other ways.
+  const lefts = await register(page).locator('.weg .tueren').evaluateAll(els => els.map(el => Math.round(el.getBoundingClientRect().left)));
+  expect(new Set(lefts).size).toBe(1);
+  await expect(register(page).locator('.weg')).toHaveCount(4);
+});
+
+test('footer register: no way is marked on a page of no way', async ({ page }) => {
+  await open(page, 'imprint', { width: 1280, height: 900 });
+  await expect(register(page).locator('.ist-hier')).toHaveCount(0);
+});
+
+test('footer register: the Solar page points its doors at its own anchors, in the same order', async ({ page }) => {
+  await open(page, 'solar', { width: 1280, height: 900 });
+  const energy = register(page).locator('.weg.ist-hier');
+  await expect(energy.getByRole('link')).toHaveCount(3);
+  expect(await energy.getByRole('link').evaluateAll(els => els.map(el => el.getAttribute('href')))).toEqual(['#marktcheck', '#einstieg', '#einstieg']);
+  expect(await energy.getByRole('link').evaluateAll(els => els.map(el => el.dataset.door))).toEqual(['marktcheck', 'analyse', 'sofort']);
+});
+
+test('footer register: contact has none, the page is the target of every door', async ({ page }) => {
+  await open(page, 'contact', { width: 1280, height: 900 });
+  await expect(register(page)).toHaveCount(0);
+  await expect(page.getByRole('navigation', { name: 'Weitere Seiten' })).toBeVisible();
+});
+
+test('footer register: hover turns label and arrow to --stempel and moves the arrow by 3 px', async ({ page }) => {
+  await open(page, 'imprint', { width: 1280, height: 900 });
+  const row = register(page).getByRole('link').nth(1);
+  const probe = () => row.evaluate(el => ({ label: getComputedStyle(el.querySelector('.wie')).color, arrow: new DOMMatrix(getComputedStyle(el.querySelector('.pf')).transform).m41 }));
+  const before = await probe();
+  await row.hover();
+  await page.waitForTimeout(400);
+  const after = await probe();
+  expect(after.label).not.toBe(before.label);
+  expect(after.arrow - before.arrow).toBeCloseTo(3, 0);
+});
+
+test('footer register: keyboard reaches the six doors in header order after the page content', async ({ page }) => {
+  await open(page, 'imprint', { width: 1280, height: 900 });
+  await register(page).getByRole('link').first().focus();
+  const doors = [];
+  for (let i = 0; i < 6; i++) {
+    doors.push(await page.evaluate(() => [document.activeElement.dataset.door, getComputedStyle(document.activeElement).outlineStyle]));
+    await page.keyboard.press('Tab');
+  }
+  expect(doors.map(([door]) => door)).toEqual(['projekt', 'tracking', 'aufgabe', 'marktcheck', 'analyse', 'sofort']);
+  for (const [, outline] of doors) expect(outline).not.toBe('none');
+});

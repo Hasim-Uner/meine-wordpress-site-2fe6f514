@@ -90,8 +90,11 @@ nav_check( '/ga4-tracking-setup/' === nav_path( $routes['tracking_setup'] ), 'ro
 nav_check( '/server-side-tracking-b2b/' === nav_path( $routes['tracking_b2b'] ), 'route tracking_b2b stays the Server-Side specialist page' );
 nav_check( 'Tracking' === $tracking['label'] && $routes['tracking_setup'] === $tracking['url'], 'header "Tracking" links the Tracking offer' );
 nav_check( 'https://hasimuener.de/kontakt/?type=project' === $header['cta']['url'], 'header CTA is the open project request' );
-nav_check( [ 'freelancer', 'tracking', 'whitelabel', 'energy' ] === array_column( $footer['picks'], 'route' ), 'footer ways follow the header order' );
-nav_check( $tracking['url'] === $footer['picks'][1]['url'], 'footer tracking way and header "Tracking" share one target' );
+nav_check( [ 'freelancer', 'tracking', 'whitelabel', 'energy' ] === array_column( $footer['routes'], 'route' ), 'footer ways follow the header order' );
+nav_check( [ [ 'projekt' ], [ 'tracking' ], [ 'aufgabe' ], [ 'marktcheck', 'analyse', 'sofort' ] ] === array_column( $footer['routes'], 'doors' ), 'footer ways carry their door keys; the Energy way ends in the paid ladder' );
+nav_check( ! array_key_exists( 'picks', $footer ), 'footer contract no longer carries landing-page picks' );
+nav_check( 'Ich bin Solar- oder Wärmepumpenbetrieb und kaufe heute Portal-Anfragen.' === implode( '', array_map( static function ( $part ) use ( $footer ) { return $footer['routes'][3][ $part ]; }, [ 'pre', 'strong', 'post' ] ) ), 'footer Energy sentence names today\'s portal buyers' );
+nav_check( count( hu_get_site_footer_door_urls() ) === count( array_unique( hu_get_site_footer_door_urls() ) ) && 0 < count( hu_get_site_footer_door_urls() ), 'footer door URLs are listed once for the SEO cockpit' );
 nav_check( [ 'Leistungen', 'Belege & Person', 'Wissen', 'Rechtliches' ] === array_column( $footer['directory'], 'title' ), 'footer directory has four groups' );
 
 $directory_items = array_merge( ...array_column( $footer['directory'], 'items' ) );
@@ -136,7 +139,7 @@ nav_check( $doors['analyse']['amount'] === hu_analysis_price() && $doors['sofort
 nav_check( '' === $doors['projekt']['amount'], 'project door bundles several products and carries no amount' );
 nav_check( [ 'tracking' ] === array_keys( array_filter( array_column( $doors, 'amount', 'key' ), static function ( $amount ) { return 0 === strpos( (string) $amount, 'ab ' ); } ) ), 'only the tracking door carries an "ab" amount' );
 
-foreach ( [ 'inc/funnel-doors.php', 'template-parts/site-header.php' ] as $source ) {
+foreach ( [ 'inc/funnel-doors.php', 'template-parts/site-header.php', 'template-parts/site-footer.php' ] as $source ) {
 	nav_check( ! preg_match( '/\d[\d.]*\s*(?:€|EUR|&euro;)/u', (string) file_get_contents( get_stylesheet_directory() . '/' . $source ) ), "{$source}: no price literal, amounts come from the canon" );
 }
 
@@ -165,6 +168,7 @@ $expect_funnel = [
 	'article_lead'  => [ 'leser', 'marktcheck', 'energy' ],
 	'article_track' => [ 'leser', 'tracking', 'tracking' ],
 	'article_cro'   => [ 'leser', 'projekt', '' ],
+	'article_plain' => [ 'leser', 'projekt', '' ],
 ];
 
 foreach ( array_keys( nav_test_contexts() ) as $context ) {
@@ -177,7 +181,6 @@ nav_test_use_context( 'imprint' );
 
 $tracks = array_merge(
 	array_column( hu_get_primary_navigation_contract(), 'track' ),
-	array_column( $footer['picks'], 'track' ),
 	array_column( $directory_items, 'track' )
 );
 nav_check( ! in_array( '', $tracks, true ), 'every header and footer item carries a tracking action' );
@@ -199,20 +202,54 @@ $expect_current = [
 	'whitelabel'    => [ 'White-Label' => 'page', 'Ergebnisse' => 'true' ],
 ];
 
+// Mark per context which way the footer register flags as "Ihr Weg" and where its doors point.
+$footer_door_order = [ 'projekt', 'tracking', 'aufgabe', 'marktcheck', 'analyse', 'sofort' ];
+
 foreach ( nav_test_contexts() as $context => $definition ) {
+	nav_test_use_context( $context );
+	$mode        = $expect_funnel[ $context ][0];
+	$door_key    = $expect_funnel[ $context ][1];
+	$footer_html = nav_test_render( 'template-parts/site-footer.php' );
+	$footer_x    = nav_dom( $footer_html );
+	$register    = nav_links( $footer_html, '//nav[@class="register"]//a' );
+	$route_now   = $expect_funnel[ $context ][2];
+
+	// Door register: on every page except /kontakt/, six doors in one click, own way marked, not hidden.
+	if ( 'contact' === $context ) {
+		nav_check( 0 === $footer_x->query( '//nav[@class="register"]' )->length, 'contact: footer skips the door register' );
+	} else {
+		nav_check( 1 === $footer_x->query( '//nav[@class="register"]' )->length, "{$context}: footer shows the door register" );
+		nav_check( $footer_door_order === array_column( $register, 'door' ), "{$context}: every door is one click from the footer, in header order" );
+		nav_check( array_map( static function ( $key ) { return 'cta_footer_door_' . $key; }, $footer_door_order ) === array_column( $register, 'track' ), "{$context}: footer doors carry cta_footer_door_<key>" );
+
+		$marked = $footer_x->query( '//div[contains(concat(" ", @class, " "), " ist-hier ")]' );
+		nav_check( '' === $route_now ? 0 === $marked->length : ( 1 === $marked->length && 'fuss-weg-' . $route_now . '' === ( $marked->item( 0 )->getAttribute( 'aria-labelledby' ) ) ), "{$context}: own way " . ( '' === $route_now ? 'none marked' : "{$route_now} marked, not hidden" ) );
+		nav_check( 4 === $footer_x->query( '//nav[@class="register"]//div[@class="tueren" or contains(@class,"weg")]/p[@class="satz"]' )->length, "{$context}: all four ways stay in the register" );
+
+		foreach ( $register as $index => $door_link ) {
+			$spec_row = $door_spec[ $door_link['door'] ];
+			$target   = str_replace( 'https://hasimuener.de', '', html_entity_decode( $door_link['href'] ) );
+			$on_page  = 0 === strpos( $target, '#' ) && str_ends_with( $spec_row[3], $target ) && 0 === strpos( $spec_row[3], nav_path( $definition['path'] ) );
+			nav_check( $spec_row[3] === $target || $on_page, "{$context}: footer door {$door_link['door']} targets " . ( $on_page ? "the anchor {$target} of its own page" : $spec_row[3] ) );
+			$amount_node = $footer_x->query( '(//nav[@class="register"]//a)[' . ( $index + 1 ) . ']/span[@class="betrag"]' )->item( 0 );
+			nav_check( $amount_node && ( '' === $spec_row[2] ? 'nach Umfang' : $spec_row[2] ) === trim( $amount_node->textContent ), "{$context}: footer door {$door_link['door']} amount " . ( '' === $spec_row[2] ? 'nach Umfang' : 'from the canon' ) );
+		}
+	}
+
+	// On the page that owns the anchors, the doors point at the page itself.
+	if ( 'solar' === $context ) {
+		nav_check( [ '#marktcheck', '#einstieg', '#einstieg' ] === array_slice( array_column( $register, 'href' ), 3 ), 'solar: Energy doors point at anchors of the page' );
+	}
+
 	if ( false === ( $definition['render'] ?? true ) ) {
 		continue;
 	}
 
-	nav_test_use_context( $context );
-	$mode        = $expect_funnel[ $context ][0];
-	$door_key    = $expect_funnel[ $context ][1];
 	$header_html = nav_test_render( 'template-parts/site-header.php' );
-	$footer_html = nav_test_render( 'template-parts/site-footer.php' );
 	$row         = nav_links( $header_html, '//nav[@aria-label="Hauptnavigation"]//a' );
 	$sheet       = nav_links( $header_html, '//div[@data-leiste-blatt]//nav//a' );
 	$trail       = nav_links( $header_html, '//nav[@class="pfad"]//a' );
-	$footer_nav  = nav_links( $footer_html, '//nav//a' );
+	$footer_nav  = nav_links( $footer_html, '//nav[@class="verzeichnis"]//a' );
 	$header_x    = nav_dom( $header_html );
 	$doors_html  = nav_links( $header_html, '//a[contains(concat(" ", @class, " "), " tuer ")]' );
 	$header_el   = $header_x->query( '//header' )->item( 0 );
@@ -271,12 +308,8 @@ foreach ( nav_test_contexts() as $context => $definition ) {
 		nav_check( '' === $spec[2] ? null === $amount : ( $amount && $spec[2] === trim( $amount->textContent ) ), "{$context}: door amount " . ( '' === $spec[2] ? 'none' : $spec[2] ) );
 	}
 
-	if ( 'contact' === $context ) {
-		nav_check( 0 === nav_dom( $footer_html )->query( '//nav[contains(@class,"wahl")]' )->length, 'contact: footer skips the way choice' );
-	}
-
 	if ( in_array( $context, [ 'tracking', 'server_side' ], true ) ) {
-		nav_check( ! in_array( 'cta_footer_pick_tracking', array_column( $footer_nav, 'track' ), true ), "{$context}: footer does not offer the tracking way again" );
+		nav_check( 'fuss-weg-tracking' === $footer_x->query( '//div[contains(@class,"ist-hier")]' )->item( 0 )->getAttribute( 'aria-labelledby' ), "{$context}: both tracking pages mark the tracking way" );
 	}
 
 	if ( 'home' === $context ) {

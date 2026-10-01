@@ -71,14 +71,18 @@ Abschnitt anzuhängen; der Verlauf gehört in Commit-Nachrichten.
   Menüknopf hat kein eigenes `aria-label`, der sichtbare Text
   „Menü“/„Schließen“ ist sein Name.
 - Fuß: `template-parts/site-footer.php` aus
-  `hu_get_site_footer_navigation_contract()`. Vier Wege in Kopf-Reihenfolge
-  (Website, Tracking, Agentur, Energie; der eigene Weg entfällt), Direktzeile,
-  Verzeichnis in vier Gruppen: Leistungen (Server-Side Tracking, Performance
-  Marketing, WordPress Agentur Hannover, Landingpage erstellen lassen),
-  Belege & Person (Solar-Fallstudie,
-  Über Haşim), Wissen (Blog, Glossar), Rechtliches (Impressum, Datenschutz).
-  Auf `/`, `/kontakt/` und der Energie-Money-Page entfällt die Wegewahl am
-  Abschluss.
+  `hu_get_site_footer_navigation_contract()` und `hu_funnel_doors()`. Seit
+  2026-10-01 ein Türregister: vier Wege in Kopf-Reihenfolge (Website,
+  Tracking, Agentur, Energie), je Tür eine Zeile mit Bezeichnung, Betrag
+  (aus dem Kanon) und Pfeil, Tracking `cta_footer_door_<schlüssel>`. Die
+  eigene Route ist markiert („Ihr Weg“), nicht ausgeblendet; das Register
+  erscheint auch auf Startseite und Energie-Seite, nur `/kontakt/` zeigt es
+  nicht. Darunter Direktzeile und Verzeichnis in vier Gruppen: Leistungen
+  (Server-Side Tracking, Performance Marketing, WordPress Agentur Hannover,
+  Landingpage erstellen lassen, Conversion-Optimierung), Belege & Person
+  (Solar-Fallstudie, Über Haşim), Wissen (Blog, Glossar), Rechtliches
+  (Impressum, Datenschutz). Der frühere `<style>`-Block im Template
+  (Kontaktseite) steht jetzt in `contact.css`.
 - 404: dieselben Wege wie der Kopf plus Startseite und Blog; kein Marktcheck.
 - Prüfung: `scripts/tests/navigation-contract.php` (Contract, Ziele,
   aria-current, bekannte Routen) und `scripts/tests/navigation.spec.cjs`
