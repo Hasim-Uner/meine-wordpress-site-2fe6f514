@@ -232,10 +232,10 @@
 		var index = focusable.indexOf(document.activeElement);
 		if (event.shiftKey && index <= 0) {
 			event.preventDefault();
-			focusable[focusable.length - 1].focus({ preventScroll: true });
+			focusable[focusable.length - 1].focus();
 		} else if (!event.shiftKey && (index === -1 || index === focusable.length - 1)) {
 			event.preventDefault();
-			focusable[0].focus({ preventScroll: true });
+			focusable[0].focus();
 		}
 	}
 

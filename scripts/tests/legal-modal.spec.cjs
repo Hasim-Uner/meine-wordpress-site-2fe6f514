@@ -116,9 +116,13 @@ test('legal modal: focus is contained, overflow and pre-existing inert state are
   await setup(page);
   await page.evaluate(() => { document.documentElement.style.overflow = 'clip'; document.querySelector('main').inert = true; });
   await openImprint(page);
+  const backgroundY = await page.evaluate(() => window.scrollY);
   await expect(panel(page).getByRole('button', { name: 'Schließen' })).toBeFocused();
   await page.keyboard.press('Shift+Tab');
   expect(await page.evaluate(() => !!document.activeElement.closest('.legal-modal'))).toBe(true);
+  await expect(panel(page).getByRole('link', { name: 'Kontaktseite' })).toBeFocused();
+  await expect(panel(page).getByRole('link', { name: 'Kontaktseite' })).toBeInViewport();
+  expect(await page.evaluate(() => window.scrollY)).toBe(backgroundY);
   await page.keyboard.press('Tab');
   await expect(panel(page).getByRole('button', { name: 'Schließen' })).toBeFocused();
   await panel(page).getByRole('button', { name: 'Schließen' }).click();
