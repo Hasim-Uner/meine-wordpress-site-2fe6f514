@@ -463,7 +463,7 @@ get_header();
 						<a href="<?php echo esc_url( $marktcheck_url ); ?>"
 						   data-track-action="cta_marktcheck_branch"
 						   data-track-category="server_side_tracking_b2b"
-						   data-track-section="hero">Gesamten Anfrageweg im Marktcheck einordnen</a>
+						   data-track-section="hero">Marktcheck starten</a>
 					</p>
 				</div>
 

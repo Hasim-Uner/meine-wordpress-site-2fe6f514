@@ -171,7 +171,7 @@ get_header();
 				   data-track-action="cta_marktcheck"
 				   data-track-category="qualifizierte_pv_anfragen"
 				   data-track-section="hero">
-					Marktcheck mit Fit-Entscheid starten
+					Marktcheck starten
 				</a>
 				<a class="hu-intercept__cta-secondary"
 				   href="<?php echo esc_url( $e3_url ); ?>"
@@ -272,7 +272,7 @@ get_header();
 				   data-track-action="cta_marktcheck"
 				   data-track-category="qualifizierte_pv_anfragen"
 				   data-track-section="final">
-					Marktcheck mit Fit-Entscheid starten
+					Marktcheck starten
 				</a>
 				<a class="hu-intercept__cta-secondary"
 				   href="<?php echo esc_url( $solar_money_url ); ?>"

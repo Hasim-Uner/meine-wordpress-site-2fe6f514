@@ -270,7 +270,7 @@ get_header();
 						   data-track-action="cta_marktcheck"
 						   data-track-category="b2b_solar_leads"
 						   data-track-section="hero">
-							Marktcheck mit Fit-Entscheid starten <span aria-hidden="true">→</span>
+							Marktcheck starten <span aria-hidden="true">→</span>
 						</a>
 						<a class="hu-b2b__text-link"
 						   href="<?php echo esc_url( $e3_url ); ?>"
@@ -480,7 +480,7 @@ get_header();
 				   data-track-action="cta_marktcheck"
 				   data-track-category="b2b_solar_leads"
 				   data-track-section="final">
-					Marktcheck mit Fit-Entscheid starten <span aria-hidden="true">→</span>
+					Marktcheck starten <span aria-hidden="true">→</span>
 				</a>
 				<p class="hu-b2b__microcopy">Keine Zahlungsdaten · kein Pflicht-Call · händische Einordnung</p>
 				<a class="hu-b2b__text-link"

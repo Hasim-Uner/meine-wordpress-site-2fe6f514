@@ -1,15 +1,14 @@
 <?php
 /**
  * Template Name: Solar & Wärmepumpen Leadgenerierung (Anfragestrecke)
- * Description: Gutachten-Standard. Weisser Grund, Serif im Fliesstext,
+ * Description: Gutachten-Standard. Weisser Grund, Hausschrift im Fliesstext,
  *              Randspalte mit laufender Nummer, dunkle Tafeln fuer
  *              Beweis und Handlung. Der Marktcheck ist das Gate und steht
  *              bewusst nach der Argumentation, nicht davor.
  *
  *              Aufbau: Dokumentkopf mit Definition und Messschrieb ·
- *              01 Strecke · 02 Ihr Anteil · 03 Rechnung · 04 Fall ·
- *              05 Einstieg · 06 Passung · 07 Marktcheck · 08 Fragen ·
- *              09 Verweise.
+ *              01 Strecke · 02 Rechnung · 03 Fall · 04 Einstieg ·
+ *              05 Was es braucht · 06 Marktcheck · 07 Fragen · 08 Verweise.
  *
  * Waehrungs-Doktrin: ausnahmslos EUR. Niemals $ oder generische Symbole.
  *
@@ -53,6 +52,14 @@ $calc_cpl_display   = hu_e3_metric( 'calc_cpl_conservative' );
 $calc_cpl_input     = hu_e3_metric( 'calc_cpl_conservative', 'input' );
 $calc_quote_display = hu_e3_metric( 'calc_sales_conversion_conservative' );
 $calc_quote_input   = hu_e3_metric( 'calc_sales_conversion_conservative', 'input' );
+$calc_defaults = [
+	'a1' => 25,
+	'a2' => 80,
+	'a3' => 4,
+	'b1' => 2000,
+	'b2' => (float) $calc_cpl_input,
+	'b3' => (float) $calc_quote_input,
+];
 
 // Die Vorher-Quote ist eine Marktannahme, keine Messung dieses Betriebs.
 // Deshalb die vorsichtige Fassung, sobald sie in einer Tabelle neben
@@ -74,11 +81,24 @@ $pricing_canon = function_exists( 'hu_pricing_canon' ) ? hu_pricing_canon() : []
 $calc_build   = (int) ( $pricing_canon['foundation_price_standard'] ?? 14900 );
 $calc_hosting = (int) ( $pricing_canon['foundation_hosting_monthly'] ?? 50 );
 $calc_months  = 24;
+$module_a_orders = $calc_defaults['a1'] * $calc_defaults['a3'] / 100;
+$module_b_leads  = $calc_defaults['b1'] / $calc_defaults['b2'];
+$module_b_orders = $module_b_leads * $calc_defaults['b3'] / 100;
+$module_a_cpo    = $calc_defaults['a1'] * $calc_defaults['a2'] / max( 0.0001, $module_a_orders );
+$module_b_cpo    = $module_b_orders > 0 ? ( $calc_defaults['b1'] + $calc_build / $calc_months + $calc_hosting ) / $module_b_orders : 0;
 
 $format_eur = static function ( $value ) {
 	return function_exists( 'hu_format_eur' )
 		? hu_format_eur( $value )
 		: number_format( (float) $value, 0, ',', '.' ) . ' €';
+};
+$format_orders = static function ( float $orders ): string {
+	$formatted = number_format( $orders, 1, ',', '.' );
+	return '1,0' === $formatted ? 'ein Auftrag' : $formatted . ' Aufträge';
+};
+$format_numeric_orders = static function ( float $orders ): string {
+	$formatted = number_format( $orders, 1, ',', '.' );
+	return $formatted . ( '1,0' === $formatted ? ' Auftrag' : ' Aufträge' );
 };
 
 $foundation_price = $format_eur( $calc_build );
@@ -100,6 +120,9 @@ $contact_email = function_exists( 'hu_get_contact_email' ) ? hu_get_contact_emai
 // Ausweichweg fuer den Marktcheck-Mount ohne JavaScript: ein echtes
 // Formular auf /kontakt/, kein mailto. Siehe Abschnitt 07.
 $contact_url = function_exists( 'nexus_get_contact_url' ) ? nexus_get_contact_url() : home_url( '/kontakt/' );
+$privacy_url = home_url( '/datenschutz/' );
+$order_reply = hu_response_promise( 'window' );
+$order_sources = [ 'aroundhome' => 'Aroundhome', 'daa' => 'DAA', 'wattfox' => 'Wattfox', 'check24_checkfox' => 'Check24/Checkfox', 'eigene_website' => 'eigene Website', 'andere' => 'andere' ];
 
 // ── Fremde Marktzahlen (Market-Canon) ──────────────────────────
 $market_figures    = function_exists( 'hu_market_figures' ) ? hu_market_figures() : [];
@@ -115,14 +138,13 @@ $market_disclaimer = function_exists( 'hu_market_figures_disclaimer' ) ? hu_mark
 // an der jeweiligen H2.
 $chapters = [
 	[ 'nr' => '01', 'id' => 'strecke',    'titel' => 'Die Strecke',  'kurz' => 'Strecke' ],
-	[ 'nr' => '02', 'id' => 'anteil',     'titel' => 'Ihr Anteil',   'kurz' => 'Ihr Anteil' ],
-	[ 'nr' => '03', 'id' => 'rechnung',   'titel' => 'Die Rechnung', 'kurz' => 'Rechnung' ],
-	[ 'nr' => '04', 'id' => 'ergebnisse', 'titel' => 'Der Fall',     'kurz' => 'Fall' ],
-	[ 'nr' => '05', 'id' => 'einstieg',   'titel' => 'Ihr Einstieg', 'kurz' => 'Einstieg' ],
-	[ 'nr' => '06', 'id' => 'passung',    'titel' => 'Passung',      'kurz' => 'Passung' ],
-	[ 'nr' => '07', 'id' => 'marktcheck', 'titel' => 'Marktcheck',   'kurz' => 'Marktcheck' ],
-	[ 'nr' => '08', 'id' => 'fragen',     'titel' => 'Fragen',       'kurz' => 'Fragen' ],
-	[ 'nr' => '09', 'id' => 'verweise',   'titel' => 'Verweise',     'kurz' => 'Verweise' ],
+	[ 'nr' => '02', 'id' => 'rechnung',   'titel' => 'Die Rechnung', 'kurz' => 'Rechnung' ],
+	[ 'nr' => '03', 'id' => 'ergebnisse', 'titel' => 'Der Fall',     'kurz' => 'Fall' ],
+	[ 'nr' => '04', 'id' => 'einstieg',   'titel' => 'Ihr Einstieg', 'kurz' => 'Einstieg' ],
+	[ 'nr' => '05', 'id' => 'anteil',     'titel' => 'Was es braucht', 'kurz' => 'Was es braucht' ],
+	[ 'nr' => '06', 'id' => 'marktcheck', 'titel' => 'Marktcheck',   'kurz' => 'Marktcheck' ],
+	[ 'nr' => '07', 'id' => 'fragen',     'titel' => 'Fragen',       'kurz' => 'Fragen' ],
+	[ 'nr' => '08', 'id' => 'verweise',   'titel' => 'Verweise',     'kurz' => 'Verweise' ],
 ];
 
 $chapter_by_id = [];
@@ -148,45 +170,22 @@ $render_chapter = static function ( $chapter ) {
 	<?php
 };
 
-// ── 01 Die Strecke: fuenf Stationen ────────────────────────────
-// Je Station: was gebaut wird, was davon auf dem Schreibtisch ankommt,
-// und welchen Nutzen das fuer den Vertrieb hat.
-$stations = [
-	[
-		'id' => 'station-sichtbarkeit',
-		'titel' => 'Landingpages und Kampagnen',
-		'bau' => 'Ich entwickle Seiten für Ihr Angebot und Zielgebiet, richte Kampagnen aus und teste Anzeigenvarianten. Technisches SEO ergänzt die bezahlte Reichweite.',
-		'sicht' => 'Interessenten lernen Ihren Betrieb kennen und fragen direkt bei Ihnen an.',
-	],
-	[
-		'id' => 'station-vorqualifizierung',
-		'titel' => 'Formulare mit Vorqualifizierung',
-		'bau' => 'Ich stimme die Fragen auf Ihre Projekte ab: Produktinteresse, Standort, Objekt und Zeithorizont. Die Angaben werden strukturiert übergeben.',
-		'sicht' => 'Ihr Vertrieb kann Anfragen einordnen und das erste Gespräch vorbereiten.',
-	],
-	[
-		'id' => 'station-messung',
-		'titel' => 'Tracking und Quellenzuordnung',
-		'bau' => 'Ich verbinde Browser-, Plattform- und CRM-Signale über serverseitiges Tracking. Einwilligungen und verfügbare Identifikatoren begrenzen die Zuordnung.',
-		'sicht' => 'Sie erkennen, welche Quellen Anfragen und nachvollziehbare Vertriebsresultate liefern.',
-	],
-	[
-		'id' => 'station-vertrieb',
-		'titel' => 'CRM und Rückmeldung',
-		'bau' => 'Ich richte die CRM-Übergabe nach Produktinteresse und Herkunft ein, dazu Benachrichtigung und Eingangsbestätigung. Zuständigkeiten stimmen wir mit Ihrem Vertrieb ab.',
-		'sicht' => 'Anfragen landen beim zuständigen Ansprechpartner und lassen sich nachverfolgen.',
-	],
-	[
-		'id' => 'station-eigentum',
-		'titel' => 'Dokumentation und Übergabe',
-		'bau' => 'Ich arbeite auf Ihren Konten und dokumentiere Code, Tracking und Anbindungen. Sie erhalten eine Übersicht der Zugänge und Komponenten.',
-		'sicht' => 'Ihr Betrieb behält die Kontrolle und kann die Betreuung später übergeben.',
-	],
+// Die Zwischenstufen zeigen den Ort des Verlusts, nicht eine Prognose.
+$module_counts = [
+	'a' => [ (int) $calc_defaults['a1'], 12, 6, 3, (int) round( $module_a_orders ) ],
+	'b' => [ (int) round( $module_b_leads ), 30, 22, 12, (int) round( $module_b_orders ) ],
 ];
+$module_stations = [
+	[ 'name' => 'Anfrage entsteht', 'built' => 'Landingpages und Kampagnen auf Ihrer Domain, ausgerichtet auf Ihr Zielgebiet.', 'a' => 'Derselbe Kontakt geht an 3 bis 5 Betriebe. Wer als Vierter anruft, verkauft über den Preis oder gar nicht.', 'b' => 'Die Anfrage kommt über Ihre Seite und gehört nur Ihnen. Kein Mitbewerber hat dieselbe Telefonnummer.' ],
+	[ 'name' => 'Einordnung', 'built' => 'Formular mit Vorqualifizierung: Produkt, Objekt, Standort, Zeithorizont.', 'a' => 'Was der Kontakt eigentlich will, klärt Ihr Vertrieb am Telefon. Unpassende Anfragen kosten erst Geld, dann Zeit.', 'b' => 'Unpassende fallen im Formular heraus, bevor jemand anruft. Ihr Vertrieb sieht vor dem Gespräch, worum es geht.' ],
+	[ 'name' => 'Erster Anruf', 'built' => 'CRM-Übergabe mit Alarm unter 60 Sekunden und automatischer Eingangsbestätigung mit Terminlink.', 'a' => 'Der Anruf kommt, wenn jemand Zeit hat. Bis dahin hat der Interessent schon mit zwei anderen gesprochen.', 'b' => 'Die zuständige Person bekommt die Anfrage sofort. Der Interessent bekommt in derselben Minute eine Bestätigung.' ],
+	[ 'name' => 'Nachfassen', 'built' => 'Bearbeitungsstand im CRM und Rückmeldung an die Kampagnen über serverseitiges Tracking.', 'a' => 'Der Anbieter erfährt nie, welche Kontakte verkauft haben. Nächsten Monat kaufen Sie dieselbe Qualität.', 'b' => 'Abschlüsse fließen zurück. Budget wandert zu den Quellen, die Aufträge bringen, nicht nur Formulare.' ],
+	[ 'name' => 'Auftrag', 'built' => 'Dokumentation und Übergabe. Code, Konten und Daten liegen bei Ihnen.', 'a' => '', 'b' => '' ],
+];
+$module_stations[4]['a'] = sprintf( 'Rund %s im Monat, %s je Auftrag. Nächsten Monat beginnt alles von vorn.', $format_orders( $module_a_orders ), $format_eur( $module_a_cpo ) );
+$module_stations[4]['b'] = sprintf( 'Rund %s im Monat, %s je Auftrag. Das System bleibt und wird mit jedem Monat genauer.', $format_orders( $module_b_orders ), $format_eur( $module_b_cpo ) );
 
-// ── 02 Ihr Anteil ──────────────────────────────────────────────
-// Steht bewusst vor dem Preis. Wer diese drei Punkte nicht liefern
-// kann, soll vor der Rechnung aussteigen, nicht nach dem Angebot.
+// ── 05 Was es braucht ──────────────────────────────────────────
 $conditions = [
 	[
 		'id'    => 'anteil-zugaenge',
@@ -205,7 +204,7 @@ $conditions = [
 	],
 ];
 
-// ── 04 Der Fall: Projektmonate inklusive Vorbereitung ──────────
+// ── 03 Der Fall: Projektmonate inklusive Vorbereitung ──────────
 $phases = [
 	[ 'label' => $e3_timeline['preparation_label'], 'text' => $e3_timeline['preparation'] ],
 	[ 'label' => $e3_timeline['campaign_label'], 'text' => $e3_timeline['campaign'] ],
@@ -213,7 +212,7 @@ $phases = [
 ];
 
 
-// ── 05 Die Leiter ──────────────────────────────────────────────
+// ── 04 Die Leiter ──────────────────────────────────────────────
 // Vier Stufen, jede einzeln buchbar. Der Preis steht an der Stufe,
 // nicht in einer Preisliste am Seitenende.
 $ladder = [
@@ -270,10 +269,9 @@ $exits = [
 	],
 ];
 
-// ── 06 Passung ─────────────────────────────────────────────────
+// ── 05 Passung ─────────────────────────────────────────────────
 $fit_yes = [
 	[ 't' => 'Projektwerte ab ca. 15.000 € privat, 50.000 € gewerblich', 's' => 'Richtwerte für die Einordnung; entscheidend sind Marge, Kapazität und Zielgebiet.' ],
-	[ 't' => 'Eigener Vertrieb, der abschließt', 's' => 'Ihr Team oder die Geschäftsführung — jemand, der zurückruft und nachfasst.' ],
 	[ 't' => 'Definiertes Zielgebiet', 's' => 'Region oder Bundesland. Nicht „bundesweit, alles“.' ],
 	[ 't' => 'Horizont 12 bis 24 Monate', 's' => 'Bereit, Anfragegewinnung über mehrere Monate aufzubauen und zu verbessern.' ],
 ];
@@ -284,7 +282,7 @@ $fit_no = [
 	[ 't' => 'Sichtbarkeit nicht gewollt', 's' => 'Der eigene Anfrageweg lebt davon, dass Ihr Betrieb unterscheidbar wird.' ],
 ];
 
-// ── 07 Marktcheck: was im Befund steht ─────────────────────────
+// ── 06 Marktcheck: was im Befund steht ─────────────────────────
 $report_items = [
 	'Erste Einordnung Ihres Betriebs und Zielgebiets',
 	'Einschätzung anhand Ihrer Projektgröße und Vertriebsstruktur',
@@ -302,7 +300,7 @@ $receipt_rows = [
 	[ 'k' => 'Kosten',        'v' => 'keine' ],
 ];
 
-// ── 08 Fragen ──────────────────────────────────────────────────
+// ── 07 Fragen ──────────────────────────────────────────────────
 // `lead` und `rest` werden fuer die Anzeige getrennt gesetzt (der Lead
 // steht in Tinte, der Rest in Grau) und fuer das FAQPage-Schema wieder
 // zusammengefuegt. Dadurch kann der Schema-Text nicht vom sichtbaren
@@ -351,7 +349,7 @@ $faq_answer_text = static function ( $item ) {
 	return trim( $item['lead'] . ' ' . $item['rest'] );
 };
 
-// ── 09 Verweise ────────────────────────────────────────────────
+// ── 08 Verweise ────────────────────────────────────────────────
 // Nach der Frage sortiert, die dahintersteckt — nicht nach Kategorie.
 // Wer sucht, sucht eine Antwort, keine Rubrik.
 $references = [
@@ -482,37 +480,7 @@ $schema_blocks[] = [
 	),
 ];
 
-// 2 · HowTo — die fuenf Stationen als Ablauf
-$schema_blocks[] = [
-	'@context'    => 'https://schema.org',
-	'@type'       => 'HowTo',
-	'@id'         => $page_url . '#howto',
-	'name'        => 'Eigene Photovoltaik-Anfragen aufbauen statt Leads kaufen',
-	'description' => 'Die fünf Stationen, die eine Anfrage im eigenen Anfragesystem durchläuft — von der Sichtbarkeit auf der eigenen Domain bis zur dokumentierten Übergabe.',
-	'totalTime'   => 'P10W',
-	'estimatedCost' => [
-		'@type'    => 'MonetaryAmount',
-		'currency' => 'EUR',
-		'value'    => (string) $calc_build,
-	],
-	'step'        => array_values(
-		array_map(
-			static function ( $index, $station ) use ( $page_url ) {
-				return [
-					'@type' => 'HowToStep',
-					'position' => $index + 1,
-					'name'  => $station['titel'],
-					'text'  => $station['bau'],
-					'url'   => $page_url . '#' . $station['id'],
-				];
-			},
-			array_keys( $stations ),
-			$stations
-		)
-	),
-];
-
-// 3 · DefinedTerm — der Begriff, den diese Seite besetzt
+// 2 · DefinedTerm — der Begriff, den diese Seite besetzt
 //
 // Kein eigener WebPage- und kein eigener BreadcrumbList-Block: beide gibt
 // inc/org-schema.php global aus, unter exakt denselben @ids
@@ -642,13 +610,12 @@ get_header();
 				<div class="haupt breit">
 					<p class="gegenstand">Gegenstand · Anfragegewinnung für Photovoltaik, Wärmepumpe und Speicher</p>
 
-					<h1>Eigene Anfragen für <em>Solar und Wärmepumpe.</em></h1>
+					<h1>Anfragen, die nur bei Ihnen ankommen. <em>Für Solar und Wärmepumpe.</em></h1>
 
 					<p class="aufriss">
-						<span class="erst">Für Solar- und SHK-Betriebe mit eigenem Vertrieb.</span>
-						Ich entwickle Landingpages, optimiere Kampagnen und verbinde Formulare,
-						Tracking und CRM. So kommen Anfragen mit Produktinteresse und Herkunft
-						bei Ihrem Vertrieb an. Code, Konten und Daten bleiben bei Ihnen.
+						<span class="erst">Ein Portal-Kontakt geht an 3 bis 5 Betriebe. Eine Anfrage über Ihre eigene Seite nur an Sie.</span>
+						Ich entwickle Landingpages, optimiere Kampagnen und verbinde Formulare, Tracking und CRM.
+						So kommen Anfragen mit Produktinteresse und Herkunft bei Ihrem Vertrieb an; Code, Konten und Daten bleiben bei Ihnen.
 					</p>
 
 					<div class="ausgang">
@@ -657,11 +624,11 @@ get_header();
 							data-track-category="lead_gen"
 							data-track-section="dokumentkopf"
 						>Kostenlosen Marktcheck starten <span class="pf" aria-hidden="true">→</span></a>
-						<a class="tun still" href="#strecke"
-							data-track-action="cta_strecke_kopf_to_stationen"
-							data-track-category="navigation"
+						<a class="tun still" href="#sofortkontakt"
+							data-track-action="cta_strecke_kopf_to_sofortkontakt"
+							data-track-category="lead_gen"
 							data-track-section="dokumentkopf"
-						>Was ich für Sie umsetze</a>
+						>Sie kaufen schon Leads? Sofortkontakt</a>
 					</div>
 
 					<div class="meta">
@@ -676,7 +643,7 @@ get_header();
 							</div>
 							<div>
 								<dt>Aufbau</dt>
-								<dd><span class="zahl"><?php echo esc_html( $foundation_price ); ?></span> netto · kleiner Einstieg ab <span class="zahl"><?php echo esc_html( $entry_price ); ?></span></dd>
+								<dd><span class="zahl"><?php echo esc_html( $foundation_price ); ?></span> netto · Einstieg ab <span class="zahl"><?php echo esc_html( $entry_price ); ?></span></dd>
 							</div>
 							<div>
 								<dt>Bearbeitet von</dt>
@@ -775,50 +742,88 @@ get_header();
 			<div class="blatt reihe">
 				<?php $render_chapter( $chapter_by_id['strecke'] ); ?>
 				<div class="voll">
-					<h2 class="kopf" id="strecke-titel">Was ich für Ihre Anfragegewinnung umsetze.</h2>
-					<p class="vorspann">Von der ersten Anzeige bis zur CRM-Übergabe: Ich übernehme die technische Umsetzung und die Optimierung. Ihr Vertrieb übernimmt Beratung, Angebot und Abschluss.</p>
+					<h2 class="kopf" id="strecke-titel">Was aus einem Monatsbudget von <?php echo esc_html( $format_eur( $calc_defaults['b1'] ) ); ?> wird.</h2>
+					<p class="vorspann">Zwei Wege, dasselbe Budget. Beide verlieren Anfragen. Der Unterschied ist, wo das passiert und ob es schon bezahlt war.</p>
 
-					<div class="strecke">
-						<?php foreach ( $stations as $station_index => $station ) : ?>
-							<article class="station" id="<?php echo esc_attr( $station['id'] ); ?>">
-								<span class="i" aria-hidden="true"><?php echo esc_html( sprintf( '%02d', $station_index + 1 ) ); ?></span>
-								<div>
-									<h3 id="<?php echo esc_attr( $station['id'] . '-titel' ); ?>"><?php echo esc_html( $station['titel'] ); ?></h3>
-									<p class="bau"><?php echo esc_html( $station['bau'] ); ?></p>
-								</div>
-								<div class="sicht">
-									<span class="l">Für Ihren Vertrieb</span>
-									<p><?php echo esc_html( $station['sicht'] ); ?></p>
-								</div>
-							</article>
-						<?php endforeach; ?>
-					</div>
-				</div>
-			</div>
-		</section>
-
-		<!-- ════════ 02 Ihr Anteil ════════ -->
-		<section id="anteil">
-			<div class="blatt reihe">
-				<?php $render_chapter( $chapter_by_id['anteil'] ); ?>
-				<div class="voll">
-					<h2 class="kopf" id="anteil-titel">Drei Dinge müssen bei Ihnen passieren.</h2>
-					<p class="vorspann">Damit die Umsetzung vorankommt, brauche ich Zugänge, einen festen Ansprechpartner und einen Vertrieb, der Anfragen bearbeitet.</p>
-
-					<div class="bedingungen">
-						<?php foreach ( $conditions as $condition_index => $condition ) : ?>
-							<div>
-								<span class="i" aria-hidden="true"><?php echo esc_html( sprintf( '%02d', $condition_index + 1 ) ); ?></span>
-								<h3 id="<?php echo esc_attr( $condition['id'] ); ?>"><?php echo esc_html( $condition['titel'] ); ?></h3>
-								<p><?php echo esc_html( $condition['text'] ); ?></p>
+					<div class="streckenmodul tafel" id="modul" data-streckenmodul data-counts="<?php echo esc_attr( wp_json_encode( $module_counts ) ); ?>">
+						<div class="modul-kopf"><h3>Zwei Wege, ein Budget.</h3><span class="mono">Ein Punkt = eine Anfrage</span></div>
+						<div class="modul-buehne" data-module-stage>
+							<?php
+							$module_layouts = [
+								'wide' => [ 'w' => 1000, 'h' => 400, 'xs' => [ 100, 280, 460, 640, 820 ], 'a' => 110, 'b' => 296, 'r' => 4.6, 'spread' => 26, 'fall' => 40 ],
+								'narrow' => [ 'w' => 520, 'h' => 470, 'xs' => [ 40, 135, 230, 325, 420 ], 'a' => 95, 'b' => 330, 'r' => 6.5, 'spread' => 30, 'fall' => 46 ],
+							];
+							?>
+							<?php foreach ( $module_layouts as $layout_name => $layout ) : ?>
+								<svg class="modul-svg modul-svg--<?php echo esc_attr( $layout_name ); ?>" viewBox="0 0 <?php echo esc_attr( (string) $layout['w'] ); ?> <?php echo esc_attr( (string) $layout['h'] ); ?>" role="img" aria-labelledby="modul-<?php echo esc_attr( $layout_name ); ?>-title modul-<?php echo esc_attr( $layout_name ); ?>-desc" data-layout="<?php echo esc_attr( $layout_name ); ?>">
+									<title id="modul-<?php echo esc_attr( $layout_name ); ?>-title">Zwei Wege, ein Monatsbudget</title>
+									<desc id="modul-<?php echo esc_attr( $layout_name ); ?>-desc">Weg A kauft <?php echo esc_html( (string) $module_counts['a'][0] ); ?> Anfragen. Daraus werden <?php echo esc_html( $format_numeric_orders( $module_a_orders ) ); ?> zu <?php echo esc_html( $format_eur( $module_a_cpo ) ); ?> je Auftrag. Weg B gewinnt rund <?php echo esc_html( (string) $module_counts['b'][0] ); ?> eigene Anfragen. Daraus werden <?php echo esc_html( $format_numeric_orders( $module_b_orders ) ); ?> zu <?php echo esc_html( $format_eur( $module_b_cpo ) ); ?> je Auftrag einschließlich anteiligem Aufbau und Hosting.</desc>
+									<g class="modul-raster" aria-hidden="true">
+										<?php foreach ( $layout['xs'] as $station_index => $x ) : ?>
+											<line x1="<?php echo esc_attr( (string) $x ); ?>" x2="<?php echo esc_attr( (string) $x ); ?>" y1="<?php echo esc_attr( (string) ( $layout['a'] - 50 ) ); ?>" y2="<?php echo esc_attr( (string) ( $layout['b'] + 75 ) ); ?>" data-station="<?php echo esc_attr( (string) $station_index ); ?>" />
+										<?php endforeach; ?>
+										<line class="modul-linie modul-linie--a" x1="10" x2="<?php echo esc_attr( (string) ( $layout['w'] - 10 ) ); ?>" y1="<?php echo esc_attr( (string) $layout['a'] ); ?>" y2="<?php echo esc_attr( (string) $layout['a'] ); ?>" />
+										<line class="modul-linie modul-linie--b" x1="10" x2="<?php echo esc_attr( (string) ( $layout['w'] - 10 ) ); ?>" y1="<?php echo esc_attr( (string) $layout['b'] ); ?>" y2="<?php echo esc_attr( (string) $layout['b'] ); ?>" />
+									</g>
+									<g class="modul-punkte" aria-hidden="true">
+										<?php foreach ( [ 'a', 'b' ] as $way ) : ?>
+											<?php for ( $dot = 0; $dot < $module_counts[ $way ][0]; $dot++ ) : ?>
+												<?php
+											$last = 4;
+											for ( $station = 1; $station < 5; $station++ ) {
+												if ( $dot >= $module_counts[ $way ][ $station ] ) {
+													$last = $station - 1;
+													break;
+												}
+											}
+											$dot_y = $layout[ $way ] + ( ( $dot * 17 ) % ( $layout['spread'] * 2 ) ) - $layout['spread'] + ( $last < 4 ? $layout['fall'] : 0 );
+											$dot_x = $layout['xs'][ $last ] + ( $dot % 7 - 3 ) * 3;
+												?>
+												<circle class="modul-punkt modul-punkt--<?php echo esc_attr( $way ); ?>" r="<?php echo esc_attr( (string) $layout['r'] ); ?>" cx="<?php echo esc_attr( (string) $dot_x ); ?>" cy="<?php echo esc_attr( (string) $dot_y ); ?>" data-way="<?php echo esc_attr( $way ); ?>" data-last="<?php echo esc_attr( (string) $last ); ?>" data-index="<?php echo esc_attr( (string) $dot ); ?>" />
+											<?php endfor; ?>
+										<?php endforeach; ?>
+									</g>
+								</svg>
+							<?php endforeach; ?>
+							<div class="modul-labels" aria-hidden="true">
+								<?php foreach ( [ 'a' => sprintf( 'Weg A · %d Anfragen gekauft', $module_counts['a'][0] ), 'b' => sprintf( 'Weg B · %d eigene Anfragen', $module_counts['b'][0] ) ] as $way => $label ) : ?>
+									<div class="modul-labels-row modul-labels-row--<?php echo esc_attr( $way ); ?>">
+										<span class="modul-way mono"><?php echo esc_html( $label ); ?></span>
+										<div class="modul-counts">
+											<?php foreach ( $module_counts[ $way ] as $count ) : ?><span class="modul-count"><?php echo esc_html( (string) $count ); ?></span><?php endforeach; ?>
+										</div>
+									</div>
+								<?php endforeach; ?>
 							</div>
-						<?php endforeach; ?>
+						</div>
+						<div class="modul-ende">
+							<div><span class="mono">Weg A · Anfragen einkaufen</span><b><?php echo esc_html( $format_eur( $module_a_cpo ) ); ?></b><small>je Auftrag · <?php echo esc_html( $format_numeric_orders( $module_a_orders ) ); ?> im Monat</small></div>
+							<div class="modul-ende-b"><span class="mono">Weg B · Eigene Strecke</span><b><?php echo esc_html( $format_eur( $module_b_cpo ) ); ?></b><small>je Auftrag · <?php echo esc_html( $format_numeric_orders( $module_b_orders ) ); ?> · inkl. Aufbau/<?php echo esc_html( (string) $calc_months ); ?> Mon. und Hosting</small></div>
+						</div>
+						<div class="modul-tabs" role="tablist" aria-label="Stationen einer Anfrage">
+							<?php foreach ( $module_stations as $station_index => $station ) : ?>
+								<button type="button" role="tab" id="modul-tab-<?php echo esc_attr( (string) $station_index ); ?>" aria-label="<?php echo esc_attr( sprintf( '%02d · %s', $station_index + 1, $station['name'] ) ); ?>" aria-controls="modul-panel" aria-selected="<?php echo 0 === $station_index ? 'true' : 'false'; ?>" tabindex="<?php echo 0 === $station_index ? '0' : '-1'; ?>" data-name="<?php echo esc_attr( $station['name'] ); ?>" data-built="<?php echo esc_attr( $station['built'] ); ?>" data-a="<?php echo esc_attr( $station['a'] ); ?>" data-b="<?php echo esc_attr( $station['b'] ); ?>">
+									<span class="mono"><?php echo esc_html( sprintf( '%02d', $station_index + 1 ) ); ?></span>
+									<span class="modul-tab-name"><?php echo esc_html( $station['name'] ); ?></span>
+								</button>
+							<?php endforeach; ?>
+						</div>
+						<div class="modul-panel" id="modul-panel" role="tabpanel" aria-labelledby="modul-tab-0" aria-live="polite">
+							<p class="modul-panel-name">01 · <?php echo esc_html( $module_stations[0]['name'] ); ?></p>
+							<div><span class="mono">Was gebaut wird</span><p data-module-copy="built"><?php echo esc_html( $module_stations[0]['built'] ); ?></p></div>
+							<div><span class="mono">Weg A · Einkauf</span><p data-module-copy="a"><?php echo esc_html( $module_stations[0]['a'] ); ?></p></div>
+							<div><span class="mono">Weg B · Eigene Strecke</span><p data-module-copy="b"><?php echo esc_html( $module_stations[0]['b'] ); ?></p></div>
+						</div>
+						<div class="modul-leiste">
+							<p>Anfang und Ende gerechnet wie im Rechner (Abschnitt 02). Die Zwischenstufen sind schematisch und zeigen, wo verloren wird, nicht wie viel.</p>
+							<button class="modul-replay" type="button">Noch einmal abspielen</button>
+						</div>
 					</div>
 				</div>
 			</div>
 		</section>
 
-		<!-- ════════ 03 Die Rechnung ════════ -->
+		<!-- ════════ 02 Die Rechnung ════════ -->
 		<section id="rechnung">
 			<div class="blatt reihe">
 				<?php $render_chapter( $chapter_by_id['rechnung'] ); ?>
@@ -838,21 +843,21 @@ get_header();
 							<div class="eingabe">
 								<label for="strecke-a1">Gekaufte Anfragen pro Monat</label>
 								<span class="feld">
-									<input id="strecke-a1" data-feld="a1" type="number" inputmode="numeric" min="0" max="500" step="1" value="25">
+									<input id="strecke-a1" data-feld="a1" type="number" inputmode="numeric" min="0" max="500" step="1" value="<?php echo esc_attr( (string) $calc_defaults['a1'] ); ?>">
 									<span class="einheit">Stk</span>
 								</span>
 							</div>
 							<div class="eingabe">
 								<label for="strecke-a2">Preis pro Anfrage</label>
 								<span class="feld">
-									<input id="strecke-a2" data-feld="a2" type="number" inputmode="numeric" min="0" max="1000" step="1" value="80">
+									<input id="strecke-a2" data-feld="a2" type="number" inputmode="numeric" min="0" max="1000" step="1" value="<?php echo esc_attr( (string) $calc_defaults['a2'] ); ?>">
 									<span class="einheit">€</span>
 								</span>
 							</div>
 							<div class="eingabe">
 								<label for="strecke-a3">Abschlussquote auf diese Anfragen</label>
 								<span class="feld">
-									<input id="strecke-a3" data-feld="a3" type="number" inputmode="decimal" min="0" max="100" step="0.5" value="4">
+									<input id="strecke-a3" data-feld="a3" type="number" inputmode="decimal" min="0" max="100" step="0.5" value="<?php echo esc_attr( (string) $calc_defaults['a3'] ); ?>">
 									<span class="einheit">%</span>
 								</span>
 							</div>
@@ -873,21 +878,21 @@ get_header();
 							<div class="eingabe">
 								<label for="strecke-b1">Werbebudget pro Monat</label>
 								<span class="feld">
-									<input id="strecke-b1" data-feld="b1" type="number" inputmode="numeric" min="0" max="50000" step="100" value="2000">
+									<input id="strecke-b1" data-feld="b1" type="number" inputmode="numeric" min="0" max="50000" step="100" value="<?php echo esc_attr( (string) $calc_defaults['b1'] ); ?>">
 									<span class="einheit">€</span>
 								</span>
 							</div>
 							<div class="eingabe">
 								<label for="strecke-b2">Kosten pro Anfrage, die Sie ansetzen</label>
 								<span class="feld">
-									<input id="strecke-b2" data-feld="b2" type="number" inputmode="numeric" min="1" max="1000" step="1" value="<?php echo esc_attr( $calc_cpl_input ); ?>">
+									<input id="strecke-b2" data-feld="b2" type="number" inputmode="numeric" min="1" max="1000" step="1" value="<?php echo esc_attr( (string) $calc_defaults['b2'] ); ?>">
 									<span class="einheit">€</span>
 								</span>
 							</div>
 							<div class="eingabe">
 								<label for="strecke-b3">Abschlussquote auf vorqualifizierte Anfragen</label>
 								<span class="feld">
-									<input id="strecke-b3" data-feld="b3" type="number" inputmode="decimal" min="0" max="100" step="0.5" value="<?php echo esc_attr( $calc_quote_input ); ?>">
+									<input id="strecke-b3" data-feld="b3" type="number" inputmode="decimal" min="0" max="100" step="0.5" value="<?php echo esc_attr( (string) $calc_defaults['b3'] ); ?>">
 									<span class="einheit">%</span>
 								</span>
 							</div>
@@ -916,7 +921,7 @@ get_header();
 			</div>
 		</section>
 
-		<!-- ════════ 04 Der Fall ════════ -->
+		<!-- ════════ 03 Der Fall ════════ -->
 		<section id="ergebnisse">
 			<div class="blatt reihe">
 				<?php $render_chapter( $chapter_by_id['ergebnisse'] ); ?>
@@ -949,7 +954,7 @@ get_header();
 			</div>
 		</section>
 
-		<!-- ════════ 05 Die Leiter ════════ -->
+		<!-- ════════ 04 Die Leiter ════════ -->
 		<section id="einstieg">
 			<div class="blatt reihe">
 				<?php $render_chapter( $chapter_by_id['einstieg'] ); ?>
@@ -970,7 +975,58 @@ get_header();
 									<span class="p zahl"><?php echo esc_html( $rung['preis'] ); ?></span>
 									<span class="n"><?php echo esc_html( $rung['note'] ); ?></span>
 								</div>
+								<?php if ( 'stufe-marktcheck' === $rung['id'] ) : ?>
+									<a class="textlink stufe-aktion" href="#marktcheck" data-track-action="cta_strecke_leiter_to_marktcheck" data-track-category="lead_gen" data-track-section="einstieg">Marktcheck starten →</a>
+								<?php elseif ( 'stufe-analyse' === $rung['id'] ) : ?>
+									<a class="textlink stufe-aktion" href="#analyse" data-track-action="cta_strecke_leiter_to_analyse" data-track-category="lead_gen" data-track-section="einstieg">Analyse anfragen →</a>
+								<?php elseif ( 'stufe-sofortkontakt' === $rung['id'] ) : ?>
+									<a class="textlink stufe-aktion" href="#sofortkontakt" data-track-action="cta_strecke_leiter_to_sofortkontakt" data-track-category="lead_gen" data-track-section="einstieg">Sofortkontakt anfragen →</a>
+								<?php else : ?>
+									<p class="stufe-aktion">Nach der Analyse. Der Preis der Analyse wird angerechnet.</p>
+								<?php endif; ?>
 							</article>
+						<?php endforeach; ?>
+					</div>
+
+					<div class="auftragsformulare">
+						<?php foreach ( [ 'analyse', 'sofortkontakt' ] as $order_variant ) : ?>
+							<?php $is_setup = 'sofortkontakt' === $order_variant; ?>
+							<section class="auftragsformular tafel" id="<?php echo esc_attr( $order_variant ); ?>" aria-labelledby="<?php echo esc_attr( $order_variant ); ?>-titel">
+								<p class="mono">Direkte Anfrage · <?php echo esc_html( $is_setup ? $setup_price : $analysis_price ); ?> netto</p>
+								<h3 id="<?php echo esc_attr( $order_variant ); ?>-titel"><?php echo esc_html( $is_setup ? 'Sofortkontakt-Setup anfragen' : 'Anfragesystem-Analyse anfragen' ); ?></h3>
+								<form data-order-form="<?php echo esc_attr( $order_variant ); ?>" novalidate>
+									<?php if ( ! $is_setup ) : ?>
+										<label>Website-Adresse <input name="page_url" type="url" inputmode="url" autocomplete="url" placeholder="https://beispiel.de" required></label>
+									<?php endif; ?>
+									<fieldset><legend>Woher kommen Ihre Anfragen?</legend><div class="auftragsformular-auswahl">
+										<?php foreach ( $order_sources as $source_value => $source_label ) : ?>
+											<label><input type="checkbox" name="request_sources[]" value="<?php echo esc_attr( $source_value ); ?>"> <?php echo esc_html( $source_label ); ?></label>
+										<?php endforeach; ?>
+									</div></fieldset>
+									<?php if ( $is_setup ) : ?>
+										<label>Wie viele Anfragen im Monat? <select name="lead_volume" required><option value="">Bitte wählen</option><option value="bis_20">bis 20</option><option value="20_50">20–50</option><option value="50_100">50–100</option><option value="ueber_100">über 100</option></select></label>
+										<label>Wo landen sie heute? <select name="lead_destination" required><option value="">Bitte wählen</option><option value="email">E-Mail-Postfach</option><option value="portal">Portal-Oberfläche</option><option value="crm">CRM</option><option value="tabelle">Tabelle</option></select></label>
+										<label data-crm-only hidden>Welches CRM? <input name="crm_name" type="text" maxlength="100"></label>
+										<label>Wer ruft zurück? <input name="callback_name" type="text" autocomplete="name" maxlength="120" required></label>
+										<label>Mobilnummer für den Alarm <input name="callback_mobile" type="tel" autocomplete="tel" maxlength="80" required></label>
+									<?php else : ?>
+										<label>Welches CRM? <span>(optional)</span><input name="crm_name" type="text" maxlength="100"></label>
+										<label>Was soll die Analyse klären? <span>(optional)</span><textarea name="analysis_question" maxlength="500" rows="3"></textarea></label>
+									<?php endif; ?>
+									<label>Firma <input name="company" type="text" autocomplete="organization" maxlength="150" required></label>
+									<label>E-Mail <input name="email" type="email" autocomplete="email" required></label>
+									<label>Telefon <?php if ( ! $is_setup ) : ?><span>(optional)</span><?php endif; ?><input name="phone" type="tel" autocomplete="tel" maxlength="80" <?php echo $is_setup ? 'required' : ''; ?>></label>
+									<?php if ( $is_setup ) : ?>
+										<label>Wunschstart <select name="desired_start" required><option value="">Bitte wählen</option><option value="diese_woche">diese Woche</option><option value="naechste_woche">nächste Woche</option><option value="spaeter">später</option></select></label>
+									<?php endif; ?>
+									<div class="auftragsformular-honig" aria-hidden="true"><label>Website <input name="company_website" type="text" tabindex="-1" autocomplete="off"></label></div>
+									<label class="auftragsformular-datenschutz"><input name="consent_privacy" type="checkbox" required> <span>Ich akzeptiere die <a href="<?php echo esc_url( $privacy_url ); ?>" target="_blank" rel="noopener">Datenschutzhinweise</a> und möchte zu meiner Anfrage kontaktiert werden.</span></label>
+									<p class="auftragsformular-status" role="status" aria-live="polite" hidden></p>
+									<button class="tun" type="submit" data-track-action="<?php echo esc_attr( $is_setup ? 'cta_strecke_sofortkontakt_submit' : 'cta_strecke_analyse_submit' ); ?>" data-track-category="lead_gen" data-track-section="<?php echo esc_attr( $order_variant ); ?>"><?php echo esc_html( $is_setup ? 'Sofortkontakt-Setup anfragen' : 'Analyse anfragen' ); ?> <span class="pf" aria-hidden="true">→</span></button>
+									<p class="auftragsformular-hinweis">Absenden ist noch keine Buchung. Sie bekommen <?php echo esc_html( $order_reply ); ?> einen Starttermin und die Liste der Zugänge, die ich brauche.</p>
+								</form>
+								<noscript><p>Für eine Anfrage ohne JavaScript nutzen Sie bitte das <a href="<?php echo esc_url( $contact_url ); ?>">Kontaktformular</a>.</p></noscript>
+							</section>
 						<?php endforeach; ?>
 					</div>
 
@@ -989,13 +1045,25 @@ get_header();
 			</div>
 		</section>
 
-		<!-- ════════ 06 Passung ════════ -->
-		<section id="passung">
+		<!-- ════════ 05 Was es braucht ════════ -->
+		<section id="anteil">
 			<div class="blatt reihe">
-				<?php $render_chapter( $chapter_by_id['passung'] ); ?>
+				<?php $render_chapter( $chapter_by_id['anteil'] ); ?>
 				<div class="voll">
-					<h2 class="kopf leise" id="passung-titel">Lieber jetzt klären, ob es passt.</h2>
-					<p class="vorspann">Das Angebot richtet sich an Installationsbetriebe, die eigene Anfragen gewinnen und selbst bearbeiten. Unsicher bei einem Punkt? Beschreiben Sie Ihre Ausgangslage im Marktcheck.</p>
+					<span id="passung" aria-hidden="true"></span>
+					<h2 class="kopf leise" id="anteil-titel">Was es für eine eigene Anfragestrecke braucht.</h2>
+					<p class="vorspann">Das Angebot richtet sich an Installationsbetriebe, die eigene Anfragen gewinnen und selbst bearbeiten. Dafür brauche ich Ihre Zugänge, eine Person für Entscheidungen und einen Vertrieb, der Anfragen bearbeitet.</p>
+					<div class="bedingungen">
+						<?php foreach ( $conditions as $condition_index => $condition ) : ?>
+							<div>
+								<span class="i" aria-hidden="true"><?php echo esc_html( sprintf( '%02d', $condition_index + 1 ) ); ?></span>
+								<h3 id="<?php echo esc_attr( $condition['id'] ); ?>"><?php echo esc_html( $condition['titel'] ); ?></h3>
+								<p><?php echo esc_html( $condition['text'] ); ?></p>
+							</div>
+						<?php endforeach; ?>
+					</div>
+					<h3 class="passung-untertitel" id="passung-titel">Lieber jetzt klären, ob es passt.</h3>
+					<p class="vorspann">Unsicher bei einem Punkt? Beschreiben Sie Ihre Ausgangslage im Marktcheck.</p>
 
 					<div class="passung">
 						<div class="ja">
@@ -1025,7 +1093,7 @@ get_header();
 			</div>
 		</section>
 
-		<!-- ════════ 07 Marktcheck ════════ -->
+		<!-- ════════ 06 Marktcheck ════════ -->
 		<section id="marktcheck">
 			<div class="blatt reihe">
 				<?php $render_chapter( $chapter_by_id['marktcheck'] ); ?>
@@ -1110,7 +1178,7 @@ get_header();
 			</div>
 		</section>
 
-		<!-- ════════ 08 Fragen ════════ -->
+		<!-- ════════ 07 Fragen ════════ -->
 		<section id="fragen">
 			<div class="blatt reihe">
 				<?php $render_chapter( $chapter_by_id['fragen'] ); ?>
@@ -1149,7 +1217,7 @@ get_header();
 			</div>
 		</section>
 
-		<!-- ════════ 09 Verweise ════════ -->
+		<!-- ════════ 08 Verweise ════════ -->
 		<section id="verweise">
 			<div class="blatt reihe">
 				<?php $render_chapter( $chapter_by_id['verweise'] ); ?>
@@ -1192,11 +1260,11 @@ get_header();
 								data-track-category="lead_gen"
 								data-track-section="abschluss"
 							>Kostenlosen Marktcheck starten <span class="pf" aria-hidden="true">→</span></a>
-							<a class="tun still" href="#einstieg"
-								data-track-action="cta_strecke_abschluss_to_leiter"
-								data-track-category="offer"
+							<a class="tun still" href="#sofortkontakt"
+								data-track-action="cta_strecke_abschluss_to_sofortkontakt"
+								data-track-category="lead_gen"
 								data-track-section="abschluss"
-							>Einstieg ab <?php echo esc_html( $entry_price ); ?></a>
+							>Sie kaufen schon Leads? Sofortkontakt</a>
 						</div>
 					</div>
 					<div class="marg">

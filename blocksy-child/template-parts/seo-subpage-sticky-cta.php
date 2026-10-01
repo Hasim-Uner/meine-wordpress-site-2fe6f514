@@ -34,7 +34,7 @@ $hu_sticky_category  = isset( $hu_sticky_args['track_category'] ) ? (string) $hu
 $hu_sticky_region    = isset( $hu_sticky_args['region_label'] ) ? (string) $hu_sticky_args['region_label'] : 'Marktcheck-Schnellzugang';
 $hu_sticky_lead      = isset( $hu_sticky_args['lead'] ) ? (string) $hu_sticky_args['lead'] : 'Manueller Marktcheck';
 $hu_sticky_sub       = isset( $hu_sticky_args['sub'] ) ? (string) $hu_sticky_args['sub'] : 'Fit-Befund statt Standardbericht';
-$hu_sticky_label     = isset( $hu_sticky_args['label'] ) ? (string) $hu_sticky_args['label'] : 'Eigene Region jetzt prüfen';
+$hu_sticky_label     = isset( $hu_sticky_args['label'] ) ? (string) $hu_sticky_args['label'] : 'Marktcheck starten';
 $hu_sticky_action    = isset( $hu_sticky_args['track_action'] ) ? (string) $hu_sticky_args['track_action'] : 'cta_sticky_marktcheck';
 $hu_sticky_hide_when = isset( $hu_sticky_args['hide_when_visible'] ) ? trim( (string) $hu_sticky_args['hide_when_visible'] ) : '';
 

@@ -119,6 +119,46 @@ run_case( 'marketcheck freemail is accepted and flagged', static function () use
 	check( 1 === get_post_meta( 1, '_nexus_review_email_freemail' ), 'Freemail attribute persisted' );
 	check( '' === get_post_meta( 1, '_nexus_review_domain' ), 'Provider is not stored as business domain' );
 } );
+$order_base = [
+	'company' => 'TEST Fixture GmbH', 'email' => 'fixture@gmx.de', 'phone' => '0301234567',
+	'request_sources' => [ 'aroundhome', 'eigene_website' ], 'consent_privacy' => 'accepted',
+	'company_website' => '', 'contract_version' => nexus_get_review_request_contract_version(),
+];
+run_case( 'sofortkontakt order reaches audit endpoint and persists variant', static function () use ( $order_base ) {
+	$payload = array_merge( $order_base, [
+		'intake_variant' => 'sofortkontakt', 'audit_type' => 'sofortkontakt_setup',
+		'lead_volume' => '20_50', 'lead_destination' => 'crm', 'crm_name' => 'TEST CRM',
+		'callback_name' => 'TEST Fixture Person', 'callback_mobile' => '01761234567', 'desired_start' => 'diese_woche',
+	] );
+	$r = call_intake( 'marketcheck', $payload );
+	check( 201 === $r->status && true === $r->data['ok'], 'Setup accepted' );
+	check( 'sofortkontakt' === get_post_meta( 1, '_nexus_review_intake_variant' ), 'Setup variant persisted' );
+	check( 'TEST CRM' === get_post_meta( 1, '_nexus_review_order_crm_name' ), 'Setup details persisted' );
+	check( 1 === get_post_meta( 1, '_nexus_review_email_freemail' ), 'Freemail marked' );
+	check( 2 === count( $GLOBALS['intake_test']['mails'] ), 'Internal and confirmation mail sent' );
+	check( 'Angekommen. Ich melde mich ' . hu_response_promise( 'window' ) . '.' === $r->data['message'], 'Canonical response promise' );
+} );
+run_case( 'analyse order reaches audit endpoint and persists variant', static function () use ( $order_base ) {
+	$payload = array_merge( $order_base, [
+		'intake_variant' => 'analyse', 'audit_type' => 'anfragesystem_analyse',
+		'page_url' => 'https://example.test/', 'analysis_question' => 'TEST Anfrageweg prüfen', 'crm_name' => 'TEST CRM',
+	] );
+	$r = call_intake( 'marketcheck', $payload );
+	check( 201 === $r->status && true === $r->data['ok'], 'Analysis accepted' );
+	check( 'analyse' === get_post_meta( 1, '_nexus_review_intake_variant' ), 'Analysis variant persisted' );
+	check( 'TEST Anfrageweg prüfen' === get_post_meta( 1, '_nexus_review_order_analysis_question' ), 'Analysis question persisted' );
+	check( 2 === count( $GLOBALS['intake_test']['mails'] ), 'Internal and confirmation mail sent' );
+} );
+run_case( 'order variants reject missing consent and invalid sources', static function () use ( $order_base ) {
+	$payload = array_merge( $order_base, [ 'intake_variant' => 'analyse', 'page_url' => 'https://example.test/', 'request_sources' => [ 'unknown' ] ] );
+	$r = call_intake( 'marketcheck', $payload );
+	check( 400 === $r->status && 'invalid_request_sources' === $r->data['error_code'], 'Unknown source rejected' );
+	$payload['request_sources'] = [ 'daa' ];
+	$payload['consent_privacy'] = '';
+	$r = call_intake( 'marketcheck', $payload );
+	check( 400 === $r->status && 'missing_consent_privacy' === $r->data['error_code'], 'Consent required' );
+	check( ! $GLOBALS['intake_test']['events'], 'Rejected order writes nothing' );
+} );
 run_case( 'blog stale nonce', static function () use ( $blog ) {
 	$blog['nonce'] = 'expired';
 	$r = call_intake( 'blog', $blog );
