@@ -26,6 +26,8 @@ $contact_url    = $routes['project_request'];
 $whitelabel_url = $routes['whitelabel'];
 $energy_url     = $routes['energy'];
 $tracking_url   = $routes['tracking_setup'];
+$landing_url    = $routes['landingpage'];
+$conversion_url = $routes['conversion'];
 $about_url      = $routes['about'];
 $privacy_url    = home_url( '/datenschutz/#privacy-cookies' );
 $github_url     = 'https://github.com/Hasim-Uner/meine-wordpress-site-2fe6f514';
@@ -44,6 +46,9 @@ $website_price  = $fest( hu_freelancer_website_price() );
 $tracking_offer = hu_tracking_product_ladder()['measurement'];
 $tracking_price = $fest( $tracking_offer['price'] );
 $takeover_price = $fest( hu_freelancer_takeover_check_price() );
+$landing_price  = $fest( hu_landingpage_price() );
+$analysis_price = $fest( hu_analysis_price() );
+$analysis_days  = (int) hu_diagnose_canon()['primary_days'];
 $retainer       = $fest( hu_freelancer_retainer_display() );
 $references     = hu_public_reference_projects();
 $reference_n    = count( $references );
@@ -139,49 +144,85 @@ $stations = [
 ];
 
 /*
- * Drei Leistungen mit Kanonpreis. Die ids sind die Anker der Angebote im
+ * Fuenf Leistungen mit Kanonpreis. Die ids sind die Anker der Angebote im
  * Service-Schema (inc/schema-positioning.php); scripts/lint-entity-crawler-signals.php
  * prueft, dass jeder Schema-Anker hier als 'id' => '…' steht.
+ *
+ * 'detail' ist die Produktseite zur Vertiefung (Sub-CTA neben der Anfrage).
+ * Wo es sie noch nicht gibt (Website/Relaunch, Uebernahme-Check), steht nur
+ * die direkte Anfrage und die Zeile traegt ihren Umfang selbst; 'scope' bleibt
+ * dort gefuellt, bei Zeilen mit Produktseite leer.
  */
 $offers = [
 	[
 		'id' => 'angebot-website',
-		'nr'    => '01',
-		'tags'  => 'Website · Relaunch · Landingpages · technisches SEO',
-		'title' => 'WordPress-Website und Relaunch',
-		'price' => sprintf( 'ab %s netto', $website_price ),
-		'text'  => 'Neubau oder Relaunch auf WordPress, gebaut auf einer Testumgebung und erst nach Ihrer Abnahme live. Beim Relaunch bekommt jede alte URL eine Weiterleitung, damit bestehende Links und Suchergebnisse weiter ankommen.',
-		'more'  => $fest( hu_freelancer_website_scope_display() ) . '.',
-		'scope' => 'Seitenstruktur · Entwicklung · Landingpages · Weiterleitungsplan · Title, Canonical, Schema · Dokumentation',
-		'focus' => 'relaunch',
-		'hook'  => 'home_offer_relaunch',
-		'cta'   => 'Website-Projekt anfragen',
+		'nr'      => '01',
+		'tags'    => 'Website · Relaunch · Landingpages · technisches SEO',
+		'title'   => 'WordPress-Website und Relaunch',
+		'price'   => sprintf( 'ab %s netto', $website_price ),
+		'text'    => 'Neubau oder Relaunch auf WordPress, gebaut auf einer Testumgebung und erst nach Ihrer Abnahme live. Beim Relaunch bekommt jede alte URL eine Weiterleitung, damit bestehende Links und Suchergebnisse weiter ankommen.',
+		'more'    => $fest( hu_freelancer_website_scope_display() ) . '.',
+		'scope'   => 'Seitenstruktur · Entwicklung · Landingpages · Weiterleitungsplan · Title, Canonical, Schema · Dokumentation',
+		'request' => $project_link( 'relaunch' ),
+		'hook'    => 'home_offer_relaunch',
+		'cta'     => 'Website-Projekt anfragen',
+		'detail'  => null,
+	],
+	[
+		'id' => 'angebot-landingpage',
+		'nr'      => '02',
+		'tags'    => 'Landingpage · Anfrageformular · Abnahme',
+		'title'   => 'Landingpage für ein Angebot',
+		'price'   => sprintf( 'Festpreis %s netto', $landing_price ),
+		'text'    => 'Eine Seite für ein Angebot, mit Konzept, Text, Anfrageformular und Herkunft jeder Anfrage. Sie geben zweimal frei: den Text und die fertige Seite.',
+		'more'    => 'Tracking und Website sind eigene Zusätze mit eigenem Preis.',
+		'scope'   => '',
+		'request' => $project_link( 'conversion' ),
+		'hook'    => 'home_offer_landingpage',
+		'cta'     => 'Landingpage anfragen',
+		'detail'  => [ 'url' => $landing_url, 'hook' => 'home_offer_landingpage_detail' ],
+	],
+	[
+		'id' => 'angebot-conversion',
+		'nr'      => '03',
+		'tags'    => 'Conversion-Optimierung · Anfragesystem-Analyse · B2B',
+		'title'   => 'Conversion-Optimierung für B2B-Websites',
+		'price'   => sprintf( 'Analyse %s netto · %d Werktage', $analysis_price, $analysis_days ),
+		'text'    => 'Besucher kommen, aber zu wenige passende Anfragen? Die Analyse liefert einen schriftlichen Befund der Strecke vom Besuch bis zur Rückmeldung im Vertrieb. Umgesetzt wird danach nur, was im Befund steht, zu festen Preisen.',
+		'more'    => sprintf( 'Die %s der Analyse werden bei einer Umsetzung angerechnet.', $analysis_price ),
+		'scope'   => '',
+		'request' => hu_get_contact_intake_url( 'analysis', 'conversion' ),
+		'hook'    => 'home_offer_conversion',
+		'cta'     => 'Analyse anfragen',
+		'detail'  => [ 'url' => $conversion_url, 'hook' => 'home_offer_conversion_detail' ],
 	],
 	[
 		'id' => 'angebot-tracking',
-		'nr'    => '02',
-		'tags'  => 'GA4 · Google Tag Manager · Consent Mode · Server-Side · CRM',
-		'title' => $tracking_offer['name'],
-		'price' => sprintf( 'Festpreis %s netto', $tracking_price ),
-		'text'  => 'Ein Messplan, sauber eingerichtete Conversions und ein Abnahmeprotokoll mit Testfällen. Gemessen wird im Browser, ohne eigenen Server. Einen Server-Endpunkt oder die Übergabe ins CRM brauchen Sie nur, wenn das eigentliche Problem dort liegt.',
-		'more'  => sprintf( 'Die Stufen darüber: %s.', $fest( hu_tracking_ladder_display( 2 ) ) ),
-		'scope' => 'Messplan · GTM und GA4 · Consent Mode · Google Ads · Abnahmeprotokoll',
-		'focus' => 'tracking',
-		'hook'  => 'home_offer_tracking',
-		'cta'   => 'Tracking-Projekt anfragen',
+		'nr'      => '04',
+		'tags'    => 'GA4 · Google Tag Manager · Consent Mode · Server-Side · CRM',
+		'title'   => $tracking_offer['name'],
+		'price'   => sprintf( 'Festpreis %s netto', $tracking_price ),
+		'text'    => 'Ein Messplan, sauber eingerichtete Conversions und ein Abnahmeprotokoll mit Testfällen. Gemessen wird im Browser, ohne eigenen Server.',
+		'more'    => sprintf( 'Die Stufen darüber: %s.', $fest( hu_tracking_ladder_display( 2 ) ) ),
+		'scope'   => '',
+		'request' => $project_link( 'tracking' ),
+		'hook'    => 'home_offer_tracking',
+		'cta'     => 'Tracking-Projekt anfragen',
+		'detail'  => [ 'url' => $tracking_url, 'hook' => 'home_offer_tracking_detail' ],
 	],
 	[
 		'id' => 'angebot-weiterentwicklung',
-		'nr'    => '03',
-		'tags'  => 'Übernahme · Pflege · Weiterentwicklung',
-		'title' => 'Bestehende Website übernehmen',
-		'price' => sprintf( 'Übernahme-Check %s netto', $takeover_price ),
-		'text'  => 'Ich prüfe Theme, Plugins, Updates, Backups, Zugänge und Ladezeit. Sie bekommen einen schriftlichen Befund mit Festpreis für den nächsten Schritt. Beauftragen Sie mich danach, wird der Check verrechnet. Der Befund gehört Ihnen, auch wenn Sie mit jemand anderem weiterarbeiten.',
-		'more'  => sprintf( 'Danach Weiterentwicklung im Monatskontingent: %s, monatlich kündbar.', $retainer ),
-		'scope' => '',
-		'focus' => 'implementation_scope',
-		'hook'  => 'home_offer_takeover',
-		'cta'   => 'Übernahme-Check anfragen',
+		'nr'      => '05',
+		'tags'    => 'Übernahme · Pflege · Weiterentwicklung',
+		'title'   => 'Bestehende Website übernehmen',
+		'price'   => sprintf( 'Übernahme-Check %s netto', $takeover_price ),
+		'text'    => 'Ich prüfe Theme, Plugins, Updates, Backups, Zugänge und Ladezeit. Sie bekommen einen schriftlichen Befund mit Festpreis für den nächsten Schritt. Beauftragen Sie mich danach, wird der Check verrechnet. Der Befund gehört Ihnen, auch wenn Sie mit jemand anderem weiterarbeiten.',
+		'more'    => sprintf( 'Danach Weiterentwicklung im Monatskontingent: %s, monatlich kündbar.', $retainer ),
+		'scope'   => '',
+		'request' => $project_link( 'implementation_scope' ),
+		'hook'    => 'home_offer_takeover',
+		'cta'     => 'Übernahme-Check anfragen',
+		'detail'  => null,
 	],
 ];
 
@@ -315,43 +356,8 @@ get_header();
 		<div class="st-rail"><span class="st-rail__fuellung" data-st-fuellung></span></div>
 	</div>
 
-	<section class="st-abschnitt st-pruefstand" id="pruefstand" aria-labelledby="pruefstand-h" data-st-abschnitt="02" data-track-section="pruefstand">
-		<?php echo $marke( '02', 'Prüfstand' ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- escaped inside the helper. ?>
-		<div class="st-inhalt">
-			<div class="tafel st-tafel">
-				<div class="st-tafel__kopf">
-					<h2 class="st-h2" id="pruefstand-h">Prüfen Sie mich, <span class="st-leise">bevor Sie mir schreiben.</span></h2>
-					<p class="st-vorspann">Diese Website ist mein offenster Arbeitsbeleg. Ihr Code liegt öffentlich, jede Änderung durchläuft vor dem Livegang automatische Prüfungen, und die Ladezeit messen Sie selbst.</p>
-				</div>
-				<?php // Icons: Strich in currentColor, ohne eigene Farbe; nur die Ladezeit traegt den Akzent, weil sie ein Messwert ist. ?>
-				<ol class="st-pruefungen">
-					<li>
-						<svg class="st-pruefungen__icon" viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><circle cx="6" cy="5" r="2"/><circle cx="6" cy="19" r="2"/><circle cx="18" cy="7" r="2"/><path d="M6 7v10M18 9v1a4 4 0 0 1-4 4h-4a4 4 0 0 0-4 3"/></svg>
-						<p class="st-pruefungen__label">Quellcode</p>
-						<p class="st-pruefungen__text">Jede Datei dieser Website und jede Änderung, mit Datum und Begründung.</p>
-						<a class="st-link" href="<?php echo esc_url( $github_url . '/commits/main/' ); ?>" target="_blank" rel="noopener" data-track-action="home_proof_github_history" data-track-category="proof" data-track-section="pruefstand">Code und Änderungen auf GitHub&nbsp;<span aria-hidden="true">↗</span><span class="nur-vorlesen"> (öffnet in neuem Tab)</span></a>
-					</li>
-					<li>
-						<svg class="st-pruefungen__icon" viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M8 7l-5 5 5 5M16 7l5 5-5 5M13.5 4.5l-3 15"/></svg>
-						<p class="st-pruefungen__label">Prüfungen</p>
-						<p class="st-pruefungen__text">Vor jedem Livegang prüft die CI unter anderem PHP-Syntax, statische Analyse, strukturierte Daten und eine Sperrliste veralteter Preise und Zusagen. Schlägt eine Prüfung fehl, geht nichts live.</p>
-						<a class="st-link" href="<?php echo esc_url( $github_url . '/actions' ); ?>" target="_blank" rel="noopener" data-track-action="home_proof_github_ci" data-track-category="proof" data-track-section="pruefstand">Prüfläufe auf GitHub&nbsp;<span aria-hidden="true">↗</span><span class="nur-vorlesen"> (öffnet in neuem Tab)</span></a>
-					</li>
-					<li class="st-pruefungen__mess">
-						<svg class="st-pruefungen__icon" viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M3.5 17a8.5 8.5 0 1 1 17 0"/><path d="M12 17l4.5-5.5"/><path d="M6.5 13.5l1 .6M12 8.5v1.2M17.5 13.5l-1 .6"/></svg>
-						<p class="st-pruefungen__label">Ladezeit</p>
-						<p class="st-pruefungen__text">Eine Zahl von mir wäre nur eine Behauptung. PageSpeed Insights misst die Seite unter Laborbedingungen, jederzeit und ohne mich.</p>
-						<p class="st-pruefungen__messung" data-st-nur-js hidden>Ihr Browser hat diesen Aufruf in <span class="st-messwert" data-st-lcp-kopie>…</span> dargestellt.</p>
-						<a class="st-link" href="<?php echo esc_url( $psi_url ); ?>" target="_blank" rel="noopener" data-track-action="home_proof_pagespeed" data-track-category="proof" data-track-section="pruefstand">PageSpeed jetzt messen&nbsp;<span aria-hidden="true">↗</span><span class="nur-vorlesen"> (öffnet in neuem Tab)</span></a>
-						<p class="st-pruefungen__klein">Laborwerte schwanken mit Uhrzeit und Serverlast.</p>
-					</li>
-				</ol>
-			</div>
-		</div>
-	</section>
-
-	<section class="st-abschnitt st-strecke" id="strecke" aria-labelledby="strecke-h" data-st-abschnitt="03" data-track-section="strecke">
-		<?php echo $marke( '03', 'Strecke' ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- escaped inside the helper. ?>
+	<section class="st-abschnitt st-strecke" id="strecke" aria-labelledby="strecke-h" data-st-abschnitt="02" data-track-section="strecke">
+		<?php echo $marke( '02', 'Strecke' ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- escaped inside the helper. ?>
 		<div class="st-inhalt">
 			<h2 class="st-h2" id="strecke-h">Eine Anfrage passiert sechs Stationen. An jeder kann sie verloren gehen.</h2>
 			<p class="st-vorspann">Anfragen, die nie ankommen, stehen in keinem Bericht. Zu jeder Station steht hier, was dort bricht und was ich dagegen baue.</p>
@@ -385,8 +391,8 @@ get_header();
 		</div>
 	</section>
 
-	<section class="st-abschnitt st-leistungen" id="angebote" aria-labelledby="angebote-h" data-st-abschnitt="04" data-track-section="angebote">
-		<?php echo $marke( '04', 'Leistungen' ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- escaped inside the helper. ?>
+	<section class="st-abschnitt st-leistungen" id="angebote" aria-labelledby="angebote-h" data-st-abschnitt="03" data-track-section="angebote">
+		<?php echo $marke( '03', 'Leistungen' ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- escaped inside the helper. ?>
 		<div class="st-inhalt">
 			<h2 class="st-h2" id="angebote-h">Was es kostet, steht hier.</h2>
 			<p class="st-vorspann">Alle Preise netto. Umfang und Endpreis stehen vor dem Start schriftlich fest. Was danach dazukommt, kommt nur mit Ihrer Zustimmung dazu.</p>
@@ -407,7 +413,10 @@ get_header();
 								<p class="st-angebot__umfang"><?php echo esc_html( $liste( $offer['scope'] ) ); ?></p>
 							<?php endif; ?>
 							<p class="st-angebot__wege">
-								<a class="st-link st-link--stark" href="<?php echo esc_url( $project_link( $offer['focus'] ) ); ?>" data-track-action="<?php echo esc_attr( $offer['hook'] ); ?>" data-track-category="lead_gen" data-track-section="angebote"><?php echo esc_html( $offer['cta'] ); ?>&nbsp;<span aria-hidden="true">→</span></a>
+								<a class="st-link st-link--stark" href="<?php echo esc_url( $offer['request'] ); ?>" data-track-action="<?php echo esc_attr( $offer['hook'] ); ?>" data-track-category="lead_gen" data-track-section="angebote"><?php echo esc_html( $offer['cta'] ); ?>&nbsp;<span aria-hidden="true">→</span></a>
+								<?php if ( ! empty( $offer['detail'] ) ) : ?>
+									<a class="st-link" href="<?php echo esc_url( $offer['detail']['url'] ); ?>" data-track-action="<?php echo esc_attr( $offer['detail']['hook'] ); ?>" data-track-category="navigation" data-track-section="angebote">Was drinsteckt&nbsp;<span aria-hidden="true">→</span><span class="nur-vorlesen"> bei <?php echo esc_html( $offer['title'] ); ?></span></a>
+								<?php endif; ?>
 							</p>
 						</div>
 					</article>
@@ -420,8 +429,8 @@ get_header();
 		</div>
 	</section>
 
-	<section class="st-abschnitt st-arbeiten" id="arbeiten" aria-labelledby="arbeiten-h" data-st-abschnitt="05" data-track-section="beweis">
-		<?php echo $marke( '05', 'Arbeiten' ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- escaped inside the helper. ?>
+	<section class="st-abschnitt st-arbeiten" id="arbeiten" aria-labelledby="arbeiten-h" data-st-abschnitt="04" data-track-section="beweis">
+		<?php echo $marke( '04', 'Arbeiten' ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- escaped inside the helper. ?>
 		<div class="st-inhalt">
 			<h2 class="st-h2" id="arbeiten-h">Was ich gebaut habe, können Sie nachlesen und öffnen.</h2>
 			<article class="st-fall" id="systemprojekt" aria-labelledby="fall-h">
@@ -453,6 +462,37 @@ get_header();
 					</ul>
 				</div>
 			<?php endif; ?>
+		</div>
+	</section>
+
+	<section class="st-abschnitt st-pruefstand st-pruefstand--leise" id="pruefstand" aria-labelledby="pruefstand-h" data-st-abschnitt="05" data-track-section="pruefstand">
+		<?php echo $marke( '05', 'Prüfstand' ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- escaped inside the helper. ?>
+		<div class="st-inhalt">
+			<h2 class="st-h2" id="pruefstand-h">Prüfen Sie mich, <span class="st-leise">bevor Sie mir schreiben.</span></h2>
+			<p class="st-vorspann">Diese Website ist mein Arbeitsbeleg: Der Code liegt offen, jede Änderung wird vor dem Livegang automatisch geprüft, und die Ladezeit messen Sie selbst.</p>
+			<?php // Icons: Strich in currentColor, ohne eigene Farbe; nur die Ladezeit traegt den Akzent, weil sie ein Messwert ist. ?>
+			<ol class="st-pruefungen">
+				<li>
+					<svg class="st-pruefungen__icon" viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><circle cx="6" cy="5" r="2"/><circle cx="6" cy="19" r="2"/><circle cx="18" cy="7" r="2"/><path d="M6 7v10M18 9v1a4 4 0 0 1-4 4h-4a4 4 0 0 0-4 3"/></svg>
+					<p class="st-pruefungen__label">Quellcode</p>
+					<p class="st-pruefungen__text">Jede Datei und jede Änderung, mit Datum und Begründung.</p>
+					<a class="st-link" href="<?php echo esc_url( $github_url . '/commits/main/' ); ?>" target="_blank" rel="noopener" data-track-action="home_proof_github_history" data-track-category="proof" data-track-section="pruefstand">Code auf GitHub&nbsp;<span aria-hidden="true">↗</span><span class="nur-vorlesen"> (öffnet in neuem Tab)</span></a>
+				</li>
+				<li>
+					<svg class="st-pruefungen__icon" viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M8 7l-5 5 5 5M16 7l5 5-5 5M13.5 4.5l-3 15"/></svg>
+					<p class="st-pruefungen__label">Prüfungen</p>
+					<p class="st-pruefungen__text">Vor dem Livegang laufen automatische Prüfungen. Schlägt eine fehl, geht nichts live.</p>
+					<a class="st-link" href="<?php echo esc_url( $github_url . '/actions' ); ?>" target="_blank" rel="noopener" data-track-action="home_proof_github_ci" data-track-category="proof" data-track-section="pruefstand">Prüfläufe auf GitHub&nbsp;<span aria-hidden="true">↗</span><span class="nur-vorlesen"> (öffnet in neuem Tab)</span></a>
+				</li>
+				<li class="st-pruefungen__mess">
+					<svg class="st-pruefungen__icon" viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M3.5 17a8.5 8.5 0 1 1 17 0"/><path d="M12 17l4.5-5.5"/><path d="M6.5 13.5l1 .6M12 8.5v1.2M17.5 13.5l-1 .6"/></svg>
+					<p class="st-pruefungen__label">Ladezeit</p>
+					<p class="st-pruefungen__text">Eine Zahl von mir wäre nur eine Behauptung. PageSpeed Insights misst die Seite, jederzeit und ohne mich.</p>
+					<p class="st-pruefungen__messung" data-st-nur-js hidden>Ihr Browser hat diesen Aufruf in <span class="st-messwert" data-st-lcp-kopie>…</span> dargestellt.</p>
+					<a class="st-link" href="<?php echo esc_url( $psi_url ); ?>" target="_blank" rel="noopener" data-track-action="home_proof_pagespeed" data-track-category="proof" data-track-section="pruefstand">PageSpeed jetzt messen&nbsp;<span aria-hidden="true">↗</span><span class="nur-vorlesen"> (öffnet in neuem Tab)</span></a>
+					<p class="st-pruefungen__klein">Laborwerte schwanken mit Uhrzeit und Serverlast.</p>
+				</li>
+			</ol>
 		</div>
 	</section>
 

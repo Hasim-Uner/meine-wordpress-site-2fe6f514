@@ -620,7 +620,7 @@
   50% { opacity: 0.2; }
 }
 
-/* ══ Band: die sechs Stationen zwischen Hero und Pruefstand ════
+/* ══ Band: die sechs Stationen zwischen Hero und Strecke ═══════
    Volle Breite, dunkel, Mono. Die Folge steht zweimal im Band; das
    Skript schiebt sie beim Scrollen um hoechstens eine Folgenbreite.
    Ohne Skript und bei reduzierter Bewegung steht das Band still und
@@ -679,7 +679,7 @@
   background: var(--stempel);
 }
 
-/* ══ 02 Pruefstand: die Tafel fuer den Beweis ═════════════════
+/* ══ 05 Pruefstand: die Tafel fuer den Beweis ═════════════════
    Oben rechts ein leiser Schimmer aus dem Stempel, auf der dunklen
    Flaeche gemischt; er traegt keine Information. */
 
@@ -779,6 +779,12 @@
   color: var(--matt);
 }
 
+/* Startseite: Der Pruefstand steht als leiser Beleg hinter den Arbeiten,
+   ohne Tafel und ohne Kachelflaeche. Die Tafel (.tafel) bleibt der
+   White-Label-Seite; dieselben Kacheln, nur ohne Gewicht. */
+.st .st-pruefstand--leise .st-pruefungen { margin-top: var(--s4); }
+.st .st-pruefstand--leise .st-pruefungen li { background: transparent; }
+
 @media (min-width: 1024px) {
   .st .st-pruefungen { grid-template-columns: repeat(3, minmax(0, 1fr)); }
 
@@ -789,7 +795,7 @@
   }
 }
 
-/* ══ 03 Strecke: sechs Stationen ══════════════════════════════
+/* ══ 02 Strecke: sechs Stationen ══════════════════════════════
    Ohne JavaScript eine Liste, jede Station offen. Mit JavaScript
    klappen die Stationen einzeln auf; ab 1024 px steht die Erklaerung
    der gewaehlten Station rechts daneben. */
@@ -1009,7 +1015,7 @@
   }
 }
 
-/* ══ 04 Leistungen ════════════════════════════════════════════ */
+/* ══ 03 Leistungen ════════════════════════════════════════════ */
 
 .st .st-angebote {
   margin-top: var(--s5);
@@ -1100,7 +1106,7 @@
   .st .st-angebot { grid-template-columns: minmax(0, 5fr) minmax(0, 7fr); }
 }
 
-/* ══ 05 Arbeiten ══════════════════════════════════════════════ */
+/* ══ 04 Arbeiten ══════════════════════════════════════════════ */
 
 .st .st-fall {
   display: grid;

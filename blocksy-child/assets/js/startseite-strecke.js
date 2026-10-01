@@ -406,7 +406,7 @@
         /* Erst alle Positionen lesen, dann schreiben: Abwechselnd gelesen
            und geschrieben, rechnete der Browser je Block den Stil neu. */
         var ziele = Array.prototype.filter.call(root.querySelectorAll(
-            '.st-abschnitt:not(.st-hero) .st-inhalt > :not([data-st-stationen]):not(.tafel), ' +
+            '.st-abschnitt:not(.st-hero) .st-inhalt > :not([data-st-stationen]):not(.tafel):not(.st-pruefungen), ' +
             '.st-tafel__kopf, .st-pruefungen > li, .st-schluss > .st-anfrage__h2, .st-einstiege > *, .st-schluss > .st-portrait'
         ), function (el) {
             return el.getBoundingClientRect().top >= fenster;
