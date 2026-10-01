@@ -20,8 +20,10 @@
  *          `nexus-article-reader-header` bleibt als Haken fuer die
  *          Geschwister-Selektoren der Artikel-Stylesheets und die Reader-
  *          Skripte; sie traegt keine eigene Regel mehr.
- * - fokus: Solar-Seite, eigene Leiste (siehe inc/header.php), folgt mit der
- *          Solar-Strecke.
+ * - fokus: Solar-Seite. Wortmarke links, rechts die Leiter der Seite als
+ *          Textlinks (Marktcheck, Analyse, Sofortkontakt mit Betrag) auf die
+ *          Anker der Seite. Kein Hauptmenue, nicht sticky, hoechstens 56 px,
+ *          Haarlinie unten. Unter 561 px nur Sofortkontakt.
  *
  * Auf der Kontaktseite zeigt die Leiste keine Tuer: sie zeigt auf die Seite,
  * auf der man schon steht. Der Contract behaelt den CTA unveraendert — er speist
@@ -59,7 +61,7 @@ $funnel_context = function_exists( 'hu_funnel_context' )
 	? hu_funnel_context()
 	: [ 'mode' => 'voll', 'door' => 'projekt', 'route' => '' ];
 $funnel_doors   = function_exists( 'hu_funnel_doors' ) ? hu_funnel_doors() : [];
-$leiste_modus   = 'leser' === $funnel_context['mode'] ? 'leser' : 'voll';
+$leiste_modus   = in_array( $funnel_context['mode'], [ 'leser', 'fokus' ], true ) ? $funnel_context['mode'] : 'voll';
 $funnel_door    = ( null !== $funnel_context['door'] && isset( $funnel_doors[ $funnel_context['door'] ] ) )
 	? $funnel_doors[ $funnel_context['door'] ]
 	: null;
@@ -132,6 +134,27 @@ $render_door = static function ( array $door ) {
 	<?php
 };
 
+/*
+ * Modus fokus: die Tueren der Energie-Leiter als Anker der Seite. Das Ziel
+ * der Tuer liegt auf dieser Seite; nur sein Anker zaehlt. Betrag und Name
+ * kommen aus hu_funnel_doors(), nicht aus diesem Template.
+ */
+$fokus_links = [];
+
+if ( 'fokus' === $leiste_modus ) {
+	foreach ( [ 'marktcheck', 'analyse', 'sofort' ] as $fokus_key ) {
+		if ( ! isset( $funnel_doors[ $fokus_key ] ) ) {
+			continue;
+		}
+
+		$fokus_fragment = (string) wp_parse_url( $funnel_doors[ $fokus_key ]['url'], PHP_URL_FRAGMENT );
+		$fokus_links[]  = [
+			'door' => $funnel_doors[ $fokus_key ],
+			'href' => '' !== $fokus_fragment ? '#' . $fokus_fragment : $funnel_doors[ $fokus_key ]['url'],
+		];
+	}
+}
+
 $response_promise = function_exists( 'hu_response_promise' ) ? hu_response_promise( 'compact' ) : '';
 $leiste_location  = (string) ( $meta['location'] ?? '' );
 
@@ -175,6 +198,25 @@ if ( 'leser' === $leiste_modus && function_exists( 'hu_funnel_reader_dossier' ) 
 		<?php endif; ?>
 
 		<div class="rechts">
+			<?php if ( 'fokus' === $leiste_modus && ! empty( $fokus_links ) ) : ?>
+				<nav class="leiter" aria-label="<?php esc_attr_e( 'Einstiege auf dieser Seite', 'blocksy-child' ); ?>">
+					<?php foreach ( $fokus_links as $fokus_index => $fokus_link ) : ?>
+						<?php $fokus_last = $fokus_index === count( $fokus_links ) - 1; ?>
+						<?php if ( $fokus_index > 0 ) : ?>
+							<span class="trenn<?php echo $fokus_last ? '' : ' opt'; // raw-ok -- static class. ?>" aria-hidden="true"></span>
+						<?php endif; ?>
+						<a
+							<?php echo $fokus_last ? '' : ' class="opt"'; // raw-ok -- static attribute. ?>
+							href="<?php echo esc_attr( $fokus_link['href'] ); ?>"
+							data-door="<?php echo esc_attr( $fokus_link['door']['key'] ); ?>"
+							data-track-action="<?php echo esc_attr( $fokus_link['door']['track'] ); ?>"
+							data-track-category="lead_gen"
+							data-track-section="header"
+						><?php echo esc_html( $fokus_link['door']['short'] ); ?> <b><?php echo esc_html( $fokus_link['door']['amount'] ); ?></b></a>
+					<?php endforeach; ?>
+				</nav>
+			<?php endif; ?>
+
 			<?php if ( 'voll' === $leiste_modus ) : ?>
 				<nav aria-label="<?php esc_attr_e( 'Hauptnavigation', 'blocksy-child' ); ?>">
 					<?php foreach ( $row_links as $leiste_link ) : ?>

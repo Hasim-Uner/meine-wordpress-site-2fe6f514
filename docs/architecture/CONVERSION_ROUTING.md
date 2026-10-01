@@ -400,7 +400,7 @@ Menüs, `fokus` die Leiter der Solar-Seite):
 | Übrige Beiträge, Dossier „Tracking“ | leser | Tracking anfragen | „ab“ Messung-Setup | wie oben | `nav_header_door_tracking` |
 | Übrige Beiträge, sonst | leser | Projekt anfragen | kein Betrag | wie oben | `nav_header_project` |
 | Fallstudie | voll | Marktcheck | kostenlos | `…/#marktcheck` | `nav_header_door_marktcheck` |
-| Solar-Seite | fokus | Leiter der Seite (folgt mit der Solar-Strecke) | | Anker der Seite | `nav_header_door_*` |
+| Solar-Seite | fokus | Leiter der Seite: Marktcheck · Analyse · Sofortkontakt | kostenlos · Analyse · Sofortkontakt-Setup (je aus dem Kanon) | Anker der Seite (`#marktcheck`; `#analyse` und `#sofortkontakt`, bis `HU_FEATURE_SOLAR_DOORS` an ist `#einstieg`) | `nav_header_door_marktcheck`, `nav_header_door_analyse`, `nav_header_door_sofortkontakt` |
 | Kontakt | voll | keine Tür | | | |
 
 Die Zeile „White-Label“ gilt für `site-header.php`. Die Hauptseite
@@ -423,7 +423,13 @@ Website, Landingpage, Relaunch und Optimierung und trägt keinen Betrag.
 Der Marktcheck erscheint als Tür nur im Energie-Kontext (Fallstudie, Dossier
 „Leadgenerierung“, Portal-Einordnungen).
 
-Bis zur Solar-Strecke (Solar PR 2) zeigen die Türen Analyse und Sofortkontakt
+Der Modus `fokus` (Solar-Seite) zeigt Wortmarke links und rechts die Leiter als
+drei Textlinks mit Betrag, Mono, Betrag in `--tinte`; kein Hauptmenü, nicht
+sticky, höchstens 56 px, Haarlinie unten, unter 561 px nur „Sofortkontakt“. Die
+sticky Kapitel-Leiste der Seite bleibt im Seiteninhalt.
+
+Solange `HU_FEATURE_SOLAR_DOORS` aus ist, zeigen die Türen Analyse und
+Sofortkontakt (Kopf, Leiter und Fuß)
 auf `/solar-waermepumpen-leadgenerierung/#einstieg`; `HU_FEATURE_SOLAR_DOORS`
 (`inc/feature-flags.php`, Vorgabe `false`) schaltet sie auf `#analyse` und
 `#sofortkontakt`. Haşim schaltet ihn per `wp-config.php` um, sobald diese

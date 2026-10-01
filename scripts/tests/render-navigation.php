@@ -32,7 +32,7 @@ body { margin: 0; }
 </style>
 </head>
 <body class="nx-custom-header-active">
-<?php if ( false !== ( nav_test_contexts()[ $argv[1] ?? 'imprint' ]['render'] ?? true ) ) { echo nav_test_render( 'template-parts/site-header.php' ); } // phpcs:ignore -- rendered template. Die Solar-Seite hat einen eigenen Kopf. ?>
+<?php echo nav_test_render( 'template-parts/site-header.php' ); // phpcs:ignore -- rendered template. ?>
 <main id="main" style="min-height:150vh;padding:2rem"><p>Inhalt</p><p id="angebote">Leistungen</p></main>
 <?php echo nav_test_render( 'template-parts/site-footer.php' ); // phpcs:ignore -- rendered template. ?>
 </body>

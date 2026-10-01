@@ -46,7 +46,10 @@ Abschnitt anzuhängen; der Verlauf gehört in Commit-Nachrichten.
   Artikelpfad „Wissen / Dossier“, die Tür, kein Hauptmenü; der frühere
   Lesekopf (`article-reader-header.php`, `blog-header.css`) ist entfallen, die
   Klasse `nexus-article-reader-header` bleibt als Haken für die Artikel-
-  Stylesheets. Die Tür ist kontextabhängig (Matrix in
+  Stylesheets. Modus `fokus` (Solar-Seite, `inc/header.php` rendert die Leiste
+  dort): Wortmarke und die Leiter Marktcheck · Analyse · Sofortkontakt mit
+  Betrag auf die Anker der Seite, nicht sticky, höchstens 56 px, unter 561 px
+  nur Sofortkontakt. Die Tür ist kontextabhängig (Matrix in
   `docs/architecture/CONVERSION_ROUTING.md`): Projekt anfragen (ohne Betrag),
   Tracking anfragen („ab“ Messung-Setup), Test-Sprint anfragen, Marktcheck
   (kostenlos) oder Sofortkontakt; Beträge kommen aus dem Kanon. Quelle der

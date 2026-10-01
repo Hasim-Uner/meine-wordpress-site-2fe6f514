@@ -241,10 +241,6 @@ foreach ( nav_test_contexts() as $context => $definition ) {
 		nav_check( [ '#marktcheck', '#einstieg', '#einstieg' ] === array_slice( array_column( $register, 'href' ), 3 ), 'solar: Energy doors point at anchors of the page' );
 	}
 
-	if ( false === ( $definition['render'] ?? true ) ) {
-		continue;
-	}
-
 	$header_html = nav_test_render( 'template-parts/site-header.php' );
 	$row         = nav_links( $header_html, '//nav[@aria-label="Hauptnavigation"]//a' );
 	$sheet       = nav_links( $header_html, '//div[@data-leiste-blatt]//nav//a' );
@@ -275,6 +271,16 @@ foreach ( nav_test_contexts() as $context => $definition ) {
 			$toggle && 'false' === $toggle->getAttribute( 'aria-expanded' )
 				&& 1 === $header_x->query( '//*[@id="' . $toggle->getAttribute( 'aria-controls' ) . '"]' )->length,
 			"{$context}: menu button controls an existing sheet"
+		);
+	} elseif ( 'fokus' === $mode ) {
+		$ladder = nav_links( $header_html, '//nav[@class="leiter"]//a' );
+		nav_check( [] === $row && [] === $sheet && 0 === $header_x->query( '//button[@data-leiste-klappe]' )->length, "{$context}: focus mode has no main menu, sheet or menu button" );
+		nav_check( [ 'marktcheck', 'analyse', 'sofort' ] === array_column( $ladder, 'door' ), "{$context}: focus ladder is Marktcheck, Analyse, Sofortkontakt" );
+		nav_check( [ '#marktcheck', '#einstieg', '#einstieg' ] === array_column( $ladder, 'href' ), "{$context}: focus ladder points at anchors of the page" );
+		nav_check( [ 'nav_header_door_marktcheck', 'nav_header_door_analyse', 'nav_header_door_sofortkontakt' ] === array_column( $ladder, 'track' ), "{$context}: focus ladder keeps the nav_header_door_* actions" );
+		nav_check(
+			[ 'Marktcheck ' . $door_spec['marktcheck'][2], 'Analyse ' . $door_spec['analyse'][2], 'Sofortkontakt ' . $door_spec['sofort'][2] ] === array_column( $ladder, 'text' ),
+			"{$context}: focus ladder shows each step with its canon amount"
 		);
 	} else {
 		nav_check( [] === $row && [] === $sheet && 0 === $header_x->query( '//button[@data-leiste-klappe]' )->length, "{$context}: reader mode has no main menu, sheet or menu button" );

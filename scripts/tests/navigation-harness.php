@@ -33,9 +33,8 @@ function nav_test_contexts() {
 		'imprint'       => [ 'path' => '/impressum/', 'front' => false, 'page' => 'impressum', 'template' => 'page-impressum.php' ],
 		'not_found'     => [ 'path' => '/gibt-es-nicht/', 'front' => false, 'page' => '', 'template' => '' ],
 		'whitelabel'    => [ 'path' => '/whitelabel-retainer/', 'front' => false, 'page' => 'whitelabel-retainer', 'template' => 'page-whitelabel-retainer.php' ],
-		// Solar-Seite: der Kopf entsteht dort ueber eine eigene Leiste (inc/header.php).
-		// Der Kontext dient nur der Entscheidung (hu_funnel_context), nicht dem Rendern.
-		'solar'         => [ 'path' => '/solar-waermepumpen-leadgenerierung/', 'front' => false, 'page' => 'solar-waermepumpen-leadgenerierung', 'template' => 'page-solar-waermepumpen-leadgenerierung.php', 'render' => false ],
+		// Solar-Seite: Leiste im Modus fokus (Wortmarke und Leiter der Seite).
+		'solar'         => [ 'path' => '/solar-waermepumpen-leadgenerierung/', 'front' => false, 'page' => 'solar-waermepumpen-leadgenerierung', 'template' => 'page-solar-waermepumpen-leadgenerierung.php' ],
 		// Einzelbeitraege: Slug und Kategorien bestimmen Dossier und Tuer.
 		'portal'        => [ 'path' => '/blog/checkfox-solar-waermepumpe-einordnung/', 'front' => false, 'page' => '', 'template' => '', 'post' => [ 'slug' => 'checkfox-solar-waermepumpe-einordnung', 'categories' => [ 'leadgenerierung' ] ] ],
 		'article_lead'  => [ 'path' => '/blog/anfragen-statt-portale/', 'front' => false, 'page' => '', 'template' => '', 'post' => [ 'slug' => 'anfragen-statt-portale', 'categories' => [ 'leadgenerierung' ] ] ],
