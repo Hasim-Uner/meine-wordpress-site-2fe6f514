@@ -75,9 +75,10 @@ $wl_home_label = sprintf(
 
 /*
  * Reduzierte Seitennavigation: Die Seite ist die Landeseite der
- * Akquise-Mails. Gebaut aus der .leiste des Systems, ohne Klappblatt;
- * schmal bleiben Wortmarke und Button. Die Anker markiert whitelabel.js,
- * solange ihr Abschnitt im Blick ist (aria-current="location").
+ * Akquise-Mails. Gebaut aus der .leiste des Systems, ohne Klappblatt, in
+ * template-parts/whitelabel-header.php; schmal bleiben Wortmarke und Tuer. Die
+ * Anker markiert whitelabel.js, solange ihr Abschnitt im Blick ist
+ * (aria-current="location").
  */
 $wl_nav = [
 	[ '#lieferfelder', 'Leistungen', 'nav_whitelabel_services' ],
@@ -91,29 +92,17 @@ remove_action( 'wp_body_open', 'nexus_render_site_header', 20 );
 add_action(
 	'wp_body_open',
 	static function () use ( $wl_home_url, $wl_brand_text, $wl_home_label, $wl_form_task_url, $wl_nav ) {
-		?>
-		<header class="leiste wl-site-header" role="banner" data-track-section="whitelabel_header">
-			<div class="blatt in">
-				<a
-					class="sig site-logo"
-					href="<?php echo esc_url( $wl_home_url ); ?>"
-					rel="home"
-					aria-label="<?php echo esc_attr( $wl_home_label ); ?>"
-					data-track-action="nav_whitelabel_home"
-					data-track-category="navigation"
-					data-track-section="whitelabel_header"
-				><?php echo esc_html( $wl_brand_text ); ?><i aria-hidden="true">.</i></a>
-				<div class="rechts">
-					<nav aria-label="Navigation auf dieser Seite" data-wl-anker>
-						<?php foreach ( $wl_nav as $wl_nav_item ) : ?>
-							<a href="<?php echo esc_attr( $wl_nav_item[0] ); ?>" data-track-action="<?php echo esc_attr( $wl_nav_item[2] ); ?>" data-track-category="navigation" data-track-section="whitelabel_header"><?php echo esc_html( $wl_nav_item[1] ); ?></a>
-						<?php endforeach; ?>
-					</nav>
-					<a class="tun" href="<?php echo esc_url( $wl_form_task_url ); ?>" data-wl-form-link data-track-action="cta_whitelabel_header_task_brief" data-track-category="lead_gen" data-track-section="whitelabel_header">Aufgabe beschreiben</a>
-				</div>
-			</div>
-		</header>
-		<?php
+		get_template_part(
+			'template-parts/whitelabel-header',
+			null,
+			[
+				'home_url'   => $wl_home_url,
+				'brand'      => $wl_brand_text,
+				'home_label' => $wl_home_label,
+				'form_url'   => $wl_form_task_url,
+				'nav'        => $wl_nav,
+			]
+		);
 	},
 	20
 );

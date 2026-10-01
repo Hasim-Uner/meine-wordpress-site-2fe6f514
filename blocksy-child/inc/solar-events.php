@@ -9,7 +9,10 @@ function nexus_solar_event_names() {
 	return [
 		'form_opened', 'form_step_two', 'form_submitted', 'form_validation_error',
 		'chapter_jump', 'link_strecke_vertiefung',
-		'cta_strecke_header_to_marktcheck', 'cta_strecke_kopf_to_marktcheck',
+		'nav_header_door_marktcheck', 'nav_header_door_analyse', 'nav_header_door_sofortkontakt',
+		// Die frühere Kopfzeile der Seite; gecachtes HTML sendet den Namen bis zum Cache-Purge noch.
+		'cta_strecke_header_to_marktcheck',
+		'cta_strecke_kopf_to_marktcheck',
 		'cta_strecke_kopf_to_sofortkontakt', 'cta_strecke_fall_to_case',
 		'cta_strecke_leiter_to_marktcheck', 'cta_strecke_leiter_to_analyse',
 		'cta_strecke_leiter_to_sofortkontakt', 'cta_strecke_sofortkontakt_submit',

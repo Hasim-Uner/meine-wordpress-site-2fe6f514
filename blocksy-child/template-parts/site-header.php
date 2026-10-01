@@ -20,8 +20,10 @@
  *          `nexus-article-reader-header` bleibt als Haken fuer die
  *          Geschwister-Selektoren der Artikel-Stylesheets und die Reader-
  *          Skripte; sie traegt keine eigene Regel mehr.
- * - fokus: Solar-Seite, eigene Leiste (siehe inc/header.php), folgt mit der
- *          Solar-Strecke.
+ * - fokus: Solar-Seite. Wortmarke links, rechts die Leiter der Seite als
+ *          Textlinks (Marktcheck, Analyse, Sofortkontakt mit Betrag) auf die
+ *          Anker der Seite. Kein Hauptmenue, nicht sticky, hoechstens 56 px,
+ *          Haarlinie unten. Unter 561 px nur Sofortkontakt.
  *
  * Auf der Kontaktseite zeigt die Leiste keine Tuer: sie zeigt auf die Seite,
  * auf der man schon steht. Der Contract behaelt den CTA unveraendert — er speist
@@ -59,7 +61,7 @@ $funnel_context = function_exists( 'hu_funnel_context' )
 	? hu_funnel_context()
 	: [ 'mode' => 'voll', 'door' => 'projekt', 'route' => '' ];
 $funnel_doors   = function_exists( 'hu_funnel_doors' ) ? hu_funnel_doors() : [];
-$leiste_modus   = 'leser' === $funnel_context['mode'] ? 'leser' : 'voll';
+$leiste_modus   = in_array( $funnel_context['mode'], [ 'leser', 'fokus' ], true ) ? $funnel_context['mode'] : 'voll';
 $funnel_door    = ( null !== $funnel_context['door'] && isset( $funnel_doors[ $funnel_context['door'] ] ) )
 	? $funnel_doors[ $funnel_context['door'] ]
 	: null;
@@ -106,31 +108,36 @@ $row_links = array_values(
 );
 
 /**
- * Print one door: label, short label and amount.
- *
- * Bezeichnung und Kurztext liegen beide im Markup; CSS blendet je Breite
- * einen aus (ausgeblendete Varianten zaehlen nicht zum Namen des Links). Ohne
- * Betrag steht nur ein Feld.
+ * Print one door (hu_funnel_door_link(), inc/funnel-doors.php). Row und Blatt
+ * tragen dieselbe Tuer.
  *
  * @param array<string, string> $door Door record from hu_funnel_doors().
  * @return void
  */
 $render_door = static function ( array $door ) {
-	?>
-	<a
-		class="tuer"
-		href="<?php echo esc_url( $door['url'] ); ?>"
-		data-door="<?php echo esc_attr( $door['key'] ); ?>"
-		data-track-action="<?php echo esc_attr( $door['track'] ); ?>"
-		data-track-category="lead_gen"
-		data-track-section="header"
-	><span class="lang"><?php echo esc_html( $door['label'] ); ?><i class="pf" aria-hidden="true">&rarr;</i></span><span class="kurz"><?php echo esc_html( $door['short'] ); ?></span><?php
-		if ( '' !== $door['amount'] ) :
-			?><span class="preis"><?php echo esc_html( $door['amount'] ); ?></span><?php
-		endif;
-	?></a>
-	<?php
+	echo hu_funnel_door_link( $door ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- escaped inside hu_funnel_door_link().
 };
+
+/*
+ * Modus fokus: die Tueren der Energie-Leiter als Anker der Seite. Das Ziel
+ * der Tuer liegt auf dieser Seite; nur sein Anker zaehlt. Betrag und Name
+ * kommen aus hu_funnel_doors(), nicht aus diesem Template.
+ */
+$fokus_links = [];
+
+if ( 'fokus' === $leiste_modus ) {
+	foreach ( [ 'marktcheck', 'analyse', 'sofort' ] as $fokus_key ) {
+		if ( ! isset( $funnel_doors[ $fokus_key ] ) ) {
+			continue;
+		}
+
+		$fokus_fragment = (string) wp_parse_url( $funnel_doors[ $fokus_key ]['url'], PHP_URL_FRAGMENT );
+		$fokus_links[]  = [
+			'door' => $funnel_doors[ $fokus_key ],
+			'href' => '' !== $fokus_fragment ? '#' . $fokus_fragment : $funnel_doors[ $fokus_key ]['url'],
+		];
+	}
+}
 
 $response_promise = function_exists( 'hu_response_promise' ) ? hu_response_promise( 'compact' ) : '';
 $leiste_location  = (string) ( $meta['location'] ?? '' );
@@ -175,6 +182,25 @@ if ( 'leser' === $leiste_modus && function_exists( 'hu_funnel_reader_dossier' ) 
 		<?php endif; ?>
 
 		<div class="rechts">
+			<?php if ( 'fokus' === $leiste_modus && ! empty( $fokus_links ) ) : ?>
+				<nav class="leiter" aria-label="<?php esc_attr_e( 'Einstiege auf dieser Seite', 'blocksy-child' ); ?>">
+					<?php foreach ( $fokus_links as $fokus_index => $fokus_link ) : ?>
+						<?php $fokus_last = $fokus_index === count( $fokus_links ) - 1; ?>
+						<?php if ( $fokus_index > 0 ) : ?>
+							<span class="trenn<?php echo $fokus_last ? '' : ' opt'; // raw-ok -- static class. ?>" aria-hidden="true"></span>
+						<?php endif; ?>
+						<a
+							<?php echo $fokus_last ? '' : ' class="opt"'; // raw-ok -- static attribute. ?>
+							href="<?php echo esc_attr( $fokus_link['href'] ); ?>"
+							data-door="<?php echo esc_attr( $fokus_link['door']['key'] ); ?>"
+							data-track-action="<?php echo esc_attr( $fokus_link['door']['track'] ); ?>"
+							data-track-category="lead_gen"
+							data-track-section="header"
+						><?php echo esc_html( $fokus_link['door']['short'] ); ?> <b><?php echo esc_html( $fokus_link['door']['amount'] ); ?></b></a>
+					<?php endforeach; ?>
+				</nav>
+			<?php endif; ?>
+
 			<?php if ( 'voll' === $leiste_modus ) : ?>
 				<nav aria-label="<?php esc_attr_e( 'Hauptnavigation', 'blocksy-child' ); ?>">
 					<?php foreach ( $row_links as $leiste_link ) : ?>
@@ -261,12 +287,15 @@ if ( 'leser' === $leiste_modus && function_exists( 'hu_funnel_reader_dossier' ) 
 	$reader_share_js_url  = get_stylesheet_directory_uri() . '/assets/js/article-reader-share.js';
 	$reader_share_js_path = get_stylesheet_directory() . '/assets/js/article-reader-share.js';
 	$reader_share_version = function_exists( 'hu_get_asset_version' ) ? hu_get_asset_version( $reader_share_js_path ) : wp_get_theme()->get( 'Version' );
+	// CSS-String, kein JSON: wp_json_encode() schriebe "Leadökonomie" als
+	// \u00f6, und das ist in CSS kein Escape (es erschien als "LEADU00F6KONOMIE").
+	$reader_dossier_css_label = '"' . str_replace( '</', '<\\/', addcslashes( (string) $reader_dossier['label'], "\"\\" ) ) . '"';
 	?>
 	<script id="nexus-article-reader-share-loader" src="<?php echo esc_url( add_query_arg( 'ver', rawurlencode( (string) $reader_share_version ), $reader_share_js_url ) ); ?>"></script>
 
 	<style id="nexus-article-reader-dossier-label">
 		.nexus-article-reader-header ~ .nexus-single-container .nexus-article-hero--editorial::before {
-			content: <?php echo wp_json_encode( $reader_dossier['label'] ); ?>;
+			content: <?php echo $reader_dossier_css_label; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- CSS string, escaped above. ?>;
 		}
 	</style>
 <?php endif; ?>

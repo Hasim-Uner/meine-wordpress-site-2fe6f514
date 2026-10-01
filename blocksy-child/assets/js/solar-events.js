@@ -63,6 +63,22 @@
     if (action) send(action.getAttribute('data-track-action'), door);
     if (door) formEvent('form_opened', door);
   });
+  // Der Kopf der Seite (Leiste im Modus fokus) steht ausserhalb von .strecke-doc.
+  // Seine Tueren tragen data-door; die Messung liest sie wie jede andere Tuer.
+  var headerDoors = { marktcheck: 'marktcheck', analyse: 'analyse', sofort: 'sofortkontakt' };
+  document.addEventListener('click', function (event) {
+    var link = event.target && typeof event.target.closest === 'function' ? event.target.closest('.leiste [data-door]') : null;
+    if (!link) return;
+    var door = headerDoors[link.getAttribute('data-door')] || '';
+    var action = link.getAttribute('data-track-action');
+    if (action) send(action, door);
+    // Ein Formular oeffnet nur, wenn der Anker der Tuer entspricht (wie doorFor): ohne die
+    // Tuer-Anker der Seite fuehrt die Leiter auf #einstieg, die Angebotsleiter, und das
+    // zaehlt nicht als geoeffnetes Formular.
+    var anchor = '';
+    try { anchor = new URL(link.href, window.location.href).hash.slice(1); } catch (error) { anchor = ''; }
+    if (doors.indexOf(anchor) >= 0) formEvent('form_opened', anchor);
+  });
   root.addEventListener('focusin', function (event) {
     if (!event.target.closest('[data-order-form], #sol-quiz-mount')) return;
     var door = doorFor(event.target);

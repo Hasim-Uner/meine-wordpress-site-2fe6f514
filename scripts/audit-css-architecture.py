@@ -5,17 +5,15 @@ The current site intentionally has more than one visual system while legacy
 routes are being migrated. This guard does not pretend they are one system.
 It protects the new Gutachten core instead:
 
-- system.css owns the canonical Gutachten tokens.
-- CORE_TOKENS (radius, type grades, door) are owned by system.css alone and are
-  never mirrored.
-- anfragestrecke.css is the only temporary value-identical mirror.
+- system.css owns the canonical Gutachten tokens (colour, type, spacing, radius,
+  type grades, door, motion).
 - known scoped legacy collisions are frozen to exact selectors and values.
 - no other stylesheet may redefine those canonical token names.
 
-The mirror can be removed later without changing this contract: delete it from
-TRANSITIONAL_MIRRORS once anfragestrecke.css consumes system.css directly.
-Scoped legacy collisions should disappear by renaming/migrating their local
-tokens, never by broadening this allowlist.
+There is no value-identical mirror any more: anfragestrecke.css consumes
+system.css directly (removed 2026-10-01). Scoped legacy collisions should
+disappear by renaming/migrating their local tokens, never by broadening this
+allowlist.
 """
 
 from __future__ import annotations
@@ -27,7 +25,6 @@ from pathlib import Path
 ROOT = Path(__file__).resolve().parents[1]
 CSS_DIR = ROOT / "blocksy-child" / "assets" / "css"
 CANONICAL_OWNER = CSS_DIR / "system.css"
-TRANSITIONAL_MIRRORS = {CSS_DIR / "anfragestrecke.css"}
 
 CANONICAL_TOKENS = (
     "--papier",
@@ -60,12 +57,7 @@ CANONICAL_TOKENS = (
     "--t-mikro",
     "--t-norm",
     "--t-gross",
-)
 
-# Added after the Solar mirror was frozen. system.css owns them, no stylesheet
-# may redefine them, and anfragestrecke.css does not mirror them: it consumes
-# system.css, which loads on every route.
-CORE_TOKENS = (
     "--r0",
     "--r1",
     "--grad-h1",
@@ -77,28 +69,23 @@ CORE_TOKENS = (
     "--tuer-schrift",
 )
 
-# These names predate system.css and are deliberately local to an older
-# editorial Solar surface. Their semantics and values differ from the
-# Gutachten core, so silently treating them as another owner would be wrong.
-# Freeze the exact selector/value pair until that route is renamed/migrated.
-SCOPED_LEGACY_COLLISIONS = {
-    CSS_DIR / "energy-systems.css": {
-        "selector": ".solar-page",
-        "tokens": {
-            "--serif": {
-                '"Satoshi", "Figtree", -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif'
-            },
-            "--mono": {
-                'ui-monospace, "SF Mono", "Cascadia Mono", "Roboto Mono", "Menlo", "Consolas", monospace'
-            },
-        },
-    }
-}
+# Scoped legacy collisions with core tokens used to be frozen here (the
+# .solar-page --serif/--mono of energy-systems.css). That file is gone; the
+# mechanism stays so a future exception must be listed selector- and
+# value-exact instead of being silently tolerated.
+SCOPED_LEGACY_COLLISIONS: dict[Path, dict[str, object]] = {}
 
+# A declaration starts a line or follows `{` or `;`, so `.x { --papier: #fff; }`
+# on one line is caught as well as the multi-line form. The terminator is a
+# lookahead: consuming it would take the anchor of the next declaration on the
+# same line (`{ --a: 1; --b: 2; --c: 3; }`) and let every second one through.
 DECLARATION_RE = re.compile(
-    r"(?m)^\s*(--[a-zA-Z0-9_-]+)\s*:\s*([^;]+);"
+    r"(?m)(?:^|(?<=[{;]))\s*(--[a-zA-Z0-9_-]+)\s*:\s*([^;}]+)(?=[;}])"
 )
 ROOT_BLOCK_RE = re.compile(r"(?s):root(?:\s*,[^\{]+)?\s*\{(.*?)\}")
+
+
+RETIRED_TOKEN_PREFIXES = ("--sst-", "--vp-")
 
 
 def normalize_value(value: str) -> str:
@@ -134,7 +121,7 @@ def main() -> int:
         return 1
 
     owner = declarations(CANONICAL_OWNER)
-    missing = [token for token in (*CANONICAL_TOKENS, *CORE_TOKENS) if token not in owner]
+    missing = [token for token in CANONICAL_TOKENS if token not in owner]
     if missing:
         errors.append(
             "system.css is missing canonical tokens: " + ", ".join(missing)
@@ -142,7 +129,6 @@ def main() -> int:
 
     css_files = sorted(CSS_DIR.rglob("*.css"))
     canonical_set = set(CANONICAL_TOKENS)
-    core_set = set(CORE_TOKENS)
     redefiners: dict[Path, set[str]] = {}
     file_declarations: dict[Path, dict[str, set[str]]] = {}
 
@@ -151,20 +137,11 @@ def main() -> int:
         file_declarations[path] = defined_all
         if path == CANONICAL_OWNER:
             continue
-        defined = (canonical_set | core_set).intersection(defined_all)
+        defined = canonical_set.intersection(defined_all)
         if defined:
             redefiners[path] = defined
 
     for path, tokens in redefiners.items():
-        if path in TRANSITIONAL_MIRRORS:
-            mirrored_core = tokens & core_set
-            if mirrored_core:
-                errors.append(
-                    f"{relative(path)} mirrors core tokens that system.css owns alone: "
-                    + ", ".join(sorted(mirrored_core))
-                )
-            continue
-
         legacy = SCOPED_LEGACY_COLLISIONS.get(path)
         if legacy is None:
             errors.append(
@@ -208,29 +185,19 @@ def main() -> int:
                     f"file={sorted(actual_file)!r}, scope={sorted(actual_scope)!r}"
                 )
 
-    for mirror_path in sorted(TRANSITIONAL_MIRRORS):
-        if not mirror_path.is_file():
-            errors.append(f"Transitional CSS mirror is missing: {relative(mirror_path)}")
-            continue
-
-        mirror = file_declarations.get(mirror_path, declarations(mirror_path))
-        mirror_missing = [token for token in CANONICAL_TOKENS if token not in mirror]
-        if mirror_missing:
+    # Abgeloeste Token-Familien: --sst-* und --vp-* waren die Seitentokens der
+    # Server-Side-Tracking-Schichten und sind in system.css aufgegangen.
+    for path, defined_all in file_declarations.items():
+        retired = sorted(t for t in defined_all if t.startswith(RETIRED_TOKEN_PREFIXES))
+        if retired:
             errors.append(
-                f"{relative(mirror_path)} no longer mirrors all canonical tokens; "
-                "finish the migration and remove it from TRANSITIONAL_MIRRORS. Missing: "
-                + ", ".join(mirror_missing)
+                f"{relative(path)} declares retired page tokens ({', '.join(retired)}); "
+                "use the system.css tokens instead"
             )
-            continue
 
-        for token in CANONICAL_TOKENS:
-            owner_values = owner.get(token, set())
-            mirror_values = mirror.get(token, set())
-            if owner_values != mirror_values:
-                errors.append(
-                    f"Token drift for {token}: system.css={sorted(owner_values)!r}, "
-                    f"{mirror_path.name}={sorted(mirror_values)!r}"
-                )
+    sst_css = CSS_DIR / "server-side-tracking.css"
+    if sst_css.is_file() and re.search(r"(?m)^\s*@import\b", sst_css.read_text(encoding="utf-8")):
+        errors.append("server-side-tracking.css must be one file without @import")
 
     # Report unscoped root token owners. This is diagnostic for the remaining
     # legacy systems; it intentionally does not fail while those routes exist.
@@ -243,11 +210,6 @@ def main() -> int:
 
     print(f"CSS files checked: {len(css_files)}")
     print(f"Canonical Gutachten token owner: {relative(CANONICAL_OWNER)}")
-    if TRANSITIONAL_MIRRORS:
-        print(
-            "Transitional token mirrors: "
-            + ", ".join(relative(path) for path in sorted(TRANSITIONAL_MIRRORS))
-        )
     if SCOPED_LEGACY_COLLISIONS:
         print(
             "Frozen scoped legacy collisions: "
