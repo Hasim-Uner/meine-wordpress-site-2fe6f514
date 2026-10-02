@@ -335,29 +335,6 @@ function hu_get_site_header_navigation_contract() {
 		],
 		'meta' => [
 			'location' => __( 'Pattensen bei Hannover · DACH-weit', 'blocksy-child' ),
-			'links'    => [
-				[
-					'label'    => hu_get_contact_email(),
-					'url'      => hu_get_contact_mailto(),
-					'track'    => 'nav_header_project',
-					'category' => 'lead_gen',
-					'section'  => 'header',
-				],
-				[
-					'label'    => '+49 176 76596580',
-					'url'      => 'tel:+4917676596580',
-					'track'    => 'nav_header_project',
-					'category' => 'lead_gen',
-					'section'  => 'header',
-				],
-				[
-					'label'    => 'hasimuener.org',
-					'url'      => 'https://hasimuener.org/',
-					'track'    => 'nav_header_about',
-					'category' => 'navigation',
-					'section'  => 'header',
-				],
-			],
 		],
 		'cta' => [
 			'kind'        => 'cta',

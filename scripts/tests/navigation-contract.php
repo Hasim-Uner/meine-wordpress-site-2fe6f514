@@ -86,6 +86,7 @@ $tracking = $header['routes'][1];
 
 nav_check( [ 'Projekte', 'Tracking', 'White-Label', 'Solar & Wärmepumpe', 'Ergebnisse', 'Über Haşim', 'Projekt anfragen' ] === $labels, 'header order: projects, audience paths, proof, default door' );
 nav_check( [ true, false ] === array_column( $header['groups'][0]['items'], 'row' ), 'header row carries Ergebnisse; Über Haşim stays in sheet and footer' );
+nav_check( [ 'location' ] === array_keys( $header['meta'] ) && '' !== $header['meta']['location'], 'header metadata keeps location without phantom links' );
 nav_check( '/ga4-tracking-setup/' === nav_path( $routes['tracking_setup'] ), 'route tracking_setup is the Tracking offer' );
 nav_check( '/server-side-tracking-b2b/' === nav_path( $routes['tracking_b2b'] ), 'route tracking_b2b stays the Server-Side specialist page' );
 nav_check( 'Tracking' === $tracking['label'] && $routes['tracking_setup'] === $tracking['url'], 'header "Tracking" links the Tracking offer' );
@@ -108,7 +109,7 @@ $doors     = hu_funnel_doors();
 // Die Betraege stehen hier nicht als Zahl: auch Tests tragen keine Preisliterale (scripts/canon-guard.sh).
 $door_spec = [
 	'projekt'    => [ 'Projekt anfragen', 'Projekt', '', '/kontakt/?type=project', 'nav_header_project' ],
-	'ersteinschaetzung' => [ hu_first_assessment_text( 'cta' ), hu_first_assessment_text( 'label' ), '', '/kontakt/?focus=ersteinschaetzung', 'nav_header_ersteinschaetzung' ],
+	'ersteinschaetzung' => [ hu_first_assessment_text( 'label' ), hu_first_assessment_text( 'label' ), hu_format_eur( 0 ), '/kontakt/?focus=ersteinschaetzung', 'nav_header_ersteinschaetzung' ],
 	'tracking'   => [ 'Tracking anfragen', 'Tracking', 'ab ' . hu_tracking_price( 'measurement', 'setup' ), '/kontakt/?type=project&focus=tracking', 'nav_header_door_tracking' ],
 	'aufgabe'    => [ 'Test-Sprint anfragen', 'Test-Sprint', hu_format_eur( HU_WHITELABEL_TEST_SPRINT_PRICE ), '/whitelabel-retainer/#aufgabe', 'nav_header_door_whitelabel' ],
 	'marktcheck' => [ 'Marktcheck', 'Marktcheck', hu_format_eur( 0 ), '/solar-waermepumpen-leadgenerierung/#marktcheck', 'nav_header_door_marktcheck' ],
@@ -158,6 +159,7 @@ $expect_funnel = [
 	'tracking'      => [ 'voll', 'tracking', 'tracking' ],
 	'server_side'   => [ 'voll', 'tracking', 'tracking' ],
 	'case_study'    => [ 'voll', 'marktcheck', 'energy' ],
+	'solar_cluster' => [ 'voll', 'marktcheck', 'energy' ],
 	'about'         => [ 'voll', 'projekt', '' ],
 	'contact'       => [ 'voll', null, '' ],
 	'agentur_local' => [ 'voll', 'projekt', '' ],
@@ -179,6 +181,14 @@ foreach ( array_keys( nav_test_contexts() ) as $context ) {
 	nav_check( isset( $expect_funnel[ $context ] ) && $expect_funnel[ $context ] === [ $decision['mode'], $decision['door'], $decision['route'] ], "{$context}: funnel decision " . json_encode( $decision ) );
 }
 
+// Alle Cluster-Seiten lesen dieselbe Registry; keine zweite Slug-Liste.
+foreach ( hu_get_solar_cluster_link_map() as $slug => $cluster_page ) {
+	$GLOBALS['nav_test'] = [ 'page' => $slug, 'front' => false, 'template' => '', 'path' => $cluster_page['path'] ];
+	$_SERVER['REQUEST_URI'] = $cluster_page['path'];
+	$decision = hu_funnel_context();
+	nav_check( [ 'voll', 'marktcheck', 'energy' ] === [ $decision['mode'], $decision['door'], $decision['route'] ], "{$slug}: registry routes to the Energy door" );
+}
+
 nav_test_use_context( 'imprint' );
 
 $tracks = array_merge(
@@ -195,6 +205,7 @@ $expect_current = [
 	'tracking'      => [ 'Tracking' => 'page' ],
 	'server_side'   => [ 'Tracking' => 'true' ],
 	'case_study'    => [ 'Ergebnisse' => 'true' ],
+	'solar_cluster' => [],
 	'about'         => [ 'Über Haşim' => 'page' ],
 	'contact'       => [],
 	'agentur_local' => [],
@@ -229,6 +240,9 @@ foreach ( nav_test_contexts() as $context => $definition ) {
 
 		$marked = $footer_x->query( '//div[contains(concat(" ", @class, " "), " ist-hier ")]' );
 		nav_check( '' === $route_now ? 0 === $marked->length : ( 1 === $marked->length && 'fuss-weg-' . $route_now . '' === ( $marked->item( 0 )->getAttribute( 'aria-labelledby' ) ) ), "{$context}: own way " . ( '' === $route_now ? 'none marked' : "{$route_now} marked, not hidden" ) );
+		if ( 'solar_cluster' === $context ) {
+			nav_check( 1 === $footer_x->query( '//div[@aria-labelledby="fuss-weg-energy"]//span[@class="hier" and text()="Ihr Weg"]' )->length, 'solar_cluster: Energy way carries Ihr Weg' );
+		}
 		nav_check( 4 === $footer_x->query( '//nav[@class="register"]//div[@class="tueren" or contains(@class,"weg")]/p[@class="satz"]' )->length, "{$context}: all four ways stay in the register" );
 
 		foreach ( $register as $index => $door_link ) {
@@ -255,6 +269,8 @@ foreach ( nav_test_contexts() as $context => $definition ) {
 	$header_x    = nav_dom( $header_html );
 	$doors_html  = nav_links( $header_html, '//a[contains(concat(" ", @class, " "), " tuer ")]' );
 	$header_el   = $header_x->query( '//header' )->item( 0 );
+	$wordmark    = $header_x->query( '//a[@rel="home"]' )->item( 0 );
+	nav_check( $wordmark && 'nav_header_home' === $wordmark->getAttribute( 'data-track-action' ), "{$context}: wordmark tracks the homepage" );
 
 	$expected_header_class = "leiste leiste--{$mode}" . ( 'home' === $context ? ' st-messkopf tafel' : '' );
 	nav_check( $header_el && $expected_header_class === preg_replace( '/ nexus-article-reader-header$/', '', $header_el->getAttribute( 'class' ) ), "{$context}: header renders mode {$mode} with dark measurement tokens only on home" );
@@ -263,6 +279,7 @@ foreach ( nav_test_contexts() as $context => $definition ) {
 		$sheet_without_about = array_values( array_filter( $sheet, static function ( $link ) { return 'Über Haşim' !== $link['text']; } ) );
 		nav_check( array_column( $row, 'href' ) === array_column( $sheet_without_about, 'href' ), "{$context}: row lists the sheet targets in the same order, without Über Haşim" );
 		nav_check( [ 'Projekte', 'Tracking', 'White-Label', 'Solar & Wärmepumpe', 'Ergebnisse', 'Über Haşim' ] === array_column( $sheet, 'text' ), "{$context}: sheet lists all six points" );
+		nav_check( 'nav_header_about' === $sheet[5]['track'], "{$context}: Über Haşim keeps its tracking action" );
 		nav_check( 1 === $header_x->query( '//nav[@aria-label="Hauptnavigation"]//a[@class="beleg"]' )->length && 'Ergebnisse' === $row[4]['text'], "{$context}: hairline sits before Ergebnisse" );
 
 		$current = [];
