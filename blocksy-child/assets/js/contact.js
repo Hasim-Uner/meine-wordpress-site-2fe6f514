@@ -840,6 +840,10 @@
             var requestType = getSelectedType();
             var content = typeContent[requestType] || typeContent.audit;
 
+            if (requestType === 'project' && focusSelect && focusSelect.value === 'website') {
+                content = Object.assign({}, content, { messageLabel: 'Ihr Angebot und gewünschter Starttermin', messageHelp: 'Welche Leistungen zeigen Sie, und bis wann soll die Website stehen?', messagePlaceholder: 'Wir bieten … an. Die Website soll … live gehen.' });
+            }
+
             syncFocusOptions(requestType);
             toggleContextField(timelineField, content.showTimeline);
             toggleContextField(budgetField, content.showBudget);
@@ -1001,6 +1005,10 @@
                         var trackedError = new Error(errorMessage);
                         trackedError.contactErrorTracked = true;
                         throw trackedError;
+                    }
+
+                    if (payload.focus === 'website' && payload.seiten && window.HuWebsiteProductEvent) {
+                        window.HuWebsiteProductEvent('form_submit', { seiten: Number(payload.seiten), art: payload.art, tracking: Number(payload.tracking) });
                     }
 
                     form.reset();

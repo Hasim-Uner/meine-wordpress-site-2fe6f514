@@ -170,7 +170,7 @@ $offers = [
 		'price_note' => 'netto · Festpreis für den vereinbarten Umfang',
 		'text'    => 'Neubau oder Relaunch auf WordPress, gebaut auf einer Testumgebung und erst nach Ihrer Abnahme live. Beim Relaunch bekommt jede alte URL eine Weiterleitung, damit bestehende Links und Suchergebnisse weiter ankommen.',
 		'more'    => $fest( hu_freelancer_website_scope_display() ) . '.',
-		'request' => $project_link( 'relaunch' ),
+		'request' => $project_link( 'website' ),
 		'hook'    => 'home_offer_relaunch',
 		'cta'     => 'Website-Projekt anfragen',
 		'detail'  => [ 'url' => $website_url, 'hook' => 'home_offer_website_detail' ],

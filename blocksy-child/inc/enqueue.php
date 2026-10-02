@@ -104,7 +104,7 @@ function hu_enqueue_assets() {
 	// Legacy-Provider, bis ihre impliziten Token-/Selector-Abhaengigkeiten
 	// einzeln nachgewiesen und migriert sind.
 	$is_contact_route          = function_exists( 'nexus_is_contact_page' ) && nexus_is_contact_page();
-	$uses_legacy_design_system = ! ( is_front_page() || hu_is_person_page() || $is_results_hub || $is_glossary || $is_whitelabel || $is_contact_route || $is_sst_route || $is_case_study_route );
+	$uses_legacy_design_system = ! ( is_front_page() || hu_is_person_page() || $is_results_hub || $is_glossary || $is_whitelabel || $is_contact_route || is_page( 'wordpress-website-erstellen-lassen' ) || is_page_template( 'page-wordpress-website-erstellen-lassen.php' ) || $is_sst_route || $is_case_study_route );
 	if ( $uses_legacy_design_system ) {
 		hu_enqueue_css( 'nexus-design-system', 'design-system.css', [ 'blocksy-child-style' ] );
 	}
@@ -334,7 +334,8 @@ function hu_enqueue_assets() {
 	// ── E2) Kontakt ───────────────────────────────────────────────
 	if ( $is_contact_route ) {
 		hu_enqueue_css( 'nexus-contact-css', 'contact.css', [ 'nexus-system-css' ] );
-		hu_enqueue_js( 'nexus-contact-js', 'contact.js', [ 'nexus-core-js' ] );
+		hu_enqueue_js( 'hu-website-product-events', 'website-product-events.js', [] );
+		hu_enqueue_js( 'nexus-contact-js', 'contact.js', [ 'nexus-core-js', 'hu-website-product-events' ] );
 		$contact_requested_type = isset( $_GET['type'] ) ? sanitize_key( wp_unslash( $_GET['type'] ) ) : '';
 		$contact_type_options   = function_exists( 'nexus_get_contact_request_type_options' ) ? nexus_get_contact_request_type_options() : [];
 		$contact_is_scoped_landing = in_array( $contact_requested_type, [ 'audit', 'implementation', 'ongoing' ], true )

@@ -754,7 +754,7 @@ function nexus_get_landingpage_faq_items() {
 		[
 			'key'      => 'website',
 			'question' => 'Wann ist eine Website die bessere Wahl?',
-			'answer'   => sprintf( 'Wenn Sie mehrere Leistungen zeigen wollen oder noch keine Website haben. Eine Website mit bis zu %1$s Seiten und Kontaktformular kostet %2$s. Die Landingpage ist für ein einzelnes Angebot gedacht, auf das Sie Besucher gezielt schicken.', hu_pricing_count_word( HU_FREELANCER_WEBSITE_PAGES ), $website_price ),
+			'answer'   => sprintf( 'Wenn Sie mehrere Leistungen zeigen wollen oder noch keine Website haben. Eine Website mit erster Seite und Kontaktformular kostet ab %2$s. Jede weitere Seite kostet ' . hu_freelancer_website_extra_page_price( true ) . '. Die Landingpage ist für ein einzelnes Angebot gedacht, auf das Sie Besucher gezielt schicken.', hu_pricing_count_word( HU_FREELANCER_WEBSITE_PAGES ), $website_price ),
 		],
 		[
 			'key'      => 'pflege',
@@ -764,54 +764,17 @@ function nexus_get_landingpage_faq_items() {
 	];
 }
 
-/**
- * Return the FAQ set for the website offer /wordpress-website-erstellen-lassen/.
- *
- * Shared between the page template and the FAQPage node in inc/org-schema.php.
- * Preise und Umfang kommen aus dem Kanon; der Wortlaut zu Zeitrahmen, Konten
- * und Übernahme folgt der Startseite, der zu Weiterleitungen dem Relaunch-
- * Angebot dort. Eine Lieferzeit wird nicht zugesagt, sondern mit dem Angebot
- * genannt.
- *
- * @return array<int, array{key: string, question: string, answer: string}>
- */
+/** Visible website FAQs and FAQPage use this single source. */
 function nexus_get_website_faq_items() {
 	return [
-		[
-			'key'      => 'kosten',
-			'question' => 'Was kostet es, eine WordPress-Website erstellen zu lassen?',
-			'answer'   => sprintf( 'Ab %1$s. %2$s. Die Texte liefern Sie, Struktur und Feinschliff sind enthalten. Shop, Schnittstellen und Relaunches mit vielen Seiten kalkuliere ich separat. Umfang und Endpreis stehen vor dem Start schriftlich fest.', hu_freelancer_website_price( true ), hu_freelancer_website_scope_display() ),
-		],
-		[
-			'key'      => 'dauer',
-			'question' => 'Wie lange dauert ein Projekt, und was brauchen Sie von uns?',
-			'answer'   => 'Den Zeitrahmen nenne ich mit dem Angebot. Darin steht auch, wann ich Texte, Bilder und Freigaben von Ihnen brauche. Auf Ihrer Seite braucht es eine Person, die entscheidet und freigibt.',
-		],
-		[
-			'key'      => 'text',
-			'question' => 'Wer schreibt die Texte?',
-			'answer'   => 'Die Texte liefern Sie. Struktur und Feinschliff sind im Festpreis enthalten.',
-		],
-		[
-			'key'      => 'relaunch',
-			'question' => 'Was passiert beim Relaunch mit den alten URLs?',
-			'answer'   => 'Jede alte URL bekommt eine Weiterleitung, damit bestehende Links und Suchergebnisse weiter ankommen. Dafür gibt es einen Weiterleitungsplan. Gebaut wird auf einer Testumgebung, live geht die Website erst nach Ihrer Abnahme.',
-		],
-		[
-			'key'      => 'uebernahme',
-			'question' => 'Übernehmen Sie eine bestehende WordPress-Website?',
-			'answer'   => sprintf( 'Ja, nach einem Übernahme-Check für %s. Ich prüfe Theme, Plugins, Updates, Backups, Zugänge und Ladezeit und schicke Ihnen den Befund schriftlich, mit einem Festpreis für den nächsten Schritt. Beauftragen Sie mich danach, verrechne ich den Check. Der Befund gehört Ihnen, auch wenn Sie mit jemand anderem weiterarbeiten.', hu_freelancer_takeover_check_price( true ) ),
-		],
-		[
-			'key'      => 'eigentum',
-			'question' => 'Gehören Website, Konten und Code danach uns?',
-			'answer'   => sprintf( 'Ja, von Anfang an. Domain, Hosting, Konten und Repository laufen auf Ihren Namen. Wer danach weiterentwickeln lassen will, bucht ein Kontingent: %s, monatlich kündbar. Voraussetzung ist das nicht.', hu_freelancer_retainer_display() ),
-		],
-		[
-			'key'      => 'landingpage',
-			'question' => 'Reicht mir eine Landingpage statt einer Website?',
-			'answer'   => sprintf( 'Wenn Sie ein einzelnes Angebot haben, auf das Sie Besucher gezielt schicken, ja. Die Landingpage kostet %s als Festpreis, mit Text, Anfrageformular und Herkunft jeder Anfrage. Für mehrere Leistungen oder eine Website, die es noch nicht gibt, ist die Website die bessere Wahl.', hu_landingpage_price( true ) ),
-		],
+		[ 'key' => 'kosten', 'question' => 'Was kostet es, eine WordPress-Website erstellen zu lassen?', 'answer' => sprintf( 'Ab %1$s für eine Website mit einer Seite, jede weitere Seite %2$s. Drei Seiten kosten damit %3$s. Shop, Schnittstellen und mehr als zehn Seiten kalkuliere ich einzeln. Den Endpreis bekommen Sie vor dem Start schriftlich.', hu_freelancer_website_price( true ), hu_freelancer_website_extra_page_price( true ), hu_format_eur( hu_website_quote( 3 )['price'] ) ) ],
+		[ 'key' => 'dauer', 'question' => 'Wie lange dauert es, eine WordPress-Website erstellen zu lassen?', 'answer' => 'Zwei bis vier Wochen Bauzeit, je nach Umfang: bis zwei Seiten zwei Wochen, bis fünf Seiten drei, bis zehn Seiten vier. Ein Relaunch braucht eine Woche mehr. Die Bauzeit läuft ab dem Tag, an dem Ihre Inhalte vollständig sind.' ],
+		[ 'key' => 'lizenzen', 'question' => 'Fallen nach dem Start Lizenzkosten für Themes oder Plugins an?', 'answer' => 'Nein. Ich baue ohne kostenpflichtige Themes und Plugins. Braucht Ihr Projekt doch eine Lizenz, steht sie mit Preis im Angebot, bevor Sie zusagen.' ],
+		[ 'key' => 'hosting', 'question' => 'Können wir die Website auf unserem Hosting selbst verwalten, ohne Wartungsvertrag?', 'answer' => sprintf( 'Ja. Die Website läuft auf Ihrem Hosting, auch dem bestehenden, und alle Zugänge liegen bei Ihnen. Einen Wartungsvertrag brauchen Sie nicht. Wer weiterentwickeln lassen will, bucht ein Kontingent: %s, monatlich kündbar.', hu_freelancer_retainer_display() ) ],
+		[ 'key' => 'seo', 'question' => 'Sind SEO-Titel und Meta-Beschreibungen für alle Seiten im Festpreis?', 'answer' => 'Ja, für jede Seite. Dazu Canonical, strukturierte Daten, Sitemap und die Anmeldung in der Google Search Console.' ],
+		[ 'key' => 'design', 'question' => 'Wir haben schon ein Design. Setzen Sie das um?', 'answer' => 'Ja, nach derselben Preisformel. Wo das Design Ladezeit oder Anfragen kostet, sage ich es Ihnen vor dem Bau.' ],
+		[ 'key' => 'recht', 'question' => 'Sind Impressum und Datenschutzerklärung dabei?', 'answer' => 'Ja. Ich lege beide Seiten an und binde Ihre Rechtstexte ein, etwa aus einem Generator oder von Ihrer Kanzlei. Die Texte selbst prüfe ich nicht rechtlich, das ist Sache eines Anwalts.' ],
+		[ 'key' => 'uebernahme', 'question' => 'Übernehmen Sie eine bestehende WordPress-Website?', 'answer' => sprintf( 'Ja, nach einem Übernahme-Check für %s. Sie bekommen einen schriftlichen Befund zu Theme, Plugins, Updates, Backups, Zugängen und Ladezeit, mit Festpreis für den nächsten Schritt. Bei Beauftragung wird der Check verrechnet.', hu_freelancer_takeover_check_price( true ) ) ],
 	];
 }
 

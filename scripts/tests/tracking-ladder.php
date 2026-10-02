@@ -47,7 +47,8 @@ check( 3 === substr_count( hu_tracking_ladder_display( 2 ), ' €' ), 'ladder ph
 // eine Seite kostet weniger als das kleinste Website-Paket, eine Zusatzseite
 // weniger als eine Landingpage, und Agenturen zahlen fuer die Landingpage
 // rund 30 % weniger als Endkunden.
-check( HU_LANDINGPAGE_PRICE < HU_FREELANCER_WEBSITE_MIN, 'a landing page costs less than Website Kompakt' );
+check( HU_FREELANCER_WEBSITE_MIN === 1490 && HU_FREELANCER_WEBSITE_PAGES === 1, 'approved request website includes its first page' );
+check( HU_LANDINGPAGE_PRICE === 1990, 'landing page with copy remains unchanged' );
 check( HU_FREELANCER_WEBSITE_EXTRA_PAGE < HU_LANDINGPAGE_PRICE, 'an extra website page costs less than a landing page' );
 check( HU_WHITELABEL_LANDINGPAGE_MIN <= (int) round( HU_LANDINGPAGE_PRICE * 0.75 ), 'agencies pay at least 25 % less than end customers for a landing page' );
 check( str_contains( hu_freelancer_website_scope_display(), hu_freelancer_website_extra_page_price( true ) ), 'website scope phrase names the extra page price' );
