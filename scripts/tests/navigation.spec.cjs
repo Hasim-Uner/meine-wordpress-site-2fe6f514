@@ -239,17 +239,19 @@ test('home, narrow: the door stays in the row like on every route, and in the sh
   await expect(rowDoor(page)).toBeVisible();
   await klappe(page).click();
   await expect(sheet(page).locator('.tuer')).toBeVisible();
+  await expect(sheet(page).locator('.tuer .preis')).toBeVisible();
+  await expect(sheet(page).locator('.tuer .preis')).toHaveText(freeAmount);
 });
 
-for (const width of [1440, 1080, 560, 370]) {
+for (const width of [1440, 1080, 560, 414, 413, 390, 371, 370]) {
   test(`home assessment ${width}: label, canon amount and header fit`, async ({ page }) => {
     await open(page, 'home', { width, height: 800 });
     const door = rowDoor(page);
     await expect(door).toBeVisible();
     await expect(door).toHaveAttribute('data-track-action', 'nav_header_ersteinschaetzung');
-    await expect(door).toHaveAccessibleName(width < 371 ? 'Ersteinschätzung' : `Ersteinschätzung ${freeAmount}`);
+    await expect(door).toHaveAccessibleName(width < 414 ? 'Ersteinschätzung' : `Ersteinschätzung ${freeAmount}`);
     await expect(door.locator('.preis')).toHaveText(freeAmount);
-    if (width < 371) await expect(door.locator('.preis')).toBeHidden();
+    if (width < 414) await expect(door.locator('.preis')).toBeHidden();
     else await expect(door.locator('.preis')).toBeVisible();
     const sig = await page.locator('.leiste .sig').boundingBox();
     const doorBox = await door.boundingBox();
@@ -260,6 +262,7 @@ for (const width of [1440, 1080, 560, 370]) {
     } else {
       const menuBox = await klappe(page).boundingBox();
       expect(doorBox.x + doorBox.width).toBeLessThanOrEqual(menuBox.x);
+      expect(menuBox.x + menuBox.width).toBeLessThanOrEqual(width);
     }
     expect(await rowHeight(page)).toBeLessThanOrEqual(60);
     expect(await noHorizontalScroll(page)).toBe(true);

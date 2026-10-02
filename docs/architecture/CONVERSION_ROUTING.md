@@ -418,6 +418,11 @@ entfernt; das SEO Cockpit liest nur die tatsächlich definierten Kopfpunkte.
 Die Tür ersetzt den kontextblinden CTA. Der Contract behält `cta` als
 Standardtür „Projekt anfragen“ für Menü, 404 und SEO Cockpit.
 
+Seit 2026-10-03 blendet nur die Zeilentür `ersteinschaetzung` ihren Betrag
+unter 414 px aus, damit Wortmarke, Tür und Menü ohne Überlauf passen.
+Im Klappblatt bleibt der Betrag sichtbar. Für alle übrigen Türen bleibt
+die Grenze unter 371 px unverändert.
+
 Türmatrix (Modus `voll` zeigt das Hauptmenü, `leser` den Artikelpfad statt des
 Menüs, `fokus` die Leiter der Solar-Seite):
 
@@ -488,7 +493,8 @@ Seite ist; liegt die Seite nur im Bereich eines Punkts (Server-Side-Seite unter
 Tracking, Fallstudie unter Ergebnisse), steht `aria-current="true"`.
 
 Unter 1081 px bleibt die Tür in der Kopfzeile sichtbar, unter 561 px als
-Kurztext, unter 371 px ohne Betrag. Nur im Klappblatt steht sie unter 340 px
+Kurztext, unter 371 px ohne Betrag (Ersteinschätzung bereits unter 414 px).
+Nur im Klappblatt steht sie unter 340 px
 und auf Seiten mit eigener Sticky-CTA-Leiste (unter 761 px). Ohne JavaScript
 ist das Klappblatt offen. Der Kopf von `/whitelabel-retainer/` zeigt die Tür
 zwischen 768 und 1080 px neben der Wortmarke und über 1080 px neben den Ankern;
