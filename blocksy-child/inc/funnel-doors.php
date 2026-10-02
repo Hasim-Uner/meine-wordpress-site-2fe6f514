@@ -4,7 +4,8 @@
  *
  * Der Kopf zeigt dem Leser genau eine Tuer, der Fuss fuehrt alle Tueren als
  * Register. Beide lesen dieselbe Entscheidung, damit sie nie auseinander-
- * laufen: hu_funnel_doors() kennt die sechs Tueren, hu_funnel_context()
+ * laufen: hu_funnel_doors() kennt die Tueren samt Homepage-Ersteinschaetzung,
+ * hu_funnel_context()
  * entscheidet pro Anfrage Modus, Tuer und Weg.
  *
  * Betraege kommen ausschliesslich aus dem Kanon (inc/canon/pricing-canon.php).
@@ -84,6 +85,16 @@ function hu_funnel_doors() {
 			'tier'         => 'scope',
 			'url'          => (string) $routes['project_request'],
 			'track'        => 'nav_header_project',
+		],
+		'ersteinschaetzung' => [
+			'key'          => 'ersteinschaetzung',
+			'label'        => hu_first_assessment_text( 'cta' ),
+			'short'        => hu_first_assessment_text( 'label' ),
+			'footer_label' => hu_first_assessment_text( 'cta' ),
+			'amount'       => '',
+			'tier'         => 'free',
+			'url'          => hu_first_assessment_url(),
+			'track'        => 'nav_header_ersteinschaetzung',
 		],
 		'tracking'   => [
 			'key'          => 'tracking',
@@ -320,6 +331,10 @@ function hu_footer_register_suppressed_templates() {
  * @return bool
  */
 function hu_footer_shows_register() {
+	if ( is_front_page() ) {
+		return false;
+	}
+
 	if ( function_exists( 'nexus_is_contact_page' ) && nexus_is_contact_page() ) {
 		return false;
 	}
@@ -391,7 +406,7 @@ function hu_funnel_context() {
 	}
 
 	if ( is_front_page() ) {
-		return [ 'mode' => 'voll', 'door' => 'projekt', 'route' => 'freelancer' ];
+		return [ 'mode' => 'voll', 'door' => hu_first_assessment_enabled() ? 'ersteinschaetzung' : 'projekt', 'route' => 'freelancer' ];
 	}
 
 	return [ 'mode' => 'voll', 'door' => 'projekt', 'route' => '' ];

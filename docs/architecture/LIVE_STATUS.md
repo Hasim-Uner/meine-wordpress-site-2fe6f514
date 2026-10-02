@@ -83,7 +83,7 @@ Abschnitt anzuhängen; der Verlauf gehört in Commit-Nachrichten.
   Tracking-Tür im Fuß liest den Server-Side-Setup-Anker über `footer_amount`
   (`standard/setup`); andere Tracking-Türen behalten den Messung-Einstieg.
   eigene Route ist markiert („Ihr Weg“), nicht ausgeblendet; das Register
-  erscheint auch auf Startseite und Energie-Seite, nur `/kontakt/` und die
+  erscheint auf der Energie-Seite; Startseite, `/kontakt/` und die
   Seiten aus `hu_footer_register_suppressed_templates()` (`inc/funnel-doors.php`,
   derzeit `/conversion-optimierung/`) zeigen es nicht. Darunter Direktzeile und Verzeichnis in vier Gruppen: Leistungen
   (Server-Side Tracking, Performance Marketing, WordPress Agentur Hannover,
@@ -135,47 +135,37 @@ Abschnitt anzuhängen; der Verlauf gehört in Commit-Nachrichten.
 ## Routen
 
 - **`/`** (`front-page.php`): Money Page für direkte WordPress-Projekte.
-  Title „WordPress Freelancer für Unternehmen | Haşim Üner, Hannover“,
+  Finale Fassung im Repo am 2026-10-02 umgesetzt; der Livegang ist noch offen.
+  Title „WordPress Freelancer: Website, Tracking, Anfragen · Haşim Üner“,
   Query-Owner für `wordpress freelancer` und `wordpress freelancer hannover`.
-  Seit 2026-09-24 als Strecke gebaut (`assets/css/startseite-strecke.css`,
-  `assets/js/startseite-strecke.js`): Eine Messlinie läuft in der Randspalte
-  vom Hero (Marke „Klick“) bis zum Anfrageblock (Marke „Anfrage“) und füllt
-  sich beim Lesen; ohne JavaScript und bei reduzierter Bewegung steht sie
-  statisch. Acht Abschnitte: Hero (`#klick`) mit H1 ohne Ortsnamen, Byline
-  mit Portrait, zwei Buttons, Messprotokoll und drei Belegzeilen (seit
-  2026-09-26 zuerst der Websitepreis aus `hu_freelancer_website_price()` mit
-  Hook `home_proof_strip_price`, dann Fall und Referenzen; H1, Satz, Buttons,
-  Protokoll und die Preiszeile passen bei 1280 × 800 in den ersten Bildschirm;
-  seit 2026-09-27 steht das Protokoll auf einer dunklen Tafel); darunter ein
-  dekoratives Stationsband (`aria-hidden`, verschiebt sich nur beim Scrollen);
-  sechs Stationen einer Anfrage (`#strecke`, Liste mit `#angebot-funnel`);
-  seit 2026-10-01 fünf Leistungen mit Kanonpreisen (`#angebote`, Anker
-  `#angebot-website`, `#angebot-landingpage`, `#angebot-conversion`,
-  `#angebot-tracking` = Stufe 1 der Tracking-Leiter mit den Stufen darüber
-  als Satz, `#angebot-weiterentwicklung`): Neben der Anfrage trägt jede Zeile
-  mit Produktseite den Sub-CTA „Was drinsteckt“ (Website →
-  `/wordpress-website-erstellen-lassen/`, Landingpage, Conversion-Optimierung,
-  Tracking; Hooks `home_offer_*_detail`, Kategorie `navigation`); der
-  Übernahme-Check hat keine Produktseite. Darunter die leisen Nebenausgänge zu
-  White-Label und Solar/Wärmepumpe; Arbeiten (`#arbeiten`, `#referenzen`);
-  Prüfstand (`#pruefstand`, seit 2026-10-01 hinter den Arbeiten und als
-  schmaler heller Streifen statt dunkler Tafel: drei Spalten mit Haarlinie,
-  Links auf Code, CI und PageSpeed, keine Scores; die dunkle `.tafel` bleibt
-  der White-Label-Seite); Übergabe (`#uebergabe`); Fragen (`#fragen`,
-  template-eigenes FAQPage-Schema); Anfrage (`#anfrage`, `#kontakt`, seit
-  2026-09-27 Überschrift, beide Einstiege und Portrait auf einer dunklen
-  Tafel). Abschnitte unter dem ersten Bildschirm blenden beim ersten
-  Sichtkontakt ein (`data-st-einblenden`, nur Startseite); bei reduzierter
-  Bewegung entfällt jede Bewegung.
-  Das Messprotokoll zeigt Ladezeit (LCP bzw. Navigation Timing), gesehene
-  Abschnitte, Scrolltiefe und den Klick auf einen Anfrage-Button. Es sendet
-  und speichert nichts; die Sperrliste (`strecke-js-privat`) bricht den
-  Build, sobald das Skript einen Netzwerk- oder Speicheraufruf enthält.
-  `/wordpress-freelancer-hannover/` leitet per 301 hierher. Solange der
-  Versuch Ersteinschätzung läuft (Schalter `HU_EXPERIMENT_ERSTEINSCHAETZUNG`,
-  `docs/experimente/ersteinschaetzung.md`), führen Hero und Abschluss primär
-  auf `/kontakt/?focus=ersteinschaetzung`; die Projektanfrage
-  (`/kontakt/?type=project`) steht sekundär daneben.
+  Die bestehende Strecke (`assets/css/startseite-strecke.css/.js`) hat acht
+  Abschnitte: Klick, Strecke, Fall, Prüfstand, Preise, Übergabe, Fragen, Anfrage.
+  Im Hero stehen Ersteinschätzung und „Alle Preise“, Person, Protokoll und
+  Belege. Sechs Stationen sind native exklusive Akkordeons, die erste ist offen.
+  Der dokumentierte Fall (`#arbeiten`, `#systemprojekt`) steht vor den Preisen:
+  heller Hintergrund, Drei-Phasen-Verlauf aus dem E3-Kanon und eine dunkle
+  Messtafel mit maßstäblichen CPL-Balken. Diese wachsen einmal beim Sichtkontakt
+  ausschließlich per Transform. Der Prüfstand enthält Code, CI, PageSpeed mit
+  dem lokal gemessenen LCP und die Referenzen (`#referenzen`). Unter fünf
+  Angeboten (`#angebote`, alle Schema-Anker erhalten) stehen Weiterentwicklung,
+  Hosting-Hinweis und die bedingte Ersteinschätzungs-Zeile. Übergabe enthält
+  Eigentum, Ausfall-Einwand, Projektablauf und die Nebenwege zu White-Label und
+  Solar/Wärmepumpe. Fünf sichtbare FAQ teilen ihr Array mit dem FAQPage-Schema.
+  Der Abschluss (`#anfrage`, `#kontakt`) bleibt hell und enthält zwei Einstiege,
+  die nächsten Schritte und das Portrait. Dunkel sind nur Protokoll und Messtafel.
+  Das Stationsband entfällt. Die Messlinie liegt in der linken Rinne und folgt
+  einer Lesekante bei 45 % der Fensterhöhe; am Seitenende ist alles erreicht.
+  Ohne JavaScript bleiben Stationen und FAQ bedienbar, das Protokoll bleibt leer.
+  Bei reduzierter Bewegung folgt die Linie ohne Übergang dem Scrollstand.
+  Das Protokoll zeigt lokale Herkunft (UTM oder Verweis-Domain), Ladezeit,
+  erreichte Abschnitte, Scrolltiefe und den Ort einer Anfrage-Aktion, auch im
+  globalen Kopf. Es sendet und speichert nichts (`strecke-js-privat`).
+  Der Ersteinschätzungs-Schalter gilt für Kopf, Hero, Fall, Preise und Abschluss;
+  ohne Versuch führen die Einstiege zur Projektanfrage, die Preiszeile entfällt.
+  Das globale Fußregister entfällt nur auf der Homepage; Verzeichnis,
+  Kontaktzeile und Absender bleiben. `/wordpress-freelancer-hannover/` leitet
+  unverändert per 301 hierher. Beobachtung nach sechs Wochen ab Livegang:
+  Fall-CTA gegen Hero-CTA und Qualität der Einsendungen, siehe Experiment-Doku.
 - **`/kontakt/`** (`page-kontakt.php`): Anfrage-Intake, siehe „Anfragewege“.
   Bis 820 px folgt das Formular direkt auf Titel und Einleitung; Ablauf,
   andere Einstiege und E-Mail stehen darunter.
@@ -612,9 +602,8 @@ Abschnitt anzuhängen; der Verlauf gehört in Commit-Nachrichten.
   und den Marktcheck: CRM-Eintrag, Sales-Chance, interne Mail und Bestätigung
   prüfen.
 - Versuch Ersteinschätzung: Zählung 2026-09-25 bis 2026-11-20, Entscheidung
-  nach der Tabelle in `docs/experimente/ersteinschaetzung.md`. Der Betreiber hat
-  den Freeze am 2026-10-01 für Reihenfolge und Leistungen der Startseite
-  aufgehoben (Hero und Abschluss unverändert); Einsendungen vor und nach dem
+  nach der Tabelle in `docs/experimente/ersteinschaetzung.md`. Die finale
+  Fassung bildet eine eigene Beobachtungsphase; Einsendungen vor und nach dem
   Deploy getrennt auswerten. Nach dem Deploy eine Einsendung über
   `/kontakt/?focus=ersteinschaetzung` schicken (Betreff-Präfix bei
   kontakt@hasimuener.de prüfen) und die Wochentabelle führen.

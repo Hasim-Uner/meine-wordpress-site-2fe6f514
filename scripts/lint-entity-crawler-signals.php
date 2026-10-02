@@ -61,9 +61,6 @@ function get_option( $option ) {
 function hu_get_brand_logo_url() {
 	return 'https://hasimuener.de/wp-content/uploads/logo.webp';
 }
-function hu_get_contact_email() {
-	return 'kontakt@hasimuener.de';
-}
 function untrailingslashit( $string ) {
 	return rtrim( (string) $string, '/' );
 }
@@ -119,6 +116,7 @@ function apply_filters( $hook, $value ) {
 }
 
 require_once __DIR__ . '/../blocksy-child/inc/robots-txt.php';
+require_once __DIR__ . '/../blocksy-child/inc/canon/messaging-canon.php';
 require_once __DIR__ . '/../blocksy-child/inc/org-schema.php';
 require_once __DIR__ . '/../blocksy-child/inc/helpers.php';
 require_once __DIR__ . '/../blocksy-child/inc/llms-txt.php';

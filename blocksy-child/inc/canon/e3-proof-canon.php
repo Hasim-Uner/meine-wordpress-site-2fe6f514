@@ -51,10 +51,15 @@ define( 'HU_E3_TUNING_MONTHS', 3 );
  * @return array<string, mixed>
  */
 function hu_e3_canon() {
+	$cpl_reached_month = 3;
+
 	return [
 		'case_label'            => HU_E3_CASE_LABEL,
 		'case_label_accusative' => HU_E3_CASE_LABEL_ACCUSATIVE,
 		'url'        => home_url( '/case-study-solar-leadgenerierung/' ),
+		'cpl_reached_month' => $cpl_reached_month,
+		'cpl_reached_label' => sprintf( 'ab Monat %d', $cpl_reached_month ),
+		'homepage_build_label' => sprintf( 'Monat %d–%d', HU_E3_BUILD_MONTHS, $cpl_reached_month ),
 		'metrics'    => [
 			'cpl_before'       => [
 				'value'   => HU_E3_CPL_BEFORE,

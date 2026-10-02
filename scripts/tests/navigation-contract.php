@@ -108,6 +108,7 @@ $doors     = hu_funnel_doors();
 // Die Betraege stehen hier nicht als Zahl: auch Tests tragen keine Preisliterale (scripts/canon-guard.sh).
 $door_spec = [
 	'projekt'    => [ 'Projekt anfragen', 'Projekt', '', '/kontakt/?type=project', 'nav_header_project' ],
+	'ersteinschaetzung' => [ hu_first_assessment_text( 'cta' ), hu_first_assessment_text( 'label' ), '', '/kontakt/?focus=ersteinschaetzung', 'nav_header_ersteinschaetzung' ],
 	'tracking'   => [ 'Tracking anfragen', 'Tracking', 'ab ' . hu_tracking_price( 'measurement', 'setup' ), '/kontakt/?type=project&focus=tracking', 'nav_header_door_tracking' ],
 	'aufgabe'    => [ 'Test-Sprint anfragen', 'Test-Sprint', hu_format_eur( HU_WHITELABEL_TEST_SPRINT_PRICE ), '/whitelabel-retainer/#aufgabe', 'nav_header_door_whitelabel' ],
 	'marktcheck' => [ 'Marktcheck', 'Marktcheck', hu_format_eur( 0 ), '/solar-waermepumpen-leadgenerierung/#marktcheck', 'nav_header_door_marktcheck' ],
@@ -115,7 +116,7 @@ $door_spec = [
 	'sofort'     => [ 'Sofortkontakt', 'Sofortkontakt', hu_entry_setup_price(), '/solar-waermepumpen-leadgenerierung/#einstieg', 'nav_header_door_sofortkontakt' ],
 ];
 
-nav_check( array_keys( $door_spec ) === array_keys( $doors ), 'six doors: projekt, tracking, aufgabe, marktcheck, analyse, sofort' );
+nav_check( array_keys( $door_spec ) === array_keys( $doors ), 'doors include the homepage assessment and the six footer doors' );
 
 foreach ( $door_spec as $key => $spec ) {
 	$door = $doors[ $key ] ?? [];
@@ -153,7 +154,7 @@ nav_check( is_array( $flag_on ) && str_ends_with( (string) $flag_on['analyse'], 
 // --- 1c. Decision per context ---------------------------------------------------
 
 $expect_funnel = [
-	'home'          => [ 'voll', 'projekt', 'freelancer' ],
+	'home'          => [ 'voll', 'ersteinschaetzung', 'freelancer' ],
 	'tracking'      => [ 'voll', 'tracking', 'tracking' ],
 	'server_side'   => [ 'voll', 'tracking', 'tracking' ],
 	'case_study'    => [ 'voll', 'marktcheck', 'energy' ],
@@ -218,7 +219,7 @@ foreach ( nav_test_contexts() as $context => $definition ) {
 
 	// Door register: on every page except /kontakt/ and the Money Pages in hu_footer_register_suppressed_templates(),
 	// six doors in one click, own way marked, not hidden.
-	if ( in_array( $context, [ 'contact', 'conversion' ], true ) ) {
+	if ( in_array( $context, [ 'home', 'contact', 'conversion' ], true ) ) {
 		nav_check( 0 === $footer_x->query( '//nav[@class="register"]' )->length, "{$context}: footer skips the door register" );
 		nav_check( 1 === $footer_x->query( '//footer[@id="footer"]' )->length && 1 === $footer_x->query( '//nav[@aria-label="Weitere Seiten"]' )->length, "{$context}: footer keeps direct line, directory and sender" );
 	} else {
