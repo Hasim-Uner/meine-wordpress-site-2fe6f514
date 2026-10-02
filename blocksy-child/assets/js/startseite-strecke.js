@@ -3,24 +3,24 @@
  * Fuenf Aufgaben, ein Skript:
  * 1. Die Linie in der Randspalte fuellt sich beim Lesen (transform: scaleY,
  *    Update in requestAnimationFrame, Geometrie nur bei Groessenaenderung).
- *    Im selben Durchlauf verschiebt sich das Stationsband mit dem Scrollen.
+ *    Die Lesekante liegt bei 45 % der Fensterhoehe; am Ende ist alles erreicht.
  * 2. Das Messprotokoll im Hero zeigt, was dieser Browser misst: Ladezeit,
  *    gesehene Abschnitte, Scrolltiefe, Klick auf einen Anfrage-Button.
- * 3. Die Stationen in Abschnitt 03 klappen einzeln auf.
+ * 3. Native Stationen klappen exklusiv auf; die Messtafel erscheint einmal.
  * 4. „Leistungen" in der Kopfleiste ist nur aktiv, solange #angebote im
  *    Blick ist.
  * 5. Auf Seiten mit data-st-einblenden blenden Bloecke unter dem ersten
  *    Bildschirm beim ersten Sichtkontakt ein.
  *
- * Nichts davon laeuft von selbst: Jede Bewegung folgt dem Scrollen oder
- * einem Klick und entfaellt bei reduzierter Bewegung.
+ * Nichts davon laeuft von selbst: Die Balken wachsen beim ersten Sichtkontakt. Bei reduzierter Bewegung
+ * folgt die Linie ohne Uebergaenge dem Scrollstand.
  *
  * Harte Regel: Dieses Skript sendet nichts und speichert nichts. Kein
  * Netzwerkaufruf, kein Browser-Speicher, kein Cookie. Die Sperrliste in
  * scripts/canon-forbidden-values.txt (Regel strecke-js-privat) bricht den
  * Build, sobald hier einer dieser Aufrufe auftaucht.
  *
- * Ohne dieses Skript steht alles: Linie statisch, Stationen offen, das
+ * Ohne dieses Skript steht alles: Linie statisch, Stationen nativ bedienbar, das
  * Protokoll sagt, dass es leer bleibt.
  */
 (function () {
@@ -30,8 +30,6 @@
     if (!root) return;
 
     var reduced = window.matchMedia('(prefers-reduced-motion: reduce)');
-    var desktop = window.matchMedia('(min-width: 1024px)');
-    var hoverFein = window.matchMedia('(hover: hover) and (pointer: fine)');
 
     /* ── Hilfen ─────────────────────────────────────────────── */
 
@@ -64,7 +62,7 @@
     var ANSAGE_ABSTAND = 10000;
 
     if (protokoll) {
-        ['lcp', 'abschnitte', 'tiefe', 'klick'].forEach(function (key) {
+        ['herkunft', 'lcp', 'abschnitte', 'tiefe', 'klick'].forEach(function (key) {
             werte[key] = protokoll.querySelector('[data-st-wert="' + key + '"]');
         });
         var status = protokoll.querySelector('[data-st-status]');
@@ -103,7 +101,40 @@
         ansage.textContent = meldung;
     }
 
-    protokolliere(0, 'Seite aufgerufen');
+    /* Kampagnenparameter haben Vorrang vor dem Verweis. Nur Textausgabe:
+       auch untrusted Query-Werte werden weder HTML noch Link oder Anfrage. */
+    if (protokoll) {
+        var parameter = new URLSearchParams(window.location.search);
+        var quelle = parameter.get('utm_source');
+        var medium = parameter.get('utm_medium');
+        var herkunft = '';
+        if (quelle) {
+            herkunft = 'Kampagne: ' + quelle + (medium ? ' / ' + medium : '');
+        } else {
+            var host = '';
+            try { host = document.referrer ? new URL(document.referrer).hostname.replace(/^www\./, '') : ''; } catch (e) {}
+            var namen = [
+                [/(^|\.)google\.[a-z.]+$/, 'Google-Suche'],
+                [/(^|\.)bing\.com$/, 'Bing-Suche'],
+                [/(^|\.)duckduckgo\.com$/, 'DuckDuckGo'],
+                [/(^|\.)ecosia\.org$/, 'Ecosia'],
+                [/(^|\.)(linkedin\.com|lnkd\.in)$/, 'LinkedIn'],
+                [/(^|\.)(chatgpt\.com|openai\.com)$/, 'ChatGPT'],
+                [/(^|\.)perplexity\.ai$/, 'Perplexity']
+            ];
+            herkunft = !host ? 'Direkt aufgerufen' : host === window.location.hostname.replace(/^www\./, '') ? 'Diese Website' : host;
+            namen.some(function (paar) {
+                if (!paar[0].test(host)) return false;
+                herkunft = paar[1];
+                return true;
+            });
+        }
+        // Einzeiliges Panel; der volle Wert bleibt fuer Maus und Hilfstechnik da.
+        herkunft = herkunft.replace(/[\x00-\x1f\x7f]/g, ' ').slice(0, 200);
+        setzeWert('herkunft', herkunft);
+        if (werte.herkunft) werte.herkunft.title = herkunft;
+        protokolliere(0, 'Ankunft · ' + herkunft);
+    }
 
     /* Ladezeit: LCP, wo der Browser es kennt, sonst Navigation Timing.
        Das Label nennt immer die Groesse, die tatsaechlich gemessen wurde. */
@@ -166,44 +197,34 @@
         else window.addEventListener('load', function () { window.setTimeout(ausNavigation, 0); }, { once: true });
     }
 
-    /* Gesehene Abschnitte: ein Abschnitt zaehlt, sobald er durch das
-       mittlere Band des Fensters laeuft. Das funktioniert auch fuer
-       Abschnitte, die hoeher sind als der Bildschirm. */
+    /* Erreichte Abschnitte und Strahl verwenden dieselbe Lesekante. */
     var abschnitte = root.querySelectorAll('[data-st-abschnitt]');
     var gesehen = {};
     var anzahlGesehen = 0;
-
     function markiereGesehen(abschnitt) {
         var nr = abschnitt.getAttribute('data-st-abschnitt');
         if (gesehen[nr]) return;
         gesehen[nr] = true;
         anzahlGesehen += 1;
         setzeWert('abschnitte', anzahlGesehen + ' von ' + abschnitte.length);
-        if (nr !== '01') {
-            protokolliere(jetzt(), 'Abschnitt ' + nr + ' ' + text(abschnitt.querySelector('.st-marke__name')) + ' im Blick');
-        }
+        if (nr !== '01') protokolliere(jetzt(), 'Abschnitt ' + nr + ' ' + text(abschnitt.querySelector('.st-marke__name')));
     }
-
-    if ('IntersectionObserver' in window) {
-        var band = new IntersectionObserver(function (eintraege) {
-            eintraege.forEach(function (e) {
-                if (e.isIntersecting) markiereGesehen(e.target);
-            });
-        }, { rootMargin: '-45% 0px -45% 0px' });
-        Array.prototype.forEach.call(abschnitte, function (a) { band.observe(a); });
-    }
-    if (abschnitte[0]) markiereGesehen(abschnitte[0]);
+    setzeWert('abschnitte', '0 von ' + abschnitte.length);
+    setzeWert('tiefe', '0 %');
+    setzeWert('klick', 'noch keiner');
 
     /* Klick auf einen Anfrage-Button. Die Navigation wird nie verzoegert;
        wer ueber die Zurueck-Taste zurueckkommt, sieht den Klick noch im
        Protokoll (bfcache). */
     var ersterKlick = true;
     document.addEventListener('click', function (event) {
-        var link = event.target.closest && event.target.closest('a[data-track-category="lead_gen"]');
-        if (!link || !root.contains(link)) return;
+        var link = event.target.closest && event.target.closest('[data-track-category="lead_gen"]');
+        if (!link) return;
         var t = jetzt();
-        setzeWert('klick', uhr(t));
-        protokolliere(t, 'Klick: ' + text(link));
+        var ort = { header: 'Kopf', hero: 'Einstieg', beweis: 'Fall', angebote: 'Preise', abschluss: 'Ende' }[link.dataset.trackSection];
+        if (!ort) return;
+        setzeWert('klick', 'ja · ' + ort);
+        protokolliere(t, 'Klick auf Anfrage · ' + ort);
         if (ersterKlick) {
             ersterKlick = false;
             letzteAnsage = -Infinity;
@@ -220,13 +241,6 @@
     var endeErreicht = false;
     var geplant = false;
 
-    /* Band: verschiebt sich, waehrend es durch das Fenster laeuft, um
-       hoechstens eine halbe Folgenbreite. Die Folge steht zweimal im Band,
-       es laeuft also nie leer. */
-    var band = root.querySelector('[data-st-band]');
-    var bandZug = band && band.querySelector('[data-st-band-zug]');
-    var bandMass = null;
-
     function vermessen() {
         var y = window.scrollY || window.pageYOffset || 0;
         fuellungen = Array.prototype.map.call(root.querySelectorAll('[data-st-fuellung]'), function (el) {
@@ -235,47 +249,34 @@
         });
         punkte = Array.prototype.map.call(root.querySelectorAll('.st-rail__punkt, [data-st-punkt]'), function (el) {
             var r = el.getBoundingClientRect();
-            return { el: el, y: r.top + y + r.height / 2, an: el.classList.contains('st-erreicht') };
+            return { el: el, y: r.top + y + r.height / 2, an: el.classList.contains('st-erreicht'), abschnitt: el.closest('[data-st-abschnitt]') };
         });
-        if (bandZug) {
-            var b = band.getBoundingClientRect();
-            bandMass = { oben: b.top + y, hoehe: b.height, weg: bandZug.scrollWidth / 4, zuletzt: -1 };
-        }
+
     }
 
     function aktualisieren() {
         geplant = false;
         var y = window.scrollY || window.pageYOffset || 0;
         var h = window.innerHeight || document.documentElement.clientHeight;
-        /* Lesepunkt: 60 % der Fensterhoehe. Dort liest man gerade. */
-        var anker = y + h * 0.6;
-
-        var tiefe = Math.min(100, Math.round((y + h) / Math.max(1, document.documentElement.scrollHeight) * 100));
+        var max = Math.max(0, document.documentElement.scrollHeight - h);
+        var unten = y >= max - 4;
+        var anker = y + (unten ? h : h * 0.45);
+        var tiefe = unten || !max ? 100 : Math.max(0, Math.min(100, Math.round(y / max * 100)));
         if (tiefe > tiefeMax) {
             tiefeMax = tiefe;
             setzeWert('tiefe', tiefeMax + ' %');
         }
-
-        if (!reduced.matches) {
-            fuellungen.forEach(function (f) {
-                var anteil = Math.max(0, Math.min(1, (anker - f.oben) / f.hoehe));
-                f.el.style.transform = 'scaleY(' + anteil.toFixed(4) + ')';
-            });
-            punkte.forEach(function (p) {
-                var an = anker >= p.y;
-                if (an !== p.an) {
-                    p.an = an;
-                    p.el.classList.toggle('st-erreicht', an);
-                }
-            });
-            if (bandMass) {
-                var lauf = Math.max(0, Math.min(1, (y + h - bandMass.oben) / (h + bandMass.hoehe)));
-                if (lauf !== bandMass.zuletzt) {
-                    bandMass.zuletzt = lauf;
-                    bandZug.style.transform = 'translate3d(' + (-lauf * bandMass.weg).toFixed(1) + 'px, 0, 0)';
-                }
-            }
-        }
+        // Direkte Transform-Updates auch bei reduzierter Bewegung, ohne Uebergang.
+        fuellungen.forEach(function (f) {
+            var anteil = unten ? 1 : Math.max(0, Math.min(1, (anker - f.oben) / f.hoehe));
+            f.el.style.transform = 'scaleY(' + anteil.toFixed(4) + ')';
+        });
+        punkte.forEach(function (p) {
+            if (p.an || (!unten && anker < p.y)) return;
+            p.an = true;
+            p.el.classList.add('st-erreicht');
+            if (p.abschnitt) markiereGesehen(p.abschnitt);
+        });
 
         var ende = punkte.length ? punkte[punkte.length - 1] : null;
         if (!endeErreicht && ende && anker >= ende.y) {
@@ -300,71 +301,32 @@
         planen();
     }
 
-    /* ── 3. Stationen ───────────────────────────────────────── */
-
+    /* ── 3. Native Akkordeons und Messtafel ──────────────────── */
     var stationen = root.querySelector('[data-st-stationen]');
-    var knoepfe = [];
-    var hoverTimer = 0;
-
-    function oeffne(knopf, nurDieser) {
-        knoepfe.forEach(function (k) {
-            var an = k === knopf ? (nurDieser ? true : k.getAttribute('aria-expanded') !== 'true') : false;
-            k.setAttribute('aria-expanded', an ? 'true' : 'false');
-            var detail = document.getElementById(k.getAttribute('aria-controls'));
-            if (detail) detail.hidden = !an;
-        });
-        /* Am Desktop bleibt immer eine Station offen. */
-        if (desktop.matches && !knoepfe.some(function (k) { return k.getAttribute('aria-expanded') === 'true'; }) && knoepfe[0]) {
-            oeffne(knoepfe[0], true);
-            return;
-        }
-        neuVermessen();
-    }
-
     if (stationen) {
-        Array.prototype.forEach.call(stationen.querySelectorAll('[data-st-station-kopf]'), function (kopf, i) {
-            var knopf = document.createElement('button');
-            knopf.type = 'button';
-            knopf.className = 'st-station__knopf';
-            knopf.setAttribute('aria-controls', kopf.getAttribute('data-st-ziel'));
-            knopf.setAttribute('aria-expanded', i === 0 ? 'true' : 'false');
-            while (kopf.firstChild) knopf.appendChild(kopf.firstChild);
-            kopf.appendChild(knopf);
-            var detail = document.getElementById(kopf.getAttribute('data-st-ziel'));
-            if (detail) detail.hidden = i !== 0;
-            knoepfe.push(knopf);
-
-            knopf.addEventListener('click', function () {
-                window.clearTimeout(hoverTimer);
-                oeffne(knopf, desktop.matches);
+        var details = stationen.querySelectorAll('details[name="station"]');
+        Array.prototype.forEach.call(details, function (station) {
+            station.addEventListener('toggle', function () {
+                // Fallback fuer Browser ohne exklusive details-name-Unterstuetzung.
+                if (station.open) Array.prototype.forEach.call(details, function (andere) {
+                    if (andere !== station) andere.open = false;
+                });
+                neuVermessen();
             });
-            knopf.addEventListener('mouseenter', function () {
-                if (!desktop.matches || !hoverFein.matches) return;
-                window.clearTimeout(hoverTimer);
-                hoverTimer = window.setTimeout(function () { oeffne(knopf, true); }, 80);
-            });
-            knopf.addEventListener('mouseleave', function () { window.clearTimeout(hoverTimer); });
         });
-
-        var zeigeStationen = function () { stationen.setAttribute('data-st-gesehen', ''); };
+    }
+    var messtafel = root.querySelector('[data-st-messtafel]');
+    if (messtafel) {
         if (reduced.matches || !('IntersectionObserver' in window)) {
-            zeigeStationen();
+            messtafel.setAttribute('data-st-gesehen', '');
         } else {
-            var sicht = new IntersectionObserver(function (eintraege) {
-                if (eintraege.some(function (e) { return e.isIntersecting; })) {
-                    zeigeStationen();
-                    sicht.disconnect();
-                }
-            }, { threshold: 0.15 });
-            sicht.observe(stationen);
+            var messSicht = new IntersectionObserver(function (eintraege) {
+                if (!eintraege.some(function (e) { return e.isIntersecting; })) return;
+                messtafel.setAttribute('data-st-gesehen', '');
+                messSicht.disconnect();
+            }, { threshold: 0.2 });
+            messSicht.observe(messtafel);
         }
-
-        var wechsel = function () {
-            if (desktop.matches && !knoepfe.some(function (k) { return k.getAttribute('aria-expanded') === 'true'; }) && knoepfe[0]) {
-                oeffne(knoepfe[0], true);
-            }
-        };
-        if (desktop.addEventListener) desktop.addEventListener('change', wechsel);
     }
 
     /* ── 4. Kopfleiste ───────────────────────────────────────── */
@@ -438,11 +400,7 @@
     }
     if (reduced.addEventListener) {
         reduced.addEventListener('change', function () {
-            punkte.forEach(function (p) { p.an = false; p.el.classList.remove('st-erreicht'); });
-            if (bandZug) {
-                bandZug.style.transform = '';
-                if (bandMass) bandMass.zuletzt = -1;
-            }
+            if (reduced.matches && messtafel) messtafel.setAttribute('data-st-gesehen', '');
             planen();
         });
     }

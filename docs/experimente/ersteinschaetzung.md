@@ -12,7 +12,7 @@ Schalter vollständig zurücknehmen.
 | Schalter an | 2026-09-23 (#440) |
 | Zählung ab | 2026-09-25: Relaunch der Startseite als Strecke (#453, #455). Was vorher einging, lief auf einer anderen Seite und zählt nicht mit. |
 | Ende | Zählbeginn + 8 Wochen: 2026-11-20 |
-| Startseite eingefroren | bis zum Ende. Änderungen an Hero, Reihenfolge, Leistungen oder Abschluss verfälschen den Versuch; Preis- und Textkorrekturen, die für alle Wege gleich gelten, sind ausgenommen. **Am 2026-10-01 vom Betreiber für Reihenfolge und Leistungen aufgehoben** (Abschnitt „Umbau der Startseite am 2026-10-01“). Hero und Abschluss bleiben unverändert. |
+| Startseite | Einfrierung durch den Auftrag zur finalen Fassung vom 2026-10-02 aufgehoben. Der Livegang dieser Fassung wird als neue Beobachtungsphase notiert; Daten davor und danach nicht zusammen auswerten. |
 
 ## Entscheidung am Ende
 
@@ -31,13 +31,12 @@ Die Abbruchregel unten gilt daneben weiter.
 
 ## Was sich ändert, solange der Schalter an ist
 
-- **Startseite `/`** (auch `/wordpress-freelancer-hannover/`, das per 301 auf
-  `/` zeigt): Hero und Abschluss bekommen „Kostenlose Ersteinschätzung“ als
-  primären Button mit einer Zeile darunter. Der bisherige Projekt-Button
-  bleibt mit gleichem Ziel und gleichen `data-track`-Hooks als sekundärer
-  Button daneben. Im Abschluss stehen beide Wege seit 2026-09-23 als Karten
-  („Sie schicken / Sie bekommen / Antwort“); die Texte der Ersteinschätzung
-  (`card_title`, `card_send`, `card_get`) stehen im Kanon.
+- **Startseite `/`**: In der finalen Fassung führen Kopf, Hero, Fall,
+  Preisabschluss und Seitenabschluss zur Ersteinschätzung. Im Hero steht
+  „Alle Preise“ daneben; Projektanfragen stehen in den Angeboten und als
+  zweiter Einstieg im Abschluss. Kanon-Schalter und Texte bleiben zentral.
+  Schalter aus: Projektanfrage in Kopf, Hero und Fall; die zusätzliche Zeile
+  bei den Preisen und die Ersteinschätzungs-Karte im Abschluss entfallen.
 - **`/kontakt/?focus=ersteinschaetzung`**: Das Anliegen „Ersteinschätzung“ ist
   vorausgewählt, die Themenfrage entfällt. Schritt 1 fragt die Website-URL
   (Pflicht) und in einem Satz, was die Website erreichen soll (optional).
@@ -46,8 +45,8 @@ Die Abbruchregel unten gilt daneben weiter.
 - **Mails**: Die interne Benachrichtigung und die Bestätigung tragen im
   Betreff das Präfix `[Ersteinschätzung]`.
 
-Title, H1, Meta und JSON-LD bleiben auf allen Seiten unverändert, auch auf
-`/kontakt/`. `/kontakt/` ohne Parameter und alle anderen Seiten verhalten sich
+Die finale Homepage-Fassung aktualisiert Title, Meta und das gemeinsame
+FAQ-Array. `/kontakt/` behält ihre SEO- und Schema-Verträge. `/kontakt/` ohne Parameter und alle anderen Seiten verhalten sich
 wie vorher.
 
 ### Zusätzlicher Einstieg: Beitrag `/website-relaunch/` (seit 2026-09-24)
@@ -129,8 +128,8 @@ define( 'HU_EXPERIMENT_ERSTEINSCHAETZUNG', false );
 
 Dauerhaft ab: den Standardwert im Kanon auf `false` setzen und deployen.
 
-Ist der Schalter aus, rendern Startseite und `/kontakt/` wieder wie vor dem
-Versuch; `?focus=ersteinschaetzung` fällt auf die normale Projektanfrage
+Ist der Schalter aus, zeigt die finale Startseite Projektanfragen und
+`/kontakt/` verhält sich wie vor dem Versuch; `?focus=ersteinschaetzung` fällt auf die normale Projektanfrage
 zurück. Einzige Ausnahme: Der Endpoint nimmt eine Ersteinschätzung weiter an
 und versieht die Mails mit dem Präfix. Sonst ginge eine Einsendung aus einer
 noch zwischengespeicherten Seite nach dem Abschalten verloren.
@@ -160,6 +159,21 @@ Schlägt die interne Mail fehl, steht die Einsendung trotzdem im CRM
 | 7 | | | |
 | 8 | | | |
 | **Summe** | | | |
+
+## Beobachtung der finalen Fassung
+
+Repo-Umsetzung: 2026-10-02. Livegang und Beginn der Beobachtung sind noch offen.
+Hypothese: Fall vor Preis und die Herkunftszeile erhöhen den Anteil der
+Ersteinschätzungen über den Fall-CTA. Nach sechs Wochen ab Livegang werden
+`home_case_ersteinschaetzung` und `home_head_ersteinschaetzung` sowie die
+Qualität der daraus entstandenen Einsendungen verglichen. Der Kopf trägt
+separat `nav_header_ersteinschaetzung`; Preise und Abschluss tragen eigene
+Hooks. Kein neuer Analytics-Code, Speicher oder Netzaufruf wird ergänzt.
+Die Herkunft bleibt lokal und wird nicht als CRM- oder Kampagnendatum ausgegeben.
+
+Die ursprüngliche Entscheidung über die Ersteinschätzung bleibt bestehen;
+vorherige und spätere Phase werden separat berichtet. Keine Ergebnisse oder
+Einsendungszahlen aus der Umsetzung ableiten.
 
 ## Abbruchregel
 

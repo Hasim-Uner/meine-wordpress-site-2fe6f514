@@ -57,7 +57,13 @@ Kritische Dateien:
 - Homepage-WebPage und Freelancer-Service verwenden `/`, `/#webpage` und
   `/#service`. Titel und Beschreibung kommen aus den zentralen Homepage-Helpers.
 - Inhalte sind template-owned. Editor-FAQ-Caches bleiben ausgeschlossen.
-- Vier Angebotslinks nutzen den vorhandenen Kontaktablauf mit passendem `focus`.
+- Fünf Angebotslinks nutzen den vorhandenen Kontaktablauf mit passendem Typ und `focus`.
+- Finale Fassung (Repo 2026-10-02, Livegang offen): Der Ersteinschätzungs-Schalter
+  steuert Kopf, Hero, Fall, Preisabschluss und Seitenabschluss. Die Kopf-Tür
+  liegt zentral in `inc/funnel-doors.php`; dieselbe Datei unterdrückt nur auf
+  der Homepage das Fußregister. Globale Kopf-/Fuß-Templates bleiben unverändert.
+- Herkunft und Besuchsprotokoll bleiben ausschließlich im Browser; E3-Zahlen
+  und der erreichte Projektmonat kommen aus `inc/canon/e3-proof-canon.php`.
   Details: `CONVERSION_ROUTING.md` und `../decisions/homepage-freelancer-konsolidierung.md`.
 
 ## Crawl- und KI-Signale

@@ -76,8 +76,13 @@ function get_stylesheet_directory_uri() { return 'https://hasimuener.de/wp-conte
 function trailingslashit( $value ) { return rtrim( (string) $value, '/\\' ) . '/'; }
 function untrailingslashit( $value ) { return rtrim( (string) $value, '/\\' ); }
 function wp_parse_url( $url, $component = -1 ) { return -1 === $component ? parse_url( (string) $url ) : parse_url( (string) $url, $component ); }
-function add_query_arg( $args, $url ) {
-	return $url . ( false === strpos( $url, '?' ) ? '?' : '&' ) . urldecode( http_build_query( (array) $args ) );
+function add_query_arg( $args, $value_or_url, $url = null ) {
+	if ( ! is_array( $args ) ) {
+		$args = [ $args => $value_or_url ];
+	} else {
+		$url = $value_or_url;
+	}
+	return $url . ( false === strpos( $url, '?' ) ? '?' : '&' ) . http_build_query( $args );
 }
 function add_action( ...$args ) {}
 function add_filter( ...$args ) {}

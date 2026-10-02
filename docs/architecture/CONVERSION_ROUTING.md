@@ -18,7 +18,7 @@ A page can remain the canonical SEO destination for its query while its CTA rout
 
 | Route | Primary audience / intent | Page role | Primary CTA | Secondary CTA / bridge |
 | --- | --- | --- | --- | --- |
-| `/` | Brand and direct WordPress/Freelancer intent | Homepage and direct WordPress money page | `Projekt anfragen` with offer-specific focus; while the Ersteinschätzung experiment is switched on, hero and close lead with it (`/kontakt/?focus=ersteinschaetzung`) and keep the project request beside it | Proof / White-Label / Solar / tracking specialist |
+| `/` | Brand and direct WordPress/Freelancer intent | Homepage and direct WordPress money page | `Projekt anfragen` with offer-specific focus; while the Ersteinschätzung experiment is switched on, header, hero, case, offer close and page close lead with it (`/kontakt/?focus=ersteinschaetzung`); project requests stay in the offers and page close | Proof / White-Label / Solar / tracking specialist |
 | `/wordpress-freelancer-hannover/` | Retired direct-client route | 301 to `/`; excluded from sitemap | Homepage takes over content and query ownership | Legacy content anchors remain on `/` |
 | `/whitelabel-retainer/` | Agencies seeking delivery capacity | Agency money page | White-Label request form (`?case=aufgabe` / `?case=angebotsphase` / `?case=vormerken`) or scoped first project | 30-minute call / proof |
 | `/solar-waermepumpen-leadgenerierung/` | Solar, heat-pump and storage businesses | Energy vertical money page | Marktcheck for cold intent; `#analyse` and `#sofortkontakt` for direct purchase intent | Solar proof / case study |
@@ -75,56 +75,52 @@ zusammen.
 ## Homepage: direkter Freelancer-Einstieg
 
 Seit der Betreiberentscheidung vom 2026-09-13 übernimmt `/` die Inhalte und
-Suchintention der früheren Freelancer-Route. Seit 2026-09-24 ist die Seite als
-Strecke gebaut: Hero mit Messprotokoll, die sechs Stationen einer Anfrage,
-fünf Leistungen mit Preisen, Arbeiten, Prüfstand, Übergabe, Fragen und der
-Anfrageblock als Ende der Messlinie. Der Prüfstand stand bis 2026-10-01 als
-dunkle Tafel direkt unter dem Hero und ist seitdem ein schmaler heller Streifen
-hinter den Arbeiten (Anker `#pruefstand` und alle `home_proof_*`-Hooks
-unverändert). White-Label und Solar/Wärmepumpe sind
-leise Nebenausgänge unter den Leistungen (Hooks `home_door_whitelabel`,
-`home_door_energy`), keine Weiche im Hero. Der Ausgang für Agenturen heißt seit
-2026-09-25 „Für Agenturen und Webdesigner“ mit dem Link „Technik und Tracking
-für Ihre Kunden“. Der Solar-Fall ist abgegrenzter Proof. Die Belegzeilen im
-Hero führen auf Fall, Referenzen und seit 2026-09-25 auf die Preise
-(`home_proof_strip_case`, `home_proof_strip_references`,
-`home_proof_strip_price` → `#angebote`, Kategorie `proof`).
+Suchintention der früheren Freelancer-Route. Die finale Template-Fassung vom
+2026-10-02 ordnet die vorhandene Strecke neu: Klick → Strecke → Fall →
+Prüfstand mit Referenzen → Preise → Übergabe → Fragen → Anfrage. Der Fall steht
+vor den Preisen; Protokoll und Messtafel sind die dunklen Messinstrumente.
+White-Label und Solar/Wärmepumpe stehen unter „Wann ein anderer Weg besser
+passt“ in der Übergabe (`home_door_whitelabel`, `home_door_energy`).
 
-Die Hero- und Abschluss-CTAs führen zur kanonischen Projektanfrage
-`/kontakt/?type=project` **ohne** vorbelegtes Thema (seit 2026-09-22): Die
-Kontaktseite zeigt dann die Themenwahl und die Weiche zu White-Label und
-Marktcheck. Nur die fünf Leistungen verwenden vorbelegte Themen; dort ist die
-Themenfrage schon beantwortet, und der Kontaktablauf überspringt sie:
+Hero und Abschluss nutzen die Projektanfrage `/kontakt/?type=project` ohne
+Themenvorbelegung, wenn die Ersteinschätzung aus ist. Die fünf Leistungen
+nutzen ihre passenden Fokusziele: Website `relaunch`, Landingpage `conversion`,
+Analyse `type=analysis&focus=conversion`, Tracking `tracking`, Übernahme
+`implementation_scope`. Produktseiten vertiefen den Umfang. Die Website-Zeile
+verlinkt seit 2026-10-01 `/wordpress-website-erstellen-lassen/`
+(`home_offer_website_detail`). Die Homepage hat kein eigenes Formular.
+`#angebot-funnel` bleibt an der Stationsliste; `#arbeiten`, `#systemprojekt`,
+`#referenzen`, alle `#angebot-*`, `#anfrage` und `#kontakt` bleiben erhalten.
 
 | Zeile | Anfrage-Hook (`lead_gen`) | Ziel | Sub-CTA „Was drinsteckt“ (`navigation`) |
 | --- | --- | --- | --- |
 | 01 Website und Relaunch | `home_offer_relaunch` | `/kontakt/?type=project&focus=relaunch` | `home_offer_website_detail` → `/wordpress-website-erstellen-lassen/` |
 | 02 Landingpage | `home_offer_landingpage` | `/kontakt/?type=project&focus=conversion` | `home_offer_landingpage_detail` → `/landingpage-erstellen-lassen/` |
-| 03 Conversion-Optimierung | `home_offer_analysis` | `/kontakt/?type=analysis&focus=conversion` | `home_offer_analysis_detail` → `/conversion-optimierung/` |
+| 03 Conversion-Analyse | `home_offer_analysis` | `/kontakt/?type=analysis&focus=conversion` | `home_offer_analysis_detail` → `/conversion-optimierung/` |
 | 04 Tracking | `home_offer_tracking` | `/kontakt/?type=project&focus=tracking` | `home_offer_tracking_detail` → `/ga4-tracking-setup/` |
 | 05 Übernahme-Check | `home_offer_takeover` | `/kontakt/?type=project&focus=implementation_scope` | keiner (keine Produktseite) |
 
 Der Hook `home_offer_conversion` aus der Konsolidierungsentscheidung vom
-2026-09-13 steht nicht mehr im Template und wird nicht wiederverwendet, damit ein
-Eventname in GA4 nie zwei Angebote trägt; die Analyse läuft unter
-`home_offer_analysis`. Die Homepage hat kein
-eigenes Formular; die Messlinie endet am Anfrageblock, dessen Buttons auf
-`/kontakt/` führen. `#anfrage` und `#kontakt` bleiben als Anker des
-Abschlussblocks erhalten. `#angebot-funnel` (früher das Angebot
-„Anfragestrecken“, sitewide von CRO-Links verlinkt) sitzt seit 2026-09-24 auf
-der Stationsliste in Abschnitt 02.
+2026-09-13 bleibt stillgelegt, damit ein Eventname nicht zwei Angebote trägt;
+die Analyse läuft unter `home_offer_analysis`.
 
-**Versuch Ersteinschätzung (gezählt 2026-09-25 bis 2026-11-20, Schalter
-`HU_EXPERIMENT_ERSTEINSCHAETZUNG` im Kanon `inc/canon/messaging-canon.php`):**
-Solange der Schalter an ist, ist in Hero und Abschluss die Ersteinschätzung
-der primäre Button (`hu_first_assessment_url()` →
-`/kontakt/?focus=ersteinschaetzung`, Hooks `home_head_ersteinschaetzung` und
-`home_close_ersteinschaetzung`). Die Projektanfrage bleibt mit Ziel und Hooks
-unverändert als sekundärer Button daneben. Auf `/kontakt/` wählt der
-Parameter das Anliegen vor, die Website-URL ist dort Pflicht. Mails dazu
-tragen das Betreff-Präfix aus dem Kanon, das ist die einzige Zählstelle.
-Schalter aus: Startseite und `/kontakt/` rendern wie vorher. Laufzeit,
-Messung und Abbruchregel: `docs/experimente/ersteinschaetzung.md`.
+**Versuch Ersteinschätzung (`HU_EXPERIMENT_ERSTEINSCHAETZUNG`):** Solange er an
+ist, führen Kopf, Hero, Fall, Preisabschluss und Seitenabschluss über
+`hu_first_assessment_url()` zur kostenlosen Ersteinschätzung. Die Kopf-Tür
+`ersteinschaetzung` trägt `nav_header_ersteinschaetzung`; Hero und Abschluss
+behalten `home_head_ersteinschaetzung` und `home_close_ersteinschaetzung`.
+Neu sind `home_case_ersteinschaetzung` und `home_offers_ersteinschaetzung`.
+Im Hero steht daneben „Alle Preise“ (`home_hero_prices`), die Projektanfrage
+steht bei den Angeboten und als zweiter Einstieg im Abschluss. Lokale
+Abschnittslinks tragen `home_nav_prices`, `home_nav_case`, `home_nav_pruefstand`;
+die Reihenfolge und Anker der globalen Navigation bleiben unverändert.
+Schalter aus: Kopf, Hero und Fall führen zur Projektanfrage, die zusätzliche
+Ersteinschätzungs-Zeile bei den Preisen und ihre Abschlusskarte entfallen.
+Auf der Kontaktseite und bei den Mails gelten die bestehenden Kanon-Verträge.
+Die Umbauentscheidung ersetzt die bisherige Einfrierung der Homepage;
+vorherige und spätere Versuchsdaten werden getrennt betrachtet. Die neue
+Hypothese wird sechs Wochen ab Livegang geprüft, siehe
+`docs/experimente/ersteinschaetzung.md`.
 
 Routing, Inhalte, Weiterleitung, Analytics-Zuordnung und Nachkontrolle:
 `docs/decisions/homepage-freelancer-konsolidierung.md`.
@@ -407,7 +403,8 @@ Menüs, `fokus` die Leiter der Solar-Seite):
 
 | Route | Modus | Tür | Betrag (Kanon) | Ziel | `data-track-action` |
 |---|---|---|---|---|---|
-| Startseite, Über, sonstige Seiten | voll | Projekt anfragen | kein Betrag | `/kontakt/?type=project` | `nav_header_project` |
+| Über, sonstige Seiten; Startseite bei ausgeschaltetem Versuch | voll | Projekt anfragen | kein Betrag | `/kontakt/?type=project` | `nav_header_project` |
+| Startseite bei eingeschaltetem Versuch | voll | Kostenlose Ersteinschätzung | kein Betrag | `/kontakt/?focus=ersteinschaetzung` | `nav_header_ersteinschaetzung` |
 | `/ga4-tracking-setup/`, `/server-side-tracking-b2b/` | voll | Tracking anfragen | „ab“ Messung-Setup | `/kontakt/?type=project&focus=tracking` | `nav_header_door_tracking` |
 | White-Label | voll | Test-Sprint anfragen | Test-Sprint | `/whitelabel-retainer/#aufgabe` | `nav_header_door_whitelabel` |
 | Portal-Einordnungen (Checkfox, Aroundhome, Wattfox, DAA) | leser | Sofortkontakt | Sofortkontakt-Setup | `/solar-waermepumpen-leadgenerierung/#sofortkontakt` | `nav_header_door_sofortkontakt` |
@@ -513,20 +510,20 @@ Die eigene Route wird nicht mehr ausgeblendet, sondern markiert (3-px-Kante in
 Tracking-Seiten zählen als Tracking; Fallstudie, Portal-Einordnungen und das
 Dossier „Leadgenerierung“ als Energie; Dossier „Tracking“ als Tracking). Auf
 der Seite, die den Anker besitzt, zeigt die Tür auf den Anker der Seite
-(Energie-Seite: `#marktcheck`, `#einstieg`). Das Register erscheint damit auch
-auf der Startseite und der Energie-Seite; auf `/kontakt/` bleibt es weg, die
+(Energie-Seite: `#marktcheck`, `#einstieg`). Das Register erscheint auf der Energie-Seite. Auf der Startseite bleibt es
+wegen der eigenen Nebenwege und des Abschlusses weg; auf `/kontakt/` ebenso, die
 Seite ist das Ziel jeder Tür. `/whitelabel-retainer/` rendert einen eigenen
 Fuß und zeigt das Register nicht.
 
 Der Schalter sitzt zentral: `hu_footer_shows_register()` in
-`blocksy-child/inc/funnel-doors.php` liefert `false` für die Kontaktseite und für
+`blocksy-child/inc/funnel-doors.php` liefert `false` für die Startseite, die Kontaktseite und für
 jede Seite, deren Template in `hu_footer_register_suppressed_templates()`
 steht (derzeit `page-conversion-optimierung.php`: eine Money Page mit genau einem
 Angebot und eigenem Abschluss braucht darunter keine zweite Auswahl). Der Fuß
 (`template-parts/site-footer.php`) liest nur die Funktion und bleibt sonst
 unverändert, Direktzeile, Verzeichnis und Absender erscheinen weiter. Eine weitere
 Money Page ohne Register trägt man mit ihrer Template-Datei in diese Liste ein;
-`scripts/tests/navigation-contract.php` prüft den Kontext `conversion`.
+`scripts/tests/navigation-contract.php` prüft die Kontexte `home` und `conversion`.
 
 Die Energie-Zeile führt den Marktcheck damit auf jeder Seite (außer Kontakt
 und White-Label) als eine von drei Türen der Energie-Betriebe. Das ist die

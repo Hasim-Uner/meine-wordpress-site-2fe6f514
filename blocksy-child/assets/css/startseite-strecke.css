@@ -17,7 +17,7 @@
    primaeren Button. Der Fokusring ist deshalb hier --tinte statt
    --stempel; Kopf- und Fussleiste behalten ihren.
 
-   Bewegung haengt am Lesen, nie an einer Uhr: Linie, Band und
+   Bewegung haengt am Lesen: Linie und
    Einblenden folgen dem Scrollen, nur Transform und Opacity, keine
    Endlosschleife. Der Hero steht still, weil er das LCP-Element traegt.
    ══════════════════════════════════════════════════════════════ */
@@ -71,7 +71,7 @@
    #angebote im Blick ist: startseite-strecke.js setzt dann
    aria-current="location". Ohne JavaScript bleibt er neutral.
 
-   Die Tuer „Projekt anfragen" steht hier wie auf jeder Seite in der Zeile
+   Die kontextuelle Tuer steht wie auf jeder Seite in der Zeile
    (system.css, hu_funnel_context()); der frueher gesetzte stille Button und
    das Ausblenden unter 1081 px entfallen. */
 .leiste nav a[aria-current="location"] { color: var(--stempel); }
@@ -103,10 +103,11 @@
 }
 
 .st .st-rail {
+  grid-column: 1;
   position: absolute;
   top: 0;
   bottom: 0;
-  left: var(--st-linie-x);
+  left: calc(var(--st-linie-x) - var(--st-rinne));
   width: 2px;
   pointer-events: none;
 }
@@ -620,65 +621,6 @@
   50% { opacity: 0.2; }
 }
 
-/* ══ Band: die sechs Stationen zwischen Hero und Strecke ═══════
-   Volle Breite, dunkel, Mono. Die Folge steht zweimal im Band; das
-   Skript schiebt sie beim Scrollen um hoechstens eine Folgenbreite.
-   Ohne Skript und bei reduzierter Bewegung steht das Band still und
-   schneidet rechts ab. */
-.st .st-band {
-  position: relative;
-  overflow: hidden;
-}
-
-.st .st-band__fenster {
-  padding: var(--s2) 0;
-  border-radius: 0;
-}
-
-/* Die Linie liegt ueber dem Band, auf derselben Achse wie die Abschnitte.
-   Ausserhalb der Tafel behaelt sie den unveraenderten Streckenfarbton. */
-.st .st-band > .st-rail {
-  left: calc(max(0px, (100% - var(--st-max)) / 2) + var(--st-linie-x));
-  z-index: 1;
-}
-
-.st .st-band__zug {
-  display: flex;
-  align-items: baseline;
-  gap: var(--s2);
-  width: max-content;
-  margin: 0;
-  padding-inline: var(--st-rinne);
-  font-family: var(--mono);
-  font-size: var(--mono-l);
-  font-weight: 500;
-  letter-spacing: 0.14em;
-  text-transform: uppercase;
-  white-space: nowrap;
-  color: var(--tinte);
-}
-
-.st[data-st-bereit] .st-band__zug { will-change: transform; }
-
-.st .st-band__nr { color: var(--matt); }
-.st .st-band__pfeil { color: var(--matt); }
-
-.st .st-band__titel {
-  display: inline-flex;
-  align-items: center;
-  gap: var(--s1);
-  margin-inline: var(--s2);
-  color: var(--grau);
-}
-
-/* Der Messpunkt der Linie, hier als Marke vor dem Titel. */
-.st .st-band__titel::before {
-  content: "";
-  width: 7px;
-  height: 7px;
-  background: var(--stempel);
-}
-
 /* ══ 05 Pruefstand: die Tafel fuer den Beweis ═════════════════
    Oben rechts ein leiser Schimmer aus dem Stempel, auf der dunklen
    Flaeche gemischt; er traegt keine Information. */
@@ -843,224 +785,81 @@
   }
 }
 
-/* ══ 02 Strecke: sechs Stationen ══════════════════════════════
-   Ohne JavaScript eine Liste, jede Station offen. Mit JavaScript
-   klappen die Stationen einzeln auf; ab 1024 px steht die Erklaerung
-   der gewaehlten Station rechts daneben. */
-
+/* ══ 02 Strecke: native exklusive Stationen ═══════════════════ */
 .st .st-stationen {
-  margin: var(--s5) 0 0;
+  margin: var(--s4) 0 0;
   padding: 0;
   list-style: none;
   border-top: 1px solid var(--tinte);
 }
-
 .st .st-station { border-bottom: 1px solid var(--haar); }
-
-.st .st-station__kopf {
-  position: relative;
+.st .st-station summary {
   display: grid;
-  grid-template-columns: 2.5rem minmax(0, 1fr);
-  column-gap: var(--s1);
+  grid-template-columns: 2rem minmax(0, 1fr) 1.5rem;
+  gap: var(--s0) var(--s1);
+  align-items: baseline;
   padding-block: var(--s2);
-  font-size: clamp(1.25rem, 1.1rem + 0.6vw, 1.6rem);
-  line-height: 1.1;
-  letter-spacing: -0.02em;
+  min-height: 44px;
+  list-style: none;
+  cursor: pointer;
 }
-
-/* Der Stationspunkt sitzt auf der Linie in der Randspalte. */
+.st .st-station summary::-webkit-details-marker { display: none; }
+.st .st-station summary::after {
+  content: "+";
+  grid-column: 3;
+  grid-row: 1;
+  justify-self: end;
+  font-size: 1.5rem;
+  line-height: 1;
+  transition: transform var(--t-norm) var(--ease-weich);
+}
+.st .st-station[open] summary::after { transform: rotate(45deg); }
+.st .st-station__nr {
+  font-family: var(--mono);
+  font-size: var(--mono-l);
+  color: var(--matt);
+}
+.st .st-station__name {
+  font-family: var(--serif-display);
+  font-size: 1.35rem;
+  font-weight: 500;
+  letter-spacing: -0.025em;
+}
+.st .st-station__teaser {
+  grid-column: 2;
+  font-size: 1rem;
+  line-height: 1.45;
+  color: var(--grau);
+}
+.st .st-station__detail {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  gap: var(--s2) var(--s4);
+  padding-bottom: var(--s3);
+  font-size: 0.97rem;
+  color: var(--grau);
+}
+.st .st-station__detail .st-klein-label { margin-bottom: var(--s0); }
+.st .st-station__beleg {
+  grid-column: 1 / -1;
+  padding-top: var(--s1);
+  border-top: 1px dashed var(--haar);
+  font-size: 0.92rem;
+  color: var(--tinte);
+}
+/* White-Label verwendet weiterhin die Stationspunkte der Strecke. */
 .st .st-station__punkt {
   top: calc(var(--s2) + 0.3em);
   left: calc(var(--st-linie-x) - var(--st-rinne) - var(--st-rand) - var(--st-spalt) + 1px - var(--st-punkt) / 2);
 }
-
-.st .st-station__nr {
-  grid-row: 1 / span 2;
-  padding-top: 0.45em;
-  font-family: var(--mono);
-  font-size: var(--mono-s);
-  font-weight: 500;
-  letter-spacing: 0.14em;
-  color: var(--matt);
+@media (min-width: 768px) {
+  .st .st-station summary { grid-template-columns: 2rem 7rem minmax(0, 1fr) 1.5rem; }
+  .st .st-station summary::after { grid-column: 4; }
+  .st .st-station__teaser { grid-column: 3; }
+  .st .st-station__detail { grid-template-columns: repeat(2, minmax(0, 1fr)); }
 }
-
-.st .st-station__name { grid-column: 2; }
-
-.st .st-station__teaser {
-  grid-column: 2;
-  margin-top: var(--s0);
-  font-family: var(--serif);
-  font-size: 1rem;
-  font-weight: 400;
-  line-height: 1.45;
-  letter-spacing: 0;
-  text-wrap: pretty;
-  color: var(--grau);
-}
-
-.st .st-station__detail {
-  padding: 0 0 var(--s3) calc(2.5rem + var(--s1)); /* lint-css-spacing: allow -- die Erklaerung schliesst buendig an ihre Station an */
-  max-inline-size: 64ch;
-}
-
-.st .st-station__detail p + p { margin-top: var(--s0); }
-
-/* Die Labels trennen Problem und Loesung; sie stehen auf der Label-Stufe
-   des Systems, nicht eine Stufe darunter. */
-.st .st-station__label {
-  font-family: var(--mono);
-  font-size: var(--mono-m);
-  font-weight: 500;
-  letter-spacing: 0.14em;
-  text-transform: uppercase;
-  color: var(--grau);
-}
-
-.st .st-station__detail .st-station__label:not(:first-child) { margin-top: var(--s2); }
-
-/* "Station 03 / 06" steht nur am Desktop ueber der Erklaerung, wo sie
-   neben der Liste steht. Mobil folgt die Erklaerung direkt auf ihre
-   Ueberschrift; dort traegt die Nummer schon die Zeile darueber. */
-.st .st-station__zaehler { display: none; }
-.st .st-station__detail .st-station__zaehler + .st-station__label { margin-top: 0; }
-
-.st .st-station__detail .st-station__beleg {
-  margin-top: var(--s2);
-  padding-top: var(--s1);
-  border-top: 1px solid var(--haar);
-  font-size: 0.95rem;
-  color: var(--grau);
-}
-
-/* Mit JavaScript: Stationsknopf. */
-.st .st-station__knopf {
-  display: grid;
-  grid-template-columns: 2.5rem minmax(0, 1fr) auto;
-  column-gap: var(--s1);
-  grid-column: 1 / -1;
-  width: 100%;
-  min-height: 44px;
-  margin: 0;
-  padding: 0;
-  border: 0;
-  border-radius: 0;
-  background: none;
-  color: inherit;
-  font: inherit;
-  letter-spacing: inherit;
-  text-align: left;
-  cursor: pointer;
-}
-
-.st .st-station__knopf .st-station__name { color: var(--grau); }
-
-.st .st-station__knopf[aria-expanded="true"] .st-station__name,
-.st .st-station__knopf:hover .st-station__name { color: var(--tinte); }
-
-/* Die offene Station ist der Punkt, an dem man gerade misst: Ihre Nummer
-   nimmt den Stempel wie ein erreichter Punkt auf der Linie. */
-.st .st-station__nr { transition: color var(--t-norm) var(--ease-weich); }
-.st .st-station__knopf[aria-expanded="true"] .st-station__nr { color: var(--stempel); }
-
-.st .st-station__knopf::after {
-  content: "+";
-  grid-column: 3;
-  grid-row: 1;
-  align-self: start;
-  padding-top: 0.2em;
-  font-family: var(--mono);
-  font-size: 1rem;
-  color: var(--tinte);
-}
-
-.st .st-station__knopf[aria-expanded="true"]::after { content: "−"; }
-
-.st[data-st-bereit] .st-station__detail:not([hidden]) {
-  animation: st-detail 200ms var(--ease-aus) both;
-}
-
-@keyframes st-detail {
-  from {
-    opacity: 0;
-    transform: translateX(8px);
-  }
-}
-
-/* Die Stationen lesen sich beim ersten Sichtkontakt in ihrer
-   Reihenfolge vor: 50 ms Versatz, sechs Zeilen, einmalig. */
-.st[data-st-bereit] .st-stationen:not([data-st-gesehen]) .st-station__kopf {
-  opacity: 0;
-  transform: translateY(12px);
-}
-
-.st[data-st-bereit] .st-station__kopf {
-  transition:
-    opacity var(--t-gross) var(--ease-aus),
-    transform var(--t-gross) var(--ease-aus);
-}
-
-.st .st-station:nth-child(2) .st-station__kopf { transition-delay: 50ms; }
-.st .st-station:nth-child(3) .st-station__kopf { transition-delay: 100ms; }
-.st .st-station:nth-child(4) .st-station__kopf { transition-delay: 150ms; }
-.st .st-station:nth-child(5) .st-station__kopf { transition-delay: 200ms; }
-.st .st-station:nth-child(6) .st-station__kopf { transition-delay: 250ms; }
-
-@media (min-width: 1024px) {
-  .st[data-st-bereit] .st-stationen {
-    display: grid;
-    grid-template-columns: minmax(0, 5fr) minmax(0, 7fr);
-    grid-template-rows: repeat(5, auto) 1fr;
-    column-gap: var(--s5);
-    border-top: 0;
-  }
-
-  /* Die Listenpunkte geben ihre Kinder an das Raster ab: Stationen
-     links untereinander, die offene Erklaerung rechts ueber alle Zeilen. */
-  .st[data-st-bereit] .st-station { display: contents; }
-
-  .st[data-st-bereit] .st-station__kopf {
-    grid-column: 1;
-    align-self: start;
-    border-top: 1px solid var(--haar);
-  }
-
-  .st[data-st-bereit] .st-station:first-child .st-station__kopf { border-top-color: var(--tinte); }
-  .st[data-st-bereit] .st-station:last-child .st-station__kopf { border-bottom: 1px solid var(--haar); }
-
-  .st[data-st-bereit] .st-station__detail {
-    grid-column: 2;
-    grid-row: 1 / -1;
-    align-self: start;
-    position: sticky;
-    top: calc(var(--leiste-h) + var(--s4));
-    padding: var(--s2) 0 var(--s2) var(--s4);
-    border-left: 1px solid var(--tinte);
-  }
-
-  .st[data-st-bereit] .st-station__zaehler {
-    display: block;
-    margin-bottom: var(--s2);
-    font-family: var(--mono);
-    font-size: var(--mono-m);
-    font-weight: 500;
-    letter-spacing: 0.14em;
-    text-transform: uppercase;
-    color: var(--matt);
-  }
-
-  .st[data-st-bereit] .st-station__knopf::after {
-    content: "→";
-    opacity: 0;
-    transform: translateX(-6px);
-    transition:
-      opacity var(--t-norm) var(--ease-aus),
-      transform var(--t-norm) var(--ease-aus);
-  }
-
-  .st[data-st-bereit] .st-station__knopf[aria-expanded="true"]::after {
-    opacity: 1;
-    transform: none;
-  }
+@media (hover: hover) and (pointer: fine) {
+  .st .st-station summary:hover .st-station__name { color: var(--stempel); }
 }
 
 /* ══ 03 Leistungen ════════════════════════════════════════════ */
@@ -1357,7 +1156,7 @@
     "wege"
     "bild";
   padding: clamp(1.5rem, 5vw, 3.5rem);
-  background-image: radial-gradient(55% 70% at 0% 100%, color-mix(in srgb, var(--stempel) 16%, transparent), transparent 70%);
+
 }
 
 .st .st-schluss .st-anfrage__h2 {
@@ -1497,11 +1296,11 @@
 }
 
 /* ══ Bewegung reduziert ═══════════════════════════════════════
-   Alles ruhig, nichts fehlt: keine Fuellung, keine Einblendung, kein
-   Uebergang. Die Linie steht wie ohne JavaScript. */
+   Alles ruhig, nichts fehlt: keine Einblendung und kein Uebergang.
+   Die Fuellung folgt ohne Uebergang dem Scrollstand. */
 
 @media (prefers-reduced-motion: reduce) {
-  .st[data-st-bereit] .st-rail__fuellung { display: none; }
+  .st[data-st-bereit] .st-rail__fuellung { transition: none; }
 
   .st .st-rail__punkt::after,
   .st .st-station__punkt::after,
@@ -1533,8 +1332,142 @@
     transform: none;
   }
 
-  .st[data-st-bereit] .st-band__zug {
-    transform: none;
-    will-change: auto;
-  }
+}
+
+/* Finale Homepage: dieselben Tokens und Instrumente, Beweis vor Preis.
+   Die gemeinsame Basis bleibt auch fuer White-Label verwendbar. */
+.st[data-st-final] .st-wash {
+  background: var(--zone);
+  box-shadow: 0 0 0 100vmax var(--zone);
+  clip-path: inset(0 -100vmax);
+}
+.st[data-st-final] .st-hero__kicker { grid-column: 1 / -1; color: var(--grau); }
+.st[data-st-final] .st-hero__h1 {
+  font-size: clamp(2.5rem, 4.1vw, 3.75rem);
+  line-height: 1.04;
+  font-weight: 500;
+  max-inline-size: 15ch;
+}
+.st[data-st-final] .st-hero__satz {
+  margin-top: var(--s3);
+  font-size: 1.19rem;
+  line-height: 1.55;
+  color: var(--grau);
+}
+.st[data-st-final] .st-hero__ctas { align-items: center; gap: var(--s1) var(--s3); }
+.st[data-st-final] .tun { font-family: var(--serif); font-size: 0.94rem; font-weight: 600; letter-spacing: 0; text-transform: none; }
+.st[data-st-final] .st-hero__meta { margin: var(--s3) 0 0; }
+.st[data-st-final] .st-hero__portrait { width: 48px; height: 48px; border-radius: 50%; }
+.st[data-st-final] .st-hero__person { font-size: 0.88rem; line-height: 1.45; color: var(--grau); }
+.st[data-st-final] .st-hero__person strong { color: var(--tinte); }
+.st[data-st-final] .st-protokoll.tafel { padding: var(--s2) var(--s3); border-radius: var(--r1); }
+.st[data-st-final] .st-protokoll__kopf { letter-spacing: 0.06em; }
+.st[data-st-final] .st-protokoll__werte > div { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); }
+.st[data-st-final] .st-protokoll__werte dd { text-align: right; overflow: hidden; text-overflow: ellipsis; }
+.st[data-st-final] .st-protokoll__werte dd[data-st-gemessen] { color: var(--tinte); }
+.st[data-st-final] .st-protokoll__werte dd[data-st-wert="lcp"][data-st-gemessen] { color: var(--stempel); }
+.st[data-st-final] .st-protokoll__ohne-js { display: block; }
+.st[data-st-final][data-st-bereit] .st-protokoll__ohne-js { display: none; }
+.st[data-st-final] .st-belege { grid-column: 1 / -1; }
+.st[data-st-final] .st-seitennav { grid-column: 1 / -1; display: flex; flex-wrap: wrap; gap: var(--s1) var(--s3); }
+.st[data-st-final] .st-seitennav .st-link { font-size: var(--grad-klein); color: var(--grau); }
+.st[data-st-final] .st-fall { border: 0; margin-top: var(--s4); padding: 0; }
+.st[data-st-final] .st-fall__text > p:not(.st-klein-label) { margin-top: var(--s2); }
+.st[data-st-final] .st-verlauf { list-style: none; margin: var(--s3) 0 0; padding: 0; border-top: 1px solid var(--tinte); }
+.st[data-st-final] .st-verlauf li { display: grid; grid-template-columns: 7rem minmax(0, 1fr); gap: var(--s1); padding-block: var(--s1); border-bottom: 1px solid var(--haar); font-size: 0.94rem; line-height: 1.5; color: var(--grau); }
+.st[data-st-final] .st-verlauf .st-klein-label { color: var(--tinte); }
+.st[data-st-final] .st-messtafel { margin: 0; padding: var(--s3); border: 1px solid var(--haar); border-radius: var(--r1); min-width: 0; }
+.st[data-st-final] .st-messtafel__kopf { display: flex; flex-wrap: wrap; justify-content: space-between; gap: var(--s1); padding-bottom: var(--s1); margin-bottom: var(--s3); border-bottom: 1px solid var(--haar); }
+.st[data-st-final] .st-messtafel__kopf .st-klein-label { color: var(--tinte); }
+.st[data-st-final] .st-vergleich + .st-vergleich { margin-top: var(--s2); }
+.st[data-st-final] .st-vergleich__kopf { display: flex; justify-content: space-between; align-items: baseline; gap: var(--s2); margin-bottom: var(--s1); font-size: 0.88rem; line-height: 1.4; color: var(--grau); }
+.st[data-st-final] .st-vergleich__kopf strong { font-family: var(--mono); font-size: 1.5rem; font-weight: 500; white-space: nowrap; color: var(--tinte); }
+.st[data-st-final] .st-balken { height: 16px; background: var(--haar); }
+.st[data-st-final] .st-balken i { display: block; width: 100%; height: 100%; background: var(--matt); transform: scaleX(var(--st-anteil)); transform-origin: left; }
+.st[data-st-final][data-st-bereit] .st-messtafel:not([data-st-gesehen]) .st-balken i { transform: scaleX(0); }
+.st[data-st-final][data-st-bereit] .st-balken i { transition: transform var(--t-lang) var(--ease-weich); }
+.st[data-st-final] .st-vergleich--nach .st-balken i { background: var(--stempel); }
+.st[data-st-final] .st-vergleich--nach strong { color: var(--stempel); }
+.st[data-st-final] .st-skala { position: relative; height: 2rem; margin-top: var(--s0); font-family: var(--mono); font-size: var(--mono-m); color: var(--matt); }
+.st[data-st-final] .st-skala span { position: absolute; left: var(--st-position); transform: translateX(-50%); white-space: nowrap; }
+.st[data-st-final] .st-skala span:first-child { transform: none; }
+.st[data-st-final] .st-skala span:last-child { transform: translateX(-100%); }
+.st[data-st-final] .st-messtafel .st-kennzahlen { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: var(--s2); border-top: 1px solid var(--haar); padding-top: var(--s2); }
+.st[data-st-final] .st-messtafel .st-kennzahlen > div { display: flex; flex-direction: column-reverse; align-self: start; gap: var(--s1); padding: 0; border: 0; }
+.st[data-st-final] .st-messtafel .st-kennzahlen dt { font-family: var(--serif); font-size: var(--grad-klein); text-transform: none; letter-spacing: 0; }
+.st[data-st-final] .st-messtafel .st-kennzahl { font-size: 1.65rem; color: var(--tinte); }
+.st[data-st-final] .st-messtafel .st-kennzahlen > div:first-child .st-kennzahl { color: var(--stempel); }
+.st[data-st-final] .st-messtafel figcaption { margin-top: var(--s2); font-size: var(--grad-klein); line-height: 1.5; color: var(--grau); }
+.st[data-st-final] .st-folge { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: var(--s2) var(--s4); margin-top: var(--s4); padding-top: var(--s3); border-top: 1px solid var(--haar); }
+.st[data-st-final] .st-folge > p { max-inline-size: 34ch; font-family: var(--serif-display); font-size: 1.35rem; line-height: 1.3; }
+.st[data-st-final] .st-referenzen { margin-top: var(--s5); }
+.st[data-st-final] .st-referenzen__liste { grid-template-columns: minmax(0, 1fr); gap: 0; margin-top: var(--s3); }
+.st[data-st-final] .st-referenzen__liste li { display: grid; gap: var(--s0) var(--s4); padding-block: var(--s2); }
+.st[data-st-final] .st-referenzen__name { margin: 0; }
+.st[data-st-final] .st-angebote { margin-top: var(--s4); }
+.st[data-st-final] .st-angebot { grid-template-columns: 2rem minmax(0, 1fr); gap: var(--s2); padding-block: var(--s3); }
+.st[data-st-final] .st-angebot__titel { margin: 0; font-size: 1.4rem; }
+.st[data-st-final] .st-angebot__lage { margin-top: var(--s1); font-size: 0.86rem; line-height: 1.45; color: var(--grau); }
+.st[data-st-final] .st-angebot__text, .st[data-st-final] .st-angebot__preise { grid-column: 2; }
+.st[data-st-final] .st-angebot__text { font-size: 0.97rem; line-height: 1.6; color: var(--grau); }
+.st[data-st-final] .st-angebot__mehr { font-size: 0.88rem; color: var(--matt); }
+.st[data-st-final] .st-angebot__preis { margin-top: 0; font-family: var(--serif-display); font-size: 1.75rem; font-weight: 500; line-height: 1.15; letter-spacing: -0.03em; }
+.st[data-st-final] .st-angebot__preis small { display: block; margin-top: var(--s0); font-family: var(--serif); font-size: var(--grad-klein); font-weight: 400; line-height: 1.45; letter-spacing: 0; color: var(--grau); }
+.st[data-st-final] .st-angebot__wege { display: flex; flex-direction: column; align-items: flex-start; margin-top: var(--s1); }
+.st[data-st-final] .st-angebot__wege .st-link { font-size: 0.88rem; }
+.st[data-st-final] .st-weiter { display: flex; flex-wrap: wrap; align-items: baseline; gap: var(--s2) var(--s4); padding-block: var(--s3); border-bottom: 1px solid var(--haar); font-size: 0.97rem; }
+.st[data-st-final] .st-weiter > p { flex: 1 1 30ch; }
+.st[data-st-final] .st-preisnotiz { margin-top: var(--s3); font-size: var(--grad-klein); color: var(--matt); }
+.st[data-st-final] .st-einwand { margin-top: var(--s3); padding-top: var(--s2); border-top: 1px solid var(--haar); font-size: 0.97rem; color: var(--grau); }
+.st[data-st-final] .st-einwand strong { color: var(--tinte); }
+.st[data-st-final] .st-ablauf { margin-top: var(--s5); padding-top: var(--s3); border-top: 1px solid var(--haar); }
+.st[data-st-final] .st-ablauf ol, .st[data-st-final] .st-danach { display: grid; gap: var(--s3); list-style: none; padding: 0; margin: var(--s3) 0 0; }
+.st[data-st-final] .st-ablauf h4 { margin-block: var(--s1); font-family: var(--serif-display); font-size: 1.3rem; line-height: 1.25; font-weight: 500; }
+.st[data-st-final] .st-ablauf li > p:last-child, .st[data-st-final] .st-danach li { font-size: 0.94rem; line-height: 1.55; color: var(--grau); }
+.st[data-st-final] .st-ablauf .st-klein-label, .st[data-st-final] .st-danach .st-klein-label { color: var(--stempel); }
+.st[data-st-final] .st-eignung { display: grid; gap: var(--s3) var(--s5); margin-top: var(--s5); }
+.st[data-st-final] .st-eignung > div > p { margin-top: var(--s2); color: var(--grau); }
+.st[data-st-final] .st-eignung ul { list-style: none; margin: 0; padding: 0; border-top: 1px solid var(--haar); }
+.st[data-st-final] .st-eignung li { padding-block: var(--s2); border-bottom: 1px solid var(--haar); font-size: 0.97rem; color: var(--grau); }
+.st[data-st-final] .st-eignung li strong { display: block; color: var(--tinte); }
+.st[data-st-final] .st-schluss { padding: 0; grid-template-areas: "kopf" "wege" "danach" "bild"; }
+.st[data-st-final] .st-schluss .st-anfrage__h2 { max-inline-size: 26ch; }
+.st[data-st-final] .st-einstiege { gap: var(--s3); }
+.st[data-st-final] .st-einstieg { padding: var(--s3); border: 1px solid var(--haar); border-radius: var(--r1); }
+.st[data-st-final] .st-einstieg:first-child { border-color: var(--tinte); }
+.st[data-st-final] .st-einstieg .tun { max-width: 100%; font-size: 0.9rem; white-space: normal; }
+.st[data-st-final] .st-danach { grid-area: danach; border-top: 1px solid var(--haar); padding-top: var(--s3); }
+.st[data-st-final] .st-danach .st-klein-label { display: block; margin-bottom: var(--s1); }
+.st[data-st-final] .st-einstiege > :only-child { grid-column: 1 / -1; }
+.st[data-st-final] .st-portrait { max-width: 14rem; width: 100%; }
+@media (min-width: 768px) {
+  .st[data-st-final] .st-ablauf ol, .st[data-st-final] .st-danach { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+  .st[data-st-final] .st-referenzen__liste li { grid-template-columns: minmax(0, 15rem) minmax(0, 1fr); }
+  .st[data-st-final] .st-referenzen__liste li > p:last-child { grid-column: 2; grid-row: 1 / span 2; align-self: center; margin: 0; }
+  .st[data-st-final] .st-eignung { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+}
+@media (min-width: 1024px) {
+  .st[data-st-final] .st-hero__raster { grid-template-columns: minmax(0, 1.42fr) minmax(0, 1fr); column-gap: var(--s4); }
+  .st[data-st-final] .st-hero__text { grid-column: 1; grid-row: 2; }
+  .st[data-st-final] .st-protokoll { grid-column: 2; grid-row: 2; }
+  .st[data-st-final] .st-belege { grid-column: 1 / -1; grid-row: 3; display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: var(--s3); padding-top: var(--s3); }
+  .st[data-st-final] .st-belege a { grid-template-columns: auto minmax(0, 1fr); gap: var(--s1); padding: 0; border: 0; }
+  .st[data-st-final] .st-belege__text { font-size: 0.85rem; }
+  .st[data-st-final] .st-belege__zahl { font-family: var(--serif-display); font-size: 1.8rem; }
+  .st[data-st-final] .st-fall { grid-template-columns: minmax(0, 0.92fr) minmax(0, 1.08fr); }
+  .st[data-st-final] .st-angebot { grid-template-columns: 2rem minmax(0, 1.05fr) minmax(0, 1.35fr) minmax(0, 12rem); gap: var(--s3); }
+  .st[data-st-final] .st-angebot__text, .st[data-st-final] .st-angebot__preise { grid-column: auto; }
+  .st[data-st-final] .st-schluss { grid-template-columns: minmax(0, 1fr) 10rem; grid-template-areas: "kopf bild" "wege wege" "danach danach"; }
+  .st[data-st-final] .st-schluss .st-portrait { align-self: start; }
+}
+@media (min-width: 1280px) {
+  .st[data-st-final] .st-schluss { grid-template-columns: minmax(0, 1fr) 14rem; grid-template-areas: "kopf bild" "wege bild" "danach bild"; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .st .st-station summary::after, .st[data-st-final][data-st-bereit] .st-balken i { transition: none !important; }
+  .st[data-st-final][data-st-bereit] .st-messtafel:not([data-st-gesehen]) .st-balken i { transform: scaleX(var(--st-anteil)); }
+}
+@media print {
+  .st .st-station::details-content { content-visibility: visible; }
+  .st[data-st-final][data-st-bereit] .st-messtafel:not([data-st-gesehen]) .st-balken i { transform: scaleX(var(--st-anteil)); }
 }

@@ -250,7 +250,7 @@ Regeln:
 - Sekundär: `wordpress freelancer`; unterstützend `wordpress experte hannover`
 - Targetet nicht `wordpress agentur hannover`
 - Targetet keine White-Label-Queries
-- SEO-Title seit 2026-09-24: `WordPress Freelancer für Unternehmen | Haşim Üner, Hannover`. Die Rolle steht vorn, der Ort hinten; Hannover und Pattensen stehen zusätzlich in der Metazeile und im Schema
+- SEO-Title der finalen Fassung (2026-10-02): `WordPress Freelancer: Website, Tracking, Anfragen · Haşim Üner`. Hannover und Pattensen stehen in Kicker, Person, FAQ und Schema, nicht in der H1
 - Die H1 benennt das Ergebnis oder das Problem des Lesers (mehr Anfragen, deren Herkunft sichtbar ist), nicht die Leistung, und trägt keinen Ortsnamen
 - `WordPress Freelancer` darf auf dieser Route in SEO-Title, Metazeile und Rollenbeschreibung stehen
 - GitHub, versionierter Code, Staging, Review und kontrollierte Deployments dürfen als Workflow-/Qualitätsbeleg sichtbar erklärt werden
@@ -272,9 +272,8 @@ Regeln:
 `/whitelabel-retainer/` ist ein eigenständiger Agentur-Einstieg und Teil der **globalen kommerziellen Architektur**.
 
 - sichtbar in der Hauptnavigation als `White-Label` (seit 2026-09-17; „Für Agenturen“ war die Zeile darüber im früheren Vollflächen-Menü)
-- Wegweiser auf der Startseite unter den Leistungen (seit 2026-09-25):
-  Label `Für Agenturen und Webdesigner`, Link `Technik und Tracking für Ihre
-  Kunden →`
+- Wegweiser der finalen Startseite (2026-10-02) in der Übergabe unter
+  `Wann ein anderer Weg besser passt.`: Link `White-Label-Zusammenarbeit →`
 - Rolle dort: White-Label-Partner / Umsetzung im Hintergrund
 - WordPress, SEO, Tracking, CRO und Barrierefreiheit sind Lieferfelder
 - Erstprojekt mit Scope und Preis vor Start; danach optional Retainer
