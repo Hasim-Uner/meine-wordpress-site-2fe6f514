@@ -235,8 +235,17 @@
     var fuellAnimation;
     var spurPunkte = [];
     var fuellStand = 0;
+    var etikettGeometrie = '';
+    // Gecko-Korrektur: die abgestimmte Platzierung anderer Engines bleibt.
+    var firefoxEtikett = window.CSS && CSS.supports && CSS.supports('-moz-appearance', 'none');
 
     function senkrecht() { return window.innerWidth < 768; }
+
+    function etikettMasse() {
+        return [titel.clientWidth, quellWort.offsetLeft, quellWort.offsetTop,
+            quellWort.offsetWidth, quellWort.offsetHeight,
+            etikett.offsetWidth, etikett.offsetHeight, senkrecht()].join(':');
+    }
 
     function legeEtikett() {
         if (!etikett || !quellWort || !titel) return;
@@ -244,23 +253,33 @@
         titel.style.paddingBottom = '';
         etikett.style.left = '';
         etikett.style.top = '';
+        etikettGeometrie = etikettMasse();
         if (senkrecht()) return; // Im Fluss unter der H1, keine Leitlinie.
         var t = titel.getBoundingClientRect();
         var w = quellWort.getBoundingClientRect();
+        // CSS-Positionen und Messwerte bleiben im selben Koordinatensystem.
+        // Skalierte Viewport-Rechtecke duerfen nicht mit offsetWidth und
+        // CSS-Pixeln gemischt werden: sonst wandert das Etikett in die CTA.
         // Die Maske selbst wird nicht animiert: ihr y ist auch waehrend
         // des Aufstiegs die endgueltige Lage der vierten Zeile.
-        var zeile = quellWort.closest('.st-messzeile').getBoundingClientRect();
+        var zeile = quellWort.closest('.st-messzeile');
+        var z = zeile.getBoundingClientRect();
         var breite = etikett.offsetWidth;
         var hoehe = etikett.offsetHeight;
-        var wortEnde = w.right - t.left;
-        if (window.innerWidth >= 1280 && wortEnde + 34 + breite <= t.width) {
+        var wortEnde = firefoxEtikett ? quellWort.offsetLeft + quellWort.offsetWidth : w.right - t.left;
+        var zeilenTop = firefoxEtikett ? zeile.offsetTop : z.top - t.top;
+        var zeilenHoehe = firefoxEtikett ? zeile.offsetHeight : z.height;
+        var titelBreite = firefoxEtikett ? titel.clientWidth : t.width;
+        if (window.innerWidth >= 1280 && wortEnde + 34 + breite <= titelBreite) {
             etikett.style.left = (wortEnde + 34) + 'px';
-            etikett.style.top = (zeile.top - t.top + (zeile.height - hoehe) / 2) + 'px';
+            etikett.style.top = (zeilenTop + (zeilenHoehe - hoehe) / 2) + 'px';
         } else {
             etikett.classList.add('st-etikett--unten');
             etikett.style.left = Math.max(0, wortEnde - breite) + 'px';
-            etikett.style.top = (zeile.bottom - t.top + 26) + 'px';
-            titel.style.paddingBottom = (hoehe + 26) + 'px';
+            etikett.style.top = (zeilenTop + zeilenHoehe + 26) + 'px';
+            // Auch der tiefste Ausschlag bleibt oberhalb der Hauptaktion.
+            var schwung = !firefoxEtikett || reduced.matches ? 0 : Math.ceil(Math.max(0, breite - 28) * Math.sin(24 * Math.PI / 180));
+            titel.style.paddingBottom = (hoehe + 26 + schwung) + 'px';
         }
     }
 
@@ -563,6 +582,15 @@
     window.addEventListener('load', neuVermessen, { once: true });
     if ('ResizeObserver' in window) {
         new ResizeObserver(function () { neuVermessen(); }).observe(root);
+        if (firefoxEtikett && titel && quellWort && etikett) {
+            var etikettBeobachter = new ResizeObserver(function () {
+                // Spaete Schrift-/Layoutwechsel brauchen keinen Fenster-Resize.
+                // Die Platzreserve und Transform-Animationen veraendern diese
+                // Messwerte nicht und starten keine Beobachterschleife.
+                if (etikettGeometrie && etikettMasse() !== etikettGeometrie) heroNeuVermessen();
+            });
+            [titel, quellWort, etikett].forEach(function (el) { etikettBeobachter.observe(el); });
+        }
     }
     if (document.fonts && document.fonts.ready) {
         document.fonts.ready.then(function () { neuVermessen(); starteHero(); });
