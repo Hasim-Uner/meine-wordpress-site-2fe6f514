@@ -286,6 +286,13 @@ Use White-Label as primary route when intent explicitly involves:
 
 A specialist page may show a **secondary** White-Label bridge when the topic is relevant to agencies, but it should not lose its own SEO intent.
 
+The final White-Label route keeps one primary hero action: `Aufgabe beschreiben`
+(`cta_whitelabel_hero_task_brief`). Prices are an anchor link. The offer-stage
+assessment follows proof and prices (`cta_whitelabel_offers_assessment`) and
+remains one of the three enquiry ways (`cta_whitelabel_way_offer`). All three
+ways retain the same REST form and their `case` values. Review after six weeks
+from deployment: `docs/experimente/whitelabel-angebotsphase.md`.
+
 ### 4. Local Agentur search intent stays separate
 
 `/wordpress-agentur-hannover/` owns `wordpress agentur hannover` and related local variants. This SEO route must not be redirected to the Freelancer page.

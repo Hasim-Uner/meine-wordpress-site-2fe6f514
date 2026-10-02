@@ -382,8 +382,8 @@ function hu_get_forced_singular_seo_map() {
 			// docs/standards/BRAND_AND_COPY.md: Agenturen, „ihr/euch“,
 			// sichtbar immer „White-Label“, Einstieg über das Erstprojekt.
 			'whitelabel-retainer' => [
-				'title'       => 'White-Label für Agenturen: WordPress-Webdesign & Tracking',
-				'description' => 'White-Label für Agenturen: WordPress, Tracking bis ins CRM und Barrierefreiheit aus einer Hand. Festpreis und Termin stehen, bevor ihr eurem Kunden zusagt.',
+				'title'       => 'White-Label WordPress & Tracking für Agenturen · Haşim Üner',
+				'description' => sprintf( 'WordPress-Umsetzung, Tracking und CRM-Anbindung unter eurem Namen, mit Abnahmeprotokoll. Test-Sprint %1$s, Antwort %2$s.', hu_whitelabel_price( 'test_sprint' ), hu_response_promise_short() ),
 			],
 			// Die Stack-Seite trug „White-Label“ in Title UND Description und
 			// zielte damit auf dasselbe Signal wie /whitelabel-retainer/. Zwei

@@ -1,6 +1,6 @@
 /**
  * White-Label Retainer — page-whitelabel-retainer.php
- * Sticky-CTA, native FAQ, Abnahmeprotokoll, Anker im Kopf und das
+ * Sticky-CTA, native FAQ, lokaler Live-Prüfstand, Anker im Kopf und das
  * Agentur-Formular. Wird nur auf Whitelabel-Routen geladen (inc/enqueue.php,
  * Block P2). Linie und Stationspunkte fuellt startseite-strecke.js.
  *
@@ -80,60 +80,272 @@
 	// ─── Sticky Mobile CTA visibility ───
 	var sticky = document.getElementById('wl-sticky-cta');
 	var hero   = document.getElementById('hero');
-	var cta    = document.getElementById('naechster-schritt');
+	var cta    = document.getElementById('aufgabe');
 
 	if (sticky && hero) {
 		var updateSticky = function () {
 			var heroBottom = hero.getBoundingClientRect().bottom;
-			var ctaTop     = cta ? cta.getBoundingClientRect().top : Infinity;
-			var shouldShow = heroBottom < 0 && ctaTop > window.innerHeight - 80;
+			var rect = cta ? cta.getBoundingClientRect() : null;
+			var formVisible = rect && rect.top < window.innerHeight && rect.bottom > 0;
+			var shouldShow = window.innerWidth < 768 && heroBottom < 0 && !formVisible;
 			sticky.classList.toggle('is-visible', shouldShow);
 			sticky.setAttribute('aria-hidden', shouldShow ? 'false' : 'true');
+			sticky.querySelector('a').tabIndex = shouldShow ? 0 : -1;
 			document.body.classList.toggle('has-sticky-wl-cta', shouldShow);
 		};
-		window.addEventListener('scroll', updateSticky, { passive: true });
-		window.addEventListener('resize', updateSticky);
+		var stickyPending = false;
+		var scheduleSticky = function () {
+			if (stickyPending) return; stickyPending = true;
+			requestAnimationFrame(function () { stickyPending = false; updateSticky(); });
+		};
+		window.addEventListener('scroll', scheduleSticky, { passive: true });
+		window.addEventListener('resize', scheduleSticky);
+		if (window.ResizeObserver && cta) new ResizeObserver(scheduleSticky).observe(cta);
 		updateSticky();
 	}
 
-	// ─── Abnahmeprotokoll: Punkte haken sich an ihrer Station ab ───
-	// Ohne dieses Skript stehen alle Punkte abgehakt (Muster). Mit ihm
-	// starten sie offen; ein Punkt hakt sich ab, sobald die Leselinie bei
-	// 60 % der Fensterhoehe seine Station in Abschnitt 05 erreicht, und bleibt
-	// abgehakt. Dieselbe Leselinie wie die Linie in startseite-strecke.js.
-	// Kein Netzwerk, kein Speicher.
-	var pageRoot  = document.querySelector('.wl-page[data-st]');
-	var protokoll = document.querySelector('[data-wl-protokoll]');
-	var stationen = document.querySelectorAll('[data-wl-haken]');
+	// strecke-js-privat:start — local measurement only; the form is outside.
+	(function initLocalProtocol() {
+		var root = document.querySelector('.wl-page');
+		var hero = root && root.querySelector('[data-wl-pruefstand]');
+		var panel = hero && hero.querySelector('[data-wl-protokoll]');
+		if (!panel) return;
+		var reduced = window.matchMedia('(prefers-reduced-motion: reduce)');
+		var status = panel.querySelector('[data-wl-status]');
+		var progress = panel.querySelector('[data-wl-fortschritt]');
+		var rerun = panel.querySelector('[data-wl-nochmal]');
+		var stamp = hero.querySelector('[data-wl-stempel]');
+		var title = hero.querySelector('[data-wl-titel]');
+		var lastWord = hero.querySelector('[data-wl-wort-abnahme]');
+		var scan = hero.querySelector('[data-wl-scan]');
+		var rows = Array.from(panel.querySelectorAll('[data-wl-pruefung]'));
+		var marks = [], timers = [], running = false, complete = false, passed = 0;
+		var started = 0, scanAnimation = null, lcp = null;
+		var format = function (value, digits) { return value.toFixed(digits).replace('.', ','); };
+		var seconds = function (value) { return format(value / 1000, 2) + ' s'; };
+		var clock = function () { return performance.now(); };
+		function schedule(fn, ms) { var id = window.setTimeout(fn, ms); timers.push(id); return id; }
+		function wait(ms) { return reduced.matches ? Promise.resolve() : new Promise(function (resolve) { schedule(resolve, ms); }); }
+		function announce() { status.textContent = passed + ' von ' + rows.length + ' bestanden · ' + format((clock() - started) / 1000, 1) + ' s'; }
 
-	if (pageRoot && protokoll && stationen.length && 'IntersectionObserver' in window) {
-		var punkte = {};
-		protokoll.querySelectorAll('[data-wl-punkt]').forEach(function (punkt) {
-			punkte[punkt.getAttribute('data-wl-punkt')] = punkt;
-		});
+		/* LCP entries are real browser measurements. If unavailable, name the
+		   document timing explicitly; never substitute the duration of this run. */
+		function loadMeasurement() {
+			if (lcp !== null) return { ms: lcp, label: 'Ladezeit (LCP)', short: 'LCP' };
+			var entry = performance.getEntriesByType('navigation')[0];
+			return { ms: entry && (entry.domContentLoadedEventEnd || entry.loadEventEnd) || null, label: 'Ladezeit (Dokument)', short: 'Dokument geladen' };
+		}
+		function measureLoad() {
+			var value = loadMeasurement();
+			var label = panel.querySelector('[data-wl-lcp-label]');
+			if (label) label.textContent = value.label;
+			root.querySelectorAll('[data-wl-lcp-kopie]').forEach(function (node) { node.textContent = value.ms === null ? 'nicht prüfbar' : seconds(value.ms); });
+			root.querySelectorAll('[data-wl-lcp-proof-label]').forEach(function (node) { node.textContent = value.short; });
+			root.querySelectorAll('[data-wl-lcp-proof]').forEach(function (node) { node.hidden = false; });
+			var explanation = panel.querySelector('[data-wl-pruefung="lcp"] .wl-pl-satz');
+			if (explanation) explanation.textContent = (value.short === 'LCP' ? 'Bis das größte Element steht.' : 'Bis das Dokument geladen ist; dieser Browser meldet noch keinen LCP.') + ' Grenze: ' + seconds(2500) + '.';
+			return { text: value.ms === null ? 'nicht prüfbar' : seconds(value.ms), ok: value.ms !== null && value.ms <= 2500 };
+		}
 
-		var abhaken = function (station) {
-			(station.getAttribute('data-wl-haken') || '').split(' ').forEach(function (key) {
-				if (punkte[key]) {
-					punkte[key].classList.add('wl-erreicht');
-				}
-			});
+		var checks = {
+			ueberschriften: function () {
+				var h1 = document.querySelectorAll('h1').length;
+				var h2 = Array.from(document.querySelectorAll('h2'));
+				var anchored = h2.filter(function (node) { return node.id && document.querySelectorAll('[id="' + CSS.escape(node.id) + '"]').length === 1; }).length;
+				return { text: h1 + ' · ' + anchored + '/' + h2.length, ok: h1 === 1 && h2.length > 0 && anchored === h2.length };
+			},
+			bilder: function () {
+				var images = Array.from(root.querySelectorAll('img'));
+				var valid = images.filter(function (image) { return image.hasAttribute('alt') && Number(image.getAttribute('width')) > 0 && Number(image.getAttribute('height')) > 0; }).length;
+				return { text: valid + '/' + images.length, ok: images.length > 0 && valid === images.length };
+			},
+			formular: function () {
+				var fields = Array.from(root.querySelectorAll('form [required]'));
+				var labelled = fields.filter(function (field) { return field.labels && Array.from(field.labels).some(function (label) { return label.textContent.trim(); }); }).length;
+				return { text: labelled + '/' + fields.length, ok: fields.length > 0 && labelled === fields.length };
+			},
+			'neuer-tab': function () {
+				var links = Array.from(document.querySelectorAll('a[target="_blank"]'));
+				var announced = links.filter(function (link) {
+					var name = (link.getAttribute('aria-label') || '') + ' ' + link.textContent;
+					return /(?:neue[mnrs]?\s+Tab|neue[mnrs]?\s+Fenster)/i.test(name) && /(?:^|\s)noopener(?:\s|$)/.test(link.rel);
+				}).length;
+				return { text: announced + '/' + links.length, ok: announced === links.length };
+			},
+			lcp: measureLoad,
+			cookies: function () {
+				var count = document.cookie.split(';').filter(function (cookie) { return cookie.trim(); }).length;
+				return { text: String(count), ok: count === 0 };
+			},
+			schema: function () {
+				var types = 0, valid = true;
+				document.querySelectorAll('script[type="application/ld+json"]').forEach(function (script) {
+					try {
+						var data = JSON.parse(script.textContent);
+						var nodes = Array.isArray(data) ? data : (data && data['@graph'] || [data]);
+						if (!Array.isArray(nodes) || !nodes.length) valid = false;
+						nodes.forEach(function (node) { if (!node || typeof node !== 'object' || !node['@type']) valid = false; else types++; });
+					} catch (error) { valid = false; }
+				});
+				return { text: types + ' Typen', ok: valid && types > 0 };
+			}
 		};
+		function showResult(row, result) {
+			var output = row.querySelector('.wl-pl-wert');
+			output.textContent = result.text;
+			output.dataset.ergebnis = result.ok ? 'ok' : 'befund';
+		}
+		function safeCheck(key) { try { return checks[key](); } catch (error) { return { text: 'nicht prüfbar', ok: false }; } }
 
-		var leselinie = new IntersectionObserver(function (eintraege) {
-			eintraege.forEach(function (eintrag) {
-				// Auch Stationen oberhalb des Fensters zaehlen: wer ueber
-				// #aufgabe einsteigt, hat den Ablauf schon hinter sich.
-				if (eintrag.isIntersecting || eintrag.boundingClientRect.bottom < 0) {
-					abhaken(eintrag.target);
-					leselinie.unobserve(eintrag.target);
-				}
+		/* Canvas resolves computed CSS colours (including color-mix and alpha)
+		   to sRGB; foreground/background are composited before WCAG luminance. */
+		var context = document.createElement('canvas').getContext('2d', { willReadFrequently: true });
+		function rgba(value) {
+			if (!context) throw new Error('Colour measurement unavailable');
+			context.clearRect(0, 0, 1, 1); context.fillStyle = value; context.fillRect(0, 0, 1, 1);
+			var c = context.getImageData(0, 0, 1, 1).data;
+			return [c[0] / 255, c[1] / 255, c[2] / 255, c[3] / 255];
+		}
+		function composite(front, back) { var a = front[3] + back[3] * (1 - front[3]); return front.slice(0, 3).map(function (v, i) { return a ? (v * front[3] + back[i] * back[3] * (1 - front[3])) / a : 0; }).concat(a); }
+		function luminance(c) { return c.slice(0, 3).map(function (v) { return v <= .04045 ? v / 12.92 : Math.pow((v + .055) / 1.055, 2.4); }).reduce(function (sum, v, i) { return sum + v * [.2126, .7152, .0722][i]; }, 0); }
+		function contrast(element) {
+			var layers = [], node = element;
+			while (node) { layers.unshift(rgba(getComputedStyle(node).backgroundColor)); node = node.parentElement; }
+			var background = layers.reduce(function (back, front) { return composite(front, back); }, [1, 1, 1, 1]);
+			var foreground = composite(rgba(getComputedStyle(element).color), background);
+			var a = luminance(foreground), b = luminance(background);
+			return (Math.max(a, b) + .05) / (Math.min(a, b) + .05);
+		}
+		function measurement(element) {
+			var style = getComputedStyle(element), size = parseFloat(style.fontSize);
+			switch (element.dataset.wlMess) {
+				case 'h1': return ['Überschrift', Math.round(size) + ' px'];
+				case 'satz': return ['Fließtext', Math.round(size) + ' px · Zeile ' + format(parseFloat(style.lineHeight) / size, 2)];
+				case 'cta': return ['Kontrast ' + format(contrast(element), 1) + ' : 1', 'Fläche ' + Math.round(element.getBoundingClientRect().height) + ' px hoch'];
+				case 'bild': return ['Bild ' + element.getAttribute('width') + ' × ' + element.getAttribute('height'), element.hasAttribute('alt') ? (element.alt ? 'Alt: ' + element.alt : 'Alt leer · dekorativ') : 'Alt fehlt'];
+			}
+		}
+		function bounds(element) {
+			if (element.dataset.wlMess === 'h1') {
+				var words = Array.from(element.querySelectorAll('.wl-wort')).map(function (word) { return word.getBoundingClientRect(); });
+				var lines = Array.from(element.querySelectorAll('.wl-zeile')).map(function (line) { return line.getBoundingClientRect(); });
+				return { left: Math.min.apply(null, words.map(function (r) { return r.left; })), right: Math.max.apply(null, words.map(function (r) { return r.right; })), top: lines[0].top, bottom: lines[lines.length - 1].bottom };
+			}
+			return element.getBoundingClientRect();
+		}
+		function buildMarks() {
+			marks.forEach(function (mark) { mark.label.remove(); mark.frame.remove(); }); marks = [];
+			if (window.innerWidth < 768) return;
+			var h = hero.getBoundingClientRect(), content = hero.querySelector('[data-wl-messfeld]').getBoundingClientRect();
+			var point = hero.querySelector('.st-rail__punkt').getBoundingClientRect();
+			var left = point.right - h.left + 16, width = content.left - h.left - left - 16;
+			hero.querySelectorAll('[data-wl-mess]').forEach(function (element) {
+				var result;
+				try { result = measurement(element); } catch (error) { result = ['Messung', 'nicht prüfbar']; }
+				var rect = bounds(element), label = document.createElement('div'), frame = document.createElement('div');
+				label.className = 'wl-messmarke'; label.setAttribute('aria-hidden', 'true');
+				var name = document.createElement('b'), value = document.createElement('span'); name.textContent = result[0]; value.textContent = result[1]; label.append(name, value);
+				Object.assign(label.style, { left: left + 'px', top: (rect.top - h.top) + 'px', width: Math.max(0, width) + 'px' });
+				frame.className = 'wl-messrahmen'; frame.setAttribute('aria-hidden', 'true');
+				Object.assign(frame.style, { left: (rect.left - h.left - 8) + 'px', top: (rect.top - h.top - 8) + 'px', width: (rect.right - rect.left + 16) + 'px', height: (rect.bottom - rect.top + 16) + 'px' });
+				hero.append(label, frame); marks.push({ label: label, frame: frame, y: rect.top - h.top });
 			});
-		}, { rootMargin: '0px 0px -40% 0px' });
+		}
+		function placeStamp() {
+			if (!stamp || !lastWord) return;
+			var t = title.getBoundingClientRect(), w = lastWord.getBoundingClientRect();
+			// Use layout dimensions, unaffected by the rotated stamp's animation.
+			var sw = stamp.offsetWidth, sh = stamp.offsetHeight;
+			var angle = 7 * Math.PI / 180;
+			var rotatedHeight = sw * Math.sin(angle) + sh * Math.cos(angle);
+			stamp.style.setProperty('--wl-stempel-scale', Math.min(1, w.height * .9 / rotatedHeight));
+			stamp.style.left = Math.max(0, Math.min(w.right - t.left - sw * .45, t.width - sw - 8)) + 'px';
+			stamp.style.top = (w.top - t.top + (w.height - sh) / 2) + 'px';
+		}
+		function stampResult() {
+			var all = passed === rows.length;
+			if (stamp) {
+				stamp.querySelector('[data-wl-stempel-wert]').textContent = passed + '/' + rows.length;
+				var date = new Date();
+				stamp.querySelector('[data-wl-stempel-datum]').textContent = date.toLocaleDateString('de-DE', { day: '2-digit', month: '2-digit', year: 'numeric' }) + ' · ' + date.toLocaleTimeString('de-DE', { hour: '2-digit', minute: '2-digit' });
+				placeStamp(); stamp.classList.toggle('is-finding', !all); stamp.classList.add('is-set');
+			}
+			hero.classList.toggle('is-approved', all);
+		}
+		async function run() {
+			if (running) return; running = true; complete = false; passed = 0; started = clock();
+			timers.forEach(window.clearTimeout); timers = []; if (scanAnimation) scanAnimation.cancel();
+			hero.classList.remove('is-approved', 'is-stamped'); stamp.classList.remove('is-set', 'is-finding');
+			panel.classList.remove('is-complete'); rerun.disabled = true;
+			// Keep the control's footprint through reruns to avoid a layout shift.
+			rows.forEach(function (row) { var output = row.querySelector('.wl-pl-wert'); output.textContent = '–'; delete output.dataset.ergebnis; });
+			progress.style.setProperty('--wl-progress', 0); announce();
+			hero.classList.add('is-started'); buildMarks();
+			var end = Math.max(title.getBoundingClientRect().bottom - hero.getBoundingClientRect().top, ...marks.map(function (mark) { return mark.y + 60; }));
+			if (scan && scan.animate && !reduced.matches) scanAnimation = scan.animate([{ transform: 'translateY(0)', opacity: 0 }, { opacity: 1, offset: .08 }, { opacity: 1, offset: .9 }, { transform: 'translateY(' + end + 'px)', opacity: 0 }], { duration: 1300, delay: 320, easing: 'linear', fill: 'both' });
+			marks.forEach(function (mark) {
+				var reveal = function () { mark.label.classList.add('is-visible'); mark.frame.classList.add('is-visible'); if (reduced.matches) mark.frame.classList.add('is-dimmed'); else schedule(function () { mark.frame.classList.add('is-dimmed'); }, 400); };
+				if (reduced.matches) reveal(); else schedule(reveal, 320 + 1300 * Math.min(1, mark.y / Math.max(1, end)));
+			});
+			await wait(1035);
+			for (var i = 0; i < rows.length; i++) {
+				await wait(150); var result = safeCheck(rows[i].dataset.wlPruefung); showResult(rows[i], result); if (result.ok) passed++;
+				progress.style.setProperty('--wl-progress', (i + 1) / rows.length); announce();
+			}
+			panel.classList.add('is-complete'); stampResult(); if (!reduced.matches) hero.classList.add('is-stamped');
+			rerun.hidden = false; rerun.disabled = false; complete = true; running = false;
+		}
+		try {
+			if (window.PerformanceObserver && PerformanceObserver.supportedEntryTypes.includes('largest-contentful-paint')) {
+				new PerformanceObserver(function (list) {
+					var entries = list.getEntries(), latest = entries[entries.length - 1];
+					if (!latest) return; lcp = latest.renderTime || latest.startTime;
+					if (complete) {
+						var row = panel.querySelector('[data-wl-pruefung="lcp"]'); showResult(row, measureLoad());
+						passed = rows.filter(function (r) { return r.querySelector('[data-ergebnis="ok"]'); }).length;
+						announce(); stampResult();
+					}
+				}).observe({ type: 'largest-contentful-paint', buffered: true });
+			}
+		} catch (error) { /* Document timing remains the explicit fallback. */ }
+		rerun.addEventListener('click', function () {
+			if (running) return;
+			panel.classList.remove('is-complete'); rerun.disabled = true;
+			hero.classList.remove('is-started');
+			window.requestAnimationFrame(function () { window.requestAnimationFrame(run); });
+		});
+		var reflowTimer;
+		function reflow() {
+			window.clearTimeout(reflowTimer);
+			reflowTimer = window.setTimeout(function () {
+				if (running) { reflow(); return; }
+				buildMarks(); marks.forEach(function (mark) { mark.label.classList.add('is-visible'); mark.frame.classList.add('is-visible', 'is-dimmed'); }); placeStamp();
+			}, 120);
+		}
+		window.addEventListener('resize', reflow, { passive: true });
+		if (window.ResizeObserver) new ResizeObserver(reflow).observe(hero.querySelector('.wl-hero__links'));
+		if (reduced.addEventListener) reduced.addEventListener('change', function () { if (reduced.matches && scanAnimation) scanAnimation.cancel(); reflow(); });
+		function start() {
+			var fonts = document.fonts ? document.fonts.ready : Promise.resolve();
+			fonts.then(function () {
+				// Enhance only after dependencies are ready; failure leaves words readable.
+				hero.setAttribute('data-wl-enhanced', '');
+				schedule(run, reduced.matches ? 200 : 120);
+			});
+		}
+		if (document.readyState === 'complete') start(); else window.addEventListener('load', start, { once: true });
+	})();
+	// strecke-js-privat:end
 
-		pageRoot.setAttribute('data-wl-bereit', '');
-		stationen.forEach(function (station) { leselinie.observe(station); });
-	}
+	// ─── Margen-Tafel: once on first view, same transform as homepage ───
+	document.querySelectorAll('[data-wl-marge]').forEach(function (table) {
+		var reveal = function () { table.setAttribute('data-st-gesehen', ''); };
+		if (!('IntersectionObserver' in window) || window.matchMedia('(prefers-reduced-motion: reduce)').matches) { reveal(); return; }
+		var observer = new IntersectionObserver(function (entries) {
+			if (entries.some(function (entry) { return entry.isIntersecting; })) { reveal(); observer.disconnect(); }
+		}, { threshold: .2 });
+		observer.observe(table);
+	});
 
 	// ─── Anker im Kopf: aktiv, solange ihr Abschnitt im Blick ist ───
 	// Ohne JavaScript bleiben die Anker neutral.

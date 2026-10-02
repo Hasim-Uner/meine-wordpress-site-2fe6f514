@@ -1178,8 +1178,8 @@ function nexus_get_whitelabel_page_url() {
  *
  * Seit dem Relaunch auf dem Strecke-System (2026-09) stehen hier nur noch
  * Fragen, die die Seite nicht schon selbst beantwortet. Preise und
- * Test-Sprint-Umfang stehen in Abschnitt 04, Sichtbarkeit, Zugaenge,
- * Eigentum und Start im Ablauf in Abschnitt 05. Die Schluessel bleiben
+ * Test-Sprint-Umfang stehen in Abschnitt 05, Fehler oder Aenderung
+ * im Ablauf (04), Zugaenge, Eigentum und Ausstieg in der Absicherung (06). Die Schluessel bleiben
  * stabil, weil sie als data-track-label der FAQ-Klicks laufen.
  *
  * @return array<int, array{key: string, question: string, answer: string}>
@@ -1197,11 +1197,6 @@ function nexus_get_whitelabel_faq_items() {
 			'answer'   => 'Ja. Die meisten Aufgaben betreffen laufende Installationen: Weiterentwicklung, Fehler, Ladezeit und Erweiterungen.',
 		],
 		[
-			'key'      => 'fehler',
-			'question' => 'Was ist ein Fehler, was eine Änderung?',
-			'answer'   => 'Das legen wir vor dem Start schriftlich fest. Fehler in meiner Lieferung behebe ich ohne Berechnung, auch nach der Abnahme. Neue Wünsche eures Kunden sind ein neuer Auftrag, mit Preis, bevor ich anfange.',
-		],
-		[
 			'key'      => 'stack',
 			'question' => 'Müssen wir unseren Stack ändern?',
 			'answer'   => 'Nein. Hosting, Theme, Page Builder, Git und Deployment bleiben, wenn sie technisch funktionieren. Ich arbeite in eurem Workflow. Gibt es noch keinen, reicht meist eine Trennung zwischen Staging und Live.',
@@ -1210,11 +1205,6 @@ function nexus_get_whitelabel_faq_items() {
 			'key'      => 'vor-ort',
 			'question' => 'Kommst du auch vor Ort?',
 			'answer'   => 'Zu Kickoff, Workshop oder Abnahme in der Region Hannover, Hildesheim, Braunschweig, Wolfsburg und Celle ja. Die Umsetzung läuft remote. Termine weiter weg stimmen wir einzeln ab.',
-		],
-		[
-			'key'      => 'exit',
-			'question' => 'Wie kommen wir wieder raus?',
-			'answer'   => 'Ein Projekt endet mit der Abnahme. Für das Monatskontingent legen wir die Kündigung vorher schriftlich fest, ohne Verlängerungsfalle.',
 		],
 		[
 			'key'      => 'recht',

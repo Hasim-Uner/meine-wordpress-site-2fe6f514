@@ -401,6 +401,26 @@ foreach ( $service['hasOfferCatalog']['itemListElement'] as $offer ) {
 	hu_lint_assert( false !== strpos( $template_html, "'id' => '" . $anchor . "'" ), 'Service offer retains visible homepage anchor: ' . $anchor );
 }
 
+// White-Label uses four distinct offer anchors. Render the same centralized
+// schema nodes as wp_head, then resolve them against the template's offer map.
+require_once __DIR__ . '/../blocksy-child/inc/canon/pricing-canon.php';
+$wl_nodes = hu_get_whitelabel_schema_nodes();
+$wl_service = array_values( array_filter( $wl_nodes, static function ( $node ) { return 'Service' === $node['@type']; } ) )[0];
+$wl_faq = array_values( array_filter( $wl_nodes, static function ( $node ) { return 'FAQPage' === $node['@type']; } ) )[0];
+$wl_template = (string) file_get_contents( __DIR__ . '/../blocksy-child/page-whitelabel-retainer.php' );
+$wl_offers = $wl_service['hasOfferCatalog']['itemListElement'];
+hu_lint_assert( 'BusinessAudience' === $wl_service['audience']['@type'], 'White-Label Service addresses agencies' );
+hu_lint_assert( 4 === count( $wl_offers ), 'White-Label catalog contains all four agency offers' );
+foreach ( $wl_offers as $offer ) {
+	$anchor = wp_parse_url( $offer['url'], PHP_URL_FRAGMENT );
+	hu_lint_assert( $offer['@id'] === $offer['url'], 'White-Label Offer ID is its public URL: ' . $anchor );
+	hu_lint_assert( false !== strpos( $wl_template, "'id' => '" . $anchor . "'" ), 'White-Label Offer retains its visible anchor: ' . $anchor );
+}
+foreach ( nexus_get_whitelabel_faq_items() as $i => $item ) {
+	hu_lint_assert( $item['question'] === $wl_faq['mainEntity'][ $i ]['name'] && $item['answer'] === $wl_faq['mainEntity'][ $i ]['acceptedAnswer']['text'], 'White-Label FAQ schema retains the visible answer: ' . $item['key'] );
+}
+hu_lint_assert( 5 === count( $wl_faq['mainEntity'] ), 'White-Label FAQ has five visible answers' );
+
 // --- Entity graph ---------------------------------------------------------
 
 echo "\n########## Person / Organization ##########\n\n";

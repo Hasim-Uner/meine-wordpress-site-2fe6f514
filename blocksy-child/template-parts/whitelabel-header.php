@@ -35,7 +35,7 @@ $wl_args = array_merge(
 $wl_doors = function_exists( 'hu_funnel_doors' ) ? hu_funnel_doors() : [];
 $wl_door  = $wl_doors['aufgabe'] ?? null;
 ?>
-<header class="leiste wl-site-header" role="banner" data-track-section="whitelabel_header">
+<header class="leiste wl-site-header tafel" role="banner" data-track-section="whitelabel_header">
 	<div class="blatt in">
 		<a
 			class="sig site-logo"
