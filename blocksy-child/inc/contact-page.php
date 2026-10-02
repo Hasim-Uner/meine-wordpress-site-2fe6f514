@@ -369,6 +369,10 @@ function nexus_get_contact_focus_options( $include_inactive = false ) {
 			'label' => 'Landingpage oder Anfrageweg',
 			'types' => [ 'audit', 'analysis', 'project', 'implementation', 'ongoing', 'client' ],
 		],
+		'website' => [
+			'label' => 'Die Anfrage-Website · Neubau oder Relaunch',
+			'types' => [ 'project' ],
+		],
 		'relaunch'         => [
 			'label' => 'Relaunch oder neue Website',
 			'types' => [ 'analysis', 'project', 'implementation' ],
@@ -740,6 +744,33 @@ function nexus_handle_contact_request_submission( WP_REST_Request $request ) {
 	);
 }
 
+/** Validate the product configuration independently of URL or browser prices. */
+function nexus_get_website_request_scope( $payload ) {
+	if ( 'website' !== ( $payload['focus'] ?? '' ) || 'project' !== ( $payload['request_type'] ?? '' ) || ! isset( $payload['seiten'] ) ) {
+		return [];
+	}
+	$pages = $payload['seiten'];
+	$kind = $payload['art'] ?? 'neubau';
+	$tracking = $payload['tracking'] ?? '0';
+	if ( ! is_scalar( $pages ) || ! preg_match( '/^[1-9][0-9]*$/D', (string) $pages ) || (int) $pages > HU_WEBSITE_CALCULATOR_MAX ) {
+		return new WP_Error( 'invalid_website_scope', 'Bitte zwischen einer und zehn Seiten wählen.' );
+	}
+	if ( ! in_array( $kind, [ 'neubau', 'relaunch' ], true ) || ! in_array( $tracking, [ '0', '1', 0, 1, false, true ], true ) ) {
+		return new WP_Error( 'invalid_website_scope', 'Bitte einen gültigen Website-Umfang wählen.' );
+	}
+	$quote = hu_website_quote( (int) $pages, $kind, (bool) $tracking );
+	return [ 'seiten' => $quote['pages'], 'art' => $quote['kind'], 'tracking' => $quote['tracking'] ? 1 : 0, 'website_price' => $quote['price'], 'website_weeks' => $quote['weeks'] ];
+}
+
+/** Public scope summary, shared by form, mail and CRM. */
+function nexus_get_website_scope_summary( $payload ) {
+	if ( empty( $payload['seiten'] ) ) { return ''; }
+	return sprintf( '%1$d %2$s · %3$s · Tracking %4$s · %5$s netto · %6$d Wochen ab vollständigen Inhalten',
+		$payload['seiten'], 1 === (int) $payload['seiten'] ? 'Seite' : 'Seiten',
+		'relaunch' === $payload['art'] ? 'Relaunch' : 'Neubau', empty( $payload['tracking'] ) ? 'ohne' : 'dazu',
+		hu_format_eur( $payload['website_price'] ), $payload['website_weeks'] );
+}
+
 /**
  * Validate and sanitize the public contact form payload.
  *
@@ -858,13 +889,16 @@ function nexus_validate_contact_request_payload( $payload ) {
 		return new WP_Error( 'missing_consent', 'Bitte der Verarbeitung Ihrer Nachricht zustimmen.' );
 	}
 
+	$website_scope = nexus_get_website_request_scope( $payload );
+	if ( is_wp_error( $website_scope ) ) { return $website_scope; }
+
 	// Herkunft (Einstiegsseite, Referrer, Kampagne, Selbstauskunft) nach denselben
 	// Regeln wie beim Marktcheck. Alle Felder sind optional.
 	$attribution = function_exists( 'nexus_sanitize_inquiry_attribution' ) ? nexus_sanitize_inquiry_attribution( $payload ) : [];
 	$gclid       = isset( $payload['gclid'] ) ? sanitize_text_field( (string) $payload['gclid'] ) : '';
 	$matchtype   = isset( $payload['matchtype'] ) ? sanitize_text_field( (string) $payload['matchtype'] ) : '';
 
-	return $attribution + [
+	return $website_scope + $attribution + [
 		'name'               => $name,
 		'email'              => $email,
 		'request_type'       => $request_type,
@@ -975,6 +1009,7 @@ function nexus_get_contact_request_activity_summary( $payload ) {
 		'Zeitfenster' => $payload['timeline_label'] ?? '',
 		'Budget'      => $payload['budget_label'] ?? '',
 		'Website'     => $payload['website_url'] ?? '',
+		'Website-Umfang' => nexus_get_website_scope_summary( $payload ),
 	];
 
 	foreach ( $optional as $label => $value ) {
@@ -1050,6 +1085,11 @@ function nexus_send_contact_request_admin_notification( $payload, $contact_id = 
 			'<br><strong style="color:#f7f3ee;">Unternehmen:</strong> %s',
 			esc_html( (string) $payload['company'] )
 		);
+	}
+
+	$scope_summary = nexus_get_website_scope_summary( $payload );
+	if ( '' !== $scope_summary ) {
+		$meta_rows .= '<br><strong>Website-Umfang:</strong> ' . esc_html( $scope_summary );
 	}
 
 	if ( '' !== $payload['timeline_label'] ) {
@@ -1207,6 +1247,11 @@ function nexus_send_contact_request_confirmation( $payload ) {
 		esc_html( $payload['request_type_label'] ),
 		esc_html( $payload['focus_label'] )
 	);
+
+	$scope_summary = nexus_get_website_scope_summary( $payload );
+	if ( '' !== $scope_summary ) {
+		$meta_rows .= '<br><strong>Website-Umfang:</strong> ' . esc_html( $scope_summary );
+	}
 
 	if ( '' !== $payload['timeline_label'] ) {
 		$meta_rows .= sprintf(

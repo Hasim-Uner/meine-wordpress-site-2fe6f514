@@ -300,8 +300,8 @@ function hu_get_forced_singular_seo_map() {
 			// Umfang nennen. Der Relaunch ist ein Block der Seite, nicht ihr Fokus;
 			// "website relaunch" gehoert dem Beitrag /website-relaunch/.
 			'wordpress-website-erstellen-lassen' => [
-				'title'       => 'WordPress-Website erstellen lassen: Festpreis | Haşim Üner',
-				'description' => sprintf( 'WordPress-Website erstellen lassen ab %1$s: bis zu %2$s Seiten mit Kontaktformular, Neubau oder Relaunch. Live erst nach Ihrer Abnahme.', hu_freelancer_website_price( true ), hu_pricing_count_word( HU_FREELANCER_WEBSITE_PAGES ) ),
+				'title'       => sprintf( 'WordPress-Website erstellen lassen ab %s | Haşim Üner', hu_freelancer_website_price() ),
+				'description' => sprintf( 'WordPress-Website erstellen lassen ab %s: gebaut für Anfragen, Festpreis vorab ausrechnen, alles auf Ihren Namen.', hu_freelancer_website_price( true ) ),
 			],
 			// Query-Owner "conversion optimierung b2b" (docs/seo/query-ownership.csv).
 			// Die Dauer der Analyse kommt aus dem Kanon, damit Snippet und Seite

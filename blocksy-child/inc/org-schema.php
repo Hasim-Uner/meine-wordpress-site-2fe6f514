@@ -1449,24 +1449,21 @@ function hu_output_schema()
         // Einstiegspreis aus dem Kanon (HU_FREELANCER_WEBSITE_MIN); Service und
         // sichtbarer Preis auf /wordpress-website-erstellen-lassen/ lesen dieselbe Zahl.
         'wordpress-website-erstellen-lassen' => [
-            'name'        => 'WordPress-Website erstellen lassen',
-            'description' => 'WordPress-Website zum Festpreis: Neubau oder Relaunch auf einer Testumgebung, live nach Abnahme. Bei einem Relaunch bekommt jede alte URL eine Weiterleitung.',
-            'serviceType' => 'WordPress-Website-Erstellung',
-            'serviceOutput' => 'Eine abgenommene WordPress-Website mit Kontaktformular; bei einem Relaunch mit Weiterleitung jeder alten URL',
-            'offers'      => [
+            'name' => 'Die Anfrage-Website: WordPress-Website erstellen lassen',
+            'description' => 'Gebaut für Anfragen, Festpreis vorab ausrechnen, alles auf Ihren Namen.',
+            'serviceType' => 'WordPress-Website',
+            'serviceOutput' => 'Eine abgenommene WordPress-Website mit Kontaktformular, technisches SEO und Übergabe auf Ihren Namen',
+            'offers' => [
                 [
-                    '@type'         => 'Offer',
-                    'name'          => 'Website Kompakt',
-                    'description'   => 'Festpreis ab, netto, für bis zu ' . hu_pricing_count_word(HU_FREELANCER_WEBSITE_PAGES) . ' Seiten mit Kontaktformular; jede weitere Seite ' . hu_freelancer_website_extra_page_price(true),
-                    'price'         => HU_FREELANCER_WEBSITE_MIN,
+                    '@type' => 'Offer',
+                    'name' => 'Die Anfrage-Website',
+                    'price' => HU_FREELANCER_WEBSITE_MIN,
                     'priceCurrency' => 'EUR',
                     'priceSpecification' => [
-                        '@type'                 => 'UnitPriceSpecification',
-                        'price'                 => HU_FREELANCER_WEBSITE_MIN,
-                        'priceCurrency'         => 'EUR',
-                        'valueAddedTaxIncluded' => false,
+                        [ '@type' => 'UnitPriceSpecification', 'price' => HU_FREELANCER_WEBSITE_MIN, 'priceCurrency' => 'EUR', 'valueAddedTaxIncluded' => false, 'description' => 'Website mit einer Seite' ],
+                        [ '@type' => 'UnitPriceSpecification', 'price' => HU_FREELANCER_WEBSITE_EXTRA_PAGE, 'priceCurrency' => 'EUR', 'valueAddedTaxIncluded' => false, 'description' => 'jede weitere Seite' ],
                     ],
-                    'url'           => home_url('/wordpress-website-erstellen-lassen/'),
+                    'url' => home_url('/wordpress-website-erstellen-lassen/'),
                 ],
             ],
         ],
@@ -1793,7 +1790,7 @@ function hu_output_schema()
                 $schemas[] = [
                     '@context'   => 'https://schema.org',
                     '@type'      => 'FAQPage',
-                    '@id'        => home_url('/wordpress-website-erstellen-lassen/#faq'),
+                    '@id'        => home_url('/wordpress-website-erstellen-lassen/#fragen'),
                     'url'        => home_url('/wordpress-website-erstellen-lassen/'),
                     'inLanguage' => 'de',
                     'publisher'  => ['@id' => home_url('/#organization')],

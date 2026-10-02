@@ -323,3 +323,20 @@ erklären die Umsetzung und den Nutzen für den Vertrieb. Der kostenlose
 Marktcheck bleibt der primäre Schritt: persönliche Prüfung, schriftlicher
 E-Mail-Befund gemäß Antwortzeit-Kanon, danach freie Entscheidung. Kein
 Pflichtgespräch und keine Buchung durch das Absenden.
+
+## Die Anfrage-Website — Freigabe 02.10.2026
+
+Produktname: **Die Anfrage-Website**. Preisformel und Zahlen ausschließlich aus
+`inc/canon/pricing-canon.php`: Grundpreis inklusive erster Seite, jede weitere
+Seite als Zusatzposition; optional Conversion-Tracking aus der Messung-Stufe.
+Rechner bis zehn Seiten. Bauzeit ab vollständigen Inhalten: bis zwei Seiten zwei
+Wochen, bis fünf drei, bis zehn vier; Relaunch eine Woche zusätzlich. Starttermin
+im Angebot, eine entscheidende Person, Rückmeldung in fünf Werktagen je Runde.
+Keine Theme-/Plugin-Lizenzkosten, zwei Korrekturrunden, Dokumentation und
+Editor-Einweisung, 30 Tage kostenlose Fehlerbehebung. Enthalten: Inhaltseinpflege,
+Feinschliff, technisches SEO und On-Page, Rechtstexte des Kunden einbinden,
+Kontaktformular, Honeypot, lokale Schriften, Testumgebung, Backup und Abnahme.
+Impressum, Datenschutz, Danke und 404 zählen nicht als Seite. Ausgenommen: Texte
+schreiben, Keyword-Recherche, Fotos/Logo, Rechtsberatung, Shop, Schnittstellen und
+Mehrsprachigkeit. Domain/Hosting direkt beim Anbieter. Landingpage, Übernahme-Check
+und Monatskontingente bleiben im Preiskanon unverändert.

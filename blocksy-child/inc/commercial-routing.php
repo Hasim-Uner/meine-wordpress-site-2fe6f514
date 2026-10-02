@@ -102,7 +102,7 @@ function hu_get_commercial_route_map() {
 		'conversion'      => function_exists( 'nexus_get_page_url' )
 			? nexus_get_page_url( [ 'conversion-optimierung' ], home_url( '/conversion-optimierung/' ) )
 			: home_url( '/conversion-optimierung/' ),
-		// Festpreis-Angebot Website Kompakt inkl. Relaunch-Block (seit 2026-10-01).
+		// Die Anfrage-Website: Festpreis für erste Seite plus weitere Seiten.
 		'website'         => function_exists( 'nexus_get_page_url' )
 			? nexus_get_page_url( [ 'wordpress-website-erstellen-lassen' ], home_url( '/wordpress-website-erstellen-lassen/' ) )
 			: home_url( '/wordpress-website-erstellen-lassen/' ),

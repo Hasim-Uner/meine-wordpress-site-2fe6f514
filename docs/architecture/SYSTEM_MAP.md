@@ -272,3 +272,14 @@ Risiko:
 - Kaufnahe Inhalte liegen weiter teils im Repo und teils im WordPress-Editor; Titel, Excerpts, Karten und manuell kuratierte Related-Module koennen die neue Proof- und Tonalitaetslogik unterlaufen, wenn sie nicht separat gepflegt werden.
 - WP-Cron hängt ohne Server-Cron an nicht gecachten Aufrufen; Follow-ups und Antwortfrist-Erinnerungen können sich dann verzögern.
 - Manuelle WordPress-Admin-Schritte existieren noch als Betriebswissen und muessen weiter systematisiert werden.
+
+## Anfrage-Website → Kontakt (02.10.2026)
+
+`pricing-canon.php` liefert Basis, Zusatzseite, Tracking und Bauzeit;
+`anfrage-website.js` liest die numerischen Datenattribute und übergibt Umfang
+in allen CTA-URLs. `page-kontakt.php` übernimmt `focus=website`, Seiten, Art,
+Tracking; `contact-page.php` validiert und berechnet serverseitig neu.
+`crm.php` speichert die Dimensionen und Umfang, beide Mails nennen ihn.
+`website-product-events.js` reicht freigegebene Dimensionen cookiefrei an
+Matomo weiter (bestehender Tracker muss separat konfiguriert sein).
+`helpers.php` besitzt FAQ-Copy, `org-schema.php` und Template lesen denselben Satz.

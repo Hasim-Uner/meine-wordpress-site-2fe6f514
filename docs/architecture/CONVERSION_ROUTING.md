@@ -27,7 +27,7 @@ A page can remain the canonical SEO destination for its query while its CTA rout
 | `/performance-marketing/` | B2B companies running Google Ads or Meta | Paid-demand money page (measurement → landing page → budget) | `Ausgangslage prüfen lassen` → `/kontakt/?type=project` | Tracking setup, landing page offer (`/landingpage-erstellen-lassen/`, `perf_to_landingpage_offer`; the former `perf_to_landingpages` → `/#angebot-funnel` is retired), case study; performance agencies → White-Label task (`?type=whitelabel&case=aufgabe`) |
 | `/landingpage-erstellen-lassen/` | Direct clients who need one page for one offer (`landingpage erstellen lassen`) | Fixed-price product page (route `landingpage`, since 2026-09-26) | `Landingpage anfragen` → `/kontakt/?type=project&focus=conversion` (`cta_lp_offer_hero_project`, `cta_lp_offer_scope_project`, `cta_lp_offer_close_project`) | Tracking setup and website offer as add-ons, case study; agencies → White-Label (`lp_offer_hero_whitelabel`) |
 | `/conversion-optimierung/` | B2B websites with visitors but too few matching inquiries (`conversion optimierung b2b`) | Written finding of the inquiry path (Anfragesystem-Analyse), then fixed-price implementation (route `conversion`, since 2026-09-30) | `Analyse anfragen` → `/kontakt/?type=analysis&focus=conversion` (`cro_offer_cta_hero_analysis`, `cro_offer_cta_analysis_scope`, `cro_offer_cta_close_analysis`) | Landingpage and tracking setup as price rows (`cro_offer_to_landingpage`, `cro_offer_to_tracking`), case study (`cro_offer_proof_case`); no footer door register on this page; no Marktcheck CTA. New direct-contact links in the close: `cro_offer_close_mail`, `cro_offer_close_tel`. Since 2026-10-01 the former `cro_offer_hero_whitelabel`, `cro_offer_to_website` and `cro_offer_reference_open` are retired (hero meta boxes, website row and reference list are gone) |
-| `/wordpress-website-erstellen-lassen/` | Direct clients who want a WordPress website built (`wordpress website erstellen lassen`) | Fixed-price product page Website Kompakt with a relaunch block (route `website`, since 2026-10-01); the relaunch is a block, not the page focus, and `website relaunch` stays with the article `/website-relaunch/` | `Website-Projekt anfragen` → `/kontakt/?type=project&focus=relaunch` (`cta_website_offer_hero_project`, `cta_website_offer_scope_project`, `cta_website_offer_close_project`) | Tracking setup and landing page offer as add-ons (`website_offer_to_tracking_setup`, `website_offer_to_landingpage`), relaunch article (`website_offer_relaunch_to_article`), case study (`website_offer_proof_case`); agencies → White-Label (`website_offer_hero_whitelabel`); no Marktcheck CTA, no Ersteinschätzung button |
+| `/wordpress-website-erstellen-lassen/` | Direktkunden, WordPress-Website erstellen lassen | Die Anfrage-Website: Produkt, Umfangsrechner, Festpreis und Bauzeit | `/kontakt/?type=project&focus=website&seiten=N&art=neubau\|relaunch` plus `tracking=1` bei Auswahl; Positionen hero/angebot/beleg/leiste/abschluss | Vergleich, Belege und Bauzeit; Kontextlink von der lokalen Agenturseite |
 | `/wordpress-agentur-hannover/` | Local `wordpress agentur hannover` search intent | Local SEO acquisition page | Project request without preset focus (`hu_get_navigation_project_request_url()`, since 2026-09-26) | Offers `/#angebote`; proof: public references `/#referenzen` (`agentur_proof_references`) and the case study (`agentur_proof_case`) |
 | `/ergebnisse/` | Retired proof hub (since 2026-09-25) | 301 to `/case-study-solar-leadgenerierung/`; excluded from sitemap and `llms.txt` | none | Menu item „Ergebnisse“ → `/#arbeiten`; route `results` → case study |
 | `/case-study-solar-leadgenerierung/` | Solar proof; since 2026-09-25 also the proof target of homepage, menu item „Ergebnisse“, tracking and agency pages | Evidence page | Solar Marktcheck | Non-energy readers: quiet project request below the Marktcheck (`cta_case_study_to_project`, since 2026-09-26) |
@@ -84,7 +84,7 @@ passt“ in der Übergabe (`home_door_whitelabel`, `home_door_energy`).
 
 Hero und Abschluss nutzen die Projektanfrage `/kontakt/?type=project` ohne
 Themenvorbelegung, wenn die Ersteinschätzung aus ist. Die fünf Leistungen
-nutzen ihre passenden Fokusziele: Website `relaunch`, Landingpage `conversion`,
+nutzen ihre passenden Fokusziele: Website `website`, Landingpage `conversion`,
 Analyse `type=analysis&focus=conversion`, Tracking `tracking`, Übernahme
 `implementation_scope`. Produktseiten vertiefen den Umfang. Die Website-Zeile
 verlinkt seit 2026-10-01 `/wordpress-website-erstellen-lassen/`
@@ -94,7 +94,7 @@ verlinkt seit 2026-10-01 `/wordpress-website-erstellen-lassen/`
 
 | Zeile | Anfrage-Hook (`lead_gen`) | Ziel | Sub-CTA „Was drinsteckt“ (`navigation`) |
 | --- | --- | --- | --- |
-| 01 Website und Relaunch | `home_offer_relaunch` | `/kontakt/?type=project&focus=relaunch` | `home_offer_website_detail` → `/wordpress-website-erstellen-lassen/` |
+| 01 Website und Relaunch | `home_offer_relaunch` | `/kontakt/?type=project&focus=website` | `home_offer_website_detail` → `/wordpress-website-erstellen-lassen/` |
 | 02 Landingpage | `home_offer_landingpage` | `/kontakt/?type=project&focus=conversion` | `home_offer_landingpage_detail` → `/landingpage-erstellen-lassen/` |
 | 03 Conversion-Analyse | `home_offer_analysis` | `/kontakt/?type=analysis&focus=conversion` | `home_offer_analysis_detail` → `/conversion-optimierung/` |
 | 04 Tracking | `home_offer_tracking` | `/kontakt/?type=project&focus=tracking` | `home_offer_tracking_detail` → `/ga4-tracking-setup/` |
@@ -648,3 +648,19 @@ These areas must be audited because the old architecture used the Marktcheck bro
 ## Guardrail
 
 If intent is unclear, do not guess based on the current business priority. Keep the page's SEO owner stable and prefer a neutral `Projekt anfragen` route until the page is explicitly classified.
+
+## Die Anfrage-Website (freigegeben 02.10.2026)
+
+Produkt-CTA-Hooks erhalten: `cta_website_offer_hero_project`,
+`cta_website_offer_scope_project`, `cta_website_offer_close_project`.
+Neu: `cta_website_offer_proof_project`, `cta_website_offer_sticky_project`.
+Agentur-Ausgang im Produkt-Hero und frühere Anlass/Relaunch/Zusatz-Hooks entfallen.
+Alle Produkt-CTAs tragen `data-website-cta` mit hero/angebot/beleg/leiste/abschluss.
+Der Rechner aktualisiert alle Ziele, Preis und Bauzeit aus demselben Zustand.
+`focus=website` ist ein gültiges Projekt-Thema; alte `focus=relaunch`-Links bleiben
+kompatibel. Konfiguration `seiten/art/tracking` wird angezeigt, serverseitig
+validiert, im CRM strukturiert gespeichert und in beiden Mails genannt.
+Preis oder Bauzeit aus dem Browser werden niemals als Angebotswerte übernommen.
+Matomo: Kategorie `anfrage_website`, Aktionen `cta_click`, `rechner_change`,
+`toggle_durchleuchtung`, `form_submit`; JSON-Eventname mit den jeweiligen
+Dimensionen. `form_submit` erst nach bestätigter erfolgreicher Antwort.

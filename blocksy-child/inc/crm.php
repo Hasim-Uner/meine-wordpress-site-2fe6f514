@@ -578,6 +578,10 @@ function nexus_sync_contact_request_to_crm( $payload ) {
 				'_nexus_contact_ad_budget_label'         => sanitize_text_field( (string) ( $payload['ad_budget_label'] ?? '' ) ),
 				'_nexus_contact_tracking_setup'          => sanitize_textarea_field( (string) ( $payload['tracking_setup'] ?? '' ) ),
 				'_nexus_contact_consent_tool'            => sanitize_text_field( (string) ( $payload['consent_tool'] ?? '' ) ),
+				'_nexus_contact_website_scope' => nexus_get_website_scope_summary( $payload ),
+				'_nexus_contact_website_pages' => (int) ( $payload['seiten'] ?? 0 ),
+				'_nexus_contact_website_kind' => sanitize_key( $payload['art'] ?? '' ),
+				'_nexus_contact_website_tracking' => (int) ( $payload['tracking'] ?? 0 ),
 				'_nexus_contact_message'                 => sanitize_textarea_field( (string) ( $payload['message'] ?? '' ) ),
 				'_nexus_contact_consent_contact_request' => 1,
 				'_nexus_contact_last_inquiry_at'         => current_time( 'timestamp' ),
@@ -893,6 +897,7 @@ function nexus_render_contact_details_meta_box( $post ) {
 					<?php endif; ?>
 					<?php if ( '' !== $focus_label ) : ?>
 						Thema: <?php echo esc_html( $focus_label ); ?><br>
+						<?php echo esc_html( (string) get_post_meta( $post->ID, '_nexus_contact_website_scope', true ) ); ?><br>
 					<?php endif; ?>
 					<?php if ( '' !== $timeline_label ) : ?>
 						Zeitfenster: <?php echo esc_html( $timeline_label ); ?><br>

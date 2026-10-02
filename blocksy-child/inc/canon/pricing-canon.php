@@ -472,21 +472,34 @@ function hu_tracking_ladder_display( $from_stage = 1 ) {
 }
 
 // ── WordPress-Freelancer-Nebenpfad ───────────────────────────────
-// Website Kompakt: Festpreis fuer bis zu HU_FREELANCER_WEBSITE_PAGES Seiten mit
-// Kontaktformular; jede weitere Seite kostet HU_FREELANCER_WEBSITE_EXTRA_PAGE.
+// Die Anfrage-Website: erste Seite mit Kontaktformular enthalten; jede weitere
+// Seite kostet HU_FREELANCER_WEBSITE_EXTRA_PAGE.
 // Deshalb steht der Betrag oeffentlich als "ab": mehr Seiten, hoeherer Preis.
 // Shop, Schnittstellen und Relaunches mit vielen Seiten werden separat
 // kalkuliert. Bis 2026-09-26 lag der Einstieg bei 3.400 € ohne Seitenangabe;
 // der alte Betrag steht als website-3400 in scripts/canon-forbidden-values.txt.
 // Herleitung: docs/decisions/preise-website-landingpage.md.
-define( 'HU_FREELANCER_WEBSITE_MIN', 2490 );
-define( 'HU_FREELANCER_WEBSITE_PAGES', 3 );
+// Freigegeben 02.10.2026: Die Anfrage-Website, erste Seite inklusive.
+define( 'HU_FREELANCER_WEBSITE_MIN', 1490 );
+define( 'HU_FREELANCER_WEBSITE_PAGES', 1 );
 define( 'HU_FREELANCER_WEBSITE_EXTRA_PAGE', 290 );
+define( 'HU_WEBSITE_CALCULATOR_MAX', 10 );
+
+/** Quote the approved product scope; neither price nor duration comes from a client. */
+function hu_website_quote( $pages, $kind = 'neubau', $tracking = false ) {
+	$pages = max( 1, min( HU_WEBSITE_CALCULATOR_MAX, (int) $pages ) );
+	return [
+		'pages' => $pages,
+		'kind' => 'relaunch' === $kind ? 'relaunch' : 'neubau',
+		'tracking' => (bool) $tracking,
+		'price' => HU_FREELANCER_WEBSITE_MIN + ( $pages - 1 ) * HU_FREELANCER_WEBSITE_EXTRA_PAGE + ( $tracking ? (int) hu_tracking_price( 'measurement', 'setup', 'value' ) : 0 ),
+		'weeks' => ( $pages <= 2 ? 2 : ( $pages <= 5 ? 3 : 4 ) ) + ( 'relaunch' === $kind ? 1 : 0 ),
+	];
+}
 
 // Landingpage: eine Seite, ein Angebot, ein Ziel. Festpreis inklusive Text,
-// Anfrageformular und Herkunftsmessung. Liegt bewusst unter Website Kompakt,
-// weil Kaeufer eine Seite guenstiger erwarten als mehrere; die Differenz
-// erklaert sich ueber den Inhalt (Text und Messung statt Seitenzahl).
+// Anfrageformular und Herkunftsmessung. Der höhere Preis gegenüber einer
+// Anfrage-Website mit Kundentexten erklärt sich durch Text und Messung.
 define( 'HU_LANDINGPAGE_PRICE', 1990 );
 
 // Übernahme-Check: bezahlte Diagnose, bevor eine fremde WordPress-Installation
@@ -518,7 +531,7 @@ function hu_freelancer_website_price( $with_net = false ) {
 }
 
 /**
- * Display the canonical price of one page beyond the Website-Kompakt scope.
+ * Display the canonical price of one page beyond the included first page.
  *
  * @param bool $with_net Append the "netto" qualifier.
  * @return string
@@ -530,7 +543,7 @@ function hu_freelancer_website_extra_page_price( $with_net = false ) {
 }
 
 /**
- * Describe the Website-Kompakt scope as one phrase.
+ * Describe the request website scope as one phrase.
  *
  * Ein Satzbaustein, damit Seitenzahl und Zusatzpreis nirgends einzeln
  * abgeschrieben werden. "netto" steht einmal am Ende.
@@ -539,8 +552,7 @@ function hu_freelancer_website_extra_page_price( $with_net = false ) {
  */
 function hu_freelancer_website_scope_display() {
 	return sprintf(
-		'Festpreis für bis zu %s Seiten mit Kontaktformular, jede weitere Seite %s',
-		hu_pricing_count_word( HU_FREELANCER_WEBSITE_PAGES ),
+		'Festpreis inklusive erster Seite mit Kontaktformular, jede weitere Seite %s',
 		hu_freelancer_website_extra_page_price( true )
 	);
 }

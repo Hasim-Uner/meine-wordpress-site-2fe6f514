@@ -210,6 +210,7 @@ get_header();
 
 				<div class="ausgang">
 					<a class="textlink" href="<?php echo esc_url( $offers_url ); ?>">Direkte WordPress-Leistungen ansehen</a>
+					<p>Für Neubau oder Relaunch: <a class="textlink" href="<?php echo esc_url( home_url( '/wordpress-website-erstellen-lassen/' ) ); ?>" data-track-action="agentur_to_website_offer" data-track-category="navigation">WordPress-Website zum Festpreis</a> – Umfang und Endpreis vorab ausrechnen.</p>
 					<a class="textlink" href="<?php echo esc_url( $tracking_url ); ?>">Conversion Tracking separat ansehen</a>
 				</div>
 			</div>

@@ -280,28 +280,28 @@ Abschnitt anzuhängen; der Verlauf gehört in Commit-Nachrichten.
   Guthaben, Bing-Linkdaten nicht angebunden, im Repo nur Domain-Summary:
   31 Backlinks, 25 verweisende Domains); Entscheidung offen.
 - **`/wordpress-website-erstellen-lassen/`** (`page-wordpress-website-erstellen-lassen.php`,
-  Gutachten-Layout wie `/landingpage-erstellen-lassen/`, seit 2026-10-01):
-  Festpreis-Angebot Website Kompakt für Direktkunden, Relaunch als Block, nicht
-  als Seitenfokus. Preis, Seitenzahl und Zusatzseite aus
-  `hu_freelancer_website_price()`, `HU_FREELANCER_WEBSITE_PAGES` und
-  `hu_freelancer_website_extra_page_price()`; Zusätze (Tracking-Leiter,
-  Landingpage, Übernahme-Check, Weiterentwicklungs-Kontingent) mit eigenem Preis
-  aus dem Kanon. Aufbau: Kopf, Anlass, Umfang mit „Nicht dazu“, Ablauf,
-  Relaunch (Weiterleitungsplan für jede alte URL, Testumgebung, Title/Canonical/
-  Schema), Zusätze, Beleg, Fragen, Abschluss. Keine eigene CSS-Datei: Das
-  Angebotsblatt nutzt `assets/css/landingpage-offer.css` über die Klasse
-  `lp-offer-page`. FAQ und FAQPage-Schema aus `nexus_get_website_faq_items()`,
-  Service mit Offer (Preis = `HU_FREELANCER_WEBSITE_MIN`) in `inc/org-schema.php`,
-  Title/Description in `inc/seo-meta.php`, Eintrag in `inc/llms-txt.php` und
-  `llms.txt`. CTAs auf `/kontakt/?type=project&focus=relaunch`, alle
-  Tracking-Werte mit Präfix `cta_website_offer_` bzw. Abschnitt
-  `website_offer_*`, kein Marktcheck-CTA, keine Ersteinschätzung. Route
-  `website`, Seitenanlage über `nexus_get_provisioned_pages()`. Query-Owner für
-  `wordpress website erstellen lassen`; `website relaunch` bleibt beim Beitrag
-  `/website-relaunch/`. Eingehende Links: Fuß (Gruppe Leistungen,
-  `cta_footer_nav_website_offer`) und `/landingpage-erstellen-lassen/` (Zusatz
-  „Website“). Die Startseite verlinkt die Seite seit 2026-10-01 aus der
-  Preisliste (`home_offer_website_detail`).
+  Die Anfrage-Website, Fassung 02.10.2026): Produktseite nach dem freigegebenen
+  Prototyp. Hero → Durchleuchtung → Angebot mit Rechner → Beleg → Zeit → Fragen
+  → Anfrage. Zwei dunkle Messflächen; globaler Kopf und Fuß bleiben erhalten.
+  `system.css` plus gekapseltes `anfrage-website.css`, Vanilla-JS; kein Legacy-Provider.
+  Preis aus `hu_freelancer_website_price()` inklusive erster Seite, jede weitere
+  aus `hu_freelancer_website_extra_page_price()`, optional Tracking aus der Leiter. Rechner 1–10 Seiten. Bauzeit 2/3/4 Wochen (bis 2/5/10
+  Seiten), Relaunch +1 Woche, ab vollständigen Inhalten. Acht FAQ aus einem Getter,
+  identisch im sichtbaren Text und FAQPage; Service/Offer mit zwei Preispositionen,
+  Breadcrumb und Meta bleiben zentral. Alle fünf Produkt-CTAs übergeben
+  `/kontakt/?type=project&focus=website&seiten=N&art=neubau|relaunch&tracking=1`;
+  tracking wird bei Abwahl weggelassen. Kontakt zeigt den Umfang, validiert ihn
+  serverseitig und speichert ihn in Mail, Bestätigung und CRM. Rechnerwerte bleiben
+  ohne Cookies oder Speicherung; Matomo-Events nur Umfang/Position, keine Formulardaten.
+  Matomo-Transport und dessen Konfiguration werden vom vorhandenen Website-Setup
+  erwartet; keine neue Tracker-ID oder externe Laufzeit wird injiziert.
+  Ohne JS sind beide Vergleichsansichten und beide Textzeilen sichtbar, der
+  statische Beispielumfang wird korrekt übergeben. Sticky-CTA erst nach dem Hero,
+  am Abschluss ausgeblendet und aus der Tastaturfolge entfernt. Reduzierte Bewegung:
+  keine Überblendung, kein Ladebalken. Belegbild: geliefert `hasimuener-org.webp`.
+  Zufluss: Kontextlink „WordPress-Website zum Festpreis“ auf der lokalen Agenturseite,
+  Startseite, Landingpage und Fuß. Query-Owner unverändert. Auswertung nach acht
+  Wochen oder 300 Aufrufen, siehe `docs/experimente/anfrage-website.md`.
 - **`/ga4-tracking-setup/`** (`page-ga4.php`, virtuelle Cluster-Route):
   Das Tracking-Angebot. Zeigt alle vier Stufen der Tracking-Leiter aus
   `hu_tracking_product_ladder()` als Karten `#stufe-1` bis `#stufe-4` (Raster

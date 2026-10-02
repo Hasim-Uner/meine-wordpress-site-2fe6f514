@@ -57,7 +57,7 @@ $public_focus_options = array_filter(
 // Bei Projektanfragen stehen die häufigsten Vorhaben oben; die Schlüssel
 // bleiben unverändert, nur die Reihenfolge der Auswahl ändert sich.
 if ( 'project' === $selected_type ) {
-	$project_focus_order  = [ 'relaunch', 'implementation_scope', 'conversion', 'tracking', 'seo', 'performance', 'website_strategy', 'followup_scope' ];
+	$project_focus_order  = [ 'website', 'relaunch', 'implementation_scope', 'conversion', 'tracking', 'seo', 'performance', 'website_strategy', 'followup_scope' ];
 	$public_focus_options = array_merge(
 		array_intersect_key( array_flip( $project_focus_order ), $public_focus_options ),
 		$public_focus_options
@@ -99,6 +99,18 @@ $message_step_title  = $is_scoped_focus ? 'Wo liegt der Engpass?' : 'Was soll me
 $form_eyebrow        = 'Projektbriefing';
 $page_classes        = 'site-main doku contact-page' . ( $is_scoped_focus ? ' contact-page--scoped' : '' );
 $website_placeholder = 'https://example.de';
+
+$website_scope = nexus_get_website_request_scope( [
+	'focus' => $selected_focus, 'request_type' => $selected_type,
+] + wp_unslash( $_GET ) );
+if ( is_wp_error( $website_scope ) ) { $website_scope = []; }
+if ( 'website' === $selected_focus ) {
+	$hero_title = 'Was soll Ihre Anfrage-Website können?';
+	$form_title = empty( $website_scope ) ? 'Zwei kurze Schritte zu Ihrer Website-Anfrage.' : 'Ihr Umfang steht. Zwei kurze Schritte zur Anfrage.';
+	$form_intro = 'Beschreiben Sie kurz Ihr Angebot und den gewünschten Starttermin.';
+	$message_step_title = 'Was bieten Sie an, und bis wann soll die Website stehen?';
+	$submit_label = 'Website-Projekt anfragen';
+}
 
 // Versuch Ersteinschätzung (/kontakt/?focus=ersteinschaetzung). Den Typ gibt
 // es nur bei eingeschaltetem Schalter; alle Texte kommen aus dem Kanon.
@@ -159,6 +171,13 @@ if ( $is_first_assessment ) {
 			</div>
 
 			<form class="contact-form contact-form--superflow" data-contact-form action="<?php echo esc_url( $rest_endpoint ); ?>" method="post" novalidate>
+				<?php if ( ! empty( $website_scope ) ) : ?>
+				<p class="contact-website-scope" data-website-scope><?php echo esc_html( nexus_get_website_scope_summary( $website_scope ) ); ?></p>
+				<input type="hidden" name="seiten" value="<?php echo esc_attr( $website_scope['seiten'] ); ?>">
+				<input type="hidden" name="art" value="<?php echo esc_attr( $website_scope['art'] ); ?>">
+				<input type="hidden" name="tracking" value="<?php echo esc_attr( $website_scope['tracking'] ); ?>">
+				<?php endif; ?>
+
 				<div class="contact-form__honeypot" aria-hidden="true">
 					<label for="contact-company-website">Website</label>
 					<input id="contact-company-website" type="text" name="company_website" tabindex="-1" autocomplete="off">

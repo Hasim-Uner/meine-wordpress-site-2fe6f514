@@ -124,7 +124,7 @@ function nexus_get_llms_txt_sections() {
 				[
 					'label'       => 'WordPress-Website erstellen lassen',
 					'url'         => $urls['website'] ?? home_url( '/wordpress-website-erstellen-lassen/' ),
-					'description' => 'Festpreis-Angebot Website Kompakt für Direktkunden: Neubau oder Relaunch auf WordPress, gebaut auf einer Testumgebung und live nach Abnahme. Beim Relaunch bekommt jede alte URL eine Weiterleitung. Tracking, Landingpage, Übernahme-Check und Weiterentwicklung als eigene Zusätze.',
+					'description' => 'Die Anfrage-Website für Direktkunden: Grundpreis inklusive erster Seite, jede weitere Seite mit festem Zusatzpreis. Neubau oder Relaunch, technisches SEO und Übergabe auf Ihren Namen. Umfang, Endpreis und Bauzeit vorab ausrechnen; optional Conversion-Tracking.',
 				],
 				[
 					'label'       => 'Conversion-Optimierung für B2B',
