@@ -729,3 +729,50 @@ function hu_whitelabel_price( $key, $field = 'display', $fallback = '' ) {
 
 	return (string) $prices[ $key ][ $field ];
 }
+
+/**
+ * Compare published prices only where the delivered scope is identical.
+ *
+ * Landingpage is deliberately excluded: the direct offer includes concept
+ * and copy; the agency supplies both. Ratios and labels share one source
+ * with the hero strip, so a price change cannot leave a stale discount.
+ *
+ * @return array<int, array<string, mixed>>
+ */
+function hu_whitelabel_margin_rows() {
+	$retail = (int) hu_tracking_price( 'standard', 'setup', 'value' );
+	$agency = (int) hu_whitelabel_price( 'server_side', 'value' );
+	if ( $retail <= 0 || $agency <= 0 ) {
+		return [];
+	}
+	$step       = 500;
+	$scale      = (int) ( ceil( max( $retail, $agency ) / $step ) * $step );
+	$difference = $retail - $agency;
+	$discount   = (int) round( $difference / $retail * 100 );
+	$ticks      = [];
+	for ( $value = 0; $value <= $scale; $value += $step ) {
+		$ticks[] = [
+			'value'    => $value,
+			'display'  => $value === $scale ? hu_format_eur( $value ) : number_format( $value, 0, ',', '.' ),
+			'position' => number_format( $value / $scale * 100, 6, '.', '' ) . '%',
+		];
+	}
+	return [
+		[
+			'key'              => 'server_side',
+			'name'             => 'Server-Side-Setup',
+			'retail_value'     => $retail,
+			'agency_value'     => $agency,
+			'retail_display'   => hu_tracking_price( 'standard', 'setup', 'display' ),
+			'agency_display'   => hu_format_eur( $agency ),
+			'difference'       => $difference,
+			'difference_display' => hu_format_eur( $difference ),
+			'discount_percent' => $discount,
+			'discount_display' => ( $discount >= 0 ? '−' : '+' ) . abs( $discount ) . ' %',
+			'scale_max'        => $scale,
+			'scale_ticks'      => $ticks,
+			'retail_ratio'     => number_format( $retail / $scale, 6, '.', '' ),
+			'agency_ratio'     => number_format( $agency / $scale, 6, '.', '' ),
+		],
+	];
+}

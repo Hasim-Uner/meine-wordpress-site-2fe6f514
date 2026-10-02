@@ -52,6 +52,20 @@ function hu_get_contact_email() {
 }
 
 /**
+ * Public durations in the agency delivery agreement.
+ *
+ * @param string $key Promise key.
+ * @return string
+ */
+function hu_whitelabel_delivery_promise( $key ) {
+	$promises = [
+		'customer_protection' => 'zwölf Monate',
+		'call'                => '30 Minuten',
+	];
+	return $promises[ $key ] ?? '';
+}
+
+/**
  * Canonical mailto link for the public contact address.
  *
  * Eigener Getter, damit kein Aufrufer 'mailto:' selbst davorschreibt: genau

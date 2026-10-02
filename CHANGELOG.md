@@ -2,6 +2,15 @@
 
 ## 2026-10
 
+### White-Label: finale Strecke mit echtem Abnahmeprotokoll
+
+- Acht Abschnitte: Auftrag, Felder, Belege, Ablauf, Preise, Absicherung, Fragen, Anfrage. Native Felder-Akkordeons; Fehler/Änderung im Ablauf, Ausstieg in der Absicherung, übrige fünf FAQ-Antworten unverändert.
+- Hero „Gebaut. Gemessen. Abgenommen.“ prüft lokal sieben echte Befunde, zeigt Messmarken, Scanlinie und Stempel mit tatsächlicher Punktzahl. Hauptaktion ist sofort bedienbar, Protokoll wiederholbar. Reduzierte Bewegung und fehlendes JavaScript haben eigene ehrliche Zustände.
+- Vier Agentur-Angebotszeilen und eine berechnete Margen-Tafel aus `hu_whitelabel_margin_rows()`, nur Server-Side mit gleichem Umfang. Belege bleiben hell; Kopf/Hero und Margen-Tafel sind die dunklen Messinstrumente.
+- Formular-Markup und Versand-JS unverändert, drei Fälle weiter auf demselben REST-Vertrag. Mobiler Sticky-CTA berücksichtigt die Sichtbarkeit des Formulars.
+- Title/Description zentral, Service/BusinessAudience/OfferCatalog mit vier sichtbaren Offer-Ankern, FAQPage aus demselben Array. Canon-Guard schützt auch das lokale Messmodul. Browser-Regressionsprüfungen umfassen Breiten, Befunde, Wiederholung, Tastatur, No-JS, reduzierte Bewegung und alle drei Formularwege.
+- Messhypothese und Live-Abnahme vor dem sechswöchigen Fenster in `docs/experimente/whitelabel-angebotsphase.md`.
+
 ### Startseite: Prüfstand als leiser Streifen, fünf Leistungen mit Produktseiten
 
 - **Freeze aufgehoben:** Der Betreiber hat am 2026-10-01 die Einfrierung der Startseite für Reihenfolge und Leistungen beendet (`docs/experimente/ersteinschaetzung.md`, Abschnitt „Umbau der Startseite am 2026-10-01“). Hero und Abschluss bleiben unverändert, die Ersteinschätzung ist weiter der primäre Button. Zwei Deploys: Die neue Reihenfolge und die fünf Zeilen gingen mit Pull Request 511 am 2026-10-01 um 23:16 Uhr MESZ live (Trennpunkt für die Auswertung der Einsendungen); der schmale Prüfstand-Streifen, der Link der Website-Zeile und die Hook-Umbenennung folgen mit Pull Request 513.

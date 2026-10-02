@@ -131,6 +131,21 @@ for index in "${!rule_ids[@]}"; do
     hits="$(printf '%s\n' "$hits" | grep -E -- "$context" || true)"
   fi
 
+  # White-Label keeps its existing REST form in the same script. Only the
+  # explicitly bounded measurement module belongs to strecke-js-privat.
+  # Cookie reads are a real check; writes, transport and storage are forbidden.
+  if [ "$id" = "strecke-js-privat" ]; then
+    protocol_file="blocksy-child/assets/js/whitelabel.js"
+    if ! awk '/strecke-js-privat:start/ { start++; first=FNR } /strecke-js-privat:end/ { end++; last=FNR } END { exit !(start == 1 && end == 1 && first < last) }' "$protocol_file"; then
+      echo "Canon guard: White-Label protocol needs exactly one privacy boundary." >&2
+      exit 2
+    fi
+    protocol_hits="$(awk '/strecke-js-privat:start/ { active=1; next } /strecke-js-privat:end/ { active=0 } active { print FNR ":" $0 }' "$protocol_file" | grep -E 'fetch[[:space:]]*\(|sendBeacon|XMLHttpRequest|localStorage|sessionStorage|indexedDB|dataLayer|document\.cookie[[:space:]]*=' || true)"
+    if [ -n "$protocol_hits" ]; then
+      hits+=$'\n'"$(printf '%s\n' "$protocol_hits" | sed "s|^|$protocol_file:|")"
+    fi
+  fi
+
   [ -n "$hits" ] || continue
 
   violations=$(( violations + 1 ))

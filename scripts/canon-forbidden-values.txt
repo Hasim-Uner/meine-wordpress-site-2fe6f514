@@ -119,6 +119,9 @@ rule	start-testimonial	[Tt]estimonial|<blockquote|[Kk]undenstimme|logo-wall|[Kk]
 rule	start-projektanzahl	[0-9]+\+?[[:space:]]*(Projekte|Kunden|Websites umgesetzt|zufriedene)	^blocksy-child/(front-page\.php|assets/(css|js)/startseite-strecke\.(css|js)):	Keine Projekt- oder Kundenanzahl auf der Startseite.
 # Das Messprotokoll der Startseite sendet und speichert nachweislich nichts.
 # Taucht einer dieser Aufrufe im Skript auf, bricht der Build.
+# canon-guard.sh prueft denselben Vertrag im abgegrenzten White-Label-Modul;
+# dort ist Cookie-Lesen ein Befund, Schreiben bleibt verboten. Das bestehende
+# REST-Formular liegt ausserhalb der Messgrenze.
 rule	strecke-js-privat	fetch\(|sendBeacon|XMLHttpRequest|localStorage|sessionStorage|indexedDB|document\.cookie	^blocksy-child/assets/js/startseite-strecke\.js:	Das Protokoll bleibt im Browser: kein Netzwerkaufruf, kein Speicher, kein Cookie.
 
 # ── White-Label ───────────────────────────────────────────────────────────

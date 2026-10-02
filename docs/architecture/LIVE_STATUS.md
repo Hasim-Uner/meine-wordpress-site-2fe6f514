@@ -170,38 +170,41 @@ Abschnitt anzuhängen; der Verlauf gehört in Commit-Nachrichten.
   Bis 820 px folgt das Formular direkt auf Titel und Einleitung; Ablauf,
   andere Einstiege und E-Mail stehen darunter.
 - **`/whitelabel-retainer/`** (`page-whitelabel-retainer.php`): Agentur-Einstieg
-  und Landeseite der Akquise-Mails. Seit 2026-09-25 auf dem System der
-  Startseite: lädt `startseite-strecke.css/.js` als Basis, `whitelabel.css`
-  ist nur das Delta; `design-system.css`, Breadcrumb und
-  `navigation-ecosystem.css/.js` laden hier nicht. Eigener Kopf aus der
-  `.leiste` (Wortmarke, Anker Leistungen/Belege/Preise/Ablauf/Fragen,
-  Button „Aufgabe beschreiben“; unter 768 px übernimmt der Button am unteren
-  Rand), eigener Fuß, globale Sprungmarke auf `#main`. Sieben Abschnitte
-  (Stand 2026-09-26): Hero (`#hero`) mit H1 „Ich baue die WordPress-Seite und
-  die Messung dazu. Festpreis und Termin stehen, bevor ihr zusagt.“, Zweitweg
-  „Vor der Zusage einschätzen lassen“ (`?case=angebotsphase`) und
-  Abnahmeprotokoll als Muster; Leistungen (`#lieferfelder`, vier Aufgaben
-  WordPress, Tracking, Anfragestrecke, Barrierefreiheit, je mit Anlass aus
-  Sicht der Agentur und „Ihr nehmt ab“); Belege (`#proof`: Prüfstand
-  `#pruefstand` als einzige dunkle Tafel, darunter die Referenzen aus
-  `hu_public_reference_projects()`); Preise (`#einstieg`, Test-Sprint, drei
-  Erstprojekte, Monatskontingent, Margenblock nur für das Server-Side-Setup
-  mit dem Endkundenpreis aus `hu_tracking_price()`); Ablauf
-  (`#zusammenarbeit`, fünf Stationen Aufgabe → Umfang → Umsetzung → Abnahme →
-  Übergabe auf der Linie, Ausfall-Zusage); Fragen (`#faq`); Anfrage
-  (`#naechster-schritt`, Formular `#aufgabe` als Ende der Linie; Wege
-  Aufgabe, Angebotsphase, Vormerken und 30-Minuten-Termin). Die Punkte des
-  Protokolls haken sich mit JavaScript ab, wenn die Leselinie ihre Station
-  erreicht; ohne JavaScript stehen sie abgehakt. `?case=` kennt `aufgabe`,
-  `angebotsphase` und `vormerken`; Formulartexte je Fall stehen im Template
-  (`data-wl-case-texts`), Antwort und nächster Schritt der Bestätigung in
-  `hu_whitelabel_request_cases()`. Preise aus
-  `hu_whitelabel_pricing_canon()`; Service- und FAQPage-Schema (FAQ aus
-  `nexus_get_whitelabel_faq_items()`, sieben Fragen). Sperrliste: `wl-*`-Regeln
-  in `scripts/canon-forbidden-values.txt`. Eigenes og:image
-  `assets/img/whitelabel-retainer-og.jpg` (1200 × 630, JPG) über
-  `hu_get_route_social_image()`, erzeugt mit
-  `scripts/build-og-images.py`.
+  und Landeseite der Akquise-Mails. Finale Fassung im Repo vom 2026-10-02,
+  Live-Abnahme nach dem Deploy. Basis bleibt `startseite-strecke.css/.js`,
+  `whitelabel.css/.js` ergänzt nur die lokalen Komponenten. Acht Stationen:
+  Auftrag (`#hero`), Felder (`#lieferfelder`), Belege (`#proof`, `#pruefstand`,
+  `#referenzen`), Ablauf (`#zusammenarbeit`), Preise (`#einstieg`), Absicherung
+  (`#absicherung`, `#eignung`), Fragen (`#faq`), Anfrage (`#naechster-schritt`,
+  Formular `#aufgabe`). Seitennavigation: Leistungen/Belege/Ablauf/Preise/Fragen;
+  Aufbau und Tür des Kopfes bleiben, Kopf und Hero bilden eine dunkle Fläche.
+  H1 „Gebaut. Gemessen. Abgenommen.“; ein Hauptbutton von Anfang an bedienbar,
+  Preise als Link. Der Hero prüft lokal sieben echte Befunde (Überschriften,
+  Bilder, Pflichtfelder, neue Tabs, LCP mit ausdrücklich benanntem Dokument-
+  Fallback, lesbare Cookies, JSON-LD). Messmarken in der Randspalte ab 768 px,
+  Protokoll daneben ab 1280 px. Stempel und Füllung zeigen die echte Punktzahl;
+  ein Cookie bei eingeloggten Admins bleibt ein Befund. Ohne JS stehen alle
+  Wörter, es läuft keine Prüfung. Reduzierte Bewegung zeigt Ergebnisse ohne
+  Staffelung. Keine Kopplung mehr zwischen Protokoll und Ablaufstationen.
+  Die vier Felder sind native exklusive Akkordeons. Belege sind hell; dunkel
+  sind nur Hero-Prüfstand und Margen-Tafel (`#marge`). Vier Preiszeilen mit
+  eigenen Anfrage-CTAs; Monatskontingent danach. `hu_whitelabel_margin_rows()`
+  berechnet Vergleich, Differenz, Abschlag und Skala ausschließlich für das
+  Server-Side-Setup mit gleichem Umfang. Die Landingpage bleibt wegen des
+  abweichenden Endkundenumfangs außerhalb des Vergleichs. Fehler/Änderung
+  steht im Ablauf, Ausstieg in der Absicherung; die fünf übrigen FAQ-Antworten
+  einschließlich `kapazitaet` bleiben unverändert.
+  Formular-Markup und Formular-JS bleiben unverändert: REST
+  `nexus/v1/whitelabel-request`, Honeypot, Fehlerliste, Zugänge, Mail-Fallback,
+  `?case=aufgabe`, `angebotsphase`, `vormerken`. Mobiler Sticky-CTA nach dem
+  Hero, verborgen während das Formular im Bild ist. Preise und Antwortzeit
+  aus dem Kanon, Service/BusinessAudience/OfferCatalog und FAQPage zentral in
+  `inc/org-schema.php`; Offer-IDs auf `#test-sprint`, `#angebot-tracking-audit`,
+  `#angebot-server-side`, `#angebot-landingpage`, mit Anker-Lint. Die Regel
+  `strecke-js-privat` prüft auch das abgegrenzte White-Label-Messmodul;
+  Cookie-Lesen ist eine Prüfung, Versand oder Speicherung dort verboten.
+  Eigenes og:image `assets/img/whitelabel-retainer-og.jpg` bleibt.
+  Hypothese und Auswertung: `docs/experimente/whitelabel-angebotsphase.md`.
 - **`/performance-marketing/`** (`page-performance.php`, Gutachten-Layout):
   Performance Marketing für B2B in der Reihenfolge Messung → Zielseite →
   Budget, mit eigenem Weg für Performance-Agenturen zu White-Label. Titel,

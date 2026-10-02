@@ -278,6 +278,10 @@ Regeln:
 - WordPress, SEO, Tracking, CRO und Barrierefreiheit sind Lieferfelder
 - Erstprojekt mit Scope und Preis vor Start; danach optional Retainer
 - Schreibweise sichtbar immer `White-Label`
+- Finale Strecke: Auftrag → Felder → Belege → Ablauf → Preise → Absicherung → Fragen → Anfrage
+- Dunkel sind nur zwei Messinstrumente: der live prüfende Hero und die Margen-Tafel
+- Ein Hauptweg im Hero; die Angebotsphase bekommt ihren CTA nach den Preisen
+- Margenvergleich nur bei gleichem Umfang; Landingpages werden derzeit nicht verglichen
 
 ## Brand Colors (Project Override)
 

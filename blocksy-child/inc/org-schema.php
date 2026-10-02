@@ -981,6 +981,171 @@ function hu_get_business_area_served() {
     ];
 }
 
+/**
+ * White-Label page, service catalog and FAQ from the same visible canon.
+ *
+ * @param string $slug Public White-Label route.
+ * @return array<int, array<string, mixed>>
+ */
+function hu_get_whitelabel_schema_nodes( $slug = 'whitelabel-retainer' ) {
+    if ( ! in_array( $slug, [ 'whitelabel-retainer', 'whitelabel-retainer-proof', 'whitelabel' ], true ) ) {
+        return [];
+    }
+    $schemas = [];
+    $whitelabel_url = home_url('/' . $slug . '/');
+    $whitelabelPage = [
+        '@context' => 'https://schema.org',
+        '@type'    => 'AboutPage',
+        '@id'      => $whitelabel_url . '#about',
+        'url'      => $whitelabel_url,
+        'name'     => 'White-Label für Agenturen',
+        'headline' => 'Gebaut. Gemessen. Abgenommen.',
+        'description' => 'White-Label für Agenturen: WordPress-Umsetzung, technisches SEO, Barrierefreiheit und die vollständige Messkette — GA4, Server-Side, Consent Mode V2, CRM-Anbindung — aus einer Hand. Einstieg über ein Erstprojekt mit fixem Scope, Retainer erst danach.',
+        'inLanguage' => 'de',
+        'about'    => ['@id' => home_url('/#organization')],
+        'mainEntity' => hu_person_schema_ref(),
+        'image' => hu_get_portrait_image_url(),
+    ];
+
+    $schemas[] = $whitelabelPage;
+
+    /*
+     * Service-Knoten der Agentur-Route.
+     *
+     * Die Seite beschrieb bis hierher nur sich selbst (AboutPage) und
+     * ihre FAQ. Was sie tatsaechlich anbietet — vier Erstprojekte mit
+     * Preisuntergrenze, in DE, AT und CH — stand ausschliesslich als
+     * Fliesstext da. Die Betraege kommen aus dem Pricing-Canon, damit
+     * Angebotskarte, FAQ und Schema nicht auseinanderlaufen koennen.
+     *
+     * Bewusst kein zweiter Person- oder Organization-Knoten: `provider`
+     * referenziert die bestehende Entity aus /hasim-uener/.
+     */
+    if ( function_exists( 'hu_whitelabel_pricing_canon' ) ) {
+        $whitelabel_prices = hu_whitelabel_pricing_canon();
+        $whitelabel_offers = [];
+
+        $whitelabel_offer_map = [
+            'test_sprint'    => [
+                'name'        => 'WordPress-Test-Sprint',
+                'description' => 'Eine vorab schriftlich abgegrenzte technische WordPress-Aufgabe zum Festpreis, maximal ein Arbeitstag — inklusive Umsetzung, Funktionstest, technischer Dokumentation und einer Korrekturrunde.',
+                'exact'       => true,
+                'anchor'      => 'test-sprint',
+            ],
+            'tracking_audit' => [
+                'name'        => 'Tracking-Audit',
+                'description' => 'GA4, GTM und Consent-Bestand geprüft: schriftlicher Befund und priorisierte Fixliste.',
+                'exact'       => false,
+                'anchor'      => 'angebot-tracking-audit',
+            ],
+            'server_side'    => [
+                'name'        => 'Server-Side-Setup',
+                'description' => 'Eigener Server-Side-Container, Enhanced Conversions, Meta CAPI und Consent Mode V2 — produktiv geschaltet, dokumentiert und übergeben.',
+                'exact'       => false,
+                'anchor'      => 'angebot-server-side',
+            ],
+            'landingpage'    => [
+                'name'        => 'Landingpage',
+                'description' => 'Individuelles Template mit Funnel-Logik, sauberen Core Web Vitals und Messbarkeit ab dem ersten Klick.',
+                'exact'       => false,
+                'anchor'      => 'angebot-landingpage',
+            ],
+        ];
+
+        foreach ( $whitelabel_offer_map as $offer_key => $offer ) {
+            if ( empty( $whitelabel_prices[ $offer_key ]['value'] ) ) {
+                continue;
+            }
+
+            $price_spec = [
+                '@type'                 => 'UnitPriceSpecification',
+                'priceCurrency'         => 'EUR',
+                'valueAddedTaxIncluded'  => false,
+            ];
+
+            // "ab" ist eine Untergrenze, kein Preis. minPrice sagt das
+            // maschinenlesbar; price waere eine Zusage, die die Seite
+            // ausdruecklich nicht macht.
+            if ( $offer['exact'] ) {
+                $price_spec['price'] = (int) $whitelabel_prices[ $offer_key ]['value'];
+            } else {
+                $price_spec['minPrice'] = (int) $whitelabel_prices[ $offer_key ]['value'];
+            }
+
+            $whitelabel_offers[] = [
+                '@type'           => 'Offer',
+                '@id'             => $whitelabel_url . '#' . $offer['anchor'],
+                'url'             => $whitelabel_url . '#' . $offer['anchor'],
+                'itemOffered'     => [
+                    '@type'       => 'Service',
+                    'name'        => $offer['name'],
+                    'description' => $offer['description'],
+                ],
+                'priceSpecification' => $price_spec,
+                'availability'    => 'https://schema.org/InStock',
+            ];
+        }
+
+        if ( ! empty( $whitelabel_offers ) ) {
+            $schemas[] = [
+                '@context'    => 'https://schema.org',
+                '@type'       => 'Service',
+                '@id'         => $whitelabel_url . '#service',
+                'name'        => 'White-Label-Umsetzung für Agenturen',
+                'description' => 'WordPress-Entwicklung, technisches SEO, Core Web Vitals, GA4 und GTM, Server-Side-Tracking, Consent Mode V2, Meta CAPI, CRO, Landingpages, CRM-Anbindung und Automation als Subunternehmer für Agenturen — Vertrag mit der Agentur, NDA standardmäßig.',
+                'serviceType' => 'White-Label-Umsetzung für Agenturen',
+                'url'         => $whitelabel_url,
+                'inLanguage'  => 'de',
+                'provider'    => hu_person_schema_ref(),
+                'areaServed'  => [
+                    [ '@type' => 'Country', 'name' => 'DE' ],
+                    [ '@type' => 'Country', 'name' => 'AT' ],
+                    [ '@type' => 'Country', 'name' => 'CH' ],
+                ],
+                'audience'    => [
+                    '@type'        => 'BusinessAudience',
+                    'audienceType' => 'Web-, Performance- und Marketing-Agenturen',
+                ],
+                'mainEntityOfPage' => [ '@id' => $whitelabel_url . '#about' ],
+                'hasOfferCatalog'  => [
+                    '@type'           => 'OfferCatalog',
+                    'name'            => 'Erstprojekte',
+                    'itemListElement' => $whitelabel_offers,
+                ],
+            ];
+        }
+    }
+
+    if ( function_exists( 'nexus_get_whitelabel_faq_items' ) ) {
+        $whitelabel_faq_entities = array_map(
+            static function ( $item ) {
+                return [
+                    '@type'          => 'Question',
+                    'name'           => (string) $item['question'],
+                    'acceptedAnswer' => [
+                        '@type' => 'Answer',
+                        'text'  => (string) $item['answer'],
+                    ],
+                ];
+            },
+            nexus_get_whitelabel_faq_items()
+        );
+
+        if ( ! empty( $whitelabel_faq_entities ) ) {
+            $schemas[] = [
+                '@context'   => 'https://schema.org',
+                '@type'      => 'FAQPage',
+                '@id'        => $whitelabel_url . '#faq',
+                'url'        => $whitelabel_url,
+                'inLanguage' => 'de',
+                'publisher'  => ['@id' => home_url('/#organization')],
+                'mainEntity' => $whitelabel_faq_entities,
+            ];
+        }
+    }
+    return $schemas;
+}
+
 function hu_output_schema()
 {
     $google_maps_url = hu_brand_map_url();
@@ -1818,152 +1983,8 @@ function hu_output_schema()
             $schemas[] = $collection;
         }
 
-        if ($slug === 'whitelabel-retainer' || $slug === 'whitelabel-retainer-proof' || $slug === 'whitelabel') {
-            $whitelabel_url = home_url('/' . $slug . '/');
-            $whitelabelPage = [
-                '@context' => 'https://schema.org',
-                '@type'    => 'AboutPage',
-                '@id'      => $whitelabel_url . '#about',
-                'url'      => $whitelabel_url,
-                'name'     => 'White-Label für Agenturen',
-                'headline' => 'Ich baue die WordPress-Seite und die Messung dazu. Festpreis und Termin stehen, bevor ihr zusagt.',
-                'description' => 'White-Label für Agenturen: WordPress-Umsetzung, technisches SEO, Barrierefreiheit und die vollständige Messkette — GA4, Server-Side, Consent Mode V2, CRM-Anbindung — aus einer Hand. Einstieg über ein Erstprojekt mit fixem Scope, Retainer erst danach.',
-                'inLanguage' => 'de',
-                'about'    => ['@id' => home_url('/#organization')],
-                'mainEntity' => hu_person_schema_ref(),
-                'image' => hu_get_portrait_image_url(),
-            ];
-
-            $schemas[] = $whitelabelPage;
-
-            /*
-             * Service-Knoten der Agentur-Route.
-             *
-             * Die Seite beschrieb bis hierher nur sich selbst (AboutPage) und
-             * ihre FAQ. Was sie tatsaechlich anbietet — vier Erstprojekte mit
-             * Preisuntergrenze, in DE, AT und CH — stand ausschliesslich als
-             * Fliesstext da. Die Betraege kommen aus dem Pricing-Canon, damit
-             * Angebotskarte, FAQ und Schema nicht auseinanderlaufen koennen.
-             *
-             * Bewusst kein zweiter Person- oder Organization-Knoten: `provider`
-             * referenziert die bestehende Entity aus /hasim-uener/.
-             */
-            if ( function_exists( 'hu_whitelabel_pricing_canon' ) ) {
-                $whitelabel_prices = hu_whitelabel_pricing_canon();
-                $whitelabel_offers = [];
-
-                $whitelabel_offer_map = [
-                    'test_sprint'    => [
-                        'name'        => 'WordPress-Test-Sprint',
-                        'description' => 'Eine vorab schriftlich abgegrenzte technische WordPress-Aufgabe zum Festpreis, maximal ein Arbeitstag — inklusive Umsetzung, Funktionstest, technischer Dokumentation und einer Korrekturrunde.',
-                        'exact'       => true,
-                    ],
-                    'tracking_audit' => [
-                        'name'        => 'Tracking-Audit',
-                        'description' => 'GA4, GTM und Consent-Bestand geprüft: schriftlicher Befund und priorisierte Fixliste.',
-                        'exact'       => false,
-                    ],
-                    'server_side'    => [
-                        'name'        => 'Server-Side-Setup',
-                        'description' => 'Eigener Server-Side-Container, Enhanced Conversions, Meta CAPI und Consent Mode V2 — produktiv geschaltet, dokumentiert und übergeben.',
-                        'exact'       => false,
-                    ],
-                    'landingpage'    => [
-                        'name'        => 'Landingpage',
-                        'description' => 'Individuelles Template mit Funnel-Logik, sauberen Core Web Vitals und Messbarkeit ab dem ersten Klick.',
-                        'exact'       => false,
-                    ],
-                ];
-
-                foreach ( $whitelabel_offer_map as $offer_key => $offer ) {
-                    if ( empty( $whitelabel_prices[ $offer_key ]['value'] ) ) {
-                        continue;
-                    }
-
-                    $price_spec = [
-                        '@type'                 => 'UnitPriceSpecification',
-                        'priceCurrency'         => 'EUR',
-                        'valueAddedTaxIncluded'  => false,
-                    ];
-
-                    // "ab" ist eine Untergrenze, kein Preis. minPrice sagt das
-                    // maschinenlesbar; price waere eine Zusage, die die Seite
-                    // ausdruecklich nicht macht.
-                    if ( $offer['exact'] ) {
-                        $price_spec['price'] = (int) $whitelabel_prices[ $offer_key ]['value'];
-                    } else {
-                        $price_spec['minPrice'] = (int) $whitelabel_prices[ $offer_key ]['value'];
-                    }
-
-                    $whitelabel_offers[] = [
-                        '@type'           => 'Offer',
-                        'itemOffered'     => [
-                            '@type'       => 'Service',
-                            'name'        => $offer['name'],
-                            'description' => $offer['description'],
-                        ],
-                        'priceSpecification' => $price_spec,
-                        'availability'    => 'https://schema.org/InStock',
-                    ];
-                }
-
-                if ( ! empty( $whitelabel_offers ) ) {
-                    $schemas[] = [
-                        '@context'    => 'https://schema.org',
-                        '@type'       => 'Service',
-                        '@id'         => $whitelabel_url . '#service',
-                        'name'        => 'White-Label-Umsetzung für Agenturen',
-                        'description' => 'WordPress-Entwicklung, technisches SEO, Core Web Vitals, GA4 und GTM, Server-Side-Tracking, Consent Mode V2, Meta CAPI, CRO, Landingpages, CRM-Anbindung und Automation als Subunternehmer für Agenturen — Vertrag mit der Agentur, NDA standardmäßig.',
-                        'serviceType' => 'White-Label-Umsetzung für Agenturen',
-                        'url'         => $whitelabel_url,
-                        'inLanguage'  => 'de',
-                        'provider'    => hu_person_schema_ref(),
-                        'areaServed'  => [
-                            [ '@type' => 'Country', 'name' => 'DE' ],
-                            [ '@type' => 'Country', 'name' => 'AT' ],
-                            [ '@type' => 'Country', 'name' => 'CH' ],
-                        ],
-                        'audience'    => [
-                            '@type'        => 'BusinessAudience',
-                            'audienceType' => 'Web-, Performance- und Marketing-Agenturen',
-                        ],
-                        'mainEntityOfPage' => [ '@id' => $whitelabel_url . '#about' ],
-                        'hasOfferCatalog'  => [
-                            '@type'           => 'OfferCatalog',
-                            'name'            => 'Erstprojekte',
-                            'itemListElement' => $whitelabel_offers,
-                        ],
-                    ];
-                }
-            }
-
-            if ( function_exists( 'nexus_get_whitelabel_faq_items' ) ) {
-                $whitelabel_faq_entities = array_map(
-                    static function ( $item ) {
-                        return [
-                            '@type'          => 'Question',
-                            'name'           => (string) $item['question'],
-                            'acceptedAnswer' => [
-                                '@type' => 'Answer',
-                                'text'  => (string) $item['answer'],
-                            ],
-                        ];
-                    },
-                    nexus_get_whitelabel_faq_items()
-                );
-
-                if ( ! empty( $whitelabel_faq_entities ) ) {
-                    $schemas[] = [
-                        '@context'   => 'https://schema.org',
-                        '@type'      => 'FAQPage',
-                        '@id'        => $whitelabel_url . '#faq',
-                        'url'        => $whitelabel_url,
-                        'inLanguage' => 'de',
-                        'publisher'  => ['@id' => home_url('/#organization')],
-                        'mainEntity' => $whitelabel_faq_entities,
-                    ];
-                }
-            }
+        if ( in_array( $slug, [ 'whitelabel-retainer', 'whitelabel-retainer-proof', 'whitelabel' ], true ) ) {
+            $schemas = array_merge( $schemas, hu_get_whitelabel_schema_nodes( $slug ) );
         }
 
         if ( 'aroundhome-solar-einordnung' === $slug && function_exists( 'nexus_get_aroundhome_faq_items' ) ) {
