@@ -234,7 +234,7 @@ $marke = static function ( $nr, $name ) {
 
 <div class="doku st wl-page" id="top" data-track-section="whitelabel_page" data-st data-st-final>
 
-	<section class="st-abschnitt st-hero wl-hero tafel" id="hero" aria-labelledby="wl-title" data-st-abschnitt="01" data-track-section="hero" data-wl-pruefstand>
+	<section class="st-abschnitt st-hero st-messflaeche wl-hero tafel" id="hero" aria-labelledby="wl-title" data-st-abschnitt="01" data-track-section="hero" data-wl-pruefstand>
 		<div class="wl-scan" aria-hidden="true" data-wl-scan></div>
 		<?php echo $marke( '01', 'Auftrag' ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?>
 		<div class="st-inhalt" data-wl-messfeld>
@@ -242,7 +242,7 @@ $marke = static function ( $nr, $name ) {
 			<div class="wl-hero__raster">
 				<div class="wl-hero__links">
 					<div class="wl-hero__titel" data-wl-titel>
-						<h1 class="wl-hero__h1" id="wl-title" data-wl-mess="h1"><span class="wl-zeile"><span class="wl-wort">Gebaut.</span></span> <span class="wl-zeile"><span class="wl-wort">Gemessen.</span></span> <span class="wl-zeile"><span class="wl-wort wl-wort--abnahme" data-wl-wort-abnahme>Abgenommen.</span></span></h1>
+						<h1 class="wl-hero__h1" id="wl-title" data-wl-mess="h1"><span class="wl-zeile st-messzeile"><span class="wl-wort st-messwort">Gebaut.</span></span> <span class="wl-zeile st-messzeile"><span class="wl-wort st-messwort">Gemessen.</span></span> <span class="wl-zeile st-messzeile"><span class="wl-wort st-messwort wl-wort--abnahme" data-wl-wort-abnahme>Abgenommen.</span></span></h1>
 						<div class="wl-stempel" data-wl-stempel aria-hidden="true"><span class="wl-stempel__kopf">Geprüft</span><span class="wl-stempel__wert" data-wl-stempel-wert></span><span class="wl-stempel__datum" data-wl-stempel-datum></span></div>
 					</div>
 					<p class="st-hero__satz" data-wl-mess="satz">Ich baue die WordPress-Seite und das Tracking dazu, als White-Label unter eurem Namen und in euren Accounts. Festpreis und Termin stehen, bevor ihr zusagt.</p>

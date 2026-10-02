@@ -1,19 +1,21 @@
 /* Startseite: die Strecke.
  *
- * Fuenf Aufgaben, ein Skript:
+ * Sechs Aufgaben, ein Skript:
  * 1. Die Linie in der Randspalte fuellt sich beim Lesen (transform: scaleY,
  *    Update in requestAnimationFrame, Geometrie nur bei Groessenaenderung).
  *    Die Lesekante liegt bei 45 % der Fensterhoehe; am Ende ist alles erreicht.
  * 2. Das Messprotokoll im Hero zeigt, was dieser Browser misst: Ladezeit,
  *    gesehene Abschnitte, Scrolltiefe, Klick auf einen Anfrage-Button.
- * 3. Native Stationen klappen exklusiv auf; die Messtafel erscheint einmal.
- * 4. „Leistungen" in der Kopfleiste ist nur aktiv, solange #angebote im
+ * 3. Der Hero zeigt Herkunftsetikett und Signal auf der Bahn, nach den Schriften.
+ * 4. Native Stationen klappen exklusiv auf; die Messtafel erscheint einmal.
+ * 5. „Leistungen" in der Kopfleiste ist nur aktiv, solange #angebote im
  *    Blick ist.
- * 5. Auf Seiten mit data-st-einblenden blenden Bloecke unter dem ersten
+ * 6. Auf Seiten mit data-st-einblenden blenden Bloecke unter dem ersten
  *    Bildschirm beim ersten Sichtkontakt ein.
  *
- * Nichts davon laeuft von selbst: Die Balken wachsen beim ersten Sichtkontakt. Bei reduzierter Bewegung
- * folgt die Linie ohne Uebergaenge dem Scrollstand.
+ * Die Hero-Choreografie laeuft einmal, die Balken beim ersten Sichtkontakt.
+ * Bei reduzierter Bewegung steht der Hero sofort im gemessenen Endzustand;
+ * die Linie folgt ohne Uebergaenge dem Scrollstand.
  *
  * Harte Regel: Dieses Skript sendet nichts und speichert nichts. Kein
  * Netzwerkaufruf, kein Browser-Speicher, kein Cookie. Die Sperrliste in
@@ -56,7 +58,6 @@
 
     var protokoll = root.querySelector('[data-st-protokoll]');
     var werte = {};
-    var verlauf = protokoll && protokoll.querySelector('[data-st-verlauf]');
     var ansage = protokoll && protokoll.querySelector('[data-st-ansage]');
     var letzteAnsage = -Infinity;
     var ANSAGE_ABSTAND = 10000;
@@ -74,20 +75,6 @@
         if (!dd || dd.textContent === wert) return;
         dd.textContent = wert;
         dd.setAttribute('data-st-gemessen', '');
-    }
-
-    function protokolliere(ms, meldung) {
-        if (!verlauf) return;
-        var li = document.createElement('li');
-        var zeit = document.createElement('time');
-        zeit.textContent = uhr(ms);
-        li.appendChild(zeit);
-        li.appendChild(document.createTextNode(' ' + meldung));
-        if (!reduced.matches) li.className = 'st-neu';
-        verlauf.insertBefore(li, verlauf.firstChild);
-        while (verlauf.children.length > 3) {
-            verlauf.removeChild(verlauf.lastChild);
-        }
     }
 
     /* aria-live nur polite und gedrosselt: hoechstens eine Ansage je zehn
@@ -129,11 +116,10 @@
                 return true;
             });
         }
-        // Einzeiliges Panel; der volle Wert bleibt fuer Maus und Hilfstechnik da.
+        // Der volle Wert bleibt in Station 01 fuer Maus und Hilfstechnik da.
         herkunft = herkunft.replace(/[\x00-\x1f\x7f]/g, ' ').slice(0, 200);
         setzeWert('herkunft', herkunft);
         if (werte.herkunft) werte.herkunft.title = herkunft;
-        protokolliere(0, 'Ankunft · ' + herkunft);
     }
 
     /* Ladezeit: LCP, wo der Browser es kennt, sonst Navigation Timing.
@@ -152,23 +138,25 @@
         });
         if (abschliessen && !lcpFertig) {
             lcpFertig = true;
-            protokolliere(ms, 'Größtes Element gezeichnet');
             sage('Ladezeit dieses Aufrufs: ' + sekunden(ms).replace(' s', ' Sekunden') + '.');
         }
     }
 
-    var kannLcp = 'PerformanceObserver' in window &&
+    var kannLcp = typeof PerformanceObserver === 'function' &&
         PerformanceObserver.supportedEntryTypes &&
         PerformanceObserver.supportedEntryTypes.indexOf('largest-contentful-paint') !== -1;
 
-    if (kannLcp) {
-        var lcpBeobachter = new PerformanceObserver(function (liste) {
+    var lcpBeobachter;
+    if (kannLcp) try {
+        lcpBeobachter = new PerformanceObserver(function (liste) {
             var eintraege = liste.getEntries();
             var letzter = eintraege[eintraege.length - 1];
             if (letzter) zeigeLadezeit(letzter.startTime, false);
         });
         lcpBeobachter.observe({ type: 'largest-contentful-paint', buffered: true });
+    } catch (e) { kannLcp = false; }
 
+    if (kannLcp) {
         /* LCP steht fest, sobald die Seite geladen ist und der Browser
            kurz Ruhe hatte, spaetestens bei der ersten Eingabe. */
         var lcpAbschluss = function () {
@@ -207,11 +195,10 @@
         gesehen[nr] = true;
         anzahlGesehen += 1;
         setzeWert('abschnitte', anzahlGesehen + ' von ' + abschnitte.length);
-        if (nr !== '01') protokolliere(jetzt(), 'Abschnitt ' + nr + ' ' + text(abschnitt.querySelector('.st-marke__name')));
     }
     setzeWert('abschnitte', '0 von ' + abschnitte.length);
     setzeWert('tiefe', '0 %');
-    setzeWert('klick', 'noch keiner');
+    setzeWert('klick', 'noch offen');
 
     /* Klick auf einen Anfrage-Button. Die Navigation wird nie verzoegert;
        wer ueber die Zurueck-Taste zurueckkommt, sieht den Klick noch im
@@ -220,17 +207,200 @@
     document.addEventListener('click', function (event) {
         var link = event.target.closest && event.target.closest('[data-track-category="lead_gen"]');
         if (!link) return;
-        var t = jetzt();
         var ort = { header: 'Kopf', hero: 'Einstieg', beweis: 'Fall', angebote: 'Preise', abschluss: 'Ende' }[link.dataset.trackSection];
         if (!ort) return;
-        setzeWert('klick', 'ja · ' + ort);
-        protokolliere(t, 'Klick auf Anfrage · ' + ort);
+        setzeWert('klick', 'geöffnet · ' + ort);
+        var formularPunkt = root.querySelector('[data-st-spur-station="2"]');
+        if (formularPunkt) formularPunkt.classList.add('is-reached');
         if (ersterKlick) {
             ersterKlick = false;
             letzteAnsage = -Infinity;
         }
         sage('Klick auf ' + text(link) + ' protokolliert.');
     }, true);
+
+    /* ── Hero: Signal und Herkunftsetikett, rein lokal ───────── */
+    var hero = root.querySelector('[data-st-hero]');
+    var titel = hero && hero.querySelector('[data-st-titel]');
+    var quellWort = hero && hero.querySelector('[data-st-wort-quelle]');
+    var etikett = hero && hero.querySelector('[data-st-etikett]');
+    var bahn = hero && hero.querySelector('[data-st-bahn]');
+    var signal = hero && hero.querySelector('[data-st-signal]');
+    var spurLinie = hero && hero.querySelector('[data-st-spur-linie]');
+    var spurFuell = hero && hero.querySelector('[data-st-spur-fuell]');
+    var spurStationen = hero ? Array.prototype.slice.call(hero.querySelectorAll('[data-st-spur-station]')) : [];
+    var stand = -1;
+    var lauf = 0;
+    var signalAnimation;
+    var fuellAnimation;
+    var spurPunkte = [];
+    var fuellStand = 0;
+
+    function senkrecht() { return window.innerWidth < 768; }
+
+    function legeEtikett() {
+        if (!etikett || !quellWort || !titel) return;
+        etikett.classList.remove('st-etikett--unten');
+        titel.style.paddingBottom = '';
+        etikett.style.left = '';
+        etikett.style.top = '';
+        if (senkrecht()) return; // Im Fluss unter der H1, keine Leitlinie.
+        var t = titel.getBoundingClientRect();
+        var w = quellWort.getBoundingClientRect();
+        // Die Maske selbst wird nicht animiert: ihr y ist auch waehrend
+        // des Aufstiegs die endgueltige Lage der vierten Zeile.
+        var zeile = quellWort.closest('.st-messzeile').getBoundingClientRect();
+        var breite = etikett.offsetWidth;
+        var hoehe = etikett.offsetHeight;
+        var wortEnde = w.right - t.left;
+        if (window.innerWidth >= 1280 && wortEnde + 34 + breite <= t.width) {
+            etikett.style.left = (wortEnde + 34) + 'px';
+            etikett.style.top = (zeile.top - t.top + (zeile.height - hoehe) / 2) + 'px';
+        } else {
+            etikett.classList.add('st-etikett--unten');
+            etikett.style.left = Math.max(0, wortEnde - breite) + 'px';
+            etikett.style.top = (zeile.bottom - t.top + 26) + 'px';
+            titel.style.paddingBottom = (hoehe + 26) + 'px';
+        }
+    }
+
+    function vermesseSpur() {
+        if (!bahn || !spurStationen.length) return;
+        var b = bahn.getBoundingClientRect();
+        spurPunkte = spurStationen.map(function (station) {
+            var p = station.querySelector('.st-spur__punkt').getBoundingClientRect();
+            return { x: p.left - b.left + p.width / 2, y: p.top - b.top + p.height / 2 };
+        });
+        var erster = spurPunkte[0];
+        var letzter = spurPunkte[spurPunkte.length - 1];
+        spurLinie.style.left = erster.x + 'px';
+        spurLinie.style.top = erster.y + 'px';
+        spurLinie.style.width = senkrecht() ? '1px' : (letzter.x - erster.x) + 'px';
+        spurLinie.style.height = senkrecht() ? (letzter.y - erster.y) + 'px' : '1px';
+    }
+
+    function signalLage(i) {
+        var p = spurPunkte[i];
+        return 'translate(' + (p.x - 6.5) + 'px, ' + (p.y - 6.5) + 'px)';
+    }
+
+    function fuellLage(wert) { return (senkrecht() ? 'scaleY(' : 'scaleX(') + wert + ')'; }
+
+    function stoppeSignal() {
+        if (signalAnimation) signalAnimation.cancel();
+        if (fuellAnimation) fuellAnimation.cancel();
+        signalAnimation = fuellAnimation = null;
+    }
+
+    function setzeSignal(i, dauer) {
+        if (!signal || !spurPunkte[i]) return Promise.resolve();
+        var von = stand < 0 ? i : stand;
+        var achse = senkrecht() ? 'y' : 'x';
+        var start = spurPunkte[0][achse];
+        var gesamt = spurPunkte[spurPunkte.length - 1][achse] - start;
+        var anteil = Math.max(0, Math.min(1, (spurPunkte[i][achse] - start) / Math.max(1, gesamt)));
+        var vorher = fuellStand;
+        stoppeSignal();
+        stand = i;
+        fuellStand = anteil;
+        signal.style.transform = signalLage(i);
+        spurFuell.style.transform = fuellLage(anteil);
+        if (!dauer || reduced.matches || !signal.animate) return Promise.resolve();
+        // Der Endzustand steht bereits inline. Keine fill-forwards-Schicht,
+        // die nach resize die neu vermessene Lage ueberschreibt.
+        signalAnimation = signal.animate([{ transform: signalLage(von) }, { transform: signalLage(i) }],
+            { duration: dauer, easing: 'cubic-bezier(.65, 0, .35, 1)' });
+        fuellAnimation = spurFuell.animate([{ transform: fuellLage(vorher) }, { transform: fuellLage(anteil) }],
+            { duration: dauer, easing: 'cubic-bezier(.65, 0, .35, 1)' });
+        return signalAnimation.finished.catch(function () {}); // resize darf abbrechen.
+    }
+
+    function haengeEtikett() {
+        if (!etikett) return;
+        etikett.classList.add('is-hung');
+        hero.classList.add('is-assigned');
+    }
+
+    function heroEndzustand() {
+        if (!hero || !spurPunkte.length) return;
+        lauf += 1;
+        stoppeSignal();
+        hero.classList.add('is-started');
+        haengeEtikett();
+        spurStationen[0].classList.add('is-reached');
+        spurStationen[1].classList.add('is-reached');
+        signal.hidden = false;
+        signal.classList.add('is-visible', 'is-here');
+        signal.classList.remove('is-pulsing');
+        setzeSignal(2, 0);
+    }
+
+    function heroNeuVermessen() {
+        if (!hero || !hero.hasAttribute('data-st-hero-bereit')) return;
+        legeEtikett();
+        vermesseSpur();
+        // Ein Groessenwechsel unterbricht die Choreografie und zeigt den
+        // Endzustand. Es bleibt nie eine Animation auf der alten Achse liegen.
+        if (stand >= 0) heroEndzustand();
+    }
+
+    function warte(ms) { return new Promise(function (resolve) { window.setTimeout(resolve, ms); }); }
+
+    async function starteHero() {
+        if (!hero || !titel || !etikett || !signal || spurStationen.length < 3) return;
+        // Erst wenn die Messung eingerichtet ist, uebernimmt CSS die Maske.
+        // Beim Ausfall von JS bleiben alle vier Zeilen voll lesbar.
+        etikett.hidden = false;
+        etikett.querySelector('[data-st-etikett-wert]').textContent = werte.herkunft ? werte.herkunft.textContent : '…';
+        etikett.querySelector('[data-st-etikett-fuss]').textContent = 'zugeordnet ' + new Date().toLocaleTimeString('de-DE', { hour: '2-digit', minute: '2-digit' }) + ' · ohne Cookie';
+        hero.setAttribute('data-st-hero-bereit', '');
+        legeEtikett();
+        vermesseSpur();
+        neuVermessen();
+        if (reduced.matches) {
+            await warte(200);
+            heroEndzustand();
+            return;
+        }
+        var dieserLauf = ++lauf;
+        // Ein Frame fuer den Masken-Startzustand, dann erst die Transition.
+        await new Promise(function (resolve) { window.requestAnimationFrame(function () { window.requestAnimationFrame(resolve); }); });
+        if (lauf !== dieserLauf) return;
+        hero.classList.add('is-started');
+        await warte(450);
+        if (lauf !== dieserLauf) return;
+        spurStationen[0].classList.add('is-reached');
+        signal.hidden = false;
+        setzeSignal(0, 0);
+        signal.classList.add('is-visible');
+        await warte(350);
+        if (lauf !== dieserLauf) return;
+        haengeEtikett();
+        await warte(500);
+        if (lauf !== dieserLauf) return;
+        await setzeSignal(1, 500);
+        if (lauf !== dieserLauf) return;
+        spurStationen[1].classList.add('is-reached');
+        await setzeSignal(2, 600);
+        if (lauf !== dieserLauf) return;
+        signal.classList.add('is-here', 'is-pulsing');
+    }
+
+    // Auch Direktlinks und Zurueck/Vorwaerts oeffnen die richtige Station.
+    // Der native Fragment-Sprung bleibt erhalten; Tastaturfokus geht an summary.
+    function oeffneStation(hash, fokus) {
+        var summary = hash && document.getElementById(hash.slice(1));
+        if (!summary || !summary.matches('#angebot-funnel summary')) return;
+        summary.closest('details').open = true;
+        if (fokus) summary.focus({ preventScroll: true });
+        neuVermessen();
+    }
+    document.addEventListener('click', function (event) {
+        var link = event.target.closest && event.target.closest('[data-st-station-link]');
+        if (link) oeffneStation(link.hash, true);
+    });
+    window.addEventListener('hashchange', function () { oeffneStation(window.location.hash, true); });
+    oeffneStation(window.location.hash, false);
 
     /* ── 1. Die Linie ───────────────────────────────────────── */
 
@@ -286,7 +456,6 @@
                 endeZeit.textContent = 'erreicht nach ' + uhr(t);
                 endeZeit.hidden = false;
             }
-            protokolliere(t, 'Ende der Strecke erreicht');
         }
     }
 
@@ -390,17 +559,18 @@
     else window.setTimeout(einblenden, 300);
 
     window.addEventListener('scroll', planen, { passive: true });
-    window.addEventListener('resize', neuVermessen, { passive: true });
+    window.addEventListener('resize', function () { neuVermessen(); heroNeuVermessen(); }, { passive: true });
     window.addEventListener('load', neuVermessen, { once: true });
     if ('ResizeObserver' in window) {
         new ResizeObserver(function () { neuVermessen(); }).observe(root);
     }
     if (document.fonts && document.fonts.ready) {
-        document.fonts.ready.then(neuVermessen);
-    }
+        document.fonts.ready.then(function () { neuVermessen(); starteHero(); });
+    } else starteHero();
     if (reduced.addEventListener) {
         reduced.addEventListener('change', function () {
             if (reduced.matches && messtafel) messtafel.setAttribute('data-st-gesehen', '');
+            if (reduced.matches && hero && hero.hasAttribute('data-st-hero-bereit')) heroEndzustand();
             planen();
         });
     }

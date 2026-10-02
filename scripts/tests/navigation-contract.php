@@ -256,7 +256,8 @@ foreach ( nav_test_contexts() as $context => $definition ) {
 	$doors_html  = nav_links( $header_html, '//a[contains(concat(" ", @class, " "), " tuer ")]' );
 	$header_el   = $header_x->query( '//header' )->item( 0 );
 
-	nav_check( $header_el && "leiste leiste--{$mode}" === preg_replace( '/ nexus-article-reader-header$/', '', $header_el->getAttribute( 'class' ) ), "{$context}: header renders mode {$mode}" );
+	$expected_header_class = "leiste leiste--{$mode}" . ( 'home' === $context ? ' st-messkopf tafel' : '' );
+	nav_check( $header_el && $expected_header_class === preg_replace( '/ nexus-article-reader-header$/', '', $header_el->getAttribute( 'class' ) ), "{$context}: header renders mode {$mode} with dark measurement tokens only on home" );
 
 	if ( 'voll' === $mode ) {
 		$sheet_without_about = array_values( array_filter( $sheet, static function ( $link ) { return 'Über Haşim' !== $link['text']; } ) );

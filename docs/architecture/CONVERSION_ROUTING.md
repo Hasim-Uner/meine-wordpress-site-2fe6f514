@@ -78,7 +78,7 @@ Seit der Betreiberentscheidung vom 2026-09-13 übernimmt `/` die Inhalte und
 Suchintention der früheren Freelancer-Route. Die finale Template-Fassung vom
 2026-10-02 ordnet die vorhandene Strecke neu: Klick → Strecke → Fall →
 Prüfstand mit Referenzen → Preise → Übergabe → Fragen → Anfrage. Der Fall steht
-vor den Preisen; Protokoll und Messtafel sind die dunklen Messinstrumente.
+vor den Preisen; Hero samt Kopf und Messtafel sind die dunklen Messinstrumente.
 White-Label und Solar/Wärmepumpe stehen unter „Wann ein anderer Weg besser
 passt“ in der Übergabe (`home_door_whitelabel`, `home_door_energy`).
 
@@ -111,9 +111,14 @@ ist, führen Kopf, Hero, Fall, Preisabschluss und Seitenabschluss über
 behalten `home_head_ersteinschaetzung` und `home_close_ersteinschaetzung`.
 Neu sind `home_case_ersteinschaetzung` und `home_offers_ersteinschaetzung`.
 Im Hero steht daneben „Alle Preise“ (`home_hero_prices`), die Projektanfrage
-steht bei den Angeboten und als zweiter Einstieg im Abschluss. Lokale
-Abschnittslinks tragen `home_nav_prices`, `home_nav_case`, `home_nav_pruefstand`;
-die Reihenfolge und Anker der globalen Navigation bleiben unverändert.
+steht bei den Angeboten und als zweiter Einstieg im Abschluss.
+Preislink im Kicker: `home_hero_price_line` → `#angebote`, aus dem Preiskanon.
+Die frühere Hero-Seitennavigation mit `home_nav_prices`, `home_nav_case` und
+`home_nav_pruefstand` entfällt. Fall und Referenzen bleiben in der Belege-Leiste.
+Die sechs Hero-Stationslinks tragen `home_hero_station` mit dem Slug als
+`data-track-label`, führen auf `#station-{slug}` und öffnen dort das Akkordeon.
+Die Reihenfolge, Türen und Anker der globalen Navigation bleiben unverändert;
+nur auf der Startseite trägt der globale Kopf die dunklen Tafel-Tokens.
 Schalter aus: Kopf, Hero und Fall führen zur Projektanfrage, die zusätzliche
 Ersteinschätzungs-Zeile bei den Preisen und ihre Abschlusskarte entfallen.
 Auf der Kontaktseite und bei den Mails gelten die bestehenden Kanon-Verträge.

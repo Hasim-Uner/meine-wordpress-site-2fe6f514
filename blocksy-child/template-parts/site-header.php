@@ -155,7 +155,7 @@ if ( 'leser' === $leiste_modus && function_exists( 'hu_funnel_reader_dossier' ) 
 ?>
 
 <header
-	class="leiste leiste--<?php echo esc_attr( $leiste_modus ); ?><?php echo null !== $reader_dossier ? ' nexus-article-reader-header' : ''; // raw-ok -- static class. ?>"
+	class="leiste leiste--<?php echo esc_attr( $leiste_modus ); ?><?php echo is_front_page() ? ' st-messkopf tafel' : ''; // raw-ok -- static class. ?><?php echo null !== $reader_dossier ? ' nexus-article-reader-header' : ''; // raw-ok -- static class. ?>"
 	data-leiste
 	data-leiste-modus="<?php echo esc_attr( $leiste_modus ); ?>"
 	role="banner"
