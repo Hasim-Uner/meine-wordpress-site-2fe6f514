@@ -99,6 +99,31 @@ läuft auf einer anderen Seitenstruktur und ist mit der davor nur eingeschränkt
 vergleichbar. Ein längerer Weg bis zu den Preisen oder neue
 Ausgänge zu Produktseiten können Anfragen vom Hero-Button wegziehen.
 
+### Hero als Messfläche (Auftrag 2026-10-02)
+
+Die nächste Änderung betrifft nur den Kopf und Abschnitt 01. Hero und Kopf
+bilden ein dunkles Messinstrument. Ein Herkunftsetikett und der Besuch als
+Signal führen auf einer Bahn von Klick über Seite bis Formular. Die sechs
+Stationslinks öffnen die bestehenden Akkordeons in Abschnitt 02.
+
+**Hypothese:** mehr Ersteinschätzungs-Klicks aus dem ersten Bildschirm und mehr
+Stationsöffnungen. Sechs Wochen ab dem tatsächlichen Livegang auswerten:
+
+- `home_head_ersteinschaetzung`, `data-track-section=hero`: Anteil der
+  Hero-Klicks an Startseitenaufrufen, verglichen mit den sechs Wochen davor.
+- `home_hero_station`, `data-track-label={slug}`: Anteil der Aufrufe mit
+  mindestens einer Stationsöffnung und Verteilung auf die sechs Slugs.
+  Dieser Hook ist neu; vor dem Release gibt es dafür keine vergleichbare
+  Ereignisreihe. Erst ab Livegang eine Baseline bilden.
+- Herkunftsmix und passende Einsendungen daneben betrachten. Mehr Klicks
+  allein belegen keinen zusätzlichen Umsatz; Vorher/Nachher ist bei
+  verändertem Traffic kein kausaler Nachweis.
+
+Livegang und Ende der Beobachtung werden nach dem erfolgreichen Deploy
+notiert. Die `data-track-*`-Hooks sind vorhanden; die lokale Messfläche
+sendet keine Ereignisse. Vor der Auswertung prüfen, ob das bestehende
+Tracking die beiden Hooks erfasst. Keine neue Analytics im Messmodul.
+
 ## Wo was steht
 
 | Was | Wo |

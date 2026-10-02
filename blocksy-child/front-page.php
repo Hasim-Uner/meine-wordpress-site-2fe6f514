@@ -4,7 +4,7 @@
  *
  * Die Seite ist die Strecke, die sie verkauft: Eine Messlinie laeuft in der
  * Randspalte vom Hero bis zum Anfrageblock und fuellt sich beim Lesen. Oben
- * protokolliert ein Panel diesen Besuch mit Werten, die der Browser selbst
+ * protokolliert die Hero-Strecke diesen Besuch mit Werten, die der Browser selbst
  * misst; startseite-strecke.js sendet und speichert davon nichts (erzwungen
  * ueber scripts/canon-forbidden-values.txt, Regel strecke-js-privat).
  *
@@ -301,56 +301,77 @@ get_header();
 <?php // data-st-final grenzt die Homepage-Deltas von der gemeinsamen White-Label-Basis ab. ?>
 <div class="doku st" id="top" data-track-section="homepage" data-st data-st-final>
 
-	<section class="st-abschnitt st-hero" id="klick" aria-labelledby="st-h1" data-st-abschnitt="01">
+	<section class="st-abschnitt st-hero st-hero--messflaeche st-messflaeche tafel" id="klick" aria-labelledby="st-h1" data-st-abschnitt="01" data-track-section="hero" data-st-hero>
 		<?php echo $marke( '01', 'Klick' ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- escaped inside the helper. ?>
-		<div class="st-inhalt st-hero__raster">
-			<p class="st-klein-label st-hero__kicker">WordPress Freelancer für Unternehmen · Pattensen bei Hannover · remote in DACH</p>
-			<div class="st-hero__text">
-				<h1 class="st-hero__h1" id="st-h1"><span class="st-hero__h1-satz">Mehr Anfragen über Ihre Website.</span> <span class="st-hero__h1-satz st-hero__h1-satz--leise">Und Sie sehen, woher jede kommt.</span></h1>
+		<div class="st-inhalt">
+			<div class="st-hero__kopfzeile">
+				<p class="st-klein-label st-hero__kicker">WordPress Freelancer für Unternehmen · Pattensen bei Hannover · remote in DACH</p>
+				<a class="st-klein-label st-hero__preis" href="#angebote" data-track-action="home_hero_price_line" data-track-category="navigation" data-track-section="hero">Websites ab <?php echo esc_html( $website_price ); ?> netto · alle Preise ↓</a>
+			</div>
+			<div class="st-hero__titel" data-st-titel>
+				<h1 class="st-hero__h1" id="st-h1"><span class="st-messzeile"><span class="st-messwort">Mehr Anfragen</span></span> <span class="st-messzeile"><span class="st-messwort">über Ihre Website.</span></span> <span class="st-messzeile st-leise"><span class="st-messwort">Und Sie sehen,</span></span> <span class="st-messzeile st-leise"><span class="st-messwort st-wort--quelle" data-st-wort-quelle><span class="st-quelle__kontur">woher jede kommt.</span><span class="st-quelle__fuell" aria-hidden="true">woher jede kommt.</span></span></span></h1>
+				<div class="st-etikett" data-st-etikett aria-hidden="true" hidden>
+					<span class="st-etikett__kopf">Ihr Besuch kam über</span>
+					<span class="st-etikett__wert" data-st-etikett-wert>…</span>
+					<span class="st-etikett__fuss" data-st-etikett-fuss>zugeordnet · ohne Cookie</span>
+				</div>
+			</div>
+			<div class="st-hero__unten">
 				<p class="st-hero__satz">Ich baue Ihre WordPress-Website, den Weg zum Formular und die Messung dazu. Sie arbeiten dabei direkt mit mir, vom ersten Entwurf bis zur Übergabe.</p>
-				<div class="st-hero__ctas">
+				<div>
+					<div class="st-hero__ctas">
+						<?php if ( $first_assessment_on ) : ?>
+							<a class="tun" href="<?php echo esc_url( hu_first_assessment_url() ); ?>" data-track-action="home_head_ersteinschaetzung" data-track-category="lead_gen" data-track-section="hero"><?php echo esc_html( hu_first_assessment_text( 'cta' ) ); ?> <span class="pf" aria-hidden="true">→</span></a>
+						<?php else : ?>
+							<a class="tun" href="<?php echo esc_url( $contact_url ); ?>" data-track-action="home_head_contact" data-track-category="lead_gen" data-track-section="hero">Projekt anfragen <span class="pf" aria-hidden="true">→</span></a>
+						<?php endif; ?>
+						<a class="st-link" href="#angebote" data-track-action="home_hero_prices" data-track-category="navigation" data-track-section="hero">Alle Preise <span class="pf" aria-hidden="true">↓</span></a>
+					</div>
 					<?php if ( $first_assessment_on ) : ?>
-						<a class="tun" href="<?php echo esc_url( hu_first_assessment_url() ); ?>" data-track-action="home_head_ersteinschaetzung" data-track-category="lead_gen" data-track-section="hero"><?php echo esc_html( hu_first_assessment_text( 'cta' ) ); ?> <span class="pf" aria-hidden="true">→</span></a>
-					<?php else : ?>
-						<a class="tun" href="<?php echo esc_url( $contact_url ); ?>" data-track-action="home_head_contact" data-track-category="lead_gen" data-track-section="hero">Projekt anfragen <span class="pf" aria-hidden="true">→</span></a>
+						<p class="st-hero__notiz"><?php echo esc_html( hu_first_assessment_text( 'cta_note' ) ); ?></p>
 					<?php endif; ?>
-					<a class="st-link" href="#angebote" data-track-action="home_hero_prices" data-track-category="navigation" data-track-section="hero">Alle Preise <span class="pf" aria-hidden="true">↓</span></a>
 				</div>
-				<?php if ( $first_assessment_on ) : ?>
-					<p class="st-hero__notiz"><?php echo esc_html( hu_first_assessment_text( 'cta_note' ) ); ?></p>
-				<?php endif; ?>
-				<div class="st-hero__meta">
-					<img class="st-hero__portrait" src="<?php echo esc_url( $img_uri . 'hasim-freelancer-portrait-112.webp' ); ?>" width="56" height="56" alt="" decoding="async" fetchpriority="low">
-					<p class="st-hero__person"><strong>Haşim Üner</strong> · Entwicklung, Tracking und Conversion<br><a href="<?php echo esc_url( $about_url ); ?>" data-track-action="home_about" data-track-category="trust" data-track-section="hero">Wer hier für Sie arbeitet</a></p>
-				</div>
-
 			</div>
 
-			<?php // Das Protokoll steht auf einer Tafel: dunkel wie ein Messgeraet neben dem hellen Satz. ?>
-			<aside class="st-protokoll tafel" id="protokoll" aria-labelledby="st-protokoll-titel" data-st-protokoll>
+			<div class="st-spur" id="protokoll" role="group" aria-labelledby="st-protokoll-titel" data-st-protokoll>
 				<p class="st-protokoll__kopf"><span id="st-protokoll-titel">Protokoll · Ihr Besuch</span><span class="st-protokoll__status" data-st-status hidden>läuft</span></p>
-				<dl class="st-protokoll__werte">
-					<div><dt>Herkunft</dt><dd data-st-wert="herkunft">…</dd></div>
-					<div><dt data-st-lcp-label>Ladezeit (LCP)</dt><dd data-st-wert="lcp">…</dd></div>
-					<div><dt>Abschnitte erreicht</dt><dd data-st-wert="abschnitte">…</dd></div>
-					<div><dt>Scrolltiefe</dt><dd data-st-wert="tiefe">…</dd></div>
-					<div><dt>Klick auf Anfrage</dt><dd data-st-wert="klick">…</dd></div>
-				</dl>
-				<ol class="st-protokoll__verlauf" aria-label="Verlauf" data-st-verlauf></ol>
+				<div class="st-spur__bahn" data-st-bahn>
+					<div class="st-spur__linie" aria-hidden="true" data-st-spur-linie><i data-st-spur-fuell></i></div>
+					<span class="st-spur__signal" aria-hidden="true" data-st-signal hidden><span class="st-spur__hier">Sie sind hier</span></span>
+					<ol class="st-spur__stationen">
+						<?php foreach ( $stations as $i => $station ) : ?>
+							<li class="st-spur__station<?php echo $i > 2 ? ' st-spur__station--spaeter' : ''; // raw-ok -- static class. ?>" data-st-spur-station="<?php echo esc_attr( (string) $i ); ?>">
+								<a href="#station-<?php echo esc_attr( $station['slug'] ); ?>" data-st-station-link data-track-action="home_hero_station" data-track-label="<?php echo esc_attr( $station['slug'] ); ?>" data-track-category="navigation" data-track-section="hero"><span class="st-spur__punkt" aria-hidden="true"></span><span class="st-spur__nr"><?php echo esc_html( sprintf( '%02d', $i + 1 ) ); ?></span><span class="st-spur__name"><?php echo esc_html( $station['name'] ); ?></span></a>
+								<?php if ( 0 === $i ) : ?>
+									<span class="nur-vorlesen">Herkunft: </span><span class="st-spur__wert" data-st-wert="herkunft">…</span>
+								<?php elseif ( 1 === $i ) : ?>
+									<span class="st-spur__wert st-messwert" data-st-wert="lcp">…</span><span class="st-spur__einheit" data-st-lcp-label>Ladezeit (LCP)</span>
+								<?php elseif ( 2 === $i ) : ?>
+									<span class="nur-vorlesen">Klick auf Anfrage: </span><span class="st-spur__wert" data-st-wert="klick">…</span>
+								<?php endif; ?>
+							</li>
+						<?php endforeach; ?>
+					</ol>
+					<p class="st-spur__klammer">Ab hier baue ich für Ihre Website: Messung bis zur Quelle, Übergabe ins CRM, Antwort mit Termin.</p>
+				</div>
+				<dl class="st-spur__messung"><div><dt>Abschnitte erreicht</dt><dd data-st-wert="abschnitte">…</dd></div><div><dt>Scrolltiefe</dt><dd data-st-wert="tiefe">…</dd></div></dl>
 				<p class="st-protokoll__ohne-js">Ohne JavaScript misst diese Seite nichts. Das Protokoll bleibt leer.</p>
-				<p class="st-protokoll__fuss">So sieht Messung aus, die eine Anfrage ihrer Quelle zuordnet. Diese Werte entstehen in Ihrem Browser und werden nirgendwohin gesendet. <a href="<?php echo esc_url( $privacy_url ); ?>" data-track-action="home_protocol_privacy" data-track-category="trust" data-track-section="hero">Datenschutz&nbsp;<span aria-hidden="true">→</span></a></p>
+				<p class="st-spur__fuss">Diese Werte entstehen in Ihrem Browser und werden nirgendwohin gesendet. <a href="<?php echo esc_url( $privacy_url ); ?>" data-track-action="home_protocol_privacy" data-track-category="trust" data-track-section="hero">Datenschutz&nbsp;<span aria-hidden="true">→</span></a></p>
 				<p class="nur-vorlesen" aria-live="polite" data-st-ansage></p>
-			</aside>
+			</div>
+
+			<div class="st-hero__meta">
+				<img class="st-hero__portrait" src="<?php echo esc_url( $img_uri . 'hasim-freelancer-portrait-112.webp' ); ?>" width="56" height="56" alt="" decoding="async" fetchpriority="low">
+				<p class="st-hero__person"><strong>Haşim Üner</strong> · Entwicklung, Tracking und Conversion<br><a href="<?php echo esc_url( $about_url ); ?>" data-track-action="home_about" data-track-category="trust" data-track-section="hero">Wer hier für Sie arbeitet</a></p>
+			</div>
 
 			<ul class="st-belege" aria-label="Belege">
-				<?php // Der Preis steht zuerst: Nur so liegt er bei 1280 x 800 und 1440 x 900 im ersten Bildschirm. Station 02 nennt den fehlenden Preis als Bruchstelle. ?>
 				<li><a href="#angebote" data-track-action="home_proof_strip_price" data-track-category="proof" data-track-section="hero"><span class="st-belege__zahl"><?php echo $zahl( "ab\u{00A0}" . $website_price ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- escaped inside the helper. ?></span> <span class="st-belege__text">netto für eine WordPress-Website, alle Preise stehen auf dieser Seite</span></a></li>
 				<li><a href="#arbeiten" data-track-action="home_proof_strip_case" data-track-category="proof" data-track-section="hero"><span class="st-belege__zahl st-belege__zahl--messwert"><?php echo $zahl( $cpl_drop ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- escaped inside the helper. ?></span> <span class="st-belege__text">Kosten pro qualifizierter Anfrage in einem dokumentierten B2B-Fall</span></a></li>
 				<?php if ( $reference_n ) : ?>
 					<li><a href="#referenzen" data-track-action="home_proof_strip_references" data-track-category="proof" data-track-section="hero"><span class="st-belege__zahl"><?php echo esc_html( (string) $reference_n ); ?></span> <span class="st-belege__text"><?php echo esc_html( 1 === $reference_n ? 'öffentliche Website, die Sie selbst öffnen können' : 'öffentliche Websites, die Sie selbst öffnen können' ); ?></span></a></li>
 				<?php endif; ?>
 			</ul>
-			<nav class="st-seitennav" aria-label="Auf dieser Seite"><a class="st-link" href="#angebote" data-track-action="home_nav_prices" data-track-category="navigation" data-track-section="hero">Preise ↓</a><a class="st-link" href="#arbeiten" data-track-action="home_nav_case" data-track-category="navigation" data-track-section="hero">Fall ↓</a><a class="st-link" href="#pruefstand" data-track-action="home_nav_pruefstand" data-track-category="navigation" data-track-section="hero">Prüfstand ↓</a></nav>
 		</div>
 	</section>
 

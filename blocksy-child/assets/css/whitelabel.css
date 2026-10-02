@@ -3,15 +3,11 @@
    Nur Hero-Prüfstand, dessen Messschicht und das bestehende Formular sind lokal. */
 
 /* Kopf und Prüfstand sind dieselbe dunkle Fläche. Die Tür bleibt zentral. */
-.wl-site-header.tafel { padding: 0; border-radius: 0; background: var(--papier); color: var(--tinte); border-color: var(--haar); }
-.wl-site-header.tafel .sig, .wl-site-header.tafel nav a { color: var(--tinte); }
-.wl-site-header.tafel :focus-visible { outline-color: var(--tinte); }
 @media (max-width: 1080px) { .wl-site-header .rechts > .tuer { display: inline-flex; } }
 @media (max-width: 767px) { .wl-site-header .rechts > .tuer { display: none; } }
 
 /* 01: die ganze Fläche ist ein Messinstrument. Absolute Schichten reservieren
    keinen Platz; nur transform und opacity bewegen sich. */
-.st .wl-hero { padding-top: var(--s3); padding-bottom: var(--s4); background: var(--papier); box-shadow: 0 0 0 100vmax var(--papier); clip-path: inset(0 -100vmax); }
 .st .wl-hero [data-wl-messfeld] { position: relative; }
 .st .wl-hero__kopf { display: flex; flex-wrap: wrap; justify-content: space-between; gap: var(--s1) var(--s3); margin-bottom: var(--s3); }
 .st .wl-hero__kopf .st-klein-label { color: var(--grau); }
@@ -19,10 +15,6 @@
 .st .wl-hero__links { container-type: inline-size; min-width: 0; }
 .st .wl-hero__titel { position: relative; }
 .st .wl-hero__h1 { margin: 0; max-inline-size: none; font-size: clamp(2.5rem, 7vw, 7rem); font-size: clamp(2.5rem, 14cqi, 9.375rem); font-weight: 500; line-height: .96; letter-spacing: -.052em; color: var(--tinte); }
-.st .wl-zeile { display: block; overflow: hidden; padding-bottom: .08em; margin-bottom: -.08em; }
-.st .wl-wort { display: inline-block; }
-.st .wl-hero[data-wl-enhanced]:not(.is-started) .wl-wort { transform: translateY(105%); }
-.st .wl-hero.is-started .wl-wort { transform: translateY(0); transition: transform 900ms cubic-bezier(.16, 1, .3, 1); }
 .st .wl-zeile:nth-child(2) .wl-wort { transition-delay: 80ms; }
 .st .wl-zeile:nth-child(3) .wl-wort { transition-delay: 160ms; }
 @supports (-webkit-text-stroke: 1px currentColor) {

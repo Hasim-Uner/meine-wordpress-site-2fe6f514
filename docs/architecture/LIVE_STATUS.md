@@ -140,8 +140,19 @@ Abschnitt anzuhängen; der Verlauf gehört in Commit-Nachrichten.
   Query-Owner für `wordpress freelancer` und `wordpress freelancer hannover`.
   Die bestehende Strecke (`assets/css/startseite-strecke.css/.js`) hat acht
   Abschnitte: Klick, Strecke, Fall, Prüfstand, Preise, Übergabe, Fragen, Anfrage.
-  Im Hero stehen Ersteinschätzung und „Alle Preise“, Person, Protokoll und
-  Belege. Sechs Stationen sind native exklusive Akkordeons, die erste ist offen.
+  Hero und Startseiten-Kopf sind seit dem Umbau zur Messfläche dunkel; die
+  gemeinsamen Flächen-, Raster- und Maskenregeln mit White-Label liegen einmal
+  in `startseite-strecke.css`. Vier H1-Zeilen zeigen dieselbe Aussage; die Quelle
+  dieses Besuchs hängt als dekoratives Etikett am letzten Satz. Die Herkunft
+  bleibt in Station 01 für Hilfstechnik lesbar. Der Kicker enthält den Kanonpreis
+  (`home_hero_price_line`), darunter stehen Ersteinschätzung und „Alle Preise“.
+  Das Protokoll ist die Bahn aus demselben Stationsarray wie Abschnitt 02:
+  Herkunft, LCP und Klickstatus („noch offen“ / „geöffnet · Ort“), danach die
+  gedämpften Stationen Messung, CRM und Anfrage. Das Signal hält bei Formular;
+  Stationslinks (`home_hero_station`, Label = Slug) öffnen und fokussieren das
+  passende native Akkordeon. Person und Belege folgen der Bahn im Hero.
+  Die frühere Hero-Seitennavigation entfällt. Alles ab Abschnitt 02 ist erhalten.
+  Sechs Stationen sind native exklusive Akkordeons, die erste ist offen.
   Der dokumentierte Fall (`#arbeiten`, `#systemprojekt`) steht vor den Preisen:
   heller Hintergrund, Drei-Phasen-Verlauf aus dem E3-Kanon und eine dunkle
   Messtafel mit maßstäblichen CPL-Balken. Diese wachsen einmal beim Sichtkontakt
@@ -152,16 +163,25 @@ Abschnitt anzuhängen; der Verlauf gehört in Commit-Nachrichten.
   Eigentum, Ausfall-Einwand, Projektablauf und die Nebenwege zu White-Label und
   Solar/Wärmepumpe. Fünf sichtbare FAQ teilen ihr Array mit dem FAQPage-Schema.
   Der Abschluss (`#anfrage`, `#kontakt`) bleibt hell und enthält zwei Einstiege,
-  die nächsten Schritte und das Portrait. Dunkel sind nur Protokoll und Messtafel.
-  Das Stationsband entfällt. Die Messlinie liegt in der linken Rinne und folgt
+  die nächsten Schritte und das Portrait. Dunkel sind Hero-Messfläche und Messtafel.
+  Die Messlinie liegt in der linken Rinne und folgt
   einer Lesekante bei 45 % der Fensterhöhe; am Seitenende ist alles erreicht.
   Ohne JavaScript bleiben Stationen und FAQ bedienbar, das Protokoll bleibt leer.
-  Bei reduzierter Bewegung folgt die Linie ohne Übergang dem Scrollstand.
+  Bei reduzierter Bewegung stehen Etikett und Signal nach 200 ms im Endzustand;
+  die Leselinie folgt ohne Übergang dem Scrollstand. Ohne JS fehlen Etikett und
+  Signal, die H1 bleibt gefüllt, Messwerte stehen auf „…“ mit Ausfallhinweis.
+  Die Hero-Choreografie startet nach `document.fonts.ready`, animiert nur Transform
+  und Opacity und vermisst Etikett und Bahn bei Größenwechseln neu.
+  Hypothese: mehr Hero-Ersteinschätzungen und Stationsöffnungen. Sechs Wochen
+  nach Livegang `home_head_ersteinschaetzung` (Section = hero) und
+  `home_hero_station` gegen den vorherigen Zeitraum prüfen; Stationsöffnungen
+  sind ein neuer Hook und haben vor diesem Release keine eigene Baseline.
   Das Protokoll zeigt lokale Herkunft (UTM oder Verweis-Domain), Ladezeit,
   erreichte Abschnitte, Scrolltiefe und den Ort einer Anfrage-Aktion, auch im
   globalen Kopf. Es sendet und speichert nichts (`strecke-js-privat`).
   Der Ersteinschätzungs-Schalter gilt für Kopf, Hero, Fall, Preise und Abschluss;
-  ohne Versuch führen die Einstiege zur Projektanfrage, die Preiszeile entfällt.
+  ohne Versuch führen die Einstiege zur Projektanfrage; die zusätzliche
+  Ersteinschätzungs-Zeile am Preisabschluss entfällt, der Kickerpreis bleibt.
   Das globale Fußregister entfällt nur auf der Homepage; Verzeichnis,
   Kontaktzeile und Absender bleiben. `/wordpress-freelancer-hannover/` leitet
   unverändert per 301 hierher. Beobachtung nach sechs Wochen ab Livegang:

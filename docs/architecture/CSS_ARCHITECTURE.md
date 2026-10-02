@@ -119,6 +119,14 @@ Ablauf-Stationen, Margenblock, Formular und Fuß. Das Delta definiert keinen
 Farbwert und keine Abstandsskala; `whitelabel.css` ist aus der NX-Baseline
 entfernt, der Legacy-Provider lädt hier nicht mehr.
 
+Die Messflächen von Homepage und White-Label teilen `.st-messflaeche`,
+Messraster und Maskenaufstieg aus `startseite-strecke.css`. `.st-messkopf`
+setzt beide Köpfe auf die vorhandenen `.tafel`-Tokens. `whitelabel.css`
+enthält dafür keine zweite Flächen-, Kopf- oder Maskendefinition mehr;
+Stempel, Scan, Messmarken und Abnahmeprotokoll bleiben im White-Label-Delta.
+Homepage-Etikett und Signalbahn sind eigene Bausteine der gemeinsamen Basis,
+aktiviert nur durch das Startseiten-Markup.
+
 ### Kontakt
 
 `/kontakt/` steht seit 2026-10-01 ohne Legacy-Provider: `design-system.css`

@@ -24,7 +24,7 @@ $theme = '/wp-content/themes/blocksy-child';
 <title>Navigation fixture</title>
 <link rel="stylesheet" href="<?php echo esc_attr( $theme ); ?>/fonts.css">
 <link rel="stylesheet" href="<?php echo esc_attr( $theme ); ?>/assets/css/system.css">
-<?php if ( is_front_page() ) : ?>
+<?php if ( is_front_page() || $own_header ) : ?>
 <link rel="stylesheet" href="<?php echo esc_attr( $theme ); ?>/assets/css/startseite-strecke.css">
 <?php endif; ?>
 <?php if ( $own_header ) : ?>
