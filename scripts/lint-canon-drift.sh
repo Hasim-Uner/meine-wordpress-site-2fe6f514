@@ -49,7 +49,7 @@ TERM_PATTERN='(^|[^[:alnum:]_/-])(Pilotprojekt|Pilot|Beta|Test|eigentlich kostet
 PROMISE_PATTERN='(^|[^[:alnum:]_/-])([0-9]+[[:space:]]*(Werktage|Werktagen)|48[[:space:]]*(h|Stunden))([^[:alnum:]_/-]|$)'
 # Zeilen, die den Canon selbst aufrufen, duerfen ihren Fallback im Wortlaut
 # tragen — das ist das etablierte Muster im Repo, kein Drift.
-PROMISE_ALLOW='hu_response_promise|hu_marketcheck_reply_label|HU_RESPONSE_HOURS|HU_RESPONSE_PROMISE|HU_TRACKING_RESPONSE_BUSINESS_DAYS'
+PROMISE_ALLOW='hu_response_promise|hu_marketcheck_reply_label|HU_RESPONSE_HOURS|HU_RESPONSE_PROMISE'
 
 ADDED_LINES="$(
   printf '%s\n' "${DIFF_OUTPUT}" \

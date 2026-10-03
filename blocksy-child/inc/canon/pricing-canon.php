@@ -229,7 +229,6 @@ define( 'HU_TRACKING_PRO_CARE_MONTHLY', 149 );
 define( 'HU_TRACKING_PRO_INCLUDED_MINUTES', 60 );
 define( 'HU_TRACKING_CUSTOM_SETUP_MIN', 3500 );
 define( 'HU_TRACKING_CUSTOM_CARE_MONTHLY_MIN', 199 );
-define( 'HU_TRACKING_RESPONSE_BUSINESS_DAYS', 2 );
 define( 'HU_TRACKING_DURATION_WEEKS_MIN', 2 );
 define( 'HU_TRACKING_DURATION_WEEKS_MAX', 3 );
 
@@ -264,7 +263,6 @@ function hu_tracking_pricing_canon() {
 				'display' => hu_format_eur( HU_TRACKING_STANDARD_CARE_MONTHLY ) . ' / Monat',
 			],
 			'included_minutes'       => HU_TRACKING_STANDARD_INCLUDED_MINUTES,
-			'response_business_days' => HU_TRACKING_RESPONSE_BUSINESS_DAYS,
 			'terms'                  => $monthly_terms,
 		],
 		'pro'      => [
@@ -277,7 +275,6 @@ function hu_tracking_pricing_canon() {
 				'display' => hu_format_eur( HU_TRACKING_PRO_CARE_MONTHLY ) . ' / Monat',
 			],
 			'included_minutes'       => HU_TRACKING_PRO_INCLUDED_MINUTES,
-			'response_business_days' => HU_TRACKING_RESPONSE_BUSINESS_DAYS,
 			'terms'                  => $monthly_terms,
 		],
 		'individual' => [

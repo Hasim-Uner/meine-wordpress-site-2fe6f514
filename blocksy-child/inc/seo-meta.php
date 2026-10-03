@@ -811,6 +811,14 @@ function hu_get_noindex_nofollow_slugs() {
 /**
  * Return public/legacy slugs that should be noindex but still pass link equity.
  *
+ * Release decision 2026-10-03: the solar proof page
+ * (case-study-solar-leadgenerierung) is indexable. Bis dahin lag sie hier mit
+ * einem Anonymisierungs-Hold; derselbe Eintrag hat zugleich ihr robots-Meta
+ * und den Sitemap-Ausschluss erzeugt (nexus_get_sitemap_excluded_slugs() liest
+ * diese Liste). Wer sie wieder aufnimmt, braucht eine neue Entscheidung des
+ * Inhabers; scripts/validate-route-architecture.py hält das fest. Eine
+ * Notbremse bleibt das ACF-Feld seo_noindex an der Seite.
+ *
  * @return array<int, string>
  */
 function hu_get_noindex_follow_slugs() {
@@ -826,11 +834,10 @@ function hu_get_noindex_follow_slugs() {
 		// (nexus_redirect_legacy_results_path()). Der Eintrag haelt die Seite
 		// aus der Sitemap, auch solange sie im Editor noch veroeffentlicht ist.
 		'ergebnisse',
-		// Anonymization hold: noindex pending settlement resolution.
-		// Remove once the anonymized case study is cleared for public reindexing.
+		// Alias-Slugs der Fallstudie: bleiben noindex, damit dieselbe Seite nicht
+		// mehrfach im Index steht. Die Fallstudie selbst steht nicht hier.
 		'e3-new-energy',
 		'case-e3',
-		'case-study-solar-leadgenerierung',
 		'conversion-rate-optimization',
 		'core-web-vitals',
 		'danke',

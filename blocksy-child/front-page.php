@@ -330,6 +330,7 @@ get_header();
 					<?php if ( $first_assessment_on ) : ?>
 						<p class="st-hero__notiz"><?php echo esc_html( hu_first_assessment_text( 'cta_note' ) ); ?></p>
 					<?php endif; ?>
+					<p class="st-hero__beleg"><a class="st-link" href="<?php echo esc_url( $e3_case_url ); ?>" data-track-action="home_hero_case_proof" data-track-category="proof" data-track-section="hero"><?php echo esc_html( $cpl_drop ); ?> Kosten pro Anfrage · dokumentierter B2B-Fall <span aria-hidden="true">→</span></a></p>
 				</div>
 			</div>
 

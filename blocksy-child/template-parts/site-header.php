@@ -185,12 +185,12 @@ if ( 'leser' === $leiste_modus && function_exists( 'hu_funnel_reader_dossier' ) 
 			<?php if ( 'fokus' === $leiste_modus && ! empty( $fokus_links ) ) : ?>
 				<nav class="leiter" aria-label="<?php esc_attr_e( 'Einstiege auf dieser Seite', 'blocksy-child' ); ?>">
 					<?php foreach ( $fokus_links as $fokus_index => $fokus_link ) : ?>
-						<?php $fokus_last = $fokus_index === count( $fokus_links ) - 1; ?>
+						<?php $fokus_main = 'marktcheck' === $fokus_link['door']['key']; // Die eine Aktion unter 561 px. ?>
 						<?php if ( $fokus_index > 0 ) : ?>
-							<span class="trenn<?php echo $fokus_last ? '' : ' opt'; // raw-ok -- static class. ?>" aria-hidden="true"></span>
+							<span class="trenn opt" aria-hidden="true"></span>
 						<?php endif; ?>
 						<a
-							<?php echo $fokus_last ? '' : ' class="opt"'; // raw-ok -- static attribute. ?>
+							<?php echo $fokus_main ? '' : ' class="opt"'; // raw-ok -- static attribute. ?>
 							href="<?php echo esc_attr( $fokus_link['href'] ); ?>"
 							data-door="<?php echo esc_attr( $fokus_link['door']['key'] ); ?>"
 							data-track-action="<?php echo esc_attr( $fokus_link['door']['track'] ); ?>"

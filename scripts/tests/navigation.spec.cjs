@@ -486,13 +486,21 @@ for (const width of [561, 640, 768, 1024, 1080, 1280, 1440]) {
 }
 
 for (const width of [320, 360, 370, 390, 414, 560]) {
-  test(`solar focus ${width}: only Sofortkontakt stays, in one row with the wordmark`, async ({ page }) => {
+  test(`solar focus ${width}: only the filled Marktcheck button stays, 44 px, in one row with the wordmark`, async ({ page }) => {
     await open(page, 'solar', { width, height: 800 });
-    await expect(ladder(page).getByRole('link', { name: /^Sofortkontakt/ })).toBeVisible();
-    await expect(ladder(page).getByRole('link', { name: /^Marktcheck/ })).toBeHidden();
+    const main = ladder(page).getByRole('link', { name: /^Marktcheck · 0 €$/ });
+    await expect(main).toBeVisible();
     await expect(ladder(page).getByRole('link', { name: /^Analyse/ })).toBeHidden();
+    await expect(ladder(page).getByRole('link', { name: /^Sofortkontakt/ })).toBeHidden();
     await expect(page.locator('.leiste .leiter .trenn:visible')).toHaveCount(0);
-    const [sig, link] = await Promise.all([page.locator('.leiste .sig'), ladder(page).getByRole('link', { name: /^Sofortkontakt/ })].map(l => l.evaluate(el => {
+    const style = await main.evaluate(el => {
+      const css = getComputedStyle(el);
+      return { background: css.backgroundColor, color: css.color, height: el.getBoundingClientRect().height };
+    });
+    expect(style.background).toBe('rgb(184, 66, 15)');
+    expect(style.color).toBe('rgb(255, 255, 255)');
+    expect(style.height).toBeGreaterThanOrEqual(44);
+    const [sig, link] = await Promise.all([page.locator('.leiste .sig'), main].map(l => l.evaluate(el => {
       const r = el.getBoundingClientRect();
       return { mid: r.top + r.height / 2, left: r.left, right: r.right };
     })));

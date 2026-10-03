@@ -44,14 +44,14 @@ $e3_cpl_after     = $e3_metrics['cpl_after']['display'] ?? '22 €';
 $e3_timeframe     = $e3_metrics['timeframe']['display'] ?? '6 Monate';
 $e3_timeline      = $e3_canon['timeline'];
 
-// Voreinstellungen des Vergleichsrechners. Bewusst vorsichtiger als der Fall
-// und deshalb im Canon als eigene Kennzahl gefuehrt: als nacktes Literal im
-// Template war die angesetzte Quote von der gemessenen Abschlussquote des
-// Falls nicht zu unterscheiden.
+// Voreinstellungen des Vergleichsrechners: Kosten pro Anfrage vorsichtiger als
+// der Fall, Abschlussquote wie im Fall. Beides steht im Canon als eigene
+// Kennzahl; als nacktes Literal im Template war die angesetzte Quote von der
+// gemessenen Abschlussquote des Falls nicht zu unterscheiden.
 $calc_cpl_display   = hu_e3_metric( 'calc_cpl_conservative' );
 $calc_cpl_input     = hu_e3_metric( 'calc_cpl_conservative', 'input' );
-$calc_quote_display = hu_e3_metric( 'calc_sales_conversion_conservative' );
-$calc_quote_input   = hu_e3_metric( 'calc_sales_conversion_conservative', 'input' );
+$calc_quote_display = hu_e3_metric( 'calc_sales_conversion' );
+$calc_quote_input   = hu_e3_metric( 'calc_sales_conversion', 'input' );
 $calc_defaults = [
 	'a1' => 25,
 	'a2' => 80,
@@ -954,8 +954,8 @@ get_header();
 						<?php echo esc_html( (string) $calc_months ); ?> Monate verteilt, rund
 						<?php echo esc_html( $hosting_price ); ?> Hosting monatlich und Ihr Werbebudget.
 						Vertriebszeit und laufende Betreuung sind nicht eingerechnet.
-						Die Voreinstellungen von <?php echo esc_html( $calc_cpl_display ); ?> pro Anfrage und
-						<?php echo esc_html( $calc_quote_display ); ?> Abschlussquote sind Rechenannahmen.
+						Voreingestellt sind <?php echo esc_html( $calc_cpl_display ); ?> pro Anfrage und
+						<?php echo esc_html( $calc_quote_display ); ?> Abschlussquote — der Wert aus dem dokumentierten Fall.
 						Kosten und Quote müssen sich auf dieselbe Leadmenge beziehen.
 					</p>
 				</div>
