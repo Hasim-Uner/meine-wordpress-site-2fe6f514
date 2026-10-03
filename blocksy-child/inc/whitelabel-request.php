@@ -265,6 +265,10 @@ function hu_handle_whitelabel_request_submission( WP_REST_Request $request ) {
 		nexus_record_lead_notification_failure( $contact_id, 'whitelabel_request' );
 	}
 
+	if ( function_exists( 'hu_record_inquiry_event' ) ) {
+		hu_record_inquiry_event( 'whitelabel', $payload );
+	}
+
 	hu_send_whitelabel_request_confirmation( $validated );
 
 	$response_promise = hu_response_promise( 'window' );

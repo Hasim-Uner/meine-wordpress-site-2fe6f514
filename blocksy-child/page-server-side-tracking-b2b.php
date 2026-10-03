@@ -944,6 +944,7 @@ get_header();
 				// Focus-Option, deren data-types den Anfragetyp enthaelt.
 				?>
 				<div class="hu-sst__form-fixed" hidden>
+					<input type="hidden" name="form_origin" value="sst">
 					<input
 						id="contact-type-project"
 						type="radio"

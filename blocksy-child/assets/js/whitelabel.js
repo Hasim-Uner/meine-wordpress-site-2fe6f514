@@ -415,6 +415,20 @@
 		var taskHint     = form.querySelector('#wl-task-hint');
 		var isSubmitting = false;
 
+		// Kampagnenparameter der URL in die versteckten Felder, wie auf /kontakt/:
+		// utm_source landet im Feld ads_source. Ein Browser-Speicher entsteht nicht.
+		var urlParams = new URLSearchParams(window.location.search);
+		var paramMap = { utm_source: 'ads_source', ads_source: 'ads_source', utm_campaign: 'utm_campaign' };
+
+		Object.keys(paramMap).forEach(function (urlKey) {
+			var value = urlParams.get(urlKey);
+			var field = value ? form.querySelector('input[name="' + paramMap[urlKey] + '"]') : null;
+
+			if (field) {
+				field.value = value;
+			}
+		});
+
 		// Texte je Weg (aufgabe, angebotsphase, vormerken) kommen aus dem
 		// Template, damit die Copy an einer Stelle steht.
 		var caseTexts = {};
@@ -569,6 +583,8 @@
 				access: (form.querySelector('input[name="access"]:checked') || { value: '' }).value,
 				referral_source: (form.querySelector('#wl-referral') || { value: '' }).value,
 				company_website: (form.querySelector('#wl-company-website') || { value: '' }).value,
+				ads_source: (form.querySelector('#wl-ads-source') || { value: '' }).value,
+				utm_campaign: (form.querySelector('#wl-utm-campaign') || { value: '' }).value,
 				'case': caseField ? caseField.value : 'aufgabe'
 			};
 
@@ -577,18 +593,23 @@
 			var attribution = core && typeof core.getLeadAttributionPayload === 'function' ? core.getLeadAttributionPayload() : {};
 			var campaign = core && typeof core.getCampaignContext === 'function' ? core.getCampaignContext() : {};
 
-			['landing_page_url', 'entry_page_url', 'previous_internal_url', 'referrer_url', 'ads_source', 'ads_keyword'].forEach(function (key) {
+			['landing_page_url', 'entry_page_url', 'previous_internal_url', 'referrer_url', 'ads_keyword'].forEach(function (key) {
 				if (attribution[key]) {
 					payload[key] = attribution[key];
 				}
 			});
+
+			// Parameter dieser Seite stehen schon im Payload und haben Vorrang.
+			if (!payload.ads_source && attribution.ads_source) {
+				payload.ads_source = attribution.ads_source;
+			}
 
 			if (campaign.entry_referrer_url) {
 				payload.referrer_url = campaign.entry_referrer_url;
 			}
 
 			['utm_medium', 'utm_campaign'].forEach(function (key) {
-				if (campaign[key]) {
+				if (campaign[key] && !payload[key]) {
 					payload[key] = campaign[key];
 				}
 			});

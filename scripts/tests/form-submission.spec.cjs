@@ -75,7 +75,9 @@ const fixtures = {
     html: `<div data-wl-error-summary class="is-hidden" tabindex="-1"><ul data-wl-error-list></ul></div>
       <form data-wl-request-form action="https://example.test/wp-json/nexus/v1/whitelabel-request" novalidate>
       <textarea id="wl-task" name="task"></textarea><input id="wl-email" name="email" type="email">
-      <input data-wl-case name="case" value="aufgabe" hidden><button data-wl-submit>Aufgabe senden</button>
+      <input data-wl-case name="case" value="aufgabe" hidden>
+      <input type="hidden" name="ads_source" id="wl-ads-source" value=""><input type="hidden" name="utm_campaign" id="wl-utm-campaign" value="">
+      <button data-wl-submit>Aufgabe senden</button>
       <div data-wl-feedback role="status"></div></form>`,
   },
   blog: {
@@ -100,7 +102,6 @@ async function setup(page, kind) {
     window.NexusContactConfig = { restEndpoint: '/wp-json/nexus/v1/contact-request' };
     window.NexusBlogNotifyConfig = { restEndpoint: '/wp-json/nexus/v1/blog-subscribe' };
     window.NexusMarktcheckConfig = { restEndpoint: '/wp-json/nexus/v1/audit-request' };
-    window.dataLayer = [];
     window.requests = [];
     window.nativeFetch = window.fetch;
     window.fetch = (url, options) => new Promise((resolve, reject) => {
@@ -120,9 +121,13 @@ async function setup(page, kind) {
     await page.selectOption('[name="position"]', 'Geschäftsführung / Inhaber');
     await page.fill('[name="postal_code"]', '30159');
     await page.check('[name="consent_privacy"]');
-  } else if (kind === 'contact' || kind === 'assessment') {
+  } else if (kind === 'assessment') {
+    // Kurzformular: URL, Ziel (optional), E-Mail, Einwilligung. Kein Weiter, kein Name.
     await page.fill('[name="website_url"]', 'https://example.test/');
-    if (kind === 'contact') await page.fill('[name="message"]', 'Bitte das bestehende Tracking prüfen.');
+    await page.check('[name="consent"]');
+  } else if (kind === 'contact') {
+    await page.fill('[name="website_url"]', 'https://example.test/');
+    await page.fill('[name="message"]', 'Bitte das bestehende Tracking prüfen.');
     await page.click('[data-contact-next]');
     await page.fill('[name="name"]', 'Fixture Person');
     await page.check('[name="consent"]');
@@ -249,6 +254,57 @@ for (const kind of Object.keys(fixtures)) {
   });
 }
 
+test('assessment short form: three fields, canonical copy, request_type, no browser event sink', async ({ page }) => {
+  const f = await setup(page, 'assessment');
+  await expect(page.locator('h1')).toHaveText('Welche Website soll ich mir ansehen?');
+  await expect(page.locator('.contact-after__text')).toContainText('antworte innerhalb von 24 Stunden werktags');
+  await expect(page.locator(f.button)).toHaveText('Drei Befunde anfordern');
+  await expect(page.locator('.contact-form__promise')).toHaveText('Antwort innerhalb von 24 Stunden werktags. Passt die Seite nicht zu meiner Arbeit, sage ich das direkt.');
+  await expect(page.locator('.contact-form__aux-link')).toContainText('Lieber direkt Termin buchen');
+  // Sichtbare Eingaben: genau URL, Ziel, E-Mail (plus die Datenschutz-Checkbox).
+  const visible = await page.locator(f.form).evaluate(form => [...form.querySelectorAll('input, select, textarea')]
+    .filter(control => control.type !== 'hidden' && control.type !== 'radio' && !control.closest('.contact-form__honeypot') && control.type !== 'checkbox')
+    .map(control => control.name));
+  expect(visible).toEqual(['website_url', 'message', 'email']);
+  await expect(page.locator('[name="name"], [data-contact-focus-select], [data-contact-step="identity"]')).toHaveCount(0);
+  await expect(page.locator('[name="website_url"]')).toHaveAttribute('type', 'url');
+  await expect(page.locator('[name="website_url"]')).toHaveAttribute('required', '');
+  await expect(page.locator('[name="message"]')).not.toHaveAttribute('required', '');
+  await submit(page, f);
+  const payload = await page.evaluate(() => JSON.parse(window.requests[0].options.body));
+  expect(payload).toMatchObject({ request_type: 'ersteinschaetzung', focus: 'ersteinschaetzung', website_url: 'https://example.test/', email: 'fixture@example.test', consent: '1' });
+  expect(payload).not.toHaveProperty('name');
+  expect(await page.evaluate(() => typeof window.dataLayer)).toBe('undefined');
+});
+
+test('whitelabel takes utm_source and utm_campaign from the URL into hidden fields, like the contact form', async ({ page }) => {
+  await page.route('**/*', route => route.fulfill({ contentType: 'text/html', body: '<html></html>' }));
+  await page.goto('https://example.test/whitelabel-retainer/?utm_source=linkedin&utm_campaign=agentur-herbst');
+  await page.setContent('<style>[hidden]{display:none!important}</style>' + fixtures.whitelabel.html);
+  await page.evaluate(() => {
+    window.requests = [];
+    window.fetch = (url, options) => new Promise(resolve => { window.requests.push({ url, options, resolve }); });
+  });
+  await page.addScriptTag({ path: js('nexus-core.js') });
+  await page.addScriptTag({ path: js('whitelabel.js') });
+  await expect(page.locator('#wl-ads-source')).toHaveValue('linkedin');
+  await expect(page.locator('#wl-utm-campaign')).toHaveValue('agentur-herbst');
+  await page.fill('[name="task"]', 'Bitte das bestehende Tracking prüfen.');
+  await page.fill('[name="email"]', 'fixture@example.test');
+  await page.click('[data-wl-submit]');
+  await expect.poll(() => page.evaluate(() => window.requests.length)).toBe(1);
+  const payload = await page.evaluate(() => JSON.parse(window.requests[0].options.body));
+  expect(payload).toMatchObject({ ads_source: 'linkedin', utm_campaign: 'agentur-herbst', email: 'fixture@example.test' });
+});
+
+test('assessment requires the URL on the client before sending', async ({ page }) => {
+  const f = await setup(page, 'assessment');
+  await page.fill('[name="website_url"]', '');
+  await page.click(f.button);
+  await expect(page.locator('#contact-website-error')).toContainText('Adresse Ihrer Website');
+  expect(await page.evaluate(() => window.requests.length)).toBe(0);
+});
+
 for (const kind of ['contact', 'assessment', 'whitelabel', 'marketcheck']) {
   test(`${kind} server validation marks the field and preserves inputs`, async ({ page }) => {
     const f = await setup(page, kind);
@@ -280,9 +336,10 @@ test('local validation keeps the assessment URL required and project message req
   for (const kind of ['contact', 'assessment']) {
     const f = await setup(page, kind);
     const field = kind === 'assessment' ? 'website_url' : 'message';
-    await page.click('[data-contact-prev]');
+    // Die Kurzvariante hat nur einen Schritt: kein Zurueck, Pruefung beim Absenden.
+    if (kind === 'contact') await page.click('[data-contact-prev]');
     await page.fill(`[name="${field}"]`, '');
-    await page.click('[data-contact-next]');
+    await page.click(kind === 'assessment' ? f.button : '[data-contact-next]');
     await expect(page.locator(`[name="${field}"]`)).toHaveAttribute('aria-invalid', 'true');
     expect(await page.evaluate(() => window.requests.length)).toBe(0);
     await expect(page.locator(f.button)).toBeEnabled();

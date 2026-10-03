@@ -47,32 +47,10 @@
         var currentFlowIndex = 0;
         var contactAutoAdvanceTimer = 0;
         var CONTACT_AUTO_ADVANCE_DELAY = 180;
-        var lastTrackedFlowStep = '';
         var isSubmitting = false;
 
         if (!endpoint) {
             return;
-        }
-
-        function pushContactEvent(eventName, extra) {
-            if (typeof window === 'undefined' || !window.dataLayer || typeof window.dataLayer.push !== 'function') {
-                return;
-            }
-
-            var payload = {
-                event: eventName,
-                event_category: 'contact',
-                contact_request_type: getSelectedType(),
-                contact_focus: focusSelect ? focusSelect.value : ''
-            };
-
-            if (extra && typeof extra === 'object') {
-                Object.keys(extra).forEach(function (key) {
-                    payload[key] = extra[key];
-                });
-            }
-
-            window.dataLayer.push(payload);
         }
 
         // ── Attribution: direct URL param capture (no sessionStorage) ──
@@ -198,6 +176,21 @@
                 messagePlaceholder: 'Worum geht es und welche Rückmeldung wäre hilfreich?',
                 submitLabel: 'Anfrage senden',
                 messageMinlength: 18,
+                timelineLabel: 'Zeitfenster',
+                showTimeline: false,
+                showBudget: false
+            },
+            // Kurzformular: Thema, Nachricht und Zeitfenster gibt es dort nicht; die
+            // Texte stehen im Template (Kanon). Der Eintrag verhindert den
+            // Rueckfall auf die Marktcheck-Texte.
+            ersteinschaetzung: {
+                focusLabel: '',
+                focusHelp: '',
+                messageLabel: '',
+                messageHelp: '',
+                messagePlaceholder: '',
+                submitLabel: '',
+                messageMinlength: 0,
                 timelineLabel: 'Zeitfenster',
                 showTimeline: false,
                 showBudget: false
@@ -429,17 +422,6 @@
 
             if (options.focus) {
                 focusContactFlowStep(currentStep);
-            }
-
-            if (currentKey && currentKey !== lastTrackedFlowStep) {
-                lastTrackedFlowStep = currentKey;
-                pushContactEvent('contact_form_step_view', {
-                    contact_flow_step: currentKey,
-                    contact_flow_step_label: currentLabel,
-                    contact_flow_step_index: currentFlowIndex + 1,
-                    contact_flow_step_total: total,
-                    contact_flow_progress: percentage
-                });
             }
         }
 
@@ -675,9 +657,6 @@
                 }
 
                 showErrorSummary(errors);
-                pushContactEvent('contact_form_validation_error', {
-                    contact_error_fields: errors.map(function (err) { return err.field; }).join(',')
-                });
                 if (firstInvalid && firstInvalid.focus) {
                     firstInvalid.focus();
                 }
@@ -895,7 +874,8 @@
                         analysis: 'Website-Analyse',
                         project: 'Projektanfrage',
                         implementation: 'Umsetzung',
-                        ongoing: 'Weiterentwicklung'
+                        ongoing: 'Weiterentwicklung',
+                        ersteinschaetzung: 'Ersteinschätzung'
                     };
                     statusValue.textContent = labels[requestType] || 'Marktcheck';
                 }
@@ -956,7 +936,6 @@
             cancelContactAutoAdvance();
             var unlockForm = window.NexusCore.lockForm(form);
             setPending(true);
-            pushContactEvent('contact_form_submit_started');
 
             window.NexusCore.submitJson(endpoint, {
                 method: 'POST',
@@ -971,7 +950,6 @@
                         var errorMessage = result.data && result.data.error
                             ? result.data.error
                             : (window.NexusContactConfig && window.NexusContactConfig.errorMessage) || 'Die Anfrage konnte gerade nicht gesendet werden.';
-                        var errorCode = result.data && result.data.error_code ? result.data.error_code : 'server_error';
 
                         // Try to map server-side field errors
                         if (result.data && result.data.error_code) {
@@ -998,17 +976,7 @@
                             }
                         }
 
-                        pushContactEvent('contact_form_submit_failed', {
-                            contact_error_code: errorCode
-                        });
-
-                        var trackedError = new Error(errorMessage);
-                        trackedError.contactErrorTracked = true;
-                        throw trackedError;
-                    }
-
-                    if (payload.focus === 'website' && payload.seiten && window.HuWebsiteProductEvent) {
-                        window.HuWebsiteProductEvent('form_submit', { seiten: Number(payload.seiten), art: payload.art, tracking: Number(payload.tracking) });
+                        throw new Error(errorMessage);
                     }
 
                     form.reset();
@@ -1020,16 +988,8 @@
                         || 'Danke. Ihre Anfrage ist eingegangen.';
 
                     setFeedback(successMessage, 'success');
-                    pushContactEvent('contact_form_submit_success', {
-                        contact_has_crm_id: !!result.data.contactId
-                    });
                 })
                 .catch(function (error) {
-                    if (!error || !error.contactErrorTracked) {
-                        pushContactEvent('contact_form_submit_failed', {
-                            contact_error_code: 'network_or_unknown'
-                        });
-                    }
                     setFeedback(error && error.message ? error.message : 'Die Anfrage konnte gerade nicht gesendet werden.', 'error');
                 })
                 .finally(function () {
