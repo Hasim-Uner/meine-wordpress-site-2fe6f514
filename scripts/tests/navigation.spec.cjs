@@ -10,6 +10,7 @@ const theme = path.resolve(__dirname, '../../blocksy-child');
 const types = { '.css': 'text/css', '.js': 'text/javascript', '.woff2': 'font/woff2', '.woff': 'font/woff' };
 const rendered = {};
 const html = context => (rendered[context] ??= execFileSync('php', [path.join(__dirname, 'render-navigation.php'), context], { encoding: 'utf8' }));
+const freeAmount = execFileSync('php', ['-r', `require '${path.join(__dirname, 'navigation-harness.php')}'; echo hu_format_eur(0);`], { encoding: 'utf8' });
 
 async function open(page, context, viewport) {
   await page.setViewportSize(viewport);
@@ -238,6 +239,51 @@ test('home, narrow: the door stays in the row like on every route, and in the sh
   await expect(rowDoor(page)).toBeVisible();
   await klappe(page).click();
   await expect(sheet(page).locator('.tuer')).toBeVisible();
+  await expect(sheet(page).locator('.tuer .preis')).toBeVisible();
+  await expect(sheet(page).locator('.tuer .preis')).toHaveText(freeAmount);
+});
+
+for (const width of [1440, 1080, 560, 414, 413, 390, 371, 370]) {
+  test(`home assessment ${width}: label, canon amount and header fit`, async ({ page }) => {
+    await open(page, 'home', { width, height: 800 });
+    const door = rowDoor(page);
+    await expect(door).toBeVisible();
+    await expect(door).toHaveAttribute('data-track-action', 'nav_header_ersteinschaetzung');
+    await expect(door).toHaveAccessibleName(width < 414 ? 'Ersteinschätzung' : `Ersteinschätzung ${freeAmount}`);
+    await expect(door.locator('.preis')).toHaveText(freeAmount);
+    if (width < 414) await expect(door.locator('.preis')).toBeHidden();
+    else await expect(door.locator('.preis')).toBeVisible();
+    const sig = await page.locator('.leiste .sig').boundingBox();
+    const doorBox = await door.boundingBox();
+    expect(sig.x + sig.width).toBeLessThanOrEqual(doorBox.x);
+    if (width > 1080) {
+      const navBox = await rowNav(page).boundingBox();
+      expect(navBox.x + navBox.width).toBeLessThanOrEqual(doorBox.x);
+    } else {
+      const menuBox = await klappe(page).boundingBox();
+      expect(doorBox.x + doorBox.width).toBeLessThanOrEqual(menuBox.x);
+      expect(menuBox.x + menuBox.width).toBeLessThanOrEqual(width);
+    }
+    expect(await rowHeight(page)).toBeLessThanOrEqual(60);
+    expect(await noHorizontalScroll(page)).toBe(true);
+  });
+}
+
+test('wordmark and About keep separate tracking actions', async ({ page }) => {
+  await open(page, 'home', { width: 560, height: 800 });
+  await expect(page.locator('.leiste .sig')).toHaveAttribute('data-track-action', 'nav_header_home');
+  await klappe(page).click();
+  await expect(sheet(page).getByRole('link', { name: 'Über Haşim' })).toHaveAttribute('data-track-action', 'nav_header_about');
+});
+
+test('solar cluster: Marktcheck in the header and Ihr Weg on the Energy footer row', async ({ page }) => {
+  await open(page, 'solar_cluster', { width: 1440, height: 900 });
+  await expect(rowDoor(page)).toHaveAttribute('data-door', 'marktcheck');
+  await expect(rowDoor(page)).toHaveAccessibleName(`Marktcheck ${freeAmount}`);
+  const energy = page.locator('.register .weg.ist-hier');
+  await expect(energy).toHaveCount(1);
+  await expect(energy).toHaveAttribute('aria-labelledby', 'fuss-weg-energy');
+  await expect(energy.locator('.hier')).toHaveText('Ihr Weg');
 });
 
 test('contact: no door, the page is the target', async ({ page }) => {

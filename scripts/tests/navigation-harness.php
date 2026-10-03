@@ -27,6 +27,7 @@ function nav_test_contexts() {
 		'tracking'      => [ 'path' => '/ga4-tracking-setup/', 'front' => false, 'page' => '', 'template' => '' ],
 		'server_side'   => [ 'path' => '/server-side-tracking-b2b/', 'front' => false, 'page' => 'server-side-tracking-b2b', 'template' => 'page-server-side-tracking-b2b.php' ],
 		'case_study'    => [ 'path' => '/case-study-solar-leadgenerierung/', 'front' => false, 'page' => 'case-study-solar-leadgenerierung', 'template' => '' ],
+		'solar_cluster' => [ 'path' => '/b2b-solar-leads/', 'front' => false, 'page' => 'b2b-solar-leads', 'template' => 'page-b2b-solar-leads.php' ],
 		'about'         => [ 'path' => '/hasim-uener/', 'front' => false, 'page' => 'hasim-uener', 'template' => 'page-hasim-uener.php' ],
 		'contact'       => [ 'path' => '/kontakt/', 'front' => false, 'page' => 'kontakt', 'template' => 'page-kontakt.php' ],
 		'agentur_local' => [ 'path' => '/wordpress-agentur-hannover/', 'front' => false, 'page' => 'wordpress-agentur-hannover', 'template' => 'page-wordpress-agentur.php' ],
@@ -178,6 +179,7 @@ foreach ( [
 	'wgos/wgos-cluster-pages.php',
 	'header.php',
 	'commercial-routing.php',
+	'seo-subpage-cluster-links.php',
 	'funnel-doors.php',
 ] as $module ) {
 	require_once $theme . $module;

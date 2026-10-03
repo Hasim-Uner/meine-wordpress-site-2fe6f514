@@ -1196,6 +1196,12 @@ body.nx-custom-header-active {
   .leiste--leser .in { gap: var(--s1); }
 }
 
+/* Die laengere Ersteinschaetzung braucht neben Wortmarke und Menue
+   unter 414 px dieselbe Platzreserve. Im Klappblatt bleibt der Betrag. */
+@media (max-width: 413px) {
+  .leiste .rechts > .tuer[data-door="ersteinschaetzung"] .preis { display: none; }
+}
+
 @media (max-width: 370px) {
   .leiste .rechts > .tuer .preis { display: none; }
 }

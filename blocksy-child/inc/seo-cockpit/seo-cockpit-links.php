@@ -512,8 +512,6 @@ function nexus_get_seo_cockpit_site_header_tracking_actions() {
 		$definitions = array_merge( $definitions, (array) ( $group['items'] ?? [] ) );
 	}
 
-	$definitions = array_merge( $definitions, (array) ( $contract['meta']['links'] ?? [] ) );
-
 	if ( ! empty( $contract['cta'] ) && is_array( $contract['cta'] ) ) {
 		$definitions[] = $contract['cta'];
 	}

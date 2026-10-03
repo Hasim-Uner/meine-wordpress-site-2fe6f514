@@ -168,7 +168,7 @@ if ( 'leser' === $leiste_modus && function_exists( 'hu_funnel_reader_dossier' ) 
 			rel="home"
 			aria-label="<?php echo esc_attr( $home_label ); ?>"
 			<?php echo is_front_page() ? ' aria-current="page"' : ''; // raw-ok -- static attribute. ?>
-			data-track-action="nav_header_about"
+			data-track-action="nav_header_home"
 			data-track-category="navigation"
 			data-track-section="header"
 		><?php echo esc_html( $brand_text ); ?><i aria-hidden="true">.</i></a>

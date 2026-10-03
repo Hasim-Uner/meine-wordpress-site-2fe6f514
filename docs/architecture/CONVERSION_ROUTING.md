@@ -407,8 +407,21 @@ Geprüft von `scripts/tests/navigation-contract.php` (CI).
 | Ergebnisse (hinter einer Haarlinie) | `/#arbeiten` | `nav_header_results` | ja |
 | Über Haşim | `/hasim-uener/` | `nav_header_about` | nur Blatt |
 
+Seit 2026-10-03 trägt die Wortmarke (Ziel `/`) `nav_header_home`.
+Die Zeitreihe von `nav_header_about` ist bis zu dieser Umstellung mit
+Logo-Klicks vermischt; „Über Haşim“ behält `nav_header_about`.
+
+`meta.location` bleibt im Kopf-Contract für das Klappblatt. Die dort nie
+gerenderten E-Mail-, Telefon- und hasimuener.org-Links (`meta.links`) sind
+entfernt; das SEO Cockpit liest nur die tatsächlich definierten Kopfpunkte.
+
 Die Tür ersetzt den kontextblinden CTA. Der Contract behält `cta` als
 Standardtür „Projekt anfragen“ für Menü, 404 und SEO Cockpit.
+
+Seit 2026-10-03 blendet nur die Zeilentür `ersteinschaetzung` ihren Betrag
+unter 414 px aus, damit Wortmarke, Tür und Menü ohne Überlauf passen.
+Im Klappblatt bleibt der Betrag sichtbar. Für alle übrigen Türen bleibt
+die Grenze unter 371 px unverändert.
 
 Türmatrix (Modus `voll` zeigt das Hauptmenü, `leser` den Artikelpfad statt des
 Menüs, `fokus` die Leiter der Solar-Seite):
@@ -416,7 +429,7 @@ Menüs, `fokus` die Leiter der Solar-Seite):
 | Route | Modus | Tür | Betrag (Kanon) | Ziel | `data-track-action` |
 |---|---|---|---|---|---|
 | Über, sonstige Seiten; Startseite bei ausgeschaltetem Versuch | voll | Projekt anfragen | kein Betrag | `/kontakt/?type=project` | `nav_header_project` |
-| Startseite bei eingeschaltetem Versuch | voll | Kostenlose Ersteinschätzung | kein Betrag | `/kontakt/?focus=ersteinschaetzung` | `nav_header_ersteinschaetzung` |
+| Startseite bei eingeschaltetem Versuch | voll | Ersteinschätzung (`hu_first_assessment_text( 'label' )`) | kostenlos (`hu_format_eur( 0 )`) | `/kontakt/?focus=ersteinschaetzung` | `nav_header_ersteinschaetzung` |
 | `/ga4-tracking-setup/`, `/server-side-tracking-b2b/` | voll | Tracking anfragen | „ab“ Messung-Setup | `/kontakt/?type=project&focus=tracking` | `nav_header_door_tracking` |
 | White-Label | voll | Test-Sprint anfragen | Test-Sprint | `/whitelabel-retainer/#aufgabe` | `nav_header_door_whitelabel` |
 | Portal-Einordnungen (Checkfox, Aroundhome, Wattfox, DAA) | leser | Sofortkontakt | Sofortkontakt-Setup | `/solar-waermepumpen-leadgenerierung/#sofortkontakt` | `nav_header_door_sofortkontakt` |
@@ -424,6 +437,7 @@ Menüs, `fokus` die Leiter der Solar-Seite):
 | Übrige Beiträge, Dossier „Tracking“ | leser | Tracking anfragen | „ab“ Messung-Setup | wie oben | `nav_header_door_tracking` |
 | Übrige Beiträge, sonst | leser | Projekt anfragen | kein Betrag | wie oben | `nav_header_project` |
 | Fallstudie | voll | Marktcheck | kostenlos | `…/#marktcheck` | `nav_header_door_marktcheck` |
+| Solar-Cluster (Slugs aus `hu_get_solar_cluster_link_map()`) | voll | Marktcheck | kostenlos | `…/#marktcheck` | `nav_header_door_marktcheck` |
 | Solar-Seite | fokus | Leiter der Seite: Marktcheck · Analyse · Sofortkontakt | kostenlos · Analyse · Sofortkontakt-Setup (je aus dem Kanon) | Anker der Seite (`#marktcheck`; `#analyse` und `#sofortkontakt`, bis `HU_FEATURE_SOLAR_DOORS` an ist `#einstieg`) | `nav_header_door_marktcheck`, `nav_header_door_analyse`, `nav_header_door_sofortkontakt` |
 | Kontakt | voll | keine Tür | | | |
 
@@ -479,7 +493,8 @@ Seite ist; liegt die Seite nur im Bereich eines Punkts (Server-Side-Seite unter
 Tracking, Fallstudie unter Ergebnisse), steht `aria-current="true"`.
 
 Unter 1081 px bleibt die Tür in der Kopfzeile sichtbar, unter 561 px als
-Kurztext, unter 371 px ohne Betrag. Nur im Klappblatt steht sie unter 340 px
+Kurztext, unter 371 px ohne Betrag (Ersteinschätzung bereits unter 414 px).
+Nur im Klappblatt steht sie unter 340 px
 und auf Seiten mit eigener Sticky-CTA-Leiste (unter 761 px). Ohne JavaScript
 ist das Klappblatt offen. Der Kopf von `/whitelabel-retainer/` zeigt die Tür
 zwischen 768 und 1080 px neben der Wortmarke und über 1080 px neben den Ankern;

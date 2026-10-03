@@ -88,10 +88,10 @@ function hu_funnel_doors() {
 		],
 		'ersteinschaetzung' => [
 			'key'          => 'ersteinschaetzung',
-			'label'        => hu_first_assessment_text( 'cta' ),
+			'label'        => hu_first_assessment_text( 'label' ),
 			'short'        => hu_first_assessment_text( 'label' ),
 			'footer_label' => hu_first_assessment_text( 'cta' ),
-			'amount'       => '',
+			'amount'       => hu_format_eur( 0 ),
 			'tier'         => 'free',
 			'url'          => hu_first_assessment_url(),
 			'track'        => 'nav_header_ersteinschaetzung',
@@ -402,6 +402,10 @@ function hu_funnel_context() {
 	}
 
 	if ( is_page( [ 'case-study-solar-leadgenerierung', 'e3-new-energy' ] ) || is_page_template( 'page-case-study-solar.php' ) ) {
+		return [ 'mode' => 'voll', 'door' => 'marktcheck', 'route' => 'energy' ];
+	}
+
+	if ( function_exists( 'hu_get_solar_cluster_link_map' ) && is_page( array_keys( hu_get_solar_cluster_link_map() ) ) ) {
 		return [ 'mode' => 'voll', 'door' => 'marktcheck', 'route' => 'energy' ];
 	}
 
