@@ -15,7 +15,7 @@ if ( ! defined( 'ABSPATH' ) ) {
  * @return string
  */
 function nexus_get_glossary_registry_version() {
-	return '2026-10-01-glossary-v8-conversion-link';
+	return '2026-10-03-glossary-v9-independent-terms';
 }
 
 /**
@@ -193,14 +193,6 @@ function nexus_get_glossary_registry() {
 				)
 			)
 		);
-		$definition['wgos_context']       = array_values(
-			array_filter(
-				array_map(
-					'strval',
-					(array) ( $definition['wgos_context'] ?? [] )
-				)
-			)
-		);
 		$definition['keywords_match']     = array_values(
 			array_unique(
 				array_filter(
@@ -250,24 +242,6 @@ function nexus_get_glossary_registry() {
 			)
 		);
 
-		$definition['related_assets'] = array_values(
-			array_filter(
-				array_map(
-					static function ( $key, $reason ) {
-						if ( ! is_string( $key ) || '' === trim( $key ) ) {
-							return null;
-						}
-
-						return [
-							'slug'   => sanitize_title( $key ),
-							'reason' => is_string( $reason ) ? trim( $reason ) : '',
-						];
-					},
-					array_keys( (array) ( $definition['related_assets'] ?? [] ) ),
-					array_values( (array) ( $definition['related_assets'] ?? [] ) )
-				)
-			)
-		);
 
 		$registry[ $term_slug ] = $definition;
 	}
@@ -467,42 +441,6 @@ function nexus_get_glossary_related_primary_items( $term ) {
 			'label'  => '' !== (string) $item['label'] ? (string) $item['label'] : ucwords( str_replace( '_', ' ', $key ) ),
 			'url'    => $url,
 			'reason' => isset( $item['reason'] ) ? (string) $item['reason'] : '',
-		];
-	}
-
-	return $items;
-}
-
-/**
- * Resolve related WGOS asset cards for one glossary term.
- *
- * @param array<string, mixed> $term Term definition.
- * @return array<int, array{slug: string, label: string, url: string, reason: string}>
- */
-function nexus_get_glossary_related_asset_items( $term ) {
-	$items = [];
-
-	foreach ( (array) $term['related_assets'] as $asset ) {
-		if ( ! is_array( $asset ) || empty( $asset['slug'] ) ) {
-			continue;
-		}
-
-		$definition = function_exists( 'nexus_get_wgos_asset_definition' ) ? nexus_get_wgos_asset_definition( (string) $asset['slug'] ) : null;
-		$url        = function_exists( 'nexus_get_wgos_asset_detail_url' ) ? nexus_get_wgos_asset_detail_url( (string) $asset['slug'] ) : '';
-
-		if ( '' === $url && function_exists( 'nexus_get_wgos_asset_anchor_url' ) ) {
-			$url = nexus_get_wgos_asset_anchor_url( (string) $asset['slug'] );
-		}
-
-		if ( '' === $url ) {
-			continue;
-		}
-
-		$items[] = [
-			'slug'   => (string) $asset['slug'],
-			'label'  => is_array( $definition ) && ! empty( $definition['title'] ) ? (string) $definition['title'] : ucwords( str_replace( '-', ' ', (string) $asset['slug'] ) ),
-			'url'    => $url,
-			'reason' => isset( $asset['reason'] ) ? (string) $asset['reason'] : '',
 		];
 	}
 
@@ -922,7 +860,7 @@ function nexus_send_glossary_sync_observability_headers() {
 add_action( 'send_headers', 'nexus_send_glossary_sync_observability_headers' );
 
 /**
- * Run low-level assertions for glossary and WGOS destination rules.
+ * Run low-level assertions for glossary destination rules.
  *
  * @return array<string, mixed>
  */
@@ -934,7 +872,6 @@ function nexus_get_glossary_routing_assertions_report() {
 		'pass'             => true,
 		'failures'         => [],
 	];
-	$wgos_hub_url = function_exists( 'nexus_get_wgos_url' ) ? nexus_get_wgos_url() : home_url( '/wordpress-agentur-hannover/#zusammenarbeit' );
 	$terms        = nexus_get_glossary_registry();
 
 	$assert = static function ( $condition, $code, $message, $context = [] ) use ( &$report ) {
@@ -1011,7 +948,7 @@ function nexus_get_glossary_routing_assertions_report() {
 			);
 		}
 
-		// B + D) Related terms must follow central destination logic and avoid WGOS pillar drift.
+		// B + D) Related terms must follow central glossary destination logic.
 		$related_items_by_label = [];
 
 		foreach ( nexus_get_glossary_related_term_items( $term ) as $item ) {
@@ -1041,56 +978,6 @@ function nexus_get_glossary_routing_assertions_report() {
 				]
 			);
 
-			$related_policy = (string) ( $related_definition['index_policy'] ?? 'index' );
-			$related_detail = nexus_get_glossary_term_detail_url( $related_definition );
-
-			if ( 'alias' !== $related_policy && '' !== $related_detail ) {
-				$assert(
-					0 !== strpos( trailingslashit( $related_url ), $wgos_hub_url ),
-					'related_terms_no_wgos_pillar_drift',
-					'Related glossary terms must not drift to WGOS pillar when a glossary detail exists.',
-					[
-						'term'         => $term_slug,
-						'related_term' => (string) $related_definition['slug'],
-						'card_url'     => $related_url,
-						'wgos_hub_url' => $wgos_hub_url,
-					]
-				);
-			}
-		}
-
-		// C) WGOS asset routing must resolve to detail page or clean anchor fallback.
-		$related_asset_items = nexus_get_glossary_related_asset_items( $term );
-		$asset_items_by_slug = [];
-
-		foreach ( $related_asset_items as $item ) {
-			if ( ! empty( $item['slug'] ) ) {
-				$asset_items_by_slug[ (string) $item['slug'] ] = (string) $item['url'];
-			}
-		}
-
-		foreach ( (array) ( $term['related_assets'] ?? [] ) as $asset ) {
-			if ( ! is_array( $asset ) || empty( $asset['slug'] ) ) {
-				continue;
-			}
-
-			$asset_slug   = (string) $asset['slug'];
-			$detail_url   = function_exists( 'nexus_get_wgos_asset_detail_url' ) ? nexus_get_wgos_asset_detail_url( $asset_slug ) : '';
-			$fallback_url = function_exists( 'nexus_get_wgos_asset_anchor_url' ) ? nexus_get_wgos_asset_anchor_url( $asset_slug ) : '';
-			$expected_url = '' !== $detail_url ? $detail_url : $fallback_url;
-			$actual_url   = $asset_items_by_slug[ $asset_slug ] ?? '';
-
-			$assert(
-				$actual_url === $expected_url,
-				'wgos_asset_destination_fallback',
-				'Related WGOS asset link must resolve to detail URL or anchor fallback.',
-				[
-					'term'         => $term_slug,
-					'asset_slug'   => $asset_slug,
-					'asset_url'    => $actual_url,
-					'expected_url' => $expected_url,
-				]
-			);
 		}
 	}
 

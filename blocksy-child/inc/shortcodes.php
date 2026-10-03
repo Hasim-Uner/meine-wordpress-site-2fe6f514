@@ -228,13 +228,12 @@ function hu_home_urls() {
 
 	$urls = [
 		'audit'       => nexus_get_primary_public_url( 'audit', home_url( '/solar-waermepumpen-leadgenerierung/#marktcheck' ) ),
-		'wgos'        => nexus_get_primary_public_url( 'wgos', home_url( '/wordpress-agentur-hannover/#zusammenarbeit' ) ),
 		'cases'       => nexus_get_primary_public_url( 'results', home_url( '/case-study-solar-leadgenerierung/' ) ),
 		'agentur'     => nexus_get_primary_public_url( 'agentur', home_url( '/wordpress-agentur-hannover/' ) ),
 		'seo'         => nexus_get_primary_public_url( 'seo', home_url( '/wordpress-agentur-hannover/#zusammenarbeit' ) ),
 		'wartung'     => nexus_get_primary_public_url( 'wartung', home_url( '/wordpress-agentur-hannover/#zusammenarbeit' ) ),
 		'tracking'    => nexus_get_primary_public_url( 'tracking', home_url( '/ga4-tracking-setup/' ) ),
-		'cwv'         => nexus_get_primary_public_url( 'cwv', home_url( '/wgos-assets/cwv-optimierung/' ) ),
+		'cwv'         => nexus_get_primary_public_url( 'cwv', home_url( '/wordpress-agentur-hannover/#zusammenarbeit' ) ),
 		'cro'         => nexus_get_primary_public_url( 'cro', home_url( '/#angebot-funnel' ) ),
 		'about'       => nexus_get_primary_public_url( 'about', home_url( '/hasim-uener/' ) ),
 		'blog'        => nexus_get_primary_public_url( 'blog', home_url( '/blog/' ) ),
@@ -693,58 +692,6 @@ function hu_owned_section_shortcode() {
 	return ob_get_clean();
 }
 add_shortcode( 'hu_owned', 'hu_owned_section_shortcode' );
-
-/**
- * Homepage offer architecture section.
- *
- * @return string
- */
-function hu_wgos_block_shortcode() {
-	$urls = hu_home_urls();
-
-	ob_start();
-	?>
-	<section class="wp-section homepage-wgos-section" id="angebot" aria-labelledby="angebot-heading">
-		<div class="wp-container">
-			<div class="wp-section-title text-center nx-reveal">
-				<span class="wp-badge">Angebotsarchitektur</span>
-				<h2 id="angebot-heading" class="wp-section-h2">Drei Stufen statt zehn Einzelleistungen.</h2>
-				<p class="wp-section-p">
-					Der Ablauf ist bewusst eng geführt: erst Diagnose, dann klare Priorisierung,
-					dann kontrollierte Umsetzung und Weiterentwicklung auf WordPress-Basis.
-				</p>
-			</div>
-
-			<div class="wp-process">
-				<div class="wp-step nx-reveal">
-					<div class="wp-step-num">1</div>
-					<h3>Marktcheck</h3>
-					<p>Der niedrigschwellige Einstieg. Wir machen sichtbar, wo Sichtbarkeit, Vertrauen, Datenqualität oder Lead-Capture wegbrechen und ob sich ein tieferer Eingriff lohnt.</p>
-				</div>
-				<div class="wp-step highlight-step nx-reveal">
-					<div class="wp-step-num highlight-num">2</div>
-					<h3>Priorisierung im direkten Austausch</h3>
-					<p>Aus Audit, Signalen und Geschäftslogik entsteht eine belastbare Reihenfolge: welche Seiten, welche Datenlücken und welche Conversion-Bremsen zuerst angefasst werden.</p>
-				</div>
-				<div class="wp-step nx-reveal">
-					<div class="wp-step-num">3</div>
-					<h3>Kontrollierte Umsetzung und laufende Weiterentwicklung</h3>
-					<p>Dann folgt die kontrollierte Umsetzung: Seiten, Datenlogik, Tracking, SEO und Weiterentwicklung in einer Reihenfolge, die Reibung senkt und bessere Anfragen erzeugt.</p>
-				</div>
-			</div>
-
-			<div id="homepage-mindmap-teaser-root" class="homepage-mindmap-section" aria-label="Anfragesystem Teaser"></div>
-
-			<div style="display:flex; flex-wrap:wrap; justify-content:center; gap:1rem; margin-top:2.5rem;">
-				<a href="<?php echo esc_url( $urls['audit'] ); ?>" class="wp-btn wp-btn-primary" data-track-action="cta_wgos_marketcheck" data-track-category="lead_gen">Marktcheck mit Fit-Entscheid starten</a>
-			</div>
-		</div>
-	</section>
-	<?php
-
-	return ob_get_clean();
-}
-add_shortcode( 'hu_wgos_block', 'hu_wgos_block_shortcode' );
 
 /**
  * Homepage proof section.

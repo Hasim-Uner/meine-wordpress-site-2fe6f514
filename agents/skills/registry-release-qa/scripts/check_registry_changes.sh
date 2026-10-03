@@ -7,7 +7,7 @@ head_ref="${2:-HEAD}"
 
 files=(
   "blocksy-child/inc/glossary/glossary-registry-data.php"
-  "blocksy-child/inc/wgos/wgos-asset-registry-data.php"
+  "blocksy-child/inc/legacy-system-retirement.php"
 )
 
 if [[ "$head_ref" == "WORKTREE" ]]; then
@@ -17,7 +17,7 @@ else
 fi
 
 if [[ -z "$changed" ]]; then
-	echo "No glossary or WGOS registry changes detected between $base_ref and $head_ref."
+	echo "No glossary or retirement-routing changes detected between $base_ref and $head_ref."
   exit 0
 fi
 
@@ -30,7 +30,9 @@ cat <<'EOF'
 - /glossar/owned-leads/
 - /solar-leads-kaufen-alternative/
 - /wordpress-agentur-hannover/
-- /wgos-assets/
-- /wgos-assets/cwv-optimierung/
+- /wgos-assets/ (expected 410)
+- /wgos-assets/positionierungs-check/ (301 to /glossar/positionierung/)
+- /glossar/positionierung/
+- /performance-marketing/
 - /ga4-tracking-setup/
 EOF

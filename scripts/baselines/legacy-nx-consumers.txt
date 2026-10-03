@@ -15,5 +15,3 @@ blocksy-child/assets/css/single-editorial.css
 blocksy-child/assets/css/single.css
 blocksy-child/assets/css/solar-leads-kaufen-alternative.css
 blocksy-child/assets/css/solar-marketcheck-compact.css
-blocksy-child/assets/css/wgos-assets.css
-blocksy-child/assets/css/wgos.css

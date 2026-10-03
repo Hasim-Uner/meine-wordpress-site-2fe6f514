@@ -18,7 +18,7 @@ REPO_ROOT="$(cd "$(dirname "${BASH_SOURCE[0]}")/../../../.." && pwd)"
 REGISTRY="$REPO_ROOT/docs/seo/query-ownership.csv"
 SEO_META="$REPO_ROOT/blocksy-child/inc/seo-meta.php"
 PROVIDER_POSTS="$REPO_ROOT/blocksy-child/inc/blog-provider-posts.php"
-CLUSTER_PAGES="$REPO_ROOT/blocksy-child/inc/wgos/wgos-cluster-pages.php"
+CLUSTER_PAGES="$REPO_ROOT/blocksy-child/inc/service-cluster-pages.php"
 
 if [[ ! -f "$REGISTRY" ]]; then
   echo "FEHLER: Registry fehlt: $REGISTRY" >&2
@@ -225,7 +225,7 @@ if os.path.exists(provider_posts_path):
     with open(provider_posts_path, encoding="utf-8") as fh:
         provider_posts_src = fh.read()
 
-# Cluster-Routen (nexus_get_wgos_cluster_route_templates) legen ihre Vorlage
+# Cluster-Routen (nexus_get_service_cluster_route_templates) legen ihre Vorlage
 # per Slug fest; der Dateiname muss nicht page-<slug>.php heissen.
 cluster_src = ""
 if os.path.exists(cluster_pages_path):

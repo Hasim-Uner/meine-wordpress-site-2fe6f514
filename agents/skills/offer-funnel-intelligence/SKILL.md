@@ -26,8 +26,9 @@ Use the local context already selected under `AGENTS.md`; do not load another.
 - Lead quality and qualified demand outrank clicks. Resolve obvious clarity and
   qualification debt before suggesting an A/B test.
 - Never present proxy research or competitor language as direct buyer evidence.
-- On energy acquisition routes, lead with buyer outcomes; keep WGOS as delivery
-  architecture. Apply the canonical brand and offer boundaries to other routes.
+- On energy acquisition routes, lead with buyer outcomes. The former asset
+  framework is retired from runtime, delivery and positioning. Apply the canonical
+  brand and offer boundaries to other routes.
 - Use E3 as mechanism proof with constraints, never as a universal guarantee.
 - Do not restore retired offers, timing or positioning; use current canonical sources.
 - An audit request yields recommendations. Implement only within the user's

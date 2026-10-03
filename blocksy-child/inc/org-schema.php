@@ -1234,7 +1234,6 @@ function hu_output_schema()
         'areaServed' => hu_get_business_area_served(),
         // Eine Quelle fuer den Katalog, wie bei knowsAbout. Hier stand bis
         // 2026-09-05 ein zweiter, eigener OfferCatalog — Energy-benannt, mit
-        // Angeboten auf /wgos-assets/… und einer Beschreibung, die die eigene
         // Money-Page als "Sekundaere lokale B2B-Seite" bezeichnete. Er hat nie
         // eine Seite erreicht: hu_normalize_positioned_schema_node() ersetzt
         // hasOfferCatalog beim Rendern vollstaendig. Genau die Drift, vor der
@@ -1503,9 +1502,6 @@ function hu_output_schema()
             'serviceOutput' => 'Belastbare Conversion-Signale, eine Zielseite, die das Anzeigenversprechen einlöst, und Kampagnen, die auf qualifizierte Anfragen optimieren'
         ],
 
-        // Legacy-Services wordpress-growth-operating-system + wgos entfernt:
-        // WGOS ist in der neuen Positionierung Hard-Ban, Seite ist noindex,
-        // daher keine Service-Schema-Signale mehr zur WGOS-URL.
     ];
 
     /**
@@ -1518,8 +1514,8 @@ function hu_output_schema()
         $post_id = get_queried_object_id();
         $slug = $post_id ? get_post_field('post_name', $post_id) : '';
 
-        if (!$slug && function_exists('nexus_get_current_wgos_cluster_route_slug')) {
-            $slug = nexus_get_current_wgos_cluster_route_slug();
+        if (!$slug && function_exists('nexus_get_current_service_cluster_route_slug')) {
+            $slug = nexus_get_current_service_cluster_route_slug();
         }
 
         if ( function_exists( 'nexus_is_glossary_hub_page' ) && nexus_is_glossary_hub_page() && function_exists( 'nexus_get_glossary_registry' ) ) {
@@ -1585,37 +1581,6 @@ function hu_output_schema()
                 ];
 
                 $schemas[] = $term_schema;
-            }
-        }
-
-        if (is_singular('wgos_asset') && function_exists('nexus_get_wgos_asset_definition')) {
-            $asset = nexus_get_wgos_asset_definition(get_post($post_id));
-            $schema_type = $asset['schema_type'] ?? 'Service';
-
-            if ($asset && $schema_type !== 'none') {
-                $description = '';
-
-                if (!empty($asset['result'])) {
-                    $description = (string) $asset['result'];
-                } elseif (!empty($asset['excerpt'])) {
-                    $description = (string) $asset['excerpt'];
-                }
-
-                $service = [
-                    '@context'      => 'https://schema.org',
-                    '@type'         => $schema_type,
-                    '@id'           => trailingslashit(get_permalink($post_id)) . '#service',
-                    'name'          => (string) $asset['title'],
-                    'description'   => $description,
-                    'url'           => get_permalink($post_id),
-                    'provider'      => ['@id' => home_url('/#organization')],
-                    'serviceType'   => 'Systembaustein',
-                    'serviceOutput' => (string) ($asset['result'] ?? ''),
-                    // isPartOf-Referenz auf WGOS-Hub entfernt (noindex);
-                    // Asset wird via provider an Organization gebunden.
-                ];
-
-                $schemas[] = $service;
             }
         }
 
@@ -1856,8 +1821,8 @@ function hu_output_schema()
             }
         }
 
-        if ( $slug && function_exists( 'nexus_get_wgos_cluster_page_faq_entities' ) ) {
-            $cluster_faq_entities = nexus_get_wgos_cluster_page_faq_entities( $slug );
+        if ( $slug && function_exists( 'nexus_get_service_cluster_page_faq_entities' ) ) {
+            $cluster_faq_entities = nexus_get_service_cluster_page_faq_entities( $slug );
 
             if ( ! empty( $cluster_faq_entities ) ) {
                 $faq_schema = [
@@ -2079,12 +2044,12 @@ function hu_output_schema()
         global $post;
         if ( isset( $post ) && $post instanceof WP_Post ) {
             $template_owns_faq_schema = (
-                in_array( $slug, [ 'ergebnisse', 'case-studies-e-commerce', 'case-studies', 'hasim-uener', 'wordpress-agentur-hannover', 'wordpress-freelancer-hannover', 'server-side-tracking-b2b', 'aroundhome-solar-einordnung', 'whitelabel-retainer', 'whitelabel-retainer-proof', 'whitelabel', 'wgos', 'wordpress-growth-operating-system', 'landingpage-erstellen-lassen', 'wordpress-website-erstellen-lassen' ], true )
+                in_array( $slug, [ 'ergebnisse', 'case-studies-e-commerce', 'case-studies', 'hasim-uener', 'wordpress-agentur-hannover', 'wordpress-freelancer-hannover', 'server-side-tracking-b2b', 'aroundhome-solar-einordnung', 'whitelabel-retainer', 'whitelabel-retainer-proof', 'whitelabel', 'landingpage-erstellen-lassen', 'wordpress-website-erstellen-lassen' ], true )
                 // Template-owned pages must not emit FAQs from invisible editor caches.
                 || is_page_template( 'page-ergebnisse.php' )
                 || is_page_template( 'page-case-studies-e-commerce.php' )
                 || is_page_template( 'page-wordpress-freelancer-hannover.php' )
-                || ( function_exists( 'nexus_is_wgos_cluster_page' ) && nexus_is_wgos_cluster_page( $slug ) )
+                || ( function_exists( 'nexus_is_service_cluster_page' ) && nexus_is_service_cluster_page( $slug ) )
                 || ( function_exists( 'hu_is_seo_cornerstone_article' ) && hu_is_seo_cornerstone_article() )
                 // Die Solar Case Study emittiert ihren FAQPage-Knoten oben selbst.
                 || ( function_exists( 'hu_is_e3_methodology_case_post' ) && hu_is_e3_methodology_case_post( $post_id ) )
@@ -2173,23 +2138,6 @@ function hu_output_schema()
                 'position' => $bc_position++,
                 'name'     => 'Glossar',
                 'item'     => $glossar_hub_url,
-            ];
-            $breadcrumb_items[] = [
-                '@type'    => 'ListItem',
-                'position' => $bc_position++,
-                'name'     => get_the_title(),
-            ];
-
-        } elseif ( is_singular( 'wgos_asset' ) ) {
-            // Agentur > Asset — WGOS-Hub-Crumb entfernt (noindex).
-            $agentur_url = function_exists( 'nexus_get_primary_public_url' )
-                ? nexus_get_primary_public_url( 'agentur', home_url( '/wordpress-agentur-hannover/' ) )
-                : home_url( '/wordpress-agentur-hannover/' );
-            $breadcrumb_items[] = [
-                '@type'    => 'ListItem',
-                'position' => $bc_position++,
-                'name'     => 'WordPress Agentur Hannover',
-                'item'     => $agentur_url,
             ];
             $breadcrumb_items[] = [
                 '@type'    => 'ListItem',

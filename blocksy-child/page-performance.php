@@ -9,12 +9,11 @@
  * Agenturen bekommen einen eigenen Weg zu White-Label.
  *
  * Seit 2026-09-22 im Gutachten-Layout (system.css) statt im generischen
- * WGOS-Cluster-Renderer. Titel, Beschreibung und FAQ kommen weiter aus
- * nexus_get_wgos_cluster_page_data(), damit sichtbare Fragen und FAQPage-Schema
+ * nexus_get_service_cluster_page_data(), damit sichtbare Fragen und FAQPage-Schema
  * nicht auseinanderlaufen; das Service-Schema steht in inc/org-schema.php.
  * Zahlen kommen ausschließlich aus dem Kanon.
  *
- * Die Route wird über nexus_get_wgos_cluster_route_templates() unabhängig von
+ * Die Route wird über nexus_get_service_cluster_route_templates() unabhängig von
  * der Template-Zuordnung in der Datenbank auf diese Datei gelegt.
  *
  * @package Blocksy_Child
@@ -62,7 +61,7 @@ add_action(
 	30
 );
 
-$page            = nexus_get_wgos_cluster_page( 'performance-marketing' );
+$page            = nexus_get_service_cluster_page( 'performance-marketing' );
 $faq_items       = isset( $page['faq_items'] ) && is_array( $page['faq_items'] ) ? $page['faq_items'] : [];
 $contact_url     = hu_get_commercial_route( 'project_request' );
 $tracking_url    = nexus_get_page_url( [ 'ga4-tracking-setup' ], home_url( '/ga4-tracking-setup/' ) );

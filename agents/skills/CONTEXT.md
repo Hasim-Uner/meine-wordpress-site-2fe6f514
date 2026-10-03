@@ -32,7 +32,7 @@ Hard rules:
 | `seo-cockpit-dev` | SEO Cockpit modules, queues, GSC/Koko integration, diagnostics |
 | `editorial-seo` | Blog index, categories, articles, cornerstone/pillar content, editorial internal linking |
 | `conversion-copy` | Buyer research, competitor teardown, German conversion copy, iterative copy refinement |
-| `offer-funnel-intelligence` | Offer logic, proof, qualification, Marktcheck, funnel economics, WGOS boundary |
+| `offer-funnel-intelligence` | Offer logic, proof, qualification, Marktcheck, funnel economics, retired-offer boundary |
 | `conversion-architecture` | Page CRO, route-wide conversion review, paid/campaign landing pages |
 | `wordpress-growth-architecture` | Forms, lead routing, REST, CRM and WordPress growth plumbing |
 | `performance-marketing` | Broad SEO/CRO/tracking audits and Core Web Vitals/page-speed diagnosis |

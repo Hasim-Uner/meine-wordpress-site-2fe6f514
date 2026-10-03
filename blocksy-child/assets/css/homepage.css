@@ -981,7 +981,6 @@ section.blog-preview,
     line-height: 1.6;
 }
 
-/* Prozess Schritte (WGOS) */
 .wp-process {
     display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 1.75rem;
 }

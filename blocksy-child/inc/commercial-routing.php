@@ -86,10 +86,10 @@ function hu_get_commercial_route_map() {
 		'marketcheck'     => function_exists( 'hu_get_request_analysis_url' )
 			? hu_get_request_analysis_url()
 			: home_url( '/solar-waermepumpen-leadgenerierung/#marktcheck' ),
-		// Versionierte Cluster-Route (inc/wgos/wgos-cluster-pages.php): derselbe
+		// Versionierte Cluster-Route (inc/service-cluster-pages.php): derselbe
 		// Resolver wie der Schluessel 'tracking' der URL-Karte in helpers.php.
-		'tracking_setup'  => function_exists( 'nexus_get_wgos_cluster_route_url' )
-			? nexus_get_wgos_cluster_route_url( 'ga4-tracking-setup', home_url( '/ga4-tracking-setup/' ) )
+		'tracking_setup'  => function_exists( 'nexus_get_service_cluster_route_url' )
+			? nexus_get_service_cluster_route_url( 'ga4-tracking-setup', home_url( '/ga4-tracking-setup/' ) )
 			: home_url( '/ga4-tracking-setup/' ),
 		'tracking_b2b'    => function_exists( 'nexus_get_page_url' )
 			? nexus_get_page_url( [ 'server-side-tracking-b2b' ], home_url( '/server-side-tracking-b2b/' ) )
@@ -166,7 +166,7 @@ function hu_get_results_nav_url() {
 function hu_is_tracking_setup_route() {
 	return is_page( 'ga4-tracking-setup' )
 		|| is_page_template( 'page-ga4.php' )
-		|| ( function_exists( 'nexus_get_current_wgos_cluster_route_slug' ) && 'ga4-tracking-setup' === nexus_get_current_wgos_cluster_route_slug() );
+		|| ( function_exists( 'nexus_get_current_service_cluster_route_slug' ) && 'ga4-tracking-setup' === nexus_get_current_service_cluster_route_slug() );
 }
 
 /**

@@ -30,9 +30,8 @@ Assess the route against its canonical audience and role. Energy-specific questi
    - Does each CTA communicate the value received, not only the action taken?
    - Is the primary CTA obvious at every decision point?
    - Are secondary CTAs proof/support, not distractions?
-8. `WGOS boundary`
-   - WGOS/WordPress Growth Operating System is allowed as delivery architecture, offer module logic, internal/post-sale language, proposal structure, protected/noindex detail, or implementation system.
-   - WGOS is not allowed as cold acquisition positioning on Solar/SHK landing pages, first-screen copy, primary CTA labels, or marketcheck entry copy.
+8. `Retired-offer boundary`
+   - Retired frameworks are not allowed in positioning, delivery, protected dashboards or content registries.
    - Public cold traffic should not have to learn the internal framework before understanding the business outcome.
 9. `Sales handoff`
    - Does the page prepare the buyer for the next conversation?

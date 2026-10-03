@@ -40,7 +40,7 @@ Struktur:
 
 1. Hero → klares Leistungsversprechen
 2. Authority Signals → Logos / Resultate
-3. System Erklärung (WGOS)
+3. Arbeitsweise und Umsetzung
 4. Service Einstieg
 5. Proof Teaser
 6. CTA → Audit
@@ -87,7 +87,7 @@ KEIN Grundlagencontent → dafür Glossar oder Pillar nutzen.
 
 Beispiele:
 - page-seo-cornerstone.php
-- page-wgos.php
+- inc/service-cluster-pages.php
 
 Ziel:
 - thematische Autorität aufbauen

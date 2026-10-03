@@ -1,5 +1,9 @@
 # 0009 Fix-Preis-Foundation-Pricing
 
+Historische Entscheidung: Das ehemalige Framework samt Liefermodell wurde am
+2026-10-03 eingestellt. Aktuell gilt `asset-system-retirement.md`; aktive
+Angebotsdaten kommen aus den zentralen Kanons.
+
 - Datum: 2026-05-02
 - Status: proposed
 

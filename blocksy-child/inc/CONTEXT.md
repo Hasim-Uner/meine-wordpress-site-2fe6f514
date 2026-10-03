@@ -8,7 +8,7 @@ Scope: `blocksy-child/inc/*.php`
 - SEO and schema: `seo-meta.php`, `org-schema.php`, `llms-txt.php`
 - Funnel and CRM: `review-crm.php`, `crm.php`, `blog-notify.php`, `mail.php`
 - Routing and doors: `commercial-routing.php` (routes, navigation contracts), `funnel-doors.php` (six doors, mode and way per request for header and footer)
-- Registries and sync: `glossary-registry*.php`, `wgos-asset-registry*.php`, `wgos-assets.php`
+- Registries and sync: `glossary/`, `service-cluster-pages.php`, `legacy-system-retirement.php`
 - Admin products: `seo-cockpit*.php`, `client-portal.php`, `admin-manager.php`
 
 ## Rules

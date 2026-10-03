@@ -27,7 +27,7 @@ if [[ -z "${RAW_ROUTE}" ]]; then
 Fehlt: Route.
 
   gate-check.sh /whitelabel-retainer/
-  gate-check.sh /wgos/
+  gate-check.sh /wordpress-website-erstellen-lassen/
 
 Bekannte Routen stehen in llms.txt.
 EOF
