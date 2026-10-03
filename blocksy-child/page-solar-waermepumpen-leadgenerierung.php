@@ -954,8 +954,8 @@ get_header();
 						<?php echo esc_html( (string) $calc_months ); ?> Monate verteilt, rund
 						<?php echo esc_html( $hosting_price ); ?> Hosting monatlich und Ihr Werbebudget.
 						Vertriebszeit und laufende Betreuung sind nicht eingerechnet.
-						Voreingestellt sind <?php echo esc_html( $calc_cpl_display ); ?> pro Anfrage und
-						<?php echo esc_html( $calc_quote_display ); ?> Abschlussquote — der Wert aus dem dokumentierten Fall.
+						Voreingestellt sind <?php echo esc_html( $calc_cpl_display ); ?> pro Anfrage, eine vorsichtige Annahme,
+						und <?php echo esc_html( $calc_quote_display ); ?> Abschlussquote, der Wert aus dem dokumentierten Fall.
 						Kosten und Quote müssen sich auf dieselbe Leadmenge beziehen.
 					</p>
 				</div>
