@@ -268,7 +268,7 @@ function hu_inquiry_events_summary( $days = HU_INQUIRY_EVENTS_WINDOW_DAYS ) {
 			HU_INQUIRY_EVENT_NAME,
 			gmdate( 'Y-m-d H:i:s', time() - (int) $days * DAY_IN_SECONDS )
 		),
-		ARRAY_A
+		'ARRAY_A'
 	);
 
 	$summary = [];
