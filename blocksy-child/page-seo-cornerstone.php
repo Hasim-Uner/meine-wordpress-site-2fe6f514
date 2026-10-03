@@ -173,7 +173,7 @@ get_header();
 					<li><strong>INP</strong> zeigt, wie reaktionsfähig die Seite auf Interaktionen ist</li>
 					<li><strong>CLS</strong> zeigt visuelle Stabilität während des Ladens</li>
 				</ul>
-				<p>Wenn LCP, INP und CLS stabil im grünen Bereich liegen, sinken Reibung und Absprünge. Benchmarks zeigen zudem, dass ein besserer Quality Score den CPC spürbar entlasten kann. Die größte Hebelwirkung entsteht dort, wo <a href="<?php echo esc_url( $cwv_url ); ?>">Core Web Vitals</a> und Anzeigenerlebnis gemeinsam optimiert werden.</p>
+				<p>Wenn <?php echo nexus_glossary_link( 'lcp', 'LCP' ); ?>, <?php echo nexus_glossary_link( 'inp', 'INP' ); ?> und <?php echo nexus_glossary_link( 'cls', 'CLS' ); ?> stabil im grünen Bereich liegen, sinken Reibung und Absprünge. Benchmarks zeigen zudem, dass ein besserer Quality Score den CPC spürbar entlasten kann. Die größte Hebelwirkung entsteht dort, wo <a href="<?php echo esc_url( $cwv_url ); ?>">Core Web Vitals</a> und Anzeigenerlebnis gemeinsam optimiert werden.</p>
 				<p>Wenn Ihr Ziel "CPC senken" lautet, ist die Antwort selten "nur anderes Targeting". In vielen Konten ist die schnellste Rendite ein technischer Landingpage-Fix.</p>
 
 				<h2 id="seo-sea">SEO und SEA Zusammenspiel: Zwei Kanäle, ein System</h2>
@@ -193,7 +193,7 @@ get_header();
 					<li><strong>MQL:</strong> Marketing Qualified Lead mit klarem Intent-Signal</li>
 					<li><strong>SQL:</strong> Sales Qualified Lead mit hoher Abschlusswahrscheinlichkeit</li>
 				</ul>
-				<p>Die Brücke dazwischen entsteht nicht im Telefonat, sondern auf der Seite und im Formular. Relevante Felder, klare Angebotskategorien, saubere UTM-Parameter und ein nachvollziehbarer Scoring-Mechanismus im CRM reduzieren manuelle Nacharbeit massiv.</p>
+				<p>Die Brücke dazwischen entsteht nicht im Telefonat, sondern auf der Seite und im Formular. Relevante Felder, klare Angebotskategorien, saubere <?php echo nexus_glossary_link( 'utm-parameter', 'UTM-Parameter' ); ?> und ein nachvollziehbarer Scoring-Mechanismus im CRM reduzieren manuelle Nacharbeit massiv.</p>
 				<p>Ein Beispiel für saubere Vorqualifizierung:</p>
 				<ul>
 					<li>Intent-Abfrage: Erstberatung, konkretes Projekt, Anbieterwechsel</li>

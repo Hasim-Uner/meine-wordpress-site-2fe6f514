@@ -300,7 +300,7 @@ get_header();
 					<div class="hu-intercept__matrix-row" role="row">
 						<span class="hu-intercept__matrix-criterion" role="cell"><?php echo esc_html( $row['criterion'] ); ?></span>
 						<span class="hu-intercept__matrix-rent" role="cell"><?php echo esc_html( $row['rent'] ); ?></span>
-						<span class="hu-intercept__matrix-own" role="cell"><?php echo esc_html( $row['own'] ); ?></span>
+						<span class="hu-intercept__matrix-own" role="cell"><?php echo 'Datenhoheit' === $row['criterion'] ? nexus_glossary_explain_text( $row['own'], 'crm', 'CRM' ) : esc_html( $row['own'] ); ?></span>
 					</div>
 				<?php endforeach; ?>
 			</div>

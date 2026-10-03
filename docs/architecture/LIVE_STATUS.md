@@ -452,8 +452,20 @@ Abschnitt anzuhängen; der Verlauf gehört in Commit-Nachrichten.
   Suchintentionen sind in `docs/seo/query-ownership.csv` getrennt;
   die Entscheidung erläutert `docs/seo/glossar-indexierung.md`.
   Neue Begriffe werden in `inc/glossary/glossary-registry-data.php` gepflegt;
-  `search_terms` erweitert nur die Glossarsuche, `keywords_match` steuert
-  weiterhin die bestehenden Blog-Verlinkungen. Abschlussziel: Projektanfrage.
+  `search_terms` erweitert nur die Glossarsuche; Titel und `keywords_match` steuern
+  die Artikel-Verlinkung (ein Treffer je Begriff und Absatz, höchstens acht).
+  Kontextuelle Integration (Repo 2026-10-03; Livegang ausstehend):
+  `glossary-autolink.php` stellt denselben Definitionsbaustein für gezielte
+  Template-Verknüpfungen auf Startseite und zwanzig Unterseiten bereit.
+  Hover und Tastaturfokus zeigen die Kurzdefinition, Escape schließt sie;
+  Touch und Betrieb ohne JavaScript behalten den normalen Link.
+  Ziele werden aus veröffentlichten Details bzw. bestehenden Alias-Eigentümern
+  aufgelöst. Formulare, Überschriften, bestehende Links, Code und versteckte
+  Inhalte bleiben bei der automatischen Verarbeitung unverändert.
+  `glossary-links.css` und `glossary-links.js` laden nur im vorgesehenen
+  Seitenkontext oder bei ausdrücklichem Editor-Opt-in `[hu_begriff]`.
+  Architektur und Auswahl: `docs/decisions/glossary-context-integration.md`.
+  Abschlussziel: Projektanfrage.
 - **Weitere öffentliche Seiten:** `/impressum/`, `/datenschutz/`
   (Kontaktdaten aus dem Messaging-Canon).
 - **Stillgelegte Asset-Struktur (Repo 2026-10-03; Livegang ausstehend):**

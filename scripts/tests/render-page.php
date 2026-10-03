@@ -16,7 +16,7 @@
  * every resolver uses its hardcoded default.
  */
 
-require __DIR__ . '/navigation-harness.php';
+require __DIR__ . '/glossary-links-harness.php';
 
 $context  = $argv[1] ?? 'imprint';
 $template = $argv[2] ?? '';

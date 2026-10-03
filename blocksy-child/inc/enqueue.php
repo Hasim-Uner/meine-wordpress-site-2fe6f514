@@ -117,6 +117,11 @@ function hu_enqueue_assets() {
 	 */
 	hu_enqueue_css( 'nexus-system-css', 'system.css', [ 'blocksy-child-style' ] );
 
+	if ( nexus_glossary_has_link_context() ) {
+		hu_enqueue_css( 'nexus-glossary-links-css', 'glossary-links.css', [ 'nexus-system-css' ] );
+		hu_enqueue_js( 'nexus-glossary-links-js', 'glossary-links.js', [] );
+	}
+
 	// ── Client Portal only ─────────────────────────────────────────
 	if ( $is_client_portal ) {
 		hu_enqueue_css( 'nexus-client-portal-css', 'client-portal.css', [ 'blocksy-child-style' ] );

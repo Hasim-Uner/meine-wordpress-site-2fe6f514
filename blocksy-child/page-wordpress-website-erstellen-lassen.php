@@ -154,7 +154,7 @@ get_header();
                 <li>Gliederung jeder Seite: Angebot, Preis, Beleg</li>
                 <li>Ihre Texte und Bilder eingepflegt</li>
                 <li>Feinschliff der Texte</li>
-                <li>Bilder zugeschnitten und als WebP verkleinert</li>
+                <li>Bilder zugeschnitten und als <?php echo nexus_glossary_link( 'webp', 'WebP' ); ?> verkleinert</li>
               </ul></div>
               <div class="gruppe"><h4>Technisches SEO und On-Page</h4><ul>
                 <li>Pro Seite ein Suchbegriff, auf den Title, Überschrift und Gliederung ausgerichtet sind</li>
@@ -162,8 +162,8 @@ get_header();
                 <li>Saubere URLs und eine logische Überschriften-Struktur</li>
                 <li>Interne Links zwischen den Seiten</li>
                 <li>Alternativtexte für alle Bilder</li>
-                <li>Canonical, XML-Sitemap und robots.txt</li>
-                <li>Strukturierte Daten: Unternehmen, Brotkrumen, FAQ</li>
+                <li><?php echo nexus_glossary_link( 'canonical-url', 'Canonical' ); ?>, <?php echo nexus_glossary_link( 'xml-sitemap', 'XML-Sitemap' ); ?> und robots.txt</li>
+                <li><?php echo nexus_glossary_link( 'strukturierte-daten', 'Strukturierte Daten' ); ?>: Unternehmen, Brotkrumen, FAQ</li>
                 <li>Core Web Vitals: feste Bildmaße, kein Springen beim Laden</li>
                 <li>Google Search Console eingerichtet, Sie als Inhaber</li>
                 <li>Vorschau für WhatsApp, LinkedIn und Co.</li>

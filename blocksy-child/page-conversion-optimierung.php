@@ -257,7 +257,7 @@ get_header();
 					<p class="cro-meta"><span><b><?php echo esc_html( $analysis_price ); ?></b> netto · <b><?php echo esc_html( (string) $analysis_days ); ?></b> Werktage</span></p>
 				</div>
 			</div>
-			<aside class="marg"><div class="note"><span class="label">Warum kein A/B-Test</span><p>Bei ein paar Dutzend Anfragen im Monat zeigt ein Test über Wochen vor allem Zufall. Ich vergleiche vorher und nachher, sauber dokumentiert.</p><p>Reicht Ihr Traffic für belastbare Tests, steht das im Befund.</p></div></aside>
+			<aside class="marg"><div class="note"><span class="label">Warum kein <?php echo nexus_glossary_link( 'ab-test', 'A/B-Test' ); ?></span><p>Bei ein paar Dutzend Anfragen im Monat zeigt ein Test über Wochen vor allem Zufall. Ich vergleiche vorher und nachher, sauber dokumentiert.</p><p>Reicht Ihr Traffic für belastbare Tests, steht das im Befund.</p></div></aside>
 		</div>
 	</section>
 

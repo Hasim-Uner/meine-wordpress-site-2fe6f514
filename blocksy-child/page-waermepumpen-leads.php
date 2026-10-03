@@ -375,7 +375,7 @@ get_header();
 						<span class="hu-intercept__layer-index"><?php echo esc_html( str_pad( (string) ( $i + 1 ), 2, '0', STR_PAD_LEFT ) ); ?></span>
 						<div class="hu-intercept__layer-body">
 							<h3 class="hu-intercept__layer-title"><?php echo esc_html( $layer['t'] ); ?></h3>
-							<p class="hu-intercept__layer-text"><?php echo esc_html( $layer['s'] ); ?></p>
+							<p class="hu-intercept__layer-text"><?php echo nexus_glossary_explain_text( $layer['s'], 'lead-qualifizierung', 'Vorqualifizierung' ); ?></p>
 						</div>
 					</li>
 				<?php endforeach; ?>

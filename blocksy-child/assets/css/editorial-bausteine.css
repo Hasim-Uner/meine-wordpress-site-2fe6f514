@@ -1298,9 +1298,7 @@
 	color: var(--stempel);
 }
 
-/* Der Pfeil steht im CSS, nicht im Link: die Glossar-Autoverlinkung
-   (glossary-autolink.php) prueft nur bis zum naechsten Tag und koennte
-   sonst in das href eines Links mit innerem Element schreiben. */
+/* Dekorativer Pfeil; die Glossar-Verlinkung laesst Links samt Kindern aus. */
 #article-content .hu-tun--pfeil::after {
 	content: "→";
 	content: "→" / "";

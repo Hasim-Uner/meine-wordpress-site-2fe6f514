@@ -111,15 +111,18 @@ function wp_get_theme() { return new class { public function get( $key ) { retur
 function get_option( $option, $default = false ) { return 'blog_charset' === $option ? 'UTF-8' : $default; }
 function get_bloginfo( $key = '' ) { return 'Haşim Üner'; }
 function get_page_by_path( ...$args ) { return null; }
-function get_permalink( ...$args ) { return false; }
-function get_posts( ...$args ) { return []; }
+function get_permalink( ...$args ) {
+	if ( isset( $args[0] ) && $args[0] instanceof WP_Post ) { return home_url( '/glossar/' . $args[0]->post_name . '/' ); }
+	return $GLOBALS['nav_test_permalink'] ?? false;
+}
+function get_posts( ...$args ) { return 'glossary_term' === ( $args[0]['post_type'] ?? '' ) ? array_values( $GLOBALS['nav_glossary_posts'] ?? [] ) : []; }
 function get_post_status( ...$args ) { return false; }
 function get_term_by( ...$args ) { return false; }
 function get_term_link( ...$args ) { return false; }
 function is_wp_error( $thing ) { return false; }
 function wp_date( $format ) { return gmdate( $format, 1790000000 ); }
-function is_admin() { return false; }
-function is_feed() { return false; }
+function is_admin() { return $GLOBALS['glossary_fixture_admin'] ?? false; }
+function is_feed() { return $GLOBALS['glossary_fixture_feed'] ?? false; }
 function wp_is_json_request() { return false; }
 function wp_doing_ajax() { return false; }
 function is_front_page() { return ! empty( $GLOBALS['nav_test']['front'] ); }
@@ -152,7 +155,7 @@ function is_page( $page = '' ) {
 	return '' !== $current && in_array( $current, array_map( 'strval', (array) $page ), true );
 }
 function is_page_template( $template = '' ) {
-	return '' !== $template && ( $GLOBALS['nav_test']['template'] ?? '' ) === $template;
+	return '' !== $template && in_array( $GLOBALS['nav_test']['template'] ?? '', (array) $template, true );
 }
 function get_header() {}
 function get_footer() {}

@@ -286,12 +286,12 @@ get_header();
 		<div class="hu-intercept__container">
 			<h2 class="hu-intercept__h2" id="hu-study-models-title">Lead-Kosten nach Markt-Modell</h2>
 			<div class="hu-intercept__grid hu-intercept__grid--four">
-				<?php foreach ( $cost_models as $model ) : ?>
+				<?php foreach ( $cost_models as $model_index => $model ) : ?>
 					<article class="hu-intercept__card">
 						<h3 class="hu-intercept__card-title"><?php echo esc_html( $model['t'] ); ?></h3>
 						<p class="hu-intercept__fact-key" style="font-size:1.4rem;"><?php echo esc_html( $model['cpl'] ); ?></p>
 						<p class="hu-intercept__card-text" style="margin:.2rem 0 .6rem;opacity:.7;"><strong><?php echo esc_html( $model['excl'] ); ?></strong></p>
-						<p class="hu-intercept__card-text"><?php echo esc_html( $model['s'] ); ?></p>
+						<p class="hu-intercept__card-text"><?php echo 2 === $model_index ? nexus_glossary_explain_text( $model['s'], 'lead-qualifizierung', 'Vorqualifizierung' ) : esc_html( $model['s'] ); ?></p>
 					</article>
 				<?php endforeach; ?>
 			</div>

@@ -204,7 +204,7 @@ get_header();
 				<div class="protokoll">
 					<div class="z"><span>01 · Build</span><b>WordPress-Websites, Relaunches und Landingpages mit sauberer technischer Übergabe</b></div>
 					<div class="z"><span>02 · Sichtbarkeit</span><b>technische SEO, Seitenarchitektur, Performance und Barrierefreiheit</b></div>
-					<div class="z"><span>03 · Messbarkeit</span><b>GA4, GTM, Consent und Conversion Tracking als eigener oder integrierter Scope</b></div>
+					<div class="z"><span>03 · Messbarkeit</span><b>GA4, GTM, Consent und <?php echo nexus_glossary_link( 'conversion', 'Conversion' ); ?> Tracking als eigener oder integrierter Scope</b></div>
 					<div class="z"><span>04 · Weiterentwicklung</span><b>begrenzte laufende Betreuung für Systeme, die technisch geprüft oder von mir aufgebaut wurden</b></div>
 				</div>
 

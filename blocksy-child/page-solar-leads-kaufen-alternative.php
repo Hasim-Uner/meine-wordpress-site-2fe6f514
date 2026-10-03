@@ -399,7 +399,7 @@ get_header();
 					<article class="hu-buy__model-card">
 						<span class="hu-buy__model-number"><?php echo esc_html( str_pad( (string) ( $i + 1 ), 2, '0', STR_PAD_LEFT ) ); ?></span>
 						<h3><?php echo esc_html( $model['t'] ); ?></h3>
-						<p><?php echo esc_html( $model['s'] ); ?></p>
+						<p><?php echo nexus_glossary_explain_text( $model['s'], 'lead-qualifizierung', 'Vorqualifizierung' ); ?></p>
 					</article>
 				<?php endforeach; ?>
 			</div>

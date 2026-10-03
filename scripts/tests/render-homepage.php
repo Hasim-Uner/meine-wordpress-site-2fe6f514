@@ -3,7 +3,7 @@
 if ( 'off' === ( $argv[1] ?? '' ) ) {
 	define( 'HU_EXPERIMENT_ERSTEINSCHAETZUNG', false );
 }
-require __DIR__ . '/navigation-harness.php';
+require __DIR__ . '/glossary-links-harness.php';
 require_once get_stylesheet_directory() . '/inc/canon/reference-canon.php';
 require_once get_stylesheet_directory() . '/inc/seo-meta.php';
 nav_test_use_context( 'home' );
@@ -21,6 +21,7 @@ $asset = '/wp-content/themes/blocksy-child/';
 <link rel="stylesheet" href="<?php echo esc_attr( $asset ); ?>fonts.css">
 <link rel="stylesheet" href="<?php echo esc_attr( $asset ); ?>assets/css/system.css">
 <link rel="stylesheet" href="<?php echo esc_attr( $asset ); ?>assets/css/startseite-strecke.css">
+<link rel="stylesheet" href="<?php echo esc_attr( $asset ); ?>assets/css/glossary-links.css">
 <style>body{margin:0}*,*::before,*::after{box-sizing:border-box}</style>
 </head>
 <body class="nx-custom-header-active">
@@ -29,5 +30,6 @@ $asset = '/wp-content/themes/blocksy-child/';
 <?php echo nav_test_render( 'template-parts/site-footer.php' ); ?>
 <script src="<?php echo esc_attr( $asset ); ?>assets/js/leiste.js"></script>
 <script src="<?php echo esc_attr( $asset ); ?>assets/js/startseite-strecke.js"></script>
+<script src="<?php echo esc_attr( $asset ); ?>assets/js/glossary-links.js"></script>
 </body>
 </html>

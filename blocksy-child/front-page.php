@@ -413,7 +413,7 @@ get_header();
 			<article class="st-fall" id="systemprojekt" aria-label="Dokumentierter B2B-Fall">
 				<div class="st-fall__text">
 					<p class="st-klein-label">Dokumentierter Fall · B2B · Photovoltaik</p>
-					<p>Der Betrieb hat seine Anfragen über Portale eingekauft, zu <?php echo esc_html( $fest( hu_e3_metric( 'cpl_before' ) ) ); ?> pro Anfrage. Gebaut habe ich die ganze Strecke: Website und Landingpages, Kampagnen, ein Formular mit Vorqualifizierung, Server-Side Tracking und die Übergabe jeder Anfrage an den Vertrieb.</p>
+					<p>Der Betrieb hat seine Anfragen über Portale eingekauft, zu <?php echo esc_html( $fest( hu_e3_metric( 'cpl_before' ) ) ); ?> pro Anfrage. Gebaut habe ich die ganze Strecke: Website und Landingpages, Kampagnen, ein Formular mit <?php echo nexus_glossary_link( 'lead-qualifizierung', 'Vorqualifizierung' ); ?>, Server-Side Tracking und die Übergabe jeder Anfrage an den Vertrieb.</p>
 					<ol class="st-verlauf" aria-label="Verlauf des Projekts">
 						<li><span class="st-klein-label"><?php echo esc_html( $e3['homepage_build_label'] ); ?></span><span>Aufbau von Website, Formular, Tracking und Übergabe an den Vertrieb</span></li>
 						<li><span class="st-klein-label"><?php echo esc_html( $e3['cpl_reached_label'] ); ?></span><span>Rund <?php echo esc_html( $fest( hu_e3_metric( 'cpl_after' ) ) ); ?> pro eigener Anfrage erreicht</span></li>

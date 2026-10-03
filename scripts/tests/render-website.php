@@ -1,6 +1,6 @@
 <?php
 /** Render the real product and shared navigation with WordPress boundaries only. */
-require __DIR__ . '/navigation-harness.php';
+require __DIR__ . '/glossary-links-harness.php';
 require_once get_stylesheet_directory() . '/inc/seo-meta.php';
 $GLOBALS['nav_test'] = [ 'path' => '/wordpress-website-erstellen-lassen/', 'front' => false, 'page' => 'wordpress-website-erstellen-lassen', 'template' => 'page-wordpress-website-erstellen-lassen.php' ];
 $_SERVER['REQUEST_URI'] = $GLOBALS['nav_test']['path'];
@@ -12,6 +12,7 @@ $asset = '/wp-content/themes/blocksy-child/';
 <link rel="stylesheet" href="<?php echo esc_attr( $asset ); ?>fonts.css">
 <link rel="stylesheet" href="<?php echo esc_attr( $asset ); ?>style.css">
 <link rel="stylesheet" href="<?php echo esc_attr( $asset ); ?>assets/css/system.css">
+<link rel="stylesheet" href="<?php echo esc_attr( $asset ); ?>assets/css/glossary-links.css">
 <link rel="stylesheet" href="<?php echo esc_attr( $asset ); ?>assets/css/anfrage-website.css">
 <link rel="stylesheet" href="<?php echo esc_attr( $asset ); ?>assets/css/accessibility-navigation.css">
 <style>body{margin:0}*,*::before,*::after{box-sizing:border-box}</style></head><body class="nx-custom-header-active hu-website-offer-page">
@@ -20,4 +21,5 @@ $asset = '/wp-content/themes/blocksy-child/';
 <?php echo nav_test_render( 'template-parts/site-footer.php' ); ?>
 <script src="<?php echo esc_attr( $asset ); ?>assets/js/leiste.js"></script>
 <script src="<?php echo esc_attr( $asset ); ?>assets/js/anfrage-website.js"></script>
+<script src="<?php echo esc_attr( $asset ); ?>assets/js/glossary-links.js"></script>
 </body></html>

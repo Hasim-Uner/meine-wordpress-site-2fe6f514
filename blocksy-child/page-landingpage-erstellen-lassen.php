@@ -260,7 +260,7 @@ get_header();
 			<div class="haupt">
 				<p class="mono stempelfarbe">Vier Schritte</p>
 				<h2 class="kopf">Sie geben zweimal frei: den Text und die fertige Seite.</h2>
-				<p class="vorspann">Dazwischen arbeite ich auf einer Testumgebung. Den Termin lege ich nach dem Auftakt schriftlich fest; er hängt vor allem daran, wie schnell Fakten, Bilder und Freigaben kommen.</p>
+				<p class="vorspann">Dazwischen arbeite ich auf einer <?php echo nexus_glossary_link( 'staging', 'Testumgebung' ); ?>. Den Termin lege ich nach dem Auftakt schriftlich fest; er hängt vor allem daran, wie schnell Fakten, Bilder und Freigaben kommen.</p>
 				<div class="protokoll posten" aria-label="Ablauf">
 					<?php foreach ( $process as $step ) : ?>
 						<div class="z"><span><?php echo esc_html( $step[0] ); ?></span><b><?php echo esc_html( $step[1] ); ?></b></div>
