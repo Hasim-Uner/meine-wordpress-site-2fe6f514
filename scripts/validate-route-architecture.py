@@ -115,16 +115,18 @@ if not set(slugs) & retired:
 if not set(slugs) & legacy_redirects:
     ok("provisioned routes are not legacy redirect sources")
 
-# The proof page is intentionally held out of the index until the explicit
-# release decision. Guard the intent so an unrelated SEO cleanup cannot flip it.
+# The proof page is indexable since the owner's release decision of
+# 2026-10-03 (it was held out of the index before). Guard the decision so an
+# unrelated SEO cleanup cannot flip it back; the same slug list drives the
+# robots meta and the sitemap exclusion.
 proof_slug = "case-study-solar-leadgenerierung"
-proof_comment = "Anonymization hold: noindex pending settlement resolution."
-if proof_slug in noindex and proof_comment in seo:
-    ok("solar proof noindex hold is explicit and documented")
-elif proof_slug not in noindex:
-    fail("solar proof indexing state changed; update the documented release decision and guard together")
+proof_comment = "Release decision 2026-10-03: the solar proof page"
+if proof_slug in noindex:
+    fail("solar proof is noindex again; a new release decision is required and this guard must change with it")
+elif proof_comment not in seo:
+    fail("solar proof release decision comment is missing in hu_get_noindex_follow_slugs()")
 else:
-    fail("solar proof is noindex without the documented hold comment")
+    ok("solar proof is indexable and the release decision is documented")
 
 required_lock_symbols = [
     "nexus_acquire_route_pages_lock",

@@ -376,7 +376,11 @@ Abschnitt anzuhängen; der Verlauf gehört in Commit-Nachrichten.
   der Marktcheck; Byline, Breadcrumb- und Service-Schema über Helper in
   `inc/seo-meta.php`.
 - **Nachweise:** `/case-study-solar-leadgenerierung/` ist die Fallstudie; sie
-  bleibt `noindex, follow`, bis die Freigabe vorliegt. Unter dem Marktcheck
+  ist seit der Freigabe des Inhabers vom 2026-10-03 indexierbar (kein
+  `noindex`, in `wp-sitemap.xml`); der frühere Anonymisierungs-Hold ist aus
+  `hu_get_noindex_follow_slugs()` entfernt, `scripts/validate-route-architecture.py`
+  hält den neuen Stand fest. Notbremse: ACF-Feld `seo_noindex` an der Seite.
+  Unter dem Marktcheck
   steht seit 2026-09-26 ein zweiter, leiser Weg in die Projektanfrage für
   Leser ohne Energiebetrieb (`cta_case_study_to_project`). Seit 2026-10-01
   steht die Seite auf `system.css` und `e3-case-v2.css` (vier `.tafel`-Flächen,
