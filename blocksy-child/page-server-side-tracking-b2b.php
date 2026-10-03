@@ -52,7 +52,6 @@ $pro_terms              = hu_tracking_package_detail( 'pro', 'terms' );
 $individual_terms       = hu_tracking_package_detail( 'individual', 'terms' );
 $standard_minutes       = hu_tracking_package_detail( 'standard', 'included_minutes' );
 $pro_minutes            = hu_tracking_package_detail( 'pro', 'included_minutes' );
-$response_days          = hu_tracking_package_detail( 'standard', 'response_business_days' );
 $delivery_window        = hu_tracking_delivery_weeks_display();
 
 // ── Formular-Registries (bestehender Kontakt-Intake) ──────────
@@ -244,7 +243,8 @@ $care_included = [
 	'Erkennung fehlender oder doppelter Events',
 	'GTM-Versionierung',
 	'Kleinere Fehlerkorrekturen im vereinbarten Zeitrahmen',
-	sprintf( 'Supportantwort innerhalb von %s Werktagen im laufenden Care-Vertrag', $response_days ),
+	// Dieselbe Antwortzeit wie für Anfragen; keine eigene Frist im Template.
+	'Supportantwort ' . hu_response_promise( 'window' ) . ' im laufenden Care-Vertrag',
 	'Kurze Statusmeldung bei Auffälligkeiten',
 ];
 

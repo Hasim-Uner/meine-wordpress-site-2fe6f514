@@ -138,9 +138,10 @@ werden von `scripts/canon-guard.sh` repo-weit geblockt — in CI und im
 Theme-Build, also vor jedem Deploy. Sie hier noch einmal aufzuzählen wäre eine
 zweite Liste.
 
-Die Support-Frist der Tracking Care (`HU_TRACKING_RESPONSE_BUSINESS_DAYS`) ist
-eine dritte, vertragliche Größe im laufenden Mandat. Sie gehört nicht in
-Intake-Bestätigungen.
+Die Support-Frist der Tracking Care ist keine eigene Größe mehr: Im laufenden
+Care-Vertrag gilt dieselbe Antwortzeit wie für Anfragen, ausgegeben über
+`hu_response_promise()`. Die frühere eigene Kanon-Konstante `HU_TRACKING_RESPONSE_BUSINESS_DAYS`
+ist entfernt.
 
 ## Sichtbare Kontaktwege
 

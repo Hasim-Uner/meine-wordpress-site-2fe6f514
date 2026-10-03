@@ -476,10 +476,10 @@ function hu_enqueue_assets() {
 			'NexusContactConfig',
 			[
 				'restEndpoint'    => esc_url_raw( rest_url( 'nexus/v1/contact-request' ) ),
-				// Stand zuvor auf der Support-Frist der Tracking Care
-				// (response_business_days). Das ist die Reaktionszeit im
-				// laufenden Vertrag, nicht die Antwort auf eine Anfrage — und
-				// als Intake-Zusage war sie die zweite Antwortzeit der Seite.
+				// Stand zuvor auf einer eigenen Support-Frist der Tracking Care.
+				// Das war die Reaktionszeit im laufenden Vertrag, nicht die
+				// Antwort auf eine Anfrage — und als Intake-Zusage die zweite
+				// Antwortzeit der Seite. Heute gilt dieselbe Zusage.
 				'successMessage'  => sprintf(
 					'Danke. Ihre Anfrage ist eingegangen. Sie erhalten %s eine persönliche Rückmeldung zu Ihrem Tracking-Setup.',
 					hu_response_promise( 'window' )
