@@ -176,7 +176,7 @@ foreach ( [
 	'canon/diagnose-canon.php',
 	'canon/e3-proof-canon.php',
 	'canon/pricing-canon.php',
-	'wgos/wgos-cluster-pages.php',
+	'service-cluster-pages.php',
 	'header.php',
 	'commercial-routing.php',
 	'seo-subpage-cluster-links.php',

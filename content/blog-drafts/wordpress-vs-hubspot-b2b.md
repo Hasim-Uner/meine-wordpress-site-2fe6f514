@@ -32,7 +32,7 @@ Die eigentliche Entscheidung lautet nicht `WordPress oder HubSpot?`, sondern: We
 ## Primaere interne Links
 
 - `/wordpress-agentur-hannover/`
-- `/wordpress-agentur-hannover/#wgos`
+- `/wordpress-agentur-hannover/#zusammenarbeit`
 - `/wordpress-agentur-hannover/#technisches-seo`
 - `/ga4-tracking-setup/`
 - `/growth-audit/`
@@ -84,4 +84,4 @@ Die eigentliche Entscheidung lautet nicht `WordPress oder HubSpot?`, sondern: We
 
 - Verweis auf oeffentliche Ergebnisse
 - klares Argument fuer Ownership statt Suite-Lock-in
-- Hinweis auf versionierte URL- und Cluster-Logik im WGOS
+- Hinweis auf versionierte URL- und Cluster-Logik für aktive Leistungsseiten

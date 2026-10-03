@@ -1,6 +1,6 @@
 <?php
 /**
- * Versioned service cluster pages and blog-to-asset bridges.
+ * Versioned service routes for tracking and performance marketing.
  *
  * @package Blocksy_Child
  */
@@ -14,7 +14,7 @@ if ( ! defined( 'ABSPATH' ) ) {
  *
  * @return array<string, array<string, mixed>>
  */
-function nexus_get_wgos_cluster_page_data() {
+function nexus_get_service_cluster_page_data() {
 	static $pages = null;
 
 	if ( null !== $pages ) {
@@ -101,12 +101,12 @@ function nexus_get_wgos_cluster_page_data() {
  * @param string|WP_Post|null $value Page slug or post object.
  * @return array<string, mixed>|null
  */
-function nexus_get_wgos_cluster_page( $value = null ) {
+function nexus_get_service_cluster_page( $value = null ) {
 	if ( null === $value ) {
 		$value = get_post();
 
-		if ( ! ( $value instanceof WP_Post ) && function_exists( 'nexus_get_current_wgos_cluster_route_slug' ) ) {
-			$value = nexus_get_current_wgos_cluster_route_slug();
+		if ( ! ( $value instanceof WP_Post ) && function_exists( 'nexus_get_current_service_cluster_route_slug' ) ) {
+			$value = nexus_get_current_service_cluster_route_slug();
 		}
 	}
 
@@ -115,7 +115,7 @@ function nexus_get_wgos_cluster_page( $value = null ) {
 	}
 
 	$slug  = sanitize_title( (string) $value );
-	$pages = nexus_get_wgos_cluster_page_data();
+	$pages = nexus_get_service_cluster_page_data();
 
 	return $pages[ $slug ] ?? null;
 }
@@ -126,8 +126,8 @@ function nexus_get_wgos_cluster_page( $value = null ) {
  * @param string|WP_Post|null $value Page slug or post object.
  * @return bool
  */
-function nexus_is_wgos_cluster_page( $value = null ) {
-	return is_array( nexus_get_wgos_cluster_page( $value ) );
+function nexus_is_service_cluster_page( $value = null ) {
+	return is_array( nexus_get_service_cluster_page( $value ) );
 }
 
 /**
@@ -136,8 +136,8 @@ function nexus_is_wgos_cluster_page( $value = null ) {
  * @param string|WP_Post|null $value Page slug or post object.
  * @return array<string, string>|null
  */
-function nexus_get_wgos_cluster_page_seo_defaults( $value = null ) {
-	$page = nexus_get_wgos_cluster_page( $value );
+function nexus_get_service_cluster_page_seo_defaults( $value = null ) {
+	$page = nexus_get_service_cluster_page( $value );
 
 	if ( ! is_array( $page ) ) {
 		return null;
@@ -155,8 +155,8 @@ function nexus_get_wgos_cluster_page_seo_defaults( $value = null ) {
  * @param string|WP_Post|null $value Page slug or post object.
  * @return array<int, array<string, mixed>>
  */
-function nexus_get_wgos_cluster_page_faq_entities( $value = null ) {
-	$page = nexus_get_wgos_cluster_page( $value );
+function nexus_get_service_cluster_page_faq_entities( $value = null ) {
+	$page = nexus_get_service_cluster_page( $value );
 
 	if ( ! is_array( $page ) ) {
 		return [];
@@ -186,36 +186,11 @@ function nexus_get_wgos_cluster_page_faq_entities( $value = null ) {
 }
 
 /**
- * Build render-ready asset cards from an 'assets' map.
- *
- * Genutzt von den Blog-Brücken (nexus_render_wgos_blog_asset_bridge) und dem
- * SEO-Cockpit; die Cluster-Seiten selbst rendern keine Asset-Karten mehr.
- *
- * @param array<string, mixed> $page Definition with an 'assets' map.
- * @return array<int, array<string, string>>
- */
-function nexus_get_wgos_cluster_page_asset_cards( $page ) {
-	$cards = [];
-
-	foreach ( (array) ( $page['assets'] ?? [] ) as $slug => $context ) {
-		$asset = function_exists( 'nexus_get_wgos_asset_definition' ) ? nexus_get_wgos_asset_definition( (string) $slug ) : null;
-
-		$cards[] = [
-			'title'   => is_array( $asset ) && ! empty( $asset['title'] ) ? (string) $asset['title'] : ucwords( str_replace( '-', ' ', (string) $slug ) ),
-			'url'     => function_exists( 'nexus_get_wgos_asset_anchor_url' ) ? nexus_get_wgos_asset_anchor_url( (string) $slug ) : home_url( '/wordpress-agentur-hannover/#zusammenarbeit' ),
-			'context' => (string) $context,
-		];
-	}
-
-	return $cards;
-}
-
-/**
  * Return the slug-to-template mapping for versioned cluster routes.
  *
  * @return array<string, string>
  */
-function nexus_get_wgos_cluster_route_templates() {
+function nexus_get_service_cluster_route_templates() {
 	return [
 		'ga4-tracking-setup'           => get_stylesheet_directory() . '/page-ga4.php',
 		'performance-marketing'        => get_stylesheet_directory() . '/page-performance.php',
@@ -227,14 +202,14 @@ function nexus_get_wgos_cluster_route_templates() {
  *
  * @return string
  */
-function nexus_get_current_wgos_cluster_route_slug() {
+function nexus_get_current_service_cluster_route_slug() {
 	if ( ! function_exists( 'nexus_get_current_request_path' ) ) {
 		return '';
 	}
 
 	$request_path = nexus_get_current_request_path();
 
-	foreach ( array_keys( nexus_get_wgos_cluster_route_templates() ) as $slug ) {
+	foreach ( array_keys( nexus_get_service_cluster_route_templates() ) as $slug ) {
 		if ( trailingslashit( '/' . $slug ) === $request_path ) {
 			return $slug;
 		}
@@ -250,7 +225,7 @@ function nexus_get_current_wgos_cluster_route_slug() {
  * @return string|false
  */
 function nexus_disable_canonical_redirect_for_cluster_routes( $redirect_url ) {
-	if ( '' !== nexus_get_current_wgos_cluster_route_slug() ) {
+	if ( '' !== nexus_get_current_service_cluster_route_slug() ) {
 		return false;
 	}
 
@@ -270,7 +245,7 @@ function nexus_preempt_cluster_404( $preempt, $wp_query ) {
 		return $preempt;
 	}
 
-	$slug = nexus_get_current_wgos_cluster_route_slug();
+	$slug = nexus_get_current_service_cluster_route_slug();
 
 	// `pre_handle_404` fires before WordPress marks the request as 404.
 	// Virtual cluster routes must therefore key off the route slug alone.
@@ -306,8 +281,8 @@ function nexus_force_cluster_route_templates( $template ) {
 		return $template;
 	}
 
-	$current_slug     = nexus_get_current_wgos_cluster_route_slug();
-	$route_templates  = nexus_get_wgos_cluster_route_templates();
+	$current_slug     = nexus_get_current_service_cluster_route_slug();
+	$route_templates  = nexus_get_service_cluster_route_templates();
 
 	foreach ( $route_templates as $slug => $forced_template ) {
 		if ( ( is_page( $slug ) || $current_slug === $slug ) && file_exists( $forced_template ) ) {
@@ -326,7 +301,7 @@ add_filter( 'template_include', 'nexus_force_cluster_route_templates', 97 );
  * @return array<int, string>
  */
 function nexus_add_virtual_cluster_body_class( $classes ) {
-	$slug = nexus_get_current_wgos_cluster_route_slug();
+	$slug = nexus_get_current_service_cluster_route_slug();
 
 	if ( '' === $slug ) {
 		return $classes;
@@ -354,8 +329,8 @@ function nexus_maybe_ensure_cluster_route_pages() {
 		return;
 	}
 
-	$route_templates = nexus_get_wgos_cluster_route_templates();
-	$page_data       = nexus_get_wgos_cluster_page_data();
+	$route_templates = nexus_get_service_cluster_route_templates();
+	$page_data       = nexus_get_service_cluster_page_data();
 
 	foreach ( $route_templates as $slug => $template_path ) {
 		$page_id  = 0;
@@ -435,186 +410,3 @@ function nexus_maybe_ensure_cluster_route_pages() {
 	}
 }
 add_action( 'init', 'nexus_maybe_ensure_cluster_route_pages', 28 );
-
-/**
- * Return the versioned mapping from blog articles to system-building-block recommendations.
- *
- * @return array<string, array<string, mixed>>
- */
-function nexus_get_wgos_blog_asset_bridge_data() {
-	static $bridges = null;
-
-	if ( null !== $bridges ) {
-		return $bridges;
-	}
-
-	$agentur_url             = nexus_get_primary_public_url( 'agentur', home_url( '/wordpress-agentur-hannover/' ) );
-	$seo_url                 = nexus_get_primary_public_url( 'seo', home_url( '/wordpress-agentur-hannover/#zusammenarbeit' ) );
-	$tracking_url            = nexus_get_primary_public_url( 'tracking', home_url( '/ga4-tracking-setup/' ) );
-	$cwv_url                 = nexus_get_primary_public_url( 'cwv', home_url( '/wgos-assets/cwv-optimierung/' ) );
-	$cro_url                 = nexus_get_primary_public_url( 'cro', home_url( '/#angebot-funnel' ) );
-	$performance_marketing_url = nexus_get_primary_public_url( 'performance_marketing', home_url( '/performance-marketing/' ) );
-	$solar_pillar_url        = function_exists( 'nexus_get_energy_systems_url' )
-		? nexus_get_energy_systems_url()
-		: home_url( '/solar-waermepumpen-leadgenerierung/' );
-
-	$seo_foundation_bridge = [
-		'title' => 'Passende Systembausteine zu diesem Thema',
-		'intro' => 'Wenn Performance Marketing an technischer Reibung und einer instabilen SEO-Basis scheitert, sind diese Bausteine meist der nächste sinnvolle Schritt:',
-		'assets' => [
-			'technical-seo-audit' => 'Macht technische Indexierungs-, Redirect- und Strukturprobleme sichtbar, die Rankings und Kampagnenwirkung ausbremsen.',
-			'cwv-speed-audit'      => 'Zeigt, ob Ladezeit, Layout Shifts oder Render-Blocking die Nachfrage schon vor dem Angebot ausbremsen.',
-			'cwv-optimierung'      => 'Setzt die größten Performance-Fixes dort um, wo sie Rankings und Conversion direkt entlasten.',
-		],
-		'supporting_link' => [
-			'label' => 'WordPress SEO Hannover',
-			'url'   => $seo_url,
-			'text'  => 'Wenn Sie für dieses Thema einen kaufnahen Einstieg suchen, ist die SEO-Seite der direkte Anschluss zwischen technischer Basis, Sichtbarkeit und Anfragepfad.',
-		],
-	];
-
-	$bridges = [
-		'technisches-seo-performance-fundament' => $seo_foundation_bridge,
-		'warum-performance-marketing-ohne-technisches-seo-geld-verbrennt' => $seo_foundation_bridge,
-		'owned-leads-statt-ad-miete' => [
-			'title' => 'Passende Systembausteine zu diesem Thema',
-			'intro' => 'Wenn das Problem nicht nur mehr Traffic, sondern die falsche Nachfrage-Logik ist, sind das die nächsten sinnvollen Bausteine:',
-			'assets' => [
-				'growth-audit'             => 'Klärt zuerst, ob Angebot, Tracking oder Seitenlogik die Anfragequalität bremsen.',
-				'angebotsseiten-architektur' => 'Ordnet Angebotsseiten so, dass aus Nachfrage ein klar geführter nächster Schritt wird.',
-				'landing-page-neu'         => 'Baut den Einstieg neu auf, wenn bezahlte oder organische Nachfrage bisher auf die falsche Zielseite trifft.',
-			],
-			'supporting_link' => [
-				'label' => 'Solar- & Wärmepumpen-Leadgenerierung',
-				'url'   => $solar_pillar_url,
-				'text'  => 'Wenn der Kontext konkret Solar oder Wärmepumpen ist und aus Portal-Mietern Eigentümer der Nachfrage werden sollen, ist die Pillar-Seite der direkte Einstieg in das eigene Anfragesystem.',
-			],
-		],
-		'b2b-landingpage-optimieren' => [
-			'title' => 'Passende Systembausteine zu diesem Artikel',
-			'intro' => 'Wenn Sie die Gedanken aus dem Artikel konkret in Ihre Website übersetzen wollen, starten meist diese Bausteine:',
-			'assets' => [
-				'landing-page-optimierung' => 'Hebt bestehende Landing Pages an Headline, Struktur und Reibung an.',
-				'cta-formular-optimierung' => 'Prüft Formulare und CTA-Hürden dort, wo qualifizierte Besucher heute aussteigen.',
-				'angebotsseiten-architektur' => 'Sichert, dass einzelne Landing Pages in eine konsistente Angebotslogik eingebettet sind.',
-			],
-			'supporting_link' => [
-				'label' => 'WordPress Agentur in Hannover',
-				'url'   => $agentur_url,
-				'text'  => 'Wenn Landing Pages Teil eines größeren WordPress-Systems werden sollen, führt die lokale Agentur-Seite direkt in den passenden Kontext.',
-			],
-		],
-		'meta-ads-fuer-b2b' => [
-			'title' => 'Systembausteine für kampagnenfähige Zielseiten',
-			'intro' => 'Kampagnenstrukturen wirken nur so gut wie Tracking und Zielseite. Diese Bausteine sind meist der nächste Hebel:',
-			'assets' => [
-				'landing-page-neu'         => 'Baut Seiten mit sauberem Message Match für bezahlte Nachfrage auf.',
-				'landing-page-optimierung' => 'Verbessert bestehende Zielseiten, wenn Kampagnen zwar klicken, aber nicht sauber konvertieren.',
-				'tracking-audit'           => 'Prüft, ob Kampagnendaten und Conversion-Signale überhaupt belastbar ankommen.',
-			],
-			'supporting_link' => [
-				'label' => 'Performance Marketing',
-				'url'   => $performance_marketing_url,
-				'text'  => 'Wenn Kampagnen schon laufen oder vorbereitet werden, ist die Performance-Marketing-Seite der saubere Anschluss zwischen Zielseite, Tracking und Paid-Aktivierung.',
-			],
-		],
-		'server-side-tracking-gtm' => [
-			'title' => 'Systembausteine für belastbare Messbarkeit',
-			'intro' => 'Server-Side Tracking ist selten der erste Schritt. Diese Bausteine sorgen für die richtige Reihenfolge:',
-			'assets' => [
-				'server-side-tracking' => 'Setzt serverseitige Signalverarbeitung technisch sauber um.',
-				'tracking-audit'       => 'Klärt vorher, wo Browser-Tracking, Event-Setup und Datenqualität heute brechen.',
-				'consent-mode-v2'      => 'Ordnet Datenschutz und Signalverluste, damit die Umsetzung fachlich belastbar bleibt.',
-			],
-			'supporting_link' => [
-				'label' => 'GA4 Tracking Setup',
-				'url'   => $tracking_url,
-				'text'  => 'Wenn Tracking nicht nur technisch, sondern als stabile Entscheidungsgrundlage aufgebaut werden soll, ist die Tracking-Seite der direkte Einstieg.',
-			],
-		],
-		'core-web-vitals-wachstum-seo-und-roas' => [
-			'title' => 'Systembausteine für Performance als Hebel',
-			'intro' => 'Wenn Performance nicht nur ein Symptom, sondern ein Wachstumshebel ist, greifen meist diese drei Bausteine ineinander:',
-			'assets' => [
-				'cwv-speed-audit' => 'Zeigt, welche technischen Bremsen auf den wichtigen Seitentypen wirklich Priorität haben.',
-				'cwv-optimierung' => 'Setzt die größten Performance-Fixes gezielt um.',
-				'server-tuning'   => 'Geht tiefer in Infrastruktur, Caching und TTFB, wenn der Bottleneck nicht im Frontend endet.',
-			],
-			'supporting_link' => [
-				'label' => 'Core Web Vitals',
-				'url'   => $cwv_url,
-				'text'  => 'Wenn Sie das Thema als kaufnahe Service-Seite statt nur als Insight vertiefen wollen, ist die Core-Web-Vitals-Seite der direkte Anschluss.',
-			],
-		],
-	];
-
-	return $bridges;
-}
-
-/**
- * Resolve one blog-to-asset bridge by post slug or current post.
- *
- * @param string|WP_Post|null $value Post slug or post object.
- * @return array<string, mixed>|null
- */
-function nexus_get_wgos_blog_asset_bridge( $value = null ) {
-	if ( null === $value ) {
-		$value = get_post();
-	}
-
-	if ( ! ( $value instanceof WP_Post ) ) {
-		$value = get_post();
-	}
-
-	if ( ! ( $value instanceof WP_Post ) || 'post' !== $value->post_type ) {
-		return null;
-	}
-
-	$slug    = sanitize_title( (string) $value->post_name );
-	$bridges = nexus_get_wgos_blog_asset_bridge_data();
-
-	return $bridges[ $slug ] ?? null;
-}
-
-/**
- * Render the blog-to-asset bridge block for single posts.
- *
- * @param array<string, mixed> $bridge Bridge definition.
- * @return string
- */
-function nexus_render_wgos_blog_asset_bridge( $bridge ) {
-	$cards = nexus_get_wgos_cluster_page_asset_cards( $bridge );
-	$supporting_link = isset( $bridge['supporting_link'] ) && is_array( $bridge['supporting_link'] ) ? $bridge['supporting_link'] : [];
-
-	ob_start();
-	?>
-	<section class="nx-asset-bridge" data-track-section="blog_asset_bridge">
-		<div class="nx-asset-bridge__inner">
-			<span class="nx-asset-bridge__kicker">Fachlicher Anschluss</span>
-			<h2 class="nx-asset-bridge__title"><?php echo esc_html( (string) $bridge['title'] ); ?></h2>
-			<p class="nx-asset-bridge__intro"><?php echo esc_html( (string) $bridge['intro'] ); ?></p>
-
-			<div class="nx-asset-bridge__grid">
-				<?php foreach ( $cards as $card ) : ?>
-					<article class="nx-asset-bridge__card">
-						<h3><a href="<?php echo esc_url( $card['url'] ); ?>"><?php echo esc_html( $card['title'] ); ?></a></h3>
-						<p><?php echo esc_html( $card['context'] ); ?></p>
-					</article>
-				<?php endforeach; ?>
-			</div>
-
-			<?php if ( ! empty( $supporting_link['url'] ) && ! empty( $supporting_link['label'] ) ) : ?>
-				<p class="nx-asset-bridge__supporting-link">
-					<?php if ( ! empty( $supporting_link['text'] ) ) : ?>
-						<?php echo esc_html( (string) $supporting_link['text'] ); ?>
-						<?php echo ' '; ?>
-					<?php endif; ?>
-					<a href="<?php echo esc_url( (string) $supporting_link['url'] ); ?>"><?php echo esc_html( (string) $supporting_link['label'] ); ?></a>
-				</p>
-			<?php endif; ?>
-		</div>
-	</section>
-	<?php
-
-	return trim( (string) ob_get_clean() );
-}

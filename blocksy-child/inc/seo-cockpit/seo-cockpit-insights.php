@@ -40,11 +40,11 @@ function nexus_get_seo_cockpit_cluster_slug_from_url( $url ) {
 	$path = wp_parse_url( $url, PHP_URL_PATH );
 	$slug = sanitize_title( basename( trim( (string) $path, '/' ) ) );
 
-	if ( '' === $slug || ! function_exists( 'nexus_get_wgos_cluster_page' ) ) {
+	if ( '' === $slug || ! function_exists( 'nexus_get_service_cluster_page' ) ) {
 		return '';
 	}
 
-	return nexus_get_wgos_cluster_page( $slug ) ? $slug : '';
+	return nexus_get_service_cluster_page( $slug ) ? $slug : '';
 }
 
 /**
@@ -191,7 +191,7 @@ function nexus_get_seo_cockpit_wp_context_for_url( $url ) {
 	$cluster_slug  = nexus_get_seo_cockpit_cluster_slug_from_url( $url );
 	$redirect_url  = nexus_get_seo_cockpit_redirect_target_for_url( $url );
 
-	$cluster_templates = function_exists( 'nexus_get_wgos_cluster_route_templates' ) ? nexus_get_wgos_cluster_route_templates() : [];
+	$cluster_templates = function_exists( 'nexus_get_service_cluster_route_templates' ) ? nexus_get_service_cluster_route_templates() : [];
 	$cluster_template  = isset( $cluster_templates[ $cluster_slug ] ) ? basename( (string) $cluster_templates[ $cluster_slug ] ) : '';
 
 	if ( 0 === $resolved_id && home_url( '/' ) === $url ) {
@@ -267,7 +267,7 @@ function nexus_get_seo_cockpit_wp_context_for_url( $url ) {
 
 		if ( $post instanceof WP_Post ) {
 			if ( '' !== $cluster_slug && 'publish' !== (string) $post->post_status ) {
-				$cluster_defaults = function_exists( 'nexus_get_wgos_cluster_page_seo_defaults' ) ? nexus_get_wgos_cluster_page_seo_defaults( $cluster_slug ) : null;
+				$cluster_defaults = function_exists( 'nexus_get_service_cluster_page_seo_defaults' ) ? nexus_get_service_cluster_page_seo_defaults( $cluster_slug ) : null;
 				$context          = [
 					'resolved'                => true,
 					'url'                     => $url,
@@ -345,12 +345,12 @@ function nexus_get_seo_cockpit_wp_context_for_url( $url ) {
 	}
 
 	if ( 0 === $resolved_id && '' !== $cluster_slug ) {
-		$cluster_defaults = function_exists( 'nexus_get_wgos_cluster_page_seo_defaults' ) ? nexus_get_wgos_cluster_page_seo_defaults( $cluster_slug ) : null;
+		$cluster_defaults = function_exists( 'nexus_get_service_cluster_page_seo_defaults' ) ? nexus_get_service_cluster_page_seo_defaults( $cluster_slug ) : null;
 		$context          = [
 			'resolved'                => true,
 			'url'                     => $url,
 			'post_id'                 => 0,
-			'post_title'              => function_exists( 'nexus_get_wgos_cluster_page' ) && is_array( nexus_get_wgos_cluster_page( $cluster_slug ) ) ? (string) nexus_get_wgos_cluster_page( $cluster_slug )['title'] : '',
+			'post_title'              => function_exists( 'nexus_get_service_cluster_page' ) && is_array( nexus_get_service_cluster_page( $cluster_slug ) ) ? (string) nexus_get_service_cluster_page( $cluster_slug )['title'] : '',
 			'post_type'               => '',
 			'post_status'             => 'virtual',
 			'page_type'               => 'virtual_cluster',
@@ -473,7 +473,7 @@ function nexus_get_seo_cockpit_post_seo_context( $post_id ) {
 	}
 
 	$forced           = function_exists( 'hu_get_forced_singular_seo' ) ? hu_get_forced_singular_seo( $post_id ) : [];
-	$cluster_defaults = function_exists( 'nexus_get_wgos_cluster_page_seo_defaults' ) ? nexus_get_wgos_cluster_page_seo_defaults( $post ) : null;
+	$cluster_defaults = function_exists( 'nexus_get_service_cluster_page_seo_defaults' ) ? nexus_get_service_cluster_page_seo_defaults( $post ) : null;
 	$stored_title     = function_exists( 'hu_get_stored_seo_value' ) ? hu_get_stored_seo_value( $post_id, 'seo_title', 'rank_math_title' ) : '';
 	$stored_desc      = function_exists( 'hu_get_stored_seo_value' ) ? hu_get_stored_seo_value( $post_id, 'seo_description', 'rank_math_description' ) : '';
 	$title            = $stored_title;
@@ -782,7 +782,7 @@ function nexus_get_seo_cockpit_page_role( $context = [], $url = '' ) {
 		return 'service';
 	}
 
-	if ( in_array( $path, array_filter( [ $paths['wgos'] ?? '', $paths['glossary'] ?? '', $paths['tools'] ?? '', $paths['performance_analysis'] ?? '' ] ), true ) ) {
+	if ( in_array( $path, array_filter( [ $paths['glossary'] ?? '', $paths['tools'] ?? '', $paths['performance_analysis'] ?? '' ] ), true ) ) {
 		return 'system';
 	}
 

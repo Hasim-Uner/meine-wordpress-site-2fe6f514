@@ -79,7 +79,7 @@ if [[ "${#EXISTING_COLD_ROUTES[@]}" -gt 0 ]]; then
   wgos_cold=$(count_hits "WGOS|WordPress Growth Operating System" "${EXISTING_COLD_ROUTES[@]}")
 fi
 if (( wgos_cold > 0 )); then
-  red+=("WGOS on $wgos_cold cold acquisition route(s) — move to delivery/proposal language only")
+  red+=("WGOS on $wgos_cold cold acquisition route(s) — remove the retired framework entirely")
 else
   green+=("WGOS boundary held on cold acquisition routes")
 fi

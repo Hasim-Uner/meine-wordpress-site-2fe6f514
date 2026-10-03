@@ -9,7 +9,7 @@ Trigger: before push/deploy/release, registry changes, navigation/header migrati
 
 Delegate:
 - General pre-deploy checks → `pre-deploy-smoke`
-- WGOS/glossary/registry release → `registry-release-qa`
+- Glossary/service-registry release → `registry-release-qa`
 - Header/menu/navigation migration → `navigation-migration`
 
 Required baseline:

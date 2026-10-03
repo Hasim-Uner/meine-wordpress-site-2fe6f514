@@ -72,14 +72,14 @@ Die gemeinsame Sticky-CTA-Leiste (`sticky-cta.css`, `template-parts/seo-subpage-
 
 Die vier Portal-Einordnungen (Checkfox, Aroundhome, Wattfox, DAA) laufen im gemeinsamen Leser (`template-parts/single-reader.php`, `article-reader-body.css`, `single-reader-unified.css`). Seit 2026-10-01 stehen ihre beitragsspezifischen Module auf `system.css`: `checkfox-decision.css`, `aroundhome-decision.css` und `cpo-calculator.css` enthalten weder Farbwert noch Radius noch `--nx-*`. Die Modulfarben (`--checkfox-*`, `--ah-*`) sind aufgelöst; die toten Regeln auf `[data-theme='light']`/`[data-nx-theme='light']` entfallen, weil `nexus-core.js` die Wurzel fest auf `dark` setzt. Die Seite ist hell; wo ein Baustein den Stempel als Fläche trägt (Knöpfe, CPO-Ergebnis), setzt es den Text ausdrücklich auf `--papier`, weil der Leser Links und `strong` im Artikel sonst dunkel färbt.
 
-**Offen:** Die Beiträge laden weiter den Legacy-Provider, denn der Leser-Unterbau (`single.css`, `single-editorial.css`, `related-content.css`, `footer-cta.css`, `post-visual.css`, `blog-notify.css`, `wgos-bridge.css`) ist für alle Beiträge gemeinsam. Ihn auf Tokens zu ziehen ändert jeden Artikel des Blogs und ist deshalb ein eigener Auftrag (Cluster 4 unten). `single-reader-unified.css` neutralisiert ihn heute mit `!important`.
+**Offen:** Die Beiträge laden weiter den Legacy-Provider, denn der Leser-Unterbau (`single.css`, `single-editorial.css`, `related-content.css`, `footer-cta.css`, `post-visual.css`, `blog-notify.css`) ist für alle Beiträge gemeinsam. Ihn auf Tokens zu ziehen ändert jeden Artikel des Blogs und ist deshalb ein eigener Auftrag (Cluster 4 unten). `single-reader-unified.css` neutralisiert ihn heute mit `!important`.
 
 ### Gemessene Legacy-Cluster
 
 Die verbleibenden Verbraucher verteilen sich nicht gleichmäßig. Für die Migration gelten diese Cluster:
 
 1. **Globale Shell / Provider:** `style.css` ist von `--nx-*` entkoppelt; der frühere Audit-Sonderheader samt `site-header.css` ist entfernt. `design-system.css` wird auf der kanonischen Startseite, der Personenseite, dem Ergebnisse-Hub und den Glossarseiten nicht mehr geladen. Auf allen übrigen Routen bleibt der Provider vorerst aktiv, weil er neben NX-Tokens auch unpräfixierte Tokens sowie globale `body`-/Heading-/Kompatibilitätsregeln bereitstellt.
-2. **Schwere Legacy-Oberflächen:** `homepage.css`, `wgos.css`, `wgos-assets.css`. `ergebnisse.css` ist bereits vollständig entkoppelt.
+2. **Schwere Legacy-Oberflächen:** `homepage.css`. `ergebnisse.css` ist bereits vollständig entkoppelt.
 3. **Service-Routen:** `cro.css`, `ga4.css`, `cwv.css`, `seo-cornerstone.css`, `seo.css`. `performance.css` ist entkoppelt (siehe unten).
 4. **Blog / Editorial:** `single.css`, `single-editorial.css`, `related-content.css`, `footer-cta.css`, Provider-Decision-Layer.
 5. **Solar / Intercepts:** `solar-marketcheck-compact.css`, `solar-leads-kaufen-alternative.css` und die Solar-SEO-Deltas. `server-side-tracking.css` und `sticky-cta.css` stehen auf `system.css` (siehe Abschnitt 3a).
@@ -105,7 +105,7 @@ Die aktuelle Anzahl der Legacy-Verbraucher liefert der Guard.
 
 Übersicht und Detailseiten verwenden `system.css` plus `glossary.css` für
 Suchfeld, Filter, Begriffszeilen und Lesebreite. `design-system.css`,
-`homepage.css` und `wgos.css` werden auf diesen Routen nicht mehr geladen.
+`homepage.css` werden auf diesen Routen nicht mehr geladen.
 Die Beispiel-Tafel verwendet die vorhandene `.tafel`-Komponente. Das Glossar
 ist aus der NX-Baseline entfernt; es definiert keine eigenen Design-Tokens.
 
@@ -167,7 +167,7 @@ Template lädt die Datei selbst, wie `navigation-ecosystem.css`.
 
 ### `homepage-redesign.css`
 
-Das `.hu-hp`-Kit bleibt nur für die noch davon abhängigen WGOS-/Case-/WOW-Oberflächen. Die aktuelle Startseite verwendet es nicht mehr. Es ist ein Migrationsbestand, kein zweiter globaler Core.
+Das `.hu-hp`-Kit bleibt nur für die noch davon abhängigen Case-/WOW-Oberflächen. Die aktuelle Startseite verwendet es nicht mehr. Es ist ein Migrationsbestand, kein zweiter globaler Core.
 
 ## 5. Route-CSS-Vertrag
 
@@ -194,7 +194,7 @@ Route-CSS soll **nicht** enthalten:
 4. **Editorial-Solar-Legacy (erledigt 2026-10-01):** `energy-systems.css` ist entfernt, die eingefrorene Guard-Ausnahme für `.solar-page` gelöscht; die Fallstudie steht auf `e3-case-v2.css` und `system.css`.
 5. **Service-Routen:** aktive `cro.css`, `ga4.css`, `seo-cornerstone.css` nach Nutzung und Geschäftswert einzeln migrieren oder stilllegen (`performance.css` erledigt).
 6. **Blog / Editorial:** `single.css` und die verbleibenden Reader-/CTA-Layer auf Gutachten-Primitives ziehen; neue Blog-Schichten bauen bereits auf dem neuen System auf und dürfen nicht zurück auf NX driften.
-7. **Schwere Legacy-Familien:** `homepage.css`, WGOS und Case-Routen nur nach realer Routennutzung weiterführen oder abbauen.
+7. **Schwere Legacy-Familien:** `homepage.css`, Case-Routen nur nach realer Routennutzung weiterführen oder abbauen.
 8. **Agentur (erledigt):** Die Route läuft auf `system.css` plus `agentur-decision.css`; das frühere `agentur.css` mit `--ag-*` ist entfernt.
 9. **Legacy-Core:** `design-system.css` nicht mehr global laden; danach Restverbraucher migrieren und Datei entfernen.
 10. **Alte `.hu-hp`-Familie:** nur noch behalten, wenn reale aktive Routen sie benötigen.

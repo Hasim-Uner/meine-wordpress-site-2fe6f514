@@ -221,7 +221,7 @@ Regeln:
 - Solar/Wärmepumpe als angeblich einzige Zielgruppe auf globalen Seiten
 - Marktcheck als globaler CTA auf fachfremden WordPress-/Tracking-/CRO-Seiten
 - `Growth Audit` als user-facing Label
-- `WGOS` und `WordPress Growth Operating System` als öffentliches Angebot
+- `WGOS` und `WordPress Growth Operating System`: vollständig eingestellt, auch intern als Dashboard, Credits- oder Delivery-Modell. Aktive Energie-Preise bleiben eigenständige Angebotsdaten.
 - `KI-Integration` als eigenständiges Angebot
 - `Growth Architect` und generische Growth-Blasen-Begriffe
 - `Performance-Marketing-Agentur` als Unternehmensidentität

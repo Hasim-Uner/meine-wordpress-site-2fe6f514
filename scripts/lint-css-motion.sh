@@ -72,7 +72,6 @@ BASELINE_REDUCED_MOTION=(
   "seo-cockpit-admin.css"
   "single.css"
   "waermepumpen-leads.css"
-  "wgos.css"
 )
 
 failures=0

@@ -113,7 +113,7 @@ tracking loesungen b2b;/server-side-tracking-b2b/;commercial;owned;gsc-export-28
 # Performance-Marketing-Intent (2026-09-22): /performance-marketing/ besitzt den
 # B2B-Kaufintent "erst Messung und Zielseite, dann Budget". Noch ohne GSC-Beleg;
 # die Zeile sichert die Zuordnung, damit kein Beitrag die Query doppelt besetzt.
-performance marketing b2b;/performance-marketing/;commercial;owned;wgos-cluster-pages.php meta_title (2026-09-22);
+performance marketing b2b;/performance-marketing/;commercial;owned;service-cluster-pages.php meta_title (2026-09-22);
 # Tracking-Angebot (2026-09-26): /ga4-tracking-setup/ ist Ziel des Kopfpunkts
 # "Tracking" und verkauft Stufe 1 der Tracking-Leiter (clientseitig). Server-Side-
 # Terme bleiben bei /server-side-tracking-b2b/. Bis hierher hatte die Seite keine

@@ -1528,7 +1528,6 @@ html.theme-transitioning *::after {
 
 :root[data-nx-theme='light'] :is(
     .cs-page,
-    .wgos-wrapper,
     .wp-agentur-page-wrapper,
     .nexus-single-container,
     .nexus-archive-container,
@@ -1594,9 +1593,6 @@ html.theme-transitioning *::after {
     .milestone-title,
     .value-story-title,
     .cta-headline,
-    .wgos-h2,
-    .wgos-hero__title,
-    .wgos-credit-phase__title,
     .problem-title,
     .pm-step-title,
     .pm-cta-headline,

@@ -505,7 +505,7 @@ function hu_get_public_category_label( $category ) {
  * @param string $fallback Optional fallback URL.
  * @return string
  */
-function nexus_get_wgos_cluster_route_url( $slug, $fallback = '' ) {
+function nexus_get_service_cluster_route_url( $slug, $fallback = '' ) {
 	$slug = sanitize_title( (string) $slug );
 
 	if ( '' === $slug ) {
@@ -541,14 +541,10 @@ function nexus_get_primary_public_url_map() {
 	// gehören laut docs/seo/query-ownership.csv weiter dieser Seite.
 	// Conversion-Links führen zur Leistung "Anfragestrecken & Landingpages"
 	// auf der Startseite.
-	$wgos_url    = trailingslashit( $agentur_url ) . '#zusammenarbeit';
-	$asset_url   = trailingslashit( $agentur_url ) . '#zusammenarbeit';
 	$seo_url     = trailingslashit( $agentur_url ) . '#zusammenarbeit';
 	$cro_url     = home_url( '/#angebot-funnel' );
 	$wartung_url = trailingslashit( $agentur_url ) . '#zusammenarbeit';
-	$cwv_url     = function_exists( 'hue_get_wgos_asset_redirect_url' )
-		? hue_get_wgos_asset_redirect_url( 'cwv-optimierung', trailingslashit( $agentur_url ) . '#zusammenarbeit' )
-		: home_url( '/wgos-assets/cwv-optimierung/' );
+	$cwv_url     = trailingslashit( $agentur_url ) . '#zusammenarbeit';
 
 	$urls = [
 		'home'                 => home_url( '/' ),
@@ -556,8 +552,6 @@ function nexus_get_primary_public_url_map() {
 		'audit'                => $request_url,
 		'audit_linkedin'       => $request_url,
 		'results'              => function_exists( 'nexus_get_results_url' ) ? nexus_get_results_url() : home_url( '/case-study-solar-leadgenerierung/' ),
-		'wgos'                 => $wgos_url,
-		'wgos_assets'          => $asset_url,
 		'glossary'             => nexus_get_page_url(
 			[ 'glossar' ],
 			home_url( '/glossar/' )
@@ -565,13 +559,13 @@ function nexus_get_primary_public_url_map() {
 		'agentur'              => $agentur_url,
 		'seo'                  => $seo_url,
 		'wartung'              => $wartung_url,
-		'tracking'             => nexus_get_wgos_cluster_route_url(
+		'tracking'             => nexus_get_service_cluster_route_url(
 			'ga4-tracking-setup',
 			home_url( '/ga4-tracking-setup/' )
 		),
 		'cwv'                  => $cwv_url,
 		'cro'                  => $cro_url,
-		'performance_marketing'=> nexus_get_wgos_cluster_route_url(
+		'performance_marketing'=> nexus_get_service_cluster_route_url(
 			'performance-marketing',
 			home_url( '/performance-marketing/' )
 		),
@@ -1379,7 +1373,6 @@ function nexus_route_pages_ensure_due() {
  * Store the stamp after every provisioning hook of this request has run.
  *
  * Only the request that acquired the provisioning lock reaches this branch.
- * Releasing at priority 99 keeps contact, glossary, WGOS and route-page hooks
  * inside the same critical section.
  *
  * @return void
@@ -1657,7 +1650,6 @@ function nexus_get_legacy_offer_redirect_map() {
 
 	return [
 		// High-probability external entry paths. Internal/historical tool,
-		// WGOS and service slugs are no longer forced through 301 redirects.
 		// Content and query ownership moved to / by the homepage consolidation.
 		'/wordpress-freelancer-hannover/' => home_url( '/' ),
 		'/growth-audit/'             => $request_url,
@@ -1924,7 +1916,7 @@ function nexus_should_hide_footer_primary_cta() {
 		return true;
 	}
 
-	if ( function_exists( 'nexus_is_wgos_cluster_page' ) && nexus_is_wgos_cluster_page() ) {
+	if ( function_exists( 'nexus_is_service_cluster_page' ) && nexus_is_service_cluster_page() ) {
 		return true;
 	}
 
@@ -1941,8 +1933,6 @@ function nexus_should_hide_footer_primary_cta() {
 		'page-ergebnisse.php',
 		'page-case-studies-e-commerce.php',
 		'page-case-study-solar.php',
-		'page-wgos.php',
-		'page-wgos-assets.php',
 		'page-solar-waermepumpen-leadgenerierung.php',
 		'page-solar-leads-kaufen-alternative.php',
 		'page-server-side-tracking-b2b.php',
@@ -1973,11 +1963,6 @@ function nexus_should_hide_footer_primary_cta() {
 			'e3-new-energy',
 			'case-study-domdar',
 			'domdar',
-			'wgos',
-			'wordpress-growth-operating-system',
-			'wgos-systemlandkarte',
-			'wgos-asset-hub',
-			'systemlandkarte',
 			'ki-integration-wordpress',
 			'solar-waermepumpen-leadgenerierung',
 			'website-fuer-solar-und-waermepumpen-anbieter',
