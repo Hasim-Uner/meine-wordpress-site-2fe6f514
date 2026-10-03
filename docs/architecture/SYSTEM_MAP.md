@@ -163,6 +163,7 @@ Im Repo:
 
 - `data-track-*`-Attribute auf CTAs und Content-Bausteinen; auf der Solar-Money-Page liest `assets/js/solar-events.js` sie für anonyme Tageszähler über `inc/solar-events.php` (`POST nexus/v1/solar-events`), unabhängig von Koko und CRM; `GET` ist nur für Administratoren verfügbar
 - Formularereignisse der drei Solar-Türen übertragen nur Ereignis/Tür/Seitenpfad/UTC-Tag; keine Formularwerte, Referrer, Browser-Speicherung oder Identifikatoren. Andere vorhandene Skripte schreiben nur dann in `dataLayer`, wenn eines existiert
+- serverseitiges Anfrage-Protokoll `anfrage_gesendet` (`inc/inquiry-events.php`, Tabelle `hu_inquiry_events`): je erfolgreich verarbeiteter Anfrage eine Zeile mit Formular, Seitenpfad, utm_source, utm_campaign, Zeitpunkt; aufgerufen von `contact-request`, `whitelabel-request` und `audit-request`; keine IP, keine Personendaten; Admin-Seite „Anfrage-Eingänge“. Der Marker `form_origin=sst` im Formular von `/server-side-tracking-b2b/` trennt es vom Kontaktformular
 - cookiefreie Anfrage-Herkunft aus der Browser-Session, gespeichert am CRM-Kontakt (`nexus_get_inquiry_attribution_meta()` in `inc/crm.php`)
 - noindex- und SEO-Meta-Logik; Schema-Ausgabe für Organisation, Services und Profile; editorgetriebenes FAQPage-Schema wird per `save_post` gecacht und im Frontend nur gelesen
 
@@ -280,6 +281,6 @@ Risiko:
 in allen CTA-URLs. `page-kontakt.php` übernimmt `focus=website`, Seiten, Art,
 Tracking; `contact-page.php` validiert und berechnet serverseitig neu.
 `crm.php` speichert die Dimensionen und Umfang, beide Mails nennen ihn.
-`website-product-events.js` reicht freigegebene Dimensionen cookiefrei an
-Matomo weiter (bestehender Tracker muss separat konfiguriert sein).
+Die Skripte der Seite senden keine Browser-Ereignisse mehr; gezählt wird
+serverseitig über `inc/inquiry-events.php` (Formular `kontakt`).
 `helpers.php` besitzt FAQ-Copy, `org-schema.php` und Template lesen denselben Satz.

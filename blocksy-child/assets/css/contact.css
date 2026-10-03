@@ -79,6 +79,30 @@
     font-size: clamp(2.65rem, 1.75rem + 2.55vw, 4.15rem);
 }
 
+/* Kopf "Was passiert danach?": steht direkt unter der H1, auf jeder Variante. */
+.contact-page .contact-after {
+    margin: 1.15rem 0 0;
+    max-width: 40ch;
+}
+
+.contact-page .contact-after__label {
+    margin: 0;
+    font-family: var(--mono);
+    font-size: var(--mono-m);
+    font-weight: 550;
+    letter-spacing: 0.16em;
+    line-height: 1.45;
+    text-transform: uppercase;
+    color: var(--stempel);
+}
+
+.contact-page .contact-after__text {
+    margin: 0.4rem 0 0;
+    color: var(--tinte);
+    font-size: 0.96rem;
+    line-height: 1.6;
+}
+
 .contact-page .contact-lead {
     margin: 1.15rem 0 0;
     max-width: 40ch;
@@ -570,8 +594,8 @@
     grid-template-columns: minmax(0, 1fr) auto;
     grid-template-areas:
         "assurance buttons"
-        "assurance promise"
-        "assurance aux";
+        "assurance aux"
+        "assurance promise";
     gap: 0.45rem 1.25rem;
     align-items: center;
     padding: 1.15rem clamp(1.35rem, 3vw, 2.15rem);
@@ -690,18 +714,28 @@
     text-align: right;
 }
 
+/* Termin als sichtbare Alternative: Sekundaer-Button ueber der Antwortzeit-Zeile. */
 .contact-page .contact-form__aux-link {
     grid-area: aux;
     justify-self: end;
-    color: var(--zone2);
-    font-size: 0.74rem;
-    text-decoration-color: var(--grau);
-    text-underline-offset: 0.2em;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.4rem;
+    min-height: 44px;
+    padding: 0 1rem;
+    border: 1px solid var(--papier);
+    color: var(--papier);
+    font-size: 0.9375rem;
+    line-height: 1.2;
+    text-decoration: none;
+    transition: background-color var(--t-mikro) var(--ease-weich), color var(--t-mikro) var(--ease-weich);
 }
 
 .contact-page .contact-form__aux-link:hover,
 .contact-page .contact-form__aux-link:focus-visible {
-    color: var(--papier);
+    background: var(--papier);
+    color: var(--tinte);
 }
 
 /* ── Fehler / Rueckmeldung ─────────────────────────────────── */
@@ -888,8 +922,8 @@
         grid-template-areas:
             "assurance"
             "buttons"
-            "promise"
-            "aux";
+            "aux"
+            "promise";
         gap: 0.85rem;
     }
 
@@ -914,8 +948,9 @@
     }
 
     .contact-page .contact-form__aux-link {
-        justify-self: center;
+        justify-self: stretch;
     }
+
 }
 
 @media (prefers-reduced-motion: reduce) {

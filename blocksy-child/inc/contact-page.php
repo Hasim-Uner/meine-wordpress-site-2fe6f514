@@ -728,6 +728,10 @@ function nexus_handle_contact_request_submission( WP_REST_Request $request ) {
 		nexus_record_lead_notification_failure( $contact_id, 'contact_request' );
 	}
 
+	if ( function_exists( 'hu_record_inquiry_event' ) ) {
+		hu_record_inquiry_event( hu_inquiry_event_form_for_contact( $validated, $payload ), $payload );
+	}
+
 	nexus_send_contact_request_confirmation( $validated );
 
 	return new WP_REST_Response(
@@ -807,7 +811,9 @@ function nexus_validate_contact_request_payload( $payload ) {
 	$tracking_setup = isset( $payload['tracking_setup'] ) ? mb_substr( sanitize_textarea_field( (string) $payload['tracking_setup'] ), 0, 2000 ) : '';
 	$ad_budget      = isset( $payload['ad_budget'] ) ? sanitize_key( (string) $payload['ad_budget'] ) : '';
 
-	if ( '' === $name ) {
+	// Das Kurzformular der Ersteinschaetzung fragt keinen Namen: URL und
+	// E-Mail genuegen fuer die ersten drei Befunde.
+	if ( '' === $name && ! $is_first_assessment ) {
 		return new WP_Error( 'missing_name', 'Bitte Ihren Namen angeben.' );
 	}
 
@@ -831,6 +837,13 @@ function nexus_validate_contact_request_payload( $payload ) {
 	// Ersteinschaetzung: ohne URL gibt es nichts anzusehen.
 	if ( $is_first_assessment && '' === $website_url ) {
 		return new WP_Error( 'missing_website', hu_first_assessment_text( 'website_missing' ) );
+	}
+
+	// Ohne Namen traegt der Kontakt die Domain der Website, wie bei der
+	// White-Label-Anfrage: Betreff, CRM-Titel und Mail bleiben lesbar.
+	$name_provided = '' !== $name;
+	if ( ! $name_provided ) {
+		$name = (string) preg_replace( '/^www\./i', '', (string) wp_parse_url( $website_url, PHP_URL_HOST ) );
 	}
 
 	$linkedin_url = nexus_validate_contact_optional_url(
@@ -900,6 +913,7 @@ function nexus_validate_contact_request_payload( $payload ) {
 
 	return $website_scope + $attribution + [
 		'name'               => $name,
+		'name_provided'      => $name_provided,
 		'email'              => $email,
 		'request_type'       => $request_type,
 		'request_type_label' => $request_type_labels[ $request_type ],
@@ -1316,7 +1330,7 @@ function nexus_send_contact_request_confirmation( $payload ) {
 			'preheader' => 'Ihre Anfrage ist eingegangen.',
 			'eyebrow'   => $payload['request_type_label'],
 			'headline'  => 'Ihre Anfrage ist eingegangen.',
-			'intro'     => 'Danke, ' . $payload['name'] . '. Ich prüfe Ihre Angaben persönlich und melde mich zeitnah zurück.',
+			'intro'     => ( ! isset( $payload['name_provided'] ) || $payload['name_provided'] ? 'Danke, ' . $payload['name'] . '.' : 'Danke.' ) . ' Ich prüfe Ihre Angaben persönlich und melde mich zeitnah zurück.',
 			'content'   => $content,
 			'footer'    => 'Viele Grüße, Haşim Üner',
 		]

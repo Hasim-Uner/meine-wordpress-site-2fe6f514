@@ -70,8 +70,6 @@ test('40 scopes: price, time and every CTA use the same configuration', async ({
   await expect(page.locator('#plus')).toBeDisabled();
   const points=await page.locator('.anfrage-website .gruppe li').count();
   await expect(page.locator('#anzahl')).toHaveText(String(points));
-  const events=await page.evaluate(()=>window._paq);
-  expect(events.filter(e=>e[0]==='trackEvent' && e[2]==='rechner_change').length).toBeGreaterThan(40);
 });
 test('no JavaScript: both comparison rows and diagrams, valid static offer', async ({ browser }) => {
   const context=await browser.newContext({ javaScriptEnabled:false });const page=await context.newPage();
@@ -84,19 +82,15 @@ test('no JavaScript: both comparison rows and diagrams, valid static offer', asy
   expect(new URL(await page.locator('#cta-angebot').getAttribute('href')).searchParams.get('seiten')).toBe('3');
   await context.close();
 });
-test('reduced motion: no transitions or load-bar animation; event dimensions only', async ({ page }) => {
+test('reduced motion: no transitions or load-bar animation, no browser storage', async ({ page }) => {
   await page.emulateMedia({reducedMotion:'reduce'});await open(page);
   await page.locator('#m-anfragen').click();
   expect(await page.locator('.laden').isVisible()).toBe(false);
   expect(await page.locator('.anfrage-website').evaluate(el=>el.getAnimations({subtree:true}).length)).toBe(0);
   await page.locator('#cta-angebot').evaluate(el=>{el.addEventListener('click',e=>e.preventDefault());el.click()});
-  const events=await page.evaluate(()=>window._paq);
-  expect(events[0]).toEqual(['disableCookies']);
-  expect(events.find(e=>e[2]==='toggle_durchleuchtung')).toEqual(['trackEvent','anfrage_website','toggle_durchleuchtung','{"modus":"anfragen"}']);
-  const cta=events.find(e=>e[2]==='cta_click');expect(JSON.parse(cta[3])).toEqual({position:'angebot',seiten:3,art:'neubau',tracking:0});
   expect(await page.evaluate(()=>[localStorage.length,sessionStorage.length,document.cookie])).toEqual([0,0,'']);
 });
-test('product to contact to real intake: request, CRM, mails and success event', async ({ page }) => {
+test('product to contact to real intake: request, CRM and mails', async ({ page }) => {
   await open(page);
   await page.locator('.groessen [data-seiten="5"]').click();await page.locator('.art [data-art="relaunch"]').click();await page.locator('#tracking').check();
   const search=new URL(await page.locator('#cta-angebot').getAttribute('href')).searchParams.toString();
@@ -109,8 +103,8 @@ test('product to contact to real intake: request, CRM, mails and success event',
     response=JSON.parse(execFileSync('php',[path.join(__dirname,'submit-website-fixture.php')],{input:JSON.stringify(route.request().postDataJSON()),encoding:'utf8'}));
     await route.fulfill({status:response.status,contentType:'application/json',body:JSON.stringify(response.data)});
   });
-  await page.evaluate(()=>{window.NexusContactConfig={restEndpoint:'/wp-json/nexus/v1/contact-request'};window._paq=[]});
-  for(const file of ['nexus-core.js','website-product-events.js','contact.js']) await page.addScriptTag({path:path.join(theme,'assets/js',file)});
+  await page.evaluate(()=>{window.NexusContactConfig={restEndpoint:'/wp-json/nexus/v1/contact-request'}});
+  for(const file of ['nexus-core.js','contact.js']) await page.addScriptTag({path:path.join(theme,'assets/js',file)});
   await page.locator('[name="message"]').fill('Wir bieten Beratung an und möchten im November starten.');
   await page.locator('[data-contact-next]').click();await page.locator('[name="name"]').fill('Fixture Person');
   await page.locator('[name="email"]').fill('fixture@example.test');await page.locator('[name="consent"]').check();
@@ -120,8 +114,4 @@ test('product to contact to real intake: request, CRM, mails and success event',
   expect(response.meta['1']._nexus_contact_website_pages).toBe(5);
   expect(response.mails).toHaveLength(2);
   for(const mail of response.mails) expect(mail.body).toContain('3.540');
-  const events=await page.evaluate(()=>window._paq);
-  expect(events.filter(e=>e[2]==='form_submit')).toHaveLength(1);
-  expect(JSON.parse(events.find(e=>e[2]==='form_submit')[3])).toEqual({seiten:5,art:'relaunch',tracking:1});
-  expect(JSON.stringify(events)).not.toContain('fixture@example.test');
 });

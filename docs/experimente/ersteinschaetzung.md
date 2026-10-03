@@ -37,11 +37,14 @@ Die Abbruchregel unten gilt daneben weiter.
   zweiter Einstieg im Abschluss. Kanon-Schalter und Texte bleiben zentral.
   Schalter aus: Projektanfrage in Kopf, Hero und Fall; die zusätzliche Zeile
   bei den Preisen und die Ersteinschätzungs-Karte im Abschluss entfallen.
-- **`/kontakt/?focus=ersteinschaetzung`**: Das Anliegen „Ersteinschätzung“ ist
-  vorausgewählt, die Themenfrage entfällt. Schritt 1 fragt die Website-URL
-  (Pflicht) und in einem Satz, was die Website erreichen soll (optional).
-  Schritt 2 ist der bestehende Kontaktschritt. Über dem Formular stehen die
-  Zusage und die Antwortzeit aus dem Kanon.
+- **`/kontakt/?focus=ersteinschaetzung`**: Kurzformular mit drei Feldern
+  (seit 2026-10-03): Website-URL (Pflicht), „Was soll die Seite erreichen?“
+  (ein Satz, optional) und E-Mail, dazu die Datenschutz-Checkbox. H1 „Welche
+  Website soll ich mir ansehen?“, Button „Drei Befunde anfordern“, darunter die
+  Antwortzeit aus dem Kanon. Kein Name, kein Themenschritt. Das Anliegen bleibt
+  `request_type=ersteinschaetzung`. Der Server zählt jede Einsendung zusätzlich
+  als `anfrage_gesendet` mit `form=ersteinschaetzung` (Admin-Seite
+  „Anfrage-Eingänge“); die Betreff-Zählung bleibt daneben bestehen.
 - **Mails**: Die interne Benachrichtigung und die Bestätigung tragen im
   Betreff das Präfix `[Ersteinschätzung]`.
 

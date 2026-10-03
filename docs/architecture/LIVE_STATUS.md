@@ -48,8 +48,10 @@ Abschnitt anzuhängen; der Verlauf gehört in Commit-Nachrichten.
   Klasse `nexus-article-reader-header` bleibt als Haken für die Artikel-
   Stylesheets. Modus `fokus` (Solar-Seite, `inc/header.php` rendert die Leiste
   dort): Wortmarke und die Leiter Marktcheck · Analyse · Sofortkontakt mit
-  Betrag auf die Anker der Seite, nicht sticky, höchstens 56 px, unter 561 px
-  nur Sofortkontakt. Die Tür ist kontextabhängig (Matrix in
+  getrennten Feldern für Bezeichnung und Betrag (Abstand `--s1`) auf die
+  Anker der Seite, nicht sticky, höchstens 56 px, unter 561 px
+  nur der Marktcheck als gefüllter Button „Marktcheck · 0 €“ (44 px); der
+  Sofortkontakt steht dann nur im Angebotsblock. Die Tür ist kontextabhängig (Matrix in
   `docs/architecture/CONVERSION_ROUTING.md`): Projekt anfragen (ohne Betrag),
   Tracking anfragen („ab“ Messung-Setup), Test-Sprint anfragen, Marktcheck
   (kostenlos) oder Sofortkontakt; Beträge kommen aus dem Kanon. Quelle der
@@ -188,7 +190,13 @@ Abschnitt anzuhängen; der Verlauf gehört in Commit-Nachrichten.
   Fall-CTA gegen Hero-CTA und Qualität der Einsendungen, siehe Experiment-Doku.
 - **`/kontakt/`** (`page-kontakt.php`): Anfrage-Intake, siehe „Anfragewege“.
   Bis 820 px folgt das Formular direkt auf Titel und Einleitung; Ablauf,
-  andere Einstiege und E-Mail stehen darunter.
+  andere Einstiege und E-Mail stehen darunter. Direkt unter der H1 steht auf
+  jeder Variante „Was passiert danach?“ (Antwortzeit aus dem Kanon). In der
+  Aktionsleiste ist „Lieber direkt Termin buchen →“ ein Sekundär-Button über
+  der Antwortzeit-Zeile. `/kontakt/?focus=ersteinschaetzung` ist ein
+  Kurzformular mit drei Feldern (URL, Ziel, E-Mail) und Datenschutz-Checkbox,
+  Button „Drei Befunde anfordern“, ohne Name; `request_type=ersteinschaetzung`
+  bleibt das Unterscheidungsmerkmal im Backend.
 - **`/whitelabel-retainer/`** (`page-whitelabel-retainer.php`): Agentur-Einstieg
   und Landeseite der Akquise-Mails. Finale Fassung im Repo vom 2026-10-02,
   Live-Abnahme nach dem Deploy. Basis bleibt `startseite-strecke.css/.js`,
@@ -523,7 +531,10 @@ Abschnitt anzuhängen; der Verlauf gehört in Commit-Nachrichten.
 
 - Das Theme bindet weder GTM noch GA4 ein. `data-track-*`-Hooks bleiben an
   allen Conversion-Flächen; Skripte schreiben nur dann in `dataLayer`, wenn
-  eines existiert.
+  eines existiert. Das Absenden einer Anfrage zählt der Server (`anfrage_gesendet`
+  in `inc/inquiry-events.php`, Admin-Seite „Anfrage-Eingänge“, letzte 90 Tage
+  je Formular und `utm_source`); `contact.js` und die Produktseite der
+  Anfrage-Website senden dafür keine Browser-Ereignisse mehr.
 - Auswertung: Koko Analytics (Plugin, admin-owned, Tracking-Methode
   `fingerprint`, cookielos) und das SEO-Cockpit im Admin (Search Console per
   OAuth, Linkgraph, Lead-Attribution aus dem CRM). Das Cockpit besitzt zusätzlich

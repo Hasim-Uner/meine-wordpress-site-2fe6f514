@@ -683,6 +683,29 @@ function hu_get_decision_cockpit_modified_time( $post_id, $slug ) {
 }
 
 /**
+ * Return the effective dateModified for a page whose visible substance lives in
+ * a theme template rather than in the stored post.
+ *
+ * Gilt fuer /kontakt/: Der Beitrag steht seit Monaten still, waehrend
+ * page-kontakt.php Kopf, Formular und Antwortzusage rendert. Das spaetere von
+ * beiden Daten zaehlt, damit auch eine Redaktionsaenderung sichtbar bleibt.
+ *
+ * @param int    $post_id  Post ID.
+ * @param string $template Absolute path of the template file.
+ * @return string RFC 3339 timestamp.
+ */
+function hu_get_template_page_modified_time( $post_id, $template ) {
+    $modified          = (string) get_post_modified_time( DATE_W3C, true, $post_id );
+    $template_modified = is_file( $template ) ? filemtime( $template ) : false;
+
+    if ( false !== $template_modified && ( '' === $modified || $template_modified > (int) strtotime( $modified ) ) ) {
+        $modified = gmdate( DATE_W3C, $template_modified );
+    }
+
+    return $modified;
+}
+
+/**
  * Return schema copy and modification time for the repo-owned Aroundhome view.
  *
  * The WordPress post remains the route container, but its editor title, excerpt
@@ -765,6 +788,11 @@ function hu_build_generic_webpage_schema( $post_id, $slug ) {
     // Cockpit-Template: der sichtbare Inhalt liegt dort, nicht im Post.
     if ( 'checkfox-solar-waermepumpe-einordnung' === $slug ) {
         $route_schema['dateModified'] = hu_get_decision_cockpit_modified_time( $post_id, $slug );
+    }
+
+    // /kontakt/ ist template-owned: das Datum folgt page-kontakt.php.
+    if ( 'kontakt' === $slug ) {
+        $route_schema['dateModified'] = hu_get_template_page_modified_time( $post_id, get_stylesheet_directory() . '/page-kontakt.php' );
     }
 
     if ( function_exists( 'hu_is_e3_methodology_case_post' ) && hu_is_e3_methodology_case_post( $post_id ) ) {

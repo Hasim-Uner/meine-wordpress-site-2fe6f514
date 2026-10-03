@@ -270,12 +270,15 @@ function hu_first_assessment_text( $key ) {
 		'intro_short'     => $review . ' ' . $promise,
 		// Dritter Schritt der Bestaetigungsmail: dieselbe Zusage wie im Formular.
 		'promise'         => $promise,
-		'step_title'      => 'Welche Website soll ich mir ansehen?',
+		// Kurzformular auf /kontakt/?focus=ersteinschaetzung: Ueberschrift (H1),
+		// die drei Felder, Button und die Zeile darunter.
+		'title'           => 'Welche Website soll ich mir ansehen?',
 		'website_label'   => 'Website-URL',
 		'website_missing' => 'Bitte die Adresse Ihrer Website angeben.',
-		'goal_label'      => 'Was soll die Website für Sie erreichen?',
+		'goal_label'      => 'Was soll die Seite erreichen?',
 		'goal_hint'       => 'ein Satz, optional',
-		'submit'          => HU_FIRST_ASSESSMENT_LABEL . ' anfordern',
+		'submit'          => 'Drei Befunde anfordern',
+		'submit_note'     => hu_response_promise( 'sentence' ) . ' Passt die Seite nicht zu meiner Arbeit, sage ich das direkt.',
 		// Betreff-Praefix der internen Mail und der Bestaetigung. Einzige
 		// Zaehlstelle des Versuchs.
 		'subject_prefix'  => '[' . HU_FIRST_ASSESSMENT_LABEL . ']',

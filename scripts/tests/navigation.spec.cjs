@@ -445,7 +445,25 @@ test('footer register: keyboard reaches the six doors in header order after the 
 // Focus mode (Solar page): wordmark and the ladder of the page, no main menu, not sticky, at most 56 px.
 const ladder = page => page.getByRole('navigation', { name: 'Einstiege auf dieser Seite' });
 
-for (const width of [768, 1024, 1280, 1440]) {
+async function expectLadderFields(page) {
+  const fields = await ladder(page).getByRole('link').evaluateAll(els => els.filter(a => a.getBoundingClientRect().width).map(a => {
+    const label = a.querySelector('span').getBoundingClientRect();
+    const amount = a.querySelector('b').getBoundingClientRect();
+    return {
+      gap: amount.left - label.right,
+      expectedGap: parseFloat(getComputedStyle(a).getPropertyValue('--s1')) * parseFloat(getComputedStyle(document.documentElement).fontSize),
+      height: a.getBoundingClientRect().height,
+      middleDelta: Math.abs(label.top + label.height / 2 - amount.top - amount.height / 2),
+    };
+  }));
+  for (const field of fields) {
+    expect(field.gap).toBeCloseTo(field.expectedGap, 1);
+    expect(field.middleDelta).toBeLessThanOrEqual(1);
+    expect(field.height).toBeGreaterThanOrEqual(44);
+  }
+}
+
+for (const width of [561, 640, 768, 1024, 1080, 1280, 1440]) {
   test(`solar focus ${width}: three steps with amounts, no menu, one row, not sticky`, async ({ page }) => {
     await open(page, 'solar', { width, height: 800 });
     await expect(leiste(page)).toHaveAttribute('data-leiste-modus', 'fokus');
@@ -459,10 +477,15 @@ for (const width of [768, 1024, 1280, 1440]) {
     expect(await leiste(page).evaluate(el => getComputedStyle(el).position)).toBe('static');
     expect(await leiste(page).evaluate(el => getComputedStyle(el).borderBottomWidth)).toBe('1px');
     expect(await noHorizontalScroll(page)).toBe(true);
+    await expectLadderFields(page);
+    const sig = await page.locator('.leiste .sig').boundingBox();
+    const links = await ladder(page).boundingBox();
+    expect(sig.x + sig.width).toBeLessThanOrEqual(links.x);
+    expect(links.x + links.width).toBeLessThanOrEqual(width);
   });
 }
 
-for (const width of [360, 390, 414, 560]) {
+for (const width of [320, 360, 370, 390, 414, 560]) {
   test(`solar focus ${width}: only the filled Marktcheck button stays, 44 px, in one row with the wordmark`, async ({ page }) => {
     await open(page, 'solar', { width, height: 800 });
     const main = ladder(page).getByRole('link', { name: /^Marktcheck · 0 €$/ });
@@ -472,13 +495,11 @@ for (const width of [360, 390, 414, 560]) {
     await expect(page.locator('.leiste .leiter .trenn:visible')).toHaveCount(0);
     const style = await main.evaluate(el => {
       const css = getComputedStyle(el);
-      return { background: css.backgroundColor, color: css.color, height: el.getBoundingClientRect().height, columnGap: css.columnGap, fontSize: css.fontSize };
+      return { background: css.backgroundColor, color: css.color, height: el.getBoundingClientRect().height };
     });
     expect(style.background).toBe('rgb(184, 66, 15)');
     expect(style.color).toBe('rgb(255, 255, 255)');
     expect(style.height).toBeGreaterThanOrEqual(44);
-    // Gap zwischen Name und Preis: 0,4 em, nie "Marktcheck0 €".
-    expect(parseFloat(style.columnGap)).toBeCloseTo(0.4 * parseFloat(style.fontSize), 1);
     const [sig, link] = await Promise.all([page.locator('.leiste .sig'), main].map(l => l.evaluate(el => {
       const r = el.getBoundingClientRect();
       return { mid: r.top + r.height / 2, left: r.left, right: r.right };
@@ -487,6 +508,7 @@ for (const width of [360, 390, 414, 560]) {
     expect(sig.right).toBeLessThanOrEqual(link.left);
     expect(await rowHeight(page)).toBeLessThanOrEqual(56);
     expect(await noHorizontalScroll(page)).toBe(true);
+    await expectLadderFields(page);
   });
 }
 

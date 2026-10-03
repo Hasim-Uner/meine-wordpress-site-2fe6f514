@@ -1,6 +1,6 @@
 # Privacy
 
-Stand: 2026-10-01. Technische Sicht auf die Datenverarbeitung im Theme. Die
+Stand: 2026-10-03. Technische Sicht auf die Datenverarbeitung im Theme. Die
 rechtliche Fassung für Besucher steht in `blocksy-child/page-datenschutz.php`;
 Änderungen an Formularen, Speicherung oder Drittanbietern müssen dort
 nachgezogen werden.
@@ -55,6 +55,27 @@ Payloads, Einwilligungen, CRM-Einträge und Koko-Statistik bleiben getrennt.
 Die Besucherinformation steht in `page-datenschutz.php`. Vor dem Merge des
 zugehörigen PRs ist Hasims Bestätigung zur cookiefreien Linie erforderlich.
 
+## Anfrage-Protokoll `anfrage_gesendet`
+
+`inc/inquiry-events.php` schreibt je erfolgreich verarbeiteter Anfrage eine
+Zeile in `<prefix>hu_inquiry_events`: `event` (`anfrage_gesendet`), `form`
+(`kontakt`, `ersteinschaetzung`, `whitelabel`, `marktcheck`, `analyse`,
+`sofortkontakt`, `sst`), `seite` (Pfad der absendenden Seite, ohne Query und
+Fragment), `utm_source`, `utm_campaign` und `created_at` (UTC). Der Aufruf
+steht in den REST-Handlern von `contact-request`, `whitelabel-request` und
+`audit-request`, nach CRM-Schreibvorgang und Benachrichtigung; Honeypot-Treffer,
+Validierungsfehler, Rate-Limit und ein Fehlschlag von CRM und Mail erzeugen
+keine Zeile. Der Browser sendet dafür nichts.
+
+Nicht gespeichert werden IP, User-Agent, E-Mail, Name, Nachricht, Query-String,
+Referrer-Host oder eine Besucher-/Sitzungskennung. `utm_source` und
+`utm_campaign` werden auf `a-z 0-9 . _ -` und 64 beziehungsweise 96 Zeichen
+reduziert. Es entsteht weder Cookie noch Browser-Speicher; deshalb kein Banner.
+Ein Schreibfehler bricht nie eine Anfrage ab. Die Zeilen sind einzelne
+Ereignisse ohne Personenbezug; eine automatische Löschung gibt es nicht. Die
+Admin-Seite „Anfrage-Eingänge“ (unter dem CRM-Menü, `manage_options`) zeigt die
+letzten 90 Tage als Anzahl je Formular und `utm_source`.
+
 ## Formulare und Speicherung
 
 Alle Formulare senden per `fetch()` an eigene REST-Endpunkte unter `nexus/v1`
@@ -71,9 +92,11 @@ und speichern im WordPress-Backend. Kein Browser-Submit an Drittanbieter.
 
 Die Ersteinschätzung (`/kontakt/?focus=ersteinschaetzung`, Versuch laut
 `docs/experimente/ersteinschaetzung.md`) ist dasselbe Formular am selben
-Endpunkt mit derselben Pflicht-Checkbox. Sie fragt die Website-URL als
-Pflichtfeld und das Ziel als optionalen Satz im Feld `message`. Neue
-Datenkategorien, Cookies oder Skripte kommen nicht hinzu; die
+Endpunkt mit derselben Pflicht-Checkbox. Sie ist ein Kurzformular mit drei
+Feldern: Website-URL (Pflicht), Ziel als optionaler Satz im Feld `message` und
+E-Mail. Einen Namen fragt sie nicht; der Server nimmt dann die Domain der URL
+als Anzeigenamen (Betreff, CRM-Titel) und überschreibt keinen bekannten
+Kontaktnamen. Neue Datenkategorien, Cookies oder Skripte kommen nicht hinzu; die
 Datenschutzerklärung deckt sie mit den Anfragen aus den Formularen ab.
 
 Vertriebsrelevante Kontakte bekommen eine Sales-Chance (`nexus_opportunity`)

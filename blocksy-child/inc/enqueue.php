@@ -334,8 +334,7 @@ function hu_enqueue_assets() {
 	// ── E2) Kontakt ───────────────────────────────────────────────
 	if ( $is_contact_route ) {
 		hu_enqueue_css( 'nexus-contact-css', 'contact.css', [ 'nexus-system-css' ] );
-		hu_enqueue_js( 'hu-website-product-events', 'website-product-events.js', [] );
-		hu_enqueue_js( 'nexus-contact-js', 'contact.js', [ 'nexus-core-js', 'hu-website-product-events' ] );
+		hu_enqueue_js( 'nexus-contact-js', 'contact.js', [ 'nexus-core-js' ] );
 		$contact_requested_type = isset( $_GET['type'] ) ? sanitize_key( wp_unslash( $_GET['type'] ) ) : '';
 		$contact_type_options   = function_exists( 'nexus_get_contact_request_type_options' ) ? nexus_get_contact_request_type_options() : [];
 		$contact_is_scoped_landing = in_array( $contact_requested_type, [ 'audit', 'implementation', 'ongoing' ], true )

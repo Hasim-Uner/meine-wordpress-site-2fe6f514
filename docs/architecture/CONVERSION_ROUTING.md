@@ -466,8 +466,12 @@ Der Marktcheck erscheint als Tür nur im Energie-Kontext (Fallstudie, Dossier
 „Leadgenerierung“, Portal-Einordnungen).
 
 Der Modus `fokus` (Solar-Seite) zeigt Wortmarke links und rechts die Leiter als
-drei Textlinks mit Betrag, Mono, Betrag in `--tinte`; kein Hauptmenü, nicht
-sticky, höchstens 56 px, Haarlinie unten, unter 561 px nur „Sofortkontakt“. Die
+drei Textlinks mit Betrag, Mono, Betrag in `--tinte`. Bezeichnung und Betrag
+sind getrennte Felder mit Abstand `--s1`; die Abstände zwischen den Einstiegen
+passen sich zwischen `--s1` und `--s2` an. Die globale Accessibility-Schicht
+hält die Klickflächen mindestens 44 px hoch. Kein Hauptmenü, nicht
+sticky, höchstens 56 px, Haarlinie unten, unter 561 px nur „Marktcheck · 0 €“ als
+gefüllter Button (der Sofortkontakt steht dann nur im Angebotsblock). Die
 sticky Kapitel-Leiste der Seite bleibt im Seiteninhalt.
 
 Solange `HU_FEATURE_SOLAR_DOORS` aus ist, zeigen die Türen Analyse und

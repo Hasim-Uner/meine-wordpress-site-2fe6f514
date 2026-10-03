@@ -196,7 +196,7 @@ if ( 'leser' === $leiste_modus && function_exists( 'hu_funnel_reader_dossier' ) 
 							data-track-action="<?php echo esc_attr( $fokus_link['door']['track'] ); ?>"
 							data-track-category="lead_gen"
 							data-track-section="header"
-						><?php echo esc_html( $fokus_link['door']['short'] ); ?> <b><?php echo esc_html( $fokus_link['door']['amount'] ); ?></b></a>
+						><span><?php echo esc_html( $fokus_link['door']['short'] ); ?></span> <b><?php echo esc_html( $fokus_link['door']['amount'] ); ?></b></a>
 					<?php endforeach; ?>
 				</nav>
 			<?php endif; ?>

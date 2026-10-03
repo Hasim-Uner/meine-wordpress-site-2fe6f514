@@ -1239,6 +1239,10 @@ function nexus_process_review_request_submission( $payload, $trace_id = '' ) {
 	nexus_send_review_request_admin_notification( $post_id, $validated );
 	nexus_send_review_request_confirmation( $validated );
 
+	if ( function_exists( 'hu_record_inquiry_event' ) ) {
+		hu_record_inquiry_event( hu_inquiry_event_form_for_audit( $validated ), $payload );
+	}
+
 	return [
 		'ok'            => true,
 		'requestId'     => $post_id,

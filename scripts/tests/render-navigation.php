@@ -31,6 +31,7 @@ $theme = '/wp-content/themes/blocksy-child';
 <link rel="stylesheet" href="<?php echo esc_attr( $theme ); ?>/assets/css/whitelabel.css">
 <?php endif; ?>
 <script src="<?php echo esc_attr( $theme ); ?>/assets/js/leiste.js" defer></script>
+<link rel="stylesheet" href="<?php echo esc_attr( $theme ); ?>/assets/css/accessibility-navigation.css">
 <style>
 /* The Blocksy parent theme sets both on the live site. */
 body { margin: 0; }
