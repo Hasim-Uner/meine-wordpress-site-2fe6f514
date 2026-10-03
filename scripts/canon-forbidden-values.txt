@@ -155,6 +155,8 @@ rule	wl-landingpage-1900	(^|[^0-9.,])1\.?900[[:space:]]*(€|&nbsp;€| €|&eur
 rule	belege-im-gespraech	Belege im Gespr(ä|ae)ch	-	Satz streichen. Belegt ist, was auf der Seite verlinkt steht.
 
 # ── Ausnahmen ─────────────────────────────────────────────────────────────
+rule	chat-prompt-adresse	[[:alnum:]._%+-]+@[[:alnum:].-]+\.[[:alpha:]]{2,}	^blocksy-child/inc/chat-assistant/systemprompt\.md:	Kontakt im Systemprompt ausschließlich als Kanon-Platzhalter.
+rule	chat-prompt-zahl	(^|[^[:alnum:]_])[0-9]+([.,][0-9]+)?([^[:alnum:]_]|$)	^blocksy-child/inc/chat-assistant/systemprompt\.md:	Keine numerischen Literale im Systemprompt; Fakten kommen aus dem Kanon.
 # Der Kanon fuehrt die Werte und muss die abgeloesten benennen duerfen.
 ignore	blocksy-child/inc/canon/**	Kanon-Dateien. Einzige inhaltliche Ausnahme.
 # Historische Aufzeichnungen. Sie nachtraeglich auf den Kanon umzuschreiben

@@ -19,6 +19,11 @@ if ( ! defined( 'ABSPATH' ) ) {
  */
 function nexus_api_telemetry_capture( $response, $server, $request ) {
 	$route = $request->get_route();
+	// Chat diagnostics own a fixed, content-free schema. Even arbitrary JSON
+	// keys can contain conversation text, so never inspect these payloads here.
+	if ( '/nexus/v1/chat' === rtrim( $route, '/' ) || 0 === strpos( $route, '/nexus/v1/chat/' ) ) {
+		return $response;
+	}
 	// Anonymous counters must never acquire telemetry IP hashes or trace IDs.
 	if ( '/nexus/v1/solar-events' === rtrim( $route, '/' ) ) {
 		return $response;

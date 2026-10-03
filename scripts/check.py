@@ -118,6 +118,7 @@ def checks(plan, base, head, skip_browser=False, skip_analysis=False):
             ('spacing', ['bash', 'scripts/lint-css-spacing.sh']),
             ('forms', ['npm', 'run', 'test:forms']),
             ('intake', ['npm', 'run', 'test:intake']),
+            ('chat', ['npm', 'run', 'test:chat']),
             ('permalinks', ['npm', 'run', 'test:permalinks']),
             ('provisioning', ['npm', 'run', 'test:provisioning']),
             ('pricing', ['npm', 'run', 'test:pricing']),

@@ -50,6 +50,7 @@ $modules = [
 	'solar-events.php',   // Anonyme Tageszähler der drei Solar-Türen
 	'contact-page.php',   // Kontakt-Route, schlanke Kontaktform und Mailversand
 	'whitelabel-request.php', // Vierfeldriges Agentur-Formular der White-Label-Route
+	'chat-assistant/chat-assistant.php', // Staging-Spike; kein oeffentlicher Chat vor SSE-Abnahme
 	'inquiry-events.php', // Serverseitiges Protokoll anfrage_gesendet (Formular, Quelle, Zeitpunkt) und Admin-Übersicht
 	'system-diagnose-page.php', // Deutsche Analyse-Route plus Legacy-Redirect
 	'analysis-intake.php', // REST-Endpoint der früheren Analyse; standardmäßig aus (HU_FEATURE_READINESS_SUBMIT)
