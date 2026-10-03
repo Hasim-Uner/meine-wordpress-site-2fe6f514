@@ -1,5 +1,5 @@
 <?php
-/** Staging-only transport spike. Public assistant waits for the SSE gate. */
+/** Admin-only preview transport spike. Public assistant waits for the SSE gate. */
 if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }

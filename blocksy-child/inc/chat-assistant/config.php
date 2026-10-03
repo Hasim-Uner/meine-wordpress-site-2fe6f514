@@ -41,3 +41,8 @@ function hu_chat_config_valid( array $config ): bool {
 	}
 	return true;
 }
+
+/** The admin probe is available only with a complete preview configuration. */
+function hu_chat_spike_enabled(): bool {
+	return hu_chat_config_valid( hu_chat_config() ) && function_exists( 'curl_init' );
+}
