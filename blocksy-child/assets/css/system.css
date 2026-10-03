@@ -1125,13 +1125,14 @@ body.nx-custom-header-active {
 .leiste .rechts > .leiter {
   display: flex;
   align-items: center;
-  gap: var(--s2);
+  gap: clamp(var(--s1), 2vw, var(--s2));
 }
 
 /* Die Regeln fuer Hauptnavigations-Links (.leiste nav a) gelten auch hier;
    die Leiter ist Mono in Normalschrift mit Betrag in --tinte, ohne
    Hover-Linie, und bleibt auch unter 1081 px in der Zeile. */
 .leiste .leiter a {
+  column-gap: var(--s1);
   padding-block: var(--s1);
   font-family: var(--mono);
   font-size: var(--mono-m);
@@ -1144,6 +1145,7 @@ body.nx-custom-header-active {
 .leiste .leiter a::after { display: none; }
 
 .leiste .leiter a b {
+  flex: none;
   font-weight: 500;
   color: var(--tinte);
   font-variant-numeric: tabular-nums;
