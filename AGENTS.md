@@ -54,7 +54,7 @@ Internal specialist skills are implementation details. Do not route directly to 
 
 - Start with `rg --files`; avoid broad `find .`.
 - Search with `rg -n` before opening large files.
-- Do not scan `node_modules`, `vendor`, `.build`, plans, historical audits, large references, binary assets, or inactive n8n exports unless explicitly needed.
+- Do not scan `node_modules`, `vendor`, `.build`, plans, historical audits, large references or binary assets unless explicitly needed.
 - Do not read large files wholesale. Read the smallest relevant ranges.
 - For layout/template work, stay in templates/assets unless backend behavior is in scope.
 - Do not create root-level scratch plans or fix logs. Use `.ai/memory/` for ephemeral notes.
@@ -70,7 +70,6 @@ Internal specialist skills are implementation details. Do not route directly to 
 - Do not add React/Vue/Angular, client-side routing, heavy libraries, analytics code, IDs, pixels, cookies, or third-party scripts unless explicitly requested.
 - Prefer vanilla JS, native browser APIs, progressive enhancement, feature detection, and `prefers-reduced-motion`.
 - Do not move or rename `blocksy-child/`.
-- Ignore `automations/n8n/` unless n8n is explicitly in scope.
 
 ## Product boundaries
 

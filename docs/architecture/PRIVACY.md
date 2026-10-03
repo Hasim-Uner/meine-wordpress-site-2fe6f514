@@ -161,5 +161,3 @@ Rate-Limits zählen pro IP und Stunde in Transients mit gehashtem Schlüssel
   geklärt.
 - Nicht aus dem Repo prüfbar: Auftragsverarbeitungsverträge mit Hoster und
   Brevo, Log-Aufbewahrung beim Hoster.
-- n8n ist nicht angebunden. Wird es später aktiviert, braucht es vorher
-  Payload-Contract, Retention-Regel und Auftragsverarbeitung.

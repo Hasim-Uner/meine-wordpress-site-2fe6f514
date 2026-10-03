@@ -10,7 +10,7 @@
  * REST: POST /wp-json/nexus/v1/post-rating
  *   body: { postId, rating ("yes" | "no"), feedback, nonce }
  *
- * Action hook for downstream automation (CRM, n8n, Brevo):
+ * Action hook for downstream automation (CRM, Brevo):
  *   do_action( 'nexus_post_rating_received', $post_id, $rating, $feedback, $context );
  *
  * @package Blocksy_Child
@@ -118,7 +118,7 @@ function nexus_handle_post_rating_submission( WP_REST_Request $request ) {
 
 	/**
 	 * Fires after a rating is recorded so downstream automations
-	 * (CRM, Brevo, n8n) can react. Receives:
+	 * (CRM, Brevo) can react. Receives:
 	 *   $post_id, $rating ('yes'|'no'), $feedback (string), $context (array)
 	 */
 	do_action(

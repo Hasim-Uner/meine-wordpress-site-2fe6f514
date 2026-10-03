@@ -30,7 +30,7 @@ In scope:
 - Server-side GTM container endpoints
 
 Out of scope:
-- Third-party services (Cal.com, GTM/GA4, Brevo, n8n Cloud)
+- Third-party services (Cal.com, GTM/GA4, Brevo)
 - DoS / volumetric tests
 - Social-engineering attacks
 

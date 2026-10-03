@@ -166,8 +166,6 @@ ignore	docs/references/**	Archivierte Referenztexte.
 ignore	docs/briefings/**	Archivierte Auftragstexte im beauftragten Wortlaut.
 ignore	seo-research/**	Rohexporte aus Search Console. Fremddaten, nicht editierbar.
 ignore	plans/**	Abgelegte Planungsnotizen.
-# Laut AGENTS.md ausserhalb des Repo-Scopes, solange n8n nicht Aufgabe ist.
-ignore	automations/n8n/**	Inaktive n8n-Exporte, siehe AGENTS.md.
 
 # Der erreichte Projektmonat kommt aus dem E3-Kanon, auch im Balkenlabel.
 rule	start-cpl-monat	ab[[:space:]]+Monat[[:space:]]+[0-9]+	^blocksy-child/(front-page\.php|assets/(css|js)/startseite-strecke\.(css|js)):	Der erreichte Monat kommt aus hu_e3_canon()['cpl_reached_label'].

@@ -12,7 +12,6 @@ Report-Spec: `docs/specs/anfrage-system-analyse-report-v1.md`
 - Die frühere Analyse läuft nicht mehr als öffentliche React-Funnel-Mikro-App. Customer-facing ist der Marktcheck auf der Solar-/Wärmepumpen-Seite.
 - Der frühere EnergieFahrplan-Showroom ist retired; der Hauptpfad läuft direkt über Landingpage, Branchen-Seite und Anfragesystem-Analyse.
 - `/solar-waermepumpen-leadgenerierung/#marktcheck` ist der primäre Einstieg für kalten Solar-/SHK-Traffic. `/growth-audit/` und `/anfrage-system-analyse/` dürfen nicht als Hauptfunnel zurückkehren.
-- n8n bleibt bis zu einem versionierten Contract und einer expliziten Workflow-Freigabe abgekoppelt.
 - Der Default-Pfad verarbeitet keine personenbezogenen Daten; Ergebnis und Kontaktdaten werden erst im separaten Kontakt-Schritt nach Einwilligung an WordPress REST übergeben.
 - E3-Proof-Zahlen dürfen in Analyse-Kontexten nur aus `blocksy-child/inc/canon/e3-proof-canon.php` kommen.
 
@@ -27,7 +26,6 @@ Die Anfragesystem-Analyse ist der 14-Tage-Fitcheck für passende Betriebe. Sie s
 - Keine Telefonnummer im Default-Pfad.
 - Keine E-Mail, außer der Geschäftsführer wünscht den Befund per E-Mail und bestätigt den separaten Consent-Schritt.
 - Kein Payment-Flow in v1.
-- Kein n8n-Submit in v1.
 - Kein CRM-Write im lokalen Fragepfad; der separate Kontakt-Schritt schreibt nach Einwilligung in `nexus_contact`.
 - Keine öffentliche Tiefendiagnose als eigener Funnel-Schritt.
 - Kein Rücksprung auf den `Growth Audit` als Hauptfunnel oder primäre CTA-Logik.
@@ -86,7 +84,6 @@ WordPress-Submit nach Einwilligung (seit 2026-09-22 standardmäßig abgeschaltet
   `wp-config.php`, wenn ein neues Frontend den Contract nutzt.
 - CRM-Ziel: `nexus_contact` mit Segment `analysis_lead`
 - Mail-Ziel: interne Admin-Benachrichtigung und Lead-Bestätigung über zentrale `wp_mail`-/Brevo-Schicht
-- n8n: nicht angebunden
 
 ## Scoring-Regeln
 
@@ -106,6 +103,4 @@ WordPress-Submit nach Einwilligung (seit 2026-09-22 standardmäßig abgeschaltet
 
 ## Folge-PR
 
-Der bestehende Payload-Contract `automations/n8n/data-models/readiness-diagnosis-payload.v1.contract.json` bleibt bis zur nächsten Contract-Version intern stabil.
-
-Der Kontakt-Submit ist als WordPress-REST-Pfad implementiert, aber standardmäßig abgeschaltet (siehe oben). Eingeschaltet speichert er das Client-Ergebnis plus Kontaktblock nach Einwilligung im WordPress-CRM und versendet Transaktionsmails. Serverseitiges Scoring und n8n bleiben Folgearbeiten.
+Der Kontakt-Submit ist als WordPress-REST-Pfad implementiert, aber standardmäßig abgeschaltet (siehe oben). Eingeschaltet speichert er das Client-Ergebnis plus Kontaktblock nach Einwilligung im WordPress-CRM und versendet Transaktionsmails. Serverseitiges Scoring bleibt eine Folgearbeit.

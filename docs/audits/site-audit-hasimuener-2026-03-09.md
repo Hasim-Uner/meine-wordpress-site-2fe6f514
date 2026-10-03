@@ -456,4 +456,4 @@ Befunde: Besteht als Seite, erfuellt aber die Funktion eines direkten Kontaktweg
 
 ### ⏭️ Skip (Low Impact, High Effort)
 - `page-wgos.php` grundlegend refactoren; laut `docs/architecture/LIVE_STATUS.md` ist das weiterhin "in Arbeit".
-- Externe GTM/GA4/Consent-/n8n-/SMTP-Konfigurationen aendern; ausserhalb des versionierten Repo-Layers.
+- Externe GTM/GA4/Consent-/SMTP-Konfigurationen aendern; ausserhalb des versionierten Repo-Layers.

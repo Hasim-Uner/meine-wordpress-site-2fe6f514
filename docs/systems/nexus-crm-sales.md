@@ -112,7 +112,6 @@ Herkunft der letzten Anfrage, die interne Mail einen Block „Herkunft“.
 
 - WordPress bleibt Source of Truth für Pre-Sales.
 - Brevo bleibt Versand-/Transportebene und wird nicht zum führenden CRM.
-- n8n bleibt inaktiv und ist für diese Pipeline nicht erforderlich.
 - Das Kundenportal bleibt Source of Truth für Post-Sales-Projektabwicklung.
 - Keine API-Schlüssel oder Provider-Secrets werden im Repo gespeichert.
 

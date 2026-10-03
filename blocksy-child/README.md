@@ -10,7 +10,7 @@
 |-------|-----|----------------|-----------|
 | **Structure Layer** | Git Repository | Developer / Agent | Templates, CSS, JS, PHP-Module |
 | **Content Layer** | WordPress Block-Editor | Developer, Texter, Kunde | Texte, Headlines, Bilder, KPIs |
-| **External Systems** | Separate Plattformen | Manuelle Config | GTM, GA4, Meta CAPI, n8n, CRM |
+| **External Systems** | Separate Plattformen | Manuelle Config | GTM, GA4, Meta CAPI, CRM |
 
 **Kernregel:** Repo = WIE es aussieht. Editor = WAS drin steht.
 
@@ -119,6 +119,5 @@ Pillar Pages, Content-Cluster, interne Verlinkung, Proof-Assets, Nurture-Flows.
 ## Nicht im Repo (Agent kennt Schnittstellen)
 
 - **Tracking:** GTM Server-Side, GA4, Meta CAPI, Consent Mode v2
-- **Automation:** n8n Workflows
 - **CRM:** Bitrix24 / HubSpot
 - **Ads:** Google Ads, Meta Ads Kampagnen

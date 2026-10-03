@@ -15,7 +15,7 @@ Der Report entscheidet nicht über einen Verkauf. Er ordnet ein, ob ein eigener 
 
 - WordPress bleibt das Hauptsystem für Route, SEO, Consent-Grenzen und spätere REST-Schicht.
 - React berechnet in v1 nur ein lokales Ergebnis im Browser.
-- Der Default-Fragepfad sendet keine Daten an n8n, CRM, E-Mail-Systeme oder externe Webhooks.
+- Der Default-Fragepfad sendet keine Daten an CRM, E-Mail-Systeme oder externe Webhooks.
 - Der separate Kontakt-Schritt sendet nach Einwilligung Name, Firma, E-Mail, Ergebnis und Antworten an WordPress REST, speichert in `nexus_contact` und triggert die zentrale Transaktionsmail-Schicht.
 - Der Report enthält keine Namen, E-Mail-Adressen, Telefonnummern, Volladressen oder personenbezogenen Endkundendaten.
 - E3-Proof-Zahlen dürfen in Report-Kontexten nur über `blocksy-child/inc/canon/e3-proof-canon.php` verwendet werden.
@@ -120,7 +120,7 @@ Reihenfolge:
 
 ## Empfohlene Output-Struktur
 
-Diese Struktur ist die Zielstruktur für eine spätere REST- und n8n-Anbindung. Die aktuelle React-App nutzt sie noch nicht als serialisierten Payload.
+Diese Struktur ist die Zielstruktur für eine spätere REST-Anbindung. Die aktuelle React-App nutzt sie noch nicht als serialisierten Payload.
 
 ```json
 {
@@ -146,7 +146,6 @@ Diese Struktur ist die Zielstruktur für eine spätere REST- und n8n-Anbindung. 
   ],
   "privacy": {
     "default_path_contains_personal_data": false,
-    "submitted_to_n8n": false,
     "crm_write_after_consent": true,
     "transactional_email_after_consent": true
   }
@@ -166,4 +165,4 @@ Diese Struktur ist die Zielstruktur für eine spätere REST- und n8n-Anbindung. 
 
 1. Serverseitige Scoring-Funktion mit denselben Schwellen und Hard Stops anlegen.
 2. React-App gegen gemeinsame Report-Semantik angleichen, damit Client und Server nicht driften.
-3. Erst danach Consent-UI, REST-Submit, Contract-Version und n8n-Branch bauen.
+3. Erst danach Consent-UI, REST-Submit und Contract-Version bauen.

@@ -17,7 +17,7 @@ Scope: `blocksy-child/inc/*.php`
 - Do not duplicate meta or schema generation in templates.
 - When a registry file changes, run the `registry-release-qa` skill.
 - Keep webhook URLs, API keys, and external credentials out of the repo.
-- If you alter a contract consumed by JS, WordPress admin, or n8n, update the matching docs.
+- If you alter a contract consumed by JS or WordPress admin, update the matching docs.
 
 ## Guardrails
 
