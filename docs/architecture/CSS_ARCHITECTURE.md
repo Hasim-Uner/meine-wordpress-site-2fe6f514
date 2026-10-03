@@ -113,6 +113,9 @@ ist aus der NX-Baseline entfernt; es definiert keine eigenen Design-Tokens.
 gezielt verknüpften Leistungsseiten. Er konsumiert dieselben Tokens und wird
 separat von der Glossar-Übersicht geladen. Die frühere Definitionsbox aus
 `article-reader-body.css` ist entfernt; es gibt keinen zweiten Komponenten-Owner.
+Begriffe behalten die Textfarbe und erhalten eine leichte Stempel-Tönung mit
+dekorativem Infozeichen. Hover und Fokus verstärken die Tönung; der Fokus bleibt
+mit Outline sichtbar. Die Markierung verwendet keine Text-Unterstreichung.
 
 ### White-Label
 
