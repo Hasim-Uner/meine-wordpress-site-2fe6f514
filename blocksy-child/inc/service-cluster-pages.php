@@ -410,4 +410,3 @@ function nexus_maybe_ensure_cluster_route_pages() {
 	}
 }
 add_action( 'init', 'nexus_maybe_ensure_cluster_route_pages', 28 );
-
