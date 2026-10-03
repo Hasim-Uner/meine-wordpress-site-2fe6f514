@@ -214,8 +214,7 @@ test('homepage Firefox: scaled surface keeps the source anchored and the action 
   })).toBe(true);
 });
 
-test('homepage Firefox: late font metrics reposition the source without a window resize', async ({ page, browserName }) => {
-  test.skip(browserName !== 'firefox', 'Firefox-only layout correction');
+test('homepage: late font metrics reposition the source without a window resize', async ({ page }) => {
   await open(page, { width: 1440 });
   await expect(page.locator('[data-st-signal]')).toHaveClass(/is-here/, { timeout: 6000 });
   await page.addStyleTag({ content: '[data-st-wort-quelle] { letter-spacing: .08em; }' });
