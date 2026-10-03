@@ -15,8 +15,9 @@ Der tatsächliche Testpfad:
 
 1. Ein eingeloggter Administrator öffnet **Werkzeuge → Chat: Streaming-Test**.
 2. Erst der Klick startet einen First-Party-POST an `/wp-json/nexus/v1/chat`.
-3. Das Payload muss exakt ein leeres JSON-Objekt sein. Nachrichten, Empfänger,
-   Adressen und frei wählbare Modell- oder Hostnamen werden nicht akzeptiert.
+3. Das Payload ist exakt `{}` oder `{"padding":true|false}`; der einzige
+   Schalter wählt die Padding-Variante. Nachrichten, Empfänger, Adressen und
+   frei wählbare Modell- oder Hostnamen werden nicht akzeptiert.
 4. Die Route verlangt `HU_CHAT_MODE=preview`,
    vollständige Runtime-Konfiguration, `manage_options` und einen REST-Nonce.
    Die WordPress-Umgebung schränkt den Durchlauf nicht ein; er ist auch auf
@@ -27,7 +28,10 @@ Der tatsächliche Testpfad:
 5. Vor Inferenz reserviert die Route atomar das konservative Kostenmaximum
    für Stream **und** einen möglichen Fallback im laufenden UTC-Monat. Danach
    folgen Stundenlimit (gesalzener IP-Hash, höchstens 30 Aufrufe) und Payload.
-6. WordPress sendet nur die feste Bitte um das Wort „Hallo“ an Bedrock Frankfurt.
+6. WordPress sendet nur den festen Zähltest „Zähle langsam von 1 bis 30, jede
+   Zahl in eine eigene Zeile.“ mit `max_tokens` 200 an Bedrock Frankfurt
+   (`HU_CHAT_SPIKE_PROMPT`, `HU_CHAT_SPIKE_MAX_TOKENS` in `config.php`). Die
+   Budgetreservierung deckt diese Ausgabegrenze für Stream und Fallback ab.
    Eigene SigV4-Signatur, cURL, TLS-Prüfung, keine Redirects und kein SDK.
 7. Binäre AWS-Frames werden inkrementell einschließlich beider CRCs geprüft.
    Anthropic-Textdeltas werden als SSE `text` ausgegeben; Start und Transport
@@ -38,11 +42,20 @@ Der tatsächliche Testpfad:
    oder unklare Versuche behalten ihr Kostenmaximum. Zähler speichern nur
    Kosten und Tokenzahlen. Datenbankfehler verhindern neue Modellaufrufe.
 
-`rest_pre_serve_request` liefert SSE ohne REST-JSON-Hülle. PHP-Output-Buffer
-werden geschlossen; `Content-Type: text/event-stream`, `Cache-Control: no-store,
-no-transform`, `X-Accel-Buffering: no` und `flush()` werden gesetzt. Ob nginx,
-Varnish und die übrige Raidboxes-Strecke trotzdem puffern, muss der Durchlauf
-auf der Live-Box zeigen.
+`rest_pre_serve_request` liefert SSE ohne REST-JSON-Hülle. Vor dem ersten Byte
+schaltet die Route PHP-seitige Komprimierung ab (`zlib.output_compression`,
+`brotli.output_compression`, unter Apache `no-gzip`), schließt alle
+Output-Buffer und entfernt `Content-Length`. Gesendet werden
+`Content-Type: text/event-stream`, `Cache-Control: no-store, no-transform`,
+`Content-Encoding: identity` und `X-Accel-Buffering: no`; jedes Event endet
+mit `flush()`. `identity` ist keine registrierte Inhaltskodierung, aber nginx
+und viele Proxys komprimieren nicht erneut, sobald eine Kodierung gesetzt ist.
+Was danach Raidboxes (nginx, Varnish, CDN) tut, kann PHP nicht erzwingen.
+
+Variante `padded`: direkt nach `ready` folgt ein SSE-Kommentar (`:` plus
+Leerzeichen, insgesamt 4096 Byte), der typische Proxy-Puffer füllt. Der
+Browser-Parser ignoriert ihn. `plain` sendet ihn nicht; beide Varianten
+werden auf der Testseite per Checkbox gewählt und getrennt protokolliert.
 Ein Client-Disconnect verhindert die abschließende Budgetabrechnung nicht.
 
 Fehlertexte nennen nur die kanonische Kontaktadresse. `error_log` und vorhandene
@@ -104,29 +117,43 @@ Die Ersetzung ist ein einzelner `strtr`-Durchgang. Platzhalter aus fremdem
 Website-Text werden nicht erneut ausgewertet. Unbekannte/fehlende Platzhalter,
 fehlende Wissensdatei und Überschreitung des Zeichendeckels scheitern geschlossen.
 Der Builder und der Schutz des Upload-Verzeichnisses folgen erst nach dem Spike.
-Der feste Hallo-Test verwendet den Beratungsprompt noch nicht.
+Der feste Zähltest verwendet den Beratungsprompt noch nicht.
 
 `lint:canon` durchsucht bereits alle versionierten und neuen Dateien. Zusätzliche
 Regeln verbieten numerische Literale und E-Mail-Adressen gezielt in der neuen
 Prompt-Datei. `test:chat` prüft zudem jede Regel der Kanon-Sperrliste direkt gegen
 die Vorlage und verifiziert die aktuelle Kanon-Ersetzung.
 
-## Streaming-Abnahme auf der Live-Box: noch nicht durchgeführt
+## Streaming-Abnahme auf der Live-Box: offen
 
-Es wurden keine AWS-Schlüssel und kein Raidboxes-Zugang angefordert
-oder verwendet. Gemäß Hasims Ergänzung stoppt die Arbeit, bevor Zugangsdaten
-nötig werden. Ohne diesen Zugang wird kein Streaming-Ergebnis behauptet.
+Erster Durchlauf (Hallo-Test, von Hasim gemeldet): `transport=stream`, also
+lieferte Bedrock tatsächlich einen Stream. Alle Events kamen aber in einem
+Chunk bei 630 ms an, obwohl `ready` bei `server_ms` 0 gesendet wurde. Status
+`buffering_or_timing_unresolved`. Verdacht: Puffer oder Komprimierung
+zwischen PHP und Browser. Der Zähltest, die Padding-Variante, die
+Header-Mitschrift und die abgeschaltete Komprimierung grenzen das ein.
 
-Nach Freigabe, Deploy und privater Konfiguration auf der Live-Box:
+Nach Deploy und privater Konfiguration auf der Live-Box:
 
 1. Als Admin die Testseite öffnen; DevTools Network mit geöffnetem Timing-Panel.
-2. Durchlauf per Klick starten, Response und Event-Ankunft kontrollieren.
-3. **Protokoll herunterladen**: `chat-live-stream.json` enthält nur Status,
-   sichere Header, Chunk-Größen sowie Server- und Browserzeiten. Zusätzlich
-   einen bereinigten DevTools-Ausschnitt ohne Cookies/Authorization sichern.
+2. Je einen Durchlauf **ohne** und **mit** Padding starten, Response und
+   Event-Ankunft kontrollieren.
+3. **Protokoll herunterladen**: `chat-live-stream-plain.json` bzw.
+   `chat-live-stream-padded.json` enthalten Status, Chunk-Größen, Server- und
+   Browserzeiten sowie `headers`: `Content-Encoding`, `Content-Length`,
+   `Transfer-Encoding`, `Server`, `Via`, `Vary`, `X-Cache` und alle übrigen
+   `X-*`-Header, die der Browser sieht. Namen mit `nonce`, `token`, `auth`,
+   `key`, `secret`, `session` oder `cookie` (etwa `X-WP-Nonce`) werden
+   ausgelassen. `summary` nennt Chunk- und Textanzahl, verschiedene
+   Ankunftszeiten der Text-Events, Protokoll (`next_hop_protocol`) und
+   `encoded_body_size`/`decoded_body_size`; weichen beide ab, wurde unterwegs
+   komprimiert. Zusätzlich einen bereinigten DevTools-Ausschnitt ohne
+   Cookies/Authorization sichern.
 4. Mindestens zwei zeitlich getrennte Ankünfte nachweisen: `ready` vor dem
    Bedrock-Abschluss und tatsächliche `text`-Events mit `done.transport=stream`.
-   `incremental_delivery_observed` ist ein Hinweis, keine automatische Freigabe.
+   `incremental_delivery_observed` verlangt zusätzlich mindestens zwei
+   verschiedene Ankunftszeiten der `text`-Events. Es ist ein Hinweis, keine
+   automatische Freigabe.
    Fallback oder unklare Zeiten verlangen Untersuchung/Wiederholung.
 5. Ergebnis und bereinigte Protokolle am zugehörigen Spike-PR festhalten.
    Erst nach bestandenem Gate mit dem übrigen Ausbau beginnen.

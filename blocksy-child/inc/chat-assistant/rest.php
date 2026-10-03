@@ -15,9 +15,53 @@ function hu_chat_spike_permission( WP_REST_Request $request ) {
 	return true;
 }
 
-/** No user-supplied messages, keys or recipients enter the phase-one transport. */
+/**
+ * The only accepted variant switch: `{}` or `{"padding":true|false}`.
+ * No user-supplied messages, keys or recipients enter the phase-one transport.
+ *
+ * @return 'plain'|'padded'|null
+ */
+function hu_chat_spike_variant( string $body ): ?string {
+	if ( '{}' === trim( $body ) ) {
+		return 'plain';
+	}
+	$data = json_decode( $body, true, 2 );
+	if ( ! is_array( $data ) || [ 'padding' ] !== array_keys( $data ) || ! is_bool( $data['padding'] ) ) {
+		return null;
+	}
+	return $data['padding'] ? 'padded' : 'plain';
+}
+
 function hu_chat_spike_payload_valid( string $body ): bool {
-	return '{}' === trim( $body );
+	return null !== hu_chat_spike_variant( $body );
+}
+
+function hu_chat_spike_probe_body(): string {
+	return wp_json_encode( [
+		'anthropic_version' => 'bedrock-2023-05-31',
+		'max_tokens' => HU_CHAT_SPIKE_MAX_TOKENS,
+		'messages' => [ [ 'role' => 'user', 'content' => HU_CHAT_SPIKE_PROMPT ] ],
+	], JSON_UNESCAPED_UNICODE );
+}
+
+/** One SSE comment line; EventSource and the admin parser ignore it as an event. */
+function hu_chat_spike_padding(): string {
+	return ':' . str_repeat( ' ', HU_CHAT_SPIKE_PADDING_BYTES - 3 ) . "\n\n";
+}
+
+/**
+ * Stream headers. `Content-Encoding: identity` is not a registered coding, but
+ * nginx and most proxies skip their own gzip/brotli when any encoding is set.
+ *
+ * @return string[]
+ */
+function hu_chat_spike_stream_headers(): array {
+	return [
+		'Content-Type: text/event-stream; charset=UTF-8',
+		'Cache-Control: no-store, no-transform',
+		'Content-Encoding: identity',
+		'X-Accel-Buffering: no',
+	];
 }
 
 /** @return WP_REST_Response|WP_Error */
@@ -40,12 +84,14 @@ function hu_chat_spike_prepare( WP_REST_Request $request ) {
 		return new WP_Error( 'chat_rate_limited', 'Bitte später erneut testen.', [ 'status' => 429 ] );
 	}
 	set_transient( $key, $count + 1, HOUR_IN_SECONDS );
-	if ( ! hu_chat_spike_payload_valid( $request->get_body() ) ) {
+	$variant = hu_chat_spike_variant( $request->get_body() );
+	if ( null === $variant ) {
 		hu_chat_spike_settle( $reservation, [], $config['prices'] );
 		return new WP_Error( 'chat_spike_payload', 'Der Streaming-Test akzeptiert nur den festen Testaufruf.', [ 'status' => 400 ] );
 	}
 	// Do not expose config or a reservation in the REST response object.
 	$GLOBALS['hu_chat_spike_reservation'] = $reservation;
+	$GLOBALS['hu_chat_spike_variant']     = $variant;
 	return new WP_REST_Response( [ 'hu_chat_spike' => true ], 200 );
 }
 
@@ -81,18 +127,28 @@ function hu_chat_spike_serve( $served, $response, $request, $server ) {
 		return $served;
 	}
 	$reservation = $GLOBALS['hu_chat_spike_reservation'];
-	unset( $GLOBALS['hu_chat_spike_reservation'] );
+	$variant     = $GLOBALS['hu_chat_spike_variant'] ?? 'plain';
+	unset( $GLOBALS['hu_chat_spike_reservation'], $GLOBALS['hu_chat_spike_variant'] );
 	$config = hu_chat_config();
+	// Disable PHP-side compression before any buffer is closed or byte is sent.
+	@ini_set( 'zlib.output_compression', '0' );
+	@ini_set( 'brotli.output_compression', '0' );
+	if ( function_exists( 'apache_setenv' ) ) {
+		@apache_setenv( 'no-gzip', '1' );
+	}
 	while ( ob_get_level() > 0 ) {
 		if ( ! @ob_end_clean() ) {
 			break;
 		}
 	}
-	@ini_set( 'zlib.output_compression', '0' );
+	@ini_set( 'implicit_flush', '1' );
 	ignore_user_abort( true ); // Always settle the reservation after disconnect.
-	header( 'Content-Type: text/event-stream; charset=UTF-8' );
-	header( 'Cache-Control: no-store, no-transform' );
-	header( 'X-Accel-Buffering: no' );
+	if ( ! headers_sent() ) {
+		header_remove( 'Content-Length' );
+		foreach ( hu_chat_spike_stream_headers() as $line ) {
+			header( $line );
+		}
+	}
 	$started = microtime( true );
 	$emit = static function ( string $event, array $data ) use ( $started ): void {
 		$data['elapsed_ms'] = (int) round( ( microtime( true ) - $started ) * 1000 );
@@ -101,12 +157,12 @@ function hu_chat_spike_serve( $served, $response, $request, $server ) {
 	};
 	$client = new HU_Chat_Bedrock_Client( $config );
 	try {
-		$emit( 'probe', [ 'stage' => 'ready' ] );
-		$transport = $client->invoke( wp_json_encode( [
-			'anthropic_version' => 'bedrock-2023-05-31',
-			'max_tokens' => 64,
-			'messages' => [ [ 'role' => 'user', 'content' => 'Antworte ausschließlich mit dem Wort Hallo.' ] ],
-		] ), $emit );
+		$emit( 'probe', [ 'stage' => 'ready', 'variant' => $variant ] );
+		if ( 'padded' === $variant ) {
+			echo hu_chat_spike_padding(); // phpcs:ignore WordPress.Security.EscapeOutput -- fixed spaces only.
+			flush();
+		}
+		$transport = $client->invoke( hu_chat_spike_probe_body(), $emit );
 		$emit( 'done', [ 'transport' => $transport ] );
 	} catch ( Throwable $error ) {
 		hu_chat_spike_log_failure();

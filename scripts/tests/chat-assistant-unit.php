@@ -18,6 +18,9 @@ function add_option( $key, $value, $deprecated = '', $autoload = false ) { $GLOB
 function wp_cache_delete( ...$args ) {}
 function is_wp_error( $value ) { return $value instanceof WP_Error; }
 function wp_json_encode( $data, $flags = 0 ) { return json_encode( $data, $flags | JSON_THROW_ON_ERROR ); }
+function esc_html( $text ) { return htmlspecialchars( (string) $text, ENT_QUOTES, 'UTF-8' ); }
+function rest_url( $path ) { return 'https://example.test/wp-json/' . $path; }
+function wp_create_nonce( $action ) { return 'fixture-nonce'; }
 function wp_upload_dir() { return [ 'basedir' => $GLOBALS['chat_test']['uploads'], 'error' => false ]; }
 class WP_Error {
 	public function __construct( public $code, public $message, public $data ) {}
@@ -123,6 +126,7 @@ check_chat( '' === hu_chat_config()['model'] && 'off' === hu_chat_config()['mode
 check_chat( hu_chat_usage_cost( [ 'input_tokens' => 10, 'output_tokens' => 4, 'cache_creation_input_tokens' => 3, 'cache_read_input_tokens' => 2 ], $config['prices'] ) === 37, 'all four usage prices and upward rounding' );
 $reservation = hu_chat_spike_reserve( $config );
 check_chat( is_array( $reservation ), 'budget reserved before calls' );
+check_chat( $reservation['one'] === (int) ceil( 1024 * 5 + HU_CHAT_SPIKE_MAX_TOKENS * 5 ), 'reservation covers the probe output cap' );
 hu_chat_spike_settle( $reservation, [ [ 'input_tokens' => 10, 'output_tokens' => 4 ] ], $config['prices'] );
 check_chat( $GLOBALS['chat_test']['options'][ $reservation['key'] ] === 30, 'verified usage refunds unused reservation' );
 $reservation = hu_chat_spike_reserve( $config );
@@ -158,6 +162,11 @@ hu_chat_register_spike_route(); hu_chat_spike_admin_menu();
 $route = $GLOBALS['chat_test']['routes']['nexus/v1/chat'];
 check_chat( 'POST' === $route['methods'] && 'hu_chat_spike_permission' === $route['permission_callback'], 'production preview registers only privileged POST route' );
 check_chat( 1 === count( $GLOBALS['chat_test']['menus'] ) && 'manage_options' === $GLOBALS['chat_test']['menus'][0][2], 'production preview registers admin menu' );
+ob_start(); hu_chat_spike_admin_page(); $page = ob_get_clean();
+check_chat( str_contains( $page, 'id="hu-chat-padding"' ) && str_contains( $page, '{"padding":true}' ), 'admin page offers the padding variant' );
+check_chat( str_contains( $page, 'content-encoding|content-length|transfer-encoding|server|via|vary|x-cache' ) && str_contains( $page, "name.startsWith('x-')" ), 'protocol records transport headers and all X-* headers' );
+check_chat( str_contains( $page, 'nonce|token|auth|key|secret|session|cookie' ), 'protocol excludes credential-like headers' );
+check_chat( ! str_contains( $page, 'fixture-salt' ) && ! str_contains( $page, 'EXAMPLE' ), 'admin page carries no secret' );
 $GLOBALS['chat_test']['options'] = [];
 check_chat( true === hu_chat_spike_permission( new WP_REST_Request() ), 'production preview admin and nonce accepted' );
 $GLOBALS['chat_test']['admin'] = false;
@@ -173,6 +182,16 @@ check_chat( hu_chat_spike_permission( new WP_REST_Request() )->data['status'] ==
 $GLOBALS['chat_test']['nonces'] = true;
 foreach ( [ '[]', '', '{"messages":[]}', '{"recipient":"attacker@example.test"}', '{"email":"attacker@example.test"}' ] as $body ) check_chat( ! hu_chat_spike_payload_valid( $body ), 'no visitor fields or recipients: ' . $body );
 check_chat( hu_chat_spike_payload_valid( ' {} ' ), 'only fixed probe accepted' );
+check_chat( 'plain' === hu_chat_spike_variant( '{}' ) && 'plain' === hu_chat_spike_variant( '{"padding":false}' ), 'plain variant' );
+check_chat( 'padded' === hu_chat_spike_variant( '{"padding":true}' ), 'padded variant' );
+foreach ( [ '{"padding":"yes"}', '{"padding":1}', '{"padding":true,"messages":[]}', '{"padding":{"x":true}}', '[true]', 'true', '{"Padding":true}' ] as $body ) check_chat( null === hu_chat_spike_variant( $body ), 'variant switch accepts nothing else: ' . $body );
+$probe = json_decode( hu_chat_spike_probe_body(), true, 8, JSON_THROW_ON_ERROR );
+check_chat( HU_CHAT_SPIKE_MAX_TOKENS === 200 && 200 === $probe['max_tokens'], 'probe output capped at 200 tokens' );
+check_chat( [ [ 'role' => 'user', 'content' => 'Zähle langsam von 1 bis 30, jede Zahl in eine eigene Zeile.' ] ] === $probe['messages'] && ! isset( $probe['system'] ), 'fixed counting prompt, no system prompt' );
+$pad = hu_chat_spike_padding();
+check_chat( 4096 === strlen( $pad ) && ':' === $pad[0] && "\n\n" === substr( $pad, -2 ) && '' === trim( substr( $pad, 1 ) ), 'padding is one 4 KB SSE comment of spaces' );
+$stream_headers = hu_chat_spike_stream_headers();
+foreach ( [ 'Content-Type: text/event-stream; charset=UTF-8', 'Cache-Control: no-store, no-transform', 'Content-Encoding: identity', 'X-Accel-Buffering: no' ] as $line ) check_chat( in_array( $line, $stream_headers, true ), 'stream header ' . $line );
 check_chat( hu_chat_spike_prepare( new WP_REST_Request( '{"recipient":"attacker@example.test"}' ) )->data['status'] === 400, 'REST rejects arbitrary fields' );
 for ( $i = 1; $i < 30; $i++ ) check_chat( hu_chat_spike_prepare( new WP_REST_Request() ) instanceof WP_REST_Response, 'rate-limit permits request ' . $i );
 check_chat( hu_chat_spike_prepare( new WP_REST_Request() )->data['status'] === 429, 'rate-limit stops next request' );

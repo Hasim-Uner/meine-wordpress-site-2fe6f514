@@ -19,9 +19,10 @@ function hu_chat_spike_reserve( array $config ) {
 	global $wpdb;
 	$key   = 'hu_chat_cost_' . gmdate( 'Ym' );
 	$cap   = (int) floor( (float) $config['budget'] * 1000000 );
-	// Fixed tiny request: conservative byte-bound plus protocol overhead. Two
-	// attempts cover the stream and the single non-streaming fallback together.
-	$one   = (int) ceil( 1024 * max( array_map( 'floatval', $config['prices'] ) ) + 64 * (float) $config['prices']['output'] );
+	// Fixed short request: conservative byte-bound plus protocol overhead and the
+	// probe's output cap. Two attempts cover the stream and the single
+	// non-streaming fallback together.
+	$one   = (int) ceil( 1024 * max( array_map( 'floatval', $config['prices'] ) ) + HU_CHAT_SPIKE_MAX_TOKENS * (float) $config['prices']['output'] );
 	$total = 2 * $one;
 	if ( $total > $cap ) {
 		return false;
