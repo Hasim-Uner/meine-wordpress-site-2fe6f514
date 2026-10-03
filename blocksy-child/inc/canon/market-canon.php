@@ -61,7 +61,7 @@ function hu_market_figures() {
 		[
 			'key'    => 'cost_per_deal',
 			'value'  => '2.000 €',
-			'body'   => 'pro gewonnenem Auftrag in einem dokumentierten Fall: 84.000 € Lead-Budget, 950 Anfragen, 42 Aufträge. Abschlussquote 4,4 %.',
+			'body'   => 'pro gewonnenem Auftrag (Portal-Fall, anderer Betrieb): 84.000 € Lead-Budget, 950 Anfragen, 42 Aufträge. Abschlussquote 4,4 %.',
 			'source' => 'A&M Beratung',
 		],
 	];

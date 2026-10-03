@@ -23,18 +23,19 @@ define( 'HU_E3_SALES_CONVERSION_BEFORE_LOW', 1 );
 define( 'HU_E3_SALES_CONVERSION_BEFORE_HIGH', 5 );
 define( 'HU_E3_TIMEFRAME_MONTHS', 6 );
 
-// Voreinstellungen des Vergleichsrechners auf der Money Page. Bewusst
-// vorsichtiger als der dokumentierte Fall: der Rechner soll nicht mit dem
-// besten gemessenen Wert anlaufen.
+// Voreinstellungen des Vergleichsrechners auf der Money Page.
 //
-// Sie stehen hier, weil sie bis 2026-09 als nackte Literale neben der
-// Abschlussquote des Falls im Template standen — "12 % Abschlussquote" ohne
-// Rahmen war von der Fallzahl nicht zu unterscheiden und las sich als
-// Widerspruch zu den 15 %. Wer sie aendert, aendert eine Rechenannahme, nicht
-// den Fall. Umgekehrt gilt dasselbe: HU_E3_SALES_CONVERSION_PERCENT ist die
-// gemessene Abschlussquote und nie eine Rechenannahme.
+// Kosten pro Anfrage: bewusst vorsichtiger als der dokumentierte Fall (45 €
+// statt 22 €). Abschlussquote: seit 2026-10-03 die gemessene Quote des
+// dokumentierten Falls, 15 %. Bis dahin stand hier eine vorsichtigere
+// Rechenannahme (12 %), die neben den 15 % des Falls wie ein Widerspruch las.
+// Der Rechner startet damit mit den Werten des Falls, nicht darunter; wer die
+// Quote ändert, ändert eine Rechenannahme und nie den Fall.
+//
+// Sie stehen hier, weil sie bis 2026-09 als nackte Literale im Template
+// standen und von der Fallzahl nicht zu unterscheiden waren.
 define( 'HU_E3_CALC_CPL_CONSERVATIVE', 45 );
-define( 'HU_E3_CALC_SALES_CONVERSION_CONSERVATIVE', 12 );
+define( 'HU_E3_CALC_SALES_CONVERSION', HU_E3_SALES_CONVERSION_PERCENT );
 
 // Zwischenwerte der Strecke. Standen bis 2026-08 als Literale in
 // page-case-study-solar.php und waren damit weder prüfbar noch mitpflegbar.
@@ -167,11 +168,11 @@ function hu_e3_canon() {
 				'input'   => (string) HU_E3_CALC_CPL_CONSERVATIVE,
 				'label'   => 'vorsichtig angesetzte Kosten pro Anfrage (Rechenannahme)',
 			],
-			'calc_sales_conversion_conservative' => [
-				'value'   => HU_E3_CALC_SALES_CONVERSION_CONSERVATIVE,
-				'display' => HU_E3_CALC_SALES_CONVERSION_CONSERVATIVE . ' %',
-				'input'   => (string) HU_E3_CALC_SALES_CONVERSION_CONSERVATIVE,
-				'label'   => 'vorsichtig angesetzte Abschlussquote (Rechenannahme)',
+			'calc_sales_conversion' => [
+				'value'   => HU_E3_CALC_SALES_CONVERSION,
+				'display' => HU_E3_CALC_SALES_CONVERSION . ' %',
+				'input'   => (string) HU_E3_CALC_SALES_CONVERSION,
+				'label'   => 'im Rechner voreingestellte Abschlussquote: die gemessene Quote des dokumentierten Falls',
 			],
 			'portal_cost_per_deal'  => [
 				'value'   => HU_E3_PORTAL_COST_PER_DEAL,

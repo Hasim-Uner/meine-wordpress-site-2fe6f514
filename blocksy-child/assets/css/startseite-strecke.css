@@ -291,6 +291,25 @@
 .st .st-link:hover { text-decoration-color: currentColor; }
 .st .st-link--stark { font-weight: 600; }
 
+/* Preiskarte: die Aktion ist ein Button, "Umfang im Detail" bleibt Textlink.
+   Die Farben kommen aus den Tokens: hell Stempel auf Papier, im dunklen Block
+   (.tafel, dort umdefiniert) #ef8b4d auf #17140f. */
+.st .st-angebot__wege { gap: var(--s1) var(--s3); }
+.st .st-angebot__wege .st-link--stark {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  min-height: 44px;
+  padding: 0 1.25rem;
+  background: var(--stempel);
+  color: var(--papier);
+  text-decoration: none;
+}
+.st .st-angebot__wege .st-link--stark:hover {
+  background: var(--tinte);
+  color: var(--papier);
+}
+
 /* Der Pfeil am Link rueckt beim Hover nach, wie der Pfeil im Button
    (system.css). Nur Transform, das Layout bleibt stehen. */
 .st .st-link > span[aria-hidden="true"] {
@@ -1366,6 +1385,13 @@
 .st[data-st-final] .st-hero--messflaeche .st-hero__satz { margin: 0; max-inline-size: 46ch; font-size: clamp(1.0625rem, 1.35vw, 1.25rem); }
 .st[data-st-final] .st-hero--messflaeche .st-hero__ctas { margin: 0; }
 .st[data-st-final] .st-hero--messflaeche .st-hero__notiz { font-size: .875rem; }
+/* Belegzeile unter der Hauptaktion: nur auf dem schmalen Erst-Screen. Ab
+   768 px stehen die Belege rechts im Hero. */
+.st[data-st-final] .st-hero--messflaeche .st-hero__beleg { margin: var(--s1) 0 0; font-size: .9375rem; }
+.st[data-st-final] .st-hero--messflaeche .st-hero__beleg .st-link { display: inline-block; padding-block: .75rem; }
+@media (min-width: 768px) {
+  .st[data-st-final] .st-hero--messflaeche .st-hero__beleg { display: none; }
+}
 .st[data-st-final] .st-hero--messflaeche .st-hero__meta { margin-top: var(--s4); }
 .st[data-st-final] .st-hero--messflaeche .st-belege { display: grid; grid-template-columns: minmax(0, 1fr); gap: var(--s3); margin-top: var(--s4); padding-top: var(--s3); }
 .st[data-st-final] .st-hero--messflaeche .st-belege a { grid-template-columns: auto minmax(0, 1fr); gap: var(--s2); padding: 0; border: 0; align-items: center; min-height: 44px; }
@@ -1436,6 +1462,19 @@
 }
 @media (max-width: 767px) {
   .st[data-st-final] .st-hero--messflaeche .st-hero__h1 { font-size: clamp(2.5rem, 10.5vw, 3.625rem); font-size: clamp(2.5rem, 11.6cqi, 3.625rem); }
+  /* Erster Screen: Der Absatz folgt der H1 mit hoechstens --s2 Abstand. Das
+     Herkunftsetikett stand bisher im Fluss dazwischen (rund 145 px) und
+     rueckt jetzt hinter die Hauptaktion, direkt vor das Protokoll. Dafuer
+     gibt .st-hero__titel seine Box ab; die H1 misst ihre Schrift ohne
+     Container in vw. */
+  .st[data-st-final] .st-hero--messflaeche .st-inhalt { display: flex; flex-direction: column; }
+  .st[data-st-final] .st-hero--messflaeche .st-hero__titel { display: contents; }
+  .st[data-st-final] .st-hero--messflaeche .st-hero__h1 { order: 1; font-size: clamp(2.5rem, 10.5vw, 3.625rem); }
+  .st[data-st-final] .st-hero--messflaeche .st-hero__unten { order: 2; margin-top: var(--s2); }
+  .st[data-st-final] .st-hero--messflaeche .st-etikett { order: 3; align-self: flex-start; }
+  .st[data-st-final] .st-hero--messflaeche .st-inhalt > .st-spur,
+  .st[data-st-final] .st-hero--messflaeche .st-inhalt > .st-hero__meta,
+  .st[data-st-final] .st-hero--messflaeche .st-inhalt > .st-belege { order: 4; }
   .st-etikett { position: relative; left: auto !important; top: auto !important; margin-top: var(--s3); transform-origin: 30px 0; }
   .st-etikett::before { display: none; }
   .st-spur__bahn { margin-top: var(--s2); }

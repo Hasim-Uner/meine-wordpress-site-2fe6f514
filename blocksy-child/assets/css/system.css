@@ -1132,6 +1132,9 @@ body.nx-custom-header-active {
    die Leiter ist Mono in Normalschrift mit Betrag in --tinte, ohne
    Hover-Linie, und bleibt auch unter 1081 px in der Zeile. */
 .leiste .leiter a {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4em;
   padding-block: var(--s1);
   font-family: var(--mono);
   font-size: var(--mono-m);
@@ -1188,6 +1191,22 @@ body.nx-custom-header-active {
 @media (max-width: 560px) {
   .leiste .leiter .opt,
   .leiste .leiter .trenn { display: none; }
+  /* Solar-Kopf: die einzige Aktion ist der Marktcheck als gefuellter Button,
+     44 px hoch. Der Sofortkontakt steht nur noch im Angebotsblock. */
+  .leiste--fokus .leiter a {
+    min-height: 44px;
+    padding: 0 0.9rem;
+    border: 1px solid var(--stempel);
+    border-radius: var(--r0);
+    background: var(--stempel);
+    color: var(--papier);
+  }
+  .leiste--fokus .leiter a b { color: inherit; }
+  .leiste--fokus .leiter a b::before { content: "· "; }
+  .leiste--fokus .leiter a:hover {
+    background: transparent;
+    color: var(--stempel);
+  }
   .leiste .rechts > .tuer .lang { display: none; }
   .leiste .rechts > .tuer .kurz { display: flex; }
   .leiste .rechts > .tuer span { padding-inline: 0.6rem; }
