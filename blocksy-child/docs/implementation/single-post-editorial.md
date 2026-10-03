@@ -205,10 +205,10 @@ Add `data-hero-stat="71%"` and `data-hero-stat-label="Case Study"` to the `<head
 - POSTs to `wp-json/nexus/v1/post-rating` with WP REST nonce.
 - Stores aggregated counters + last 25 free-text feedbacks as post meta.
 - Admin: post-edit screen has a side meta-box "Artikel-Bewertungen"; the posts list has a sortable column.
-- Downstream hook for CRM/Brevo/n8n:
+- Downstream hook for CRM/Brevo:
   ```php
   add_action( 'nexus_post_rating_received', function ( $post_id, $rating, $feedback, $context ) {
-      // forward to Brevo, n8n, etc.
+      // forward to Brevo or the CRM.
   }, 10, 4 );
   ```
 

@@ -29,6 +29,3 @@ plans/**
 # Historical audits and research notes
 docs/audits/**
 docs/references/**
-
-# Large workflow exports are read only when n8n work is explicit
-automations/n8n/workflows/*.json

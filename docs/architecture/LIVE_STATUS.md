@@ -460,6 +460,10 @@ Abschnitt anzuhängen; der Verlauf gehört in Commit-Nachrichten.
   (`noindex, nofollow`); `wgos_asset`-Seiten unter `/wgos-assets/<slug>/` sind
   `noindex, follow`; das Kundenportal (`template-portal.php`) zeigt nur
   hinterlegte Daten; `/startseite-wow/` ist eine `noindex`-Testroute.
+  Das Workflow-Angebot `/wgos-assets/llm-workflow-automatisierung/` ist aus
+  dem Register entfernt (Repo 2026-10-03, Livegang offen). Der nächste
+  Versions-Sync verschiebt ausschließlich den zugehörigen themeverwalteten
+  Beitrag in den Papierkorb; andere Beiträge und Anfragewege bleiben bestehen.
 
 - **Seitenanlage:** Theme-eigene Seiten stehen in `nexus_get_provisioned_pages()`
   (`inc/helpers.php`); Kontakt, Glossar, WGOS-Hub und Cluster-Seiten haben eigene

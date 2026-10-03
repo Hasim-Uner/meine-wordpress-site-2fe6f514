@@ -242,14 +242,6 @@ require_no_path ".github/workflows/css-architecture.yml"
 # renames and missing history; validate-skills checks the workflow event scope.
 
 echo
-echo "=== n8n Scope Contract ==="
-if grep -Eq "automations/n8n" .github/workflows/ci.yml; then
-  fail "CI must not be coupled to inactive automations/n8n artifacts"
-else
-  pass "CI remains decoupled from inactive automations/n8n artifacts"
-fi
-
-echo
 echo "=== Verdict ==="
 if [[ "$failures" -gt 0 ]]; then
   echo "Architecture validation failed with $failures issue(s)." >&2

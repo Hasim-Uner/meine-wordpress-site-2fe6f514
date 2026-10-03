@@ -18,7 +18,6 @@ Der frühere `Growth Audit` ist kein öffentlicher Hauptfunnel mehr. Geschützte
 - Contract: `2026-05-26.audit-request.v1`, serverseitig in `NEXUS_REVIEW_REQUEST_CONTRACT_VERSION`
 - Persistenz: `nexus_review_request` im Audit-CRM
 - Mail: zentrale Mail-/Brevo-Schicht
-- n8n: nicht angebunden
 
 Der Marktcheck qualifiziert Umsetzungs-Fit. Er fragt Angebot, wirtschaftlichen Fit (`business_fit`), Anfragevolumen, CPL, Engpass und Kontakt ab. Der Fit basiert auf Projektwert, eigenem Vertrieb bzw. geschäftsführergeführtem Vertrieb und Zielgebiet, nicht auf Mitarbeiterzahl. Er ist kein generischer Verkaufssprung.
 
@@ -46,13 +45,8 @@ Antwortfrist und Mailversand bleiben am gemeinsamen Endpunkt.
 
 Die frühere Growth-Audit-UI ist entfernt. Erhalten bleiben nur die 301-/410-Kompatibilitätsverträge sowie separat zu prüfende 360°-Deep-Dive-/Result-Artefakte (`audit-live.js`, `audit-results.css`).
 
-
-## n8n
-
-Aktuell gibt es keinen produktiven n8n-Pfad für den Marktcheck. Workflow-Exports unter `automations/n8n/` gelten als historische oder vorbereitende Artefakte. Neue n8n-Arbeit braucht immer das Triplet aus Workflow-JSON, Doku und Flow-Map.
-
 ## Risiken
 
 - Legacy-Audit-Code und aktiver Marktcheck duerfen nicht vermischt werden.
-- Alte Doku oder Editor-Snippets können noch eine abgelöste Antwortzeit (siehe `scripts/canon-forbidden-values.txt`), `Growth Audit` oder n8n als aktiven Default suggerieren.
+- Alte Doku oder Editor-Snippets können noch eine abgelöste Antwortzeit (siehe `scripts/canon-forbidden-values.txt`), oder den `Growth Audit` als aktiven Default suggerieren.
 - Public CTA-Logik muss beim Marktcheck bleiben, solange keine neue Funnel-Entscheidung dokumentiert ist.

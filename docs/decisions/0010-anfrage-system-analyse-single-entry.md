@@ -19,6 +19,5 @@ Der erste gute Kunde soll nicht über eine generische kostenlose Analyse gewonne
 
 - Primärer CTA für kalten Solar-/SHK-Traffic ist inzwischen `/solar-waermepumpen-leadgenerierung/#marktcheck`.
 - Die Analyse wird nicht als kostenloser Massen-Leadmagnet positioniert.
-- Der bestehende `readiness-diagnosis-payload.v1` bleibt bis zur nächsten Contract-Version intern stabil.
 - Texte und Demo-CTA sprechen öffentlich von `Anfragesystem-Analyse`.
 - Die Tiefendiagnose bleibt intern als Option möglich, aber nicht als öffentlicher Funnel-Schritt.

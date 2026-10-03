@@ -9,7 +9,7 @@ All conversion elements must be native theme code:
 - Vanilla JavaScript only for client behavior.
 - Data submission via `fetch()` to first-party WordPress REST endpoints owned by this repo.
 
-The browser must not post lead data directly to n8n, Brevo, a SaaS CRM, a form plugin endpoint, or an external webhook. External booking URLs such as Cal.com may be post-submit handoffs only after the WordPress CRM write has succeeded.
+The browser must not post lead data directly to Brevo, a SaaS CRM, a form plugin endpoint, or an external webhook. External booking URLs such as Cal.com may be post-submit handoffs only after the WordPress CRM write has succeeded.
 
 ## CRM Contract
 
@@ -54,4 +54,4 @@ Public REST routes with `permission_callback => '__return_true'` are allowed onl
 - Keep honeypots invisible and non-destructive.
 - Rate-limit public intake endpoints.
 - Return generic user-safe errors; keep sensitive diagnostics server-side.
-- Do not expose Brevo, n8n, CRM, mail, or API credentials to the browser.
+- Do not expose Brevo, CRM, mail, or API credentials to the browser.

@@ -50,9 +50,7 @@ Probeänderung zurück.
 
 Die repo-weite Textsuche erfasste Preisliterale, HTML-Entitäten, Quellcode,
 JSON/Schema und `llms.txt`. Abhängigkeiten, Build-Artefakte und binäre Bilder
-sind keine Preisquellen. Die Preis-Suche erfasste auch inaktive n8n-Dateien
-(ohne Fund); an den Automationen wurde nichts geändert. Historische Treffer
-wurden zur Einordnung gesucht.
+sind keine Preisquellen. Historische Treffer wurden zur Einordnung gesucht.
 
 | Datei / Fundstellen | Einordnung |
 | --- | --- |

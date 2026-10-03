@@ -34,7 +34,6 @@ Read only references matching the change; do not load CRM code for pure layout w
 - Preserve the existing consent/privacy boundaries. No new pixels, persistent
   attribution cookies or external configuration without an explicit request.
 - Read canonical routing/dependency docs when their contracts are touched.
-  Keep inactive n8n outside the task unless explicitly requested.
 
 Delegate UI craft to `b2b-design-system` only for an included implementation subtask.
 Pure visual requests start at `frontend-system`; copy requests at `conversion-copy`.

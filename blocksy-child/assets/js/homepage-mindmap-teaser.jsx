@@ -24,7 +24,7 @@ export const phases = [
     label: "Skalierung",
     color: "#FB923C",
     icon: "🚀",
-    modules: ["Paid Booster", "n8n Automation", "Lead Routing"],
+    modules: ["Paid Booster", "Lead Routing"],
     stat: "über 85 %",
     statLabel: "Kosten pro Lead",
   },

@@ -16,7 +16,7 @@ Gleichzeitig deployt GitHub Actions aktuell nur `blocksy-child/` live nach WordP
 - `blocksy-child/` bleibt vorerst an Ort und Stelle.
 - Root-Dokumente definieren Status, Systemkarte und Agentenkontext.
 - Betriebswissen, Referenzen und Content-Artefakte werden in klarere Bereiche ueberfuehrt.
-- n8n, Prompts und Agentenwissen erhalten eigene Zielordner, auch wenn die Bestaende noch unvollstaendig sind.
+- Prompts und Agentenwissen erhalten eigene Zielordner, auch wenn die Bestaende noch unvollstaendig sind.
 
 ## Konsequenzen
 
@@ -25,7 +25,7 @@ Positive Folgen:
 - keine Unterbrechung des bestehenden Deploy-Pfads
 - klares Einstiegssystem fuer Menschen und Agenten
 - bessere Trennung zwischen Technik, Betrieb und Wissen
-- vorbereitetes Zielsystem fuer n8n-Exporte, Prompt-Bibliothek und Agenten-Kontext
+- vorbereitetes Zielsystem für Prompt-Bibliothek und Agenten-Kontext
 
 Bewusste Einschraenkung:
 
@@ -34,7 +34,6 @@ Bewusste Einschraenkung:
 
 ## Naechste Architekturentscheidungen
 
-- Benennungsstandard fuer n8n-Workflows und Flow-Maps
 - Datenmodell fuer Audit-Payload und Deep-Dive-Uebergabe
 - Trennlinie zwischen Repo-Content, Editor-Content und CRM-Daten
 - Refactor-Pfad fuer `page-wgos.php`

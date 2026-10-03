@@ -15,7 +15,7 @@ if ( ! defined( 'ABSPATH' ) ) {
  * @return string
  */
 function nexus_get_wgos_asset_registry_version() {
-	return '2026-05-15-wgos-assets-v6-cta-strategiegespraech';
+	return '2026-10-03-wgos-assets-v7-retire-workflow';
 }
 
 /**
@@ -606,6 +606,20 @@ function nexus_get_wgos_asset_content_html( $asset ) {
 }
 
 /**
+ * Retire the theme-managed post for the removed workflow offer.
+ *
+ * @return bool Whether no cleanup is needed or the post was moved to trash.
+ */
+function nexus_retire_wgos_workflow_offer() {
+	$post = get_page_by_path( 'llm-workflow-automatisierung', 'OBJECT', 'wgos_asset' );
+	if ( ! $post instanceof WP_Post || 'trash' === $post->post_status || '1' !== (string) get_post_meta( $post->ID, '_nexus_wgos_asset_managed', true ) ) {
+		return true;
+	}
+
+	return (bool) wp_trash_post( $post->ID );
+}
+
+/**
  * Create or update the managed WGOS asset posts from the registry.
  *
  * @return array{created: array<int, string>, updated: array<int, string>, errors: array<int, string>}
@@ -617,6 +631,10 @@ function nexus_sync_wgos_asset_posts() {
 		'errors'  => [],
 	];
 	$order   = 0;
+
+	if ( ! nexus_retire_wgos_workflow_offer() ) {
+		$results['errors'][] = 'Das zurückgezogene Workflow-Angebot konnte nicht in den Papierkorb verschoben werden.';
+	}
 
 	foreach ( nexus_get_wgos_asset_registry() as $asset ) {
 		$order += 10;

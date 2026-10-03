@@ -1825,7 +1825,7 @@ return [
 		],
 		'system_context'  => [
 			'Der KI-Assistent gehört im aktualisierten Anfragesystem in den Kernbereich Weiterentwicklung. Er baut auf Fundament, Messbarkeit und klaren Inhalten auf und erweitert ein bereits tragfähiges System um einen dialogbasierten KI-Baustein.',
-			'In Kombination mit Lead-Qualifizierung, RAG-Wissenssuche und n8n-Workflows entsteht daraus eine kontrollierte KI- und Automatisierungsschicht. Der Assistent bleibt dabei ein versionierter Systembaustein und kein loses ChatGPT-Widget.',
+			'In Kombination mit Lead-Qualifizierung und RAG-Wissenssuche entsteht daraus eine kontrollierte KI- und Automatisierungsschicht. Der Assistent bleibt dabei ein versionierter Systembaustein und kein loses ChatGPT-Widget.',
 		],
 		'priority'        => [
 			'Wenn wiederkehrende Fragen Support und Vertrieb binden, die der Assistent aus vorhandenen Inhalten beantworten könnte.',
@@ -1866,17 +1866,13 @@ return [
 				'description' => 'Wir bauen einen regelbasierten und KI-gestützten Bewertungsschritt in den Anfrageprozess ein. Kein reines Black-Box-Scoring, sondern transparente Logik.',
 			],
 			[
-				'title'       => 'n8n-Workflow für Routing aufsetzen',
-				'description' => 'Wir verbinden Formular, Klassifikation und Weiterleitung in einem n8n-Workflow. Qualifizierte Leads gehen priorisiert an den Vertrieb, der Rest wird freundlich umgeleitet.',
-			],
-			[
 				'title'       => 'Scoring-Kriterien wartbar machen',
 				'description' => 'Wir dokumentieren die Logik so, dass Kriterien ohne Entwickler angepasst werden können. Das hält den Prozess lebendig statt statisch.',
 			],
 		],
 		'system_context'  => [
 			'KI-gestützte Lead-Qualifizierung gehört im aktualisierten Anfragesystem in den Kernbereich Weiterentwicklung. Sie setzt eine funktionierende Conversion-Basis voraus und ergänzt diese um eine server-seitige Automatisierungslogik für Routing und Priorisierung.',
-			'Zusammen mit KI-Assistent, RAG-Wissenssuche und n8n-Workflows bildet sie die operative KI-Schicht oberhalb der klassischen Kernbereiche. Die Datenverarbeitung bleibt dabei server-seitig auf eigenem Server und DSGVO-konform.',
+			'Zusammen mit KI-Assistent und RAG-Wissenssuche bildet sie die operative KI-Schicht oberhalb der klassischen Kernbereiche. Die Datenverarbeitung bleibt dabei server-seitig auf eigenem Server und DSGVO-konform.',
 		],
 		'priority'        => [
 			'Wenn mehr als 20 Anfragen pro Monat eingehen und die Lead-Qualität stark schwankt.',
@@ -1939,57 +1935,6 @@ return [
 			'ki-assistent-chatbot'       => 'Nutzt dieselbe RAG-Architektur, erweitert aber die Suche um einen dialogbasierten Assistenten.',
 			'content-hub-aufbau'         => 'Schafft die Inhaltsstruktur, aus der die Wissenssuche ihre Quelldaten bezieht.',
 			'pillar-page'                => 'Liefert thematisch verdichtete Inhalte, die als hochwertige Quellen in der RAG-Suche dienen.',
-		],
-	],
-	'llm-workflow-automatisierung' => [
-		'title'           => 'LLM-Workflow-Automatisierung (n8n)',
-		'slug'            => 'llm-workflow-automatisierung',
-		'status'          => 'publish',
-		'core_area'       => 'Weiterentwicklung',
-		'credits'         => '20',
-		'keyword'         => 'LLM Automatisierung n8n WordPress',
-		'excerpt'         => 'Automatisierte Workflows mit KI-Schritten – Zusammenfassungen, Klassifikation, Routing – server-seitig auf n8n, DSGVO-konform.',
-		'goal'            => 'Wiederkehrende Geschäftsprozesse mit LLM-Schritten automatisieren, ohne SaaS-Abhängigkeit und ohne Datenabfluss.',
-		'result'          => 'Sie erhalten dokumentierte n8n-Workflows mit KI-Schritten, die auf Ihrem eigenen Server laufen und wartbar bleiben.',
-		'prerequisite'    => 'Klarer, definierter Prozess mit bekannter Ein- und Ausgabe muss stehen',
-		'seo_title'       => 'LLM-Workflow-Automatisierung mit n8n – Systembaustein | Haşim Üner',
-		'seo_description' => 'Geschäftsprozesse mit KI-Schritten automatisieren: Zusammenfassungen, Klassifikation, Routing – server-seitig auf n8n. 20 Credits.',
-		'problem'         => [
-			'Viele Aufgaben im Tagesgeschäft sind repetitiv und textlastig: Anfragen zusammenfassen, E-Mails klassifizieren, Content-Entwürfe vorbereiten, Leads routen. Manuell kosten diese Schritte Stunden pro Woche, ohne dass sie besonderen Sachverstand erfordern.',
-			'LLM-Workflow-Automatisierung baut KI-Schritte in bestehende Geschäftsprozesse ein – visuell in n8n, nachvollziehbar, versioniert und auf eigenem Server. Keine SaaS-Abhängigkeit, keine Daten an Dritte.',
-		],
-		'deliverables'    => [
-			[
-				'title'       => 'Prozess analysieren und Automatisierungspotenzial identifizieren',
-				'description' => 'Wir prüfen gemeinsam, welche Schritte sich sinnvoll automatisieren lassen und wo menschliche Checkpoints bleiben müssen. So entsteht kein Blindflug.',
-			],
-			[
-				'title'       => 'n8n-Workflow mit LLM-Nodes aufsetzen',
-				'description' => 'Wir bauen den Workflow in n8n: Trigger, LLM-Schritt (Klassifikation, Zusammenfassung, Extraktion), Ausgabe an CRM, E-Mail oder Dashboard. Alles self-hosted.',
-			],
-			[
-				'title'       => 'Workflow dokumentieren und versionieren',
-				'description' => 'Wir halten Logik, Trigger, Ein-/Ausgabe und Fail-States fest. So bleibt der Workflow wartbar, auch wenn sich Anforderungen ändern.',
-			],
-			[
-				'title'       => 'Monitoring und Checkpoints einrichten',
-				'description' => 'Wir definieren, wann der Workflow menschliche Freigabe braucht und wie Fehler sichtbar werden. Das verhindert stille Fehlläufe.',
-			],
-		],
-		'system_context'  => [
-			'LLM-Workflow-Automatisierung gehört im Anfragesystem zur Weiterentwicklung und kommt erst, wenn Fundament und Messbarkeit stehen. Automatisierung braucht einen sauberen Prozess als Grundlage – ohne definierten Ablauf entsteht nur automatisiertes Chaos.',
-			'Das Asset ergänzt die Lead-Qualifizierung und andere Conversion-Bausteine um prozessübergreifende Automatisierung. n8n als Self-hosted-Plattform auf eigenem Hetzner-Server hält die Datenhoheit im Haus.',
-		],
-		'priority'        => [
-			'Wenn wiederkehrende manuelle Aufgaben mit Textverarbeitung mehr als 5 Stunden pro Woche kosten.',
-			'Wenn der zugrunde liegende Prozess klar definiert ist und die Ein-/Ausgabe feststeht.',
-			'Wenn Datensouveränität wichtig ist und SaaS-Plattformen wie Zapier oder Make nicht infrage kommen.',
-			'Wenn nach Fundament und Messbarkeit der nächste Effizienz-Hebel in der Weiterentwicklung gesucht wird.',
-		],
-		'related_assets'  => [
-			'ki-lead-qualifizierung'     => 'Nutzt n8n-Workflows für die automatische Klassifikation und Weiterleitung von Leads.',
-			'monthly-review'             => 'Kann Reporting-Daten automatisch aufbereiten und als Grundlage für Reviews bereitstellen.',
-			'conversion-testing'         => 'Liefert automatisierte Datenpunkte, die in Testing-Hypothesen einfließen können.',
 		],
 	],
 ];
