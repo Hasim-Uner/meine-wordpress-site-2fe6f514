@@ -26,6 +26,18 @@ Abschnitt anzuhängen; der Verlauf gehört in Commit-Nachrichten.
 
 ## Positionierung und Navigation
 
+### KI-Chat-Assistent: Staging-Spike
+
+`inc/chat-assistant/` bereitet den festen Bedrock-Hallo-Test auf
+`POST /wp-json/nexus/v1/chat` vor. Er verlangt Staging, `HU_CHAT_MODE=preview`,
+vollständige private Konfiguration, geprüfte Tokenpreise und Admin samt
+REST-Nonce. Standard `off`; `live` ist in dieser Phase gesperrt. Die Admin-
+Testseite liegt unter Werkzeuge. Öffentliche Seiten erhalten weder Orb noch
+Chat-Assets. Prompt-Vorlage und frische Kanon-Ersetzung sind vorbereitet;
+Knowledge-Builder, öffentlicher Chat und CRM-/Brevo-Handover folgen nach dem
+nachgewiesenen SSE-Gate. Der Raidboxes-Streaming-Test steht noch aus.
+Contract und Abnahme: `CHAT_ASSISTANT.md`.
+
 - Öffentliche Rolle: WordPress Freelancer aus der Region Hannover; verbundene
   Kompetenz technisches SEO, Tracking und Conversion. Maßgeblich sind
   `docs/standards/BRAND_AND_COPY.md` und `docs/architecture/CONVERSION_ROUTING.md`.

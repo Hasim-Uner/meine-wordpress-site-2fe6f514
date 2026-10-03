@@ -1,0 +1,183 @@
+<?php
+/** Hermetic transport-spike tests. No WordPress boot and no network. */
+define( 'ABSPATH', __DIR__ . '/' );
+define( 'HOUR_IN_SECONDS', 3600 );
+$root = dirname( __DIR__, 2 );
+$GLOBALS['chat_test'] = [ 'environment' => 'staging', 'admin' => true, 'nonces' => true, 'options' => [], 'transients' => [] ];
+function add_action( ...$args ) {}
+function add_filter( ...$args ) {}
+function wp_get_environment_type() { return $GLOBALS['chat_test']['environment']; }
+function current_user_can( $cap ) { return $GLOBALS['chat_test']['admin']; }
+function wp_verify_nonce( $nonce, $action ) { return $GLOBALS['chat_test']['nonces'] && 'valid' === $nonce; }
+function wp_salt( $scheme ) { return 'fixture-salt'; }
+function get_transient( $key ) { return $GLOBALS['chat_test']['transients'][ $key ] ?? false; }
+function set_transient( $key, $value, $ttl ) { $GLOBALS['chat_test']['transients'][ $key ] = $value; }
+function add_option( $key, $value, $deprecated = '', $autoload = false ) { $GLOBALS['chat_test']['options'][ $key ] ??= $value; }
+function wp_cache_delete( ...$args ) {}
+function is_wp_error( $value ) { return $value instanceof WP_Error; }
+function wp_json_encode( $data, $flags = 0 ) { return json_encode( $data, $flags | JSON_THROW_ON_ERROR ); }
+function wp_upload_dir() { return [ 'basedir' => $GLOBALS['chat_test']['uploads'], 'error' => false ]; }
+class WP_Error {
+	public function __construct( public $code, public $message, public $data ) {}
+}
+class WP_REST_Response {
+	public function __construct( public $data, public $status ) {}
+}
+class WP_REST_Request {
+	public function __construct( private string $body = '{}', private string $nonce = 'valid' ) {}
+	public function get_header( $key ) { return $this->nonce; }
+	public function get_body() { return $this->body; }
+	public function get_route() { return '/nexus/v1/chat'; }
+}
+class Chat_Test_DB {
+	public string $options = 'wp_options';
+	public bool $fail = false;
+	public array $args = [];
+	public function prepare( $sql, ...$args ) { $this->args = $args; return $sql; }
+	public function query( $sql ) {
+		if ( $this->fail ) return false;
+		[ $amount, $key ] = $this->args;
+		$value = (int) ( $GLOBALS['chat_test']['options'][ $key ] ?? 0 );
+		if ( isset( $this->args[2] ) && $value > $this->args[2] ) return 0;
+		$GLOBALS['chat_test']['options'][ $key ] = str_contains( $sql, 'GREATEST' ) ? max( 0, $value - $amount ) : $value + $amount;
+		return 1;
+	}
+}
+$wpdb = new Chat_Test_DB();
+foreach ( [ 'canon/pricing-canon', 'canon/messaging-canon', 'mail' ] as $file ) require $root . '/blocksy-child/inc/' . $file . '.php';
+foreach ( [ 'config', 'sigv4', 'eventstream', 'bedrock-client', 'budget', 'prompt', 'rest' ] as $file ) require $root . '/blocksy-child/inc/chat-assistant/' . $file . '.php';
+require $root . '/blocksy-child/inc/api-telemetry.php';
+$checks = 0;
+function check_chat( bool $ok, string $label ): void {
+	global $checks;
+	if ( ! $ok ) throw new RuntimeException( 'FAIL: ' . $label );
+	$checks++;
+}
+function rejects_chat( callable $call, string $label ): void {
+	$thrown = false;
+	try { $call(); } catch ( Throwable $error ) { $thrown = true; }
+	check_chat( $thrown, $label );
+}
+
+// Official AWS botocore aws4_testsuite/get-vanilla (develop, blobs pinned in docs).
+$headers = HU_Chat_SigV4::sign( 'GET', 'https://example.amazonaws.com/', '', [], 'AKIDEXAMPLE', 'wJalrXUtnFEMI/K7MDENG+bPxRfiCYEXAMPLEKEY', 'us-east-1', 'service', '20150830T123600Z' );
+check_chat( $headers['authorization'] === 'AWS4-HMAC-SHA256 Credential=AKIDEXAMPLE/20150830/us-east-1/service/aws4_request, SignedHeaders=host;x-amz-date, Signature=5fa00fa31553b73ebf1942676e86291e8372ff2a2260956d9b8aae1d763fbf31', 'official AWS SigV4 vector' );
+$sign = static fn( $url ) => HU_Chat_SigV4::sign( 'POST', $url, '{}', [], 'AKIDEXAMPLE', 'EXAMPLEKEY', 'eu-central-1', 'bedrock', '20150830T123600Z' );
+check_chat( $sign( 'https://example.amazonaws.com/?a0=x&a=z&a=b' ) === $sign( 'https://example.amazonaws.com/?a=b&a=z&a0=x' ), 'query keys and duplicate values sorted' );
+check_chat( $sign( 'https://example.amazonaws.com/model/test%3A0/invoke' ) !== $sign( 'https://example.amazonaws.com/model/test:0/invoke' ), 'encoded model URI signs differently' );
+
+$fixture = json_decode( file_get_contents( __DIR__ . '/fixtures/chat-eventstream.json' ), true, 32, JSON_THROW_ON_ERROR );
+$binary = implode( '', array_map( static fn( $frame ) => base64_decode( $frame, true ), $fixture['frames_base64'] ) );
+foreach ( [ 1, 2, 7, 11, 12, 13, 65, strlen( $binary ) ] as $size ) {
+	$decoder = new HU_Chat_Eventstream(); $frames = [];
+	foreach ( str_split( $binary, $size ) as $chunk ) $frames = array_merge( $frames, $decoder->push( $chunk ) );
+	$decoder->finish();
+	check_chat( count( $frames ) === 4, 'all frame boundaries, chunk size ' . $size );
+}
+for ( $cut = 1; $cut < strlen( base64_decode( $fixture['frames_base64'][0] ) ); $cut++ ) {
+	$decoder = new HU_Chat_Eventstream();
+	$frames = $decoder->push( substr( $binary, 0, $cut ) );
+	$frames = array_merge( $frames, $decoder->push( substr( $binary, $cut ) ) );
+	check_chat( count( $frames ) === 4, 'two-chunk split ' . $cut );
+}
+$corrupt = $binary; $corrupt[0] = chr( ord( $corrupt[0] ) ^ 1 );
+rejects_chat( static fn() => ( new HU_Chat_Eventstream() )->push( $corrupt ), 'prelude CRC corruption' );
+$corrupt = $binary; $corrupt[110] = chr( ord( $corrupt[110] ) ^ 1 );
+rejects_chat( static fn() => ( new HU_Chat_Eventstream() )->push( $corrupt ), 'message CRC corruption' );
+$decoder = new HU_Chat_Eventstream(); $decoder->push( substr( $binary, 0, -1 ) );
+rejects_chat( static fn() => $decoder->finish(), 'truncated last frame' );
+
+$emit_events = [];
+$emit = static function ( $event, $data ) use ( &$emit_events ) { $emit_events[] = [ $event, $data ]; };
+$client = new HU_Chat_Bedrock_Client( [], static function ( $body, $stream, $consume ) use ( $binary ) { $consume( $binary ); return ''; } );
+check_chat( 'stream' === $client->invoke( '{}', $emit ), 'stream result' );
+check_chat( $client->attempts[0]['input_tokens'] === 17 && $client->attempts[0]['output_tokens'] === 3, 'start/delta usage merged' );
+check_chat( count( array_filter( $emit_events, static fn( $event ) => 'text' === $event[0] ) ) === 1, 'text delta forwarded exactly once' );
+$calls = 0;
+$client = new HU_Chat_Bedrock_Client( [], static function ( $body, $stream, $consume ) use ( &$calls ) {
+	$calls++;
+	if ( $stream ) throw new RuntimeException( 'fixture transport failure' );
+	return '{"content":[{"type":"text","text":"Hallo"}],"usage":{"input_tokens":17,"output_tokens":3}}';
+} );
+check_chat( 'fallback' === $client->invoke( '{}', $emit ) && 2 === $calls && null === $client->attempts[0], 'single fallback and uncertain stream billed' );
+$calls = 0;
+$partial = base64_decode( $fixture['frames_base64'][0] ) . base64_decode( $fixture['frames_base64'][1] );
+$client = new HU_Chat_Bedrock_Client( [], static function ( $body, $stream, $consume ) use ( &$calls, $partial ) { $calls++; $consume( $partial ); throw new RuntimeException( 'fixture partial failure' ); } );
+rejects_chat( static fn() => $client->invoke( '{}', $emit ), 'partial response fails without duplicate text' );
+check_chat( 1 === $calls && null === $client->attempts[0], 'partial output never retried, billing conservative' );
+
+$config = [ 'mode' => 'preview', 'region' => 'eu-central-1', 'model' => 'eu.anthropic.claude-haiku-4-5-20251001-v1:0', 'access_key' => 'EXAMPLE', 'secret_key' => 'EXAMPLE', 'budget' => '20', 'prices' => [ 'input' => '1', 'output' => '5', 'cache_write' => '2', 'cache_read' => '0.1' ] ];
+check_chat( hu_chat_config_valid( $config ), 'explicit EU Haiku config' );
+foreach ( [ [ 'mode', 'off' ], [ 'mode', 'live' ], [ 'region', 'us-east-1' ], [ 'model', 'global.anthropic.claude' ], [ 'model', '' ], [ 'secret_key', '' ], [ 'budget', 'NaN' ] ] as [ $key, $value ] ) {
+	$invalid = $config; $invalid[ $key ] = $value;
+	check_chat( ! hu_chat_config_valid( $invalid ), 'reject config ' . $key . ' ' . $value );
+}
+$invalid = $config; $invalid['prices']['output'] = '';
+check_chat( ! hu_chat_config_valid( $invalid ), 'prices required, never guessed' );
+check_chat( '' === hu_chat_config()['model'] && 'off' === hu_chat_config()['mode'], 'no model literal default' );
+check_chat( hu_chat_usage_cost( [ 'input_tokens' => 10, 'output_tokens' => 4, 'cache_creation_input_tokens' => 3, 'cache_read_input_tokens' => 2 ], $config['prices'] ) === 37, 'all four usage prices and upward rounding' );
+$reservation = hu_chat_spike_reserve( $config );
+check_chat( is_array( $reservation ), 'budget reserved before calls' );
+hu_chat_spike_settle( $reservation, [ [ 'input_tokens' => 10, 'output_tokens' => 4 ] ], $config['prices'] );
+check_chat( $GLOBALS['chat_test']['options'][ $reservation['key'] ] === 30, 'verified usage refunds unused reservation' );
+$reservation = hu_chat_spike_reserve( $config );
+hu_chat_spike_settle( $reservation, [ null ], $config['prices'] );
+check_chat( $GLOBALS['chat_test']['options'][ $reservation['key'] ] === 30 + $reservation['one'], 'unknown attempt retains worst-case cost' );
+$low = $config; $low['budget'] = '0.001';
+check_chat( false === hu_chat_spike_reserve( $low ), 'hard cap, insufficient room for fallback' );
+$GLOBALS['chat_test']['options'][ 'hu_chat_cost_' . gmdate( 'Ym' ) ] = 20000000;
+check_chat( false === hu_chat_spike_reserve( $config ), 'exhausted budget rejects invocation' );
+$wpdb->fail = true;
+check_chat( false === hu_chat_spike_reserve( $config ), 'database outage fails closed' );
+$wpdb->fail = false;
+
+foreach ( $config as $key => $value ) {
+	$constants = [ 'mode' => 'HU_CHAT_MODE', 'region' => 'HU_BEDROCK_REGION', 'model' => 'HU_BEDROCK_MODEL_ID', 'access_key' => 'HU_BEDROCK_ACCESS_KEY_ID', 'secret_key' => 'HU_BEDROCK_SECRET_ACCESS_KEY', 'budget' => 'HU_CHAT_MONTHLY_BUDGET_USD' ];
+	if ( isset( $constants[ $key ] ) ) define( $constants[ $key ], $value );
+}
+foreach ( $config['prices'] as $type => $price ) define( 'HU_CHAT_PRICE_' . strtoupper( $type ), $price );
+$GLOBALS['chat_test']['options'] = [];
+check_chat( true === hu_chat_spike_permission( new WP_REST_Request() ), 'staging admin and nonce accepted' );
+$GLOBALS['chat_test']['admin'] = false;
+check_chat( hu_chat_spike_permission( new WP_REST_Request() )->data['status'] === 403, 'anonymous access blocked' );
+$GLOBALS['chat_test']['admin'] = true; $GLOBALS['chat_test']['environment'] = 'production';
+check_chat( hu_chat_spike_permission( new WP_REST_Request() )->data['status'] === 503, 'production blocked even in preview' );
+$GLOBALS['chat_test']['environment'] = 'staging';
+check_chat( hu_chat_spike_permission( new WP_REST_Request( '{}', 'bad' ) )->data['status'] === 403, 'invalid nonce blocked' );
+foreach ( [ '[]', '', '{"messages":[]}', '{"recipient":"attacker@example.test"}', '{"email":"attacker@example.test"}' ] as $body ) check_chat( ! hu_chat_spike_payload_valid( $body ), 'no visitor fields or recipients: ' . $body );
+check_chat( hu_chat_spike_payload_valid( ' {} ' ), 'only fixed probe accepted' );
+check_chat( hu_chat_spike_prepare( new WP_REST_Request( '{"recipient":"attacker@example.test"}' ) )->data['status'] === 400, 'REST rejects arbitrary fields' );
+for ( $i = 1; $i < 30; $i++ ) check_chat( hu_chat_spike_prepare( new WP_REST_Request() ) instanceof WP_REST_Response, 'rate-limit permits request ' . $i );
+check_chat( hu_chat_spike_prepare( new WP_REST_Request() )->data['status'] === 429, 'rate-limit stops next request' );
+$failure = new WP_Error( 'chat_spike_payload', 'Fixed error', [ 'status' => 400 ] );
+check_chat( $failure === nexus_api_telemetry_capture( $failure, null, new WP_REST_Request( '{"secret conversation in a key":"secret"}' ) ), 'generic telemetry never inspects a chat payload' );
+
+$directory = sys_get_temp_dir() . '/hu-chat-unit-' . bin2hex( random_bytes( 6 ) );
+mkdir( $directory . '/hu-chat', 0700, true );
+$GLOBALS['chat_test']['uploads'] = $directory;
+try {
+	file_put_contents( $directory . '/hu-chat/knowledge.md', 'FIXTURE ONE {{KONTAKT_EMAIL}}' );
+	$prompt = hu_chat_system_prompt();
+	check_chat( str_contains( $prompt, 'Kontakt: ' . hu_get_contact_email() ) && str_contains( $prompt, hu_response_promise( 'value' ) ), 'fresh messaging canon' );
+	check_chat( str_contains( $prompt, hu_freelancer_website_price( true ) ) && str_contains( $prompt, hu_landingpage_price( true ) ), 'website and landingpage prices from canon' );
+	check_chat( str_contains( $prompt, hu_tracking_price( 'measurement', 'setup' ) ) && str_contains( $prompt, hu_whitelabel_price( 'retainer' ) ), 'tracking and White-Label canon' );
+	check_chat( str_contains( $prompt, 'FIXTURE ONE {{KONTAKT_EMAIL}}' ), 'no recursive interpolation of website text' );
+	file_put_contents( $directory . '/hu-chat/knowledge.md', 'FIXTURE TWO' );
+	check_chat( str_contains( hu_chat_system_prompt(), 'FIXTURE TWO' ), 'knowledge read again each invocation' );
+	unlink( $directory . '/hu-chat/knowledge.md' );
+	rejects_chat( static fn() => hu_chat_system_prompt(), 'missing knowledge fails closed' );
+} finally {
+	if ( is_file( $directory . '/hu-chat/knowledge.md' ) ) unlink( $directory . '/hu-chat/knowledge.md' );
+	rmdir( $directory . '/hu-chat' ); rmdir( $directory );
+}
+$template = file_get_contents( $root . '/blocksy-child/inc/chat-assistant/systemprompt.md' );
+check_chat( ! str_contains( $template, '<!--' ), 'HTML comment removed' );
+check_chat( ! preg_match( '/(?<![\pL\pN_])\d+(?:[.,]\d+)?(?![\pL\pN_])/u', $template ), 'no numeric literal in system prompt' );
+check_chat( ! preg_match( '/[\w.%+-]+@[\w.-]+\.[a-z]{2,}/i', $template ), 'no literal email in system prompt' );
+foreach ( file( $root . '/scripts/canon-forbidden-values.txt', FILE_IGNORE_NEW_LINES ) as $rule ) {
+	$columns = explode( "\t", $rule );
+	if ( 'rule' !== $columns[0] ) continue;
+	$matched = preg_match( '~' . str_replace( '~', '\\~', $columns[2] ) . '~m', $template );
+	check_chat( false !== $matched && 0 === $matched, 'system prompt excludes canon-forbidden rule ' . $columns[1] );
+}
+echo "Chat spike: $checks checks passed; no network used.\n";

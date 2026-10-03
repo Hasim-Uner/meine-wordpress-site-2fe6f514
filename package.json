@@ -15,6 +15,7 @@
     "benchmark:agents": "python3 agents/skills/agent-system-maintenance/scripts/benchmark.py",
     "test:forms": "playwright test --config scripts/tests/forms.config.cjs",
     "test:intake": "php scripts/tests/intake-endpoints.php && php scripts/tests/solar-events.php && php scripts/tests/inquiry-events.php",
+    "test:chat": "php scripts/tests/chat-assistant-unit.php",
     "test:permalinks": "php scripts/tests/author-permalink-redirect.php",
     "test:provisioning": "php scripts/tests/page-provisioning.php && npm run test:retirement",
     "test:pricing": "php scripts/tests/tracking-ladder.php",
