@@ -109,6 +109,11 @@ Suchfeld, Filter, Begriffszeilen und Lesebreite. `design-system.css`,
 Die Beispiel-Tafel verwendet die vorhandene `.tafel`-Komponente. Das Glossar
 ist aus der NX-Baseline entfernt; es definiert keine eigenen Design-Tokens.
 
+`glossary-links.css` ist der gemeinsame Definitionsbaustein auf Artikeln und
+gezielt verknüpften Leistungsseiten. Er konsumiert dieselben Tokens und wird
+separat von der Glossar-Übersicht geladen. Die frühere Definitionsbox aus
+`article-reader-body.css` ist entfernt; es gibt keinen zweiten Komponenten-Owner.
+
 ### White-Label
 
 `/whitelabel-retainer/` steht seit dem Relaunch am 2026-09-25 auf dem System

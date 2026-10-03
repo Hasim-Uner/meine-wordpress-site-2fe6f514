@@ -210,7 +210,7 @@ Bausteine:
 - `single.php` → `template-parts/single-reader.php`: Artikel mit reduziertem Editorial-Hero, dossierabhängiger Kontextbrücke, TOC, strukturierter Next-Step-Zone, thematischem Related Content und Footer-CTA; die Provider-Entscheide für Checkfox und Aroundhome ersetzen den Editor-Inhalt slug-spezifisch durch repo-eigene Templates und Assets
 - `template-parts/post-title-visual.php`: generierte Titelgrafik als Fallback für Beiträge ohne Featured Image
 - `page-seo-cornerstone.php`: Cornerstone-Template mit starkem Entscheider-Fokus
-- `inc/glossary/`: Registry, Alias-Logik und Blog-Autolinking für Fachbegriffe, 90-Tage-Fokus-Keywords und Money-Page-Brücken
+- `inc/glossary/`: zentrale Definitionen und Alias-Ziele, begrenzte Artikel-Verlinkung und gezielte Template-/Editor-Verknüpfungen; `assets/css/glossary-links.css` und `assets/js/glossary-links.js` übernehmen den gemeinsamen Hover-/Fokus-Baustein, ohne Dictionary-Download oder neue Datenhaltung
 - `content/blog-drafts/`: Rohfassungen ausserhalb von WordPress; Lead-Anbieter-Markteinordnungen werden zusätzlich einmalig über `blocksy-child/inc/blog-provider-posts.php` in WordPress veröffentlicht.
 
 Risiko:

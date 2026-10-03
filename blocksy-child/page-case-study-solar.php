@@ -355,7 +355,7 @@ get_header();
 					<h2 id="e3v2-einordnung-title"><?php echo esc_html( $e3_cpl_after ); ?> sind kein Versprechen. Die Architektur ist übertragbar.</h2>
 				</div>
 				<div class="e3v2-transfer-copy" data-reveal>
-					<p>Der konkrete CPL hängt unter anderem von Region, Wettbewerb, Produkt, Werbekosten, Marke und Vertrieb ab. Deshalb wäre es unseriös, den Endwert dieses Referenzfalls für einen anderen Betrieb zu versprechen.</p>
+					<p>Der konkrete <?php echo nexus_glossary_link( 'cost-per-lead', 'CPL' ); ?> hängt unter anderem von Region, Wettbewerb, Produkt, Werbekosten, Marke und Vertrieb ab. Deshalb wäre es unseriös, den Endwert dieses Referenzfalls für einen anderen Betrieb zu versprechen.</p>
 					<p>Übertragbar ist die Logik dahinter:</p>
 					<p class="e3v2-formula">Kaufabsicht erkennen <span>→</span> eigene Nachfrage erzeugen <span>→</span> qualifizieren <span>→</span> schnell übergeben <span>→</span> Ergebnis messen <span>→</span> optimieren.</p>
 				</div>

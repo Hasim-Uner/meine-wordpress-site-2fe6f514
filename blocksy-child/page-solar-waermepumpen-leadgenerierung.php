@@ -1099,7 +1099,7 @@ get_header();
 							<div>
 								<span class="i" aria-hidden="true"><?php echo esc_html( sprintf( '%02d', $condition_index + 1 ) ); ?></span>
 								<h3 id="<?php echo esc_attr( $condition['id'] ); ?>"><?php echo esc_html( $condition['titel'] ); ?></h3>
-								<p><?php echo esc_html( $condition['text'] ); ?></p>
+								<p><?php echo 'anteil-zugaenge' === $condition['id'] ? nexus_glossary_explain_text( $condition['text'], 'crm', 'CRM' ) : esc_html( $condition['text'] ); ?></p>
 							</div>
 						<?php endforeach; ?>
 					</div>

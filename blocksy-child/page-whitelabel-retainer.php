@@ -285,7 +285,7 @@ $marke = static function ( $nr, $name ) {
 					<details class="st-station wl-feld" name="feld"<?php echo 0 === $i ? ' open' : ''; ?>>
 						<summary><span class="st-station__nr"><?php echo esc_html( sprintf( '%02d', $i + 1 ) ); ?></span><span class="st-station__name" id="leistung-<?php echo esc_attr( (string) ( $i + 1 ) ); ?>-h"><?php echo esc_html( $service_names[ $i ] ); ?></span><span class="st-station__teaser"><?php echo esc_html( $service['anlass'] ); ?></span></summary>
 						<div class="st-station__detail">
-							<div><p class="st-klein-label">Was ich liefere</p><p><?php echo esc_html( $service['text'] ); ?></p></div>
+							<div><p class="st-klein-label">Was ich liefere</p><p><?php echo nexus_glossary_explain_text( $service['text'], 'consent-mode' ); ?></p></div>
 							<div><p class="st-klein-label">Woran ihr abnehmt</p><p><?php echo esc_html( $service['abnahme'] ); ?></p></div>
 							<p class="st-station__beleg"><?php echo esc_html( $service_evidence[ $i ][0] ); ?> <a class="st-link" href="<?php echo esc_attr( $service_evidence[ $i ][1] ); ?>" data-track-action="<?php echo esc_attr( $service_evidence[ $i ][2] ); ?>" data-track-category="navigation" data-track-section="services"><?php echo esc_html( $service_evidence[ $i ][3] ); ?> <span aria-hidden="true">→</span></a></p>
 						</div>

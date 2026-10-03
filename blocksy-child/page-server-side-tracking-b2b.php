@@ -688,7 +688,7 @@ get_header();
 				</ul>
 
 				<figcaption class="hu-sst__flow-caption">
-					Datenfluss im Setup: Von der Website gehen Signale an den Web-GTM-Container, von dort über eine eigene Tracking-Subdomain an den Server-GTM-Container auf Stape EU. Der Server-Container gibt die Daten an GA4 und Google Ads weiter, optional zusätzlich an die Meta Conversion API und an ein CRM.
+					Datenfluss im Setup: Von der Website gehen Signale an den Web-GTM-Container, von dort über eine eigene Tracking-Subdomain an den Server-GTM-Container auf Stape EU. Der Server-Container gibt die Daten an GA4 und Google Ads weiter, optional zusätzlich an die Meta Conversion API und an ein <?php echo nexus_glossary_link( 'crm', 'CRM' ); ?>.
 				</figcaption>
 			</figure>
 		</div>

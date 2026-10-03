@@ -157,7 +157,7 @@ get_header();
 			<div class="haupt">
 				<p class="mono stempelfarbe">Wenn Messung technisch vorhanden ist, aber geschäftlich nichts erklärt</p>
 				<h2 class="kopf">Die Events feuern. Die Zahlen passen trotzdem nicht zusammen.</h2>
-				<p class="vorspann">Ein Tracking-Setup ist erst dann brauchbar, wenn klar ist, welche Conversion gezählt wurde, unter welchem Consent-Zustand sie entstand und ob daraus im Vertrieb überhaupt ein relevanter Lead wurde. Wird sauber gemessen und es kommen trotzdem zu wenig passende Anfragen, liegt der Verlust woanders: <a class="satzlink" href="<?php echo esc_url( home_url( '/conversion-optimierung/' ) ); ?>" data-track-action="tracking_problems_to_conversion" data-track-category="navigation" data-track-section="tracking_problems">Conversion-Optimierung für B2B-Websites mit wenig Traffic</a>.</p>
+				<p class="vorspann">Ein Tracking-Setup ist erst dann brauchbar, wenn klar ist, welche <?php echo nexus_glossary_link( 'conversion', 'Conversion' ); ?> gezählt wurde, unter welchem Consent-Zustand sie entstand und ob daraus im Vertrieb überhaupt ein relevanter Lead wurde. Wird sauber gemessen und es kommen trotzdem zu wenig passende Anfragen, liegt der Verlust woanders: <a class="satzlink" href="<?php echo esc_url( home_url( '/conversion-optimierung/' ) ); ?>" data-track-action="tracking_problems_to_conversion" data-track-category="navigation" data-track-section="tracking_problems">Conversion-Optimierung für B2B-Websites mit wenig Traffic</a>.</p>
 				<div class="protokoll" aria-label="Typische Tracking-Probleme">
 					<div class="z"><span>01</span><b>GA4 und Google Ads zeigen unterschiedliche Conversion-Zahlen.</b></div>
 					<div class="z"><span>02</span><b>Formulare fehlen in der Messung oder werden mehrfach gezählt.</b></div>
@@ -165,7 +165,7 @@ get_header();
 					<div class="z"><span>04</span><b>Kampagnen sehen Leads – aber nicht, welche davon fachlich passen.</b></div>
 				</div>
 			</div>
-			<aside class="marg"><p class="note"><span class="label">Wichtig</span><b>Abweichung bedeutet nicht automatisch Fehler.</b> GA4, Ads und CRM können wegen Zählweise, Attribution, Consent und Zeitfenstern unterschiedliche Werte zeigen. Ziel ist ein erklärbares System – keine künstlich identischen Zahlen.</p></aside>
+			<aside class="marg"><p class="note"><span class="label">Wichtig</span><b>Abweichung bedeutet nicht automatisch Fehler.</b> GA4, Ads und CRM können wegen Zählweise, <?php echo nexus_glossary_link( 'attribution', 'Attribution' ); ?>, Consent und Zeitfenstern unterschiedliche Werte zeigen. Ziel ist ein erklärbares System – keine künstlich identischen Zahlen.</p></aside>
 		</div>
 	</section>
 
@@ -197,7 +197,7 @@ get_header();
 			<div class="haupt">
 				<p class="mono stempelfarbe">Ein Produkt, vier Stufen</p>
 				<h2 class="kopf">Was konkret eingerichtet wird.</h2>
-				<p class="vorspann"><?php echo esc_html( $entry['name'] ); ?> richtet GA4, Google Tag Manager, Consent Mode und Google Ads ein oder bereinigt sie. Server-Side, Meta und CRM sind eigene Stufen, von denen jede die vorige enthält. Sie kaufen die Stufe, die Ihr Problem löst, nicht die nächsthöhere.</p>
+				<p class="vorspann"><?php echo esc_html( $entry['name'] ); ?> richtet GA4, Google Tag Manager, <?php echo nexus_glossary_link( 'consent-mode', 'Consent Mode' ); ?> und Google Ads ein oder bereinigt sie. Server-Side, Meta und CRM sind eigene Stufen, von denen jede die vorige enthält. Sie kaufen die Stufe, die Ihr Problem löst, nicht die nächsthöhere.</p>
 				<div class="protokoll" aria-label="Stufen der Tracking-Leiter">
 					<?php foreach ( $ladder as $product ) : ?>
 						<div class="z"><span><?php echo esc_html( sprintf( 'Stufe %d · %s', $product['stage'], $product['name'] ) ); ?></span><b><?php echo esc_html( $product['scope'] ); ?></b></div>

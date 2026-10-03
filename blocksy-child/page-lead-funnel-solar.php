@@ -176,7 +176,7 @@ get_header();
 						<span class="hu-intercept__layer-index"><?php echo esc_html( str_pad( (string) ( $i + 1 ), 2, '0', STR_PAD_LEFT ) ); ?></span>
 						<div class="hu-intercept__layer-body">
 							<h3 class="hu-intercept__layer-title"><?php echo esc_html( $stage['t'] ); ?></h3>
-							<p class="hu-intercept__layer-text"><?php echo esc_html( $stage['s'] ); ?></p>
+							<p class="hu-intercept__layer-text"><?php echo 2 === $i ? nexus_glossary_explain_text( $stage['s'], 'lead-scoring', 'Lead-Score' ) : esc_html( $stage['s'] ); ?></p>
 						</div>
 					</li>
 				<?php endforeach; ?>

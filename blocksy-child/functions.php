@@ -42,7 +42,7 @@ $modules = [
 	'glossary/glossary.php',       // Glossar-Hub + CPT für definitorische Begriffe
 	'glossary/glossary-registry.php', // Versionierte Glossar-Registry + Sync
 	'legacy-system-retirement.php', // Einmalige Entfernung stillgelegter Inhalte nach Glossar-Sync
-	'glossary/glossary-autolink.php', // Auto-Linking: Glossar-Begriffe in Blog-Posts verlinken
+	'glossary/glossary-autolink.php', // Kontextuelle Begriffe + begrenzte Blog-Verlinkung
 	'service-cluster-pages.php', // Versionierte Service-Routen, Meta und FAQ
 	'acf.php',            // ACF Feldgruppen-Registrierung (SEO, KPI, Comparison)
 	'header.php',         // Eigener globaler Header + Navigation

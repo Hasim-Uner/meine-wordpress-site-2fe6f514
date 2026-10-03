@@ -345,7 +345,7 @@ get_header();
 					<p class="hu-intercept__eyebrow">Kalendereintrag oder Opportunity?</p>
 					<h2 class="hu-intercept__h2" id="hu-b2b-termine-title">PV-Termine B2B: gekauft oder selbst qualifiziert?</h2>
 				</div>
-				<p class="hu-intercept__section-lead">Der Unterschied liegt nicht im Kalender, sondern in Kriterienhoheit, Vorprüfung und Messung. Wie sich daraus echte <a href="<?php echo esc_url( $cpl_url ); ?>">Kosten pro Anfrage</a> ergeben, zeigt die separate CPL-Analyse.</p>
+				<p class="hu-intercept__section-lead">Der Unterschied liegt nicht im Kalender, sondern in Kriterienhoheit, Vorprüfung und Messung. Wie sich daraus echte <a href="<?php echo esc_url( $cpl_url ); ?>">Kosten pro Anfrage</a> ergeben, zeigt die separate <?php echo nexus_glossary_link( 'cost-per-lead', 'CPL' ); ?>-Analyse.</p>
 			</div>
 			<div class="hu-b2b__table-wrap" role="region" aria-labelledby="hu-b2b-termine-title" tabindex="0">
 				<table class="hu-b2b__comparison-table">

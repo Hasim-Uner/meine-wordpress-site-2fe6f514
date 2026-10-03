@@ -209,7 +209,7 @@ get_header();
 							<p class="hu-intercept__layer-text">
 								<strong>CPL:</strong> <?php echo esc_html( $s['cpl'] ); ?> · <strong>Abschlussquote:</strong> <?php echo esc_html( $s['close'] ); ?> · <strong>Cost per Auftrag:</strong> <?php echo esc_html( $s['cpa'] ); ?>
 							</p>
-							<p class="hu-intercept__layer-text"><?php echo esc_html( $s['note'] ); ?></p>
+							<p class="hu-intercept__layer-text"><?php echo 0 === $i ? nexus_glossary_explain_text( $s['note'], 'cost-per-lead', 'CPL' ) : esc_html( $s['note'] ); ?></p>
 						</div>
 					</li>
 				<?php endforeach; ?>

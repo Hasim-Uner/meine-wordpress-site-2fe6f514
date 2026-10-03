@@ -1,6 +1,6 @@
 <?php
 /** Render the actual White-Label template, header and central schema offline. */
-require __DIR__ . '/navigation-harness.php';
+require __DIR__ . '/glossary-links-harness.php';
 require_once get_stylesheet_directory() . '/inc/canon/reference-canon.php';
 require_once get_stylesheet_directory() . '/inc/whitelabel-request.php';
 require_once get_stylesheet_directory() . '/inc/seo-meta.php';
@@ -23,6 +23,7 @@ $asset = '/wp-content/themes/blocksy-child/';
 <link rel="stylesheet" href="<?php echo esc_attr( $asset ); ?>assets/css/system.css">
 <link rel="stylesheet" href="<?php echo esc_attr( $asset ); ?>assets/css/startseite-strecke.css">
 <link rel="stylesheet" href="<?php echo esc_attr( $asset ); ?>assets/css/whitelabel.css">
+<link rel="stylesheet" href="<?php echo esc_attr( $asset ); ?>assets/css/glossary-links.css">
 <style>body{margin:0}*,*::before,*::after{box-sizing:border-box}</style>
 <?php foreach ( hu_get_whitelabel_schema_nodes() as $node ) : ?>
 <script type="application/ld+json"><?php echo wp_json_encode( $node ); ?></script>
@@ -30,6 +31,7 @@ $asset = '/wp-content/themes/blocksy-child/';
 <script defer src="<?php echo esc_attr( $asset ); ?>assets/js/nexus-core.js"></script>
 <script defer src="<?php echo esc_attr( $asset ); ?>assets/js/startseite-strecke.js"></script>
 <script defer src="<?php echo esc_attr( $asset ); ?>assets/js/whitelabel.js"></script>
+<script defer src="<?php echo esc_attr( $asset ); ?>assets/js/glossary-links.js"></script>
 </head>
 <body class="nx-custom-header-active">
 <div id="main-container">

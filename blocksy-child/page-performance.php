@@ -117,7 +117,7 @@ get_header();
 			<div class="haupt">
 				<p class="mono stempelfarbe">Wenn Kampagnen laufen, aber der Vertrieb nichts davon hat</p>
 				<h2 class="kopf">Die Kampagne wird besser. Nur in die falsche Richtung.</h2>
-				<p class="vorspann">Google Ads und Meta optimieren auf das, was als Conversion gemeldet wird. Zählt jedes abgeschickte Formular gleich viel, lernt der Algorithmus, günstige Kontakte einzukaufen statt passender Projektanfragen. Mehr Budget verstärkt diesen Fehler, es korrigiert ihn nicht.</p>
+				<p class="vorspann">Google Ads und Meta optimieren auf das, was als <?php echo nexus_glossary_link( 'conversion', 'Conversion' ); ?> gemeldet wird. Zählt jedes abgeschickte Formular gleich viel, lernt der Algorithmus, günstige Kontakte einzukaufen statt passender Projektanfragen. Mehr Budget verstärkt diesen Fehler, es korrigiert ihn nicht.</p>
 				<div class="protokoll" aria-label="Typische Ursachen">
 					<div class="z"><span>01</span><b>Das Konto meldet Conversions, der Vertrieb sieht keine passenden Anfragen.</b></div>
 					<div class="z"><span>02</span><b>Newsletter, Kontaktformular und Projektanfrage lösen dasselbe Signal aus.</b></div>
@@ -138,7 +138,7 @@ get_header();
 					<h2 class="kopf">Drei Schritte, in dieser Reihenfolge.</h2>
 					<p class="vorspann">Jeder Schritt ist einzeln beauftragbar. Wenn nur die Signale klemmen, braucht es keine neue Landingpage – und wenn die Messung stimmt, keinen neuen Tracking-Umbau.</p>
 					<div class="protokoll" aria-label="Vorgehen in drei Schritten">
-						<div class="z"><span>01 · Messung</span><b>Messplan, GA4 und Google Tag Manager, Consent Mode, Conversion-Import in Google Ads und Meta. Bei Bedarf Server-Side und Rücksignale aus dem CRM.</b></div>
+						<div class="z"><span>01 · Messung</span><b>Messplan, GA4 und Google Tag Manager, <?php echo nexus_glossary_link( 'consent-mode', 'Consent Mode' ); ?>, Conversion-Import in Google Ads und Meta. Bei Bedarf Server-Side und Rücksignale aus dem CRM.</b></div>
 						<div class="z"><span>02 · Zielseite</span><b>Landingpage und Formular in WordPress, die das Versprechen der Anzeige ohne Bruch in eine Anfrage überführen – mit Qualifizierung statt Masse.</b></div>
 						<div class="z"><span>03 · Budget</span><b>Kampagnen in Google Ads und Meta dort, wo sie an WordPress, Tracking und Conversion hängen. Skaliert wird, wenn die Signale belastbar sind.</b></div>
 					</div>
