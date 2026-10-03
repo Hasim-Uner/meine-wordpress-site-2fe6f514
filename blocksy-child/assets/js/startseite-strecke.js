@@ -236,7 +236,8 @@
     var spurPunkte = [];
     var fuellStand = 0;
     var etikettGeometrie = '';
-    // Gecko-Korrektur: die abgestimmte Platzierung anderer Engines bleibt.
+    // Gecko-Korrektur der Koordinaten: die abgestimmte Platzierung anderer
+    // Engines bleibt. Die Neuvermessung bei Groessenwechseln gilt ueberall.
     var firefoxEtikett = window.CSS && CSS.supports && CSS.supports('-moz-appearance', 'none');
 
     function senkrecht() { return window.innerWidth < 768; }
@@ -582,9 +583,11 @@
     window.addEventListener('load', neuVermessen, { once: true });
     if ('ResizeObserver' in window) {
         new ResizeObserver(function () { neuVermessen(); }).observe(root);
-        if (firefoxEtikett && titel && quellWort && etikett) {
+        if (titel && quellWort && etikett) {
             var etikettBeobachter = new ResizeObserver(function () {
                 // Spaete Schrift-/Layoutwechsel brauchen keinen Fenster-Resize.
+                // Gilt fuer alle Engines: fonts.ready kann vor dem letzten
+                // Schriftwechsel aufloesen und das Etikett sonst im Wort lassen.
                 // Die Platzreserve und Transform-Animationen veraendern diese
                 // Messwerte nicht und starten keine Beobachterschleife.
                 if (etikettGeometrie && etikettMasse() !== etikettGeometrie) heroNeuVermessen();
