@@ -1,9 +1,7 @@
 # Chat-Assistent
 
-Stand: 2026-10-03. **Phase eins: Transport-Spike vorbereitet, Staging-Abnahme offen.**
-Branch `feat/chat-assistant`, Ausgangspunkt `9b248289` (aktuelles `main`,
-einschließlich Glossar-Integration; Auftrag nannte den älteren Stand `ad3ac4a`).
-Kein Merge und kein Production-Deploy ohne Hasims Freigabe.
+Stand: 2026-10-04. **Phase eins: Admin-Transport-Spike vorbereitet,
+Streaming-Abnahme auf der Live-Box offen.** Kein Merge ohne Hasims Freigabe.
 
 ## Aktueller Contract
 
@@ -19,9 +17,13 @@ Der tatsächliche Testpfad:
 2. Erst der Klick startet einen First-Party-POST an `/wp-json/nexus/v1/chat`.
 3. Das Payload muss exakt ein leeres JSON-Objekt sein. Nachrichten, Empfänger,
    Adressen und frei wählbare Modell- oder Hostnamen werden nicht akzeptiert.
-4. Die Route verlangt `WP_ENVIRONMENT_TYPE=staging`, `HU_CHAT_MODE=preview`,
+4. Die Route verlangt `HU_CHAT_MODE=preview`,
    vollständige Runtime-Konfiguration, `manage_options` und einen REST-Nonce.
-   `off`, `live`, Production und anonyme Besucher sind gesperrt.
+   Die WordPress-Umgebung schränkt den Durchlauf nicht ein; er ist auch auf
+   der Live-Box erlaubt. `live` und anonyme Besucher bleiben gesperrt.
+   Bei `off`, fehlender/ungültiger Konfiguration oder fehlendem cURL werden
+   weder Route noch Admin-Menü registriert. Auch ein direkter Aufruf der
+   Admin-Seite erzeugt dann kein Markup oder Skript.
 5. Vor Inferenz reserviert die Route atomar das konservative Kostenmaximum
    für Stream **und** einen möglichen Fallback im laufenden UTC-Monat. Danach
    folgen Stundenlimit (gesalzener IP-Hash, höchstens 30 Aufrufe) und Payload.
@@ -39,7 +41,8 @@ Der tatsächliche Testpfad:
 `rest_pre_serve_request` liefert SSE ohne REST-JSON-Hülle. PHP-Output-Buffer
 werden geschlossen; `Content-Type: text/event-stream`, `Cache-Control: no-store,
 no-transform`, `X-Accel-Buffering: no` und `flush()` werden gesetzt. Ob nginx,
-Varnish und die übrige Raidboxes-Strecke trotzdem puffern, muss Staging zeigen.
+Varnish und die übrige Raidboxes-Strecke trotzdem puffern, muss der Durchlauf
+auf der Live-Box zeigen.
 Ein Client-Disconnect verhindert die abschließende Budgetabrechnung nicht.
 
 Fehlertexte nennen nur die kanonische Kontaktadresse. `error_log` und vorhandene
@@ -49,12 +52,11 @@ Nachrichten, Zugangsdaten oder Payload-Schlüssel. Die allgemeine API-Telemetrie
 
 ## Konfiguration und externe Voraussetzungen
 
-Nur in der Staging-`wp-config.php` oder einer bestehenden privaten Runtime-
+Nur in der `wp-config.php` der Live-Box oder einer bestehenden privaten Runtime-
 Konfiguration. Keine Zugangsdaten ins Repo, PR, Testprotokoll oder Chat kopieren.
 
 | Konstante | Voraussetzung |
 | --- | --- |
-| `WP_ENVIRONMENT_TYPE` | `staging` |
 | `HU_CHAT_MODE` | `preview`; Standard `off` |
 | `HU_BEDROCK_ACCESS_KEY_ID` | IAM-Benutzer `iris`, lokal auf Raidboxes hinterlegt |
 | `HU_BEDROCK_SECRET_ACCESS_KEY` | zugehöriger privater Schlüssel |
@@ -78,7 +80,8 @@ Alle vier Preise sind Pflicht, endlich und positiv; fehlende Preise sperren
 den Spike. Es gibt keine geschätzten Preiswerte im Runtime-Code. Bedrock Model
 Invocation Logging muss abgeschaltet sein. Modell-/kontospezifische Retention,
 EU-Regionen, Auftragsverarbeitung und spätere Datenschutzerklärung werden vor
-Livegang tatsächlich geprüft; die Implementierung beweist keine AWS-Einstellungen.
+öffentlichem Chat-Betrieb tatsächlich geprüft; die Implementierung beweist
+keine AWS-Einstellungen.
 
 ## Prompt und Kanon
 
@@ -108,25 +111,28 @@ Regeln verbieten numerische Literale und E-Mail-Adressen gezielt in der neuen
 Prompt-Datei. `test:chat` prüft zudem jede Regel der Kanon-Sperrliste direkt gegen
 die Vorlage und verifiziert die aktuelle Kanon-Ersetzung.
 
-## Staging-Abnahme: noch nicht durchgeführt
+## Streaming-Abnahme auf der Live-Box: noch nicht durchgeführt
 
-Es wurden keine AWS-Schlüssel und kein Raidboxes-Staging-Zugang angefordert
+Es wurden keine AWS-Schlüssel und kein Raidboxes-Zugang angefordert
 oder verwendet. Gemäß Hasims Ergänzung stoppt die Arbeit, bevor Zugangsdaten
 nötig werden. Ohne diesen Zugang wird kein Streaming-Ergebnis behauptet.
 
-Nach privater Konfiguration und Installation dieses Branches auf Staging:
+Nach Freigabe, Deploy und privater Konfiguration auf der Live-Box:
 
 1. Als Admin die Testseite öffnen; DevTools Network mit geöffnetem Timing-Panel.
 2. Durchlauf per Klick starten, Response und Event-Ankunft kontrollieren.
-3. **Protokoll herunterladen**: `chat-staging-stream.json` enthält nur Status,
+3. **Protokoll herunterladen**: `chat-live-stream.json` enthält nur Status,
    sichere Header, Chunk-Größen sowie Server- und Browserzeiten. Zusätzlich
    einen bereinigten DevTools-Ausschnitt ohne Cookies/Authorization sichern.
 4. Mindestens zwei zeitlich getrennte Ankünfte nachweisen: `ready` vor dem
    Bedrock-Abschluss und tatsächliche `text`-Events mit `done.transport=stream`.
    `incremental_delivery_observed` ist ein Hinweis, keine automatische Freigabe.
    Fallback oder unklare Zeiten verlangen Untersuchung/Wiederholung.
-5. Ergebnis und bereinigte Protokolle im **selben PR** festhalten. Erst nach
-   bestandenem Gate mit dem übrigen Ausbau beginnen. Kein Merge.
+5. Ergebnis und bereinigte Protokolle am zugehörigen Spike-PR festhalten.
+   Erst nach bestandenem Gate mit dem übrigen Ausbau beginnen.
+6. Nach dem Durchlauf `HU_CHAT_MODE=off` setzen: Route und Admin-Menü
+   verschwinden. Öffentliche Seiten erhalten in diesem Stand bei jedem
+   Modus weder Orb noch Chat-Assets.
 
 ## Weitere Phasen nach dem Gate
 
@@ -152,9 +158,12 @@ Nach privater Konfiguration und Installation dieses Branches auf Staging:
 `npm run test:chat` läuft ohne Netz und ist in `scripts/check.py` eingebunden:
 offizieller SigV4-Vektor, alle Zweichunk-Teilungen des ersten Frames, CRC-
 Beschädigungen, Truncation, Usage-Merge, Fallback, kein Retry nach Teilantwort,
-Budgetgrenze/Abrechnung, Admin-/Staging-/Nonce-Gates, Rate-Limit, Payload und
+Budgetgrenze/Abrechnung, Preview-/Admin-/Nonce-Gates auf Production,
+fehlende Route und fehlendes Admin-Menü bei abgeschalteter/unvollständiger
+Konfiguration, Rate-Limit, Payload und
 Kanon-Ersetzung. Das binäre Fixture ist **synthetisch**, unabhängig mit Python
-`struct`/`zlib` erstellt; ein echtes Bedrock-Recording ist nach Staging zu ergänzen.
+`struct`/`zlib` erstellt; ein echtes Bedrock-Recording ist nach dem Live-Box-
+Durchlauf zu ergänzen.
 
 - [AWS SigV4](https://docs.aws.amazon.com/IAM/latest/UserGuide/reference_sigv-create-signed-request.html)
 - [AWS botocore get-vanilla-Vektor](https://github.com/boto/botocore/blob/develop/tests/unit/auth/aws4_testsuite/get-vanilla/get-vanilla.authz), Blob `551c0271d4a5ebf8aff478f5286eb12701a41182`; Request-Blob `0f7a9bfae3680836a2746b5bf7a33a6fa2b93c34`.

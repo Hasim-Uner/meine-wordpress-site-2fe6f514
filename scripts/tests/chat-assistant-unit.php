@@ -2,13 +2,15 @@
 /** Hermetic transport-spike tests. No WordPress boot and no network. */
 define( 'ABSPATH', __DIR__ . '/' );
 define( 'HOUR_IN_SECONDS', 3600 );
+define( 'WP_ENVIRONMENT_TYPE', 'production' );
 $root = dirname( __DIR__, 2 );
-$GLOBALS['chat_test'] = [ 'environment' => 'staging', 'admin' => true, 'nonces' => true, 'options' => [], 'transients' => [] ];
+$GLOBALS['chat_test'] = [ 'admin' => true, 'nonces' => true, 'options' => [], 'transients' => [], 'routes' => [], 'menus' => [] ];
 function add_action( ...$args ) {}
 function add_filter( ...$args ) {}
-function wp_get_environment_type() { return $GLOBALS['chat_test']['environment']; }
-function current_user_can( $cap ) { return $GLOBALS['chat_test']['admin']; }
-function wp_verify_nonce( $nonce, $action ) { return $GLOBALS['chat_test']['nonces'] && 'valid' === $nonce; }
+function current_user_can( $cap ) { return 'manage_options' === $cap && $GLOBALS['chat_test']['admin']; }
+function wp_verify_nonce( $nonce, $action ) { return 'wp_rest' === $action && $GLOBALS['chat_test']['nonces'] && 'valid' === $nonce; }
+function register_rest_route( $namespace, $route, $args ) { $GLOBALS['chat_test']['routes'][ $namespace . $route ] = $args; }
+function add_management_page( ...$args ) { $GLOBALS['chat_test']['menus'][] = $args; }
 function wp_salt( $scheme ) { return 'fixture-salt'; }
 function get_transient( $key ) { return $GLOBALS['chat_test']['transients'][ $key ] ?? false; }
 function set_transient( $key, $value, $ttl ) { $GLOBALS['chat_test']['transients'][ $key ] = $value; }
@@ -22,6 +24,9 @@ class WP_Error {
 }
 class WP_REST_Response {
 	public function __construct( public $data, public $status ) {}
+}
+class WP_REST_Server {
+	public const CREATABLE = 'POST';
 }
 class WP_REST_Request {
 	public function __construct( private string $body = '{}', private string $nonce = 'valid' ) {}
@@ -45,7 +50,7 @@ class Chat_Test_DB {
 }
 $wpdb = new Chat_Test_DB();
 foreach ( [ 'canon/pricing-canon', 'canon/messaging-canon', 'mail' ] as $file ) require $root . '/blocksy-child/inc/' . $file . '.php';
-foreach ( [ 'config', 'sigv4', 'eventstream', 'bedrock-client', 'budget', 'prompt', 'rest' ] as $file ) require $root . '/blocksy-child/inc/chat-assistant/' . $file . '.php';
+foreach ( [ 'config', 'sigv4', 'eventstream', 'bedrock-client', 'budget', 'prompt', 'rest', 'spike' ] as $file ) require $root . '/blocksy-child/inc/chat-assistant/' . $file . '.php';
 require $root . '/blocksy-child/inc/api-telemetry.php';
 $checks = 0;
 function check_chat( bool $ok, string $label ): void {
@@ -131,19 +136,41 @@ $wpdb->fail = true;
 check_chat( false === hu_chat_spike_reserve( $config ), 'database outage fails closed' );
 $wpdb->fail = false;
 
-foreach ( $config as $key => $value ) {
-	$constants = [ 'mode' => 'HU_CHAT_MODE', 'region' => 'HU_BEDROCK_REGION', 'model' => 'HU_BEDROCK_MODEL_ID', 'access_key' => 'HU_BEDROCK_ACCESS_KEY_ID', 'secret_key' => 'HU_BEDROCK_SECRET_ACCESS_KEY', 'budget' => 'HU_CHAT_MONTHLY_BUDGET_USD' ];
-	if ( isset( $constants[ $key ] ) ) define( $constants[ $key ], $value );
+// Exercise registration against mutable runtime configuration, without AWS calls.
+$runtime = [ 'HU_CHAT_MODE' => 'preview', 'HU_BEDROCK_REGION' => $config['region'], 'HU_BEDROCK_MODEL_ID' => $config['model'], 'HU_BEDROCK_ACCESS_KEY_ID' => $config['access_key'], 'HU_BEDROCK_SECRET_ACCESS_KEY' => $config['secret_key'], 'HU_CHAT_MONTHLY_BUDGET_USD' => $config['budget'] ];
+foreach ( $config['prices'] as $type => $price ) $runtime[ 'HU_CHAT_PRICE_' . strtoupper( $type ) ] = $price;
+foreach ( $runtime as $key => $value ) putenv( $key . '=' . $value );
+// Region and monthly budget keep their existing defaults; the rest is mandatory.
+$mandatory = array_diff( array_keys( $runtime ), [ 'HU_BEDROCK_REGION', 'HU_CHAT_MONTHLY_BUDGET_USD' ] );
+$disabled = array_merge( [ [ 'HU_CHAT_MODE', 'off' ], [ 'HU_CHAT_MODE', 'live' ], [ 'HU_BEDROCK_REGION', 'us-east-1' ], [ 'HU_BEDROCK_MODEL_ID', 'global.anthropic.claude' ], [ 'HU_CHAT_MONTHLY_BUDGET_USD', 'NaN' ], [ 'HU_CHAT_PRICE_INPUT', 'NaN' ] ], array_map( static fn( $key ) => [ $key, '' ], $mandatory ) );
+foreach ( $disabled as [ $key, $value ] ) {
+	putenv( $key . '=' . $value );
+	$GLOBALS['chat_test']['routes'] = []; $GLOBALS['chat_test']['menus'] = [];
+	hu_chat_register_spike_route(); hu_chat_spike_admin_menu();
+	check_chat( [] === $GLOBALS['chat_test']['routes'], 'disabled configuration registers no route: ' . $key . ' ' . $value );
+	check_chat( [] === $GLOBALS['chat_test']['menus'], 'disabled configuration adds no menu: ' . $key . ' ' . $value );
+	ob_start(); hu_chat_spike_admin_page(); $page = ob_get_clean();
+	check_chat( '' === $page, 'disabled configuration renders no admin markup or script: ' . $key . ' ' . $value );
+	check_chat( hu_chat_spike_permission( new WP_REST_Request() )->data['status'] === 503, 'disabled configuration rejects direct handler: ' . $key . ' ' . $value );
+	putenv( $key . '=' . $runtime[ $key ] );
 }
-foreach ( $config['prices'] as $type => $price ) define( 'HU_CHAT_PRICE_' . strtoupper( $type ), $price );
+hu_chat_register_spike_route(); hu_chat_spike_admin_menu();
+$route = $GLOBALS['chat_test']['routes']['nexus/v1/chat'];
+check_chat( 'POST' === $route['methods'] && 'hu_chat_spike_permission' === $route['permission_callback'], 'production preview registers only privileged POST route' );
+check_chat( 1 === count( $GLOBALS['chat_test']['menus'] ) && 'manage_options' === $GLOBALS['chat_test']['menus'][0][2], 'production preview registers admin menu' );
 $GLOBALS['chat_test']['options'] = [];
-check_chat( true === hu_chat_spike_permission( new WP_REST_Request() ), 'staging admin and nonce accepted' );
+check_chat( true === hu_chat_spike_permission( new WP_REST_Request() ), 'production preview admin and nonce accepted' );
 $GLOBALS['chat_test']['admin'] = false;
 check_chat( hu_chat_spike_permission( new WP_REST_Request() )->data['status'] === 403, 'anonymous access blocked' );
-$GLOBALS['chat_test']['admin'] = true; $GLOBALS['chat_test']['environment'] = 'production';
-check_chat( hu_chat_spike_permission( new WP_REST_Request() )->data['status'] === 503, 'production blocked even in preview' );
-$GLOBALS['chat_test']['environment'] = 'staging';
+$GLOBALS['chat_test']['menus'] = []; hu_chat_spike_admin_menu();
+check_chat( [] === $GLOBALS['chat_test']['menus'], 'non-admin gets no menu in preview' );
+ob_start(); hu_chat_spike_admin_page(); $page = ob_get_clean();
+check_chat( '' === $page, 'non-admin gets no direct page markup or script' );
+$GLOBALS['chat_test']['admin'] = true;
 check_chat( hu_chat_spike_permission( new WP_REST_Request( '{}', 'bad' ) )->data['status'] === 403, 'invalid nonce blocked' );
+$GLOBALS['chat_test']['nonces'] = false;
+check_chat( hu_chat_spike_permission( new WP_REST_Request() )->data['status'] === 403, 'expired nonce blocked on production' );
+$GLOBALS['chat_test']['nonces'] = true;
 foreach ( [ '[]', '', '{"messages":[]}', '{"recipient":"attacker@example.test"}', '{"email":"attacker@example.test"}' ] as $body ) check_chat( ! hu_chat_spike_payload_valid( $body ), 'no visitor fields or recipients: ' . $body );
 check_chat( hu_chat_spike_payload_valid( ' {} ' ), 'only fixed probe accepted' );
 check_chat( hu_chat_spike_prepare( new WP_REST_Request( '{"recipient":"attacker@example.test"}' ) )->data['status'] === 400, 'REST rejects arbitrary fields' );

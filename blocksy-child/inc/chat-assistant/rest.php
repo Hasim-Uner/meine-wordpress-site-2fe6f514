@@ -1,12 +1,12 @@
 <?php
-/** Phase-one REST contract: authenticated staging probe with a fixed payload. */
+/** Phase-one REST contract: authenticated preview probe with a fixed payload. */
 if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
 
 /** @return true|WP_Error */
 function hu_chat_spike_permission( WP_REST_Request $request ) {
-	if ( 'staging' !== wp_get_environment_type() || ! hu_chat_config_valid( hu_chat_config() ) || ! function_exists( 'curl_init' ) ) {
+	if ( ! hu_chat_spike_enabled() ) {
 		return new WP_Error( 'chat_unavailable', 'Der Streaming-Test ist nicht eingerichtet.', [ 'status' => 503 ] );
 	}
 	if ( ! current_user_can( 'manage_options' ) || ! wp_verify_nonce( $request->get_header( 'X-WP-Nonce' ), 'wp_rest' ) ) {
@@ -50,6 +50,9 @@ function hu_chat_spike_prepare( WP_REST_Request $request ) {
 }
 
 function hu_chat_register_spike_route(): void {
+	if ( ! hu_chat_spike_enabled() ) {
+		return;
+	}
 	register_rest_route( 'nexus/v1', '/chat', [
 		'methods' => WP_REST_Server::CREATABLE,
 		'callback' => 'hu_chat_spike_prepare',

@@ -1,29 +1,28 @@
 <?php
-/** Admin-only, click-triggered staging probe. No public hooks or assets. */
+/** Admin-only, click-triggered preview probe. No public hooks or assets. */
 if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
 
 function hu_chat_spike_admin_menu(): void {
+	if ( ! hu_chat_spike_enabled() || ! current_user_can( 'manage_options' ) ) {
+		return;
+	}
 	add_management_page( 'Chat: Streaming-Test', 'Chat: Streaming-Test', 'manage_options', 'hu-chat-spike', 'hu_chat_spike_admin_page' );
 }
 add_action( 'admin_menu', 'hu_chat_spike_admin_menu' );
 
 function hu_chat_spike_admin_page(): void {
-	if ( ! current_user_can( 'manage_options' ) ) {
+	if ( ! hu_chat_spike_enabled() || ! current_user_can( 'manage_options' ) ) {
 		return;
 	}
-	$ready = 'staging' === wp_get_environment_type() && hu_chat_config_valid( hu_chat_config() ) && function_exists( 'curl_init' );
 	?>
 	<div class="wrap">
 		<h1>Chat: Streaming-Test</h1>
-		<p>Nur Staging, Vorschau-Modus und eingeloggte Administratoren. Der Server sendet ausschließlich einen festen Hallo-Test an Bedrock.</p>
+		<p>Nur Vorschau-Modus und eingeloggte Administratoren. Der Durchlauf ist auch auf der Live-Box möglich. Der Server sendet ausschließlich einen festen Hallo-Test an Bedrock.</p>
 		<p>Das Ergebnis bleibt im Browser. Das heruntergeladene Protokoll enthält Zeitpunkte und Transportstatus, keine Zugangsdaten.</p>
-		<p><button type="button" class="button button-primary" id="hu-chat-spike" <?php disabled( ! $ready ); ?>>Streaming testen</button>
+		<p><button type="button" class="button button-primary" id="hu-chat-spike">Streaming testen</button>
 		<button type="button" class="button" id="hu-chat-report" disabled>Protokoll herunterladen</button></p>
-		<?php if ( ! $ready ) : ?>
-			<p>Voraussetzungen fehlen: Staging-Umgebung, Vorschau-Modus, Bedrock-Konfiguration, geprüfte Tokenpreise oder cURL.</p>
-		<?php endif; ?>
 		<pre id="hu-chat-result" role="status" aria-live="polite"></pre>
 	</div>
 	<script>
@@ -88,7 +87,7 @@ function hu_chat_spike_admin_page(): void {
 			const url = URL.createObjectURL(new Blob([JSON.stringify(report, null, 2)], { type: 'application/json' }));
 			const link = document.createElement('a');
 			link.href = url;
-			link.download = 'chat-staging-stream.json';
+			link.download = 'chat-live-stream.json';
 			link.click();
 			setTimeout(() => URL.revokeObjectURL(url), 1000);
 		});
