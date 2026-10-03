@@ -551,43 +551,49 @@ function nexus_sync_contact_request_to_crm( $payload ) {
 		]
 	);
 
-	return nexus_upsert_crm_contact(
-		[
-			'email'         => (string) ( $payload['email'] ?? '' ),
-			'title'         => ! empty( $title_parts ) ? implode( ' - ', $title_parts ) : (string) ( $payload['email'] ?? '' ),
-			'source'        => $source,
-			'latest_source' => $source,
-			'status'        => 'new',
-			'segments'      => [ 'contact_inquiry', $source ],
-			'refresh_title' => true,
-			'meta'          => nexus_get_inquiry_attribution_meta( $payload ) + [
-				'_nexus_contact_name'                    => sanitize_text_field( (string) ( $payload['name'] ?? '' ) ),
-				'_nexus_contact_request_type'            => $request_type,
-				'_nexus_contact_request_type_label'      => sanitize_text_field( (string) ( $payload['request_type_label'] ?? '' ) ),
-				'_nexus_contact_focus'                   => sanitize_key( (string) ( $payload['focus'] ?? '' ) ),
-				'_nexus_contact_focus_label'             => sanitize_text_field( (string) ( $payload['focus_label'] ?? '' ) ),
-				'_nexus_contact_timeline'                => sanitize_key( (string) ( $payload['timeline'] ?? '' ) ),
-				'_nexus_contact_timeline_label'          => sanitize_text_field( (string) ( $payload['timeline_label'] ?? '' ) ),
-				'_nexus_contact_budget'                  => sanitize_key( (string) ( $payload['budget'] ?? '' ) ),
-				'_nexus_contact_budget_label'            => sanitize_text_field( (string) ( $payload['budget_label'] ?? '' ) ),
-				'_nexus_contact_website_url'             => esc_url_raw( (string) ( $payload['website_url'] ?? '' ) ),
-				'_nexus_contact_linkedin_url'            => esc_url_raw( (string) ( $payload['linkedin_url'] ?? '' ) ),
-				'_nexus_contact_company'                 => sanitize_text_field( (string) ( $payload['company'] ?? '' ) ),
-				'_nexus_contact_ad_platforms'            => sanitize_text_field( (string) ( $payload['ad_platforms'] ?? '' ) ),
-				'_nexus_contact_ad_budget'               => sanitize_key( (string) ( $payload['ad_budget'] ?? '' ) ),
-				'_nexus_contact_ad_budget_label'         => sanitize_text_field( (string) ( $payload['ad_budget_label'] ?? '' ) ),
-				'_nexus_contact_tracking_setup'          => sanitize_textarea_field( (string) ( $payload['tracking_setup'] ?? '' ) ),
-				'_nexus_contact_consent_tool'            => sanitize_text_field( (string) ( $payload['consent_tool'] ?? '' ) ),
-				'_nexus_contact_website_scope' => nexus_get_website_scope_summary( $payload ),
-				'_nexus_contact_website_pages' => (int) ( $payload['seiten'] ?? 0 ),
-				'_nexus_contact_website_kind' => sanitize_key( $payload['art'] ?? '' ),
-				'_nexus_contact_website_tracking' => (int) ( $payload['tracking'] ?? 0 ),
-				'_nexus_contact_message'                 => sanitize_textarea_field( (string) ( $payload['message'] ?? '' ) ),
-				'_nexus_contact_consent_contact_request' => 1,
-				'_nexus_contact_last_inquiry_at'         => current_time( 'timestamp' ),
-			],
-		]
-	);
+	$contact_args = [
+		'email'         => (string) ( $payload['email'] ?? '' ),
+		'title'         => ! empty( $title_parts ) ? implode( ' - ', $title_parts ) : (string) ( $payload['email'] ?? '' ),
+		'source'        => $source,
+		'latest_source' => $source,
+		'status'        => 'new',
+		'segments'      => [ 'contact_inquiry', $source ],
+		'refresh_title' => true,
+		'meta'          => nexus_get_inquiry_attribution_meta( $payload ) + [
+			'_nexus_contact_name'                    => sanitize_text_field( (string) ( $payload['name'] ?? '' ) ),
+			'_nexus_contact_request_type'            => $request_type,
+			'_nexus_contact_request_type_label'      => sanitize_text_field( (string) ( $payload['request_type_label'] ?? '' ) ),
+			'_nexus_contact_focus'                   => sanitize_key( (string) ( $payload['focus'] ?? '' ) ),
+			'_nexus_contact_focus_label'             => sanitize_text_field( (string) ( $payload['focus_label'] ?? '' ) ),
+			'_nexus_contact_timeline'                => sanitize_key( (string) ( $payload['timeline'] ?? '' ) ),
+			'_nexus_contact_timeline_label'          => sanitize_text_field( (string) ( $payload['timeline_label'] ?? '' ) ),
+			'_nexus_contact_budget'                  => sanitize_key( (string) ( $payload['budget'] ?? '' ) ),
+			'_nexus_contact_budget_label'            => sanitize_text_field( (string) ( $payload['budget_label'] ?? '' ) ),
+			'_nexus_contact_website_url'             => esc_url_raw( (string) ( $payload['website_url'] ?? '' ) ),
+			'_nexus_contact_linkedin_url'            => esc_url_raw( (string) ( $payload['linkedin_url'] ?? '' ) ),
+			'_nexus_contact_company'                 => sanitize_text_field( (string) ( $payload['company'] ?? '' ) ),
+			'_nexus_contact_ad_platforms'            => sanitize_text_field( (string) ( $payload['ad_platforms'] ?? '' ) ),
+			'_nexus_contact_ad_budget'               => sanitize_key( (string) ( $payload['ad_budget'] ?? '' ) ),
+			'_nexus_contact_ad_budget_label'         => sanitize_text_field( (string) ( $payload['ad_budget_label'] ?? '' ) ),
+			'_nexus_contact_tracking_setup'          => sanitize_textarea_field( (string) ( $payload['tracking_setup'] ?? '' ) ),
+			'_nexus_contact_consent_tool'            => sanitize_text_field( (string) ( $payload['consent_tool'] ?? '' ) ),
+			'_nexus_contact_website_scope' => nexus_get_website_scope_summary( $payload ),
+			'_nexus_contact_website_pages' => (int) ( $payload['seiten'] ?? 0 ),
+			'_nexus_contact_website_kind' => sanitize_key( $payload['art'] ?? '' ),
+			'_nexus_contact_website_tracking' => (int) ( $payload['tracking'] ?? 0 ),
+			'_nexus_contact_message'                 => sanitize_textarea_field( (string) ( $payload['message'] ?? '' ) ),
+			'_nexus_contact_consent_contact_request' => 1,
+			'_nexus_contact_last_inquiry_at'         => current_time( 'timestamp' ),
+		],
+	];
+
+	// Das Kurzformular der Ersteinschaetzung fragt keinen Namen. Ein bereits
+	// bekannter Name des Kontakts bleibt dann erhalten (wie bei White-Label).
+	if ( isset( $payload['name_provided'] ) && ! $payload['name_provided'] ) {
+		unset( $contact_args['meta']['_nexus_contact_name'] );
+	}
+
+	return nexus_upsert_crm_contact( $contact_args );
 }
 
 /**

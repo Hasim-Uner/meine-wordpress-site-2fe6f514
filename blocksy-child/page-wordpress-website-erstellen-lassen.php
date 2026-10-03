@@ -13,8 +13,7 @@ add_filter( 'body_class', static function ( $classes ) {
 } );
 add_action( 'wp_enqueue_scripts', static function () {
     hu_enqueue_css( 'hu-anfrage-website', 'anfrage-website.css', [ 'nexus-system-css' ] );
-    hu_enqueue_js( 'hu-website-product-events', 'website-product-events.js', [] );
-    hu_enqueue_js( 'hu-anfrage-website', 'anfrage-website.js', [ 'hu-website-product-events' ] );
+    hu_enqueue_js( 'hu-anfrage-website', 'anfrage-website.js', [] );
 }, 90 );
 $quote = hu_website_quote( 3 );
 $contact_url = add_query_arg( [ 'seiten' => 3, 'art' => 'neubau' ], hu_get_contact_intake_url( 'project', 'website' ) );

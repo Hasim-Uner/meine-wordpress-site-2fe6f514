@@ -446,6 +446,8 @@ $marke = static function ( $nr, $name ) {
 				<form class="wl-request__form" data-wl-request-form data-wl-case-texts="<?php echo esc_attr( (string) wp_json_encode( $wl_case_texts ) ); ?>" action="<?php echo esc_url( $wl_form_endpoint ); ?>" method="post" novalidate>
 					<div class="wl-request__honeypot" aria-hidden="true"><label for="wl-company-website">Website</label><input id="wl-company-website" name="company_website" type="text" tabindex="-1" autocomplete="off"></div>
 					<input type="hidden" name="case" value="aufgabe" data-wl-case>
+					<input type="hidden" name="ads_source" id="wl-ads-source" value="">
+					<input type="hidden" name="utm_campaign" id="wl-utm-campaign" value="">
 					<div class="wl-request__field"><label for="wl-task"><span data-wl-task-label><?php echo esc_html( $wl_case_texts['aufgabe']['field'] ); ?></span> <span>(Pflichtfeld)</span></label><textarea id="wl-task" name="task" rows="5" required minlength="12" maxlength="4000" aria-describedby="wl-task-hint" placeholder="<?php echo esc_attr( $wl_case_texts['aufgabe']['placeholder'] ); ?>"></textarea><p id="wl-task-hint" class="wl-request__hint"><?php echo esc_html( $wl_case_texts['aufgabe']['hint'] ); ?></p></div>
 					<div class="wl-request__field"><label for="wl-email">Eure geschäftliche E-Mail <span>(Pflichtfeld)</span></label><input id="wl-email" name="email" type="email" required autocomplete="email" inputmode="email" placeholder="name@agentur.de"></div>
 					<div class="wl-request__field"><label for="wl-timeframe">Gewünschter Zeitraum <span>(optional)</span></label><input id="wl-timeframe" name="timeframe" type="text" maxlength="160" placeholder="Zum Beispiel: ab nächstem Monat" autocomplete="off"></div>

@@ -12,10 +12,6 @@
     var media = window.matchMedia ? window.matchMedia('(prefers-reduced-motion: reduce)') : { matches: true };
     var eur = function (number) { return number.toLocaleString('de-DE') + '\u00a0€'; };
     var weeks = function () { return (state.seiten <= 2 ? 2 : state.seiten <= 5 ? 3 : 4) + (state.art === 'relaunch' ? 1 : 0); };
-    var scope = function () { return { seiten: state.seiten, art: state.art, tracking: state.tracking ? 1 : 0 }; };
-    var event = function (name, details) {
-        if (window.HuWebsiteProductEvent) window.HuWebsiteProductEvent(name, details);
-    };
     var link = new URL($('[data-website-cta]').href, window.location.href);
     function timeline() {
         var total = weeks(), phases = [], week = 1;
@@ -37,7 +33,7 @@
         $('#bauzeit').textContent = total + ' Wochen';
         $('#hero-bauzeit').textContent = 'Ihr Umfang: ' + total + ' Wochen.';
     }
-    function calculate(changed) {
+    function calculate() {
         var extra = state.seiten - 1, total = base + extra * pagePrice + (state.tracking ? trackingPrice : 0);
         $('#weitere').textContent = extra;
         $('#minus').disabled = state.seiten <= 1; $('#plus').disabled = state.seiten >= max;
@@ -53,32 +49,27 @@
         link.searchParams.set('seiten', state.seiten); link.searchParams.set('art', state.art);
         if (state.tracking) link.searchParams.set('tracking', '1'); else link.searchParams.delete('tracking');
         $$('[data-website-cta]').forEach(function (cta) { cta.href = link.href; });
-        if (changed) event('rechner_change', scope());
     }
-    $('#minus').addEventListener('click', function () { if (state.seiten > 1) { state.seiten--; calculate(true); } });
-    $('#plus').addEventListener('click', function () { if (state.seiten < max) { state.seiten++; calculate(true); } });
+    $('#minus').addEventListener('click', function () { if (state.seiten > 1) { state.seiten--; calculate(); } });
+    $('#plus').addEventListener('click', function () { if (state.seiten < max) { state.seiten++; calculate(); } });
     $$('.groessen button').forEach(function (button) {
-        button.addEventListener('click', function () { if (state.seiten !== Number(button.dataset.seiten)) { state.seiten = Number(button.dataset.seiten); calculate(true); } });
+        button.addEventListener('click', function () { if (state.seiten !== Number(button.dataset.seiten)) { state.seiten = Number(button.dataset.seiten); calculate(); } });
     });
     $$('.art button').forEach(function (button) {
-        button.addEventListener('click', function () { if (state.art !== button.dataset.art) { state.art = button.dataset.art; calculate(true); } });
+        button.addEventListener('click', function () { if (state.art !== button.dataset.art) { state.art = button.dataset.art; calculate(); } });
     });
-    $('#tracking').addEventListener('change', function () { state.tracking = this.checked; calculate(true); });
-    $$('[data-website-cta]').forEach(function (cta) {
-        cta.addEventListener('click', function () { event('cta_click', Object.assign({ position: cta.dataset.websiteCta }, scope())); });
-    });
+    $('#tracking').addEventListener('change', function () { state.tracking = this.checked; calculate(); });
     var animation;
-    function mode(name, changed) {
+    function mode(name) {
         $('#durch').dataset.modus = name;
         $$('.schalter button').forEach(function (button) { button.setAttribute('aria-pressed', String(button.dataset.modus === name)); });
         $('.geraet').style.setProperty('--pin2', name === 'klassisch' ? 'var(--stempel)' : 'var(--aw-paper)');
         if (animation) animation.cancel();
         var bar = $('#ladebalken');
         if (!media.matches && bar.animate) animation = bar.animate([{ transform: 'scaleX(0)' }, { transform: 'scaleX(1)' }], { duration: name === 'klassisch' ? 2400 : 450, easing: 'ease-in-out' });
-        if (changed) event('toggle_durchleuchtung', { modus: name });
     }
     $$('.schalter button').forEach(function (button) {
-        button.addEventListener('click', function () { if ($('#durch').dataset.modus !== button.dataset.modus) mode(button.dataset.modus, true); });
+        button.addEventListener('click', function () { if ($('#durch').dataset.modus !== button.dataset.modus) mode(button.dataset.modus); });
     });
     function cancelMotion() { if (media.matches && animation) animation.cancel(); }
     if (media.addEventListener) media.addEventListener('change', cancelMotion);
@@ -89,11 +80,11 @@
         }
         ['mouseenter', 'mouseleave', 'focus', 'blur'].forEach(function (name) { item.addEventListener(name, highlight); });
     });
-    calculate(false);
+    calculate();
     $('#anzahl').textContent = $$('.gruppe li').length;
     root.classList.add('aw-ready');
     $$('[data-website-controls]').forEach(function (control) { control.hidden = false; });
-    mode('klassisch', false);
+    mode('klassisch');
     // Hide the CTA from both keyboard and accessibility tree at the hero and close.
     var bar = $('#leiste'), stickyCTA = $('#cta-leiste'), scheduled = false;
     function updateSticky() {

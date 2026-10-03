@@ -116,10 +116,17 @@ if ( 'website' === $selected_focus ) {
 // es nur bei eingeschaltetem Schalter; alle Texte kommen aus dem Kanon.
 $is_first_assessment = function_exists( 'nexus_is_first_assessment_request' ) && nexus_is_first_assessment_request( $selected_type );
 if ( $is_first_assessment ) {
-	$submit_label       = hu_first_assessment_text( 'submit' );
-	$form_eyebrow       = hu_first_assessment_text( 'label' );
-	$form_intro         = hu_first_assessment_text( 'intro' );
-	$message_step_title = hu_first_assessment_text( 'step_title' );
+	$hero_title   = hu_first_assessment_text( 'title' );
+	$submit_label = hu_first_assessment_text( 'submit' );
+	$form_eyebrow = hu_first_assessment_text( 'label' );
+	$form_title   = hu_first_assessment_text( 'card_title' );
+}
+
+// Kopf "Was passiert danach?" auf jeder Variante. Antwortzeit aus dem Kanon;
+// der Satz zur kostenlosen Ersteinschaetzung nur, solange der Versuch laeuft.
+$after_text = 'Ich lese jede Anfrage selbst und antworte ' . $response_window . ' — mit Rückfragen oder einem Festpreis.';
+if ( function_exists( 'hu_first_assessment_enabled' ) && hu_first_assessment_enabled() ) {
+	$after_text .= ' Die ' . hu_first_assessment_text( 'label' ) . ' ist kostenlos und verpflichtet zu nichts.';
 }
 ?>
 
@@ -130,7 +137,13 @@ if ( $is_first_assessment ) {
 			<div class="contact-intro__kopf">
 				<p class="contact-eyebrow"><?php echo esc_html( $current_type_label ); ?></p>
 				<h1 id="contact-title" class="contact-title"><?php echo esc_html( $hero_title ); ?></h1>
+				<div class="contact-after">
+					<p class="contact-after__label">Was passiert danach?</p>
+					<p class="contact-after__text"><?php echo esc_html( $after_text ); ?></p>
+				</div>
+				<?php if ( ! $is_first_assessment ) : ?>
 				<p class="contact-lead">WordPress, Tracking, Conversion oder technisches SEO: kurz einordnen, Engpass benennen, direkt bei mir landen.</p>
+				<?php endif; ?>
 			</div>
 
 			<div class="contact-intro__mehr">
@@ -162,7 +175,9 @@ if ( $is_first_assessment ) {
 					<p class="contact-section-head__trust"><span aria-hidden="true">●</span> Persönlich geprüft · Antwort <?php echo esc_html( $response_window ); ?></p>
 				</div>
 				<h2 id="contact-form-title"><?php echo esc_html( $form_title ); ?></h2>
+				<?php if ( ! $is_first_assessment ) : ?>
 				<p><?php echo esc_html( $form_intro ); ?></p>
+				<?php endif; ?>
 			</header>
 
 			<div class="contact-error-summary is-hidden" role="alert" aria-live="assertive" data-contact-error-summary tabindex="-1">
@@ -191,6 +206,7 @@ if ( $is_first_assessment ) {
 				<input type="hidden" name="matchtype" id="matchtype" value="">
 				<input type="radio" name="request_type" value="<?php echo esc_attr( $selected_type ); ?>" data-contact-type-input checked required hidden>
 
+				<?php if ( ! $is_first_assessment ) : ?>
 				<div class="contact-flow-progress" aria-label="Fortschritt">
 					<div>
 						<span data-contact-step-label><?php echo esc_html( sprintf( 'Schritt 1 von %d', $visible_step_count ) ); ?></span>
@@ -198,8 +214,33 @@ if ( $is_first_assessment ) {
 					</div>
 					<div class="contact-flow-progress__bar" aria-hidden="true"><span data-contact-progress-fill></span></div>
 				</div>
+				<?php endif; ?>
 
 				<div class="contact-flow-stage">
+					<?php if ( $is_first_assessment ) : // Kurzvariante: ein Schritt, drei Felder. Thema und Typ sind fest, der Name entfällt. Ohne data-contact-step-label: contact.js nutzt das Attribut für die Fortschrittszeile. ?>
+					<input type="hidden" name="focus" value="<?php echo esc_attr( $selected_type ); ?>">
+					<section class="contact-flow-step contact-flow-step--short" data-contact-step="message">
+						<div class="contact-field" data-contact-field="website_url">
+							<label for="contact-website"><?php echo esc_html( hu_first_assessment_text( 'website_label' ) ); ?></label>
+							<input id="contact-website" name="website_url" type="url" autocomplete="url" inputmode="url" placeholder="<?php echo esc_attr( $website_placeholder ); ?>" required aria-describedby="contact-website-error" data-contact-website data-contact-required-error="<?php echo esc_attr( hu_first_assessment_text( 'website_missing' ) ); ?>">
+							<p class="contact-field__error is-hidden" id="contact-website-error" aria-live="polite"></p>
+						</div>
+						<div class="contact-field" data-contact-field="message">
+							<label for="contact-message"><?php echo esc_html( hu_first_assessment_text( 'goal_label' ) ); ?> <span><?php echo esc_html( hu_first_assessment_text( 'goal_hint' ) ); ?></span></label>
+							<input id="contact-message" name="message" type="text" maxlength="<?php echo esc_attr( (string) HU_FIRST_ASSESSMENT_GOAL_MAXLENGTH ); ?>" data-contact-message data-contact-message-optional>
+						</div>
+						<div class="contact-field" data-contact-field="email">
+							<label for="contact-email">E-Mail</label>
+							<input id="contact-email" name="email" type="email" autocomplete="email" inputmode="email" required aria-describedby="contact-email-error">
+							<p class="contact-field__error is-hidden" id="contact-email-error" aria-live="polite"></p>
+						</div>
+						<label class="contact-consent" data-contact-field="consent">
+							<input type="checkbox" name="consent" value="1" required aria-describedby="contact-consent-error">
+							<span>Ich stimme zu, dass meine Angaben zur Bearbeitung meiner Anfrage verarbeitet werden. Mehr dazu in der <a href="<?php echo esc_url( $privacy_url ); ?>">Datenschutzerklärung</a>.</span>
+							<p class="contact-field__error is-hidden" id="contact-consent-error" aria-live="polite"></p>
+						</label>
+					</section>
+					<?php else : ?>
 					<section class="contact-flow-step" data-contact-step="focus" data-contact-step-label="Thema" <?php echo $is_scoped_focus ? 'data-contact-step-skip="true"' : ''; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- static boolean attribute ?>>
 						<div class="contact-step-head"><span>01</span><p><?php echo esc_html( 'project' === $selected_type ? 'Was steht an?' : 'Worum geht es?' ); ?></p></div>
 						<div class="contact-field" data-contact-field="focus">
@@ -217,18 +258,7 @@ if ( $is_first_assessment ) {
 
 					<section class="contact-flow-step" data-contact-step="message" data-contact-step-label="Ausgangslage">
 						<div class="contact-step-head"><span><?php echo esc_html( $is_scoped_focus ? '01' : '02' ); ?></span><p><?php echo esc_html( $message_step_title ); ?></p></div>
-						<?php if ( $is_first_assessment ) : // URL ist Pflicht, das Ziel ein optionaler Satz. Beides läuft über dieselben Felder (website_url, message) wie jede andere Anfrage. ?>
-						<div class="contact-field" data-contact-field="website_url">
-							<label for="contact-website"><?php echo esc_html( hu_first_assessment_text( 'website_label' ) ); ?></label>
-							<input id="contact-website" name="website_url" type="url" autocomplete="url" inputmode="url" placeholder="<?php echo esc_attr( $website_placeholder ); ?>" required aria-describedby="contact-website-error" data-contact-website data-contact-required-error="<?php echo esc_attr( hu_first_assessment_text( 'website_missing' ) ); ?>">
-							<p class="contact-field__error is-hidden" id="contact-website-error" aria-live="polite"></p>
-						</div>
 						<div class="contact-field" data-contact-field="message">
-							<label for="contact-message"><?php echo esc_html( hu_first_assessment_text( 'goal_label' ) ); ?> <span><?php echo esc_html( hu_first_assessment_text( 'goal_hint' ) ); ?></span></label>
-							<input id="contact-message" name="message" type="text" maxlength="<?php echo esc_attr( (string) HU_FIRST_ASSESSMENT_GOAL_MAXLENGTH ); ?>" data-contact-message data-contact-message-optional>
-						</div>
-						<?php // else und endif stehen so, dass die Seite ohne Versuch byte-gleich zum Stand davor rendert. ?>
-						<?php else : ?><div class="contact-field" data-contact-field="message">
 							<label for="contact-message" data-contact-message-label>Ausgangslage und Ziel</label>
 							<p id="contact-message-help" class="contact-field__help" data-contact-message-help>Nennen Sie Seite, Angebot und Engpass. Das reicht für eine erste fachliche Einordnung.</p>
 							<textarea id="contact-message" name="message" rows="6" required minlength="<?php echo esc_attr( (string) $message_minlength ); ?>" aria-describedby="contact-message-help contact-message-error" data-contact-message></textarea>
@@ -250,7 +280,7 @@ if ( $is_first_assessment ) {
 								</select>
 							</div>
 						</div>
-					<?php endif; ?></section>
+					</section>
 
 					<section class="contact-flow-step" data-contact-step="identity" data-contact-step-label="Kontakt">
 						<div class="contact-step-head"><span><?php echo esc_html( $is_scoped_focus ? '02' : '03' ); ?></span><p>Wie erreiche ich Sie?</p></div>
@@ -307,6 +337,7 @@ if ( $is_first_assessment ) {
 							<p class="contact-field__error is-hidden" id="contact-consent-error" aria-live="polite"></p>
 						</label>
 					</section>
+					<?php endif; ?>
 				</div>
 
 				<div class="contact-form__actions contact-form__actions--flow">
@@ -319,8 +350,12 @@ if ( $is_first_assessment ) {
 						<button class="contact-btn contact-btn--primary" type="button" data-contact-next hidden>Weiter</button>
 						<button class="contact-submit" type="submit" data-contact-submit data-contact-submit-label="<?php echo esc_attr( $submit_label ); ?>" data-track-action="contact_submit" data-track-category="contact" data-track-section="contact_superflow"><?php echo esc_html( $submit_label ); ?></button>
 					</div>
+					<a class="contact-form__aux-link" href="<?php echo esc_url( $calendar_url ); ?>" data-track-action="cta_click_contact_call_superflow" data-track-category="contact" data-track-section="contact_superflow">Lieber direkt Termin buchen <span aria-hidden="true">→</span></a>
+					<?php if ( $is_first_assessment ) : ?>
+					<p class="contact-form__promise"><?php echo esc_html( hu_first_assessment_text( 'submit_note' ) ); ?></p>
+					<?php else : ?>
 					<p class="contact-form__promise">Sie bekommen <?php echo esc_html( $response_window ); ?> eine Antwort von mir persönlich. Keine automatische Mailserie.</p>
-					<a class="contact-form__aux-link" href="<?php echo esc_url( $calendar_url ); ?>" data-track-action="cta_click_contact_call_superflow" data-track-category="contact" data-track-section="contact_superflow">Lieber direkt Termin buchen</a>
+					<?php endif; ?>
 				</div>
 
 				<div class="contact-form__feedback" data-contact-feedback aria-live="polite" role="status"></div>

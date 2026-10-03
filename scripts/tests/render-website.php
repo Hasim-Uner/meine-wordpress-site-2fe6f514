@@ -19,6 +19,5 @@ $asset = '/wp-content/themes/blocksy-child/';
 <main id="main"><?php echo nav_test_render( 'page-wordpress-website-erstellen-lassen.php' ); ?></main>
 <?php echo nav_test_render( 'template-parts/site-footer.php' ); ?>
 <script src="<?php echo esc_attr( $asset ); ?>assets/js/leiste.js"></script>
-<script src="<?php echo esc_attr( $asset ); ?>assets/js/website-product-events.js"></script>
 <script src="<?php echo esc_attr( $asset ); ?>assets/js/anfrage-website.js"></script>
 </body></html>
