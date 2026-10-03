@@ -63,29 +63,18 @@ blocksy-child/
 
 ---
 
-## WGOS – WordPress Growth Operating System
+## Aktive Angebote und Inhalte
 
-Jede Änderung ordnet sich in das 3-Phasen-Framework ein:
-
-### Phase 1: Speed & Conversion
-Core Web Vitals, UX-Reibung eliminieren, technische Hygiene.
-→ **Ziel:** LCP < 0.8s, CLS < 0.1, INP < 200ms
-
-### Phase 2: Privacy-First Measurement
-Server-Side GTM, Consent Mode v2, GA4 Event-Blueprint, Meta CAPI.
-→ **Ziel:** 100% Data Ownership, belastbare KPIs
-→ **Hinweis:** Tracking-Implementierung ist NICHT im Repo. Code ist tracking-ready (`data-track-*` Attribute).
-
-### Phase 3: Anfrage-Flywheel
-Pillar Pages, Content-Cluster, interne Verlinkung, Proof-Assets, Nurture-Flows.
-→ **Ziel:** Pipeline, die mit der Zeit günstiger wird.
-
----
+WordPress-Umsetzung, Tracking und Conversion verwenden die zentralen Kanons.
+Das Glossar erklärt Fachbegriffe; es ist kein Katalog von Lieferpaketen.
+Service-Routen für GA4 und Performance Marketing leben in `inc/service-cluster-pages.php`.
+Die ehemalige Asset-Struktur ist entfernt; `inc/legacy-system-retirement.php`
+bereinigt ihren Datenbankbestand nach erfolgreichem Glossar-Sync.
 
 ## Commit-Messages
 
 ```
-[WGOS-Phase] Bereich: Ergebnis-orientierte Beschreibung
+Bereich: Ergebnis-orientierte Beschreibung
 
 [Speed]      template-parts/hero: Critical CSS inline, LCP-Reduktion
 [Flywheel]   single.php: Related Content + Footer-CTA Template Parts

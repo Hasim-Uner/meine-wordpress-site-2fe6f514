@@ -1,6 +1,6 @@
 <?php
 /**
- * Canonical WGOS Foundation and add-on pricing.
+ * Canonical pricing for energy enquiry systems, websites and tracking.
  *
  * @package Blocksy_Child
  */
@@ -10,19 +10,9 @@ if ( ! defined( 'ABSPATH' ) ) {
 }
 
 define( 'HU_FOUNDATION_PRICE_STANDARD', 14900 );
-define( 'HU_FOUNDATION_PRICE_FOUNDING', 9900 );
 define( 'HU_FOUNDATION_HOSTING_MONTHLY', 50 );
 define( 'HU_FOUNDATION_DURATION_WEEKS_MIN', 8 );
 define( 'HU_FOUNDATION_DURATION_WEEKS_MAX', 10 );
-define( 'HU_PERFORMANCE_RETAINER_PRICE', 1500 );
-define( 'HU_PERFORMANCE_FOUNDING_RETAINER', 1000 );
-define( 'HU_PERFORMANCE_FOUNDING_MTHS', 6 );
-define( 'HU_PERFORMANCE_MIN_DURATION_MTHS', 6 );
-define( 'HU_PREMIUM_LAYER_SETUP', 1500 );
-define( 'HU_PREMIUM_LAYER_RETAINER', 700 );
-define( 'HU_FOUNDING_DISCOUNT_PERCENT', 33 );
-define( 'HU_VALUE_ANCHOR_MARKET_MIN', 34000 );
-define( 'HU_VALUE_ANCHOR_MARKET_MAX', 77000 );
 
 /**
  * Return the canonical pricing model.
@@ -32,16 +22,9 @@ define( 'HU_VALUE_ANCHOR_MARKET_MAX', 77000 );
 function hu_pricing_canon() {
 	return [
 		'foundation_price_standard'       => HU_FOUNDATION_PRICE_STANDARD,
-		'foundation_price_founding'       => HU_FOUNDATION_PRICE_FOUNDING,
 		'foundation_hosting_monthly'      => HU_FOUNDATION_HOSTING_MONTHLY,
 		'foundation_duration_weeks_min'   => HU_FOUNDATION_DURATION_WEEKS_MIN,
 		'foundation_duration_weeks_max'   => HU_FOUNDATION_DURATION_WEEKS_MAX,
-		'performance_retainer_price'      => HU_PERFORMANCE_RETAINER_PRICE,
-		'performance_founding_retainer'   => HU_PERFORMANCE_FOUNDING_RETAINER,
-		'performance_founding_months'     => HU_PERFORMANCE_FOUNDING_MTHS,
-		'performance_min_duration_months' => HU_PERFORMANCE_MIN_DURATION_MTHS,
-		'premium_layer_setup'             => HU_PREMIUM_LAYER_SETUP,
-		'premium_layer_retainer'          => HU_PREMIUM_LAYER_RETAINER,
 		'entry_setup_price'               => HU_ENTRY_SETUP_PRICE,
 		'entry_setup_business_days'       => HU_ENTRY_SETUP_BUSINESS_DAYS,
 		'analysis_price'                  => HU_ANALYSIS_PRICE,
@@ -53,9 +36,6 @@ function hu_pricing_canon() {
 		'landingpage_price'               => HU_LANDINGPAGE_PRICE,
 		// Als Satzbaustein, nicht als Stufen-Array: [hu_price] gibt nur Skalare aus.
 		'freelancer_retainer_display'     => hu_freelancer_retainer_display(),
-		'founding_discount_percent'       => HU_FOUNDING_DISCOUNT_PERCENT,
-		'value_anchor_market_min'         => HU_VALUE_ANCHOR_MARKET_MIN,
-		'value_anchor_market_max'         => HU_VALUE_ANCHOR_MARKET_MAX,
 		'guarantee_scope'                 => 'Funktionsfähiges Anfragesystem, kein Anfrage-Volumen.',
 	];
 }
@@ -614,7 +594,6 @@ function hu_freelancer_retainer_display() {
 
 // ── White-Label-Nebenpfad ────────────────────────────────────────
 // Der Partner-Funnel hat eine eigene Einstiegsebene. Sie bleibt bewusst
-// getrennt vom WGOS-Foundation- und Add-on-Modell oben.
 //
 // Die drei groesseren Erstprojekte liegen rund 30 % unter dem jeweiligen
 // Endkundenpreis der Tracking-Leiter weiter oben. Das ist die Marge der
@@ -649,7 +628,6 @@ define( 'HU_WHITELABEL_LANDINGPAGE_MIN', 1390 );
 // keine Zahl — damit war er eine Absichtserklaerung. Eine Untergrenze macht
 // ihn real, ohne dass eine Obergrenze jemanden verschreckt.
 //
-// Nicht 1.500: HU_PERFORMANCE_RETAINER_PRICE oben ist der Endkunden-Retainer
 // und steht bei 1.500. Derselbe Betrag hiesse, die Agentur zahlt so viel wie
 // ein Endkunde — das bricht die 30-%-Regel, die auf jeder anderen Sprosse
 // dieser Leiter gilt.

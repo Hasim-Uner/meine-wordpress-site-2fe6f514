@@ -81,14 +81,15 @@ Killer signal (auto -3): Single open-text "Ihre Nachricht" with no fit fields.
 
 Killer signal (auto -3): More than one primary CTA visually competing in the same viewport.
 
-## 8. WGOS Boundary (0–10)
+## 8. Retired-offer Boundary (0–10)
 
-- 0–2: WGOS in hero, primary CTA, or marketcheck entry copy on Solar/SHK route.
-- 3–5: WGOS named publicly but on a delivery/methodology route.
-- 6–8: WGOS only in proposal, delivery, post-sale, or protected/noindex detail.
-- 9–10: Cold visitor never has to learn "WGOS" to understand the business outcome. WGOS is reserved as delivery architecture and proposal language.
+- 0–2: A retired framework leads the hero or primary CTA.
+- 3–5: Retired offers remain publicly discoverable.
+- 6–8: Public routes are clean but old delivery or protected assets remain active.
+- 9–10: Retired positioning, delivery modules and content generators are removed;
+  explicit migration/redirect identifiers are the only permitted remnants.
 
-Killer signal (auto -5): "WordPress Growth Operating System" in hero copy on a Solar/SHK acquisition route.
+Killer signal (auto -5): a retired framework in cold acquisition hero copy.
 
 ## 9. Sales Handoff (0–10)
 
@@ -115,7 +116,7 @@ Killer signal (auto -5): a response-time promise that delivery cannot reliably k
 - 90–100: Closeable demand machine. Optimize CPL.
 - 75–89: Strong. Fix P1s.
 - 60–74: Leaking. Fix P0s before paid traffic.
-- 40–59: Costing money. Stop paid traffic, fix ladder + qualification + WGOS boundary.
+- 40–59: Costing money. Stop paid traffic, fix ladder + qualification + retired-offer boundary.
 - < 40: Acquisition surface is anti-helpful. Rebuild ladder before any further copy work.
 
 A world-class score requires honest numbers from the buyer's perspective, not the operator's.

@@ -80,7 +80,6 @@ fi
 #
 # Ankertexte deshalb dort pruefen, wo sie als Daten stehen und belegbar sind:
 #   inc/seo-subpage-cluster-links.php   Cluster-Labels je Money-Page
-#   inc/wgos/home-deeper-clusters.php   Karten-Titel auf der Startseite
 #   template-parts/related-content.php  Related-Labels
 #   inc/llms-txt.php                    Routen-Labels fuer LLM-Clients
 # Der Abgleich gegen die besitzende Query laeuft ueber docs/seo/query-ownership.csv.

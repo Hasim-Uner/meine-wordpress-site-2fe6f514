@@ -14,7 +14,6 @@ Stand: 2026-10-03. Diese Karte beschreibt Systemgrenzen und Abhängigkeiten nach
 | Messung | `data-track-*`-Hooks, cookiefreie Anfrage-Herkunft im CRM, SEO-/Schema-Layer | `blocksy-child/assets/js/nexus-core.js`, `blocksy-child/inc/crm.php`, `blocksy-child/inc/seo-meta.php`, `blocksy-child/inc/org-schema.php`, Templates mit `data-track-*` | Koko Analytics (Plugin), Google Search Console | live; kein GTM, GA4 oder Pixel auf dieser Website |
 | CTA- und Leadflow | CTA-Hierarchie vom ersten Besuch bis zur Diagnose, Folgeeinordnung und Qualifizierung | `blocksy-child/inc/shortcodes.php`, `blocksy-child/template-parts/footer-cta.php`, `blocksy-child/template-parts/trust-section.php`, Service-Templates | WordPress-Editor, Audit-Funnel, Cal.com, CRM | live |
 | Public Proof Layer | zentraler oeffentlicher Proof- und Vokabular-Layer fuer kaufnahe Seiten | `blocksy-child/inc/helpers.php`, `blocksy-child/inc/shortcodes.php`, `blocksy-child/front-page.php`, `blocksy-child/page-wordpress-agentur.php`, `blocksy-child/page-kontakt.php`, `blocksy-child/inc/contact-page.php` | WordPress-Editor, oeffentliche Cases und Profile | live |
-| WGOS Client Dashboard | internes Delivery-/Client-Dashboard mit minimaler Rolle und Capability | `blocksy-child/page-wgos.php`, `blocksy-child/inc/wgos/wgos-access.php` | WordPress-User-System | intern; noindex/nofollow; Zugriff nur fuer `manage_options` oder `view_wgos_dashboard` |
 | Content- und SEO-System | Blog, Kategorie-Archive, Cornerstone-Content, Glossar-Registry und interne Verlinkung | `blocksy-child/home.php`, `blocksy-child/category.php`, `blocksy-child/single.php`, `blocksy-child/template-parts/post-title-visual.php`, `blocksy-child/page-seo-cornerstone.php`, `blocksy-child/inc/glossary/`, `blocksy-child/inc/blog-provider-posts.php`, `content/blog-drafts/` | WordPress-Editor, einmalige Theme-Seeds | live plus Ausbau |
 | Client Portal | Kunden-Cockpit mit Login, Upload und optionalen Nutzer-Metadaten für Ressourcen, KPI und Roadmap | `blocksy-child/template-portal.php`, `blocksy-child/inc/client-portal.php`, `blocksy-child/inc/snippets.php` | WordPress-User-System, User Meta, Media Library | live; keine Mock-Daten mehr, Empty-State ohne gepflegtes `nexus_client_portal`; Pflege im Benutzerprofil |
 | Marktcheck / System-Diagnose-Legacy | aktiver B2B-System-Intake auf der Solar-Landingpage; frühere System-Diagnose-Route bleibt als Redirect erhalten | `blocksy-child/page-solar-waermepumpen-leadgenerierung.php`, `blocksy-child/assets/js/solar-leadgenerierung-solara.js`, `blocksy-child/assets/js/solar-marketcheck-compact.js`, `blocksy-child/inc/system-diagnose-page.php`, `blocksy-child/inc/review-crm.php` | WordPress, Audit-CRM, Brevo/wp_mail, Cal.com | System-Intake aktiv über `/wp-json/nexus/v1/audit-request` mit Contract `2026-05-26.audit-request.v1`, Trace-ID und strukturierten Fehlern; `/system-diagnose/`, `/readiness-diagnose/` und `/anfrage/` als Legacy-Redirects |
@@ -35,7 +34,7 @@ Wichtige Merkmale:
 - Ein Teil der Seiten ist editor-getrieben und nutzt `the_content()`.
 - Ein anderer Teil ist hart codiert und traegt Business-Logik direkt im Template.
 - Die kanonische Kontaktseite `/kontakt/` rendert im Frontend jetzt immer das versionierte Theme-Template statt editorgetriebener Altinhalte.
-- Die frühere WGOS-Erklärung ist öffentlich entfallen; die Agentur-Seite ist eine Entscheidungsseite, und ihre frühere Methodenbeschreibung steht verdichtet in `/wordpress-agentur-hannover/#zusammenarbeit`. `page-wgos.php` ist kein Sales-Template mehr, sondern internes Client-Dashboard mit Login- und Capability-Schutz; alte WGOS-Erklärpfade sind keine erzwungenen 301-Ziele mehr und bleiben bei vorhandenen DB-Seiten noindex sowie sitemap-excluded.
+- Die ehemalige Asset-Struktur ist repo-seitig vollständig eingestellt (2026-10-03; Livegang ausstehend). `inc/legacy-system-retirement.php` entfernt nach erfolgreichem Glossar-Sync Inhalte, ACF/SCF-Definitionen, alte Menüs, Rolle und Capability. Zugeordnete Begriffe führen direkt ins Glossar, entfernte Pakete ohne Ersatz liefern 410. Die unabhängigen GA4-/Performance-Routen leben in `inc/service-cluster-pages.php`.
 - Die Homepage-Shortcodes liefern jetzt einen versionierten Public-Proof-Layer aus konservativen Leistungsmetriken, GitHub-Transparenz und audit-first Folgelogik statt Pilotangebot.
 
 Kritische Dateien:
@@ -46,7 +45,6 @@ Kritische Dateien:
 - `blocksy-child/inc/enqueue.php`
 - `blocksy-child/inc/seo-meta.php`
 - `blocksy-child/inc/org-schema.php`
-- `blocksy-child/page-wgos.php`
 
 ### Homepage-Verträge (2026-09-13)
 
@@ -96,7 +94,7 @@ Systemische Rolle:
 
 ## Growth-Audit-Legacypfad
 
-Der Growth Audit und die frühere System-Diagnose-Seite sind nicht mehr der Primär-CTA des Systems und dürfen nicht als Hauptfunnel zurückkehren. Geschützte Legacy-Einstiege mit wahrscheinlicher externer Nutzung leiten auf den Marktcheck; interne Tool-, ROI- und Service-Altlasten liefern 410 statt als Redirect-Netz weiterzulaufen. WGOS-Altpfade bleiben separat noindex/access-protected, solange sie intern noch Dashboard-/Asset-Hub-Funktionen tragen.
+Der Growth Audit und die frühere System-Diagnose-Seite sind nicht mehr der Primär-CTA des Systems und dürfen nicht als Hauptfunnel zurückkehren. Geschützte Legacy-Einstiege mit wahrscheinlicher externer Nutzung leiten auf den Marktcheck; interne Tool-, ROI- und Service-Altlasten liefern 410 statt als Redirect-Netz weiterzulaufen. Die ehemaligen Asset-/Dashboard-Pfade sind vollständig entfernt und liefern direkte 301 oder 410.
 
 Aktuelle Logik:
 
@@ -187,7 +185,7 @@ Die CTA-Hierarchie ist klar und sollte nicht verwischt werden.
 - Partner-/Agentur-Einstieg auf der Whitelabel-Seite: `Whitelabel-Fit-Gespraech`
 - Kein oeffentlicher 360-/Blueprint-CTA mehr im Erstkontakt
 - Eskalations-CTA: `Cal.com`-Strategiecall
-- Default-URL fuer direkte Gespraechsbuchung in Audit-, Kontakt- und WGOS-Kontexten: `https://cal.com/hasim-uener/30min?overlayCalendar=true`
+- Default-URL für direkte Gesprächsbuchung in Audit- und Kontakt-Kontexten: `https://cal.com/hasim-uener/30min?overlayCalendar=true`
 - Partner-/Agentur-URL fuer direkte Gespraechsbuchung auf der Whitelabel-Seite: `https://cal.com/hasim-uener/whitelabel-fit-gesprach?overlayCalendar=true`
 - Direkte Gespraechsbuchung wird repo-seitig als progressive Enhancement umgesetzt: Modal bei aktivem JS, normaler Link als Fallback, auch bei mehreren Cal.com-Event-Typen.
 - Utility-CTA: Kunden-Portal fuer Bestandskunden
@@ -247,7 +245,6 @@ Risiko:
 
 ## Groesste Risiken
 
-- `page-wgos.php` ist fachlich wichtig und inzwischen deutlich verschlankt, bleibt aber technisch template-driven statt editor- oder SCF-getrieben.
 - Kaufnahe Inhalte liegen weiter teils im Repo und teils im WordPress-Editor; Titel, Excerpts, Karten und manuell kuratierte Related-Module koennen die neue Proof- und Tonalitaetslogik unterlaufen, wenn sie nicht separat gepflegt werden.
 - WP-Cron hängt ohne Server-Cron an nicht gecachten Aufrufen; Follow-ups und Antwortfrist-Erinnerungen können sich dann verzögern.
 - Manuelle WordPress-Admin-Schritte existieren noch als Betriebswissen und muessen weiter systematisiert werden.

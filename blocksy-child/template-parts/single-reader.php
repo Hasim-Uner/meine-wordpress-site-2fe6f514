@@ -280,10 +280,7 @@ get_template_part( 'template-parts/blog-header' );
 			<?php else : ?>
 				<article class="nexus-article-content" id="article-content" data-track-section="article_content">
 					<?php the_content(); ?>
-					<?php if ( ! $is_design_aesthetics && function_exists( 'nexus_get_wgos_blog_asset_bridge' ) && function_exists( 'nexus_render_wgos_blog_asset_bridge' ) ) : ?>
-						<?php $bridge = nexus_get_wgos_blog_asset_bridge(); ?>
-						<?php if ( is_array( $bridge ) ) : ?><?php echo nexus_render_wgos_blog_asset_bridge( $bridge ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?><?php endif; ?>
-					<?php endif; ?>
+
 				</article>
 			<?php endif; ?>
 		</div>

@@ -16,7 +16,7 @@
     "test:forms": "playwright test --config scripts/tests/forms.config.cjs",
     "test:intake": "php scripts/tests/intake-endpoints.php && php scripts/tests/solar-events.php && php scripts/tests/inquiry-events.php",
     "test:permalinks": "php scripts/tests/author-permalink-redirect.php",
-    "test:provisioning": "php scripts/tests/page-provisioning.php",
+    "test:provisioning": "php scripts/tests/page-provisioning.php && npm run test:retirement",
     "test:pricing": "php scripts/tests/tracking-ladder.php",
     "test:navigation": "php scripts/tests/navigation-contract.php",
     "test:navigation-ui": "playwright test --config scripts/tests/navigation.config.cjs",
@@ -26,7 +26,8 @@
     "lint:css-architecture": "python3 scripts/audit-css-architecture.py && python3 scripts/audit-css-values.py",
     "lint:legacy-css": "python3 scripts/audit-legacy-nx-css.py",
     "lint:php": "find blocksy-child -name '*.php' -print0 | xargs -0 -n1 php -l",
-    "lint:route-architecture": "python3 scripts/validate-route-architecture.py"
+    "lint:route-architecture": "python3 scripts/validate-route-architecture.py",
+    "test:retirement": "php scripts/tests/legacy-system-retirement.php && php scripts/smoke-glossary.php"
   },
   "devDependencies": {
     "@playwright/test": "1.63.0",

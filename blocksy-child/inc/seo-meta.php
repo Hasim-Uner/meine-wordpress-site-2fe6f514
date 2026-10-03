@@ -226,7 +226,6 @@ function hu_get_forced_singular_seo_map() {
 				'title'       => 'Über Haşim Üner | Arbeitsweise für B2B-Websites',
 				'description' => 'Ihre Website führt Gespräche, bei denen Sie nicht dabei sind. Wie Haşim Üner Websites baut, die gut kommunizieren und zeigen, was aus Anfragen wird.',
 			],
-			// 'wgos' / 'wordpress-growth-operating-system' sowie Tool-/Audit-Legacy-Routen:
 			// Seiten sind noindex, sitemap-excluded oder geschuetzte 301-Einstiege,
 			// daher keine oeffentlichen Meta-Signale mehr.
 			'wordpress-agentur-hannover' => [
@@ -803,8 +802,6 @@ function hu_get_noindex_nofollow_slugs() {
 		'portal',
 		'login',
 		'kunden-login',
-		'wgos',
-		'wordpress-growth-operating-system',
 	];
 }
 
@@ -859,7 +856,6 @@ function hu_get_noindex_follow_slugs() {
 		'tools',
 		'website-performance-analyse',
 		'website-fuer-solar-und-waermepumpen-anbieter',
-		'wgos-systemlandkarte',
 		'ki-integration-wordpress',
 		'ki-integration',
 		'wordpress-agentur',
@@ -879,26 +875,6 @@ function hu_get_noindex_follow_slugs() {
 		// noindex, damit dieselbe Seite nicht mehrfach in den Index kommt.
 		'whitelabel',
 		'whitelabel-retainer-proof',
-	];
-}
-
-/**
- * Return post types that should stay noindex but keep passing link equity.
- *
- * `wgos_asset`: WGOS ist als Angebot eingestellt (Hard Ban in
- * docs/standards/BRAND_AND_COPY.md), /wgos/ ist noindex. Die 32 Baustein-
- * Unterseiten waren es nicht — der CPT ist `public` mit
- * `exclude_from_search => false` registriert und hatte keine Robots-Regel.
- * Ergebnis laut GSC-Coverage-Export vom 2026-07-28: 32 der 72 indexierten URLs
- * gehoerten diesem Framework, ohne eine einzige Impression, teils auf denselben
- * Themen wie die Money-Pages (server-side-tracking, local-seo, cwv-optimierung).
- * `follow` bleibt, weil Glossar- und Cluster-Seiten dorthin verlinken.
- *
- * @return array<int, string>
- */
-function hu_get_noindex_follow_post_types() {
-	return [
-		'wgos_asset',
 	];
 }
 
@@ -925,7 +901,6 @@ function hu_get_singular_robots_context( $post_id ) {
 	$is_noindex_nofollow = in_array( $template, hu_get_noindex_nofollow_templates(), true )
 		|| in_array( $slug, hu_get_noindex_nofollow_slugs(), true );
 	$is_noindex_follow   = in_array( $slug, hu_get_noindex_follow_slugs(), true )
-		|| in_array( (string) get_post_type( $post_id ), hu_get_noindex_follow_post_types(), true )
 		|| $acf_noindex
 		|| $legacy_noindex;
 
@@ -1070,9 +1045,9 @@ function hu_get_resolved_document_title() {
 		return (string) $forced_seo['title'];
 	}
 
-	if ( function_exists( 'nexus_get_current_wgos_cluster_route_slug' ) && function_exists( 'nexus_get_wgos_cluster_page_seo_defaults' ) ) {
-		$cluster_slug     = nexus_get_current_wgos_cluster_route_slug();
-		$cluster_defaults = '' !== $cluster_slug ? nexus_get_wgos_cluster_page_seo_defaults( $cluster_slug ) : null;
+	if ( function_exists( 'nexus_get_current_service_cluster_route_slug' ) && function_exists( 'nexus_get_service_cluster_page_seo_defaults' ) ) {
+		$cluster_slug     = nexus_get_current_service_cluster_route_slug();
+		$cluster_defaults = '' !== $cluster_slug ? nexus_get_service_cluster_page_seo_defaults( $cluster_slug ) : null;
 
 		if ( ! empty( $cluster_defaults['title'] ) ) {
 			return (string) $cluster_defaults['title'];
@@ -1098,14 +1073,13 @@ function hu_get_resolved_document_title() {
 		$post_id    = get_queried_object_id();
 		$slug       = $post_id ? get_post_field( 'post_name', $post_id ) : '';
 		$seo_title  = hu_get_stored_seo_value( $post_id, 'seo_title', 'rank_math_title' );
-		$defaults   = function_exists( 'nexus_get_wgos_cluster_page_seo_defaults' ) ? nexus_get_wgos_cluster_page_seo_defaults( get_post( $post_id ) ) : null;
+		$defaults   = function_exists( 'nexus_get_service_cluster_page_seo_defaults' ) ? nexus_get_service_cluster_page_seo_defaults( get_post( $post_id ) ) : null;
 
 		if ( '' !== $seo_title ) {
 			return $seo_title;
 		} elseif ( ! empty( $defaults['title'] ) ) {
 			return (string) $defaults['title'];
-		} elseif ( in_array( $slug, [ 'wgos', 'wordpress-growth-operating-system' ], true ) ) {
-			return 'WGOS Client Dashboard | Haşim Üner';
+
 		}
 	}
 
@@ -1159,7 +1133,7 @@ function hu_get_singular_post_seo_context( $post_id ) {
 	}
 
 	$forced           = hu_get_forced_singular_seo( $post_id );
-	$cluster_defaults = function_exists( 'nexus_get_wgos_cluster_page_seo_defaults' ) ? nexus_get_wgos_cluster_page_seo_defaults( $post ) : null;
+	$cluster_defaults = function_exists( 'nexus_get_service_cluster_page_seo_defaults' ) ? nexus_get_service_cluster_page_seo_defaults( $post ) : null;
 	$stored_title     = hu_get_stored_seo_value( $post_id, 'seo_title', 'rank_math_title' );
 	$stored_desc      = hu_get_stored_seo_value( $post_id, 'seo_description', 'rank_math_description' );
 	$title            = $stored_title;
@@ -1329,10 +1303,10 @@ function hu_get_seo_meta() {
 		$meta['canonical']   = function_exists( 'hu_get_request_analysis_url' ) ? hu_get_request_analysis_url() : home_url( '/solar-waermepumpen-leadgenerierung/#marktcheck' );
 		$meta['robots']      = 'noindex, follow';
 
-	} elseif ( function_exists( 'nexus_get_current_wgos_cluster_route_slug' ) && '' !== nexus_get_current_wgos_cluster_route_slug() ) {
-		$cluster_slug        = nexus_get_current_wgos_cluster_route_slug();
-		$cluster_defaults    = function_exists( 'nexus_get_wgos_cluster_page_seo_defaults' ) ? nexus_get_wgos_cluster_page_seo_defaults( $cluster_slug ) : null;
-		$cluster_page        = function_exists( 'nexus_get_wgos_cluster_page' ) ? nexus_get_wgos_cluster_page( $cluster_slug ) : null;
+	} elseif ( function_exists( 'nexus_get_current_service_cluster_route_slug' ) && '' !== nexus_get_current_service_cluster_route_slug() ) {
+		$cluster_slug        = nexus_get_current_service_cluster_route_slug();
+		$cluster_defaults    = function_exists( 'nexus_get_service_cluster_page_seo_defaults' ) ? nexus_get_service_cluster_page_seo_defaults( $cluster_slug ) : null;
+		$cluster_page        = function_exists( 'nexus_get_service_cluster_page' ) ? nexus_get_service_cluster_page( $cluster_slug ) : null;
 		$meta['og_title']    = ! empty( $cluster_defaults['title'] ) ? (string) $cluster_defaults['title'] : '';
 		$meta['description'] = ! empty( $cluster_defaults['description'] ) ? (string) $cluster_defaults['description'] : '';
 		$meta['canonical']   = home_url( '/' . $cluster_slug . '/' );
@@ -1353,7 +1327,7 @@ function hu_get_seo_meta() {
 		// ACF fields first (if ACF Pro is active)
 		$meta['description'] = hu_get_stored_seo_value( $post_id, 'seo_description', 'rank_math_description' );
 		$meta['og_title']    = hu_get_stored_seo_value( $post_id, 'seo_title', 'rank_math_title' );
-		$cluster_defaults    = function_exists( 'nexus_get_wgos_cluster_page_seo_defaults' ) ? nexus_get_wgos_cluster_page_seo_defaults( get_post( $post_id ) ) : null;
+		$cluster_defaults    = function_exists( 'nexus_get_service_cluster_page_seo_defaults' ) ? nexus_get_service_cluster_page_seo_defaults( get_post( $post_id ) ) : null;
 
 		if ( ! empty( $forced_seo['description'] ) ) {
 			$meta['description'] = (string) $forced_seo['description'];
@@ -1401,15 +1375,7 @@ function hu_get_seo_meta() {
 			$meta['description'] = 'Performance Marketing ohne technisches SEO-Fundament verbrennt Budget. So wirken Technik, CRO und Tracking zusammen - inklusive Entscheider-Checkliste.';
 		}
 
-		if ( in_array( $slug, [ 'wgos', 'wordpress-growth-operating-system' ], true ) ) {
-			if ( empty( $meta['og_title'] ) ) {
-				$meta['og_title'] = 'WGOS Client Dashboard | Haşim Üner';
-			}
 
-			if ( empty( $meta['description'] ) ) {
-				$meta['description'] = 'Internes Client- und Delivery-Dashboard für berechtigte WGOS-Projekte.';
-			}
-		}
 
 		if ( empty( $meta['description'] ) ) {
 			if ( ! empty( $cluster_defaults['description'] ) ) {
@@ -1655,13 +1621,11 @@ add_action( 'template_redirect', function () {
 
 /**
  * Slugs deprecated in der neuen Positionierung:
- * - wgos / wordpress-growth-operating-system: noindex (Legacy-Hub)
  * - ki-integration-wordpress / ki-integration: noindex (Legacy-Thema)
  * - loesungen / alle-loesungen: noindex (interne Angebotsübersicht, nicht mehr beworben)
  * - energie-fahrplan-demo: Showroom/Legacy-Demo, kein aktiver Leadpfad
  * - case-studies* / Agentur- und Solar-Aliasse: 301 auf kanonische Ziele
  * - alte Service-, Tool- und ROI-Slugs: 410 Gone und aus Sitemap entfernen
- * - alte WGOS-Slugs: noindex/access-protected und aus Sitemap entfernen
  * - growth-audit und generische Audit-Aliasse: 301 auf Marktcheck
  * - whitelabel / whitelabel-retainer-proof: Alias-Slugs derselben Agenturseite,
  *   noindex gegen Duplikate. `/whitelabel-retainer/` selbst ist indexierbar und
@@ -1748,23 +1712,6 @@ add_filter( 'wp_sitemaps_posts_query_args', function ( $args, $post_type ) {
 
 	return $args;
 }, 10, 2 );
-
-/**
- * Drop noindex post types from the core sitemap entirely.
- *
- * Ein Sitemap-Eintrag sagt "crawl mich", der noindex-Header sagt das Gegenteil.
- * Fuer `wgos_asset` faellt damit ein ganzer Post-Type raus statt einzelner IDs.
- *
- * @param array<string, WP_Post_Type> $post_types Public post type objects.
- * @return array<string, WP_Post_Type>
- */
-add_filter( 'wp_sitemaps_post_types', function ( $post_types ) {
-	foreach ( hu_get_noindex_follow_post_types() as $type ) {
-		unset( $post_types[ $type ] );
-	}
-
-	return $post_types;
-} );
 
 /**
  * Keep native taxonomy sitemaps focused on curated category archives.

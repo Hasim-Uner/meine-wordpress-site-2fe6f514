@@ -683,3 +683,14 @@ Preis oder Bauzeit aus dem Browser werden niemals als Angebotswerte übernommen.
 Matomo: Kategorie `anfrage_website`, Aktionen `cta_click`, `rechner_change`,
 `toggle_durchleuchtung`, `form_submit`; JSON-Eventname mit den jeweiligen
 Dimensionen. `form_submit` erst nach bestätigter erfolgreicher Antwort.
+
+## Entfernung der ehemaligen Asset-Struktur (2026-10-03)
+
+Die ehemalige Asset-Registry, ihre Landingpages und ihr Dashboard sind entfernt.
+Glossar-Einträge schließen weiterhin mit der Projektanfrage ab; sie sind keine
+Energie-Akquise. Fachbegriffe erhalten passende Erklärseiten, operative Themen
+führen zu bestehenden Leistungsseiten. Pakete ohne inhaltlichen Nachfolger und
+Hub-Routen liefern 410; es gibt keine pauschale Umleitung auf Startseite oder
+Marktcheck. GA4- und Performance-Marketing-Routen bleiben eigenständig unter
+`inc/service-cluster-pages.php`. Vollständige Zuordnung:
+`docs/decisions/asset-system-retirement.md`.

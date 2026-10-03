@@ -89,7 +89,7 @@ if ( 'post' === $related_type && is_singular( 'post' ) && ! empty( $category_ids
 		],
 		'wordpress-performance' => [
 			'label' => __( 'Core Web Vitals', 'blocksy-child' ),
-			'url'   => function_exists( 'nexus_get_primary_public_url' ) ? nexus_get_primary_public_url( 'cwv', home_url( '/wgos-assets/cwv-optimierung/' ) ) : home_url( '/wgos-assets/cwv-optimierung/' ),
+			'url'   => function_exists( 'nexus_get_primary_public_url' ) ? nexus_get_primary_public_url( 'cwv', home_url( '/wordpress-agentur-hannover/#zusammenarbeit' ) ) : home_url( '/wordpress-agentur-hannover/#zusammenarbeit' ),
 			'text'  => __( 'Wenn Ladezeit und technische Reibung im Vordergrund stehen:', 'blocksy-child' ),
 		],
 		'wordpress-growth-agentur' => [
@@ -99,7 +99,7 @@ if ( 'post' === $related_type && is_singular( 'post' ) && ! empty( $category_ids
 		],
 		'strategie' => [
 			'label' => __( 'Anfragesystem-Methode', 'blocksy-child' ),
-			'url'   => function_exists( 'nexus_get_primary_public_url' ) ? nexus_get_primary_public_url( 'wgos', home_url( '/wordpress-agentur-hannover/#zusammenarbeit' ) ) : home_url( '/wordpress-agentur-hannover/#zusammenarbeit' ),
+			'url'   => function_exists( 'nexus_get_primary_public_url' ) ? nexus_get_primary_public_url( 'agentur', home_url( '/wordpress-agentur-hannover/#zusammenarbeit' ) ) : home_url( '/wordpress-agentur-hannover/#zusammenarbeit' ),
 			'text'  => __( 'Wenn das Thema in ein größeres System eingeordnet werden soll:', 'blocksy-child' ),
 		],
 	];

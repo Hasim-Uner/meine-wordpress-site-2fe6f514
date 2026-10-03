@@ -36,4 +36,4 @@ Bewusste Einschraenkung:
 
 - Datenmodell fuer Audit-Payload und Deep-Dive-Uebergabe
 - Trennlinie zwischen Repo-Content, Editor-Content und CRM-Daten
-- Refactor-Pfad fuer `page-wgos.php`
+- Stilllegung der ehemaligen Asset-Struktur: `asset-system-retirement.md`

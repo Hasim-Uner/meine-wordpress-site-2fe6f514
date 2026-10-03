@@ -7,13 +7,10 @@ TARGETS=(
   "blocksy-child/page-ergebnisse.php"
   "blocksy-child/page-solar-waermepumpen-leadgenerierung.php"
   "blocksy-child/page-wordpress-agentur.php"
-  "blocksy-child/page-wgos.php"
   "blocksy-child/inc/helpers.php"
   "blocksy-child/inc/seo-meta.php"
   "blocksy-child/inc/shortcodes.php"
   "blocksy-child/page-whitelabel-retainer.php"
-  "blocksy-child/assets/js/homepage-mindmap-teaser.js"
-  "blocksy-child/assets/js/homepage-mindmap-teaser.jsx"
   "docs/architecture/LIVE_STATUS.md"
   "docs/architecture/SYSTEM_MAP.md"
 )

@@ -1,6 +1,6 @@
 ---
 name: registry-release-qa
-description: Run deploy and smoke-test QA whenever glossary or WGOS registry data changes. Use when registry files, related routes, or sync behavior are edited.
+description: Run deploy and smoke-test QA whenever glossary or service registry data changes. Use when registry files, related routes, or sync behavior are edited.
 ---
 
 # Registry Release QA

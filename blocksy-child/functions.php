@@ -39,13 +39,11 @@ $modules = [
 	'canon/market-canon.php', // Fremde Marktzahlen mit Quelle — streng getrennt von eigenen Ergebnissen
 	'mail.php',           // Zentraler Brevo-Mail-Router für Transaktionsmails
 	'crm.php',            // Gemeinsame CRM-Grundlage für Kontakte, Blog-Abos und Projektanfragen
-	'wgos/wgos-access.php',    // Interne WGOS-Clientrolle, Dashboard-Capability und Backend-Sperre
-	'wgos/wgos-assets.php',    // CPT + Helper für WGOS Asset-Spokes
-	'wgos/wgos-asset-registry.php', // Versionierte WGOS Asset-Registry + Sync
 	'glossary/glossary.php',       // Glossar-Hub + CPT für definitorische Begriffe
 	'glossary/glossary-registry.php', // Versionierte Glossar-Registry + Sync
+	'legacy-system-retirement.php', // Einmalige Entfernung stillgelegter Inhalte nach Glossar-Sync
 	'glossary/glossary-autolink.php', // Auto-Linking: Glossar-Begriffe in Blog-Posts verlinken
-	'wgos/wgos-cluster-pages.php', // Versionierte Cluster-/Pillar-Pages und Blog-Asset-Bridges
+	'service-cluster-pages.php', // Versionierte Service-Routen, Meta und FAQ
 	'acf.php',            // ACF Feldgruppen-Registrierung (SEO, KPI, Comparison)
 	'header.php',         // Eigener globaler Header + Navigation
 	'review-crm.php',     // Marktcheck-Intake + WordPress CRM

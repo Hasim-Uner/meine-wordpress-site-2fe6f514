@@ -267,19 +267,6 @@ function nexus_get_seo_cockpit_template_internal_links( $post_id, $post = null )
 		);
 	}
 
-	if ( 'post' === $post->post_type && function_exists( 'nexus_get_wgos_blog_asset_bridge' ) ) {
-		$bridge = nexus_get_wgos_blog_asset_bridge( $post );
-
-		if ( is_array( $bridge ) ) {
-			if ( function_exists( 'nexus_get_wgos_cluster_page_asset_cards' ) ) {
-				$links = array_merge( $links, nexus_get_seo_cockpit_structured_internal_urls( nexus_get_wgos_cluster_page_asset_cards( $bridge ) ) );
-			}
-
-			if ( ! empty( $bridge['supporting_link'] ) && is_array( $bridge['supporting_link'] ) ) {
-				$links = array_merge( $links, nexus_get_seo_cockpit_structured_internal_urls( [ $bridge['supporting_link'] ] ) );
-			}
-		}
-	}
 
 	if (
 		in_array( $template, [ 'page-wordpress-agentur.php', 'page-wordpress-agentur-hannover.php' ], true )
@@ -290,14 +277,14 @@ function nexus_get_seo_cockpit_template_internal_links( $post_id, $post = null )
 			[
 				$primary_urls['audit'] ?? home_url( '/solar-waermepumpen-leadgenerierung/#marktcheck' ),
 				$primary_urls['results'] ?? home_url( '/case-study-solar-leadgenerierung/' ),
-				$primary_urls['wgos'] ?? home_url( '/wordpress-agentur-hannover/#zusammenarbeit' ),
+				$primary_urls['agentur'] ?? home_url( '/wordpress-agentur-hannover/#zusammenarbeit' ),
 				$primary_urls['about'] ?? home_url( '/hasim-uener/' ),
 				$contact_url,
 				$primary_urls['e3'] ?? home_url( '/case-study-solar-leadgenerierung/' ),
 				$primary_urls['seo'] ?? home_url( '/wordpress-agentur-hannover/#zusammenarbeit' ),
 				$primary_urls['wartung'] ?? home_url( '/wordpress-agentur-hannover/#zusammenarbeit' ),
 				$primary_urls['cro'] ?? home_url( '/#angebot-funnel' ),
-				function_exists( 'nexus_get_wgos_asset_anchor_url' ) ? nexus_get_wgos_asset_anchor_url( 'tracking-audit' ) : home_url( '/wordpress-agentur-hannover/#zusammenarbeit' ),
+				home_url( '/ga4-tracking-setup/' ),
 			],
 			$solar_cluster_urls
 		);
@@ -325,7 +312,7 @@ function nexus_get_seo_cockpit_template_internal_links( $post_id, $post = null )
 				$primary_urls['e3'] ?? home_url( '/case-study-solar-leadgenerierung/' ),
 				$primary_urls['agentur'] ?? home_url( '/wordpress-agentur-hannover/' ),
 				$primary_urls['tracking'] ?? home_url( '/ga4-tracking-setup/' ),
-				$primary_urls['cwv'] ?? home_url( '/wgos-assets/cwv-optimierung/' ),
+				$primary_urls['cwv'] ?? home_url( '/wordpress-agentur-hannover/#zusammenarbeit' ),
 				$primary_urls['cro'] ?? home_url( '/#angebot-funnel' ),
 				$primary_urls['performance_marketing'] ?? home_url( '/performance-marketing/' ),
 			],
@@ -355,7 +342,7 @@ function nexus_get_seo_cockpit_template_internal_links( $post_id, $post = null )
 			$links,
 			[
 				$primary_urls['audit'] ?? home_url( '/solar-waermepumpen-leadgenerierung/#marktcheck' ),
-				$primary_urls['wgos'] ?? home_url( '/wordpress-agentur-hannover/#zusammenarbeit' ),
+				$primary_urls['agentur'] ?? home_url( '/wordpress-agentur-hannover/#zusammenarbeit' ),
 				$contact_url,
 				$primary_urls['e3'] ?? home_url( '/case-study-solar-leadgenerierung/' ),
 				$primary_urls['whitelabel'] ?? home_url( '/whitelabel-retainer/' ),
@@ -551,7 +538,6 @@ function nexus_get_seo_cockpit_sitewide_source_definitions() {
 	$blog_url       = $primary_urls['blog'] ?? home_url( '/blog/' );
 	$audit_url      = $primary_urls['audit'] ?? home_url( '/solar-waermepumpen-leadgenerierung/#marktcheck' );
 	$cases_url      = $primary_urls['results'] ?? home_url( '/case-study-solar-leadgenerierung/' );
-	$wgos_url       = $primary_urls['wgos'] ?? home_url( '/wordpress-agentur-hannover/#zusammenarbeit' );
 	$e3_url         = $primary_urls['e3'] ?? home_url( '/case-study-solar-leadgenerierung/' );
 	$energy_url     = $routes['energy'] ?? ( $primary_urls['energy'] ?? home_url( '/solar-waermepumpen-leadgenerierung/' ) );
 	$freelancer_url = $routes['freelancer'] ?? ( $primary_urls['freelancer'] ?? home_url( '/' ) );

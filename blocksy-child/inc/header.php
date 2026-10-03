@@ -210,8 +210,6 @@ function nexus_strip_side_funnel_nav_items( $items, $args ) {
 		'/core-web-vitals/',
 		'/conversion-rate-optimization/',
 		'/wordpress-seo-hannover/',
-		'/wordpress-growth-operating-system/',
-		'/wgos-systemlandkarte/',
 		'/kostenlose-tools/',
 		'/tools/',
 		'/website-performance-analyse/',

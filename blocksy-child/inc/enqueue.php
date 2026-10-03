@@ -76,7 +76,7 @@ function hu_enqueue_assets() {
 	$js_uri  = get_stylesheet_directory_uri() . '/assets/js/';
 	$queried_id = get_queried_object_id();
 	$is_seo_cornerstone_template = $queried_id && 'page-seo-cornerstone.php' === get_page_template_slug( $queried_id );
-	$is_cluster_page = function_exists( 'nexus_is_wgos_cluster_page' ) && nexus_is_wgos_cluster_page();
+	$is_cluster_page = function_exists( 'nexus_is_service_cluster_page' ) && nexus_is_service_cluster_page();
 	$is_checkfox_decision = is_singular( 'post' ) && $queried_id && 'checkfox-solar-waermepumpe-einordnung' === get_post_field( 'post_name', $queried_id );
 	$is_sst_route = is_page( 'server-side-tracking-b2b' ) || is_page_template( 'page-server-side-tracking-b2b.php' );
 	$is_case_study_route = is_page( [ 'case-study-solar-leadgenerierung', 'e3-new-energy' ] ) || is_page_template( 'page-case-study-solar.php' );
@@ -240,7 +240,6 @@ function hu_enqueue_assets() {
 	 * homepage-art-v3.css, homepage-flow.css und homepage-redesign.js — rund
 	 * 139 KB CSS, von denen die neue Seite keine Regel mehr benutzt.
 	 * homepage.css und homepage-redesign.css bleiben im Repo: Agentur-,
-	 * WGOS- und Case-Routen weiter unten in dieser Datei haengen daran.
 	 */
 
 	// ── B) Blog archive surfaces ──────────────────────────────────
@@ -263,7 +262,6 @@ function hu_enqueue_assets() {
 	// ── D) Einzelbeitrag (Blog Post) ──────────────────────────────
 	if ( is_singular( 'post' ) || $is_seo_cornerstone_template ) {
 		hu_enqueue_css( 'nexus-single-css', 'single.css', [ 'nexus-design-system' ] );
-		hu_enqueue_css( 'nexus-wgos-bridge-css', 'wgos-bridge.css', [ 'nexus-single-css' ] );
 	}
 
 	if ( is_singular( 'post' ) ) {
@@ -509,50 +507,6 @@ function hu_enqueue_assets() {
 		hu_enqueue_js( 'nexus-seo-subpage-sticky-cta-js', 'seo-subpage-sticky-cta.js', [] );
 	}
 
-	// ── G) Template: WGOS Client Dashboard ─────────────────────────
-	if ( is_page_template( 'page-wgos.php' ) || is_page( 'wgos' ) || is_page( 'wordpress-growth-operating-system' ) ) {
-		hu_enqueue_css( 'nexus-home-css', 'homepage.css', [ 'nexus-design-system' ] );
-		hu_enqueue_css( 'nexus-wgos-css', 'wgos.css', [ 'nexus-home-css' ] );
-		hu_enqueue_js( 'nexus-wgos-js', 'wgos.js', [ 'nexus-core-js' ] );
-	}
-
-	// ── G2) Template: Baustein-Übersicht ──────────────────────────
-	if ( is_page_template( 'page-wgos-assets.php' ) || is_page( 'wgos-systemlandkarte' ) || is_page( 'wgos-asset-hub' ) || is_page( 'systemlandkarte' ) ) {
-		hu_enqueue_css( 'nexus-home-css', 'homepage.css', [ 'nexus-design-system' ] );
-		hu_enqueue_css( 'nexus-wgos-css', 'wgos.css', [ 'nexus-home-css' ] );
-		hu_enqueue_css( 'nexus-wgos-assets-css', 'wgos-assets.css', [ 'nexus-wgos-css' ] );
-		hu_enqueue_js( 'nexus-wgos-js', 'wgos.js', [ 'nexus-core-js' ] );
-
-		$explorer_path = get_stylesheet_directory() . '/assets/js/wgos-asset-explorer.js';
-
-		if ( file_exists( $explorer_path ) ) {
-			hu_enqueue_js( 'nexus-wgos-asset-explorer-js', 'wgos-asset-explorer.js', [ 'wp-element' ] );
-
-			wp_add_inline_script(
-				'nexus-wgos-asset-explorer-js',
-				'window.WGOSAssetData = ' . wp_json_encode( nexus_get_wgos_asset_explorer_payload(), JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE ) . ';' .
-				'window.NexusWgosExplorerConfig = ' . wp_json_encode( [ 'links' => nexus_get_wgos_asset_explorer_links() ], JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE ) . ';',
-				'before'
-			);
-		}
-	}
-
-	// ── G3) Template: WGOS Asset Detail ───────────────────────────
-	if ( is_singular( 'wgos_asset' ) ) {
-		hu_enqueue_css( 'nexus-home-css', 'homepage.css', [ 'nexus-design-system' ] );
-		hu_enqueue_css( 'nexus-wgos-css', 'wgos.css', [ 'nexus-home-css' ] );
-
-		wp_add_inline_style(
-			'blocksy-child-style',
-			'
-			.single-wgos_asset .entry-header .entry-title,
-			.single-wgos_asset .ct-page-title {
-				display: none !important;
-			}
-		'
-		);
-	}
-
 	// ── G4) Template: Glossar Hub ─────────────────────────────────
 	if ( $is_glossary_hub ) {
 		hu_enqueue_css( 'nexus-glossary-css', 'glossary.css', [ 'nexus-system-css' ] );
@@ -604,7 +558,7 @@ function hu_enqueue_assets() {
 	// Seit 2026-09-22 Gutachten-Layout: performance.css ist nur noch ein
 	// kleines Delta auf system.css. Die Route ist Cluster-Route (Meta und FAQ
 	// kommen aus dem Register), rendert aber page-performance.php.
-	if ( is_page_template( 'page-performance.php' ) || is_page( 'performance-marketing' ) || ( function_exists( 'nexus_get_current_wgos_cluster_route_slug' ) && 'performance-marketing' === nexus_get_current_wgos_cluster_route_slug() ) ) {
+	if ( is_page_template( 'page-performance.php' ) || is_page( 'performance-marketing' ) || ( function_exists( 'nexus_get_current_service_cluster_route_slug' ) && 'performance-marketing' === nexus_get_current_service_cluster_route_slug() ) ) {
 		hu_enqueue_css( 'nexus-performance-css', 'performance.css', [ 'nexus-system-css' ] );
 	}
 

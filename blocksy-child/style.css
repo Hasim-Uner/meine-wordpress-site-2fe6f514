@@ -268,9 +268,6 @@ h1, h2, h3, h4, h5, h6 {
 .milestone-title,
 .value-story-title,
 .cta-headline,
-.wgos-h2,
-.wgos-hero__title,
-.wgos-credit-phase__title,
 .journey-headline,
 .audit-usp-headline,
 .usp-title,
@@ -570,8 +567,6 @@ a[href*="customer-journey-audit"]:focus,
 a[href*="customer-journey-audit"]:focus-visible,
 a[href*="growth-audit"]:focus,
 a[href*="growth-audit"]:focus-visible,
-a[href*="wordpress-growth-operating-system"]:focus,
-a[href*="wordpress-growth-operating-system"]:focus-visible,
 .nav-cta-button a:focus,
 .nav-cta-button a:focus-visible,
 button:focus,
@@ -590,13 +585,11 @@ button:focus-visible {
     outline-offset: 2px;
 }
 
-/* ACCESSIBILITY FIX 1c: Focus-Styling für Anker-Navigation auf WGOS-Seite */
+/* ACCESSIBILITY FIX 1c: Focus-Styling für Anker-Navigation */
 .ct-scrollspy-nav a:focus,
 .ct-scrollspy-nav a:focus-visible,
 .wp-block-navigation a:focus,
-.wp-block-navigation a:focus-visible,
-.wgos-smart-nav a:focus,
-.wgos-smart-nav a:focus-visible {
+.wp-block-navigation a:focus-visible {
     outline: 2px solid var(--stempel);
     outline-offset: 2px;
 }
@@ -612,12 +605,9 @@ button:focus-visible {
     color: #E8C84A;
 }
 
-/* === WGOS FIX 3: Credits-Tabellen mobil horizontal scrollbar machen === */
+/* === Tabellen mobil horizontal scrollbar machen === */
 @media (max-width: 768px) {
-    .wp-block-table table,
-    .credits-table table,
-    .wgos-table-wrap table,
-    .wgos-credits-table {
+    .wp-block-table table {
         display: block;
         overflow-x: auto;
         -webkit-overflow-scrolling: touch;
@@ -625,17 +615,14 @@ button:focus-visible {
     }
 
     .wp-block-table table td,
-    .wp-block-table table th,
-    .wgos-credits-table td,
-    .wgos-credits-table th {
+    .wp-block-table table th {
         min-width: 120px;
         font-size: 13px;
         padding: 8px 10px;
     }
 
-    /* WGOS FIX 3b: Sichtbarer Scrollhinweis vor Tabellen auf Mobile */
-    .wp-block-table::before,
-    .wgos-table-wrap::before {
+    /* Tabellen: Sichtbarer Scrollhinweis vor Tabellen auf Mobile */
+    .wp-block-table::before {
         content: "\2190 Tabelle scrollbar \2192";
         display: block;
         font-size: 11px;
@@ -665,32 +652,6 @@ body.home .wp-hero .wp-btn[href*="case-studies"]:hover {
     color: #999 !important;
 }
 
-/* === WGOS FIX 5: Garantie-Reihenfolge per CSS (Punkte vor Disclaimer) === */
-.wgos-guarantee-section,
-[class*="garantie"],
-[id*="garantie"],
-#garantie .wgos-container {
-    display: flex;
-    flex-direction: column;
-}
-
-/* WGOS FIX 5b: Garantie-Punkte priorisieren */
-#garantie .wgos-checklist--guarantee {
-    order: 2;
-}
-
-/* WGOS FIX 5c: Disclaimer-/Erwartungs-Text ans Ende stellen */
-.wgos-guarantee-disclaimer,
-.guarantee-note,
-em[class*="disclaimer"],
-#garantie .wgos-expectation,
-#garantie .wgos-prose {
-    order: 99;
-    margin-top: 16px;
-    color: #444;
-    font-size: 12px;
-}
-
 /* === ACCESSIBILITY HELPER: Screenreader-only Textklasse === */
 .sr-only {
     position: absolute;
@@ -704,29 +665,7 @@ em[class*="disclaimer"],
     border: 0;
 }
 
-/* === WGOS FIX 3c: CSS-Fallback, falls Counter-Inhalt leer bleibt === */
-.wgos-trust-value[data-fallback]:empty::before {
-    content: attr(data-fallback);
-}
-
-/* === WGOS: Social Proof Strip Mobile === */
-@media (max-width: 600px) {
-  .wgos-proof-strip {
-    gap: 20px !important;
-  }
-  .wgos-proof-strip .proof-item {
-    border-right: none !important;
-    border-bottom: 1px solid rgba(255,255,255,0.06) !important;
-    padding: 16px 0 !important;
-    max-width: 100% !important;
-    width: 100% !important;
-  }
-  .wgos-proof-strip .proof-item:last-child {
-    border-bottom: none !important;
-  }
-}
-
-/* === WGOS: Credits-Tabelle Mobile scrollbar === */
+/* === Tabellen Mobile scrollbar === */
 @media (max-width: 768px) {
   .wp-block-table table {
     display: block;
@@ -751,21 +690,11 @@ em[class*="disclaimer"],
   }
 }
 
-/* === WGOS: Modul-Text nach Mindmap kürzen === */
-/* Die langen Modul-Beschreibungen werden auf 2 Zeilen begrenzt
-   wenn die Mindmap aktiv ist – verhindert Redundanz */
-.wgos-module-text-block {
-  font-size: 14px;
-  line-height: 1.65;
-  color: #888;
-}
-
 /* === ACCESSIBILITY: Focus States === */
 .wp-block-button__link:focus,
 .ct-button:focus,
 a[href*="customer-journey-audit"]:focus,
 a[href*="growth-audit"]:focus,
-a[href*="wordpress-growth-operating-system"]:focus,
 button:focus {
   outline: 2px solid var(--stempel);
   outline-offset: 3px;
@@ -786,8 +715,7 @@ button:focus {
 }
 
 /* Light-theme contrast for the global mobile table scroll hint.
-   WGOS keeps the component rules; the global shell owns only the readable hint. */
-:root[data-nx-theme='light'] .wp-block-table::before,
-:root[data-nx-theme='light'] .wgos-table-wrap::before {
+   The global shell owns the readable hint. */
+:root[data-nx-theme='light'] .wp-block-table::before {
   color: var(--text-secondary) !important;
 }

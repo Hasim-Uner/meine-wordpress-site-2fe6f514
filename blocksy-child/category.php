@@ -64,7 +64,7 @@ $category_deep_link_map = [
 		[ 'label' => 'CPL/CPO-Rechnung', 'url' => $cpl_url ],
 	],
 	'wordpress-performance' => [
-		[ 'label' => 'Core Web Vitals', 'url' => $primary_urls['cwv'] ?? home_url( '/wgos-assets/cwv-optimierung/' ) ],
+		[ 'label' => 'Core Web Vitals', 'url' => $primary_urls['cwv'] ?? home_url( '/wordpress-agentur-hannover/#zusammenarbeit' ) ],
 		[ 'label' => 'Technisches SEO', 'url' => $seo_url ],
 	],
 	'tracking' => [

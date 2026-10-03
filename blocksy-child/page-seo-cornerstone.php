@@ -12,7 +12,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 }
 
 $seo_url          = function_exists( 'nexus_get_primary_public_url' ) ? nexus_get_primary_public_url( 'seo', home_url( '/wordpress-agentur-hannover/#zusammenarbeit' ) ) : home_url( '/wordpress-agentur-hannover/#zusammenarbeit' );
-$cwv_url          = function_exists( 'nexus_get_primary_public_url' ) ? nexus_get_primary_public_url( 'cwv', home_url( '/wgos-assets/cwv-optimierung/' ) ) : home_url( '/wgos-assets/cwv-optimierung/' );
+$cwv_url          = function_exists( 'nexus_get_primary_public_url' ) ? nexus_get_primary_public_url( 'cwv', home_url( '/wordpress-agentur-hannover/#zusammenarbeit' ) ) : home_url( '/wordpress-agentur-hannover/#zusammenarbeit' );
 $tracking_url     = function_exists( 'nexus_get_primary_public_url' ) ? nexus_get_primary_public_url( 'tracking', home_url( '/ga4-tracking-setup/' ) ) : home_url( '/ga4-tracking-setup/' );
 $cro_url          = function_exists( 'nexus_get_primary_public_url' ) ? nexus_get_primary_public_url( 'cro', home_url( '/#angebot-funnel' ) ) : home_url( '/#angebot-funnel' );
 $seo_category_url = function_exists( 'nexus_get_primary_public_url' ) ? nexus_get_primary_public_url( 'seo_category', home_url( '/category/seo/' ) ) : home_url( '/category/seo/' );
@@ -419,15 +419,7 @@ get_header();
 			</article>
 		</div>
 
-		<?php
-		if ( function_exists( 'nexus_get_wgos_blog_asset_bridge' ) && function_exists( 'nexus_render_wgos_blog_asset_bridge' ) ) {
-			$bridge = nexus_get_wgos_blog_asset_bridge();
 
-			if ( is_array( $bridge ) ) {
-				echo nexus_render_wgos_blog_asset_bridge( $bridge ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
-			}
-		}
-		?>
 
 		<?php
 		$article_url         = get_permalink();

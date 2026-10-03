@@ -236,7 +236,7 @@ Abschnitt anzuhängen; der Verlauf gehört in Commit-Nachrichten.
 - **`/performance-marketing/`** (`page-performance.php`, Gutachten-Layout):
   Performance Marketing für B2B in der Reihenfolge Messung → Zielseite →
   Budget, mit eigenem Weg für Performance-Agenturen zu White-Label. Titel,
-  Beschreibung und FAQ kommen aus `nexus_get_wgos_cluster_page_data()`,
+  Beschreibung und FAQ kommen aus `nexus_get_service_cluster_page_data()`,
   Service-Schema aus `inc/org-schema.php`. Query-Owner für
   `performance marketing b2b`.
 - **`/landingpage-erstellen-lassen/`** (`page-landingpage-erstellen-lassen.php`,
@@ -444,11 +444,11 @@ Abschnitt anzuhängen; der Verlauf gehört in Commit-Nachrichten.
   Fehlern. Registrierte Detailseiten rendern ihre Inhalte und verwandten Links
   beim Aufruf, damit frühere Sync-Fallbacks nicht im HTML stehen bleiben.
   Der Sync aktualisiert weiterhin Posts, Metadaten und seine Prüfmarker;
-  Das Register enthält 60 Definitionen, jeweils zwölf in Anfragen, Ladezeit &
-  Technik, Tracking, SEO und Conversion. 59 Detailseiten erlauben Indexierung;
-  CTA-Hierarchie bleibt `noindex, follow`. Fünf Alias-Ziele bleiben erhalten:
+  Das Register enthält repo-seitig 68 Definitionen, mindestens zwölf je Bereich
+  in Anfragen, Ladezeit & Technik, Tracking, SEO und Conversion. 59 Detailseiten erlauben Indexierung;
+  CTA-Hierarchie und die acht neu übernommenen Fachbegriffe bleiben `noindex, follow`. Fünf Alias-Ziele bleiben erhalten:
   vier sind sichtbare Themenverweise, der lokale Agentur-Alias ist ausgeblendet.
-  Damit enthält die Übersicht 64 Einträge. Definitionsfragen und kommerzielle
+  Damit enthält die Übersicht repo-seitig 72 Einträge. Definitionsfragen und kommerzielle
   Suchintentionen sind in `docs/seo/query-ownership.csv` getrennt;
   die Entscheidung erläutert `docs/seo/glossar-indexierung.md`.
   Neue Begriffe werden in `inc/glossary/glossary-registry-data.php` gepflegt;
@@ -456,17 +456,24 @@ Abschnitt anzuhängen; der Verlauf gehört in Commit-Nachrichten.
   weiterhin die bestehenden Blog-Verlinkungen. Abschlussziel: Projektanfrage.
 - **Weitere öffentliche Seiten:** `/impressum/`, `/datenschutz/`
   (Kontaktdaten aus dem Messaging-Canon).
-- **Intern:** `page-wgos.php` ist ein geschütztes Kunden-Dashboard
-  (`noindex, nofollow`); `wgos_asset`-Seiten unter `/wgos-assets/<slug>/` sind
-  `noindex, follow`; das Kundenportal (`template-portal.php`) zeigt nur
-  hinterlegte Daten; `/startseite-wow/` ist eine `noindex`-Testroute.
-  Das Workflow-Angebot `/wgos-assets/llm-workflow-automatisierung/` ist aus
-  dem Register entfernt (Repo 2026-10-03, Livegang offen). Der nächste
-  Versions-Sync verschiebt ausschließlich den zugehörigen themeverwalteten
-  Beitrag in den Papierkorb; andere Beiträge und Anfragewege bleiben bestehen.
+- **Stillgelegte Asset-Struktur (Repo 2026-10-03; Livegang ausstehend):**
+  CPT, Templates, Explorer, Synchronisierung, lokale ACF-Feldgruppe und
+  Dashboard-Zugriff sind entfernt. `inc/legacy-system-retirement.php` löscht
+  den kompletten alten CPT-Bestand einschließlich Papierkorb und Post-Meta,
+  alte Hub-Seiten und ausschließlich zugehörige importierte ACF/SCF-Definitionen.
+  Gemeinsame Feldgruppen behalten ihre übrigen Standortregeln und Felder;
+  vorhandene Benutzer behalten ihre anderen Rollen, reine ehemalige Kunden
+  bekommen `subscriber`. Der Lauf erfolgt erst nach erfolgreichem Glossar-Sync,
+  schreibt den Abschlussmarker nur bei vollständigem Erfolg und versucht
+  fehlgeschlagene Löschungen erneut. Alte Editor-Links und Shortcodes werden
+  bereinigt. Einzelne passende Begriffe erhalten direkte 301-Ziele;
+  Hub, Pakete ohne Ersatz und unbekannte alte Asset-Slugs liefern 410.
+  Zuordnung und Live-Prüfung: `docs/decisions/asset-system-retirement.md`.
+- **Intern:** Das Kundenportal (`template-portal.php`) zeigt hinterlegte Daten;
+  `/startseite-wow/` ist eine `noindex`-Testroute.
 
 - **Seitenanlage:** Theme-eigene Seiten stehen in `nexus_get_provisioned_pages()`
-  (`inc/helpers.php`); Kontakt, Glossar, WGOS-Hub und Cluster-Seiten haben eigene
+  (`inc/helpers.php`); Kontakt, Glossar und Service-Seiten haben eigene
   Funktionen in ihrer Datei. Seit 2026-09-26 laufen alle nur noch einmal je
   Deploy (`.nexus-deploy-sha`, Option `nexus_route_pages_stamp`) statt bei jedem
   ungecachten Aufruf. Eine im Editor gelöschte Seite kommt mit dem nächsten Deploy
@@ -625,8 +632,8 @@ Abschnitt anzuhängen; der Verlauf gehört in Commit-Nachrichten.
   `/wordpress-wartung-hannover/`, `/seo/`, `/kostenlose-tools/`, `/tools/`,
   `/website-performance-analyse/`, `/roi-rechner/`, `/audit-linkedin/`,
   `/shopify-wartungsvertrag/`.
-- Alte WGOS-Pfade bleiben `noindex` bzw. geschützt, solange sie intern als
-  Dashboard- oder Asset-Pfade existieren.
+- Die ehemaligen Asset-Pfade erhalten direkte 301-Ziele oder 410 aus
+  `inc/legacy-system-retirement.php`, keine Dashboard- oder Asset-Fallbacks.
 
 ## Offen und manuell
 
