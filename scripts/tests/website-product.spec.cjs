@@ -37,15 +37,18 @@ for (const width of [320, 360, 768, 1440]) {
     const priceFits = await page.locator('.formel .betrag small').evaluate(el => el.getBoundingClientRect().right <= el.closest('.formel').getBoundingClientRect().right);
     expect(priceFits).toBe(true);
     const references = page.locator('#beleg .aw-projekt');
-    await expect(references).toHaveCount(4);
+    await expect(references).toHaveCount(3);
+    await expect(references.nth(0)).toContainText('E3 New Energy');
+    await expect(references.nth(1)).toContainText('hasimuener.org');
+    await expect(references.nth(2)).toContainText('civaka-azad.org');
     for (const image of await references.locator('.bild img').all()) {
       await image.scrollIntoViewIfNeeded();
       await expect.poll(() => image.evaluate(el => el.complete && el.naturalWidth > 0)).toBe(true);
     }
     await expect(page.locator('#beleg')).not.toContainText(/150\s*€|22\s*€|85\s*%|1[.,]750|15\s*%/);
     await expect(page.locator('#beleg a[href*="case-study-solar"]')).toHaveCount(0);
-    await expect(references.last()).toContainText('E3 New Energy');
-    await expect(references.last().locator('.aw-projekt-flow li')).toHaveText(['Klick', 'Landingpage', 'Formular', 'Tracking', 'CRM']);
+    await expect(page.locator('#beleg a[href="https://hasimuener.de/"]')).toHaveCount(0);
+    await expect(references.first().locator('.aw-projekt-flow li')).toHaveText(['Klick', 'Landingpage', 'Formular', 'Tracking', 'CRM']);
     await page.locator('#beleg').screenshot({
       path: test.info().outputPath(`website-references-${width}.png`),
       style: '.leiste, #leiste { visibility: hidden !important; }',
