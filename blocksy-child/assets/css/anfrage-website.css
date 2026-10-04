@@ -1320,7 +1320,7 @@
 .anfrage-website .aw-qualitaet strong { display: block; font-size: 1.05rem; margin-top: var(--s1); }
 .anfrage-website .aw-qualitaet .mono { color: var(--stempel); }
 .anfrage-website .aw-qualitaet p { font-size: var(--grad-klein); color: var(--grau); margin-top: var(--s0); }
-.anfrage-website .aw-konfigurator { scroll-margin-top: calc(var(--header-height, 80px) + var(--s2)); padding-top: var(--s5); }
+.anfrage-website .aw-konfigurator { scroll-margin-top: calc(var(--leiste-h, 54px) + var(--s1)); padding-top: 0; margin-top: var(--s5); }
 .anfrage-website .aw-konfigurator > .wrap { max-width: 1440px; }
 .anfrage-website .aw-config-heading { display: flex; align-items: end; justify-content: space-between; gap: var(--s2); margin-bottom: var(--s2); }
 .anfrage-website .aw-config-heading .mono { color: var(--stempel); margin-bottom: var(--s1); }
@@ -1331,7 +1331,7 @@
 .anfrage-website .aw-config-controls { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); min-width: 0; }
 .anfrage-website .aw-config-column { min-width: 0; }
 .anfrage-website .aw-config-column + .aw-config-column { border-left: 1px solid var(--haar); }
-.anfrage-website .aw-feld { min-width: 0; margin: 0; padding: var(--s2); border: 0; }
+.anfrage-website .aw-feld { min-width: 0; margin: 0; padding: var(--s1) var(--s2); border: 0; }
 .anfrage-website .aw-feld + .aw-feld { border-top: 1px solid var(--haar); }
 .anfrage-website .aw-feld legend { float: left; width: 100%; padding: 0; margin-bottom: var(--s1); font-size: 1rem; font-weight: 600; display: flex; gap: var(--s1); align-items: baseline; }
 .anfrage-website .aw-feld > :not(legend) { clear: both; }
@@ -1369,24 +1369,27 @@
 .anfrage-website .aw-standard-kurz li { display: flex; gap: var(--s1); margin-top: var(--s0); }
 .anfrage-website .aw-standard-kurz li::before { content: "✓"; color: var(--stempel); }
 .anfrage-website .aw-standard-kurz a { color: var(--grau); font-size: .78rem; }
-.anfrage-website .aw-design-details { display: grid; grid-template-columns: minmax(0, 1fr) 92px; align-items: center; gap: var(--s0) var(--s1); padding-top: var(--s1); }
+.anfrage-website .aw-design-details { display: grid; grid-template-columns: minmax(0, 1fr) 128px; align-items: center; gap: var(--s0) var(--s1); padding-top: var(--s1); }
 .anfrage-website .aw-design-details label { font-size: .8rem; font-weight: 600; }
 .anfrage-website .aw-design-details select { width: 100%; min-height: 44px; padding: var(--s0); color: var(--tinte); background: var(--papier); border: 1px solid var(--haar); border-radius: var(--r1); font: .82rem var(--mono); }
 .anfrage-website .aw-design-details p { grid-column: 1 / -1; margin-top: 0; }
 .anfrage-website .aw-zusammenfassung { min-width: 0; padding: var(--s2) var(--s3); display: flex; flex-direction: column; border-radius: 0; }
-.anfrage-website .aw-zusammenfassung h3 { font-size: 1.5rem; margin-top: var(--s2); }
+.anfrage-website .aw-zusammenfassung h3 { font-size: 1.4rem; margin-top: var(--s1); }
 .anfrage-website .aw-summary-sub { font-size: .82rem; color: var(--grau); margin-top: var(--s0); }
-.anfrage-website .aw-preispositionen { margin-top: var(--s2); font-size: .82rem; }
-.anfrage-website .aw-preispositionen > div { display: flex; align-items: baseline; justify-content: space-between; gap: var(--s1); padding-block: var(--s0); }
+.anfrage-website .aw-preispositionen { margin: var(--s2) 0 0; font-size: .82rem; }
+.anfrage-website .aw-preispositionen > div { display: flex; align-items: baseline; justify-content: space-between; gap: var(--s1); padding-block: .12rem; }
 .anfrage-website .aw-preispositionen dd { margin: 0; flex-shrink: 0; font: var(--mono-l) var(--mono); }
-.anfrage-website .summe { margin-top: var(--s2); padding-top: var(--s2); border-top: 1px solid var(--haar); }
-.anfrage-website .summe .gesamt { display: flex; flex-wrap: wrap; align-items: baseline; column-gap: var(--s1); font-size: clamp(2.2rem, 3.2vw, 3rem); margin-top: var(--s0); line-height: 1.15; }
+.anfrage-website .summe { display: grid; grid-template-columns: minmax(0, 1.2fr) minmax(100px, 1fr); gap: var(--s1); margin-top: var(--s2); padding-top: var(--s2); border-top: 1px solid var(--haar); }
+.anfrage-website .summe > .mono { grid-column: 1; align-self: end; }
+.anfrage-website .summe > .gesamt { grid-column: 1; grid-row: 2; align-self: start; }
+.anfrage-website .summe > .aw-angebot-hinweis, .anfrage-website .summe > .btn, .anfrage-website .summe > .aw-hinweis { grid-column: 1 / -1; margin-top: 0; }
+.anfrage-website .summe .gesamt { display: flex; flex-wrap: wrap; align-items: baseline; column-gap: var(--s1); font-size: clamp(2rem, 2.6vw, 2.5rem); margin-top: 0; line-height: 1.15; }
 .anfrage-website .summe .gesamt small { font: var(--mono-m) var(--mono); color: var(--grau); }
-.anfrage-website .rechnung { font: var(--mono-m) var(--mono); color: var(--grau); margin-top: var(--s1); line-height: 1.6; }
+.anfrage-website .rechnung { display: none; font: var(--mono-m) var(--mono); color: var(--grau); margin-top: var(--s1); line-height: 1.6; }
 .anfrage-website .aw-angebot-hinweis { font-size: .78rem; color: var(--stempel); margin-top: var(--s1); }
-.anfrage-website .aw-zeitkalkulation { margin-block: var(--s2); display: grid; gap: var(--s0); }
+.anfrage-website .aw-zeitkalkulation { grid-column: 2; grid-row: 1 / span 2; align-self: start; display: grid; gap: var(--s0); margin: 0; padding-left: var(--s1); border-left: 1px solid var(--haar); }
 .anfrage-website .aw-zeitkalkulation > span { font-size: .8rem; color: var(--grau); }
-.anfrage-website .aw-zeitkalkulation b { font-size: 1.35rem; font-weight: 600; font-variant-numeric: tabular-nums; }
+.anfrage-website .aw-zeitkalkulation b { font-size: 1.2rem; font-weight: 600; font-variant-numeric: tabular-nums; }
 .anfrage-website .aw-zeitkalkulation a { font-size: .78rem; color: var(--grau); }
 .anfrage-website .aw-zusammenfassung .btn { display: flex; justify-content: space-between; width: 100%; min-height: 48px; padding-inline: var(--s2); font-size: var(--mono-m); letter-spacing: .06em; }
 .anfrage-website .aw-eigentum { margin-top: auto; padding-top: var(--s2); font-size: .76rem; line-height: 1.5; color: var(--grau); }
@@ -1447,9 +1450,12 @@
   .anfrage-website .aw-config-controls { grid-template-columns: minmax(0, 1fr); }
   .anfrage-website .aw-config-column + .aw-config-column { border-left: 0; border-top: 1px solid var(--haar); }
   .anfrage-website .aw-zusammenfassung { display: flex; gap: 0; padding: var(--s2); }
-  .anfrage-website .aw-zusammenfassung .summe { margin-top: var(--s2); padding-top: var(--s2); border-top: 1px solid var(--haar); }
+  .anfrage-website .aw-zusammenfassung .summe { display: grid; grid-template-columns: minmax(0, 1.2fr) minmax(100px, 1fr); gap: var(--s1); margin-top: var(--s2); padding-top: var(--s2); border-top: 1px solid var(--haar); }
+.anfrage-website .summe > .mono { grid-column: 1; align-self: end; }
+.anfrage-website .summe > .gesamt { grid-column: 1; grid-row: 2; align-self: start; }
+.anfrage-website .summe > .aw-angebot-hinweis, .anfrage-website .summe > .btn, .anfrage-website .summe > .aw-hinweis { grid-column: 1 / -1; margin-top: 0; }
   .anfrage-website .aw-zusammenfassung .aw-summary-sub { margin-top: var(--s0); }
-  .anfrage-website .aw-zusammenfassung .gesamt { font-size: 2.5rem; }
+  .anfrage-website .aw-zusammenfassung .gesamt { font-size: 2.2rem; }
   .anfrage-website .aw-option { grid-template-columns: 20px minmax(0, 1fr); }
   .anfrage-website .aw-option-preis { grid-column: 2; }
   .anfrage-website .gruppen, .anfrage-website .aw-zeitpositionen { grid-template-columns: minmax(0, 1fr); }

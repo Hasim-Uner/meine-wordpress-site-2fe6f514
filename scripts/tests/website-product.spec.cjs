@@ -49,6 +49,7 @@ for (const width of [360, 768, 1440]) {
     await page.locator('#plus').focus(); await page.keyboard.press('Space');
     await expect(page.locator('#weitere')).toHaveText('1');
     await expect(page.locator('#bauzeit')).toHaveText(workingDays(4));
+    await page.locator('#angebot').evaluate(el=>el.scrollIntoView({block:'start',behavior:'instant'}));
     if(width >= 1100) await expect(page.locator('#leiste')).toBeHidden();
     else await expect(page.locator('#leiste')).toBeVisible();
     await page.locator('[data-website-cta="abschluss"]').scrollIntoViewIfNeeded();
@@ -244,16 +245,16 @@ for (const width of [320, 390, 768, 1440]) {
   });
 }
 
-for(const width of [1366,1440]) {
+for(const [width,height] of [[1366,768],[1440,900]]) {
   test(`configuration choices and total fit in one desktop view at ${width}`, async ({page})=>{
-    await open(page,width);
+    await open(page,width);await page.setViewportSize({width,height});
     await page.locator('#screendesign').check();await page.locator('#tracking').check();await page.locator('#crm').check();await page.locator('#dashboard').check();
     await page.locator('#angebot').evaluate(el=>el.scrollIntoView({block:'start',behavior:'instant'}));
     const bounds=await page.locator('.aw-config-grid').boundingBox();
-    expect(bounds.y).toBeGreaterThanOrEqual(0);expect(bounds.y+bounds.height).toBeLessThanOrEqual(900);
+    expect(bounds.y).toBeGreaterThanOrEqual(0);expect(bounds.y+bounds.height).toBeLessThanOrEqual(height);
     for(const id of ['plus','texte','design-basis','design-vorhanden','screendesign','design-layouts','tracking','crm','dashboard','gesamt','bauzeit','cta-angebot']) {
       const rect=await page.locator('#'+id).boundingBox();
-      expect(rect.y, id+' top').toBeGreaterThanOrEqual(0);expect(rect.y+rect.height,id+' bottom').toBeLessThanOrEqual(900);
+      expect(rect.y, id+' top').toBeGreaterThanOrEqual(0);expect(rect.y+rect.height,id+' bottom').toBeLessThanOrEqual(height);
     }
     await expect(page.locator('#leiste')).toBeHidden();
     await page.screenshot({path:test.info().outputPath('website-configurator-'+width+'.png')});

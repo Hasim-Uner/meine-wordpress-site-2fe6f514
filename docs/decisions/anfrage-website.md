@@ -66,7 +66,7 @@ und bekannte Summe ausdrücklich ohne Dashboard, vollständiges Angebot vor Auft
 Hero → kompakter Konfigurator → aufklappbarer Lieferumfang und Erweiterungen
 → Qualitätsvergleich → Belege → Zeitbeiträge → FAQ → Anfrage.
 Desktop: Seiten/Texte, Design/Extras und Preis/Zeit nebeneinander. Zielprüfung:
-bei 1366 und 1440 Pixel Breite und 900 Pixel Höhe sämtliche Auswahlfelder,
+bei 1366 × 768 und 1440 × 900 Pixel sämtliche Auswahlfelder,
 Layoutzahl und Anfrage-CTA sichtbar. Tablet/Mobil stapeln die Bereiche und
 halten eine bearbeitbare Preis-/Zeitleiste bereit. Keine künstliche Verkleinerung
 aller Inhalte auf eine einzige Handyansicht. Technische Details bleiben aufklappbar.

@@ -52,7 +52,7 @@
         $('#zeit-umfang').textContent = 'Ihr Umfang: ' + state.seiten + (state.seiten === 1 ? ' Seite' : ' Seiten') + ' · ' + (state.art === 'relaunch' ? 'Relaunch' : 'Neubau');
         $('#bauzeit').textContent = duration;
         $('#hero-bauzeit').textContent = 'Ihre Auswahl: ' + (state.dashboard ? 'mindestens ' : '') + days(result.days) + ' geplant.';
-        $('#dauer-label').textContent = state.dashboard ? 'Produktionszeit ohne Dashboard' : 'Geplante Produktionszeit';
+        $('#dauer-label').textContent = state.dashboard ? 'Produktionszeit ohne Dashboard' : 'Produktionszeit';
         $('#zeit-aufteilung').textContent = 'Vorbereitung ' + days(parts.texts + parts.design) + ' · Umsetzung ' + days(parts.implementation + parts.tracking + parts.relaunch + parts.crm);
         $('#zeit-hinweis').textContent = 'Planung bis zum geprüften Abnahmestand. Ihre Freigabezeiten und der Starttermin kommen separat dazu. Halbe Tage werden erst in der Gesamtsumme aufgerundet.' + (state.dashboard ? ' Dashboard-Aufwand ist noch nicht enthalten.' : '') + (state.crm ? ' CRM-Standardumfang nach Systemprüfung bestätigen.' : '') + (state.design === 'vorhanden' ? ' Vorlagen vor Beauftragung prüfen.' : '');
         ['implementation', 'texts', 'design', 'tracking', 'relaunch', 'crm'].forEach(function (key) {
@@ -83,7 +83,7 @@
         $('#text-hinweis').textContent = state.texte ? 'Texte bereits fertig? Abwählen. Sonst +' + days(result.components.texts) + ' Vorbereitung, ohne Aufpreis.' : 'Ihre Texte sind vollständig und freigegeben. Keine zusätzliche Texterstellung.';
         $('#auswahl-design').textContent = newDesign ? 'Screendesign · ' + state.designLayouts + (state.designLayouts === 1 ? ' Layout' : ' Layouts') : state.design === 'vorhanden' ? 'Vorhandenes Design umsetzen' : 'Basisdesign inklusive';
         $('#design-details').hidden = !newDesign;
-        $('#design-hinweis').textContent = newDesign ? eur(result.designPrice) + ' · +' + days(result.components.design) + ' · Desktop und Mobil inklusive.' : state.design === 'vorhanden' ? '*Kein Design-Aufpreis. Umfang, Mobilansichten und Sonderfunktionen vorab prüfen.' : 'Kein zusätzlicher Design-Aufpreis. Details zum Screendesign unten.';
+        $('#design-hinweis').textContent = newDesign ? eur(result.designPrice) + ' · +' + days(result.components.design) + ' · Desktop und Mobil inklusive.' : state.design === 'vorhanden' ? '*Kein Design-Aufpreis. Umfang, Mobilansichten und Sonderfunktionen vorab prüfen.' : 'Basisdesign inklusive.';
         ['tracking', 'crm', 'dashboard'].forEach(function (key) { $('#summary-' + key).hidden = !state[key]; });
         $('#summary-screendesign').hidden = !newDesign; $('#betrag-design').textContent = eur(result.designPrice);
         $('#summary-screendesign dt').textContent = 'Screendesign · ' + state.designLayouts + (state.designLayouts === 1 ? ' Layout' : ' Layouts');

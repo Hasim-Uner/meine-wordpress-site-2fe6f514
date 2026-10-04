@@ -89,23 +89,23 @@ get_header();
             <fieldset class="aw-feld aw-design">
               <legend><span class="aw-schritt">03</span> Design</legend>
               <div class="aw-extras" data-website-controls hidden role="radiogroup" aria-label="Design-Umfang">
-                <label class="aw-option"><input type="radio" name="website-design" id="design-basis" value="basis" checked><span class="aw-option-inhalt"><strong>Basisdesign</strong><small>Farben, Typografie und responsive Layouts passend zu Ihrem Unternehmen.</small></span><span class="aw-option-preis">Inklusive</span></label>
-                <label class="aw-option"><input type="radio" name="website-design" id="design-vorhanden" value="vorhanden"><span class="aw-option-inhalt"><strong>Design ist vorhanden</strong><small>Ihre fertige Vorlage umsetzen. Prüfung vor Beauftragung.</small></span><span class="aw-option-preis">+0 €*</span></label>
-                <label class="aw-option"><input type="radio" name="website-design" id="screendesign" value="neu"><span class="aw-option-inhalt"><strong>Individuelles Screendesign</strong><small>Figma-Entwurf für Desktop und Mobil vor der Umsetzung.</small></span><span class="aw-option-preis">+<?php echo esc_html( $eur( HU_WEBSITE_DESIGN_FIRST ) ); ?><small>erstes Layout</small></span></label>
+                <label class="aw-option"><input type="radio" name="website-design" id="design-basis" value="basis" checked><span class="aw-option-inhalt"><strong>Basisdesign</strong><small>Responsive Gestaltung passend zu Ihrem Unternehmen.</small></span><span class="aw-option-preis">Inklusive</span></label>
+                <label class="aw-option"><input type="radio" name="website-design" id="design-vorhanden" value="vorhanden"><span class="aw-option-inhalt"><strong>Design ist vorhanden</strong><small>Fertige Vorlage umsetzen. Umfang vorab prüfen.</small></span><span class="aw-option-preis">+0 €*</span></label>
+                <label class="aw-option"><input type="radio" name="website-design" id="screendesign" value="neu"><span class="aw-option-inhalt"><strong>Individuelles Screendesign</strong><small>Figma-Entwurf für Desktop &amp; Mobil.</small></span><span class="aw-option-preis">+<?php echo esc_html( $eur( HU_WEBSITE_DESIGN_FIRST ) ); ?><small>erstes Layout</small></span></label>
               </div>
               <div class="aw-design-details" id="design-details" hidden>
                 <label for="design-layouts">Unterschiedliche Seitenlayouts</label>
                 <select id="design-layouts" aria-describedby="design-layout-hinweis"><?php for ( $n = 1; $n <= 3; $n++ ) : ?><option value="<?php echo esc_attr( (string) $n ); ?>" <?php selected( $n, 3 ); ?>><?php echo esc_html( $n . ( 1 === $n ? ' Layout' : ' Layouts' ) ); ?></option><?php endfor; ?></select>
                 <p class="aw-hinweis" id="design-layout-hinweis">Weitere Layouts +<?php echo esc_html( $eur( HU_WEBSITE_DESIGN_EXTRA ) ); ?>. Wiederverwendete Layouts zählen einmal.</p>
               </div>
-              <p class="aw-hinweis" id="design-hinweis">Kein zusätzlicher Design-Aufpreis. Details zum Screendesign unten.</p>
+              <p class="aw-hinweis" id="design-hinweis">Basisdesign inklusive.</p>
             </fieldset>
             <fieldset class="aw-feld aw-erweiterungen">
               <legend><span class="aw-schritt">04</span> Erweiterungen</legend>
               <div class="aw-extras" data-website-controls hidden>
                 <label class="aw-option"><input type="checkbox" id="tracking"><span class="aw-option-inhalt"><strong>Conversion-Tracking</strong><small>Anfragen in GA4 &amp; Google Ads messen. +<?php echo esc_html( $days( $rules['days']['tracking'] ) ); ?></small></span><span class="aw-option-preis">+<?php echo esc_html( $eur( $rules['prices']['tracking'] ) ); ?></span></label>
-                <label class="aw-option"><input type="checkbox" id="crm"><span class="aw-option-inhalt"><strong>CRM-Anbindung</strong><small>Ein Formular → bestehendes HubSpot oder Bitrix24. +<?php echo esc_html( $days( $rules['days']['crm'] ) ); ?></small></span><span class="aw-option-preis">+<?php echo esc_html( $eur( HU_WEBSITE_CRM_STANDARD ) ); ?></span></label>
-                <label class="aw-option"><input type="checkbox" id="dashboard"><span class="aw-option-inhalt"><strong>Daten-Dashboard</strong><small>Website-, Anfrage- und Marketingdaten an einem Ort.</small></span><span class="aw-option-preis">Nach Angebot</span></label>
+                <label class="aw-option"><input type="checkbox" id="crm"><span class="aw-option-inhalt"><strong>CRM-Anbindung</strong><small>HubSpot oder Bitrix24: ein Formular. +<?php echo esc_html( $days( $rules['days']['crm'] ) ); ?></small></span><span class="aw-option-preis">+<?php echo esc_html( $eur( HU_WEBSITE_CRM_STANDARD ) ); ?></span></label>
+                <label class="aw-option"><input type="checkbox" id="dashboard"><span class="aw-option-inhalt"><strong>Daten-Dashboard</strong><small>Ihre Daten an einem Ort. Umfang nach Abstimmung.</small></span><span class="aw-option-preis">Nach Angebot</span></label>
               </div>
             </fieldset>
           </div>
@@ -129,7 +129,7 @@ get_header();
             <p class="gesamt"><span id="gesamt"><?php echo esc_html( $eur( $quote['price'] ) ); ?></span><small>netto · zzgl. USt.</small></p>
             <p class="rechnung" id="rechnung"><?php echo esc_html( hu_freelancer_website_price() . ' + 2 × ' . hu_freelancer_website_extra_page_price() ); ?></p>
             <p id="angebot-hinweis" class="aw-angebot-hinweis" hidden></p>
-            <div class="aw-zeitkalkulation"><span id="dauer-label">Geplante Produktionszeit</span><b id="bauzeit"><?php echo esc_html( $days( $quote['days'] ) ); ?></b><a href="#zeit" data-track-action="website_offer_to_zeit" data-track-category="navigation">Zeitbeiträge ansehen ↓</a></div>
+            <div class="aw-zeitkalkulation"><span id="dauer-label">Produktionszeit</span><b id="bauzeit"><?php echo esc_html( $days( $quote['days'] ) ); ?></b><a href="#zeit" data-track-action="website_offer_to_zeit" data-track-category="navigation">Zeitbeiträge ansehen ↓</a></div>
             <a class="btn" id="cta-angebot" href="<?php echo esc_url( $contact_url ); ?>" data-website-cta="angebot" data-track-action="cta_website_offer_scope_project" data-track-category="lead_gen" data-track-section="website_offer_angebot">Auswahl anfragen <span aria-hidden="true">→</span></a>
             <p class="aw-hinweis">Unverbindlich. Festpreis &amp; Starttermin im Angebot.</p>
           </div>
