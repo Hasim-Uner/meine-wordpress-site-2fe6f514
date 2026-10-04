@@ -30,6 +30,11 @@ for (const width of [360, 768, 1440]) {
       const r=el.getBoundingClientRect(); return r.width>0 && r.right>innerWidth+1;
     }).map(el=>el.className));
     expect(overflow).toEqual([]);
+    const priceFits = await page.locator('.formel .betrag small').evaluate(el => el.getBoundingClientRect().right <= el.closest('.formel').getBoundingClientRect().right);
+    expect(priceFits).toBe(true);
+    await page.locator('.bild img').scrollIntoViewIfNeeded();
+    await expect.poll(() => page.locator('.bild img').evaluate(el => el.complete && el.naturalWidth > 0)).toBe(true);
+    await page.evaluate(() => window.scrollTo({ top: 0, behavior: 'instant' }));
     await page.screenshot({ path: test.info().outputPath(`website-${width}.png`), fullPage: true });
     await expect(page.locator('#leiste')).toBeHidden();
     await page.locator('#m-anfragen').focus(); await page.keyboard.press('Space');

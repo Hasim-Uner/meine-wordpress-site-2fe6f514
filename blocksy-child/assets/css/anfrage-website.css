@@ -1309,6 +1309,7 @@
 .anfrage-website .hero h1 { max-width: 20ch; }
 .anfrage-website .hero-akzent { color: var(--stempel); }
 .anfrage-website .formel { padding: var(--s3); border-top: 0; }
+.anfrage-website .formel .betrag { display: flex; flex-wrap: wrap; align-items: baseline; gap: var(--s1); font-size: var(--grad-h1); }
 .anfrage-website .aw-produkt-kopf, .anfrage-website .aw-summary-kopf, .anfrage-website .aw-section-kopf { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: var(--s1); }
 .anfrage-website .aw-produkt-kopf { margin-bottom: var(--s3); }
 .anfrage-website .aw-status { font-family: var(--mono); font-size: var(--mono-m); padding: var(--s0) var(--s1); border: 1px solid var(--haar); border-radius: var(--r1); }
