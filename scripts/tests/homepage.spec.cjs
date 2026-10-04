@@ -34,7 +34,13 @@ for (const width of [360, 768, 1024, 1440]) {
     await expect(page).toHaveTitle('WordPress Freelancer: Website, Tracking, Anfragen · Haşim Üner');
     expect(await page.locator('[data-st-abschnitt]').evaluateAll(els => els.map(el => el.id))).toEqual(sections);
     await expect(page.locator('#klick [data-track-category="lead_gen"]')).toHaveCount(1);
-    await expect(page.locator('#klick .tun')).toHaveAttribute('href', 'https://hasimuener.de/kontakt/?focus=ersteinschaetzung');
+    await expect(page.locator('#klick .tun')).toHaveAttribute('href', 'https://hasimuener.de/kontakt/?type=project');
+    await expect(page.locator('.st-hero__ctas .tun')).toHaveCount(1);
+    await expect(page.locator('.st-hero__ctas .st-link')).toHaveText('Leistungsumfang & Preise ↓');
+    await expect(page.locator('.st-hero__kopfzeile a')).toHaveCount(0);
+    await expect(page.locator('.st-hero__beleg')).toBeVisible();
+    await expect(page.locator('#angebote .st-erstcheck')).toContainText('Drei Befunde');
+    await expect(page.locator('#angebote .st-erstcheck .tun')).toHaveAttribute('href', 'https://hasimuener.de/kontakt/?focus=ersteinschaetzung');
     await expect(page.locator('.leiste .rechts > .tuer')).toHaveAttribute('data-door', 'ersteinschaetzung');
     await expect(page.locator('.fuss .register')).toHaveCount(0);
     await expect(page.locator('.fuss .verzeichnis')).toHaveCount(1);
@@ -68,6 +74,12 @@ for (const width of [360, 768, 1024, 1440]) {
     await expect(page.locator('[data-st-ende-zeit]')).toBeVisible();
     await expect.poll(() => page.locator('#anfrage img').evaluate(el => el.naturalWidth)).toBeGreaterThan(0);
     expect(errors).toEqual([]);
+    if (width === 360 || width === 1440) {
+      await page.evaluate(() => window.scrollTo({ top: 0, behavior: 'instant' }));
+      await page.screenshot({ path: test.info().outputPath(`homepage-entry-${width}.png`) });
+      await page.locator('.st-erstcheck').scrollIntoViewIfNeeded();
+      await page.screenshot({ path: test.info().outputPath(`homepage-assessment-${width}.png`) });
+    }
   });
 
   test(`homepage ${width}: no JavaScript, native stations and full proof`, async ({ browser }) => {
@@ -96,7 +108,7 @@ test('homepage: disabled assessment has project routing at every remaining entry
   await expect(page.locator('.leiste .rechts > .tuer')).toHaveAttribute('data-door', 'projekt');
   await expect(page.locator('#klick [data-track-category="lead_gen"]')).toHaveText('Projekt anfragen →');
   await expect(page.locator('#arbeiten [data-track-category="lead_gen"]')).toHaveText('Projekt anfragen →');
-  await expect(page.locator('#angebote .st-folge')).toHaveCount(0);
+  await expect(page.locator('#angebote .st-erstcheck')).toHaveCount(0);
   await expect(page.locator('#anfrage .st-einstieg')).toHaveCount(1);
 });
 
@@ -144,7 +156,7 @@ test('homepage: FAQ schema, retained anchors and enquiry locations', async ({ pa
     if (e.target.closest('[data-track-category="lead_gen"]')) e.preventDefault();
   }));
   for (const [selector, name] of [
-    ['.leiste .rechts > .tuer', 'Kopf'], ['#klick .tun', 'Einstieg'], ['#arbeiten .tun', 'Fall'], ['#angebote .st-folge .tun', 'Preise'], ['#anfrage .tun', 'Ende'],
+    ['.leiste .rechts > .tuer', 'Kopf'], ['#klick .tun', 'Einstieg'], ['#arbeiten .tun', 'Fall'], ['#angebote .st-erstcheck .tun', 'Preise'], ['#anfrage .tun', 'Ende'],
   ]) {
     await page.locator(selector).click();
     await expect(page.locator('[data-st-wert="klick"]')).toHaveText('geöffnet · ' + name);

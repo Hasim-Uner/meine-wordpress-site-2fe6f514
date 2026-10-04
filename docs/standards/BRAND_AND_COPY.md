@@ -257,6 +257,13 @@ Regeln:
 - GitHub, versionierter Code, Staging, Review und kontrollierte Deployments dürfen als Workflow-/Qualitätsbeleg sichtbar erklärt werden
 - Lighthouse-Werte nur als Labtest bezeichnen; kein Ersatz für CrUX-/Felddaten
 - Öffentliche Referenzen müssen direkt prüfbar sein
+- Einstiegsschärfung 04.10.2026: Hero-Hauptaktion „Projekt anfragen“, leiser
+  Link „Leistungsumfang & Preise“, Kanonpreis als Klartext und Case-Link darunter.
+  Bei aktivem Ersteinschätzungs-Versuch bleibt dieser Weg in Kopf, Fall und
+  Abschluss und erhält nach den Angeboten eine deutliche Tafel mit Eingabe,
+  Ergebnis/Passungsgrenze und Kanon-Antwortzeit. Keine zusätzliche
+  Ersteinschätzungs-Weiche im Website-Produktkonfigurator. Tracking/CRM im
+  Hero-Absatz ausdrücklich bedarfsabhängige, separat kalkulierte Bausteine.
 
 ## Route: Server-Side Tracking
 

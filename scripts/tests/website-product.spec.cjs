@@ -95,6 +95,7 @@ for (const width of [390, 1440]) {
     for (const [index, count] of [[0, 1], [1, 3], [2, 5]]) await expect(page.locator('.aw-szenario').nth(index).locator('.aw-seitenplan li')).toHaveCount(count);
     await expect(page.locator('.aw-szenarien-hinweis')).toContainText('Online-Terminbuchung und Shop werden separat kalkuliert');
     await page.locator('#beispiele').scrollIntoViewIfNeeded();
+    await expect(page.locator('#leiste')).toBeHidden();
     await page.screenshot({ path: test.info().outputPath(`website-scenarios-${width}.png`), fullPage: width === 390 });
     await page.locator('#texte').uncheck();
     await page.locator('#screendesign').check();
