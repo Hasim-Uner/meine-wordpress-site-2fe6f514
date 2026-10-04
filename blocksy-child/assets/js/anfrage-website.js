@@ -48,7 +48,7 @@
         $('#zeit-gesamt').textContent = duration + ' geplant';
         $('#zeit-umfang').textContent = 'Ihr Umfang: ' + state.seiten + (state.seiten === 1 ? ' Seite' : ' Seiten') + ' · ' + (state.art === 'relaunch' ? 'Relaunch' : 'Neubau');
         $('#bauzeit').textContent = duration;
-        $('#hero-bauzeit').textContent = 'Ihre Auswahl: ' + duration.toLowerCase() + ' geplant.';
+        $('#hero-bauzeit').textContent = 'Ihre Auswahl: ' + (state.crm ? 'mindestens ' : '') + days(result.days) + ' geplant.';
         $('#dauer-label').textContent = state.crm ? 'Projektzeit ohne CRM-Aufwand' : 'Geplante Projektzeit';
         $('#zeit-aufteilung').textContent = 'Vorbereitung ' + days(parts.texts + parts.design) + ' · Umsetzung ' + days(parts.implementation + parts.tracking + parts.relaunch);
         $('#zeit-hinweis').textContent = 'Planung bis zum geprüften Abnahmestand. Ihre Freigabezeiten und der Starttermin kommen separat dazu.' + (state.crm ? ' Zusätzlicher CRM-Aufwand wird erst nach Systemprüfung kalkuliert.' : '') + (state.design === 'vorhanden' ? ' Preis und Zeit bestätigen wir nach Prüfung Ihrer Vorlagen.' : '');
