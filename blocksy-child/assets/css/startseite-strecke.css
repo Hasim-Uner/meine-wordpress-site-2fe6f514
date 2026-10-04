@@ -1369,7 +1369,7 @@
 /* 01 Homepage: der Besuch ist das Signal auf der Strecke. */
 .st[data-st-final] .st-hero--messflaeche .st-hero__kopfzeile { display: flex; flex-wrap: wrap; justify-content: space-between; align-items: baseline; gap: var(--s0) var(--s3); margin-bottom: var(--s3); }
 .st[data-st-final] .st-hero--messflaeche .st-klein-label { font-size: .65rem; letter-spacing: .06em; }
-.st[data-st-final] .st-hero--messflaeche .st-hero__preis { color: var(--stempel); text-decoration: underline; text-underline-offset: .3em; min-height: 24px; }
+.st[data-st-final] .st-hero--messflaeche .st-hero__preis { color: var(--stempel); min-height: 24px; }
 .st[data-st-final] .st-hero--messflaeche .st-hero__titel { position: relative; container-type: inline-size; }
 .st[data-st-final] .st-hero--messflaeche .st-hero__h1 { margin: 0; max-inline-size: none; font-size: clamp(2.625rem, 6.4vw, 7.375rem); font-size: clamp(2.625rem, 8.6cqi, 7.375rem); line-height: .95; font-weight: 500; }
 .st .st-hero--messflaeche .st-messzeile:nth-child(2) .st-messwort { transition-delay: 70ms; }
@@ -1385,12 +1385,15 @@
 .st[data-st-final] .st-hero--messflaeche .st-hero__satz { margin: 0; max-inline-size: 46ch; font-size: clamp(1.0625rem, 1.35vw, 1.25rem); }
 .st[data-st-final] .st-hero--messflaeche .st-hero__ctas { margin: 0; }
 .st[data-st-final] .st-hero--messflaeche .st-hero__notiz { font-size: .875rem; }
-/* Belegzeile unter der Hauptaktion: nur auf dem schmalen Erst-Screen. Ab
-   768 px stehen die Belege rechts im Hero. */
+/* One quiet case link below the main action at every width. */
 .st[data-st-final] .st-hero--messflaeche .st-hero__beleg { margin: var(--s1) 0 0; font-size: .9375rem; }
 .st[data-st-final] .st-hero--messflaeche .st-hero__beleg .st-link { display: inline-block; padding-block: .75rem; }
-@media (min-width: 768px) {
-  .st[data-st-final] .st-hero--messflaeche .st-hero__beleg { display: none; }
+.st[data-st-final] .st-erstcheck { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: var(--s4); padding: var(--s3); margin-top: var(--s4); }
+.st[data-st-final] .st-erstcheck .st-h3 { margin-top: var(--s1); }
+.st[data-st-final] .st-erstcheck p + p, .st[data-st-final] .st-erstcheck .st-h3 + p { margin-top: var(--s2); }
+.st[data-st-final] .st-erstcheck .tun { margin-block: var(--s2); }
+@media (max-width: 767px) {
+  .st[data-st-final] .st-erstcheck { grid-template-columns: minmax(0, 1fr); gap: var(--s3); }
 }
 .st[data-st-final] .st-hero--messflaeche .st-hero__meta { margin-top: var(--s4); }
 .st[data-st-final] .st-hero--messflaeche .st-belege { display: grid; grid-template-columns: minmax(0, 1fr); gap: var(--s3); margin-top: var(--s4); padding-top: var(--s3); }

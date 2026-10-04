@@ -63,7 +63,17 @@ Keyword-H1 und führt zur konfigurierten Projektanfrage.
 | „Kostet Conversions“ / allgemeine Wettbewerberprozente | Ohne Nutzungsdaten bzw. Marktstudie eine unbelegte Behauptung. Keine solche Zahl oder Kausalität übernehmen. |
 
 Grundlage: [Startseite](https://hasimuener.de/), öffentlicher Abruf am
-04.10.2026, und ihr Template; keine Änderung an der Startseite in diesem PR.
+04.10.2026, und ihr Template. Nachgereichte Nutzerfreigabe: auch die brauchbaren
+Einstiegsvorschläge direkt umsetzen. Daher zusätzlich eine begrenzte Homepage-
+Schärfung in diesem PR: Projektanfrage als Hero-Hauptaktion, eine Preis-/Umfangs-
+Navigation statt zweier Preislinks und sichtbarer Case-Link darunter. Der
+Absatz behandelt Tracking/CRM als wählbare Bausteine; die vorhandene H1 bleibt.
+Nach den Angeboten wird die kostenlose Ersteinschätzung bei aktivem Versuch
+als klare Tafel erklärt. Formular, Passungsgrenze und Antwortzeit aus dem Kanon
+bleiben bestehen; der Ablauf verspricht keine automatische Projektzusage.
+Herkunftsprotokoll und seine lokale Messung bleiben erhalten; ein vollständiger
+Umbau dieses eigenständigen Arbeitsbelegs ist nicht Teil der CTA-Schärfung.
+Homepage-Versuch vor/nach diesem Routingwechsel getrennt auswerten.
 
 ## SEO-Grenzen und Quellen
 

@@ -306,7 +306,7 @@ get_header();
 		<div class="st-inhalt">
 			<div class="st-hero__kopfzeile">
 				<p class="st-klein-label st-hero__kicker">WordPress Freelancer für Unternehmen · Pattensen bei Hannover · remote in DACH</p>
-				<a class="st-klein-label st-hero__preis" href="#angebote" data-track-action="home_hero_price_line" data-track-category="navigation" data-track-section="hero">Websites ab <?php echo esc_html( $website_price ); ?> netto · alle Preise ↓</a>
+				<p class="st-klein-label st-hero__preis">Websites ab <?php echo esc_html( $website_price ); ?> netto</p>
 			</div>
 			<div class="st-hero__titel" data-st-titel>
 				<h1 class="st-hero__h1" id="st-h1"><span class="st-messzeile"><span class="st-messwort">Mehr Anfragen</span></span> <span class="st-messzeile"><span class="st-messwort">über Ihre Website.</span></span> <span class="st-messzeile st-leise"><span class="st-messwort">Und Sie sehen,</span></span> <span class="st-messzeile st-leise"><span class="st-messwort st-wort--quelle" data-st-wort-quelle><span class="st-quelle__kontur">woher jede kommt.</span><span class="st-quelle__fuell" aria-hidden="true">woher jede kommt.</span></span></span></h1>
@@ -317,19 +317,12 @@ get_header();
 				</div>
 			</div>
 			<div class="st-hero__unten">
-				<p class="st-hero__satz">Ich baue Ihre WordPress-Website, den Weg zum Formular und die Messung dazu. Sie arbeiten dabei direkt mit mir, vom ersten Entwurf bis zur Übergabe.</p>
+				<p class="st-hero__satz">Ich entwickle Ihre WordPress-Website und den Weg zur Anfrage. Tracking und CRM ergänzen wir, wenn Ihr Projekt sie braucht. Sie arbeiten direkt mit mir, bis zur Übergabe.</p>
 				<div>
 					<div class="st-hero__ctas">
-						<?php if ( $first_assessment_on ) : ?>
-							<a class="tun" href="<?php echo esc_url( hu_first_assessment_url() ); ?>" data-track-action="home_head_ersteinschaetzung" data-track-category="lead_gen" data-track-section="hero"><?php echo esc_html( hu_first_assessment_text( 'cta' ) ); ?> <span class="pf" aria-hidden="true">→</span></a>
-						<?php else : ?>
-							<a class="tun" href="<?php echo esc_url( $contact_url ); ?>" data-track-action="home_head_contact" data-track-category="lead_gen" data-track-section="hero">Projekt anfragen <span class="pf" aria-hidden="true">→</span></a>
-						<?php endif; ?>
-						<a class="st-link" href="#angebote" data-track-action="home_hero_prices" data-track-category="navigation" data-track-section="hero">Alle Preise <span class="pf" aria-hidden="true">↓</span></a>
+						<a class="tun" href="<?php echo esc_url( $contact_url ); ?>" data-track-action="home_head_contact" data-track-category="lead_gen" data-track-section="hero">Projekt anfragen <span class="pf" aria-hidden="true">→</span></a>
+						<a class="st-link" href="#angebote" data-track-action="home_hero_prices" data-track-category="navigation" data-track-section="hero">Leistungsumfang &amp; Preise <span class="pf" aria-hidden="true">↓</span></a>
 					</div>
-					<?php if ( $first_assessment_on ) : ?>
-						<p class="st-hero__notiz"><?php echo esc_html( hu_first_assessment_text( 'cta_note' ) ); ?></p>
-					<?php endif; ?>
 					<p class="st-hero__beleg"><a class="st-link" href="<?php echo esc_url( $e3_case_url ); ?>" data-track-action="home_hero_case_proof" data-track-category="proof" data-track-section="hero"><?php echo esc_html( $cpl_drop ); ?> Kosten pro Anfrage · dokumentierter B2B-Fall <span aria-hidden="true">→</span></a></p>
 				</div>
 			</div>
@@ -507,7 +500,12 @@ get_header();
 			</div>
 			<div class="st-weiter"><p><strong>Weiterentwicklung nach dem Projekt.</strong> <?php echo esc_html( $retainer ); ?> im Monat, monatlich kündbar. Eine Voraussetzung ist das nicht.</p><a class="st-link" href="#uebergabe" data-track-action="home_offer_retainer_more" data-track-category="navigation" data-track-section="angebote">Was Sie ohnehin behalten <span aria-hidden="true">↓</span></a></div>
 			<p class="st-preisnotiz">Hosting, Lizenzen und externe Dienste stehen getrennt im Angebot und laufen auf Ihren Namen.</p>
-			<?php if ( $first_assessment_on ) : ?><div class="st-folge"><p>Unsicher, wo Sie anfangen? Die Ersteinschätzung sagt es Ihnen, kostenlos.</p><a class="tun" href="<?php echo esc_url( $assessment_url ); ?>" data-track-action="home_offers_ersteinschaetzung" data-track-category="lead_gen" data-track-section="angebote"><?php echo esc_html( $assessment_label ); ?> <span class="pf" aria-hidden="true">→</span></a></div><?php endif; ?>
+			<?php if ( $first_assessment_on ) : ?>
+			<aside class="st-erstcheck tafel" aria-labelledby="home-erstcheck-h">
+				<div><p class="st-klein-label">Noch unsicher? Kostenlose Ersteinschätzung</p><h3 class="st-h3" id="home-erstcheck-h"><?php echo esc_html( hu_first_assessment_text( 'card_title' ) ); ?></h3><p>Ich sehe mir Ladezeit, Messung und den Weg zur Anfrage an. Für die Prüfung: <?php echo esc_html( hu_first_assessment_text( 'card_send' ) ); ?>.</p></div>
+				<div><p><?php echo esc_html( hu_first_assessment_text( 'promise' ) ); ?> Antwort <?php echo esc_html( hu_response_promise( 'window' ) ); ?>.</p><a class="tun" href="<?php echo esc_url( $assessment_url ); ?>" data-track-action="home_offers_ersteinschaetzung" data-track-category="lead_gen" data-track-section="angebote"><?php echo esc_html( $assessment_label ); ?> <span class="pf" aria-hidden="true">→</span></a><p class="st-klein-label">Ohne Verpflichtung. Ein Projekt beginnt erst nach Ihrer Zusage.</p></div>
+			</aside>
+			<?php endif; ?>
 		</div>
 	</section>
 
