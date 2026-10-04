@@ -21,7 +21,7 @@ async function open(page, width = 1440) {
   await page.goto('https://hasimuener.de/wordpress-website-erstellen-lassen/');
   await page.evaluate(() => document.fonts.ready);
 }
-for (const width of [360, 768, 1440]) {
+for (const width of [320, 360, 768, 1440]) {
   test(`request website ${width}: layout, keyboard controls and sticky visibility`, async ({ page }) => {
     const errors=[]; page.on('pageerror', e=>errors.push(e.message));
     await open(page,width);
@@ -36,8 +36,20 @@ for (const width of [360, 768, 1440]) {
     expect(overflow).toEqual([]);
     const priceFits = await page.locator('.formel .betrag small').evaluate(el => el.getBoundingClientRect().right <= el.closest('.formel').getBoundingClientRect().right);
     expect(priceFits).toBe(true);
-    await page.locator('.bild img').scrollIntoViewIfNeeded();
-    await expect.poll(() => page.locator('.bild img').evaluate(el => el.complete && el.naturalWidth > 0)).toBe(true);
+    const references = page.locator('#beleg .aw-projekt');
+    await expect(references).toHaveCount(4);
+    for (const image of await references.locator('.bild img').all()) {
+      await image.scrollIntoViewIfNeeded();
+      await expect.poll(() => image.evaluate(el => el.complete && el.naturalWidth > 0)).toBe(true);
+    }
+    await expect(page.locator('#beleg')).not.toContainText(/150\s*€|22\s*€|85\s*%|1[.,]750|15\s*%/);
+    await expect(page.locator('#beleg a[href*="case-study-solar"]')).toHaveCount(0);
+    await expect(references.last()).toContainText('E3 New Energy');
+    await expect(references.last().locator('.aw-projekt-flow li')).toHaveText(['Klick', 'Landingpage', 'Formular', 'Tracking', 'CRM']);
+    await page.locator('#beleg').screenshot({
+      path: test.info().outputPath(`website-references-${width}.png`),
+      style: '.leiste, #leiste { visibility: hidden !important; }',
+    });
     await page.evaluate(() => window.scrollTo({ top: 0, behavior: 'instant' }));
     await page.screenshot({ path: test.info().outputPath(`website-${width}.png`), fullPage: true });
     await expect(page.locator('#leiste')).toBeHidden();

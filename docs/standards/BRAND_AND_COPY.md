@@ -93,6 +93,18 @@ Die Startseite ist zugleich Marke und direkte Freelancer-Money-Page. Sie überni
 - Solar-/SHK-Unterseiten, Portalvergleiche und Lead-Kauf-Intent dürfen weiterhin auf den Marktcheck führen
 - E3 bleibt der wichtigste fachliche Proof für Nachfrageaufbau, Tracking, Vorqualifizierung und Conversion
 
+### Namentliche E3-Referenz auf der Anfrage-Website
+
+- Freigegeben am 05.10.2026: E3 New Energy als Unternehmensreferenz für die
+  aufgebaute Funnel-Architektur vom Klick bis zur CRM-Übergabe nennen.
+- In diesem Projektporträt keine Kennzahlen, Ergebniszusage oder Verlinkung
+  zur separaten anonymisierten Fallstudie. Die Beschreibung nennt den eigenen
+  Beitrag; der aktuelle Website-Screenshot zeigt den öffentlichen Stand.
+- `hu_website_reference_projects()` in `reference-canon.php` besitzt die
+  Auswahl und Projektcopy dieser Produktseite. Die anderen Referenzflächen
+  behalten ihre bisherige Auswahl. Die größere E3-Strecke ist kein Beleg für
+  den Inklusivumfang des Grundprodukts.
+
 ## CTA- und Routing-Regeln
 
 **Suchintention, Seitenrolle und Conversion-Ziel sind getrennte Entscheidungen.** Eine Seite darf ihre Query besitzen und trotzdem auf einen anderen nächsten Schritt führen.

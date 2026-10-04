@@ -20,6 +20,7 @@ $rules = hu_website_calculator_rules();
 $days = static function ( $value ) { return number_format( (float) $value, floor( (float) $value ) === (float) $value ? 0 : 1, ',', '.' ) . ( 1.0 === (float) $value ? ' Werktag' : ' Werktage' ); };
 $contact_url = add_query_arg( [ 'seiten' => 3, 'art' => 'neubau', 'texte' => 1 ], hu_get_contact_intake_url( 'project', 'website' ) );
 $psi_url = 'https://pagespeed.web.dev/analysis?url=' . rawurlencode( home_url( '/wordpress-website-erstellen-lassen/' ) );
+$references = hu_website_reference_projects();
 $eur = static function ( $value ) { return str_replace( ' €', "\u{00A0}€", hu_format_eur( $value ) ); };
 $scenarios = [
     [ 'pages' => 1, 'title' => 'Ihr Angebot auf einen Blick', 'example' => 'Zum Beispiel: Friseursalon', 'purpose' => 'Leistungen, Preise, Team, Öffnungszeiten und Kontakt auf einer übersichtlichen Seite.', 'structure' => [ 'Startseite mit allen Abschnitten' ] ],
@@ -236,29 +237,52 @@ get_header();
     </div>
   </section>
 
-  <section class="dunkel tafel" id="beleg" aria-labelledby="h-beleg">
-    <div class="wrap raster">
-      <p class="nr"><b>02</b><span>Beleg</span></p>
-      <div class="haupt">
-        <h2 id="h-beleg">Prüfen Sie die Arbeit, bevor Sie anfragen.</h2>
-        <p class="lead">Sehen Sie sich Gestaltung und Umsetzung an. Die redaktionellen Projekte zeigen die Arbeit am Inhalt; der PV-Fall zeigt eine größere Anfragestrecke mit eigener Messung.</p>
-        <div class="belege">
-          <figure>
-            <div class="bild"><img src="<?php echo esc_url( get_stylesheet_directory_uri() . '/assets/img/hasimuener-org-anfrage-website.webp' ); ?>" width="960" height="600" decoding="async" loading="lazy" alt="Startseite von hasimuener.org: großer Serifen-Schriftzug „Macht. Medien. Perspektive.“ über einer Navigation und einem Titelbild"></div>
-            <figcaption><a href="https://hasimuener.org/" target="_blank" rel="noopener">hasimuener.org ↗</a> · eigenes redaktionelles Projekt. Typografie, Raster und Lesefluss tragen die Gestaltung.</figcaption>
-          </figure>
-          <ul class="messliste">
-            <li><span class="mono">Diese Seite</span><p>Ohne Cookie-Banner, gebaut wie die Websites, die ich übergebe. <a href="<?php echo esc_url( $psi_url ); ?>" target="_blank" rel="noopener">Ladezeit selbst messen ↗</a></p></li>
-            <li><span class="mono">Fall · PV-Installationsbetrieb</span><span class="wert"><?php echo esc_html( hu_e3_metric( 'cpl_before' ) . ' → ' . hu_e3_metric( 'cpl_after' ) ); ?></span><p>Kosten pro qualifizierter Anfrage in sechs Monaten. Gebaut: Website, Landingpages, Formular und Übergabe an den Vertrieb. <a href="<?php echo esc_url( home_url( '/case-study-solar-leadgenerierung/' ) ); ?>">Herleitung lesen</a></p></li>
-            <li><span class="mono">Redaktioneller Bestand</span><p><a href="https://civaka-azad.org/" target="_blank" rel="noopener">civaka-azad.org ↗</a> · viele Inhalte, Navigation und Archive so gebaut, dass Themen auffindbar bleiben.</p></li>
-          </ul>
-        </div>
-        <div class="folgerung">
-          <a class="btn btn--glut" href="<?php echo esc_url( $contact_url ); ?>" data-website-cta="beleg" data-track-action="cta_website_offer_proof_project" data-track-category="lead_gen" data-track-section="website_offer_beleg">Website-Projekt anfragen <span aria-hidden="true">→</span></a>
-          <p>Antwort <?php echo esc_html( hu_response_promise( 'window' ) ); ?>.</p>
-        </div>
+  <section class="abschnitt aw-referenzen" id="beleg" aria-labelledby="h-beleg">
+    <div class="wrap">
+      <div class="aw-referenzen-kopf">
+        <p class="mono">02 · Ausgewählte Arbeiten</p>
+        <h2 id="h-beleg">Die Website sehen.<br>Die Arbeit dahinter verstehen.</h2>
+        <p class="lead">Editorial Design, Informationsarchitektur und eine vollständige Anfragestrecke. Vier Projekte zeigen, wie ich unterschiedliche Aufgaben umsetze.</p>
       </div>
-      <aside class="rand"><span class="mono">Was der Fall belegt</span>Das Ergebnis gehört zur gesamten Maßnahme, mit Website, Kampagnen und Optimierung. Es ist keine Ergebniszusage für das Grundprodukt.</aside>
+      <div class="aw-projekte">
+<?php foreach ( $references as $index => $reference ) : $reference_id = 'aw-projekt-' . ( $index + 1 ); ?>
+        <article class="aw-projekt" aria-labelledby="<?php echo esc_attr( $reference_id ); ?>">
+          <figure class="aw-projekt-ansicht">
+            <div class="aw-projekt-browser" aria-hidden="true"><span><?php echo esc_html( wp_parse_url( $reference['url'], PHP_URL_HOST ) ); ?></span><span>Website-Ansicht</span></div>
+            <div class="bild"><img src="<?php echo esc_url( get_stylesheet_directory_uri() . '/assets/img/' . $reference['screenshot'] ); ?>" width="960" height="600" decoding="async" loading="lazy" alt="<?php echo esc_attr( $reference['alt'] ); ?>"></div>
+            <figcaption><?php echo esc_html( $reference['role'] ); ?></figcaption>
+          </figure>
+          <div class="aw-projekt-copy">
+            <p class="mono aw-projekt-fach"><?php echo esc_html( $reference['tag'] ); ?></p>
+            <p class="aw-projekt-name"><?php echo esc_html( $reference['name'] ); ?></p>
+            <h3 id="<?php echo esc_attr( $reference_id ); ?>"><?php echo esc_html( $reference['title'] ); ?></h3>
+            <p class="aw-projekt-text"><?php echo esc_html( $reference['text'] ); ?></p>
+<?php if ( ! empty( $reference['flow'] ) ) : ?>
+            <ol class="aw-projekt-flow" aria-label="Aufgebaute Anfragestrecke">
+<?php foreach ( $reference['flow'] as $step ) : ?>
+              <li><?php echo esc_html( $step ); ?></li>
+<?php endforeach; ?>
+            </ol>
+<?php else : ?>
+            <ul class="aw-projekt-gewerke" aria-label="Geleistete Arbeit">
+<?php foreach ( $reference['stack'] as $discipline ) : ?>
+              <li><?php echo esc_html( $discipline ); ?></li>
+<?php endforeach; ?>
+            </ul>
+<?php endif; ?>
+            <a class="aw-projekt-link" href="<?php echo esc_url( $reference['url'] ); ?>" target="_blank" rel="noopener" data-track-action="website_offer_reference_open" data-track-category="proof" data-track-section="website_offer_beleg">Website ansehen <span aria-hidden="true">↗</span><span class="nur-vorlesen">: <?php echo esc_html( $reference['name'] ); ?> (öffnet in neuem Tab)</span></a>
+          </div>
+        </article>
+<?php endforeach; ?>
+      </div>
+      <div class="aw-referenzen-fuss">
+        <p>Die Ansichten zeigen den öffentlichen Website-Stand. Die Beschreibung nennt meinen Beitrag; die Funnel-Architektur bei E3 geht über das Grundprodukt hinaus.</p>
+        <a class="leise" href="<?php echo esc_url( $psi_url ); ?>" target="_blank" rel="noopener">Auch diese Website ist ein Arbeitsbeleg: Ladezeit selbst messen <span aria-hidden="true">↗</span></a>
+      </div>
+      <div class="folgerung">
+        <a class="btn" href="<?php echo esc_url( $contact_url ); ?>" data-website-cta="beleg" data-track-action="cta_website_offer_proof_project" data-track-category="lead_gen" data-track-section="website_offer_beleg">Website-Projekt anfragen <span aria-hidden="true">→</span></a>
+        <p>Antwort <?php echo esc_html( hu_response_promise( 'window' ) ); ?>.</p>
+      </div>
     </div>
   </section>
 
