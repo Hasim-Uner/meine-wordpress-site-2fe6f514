@@ -124,7 +124,7 @@ function nexus_get_llms_txt_sections() {
 				[
 					'label'       => 'WordPress-Website erstellen lassen',
 					'url'         => $urls['website'] ?? home_url( '/wordpress-website-erstellen-lassen/' ),
-					'description' => 'Die Anfrage-Website für Direktkunden: Grundpreis inklusive erster Seite, jede weitere Seite mit festem Zusatzpreis. Neubau oder Relaunch, technisches SEO und Übergabe auf Ihren Namen. Umfang, Endpreis und Bauzeit vorab ausrechnen; optional Conversion-Tracking.',
+					'description' => 'Die Anfrage-Website für Unternehmen und Selbstständige: Custom Code ohne Pagebuilder, Texte auf Wunsch und technisches SEO inklusive. Beispiele mit einer, drei und fünf Inhaltsseiten; Grundpreis plus feste Zusatzseite. Neubau oder Relaunch, optionale Screendesign-, Conversion-Tracking- und Standard-CRM-Erweiterungen; Daten-Dashboard nach Angebot. Einmalpreis und Produktionszeit im Konfigurator, Übergabe auf Ihren Namen.',
 				],
 				[
 					'label'       => 'Conversion-Optimierung für B2B',

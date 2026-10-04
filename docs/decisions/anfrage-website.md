@@ -63,8 +63,17 @@ und bekannte Summe ausdrücklich ohne Dashboard, vollständiges Angebot vor Auft
 
 ## Oberfläche und Datenpfad
 
-Hero → kompakter Konfigurator → aufklappbarer Lieferumfang und Erweiterungen
-→ Qualitätsvergleich → Belege → Zeitbeiträge → FAQ → Anfrage.
+Hero → Qualität kurz → drei Umfangsbeispiele → kompakter Konfigurator
+→ aufklappbarer Lieferumfang und Erweiterungen → Belege → Qualitätsvergleich
+→ Zeitbeiträge → FAQ → Anfrage. Die Beispiele (eine Seite Salon, drei Beratung,
+fünf Sanitär/Heizung) zeigen mögliche Inhaltsseiten und lesen den Grundpreis
+aus dem Kanon. Sie ändern nur die Seitenzahl; Textstatus, Design und Extras
+bleiben erhalten. Manuell gewählte Layoutzahlen werden bei weniger Seiten
+begrenzt, nicht heimlich durch ein neues Paket ersetzt. Eine eigene URL zählt
+als Inhaltsseite, nicht jeder Bildschirm oder Abschnitt. Buchungssysteme und
+Shops bleiben separat. Diese Route spricht Unternehmen und Selbstständige an,
+auch wenn deren Zielkunden privat sind. Audit und wiederverwendbarer Prompt:
+`docs/audits/anfrage-website-produkt-review-2026-10-04.md`.
 Desktop: Seiten/Texte, Design/Extras und Preis/Zeit nebeneinander. Zielprüfung:
 bei 1366 × 768 und 1440 × 900 Pixel sämtliche Auswahlfelder,
 Layoutzahl und Anfrage-CTA sichtbar. Tablet/Mobil stapeln die Bereiche und

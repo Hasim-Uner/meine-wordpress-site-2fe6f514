@@ -21,6 +21,11 @@ $days = static function ( $value ) { return number_format( (float) $value, floor
 $contact_url = add_query_arg( [ 'seiten' => 3, 'art' => 'neubau', 'texte' => 1 ], hu_get_contact_intake_url( 'project', 'website' ) );
 $psi_url = 'https://pagespeed.web.dev/analysis?url=' . rawurlencode( home_url( '/wordpress-website-erstellen-lassen/' ) );
 $eur = static function ( $value ) { return str_replace( ' €', "\u{00A0}€", hu_format_eur( $value ) ); };
+$scenarios = [
+    [ 'pages' => 1, 'title' => 'Ihr Angebot auf einen Blick', 'example' => 'Zum Beispiel: Friseursalon', 'purpose' => 'Leistungen, Preise, Team, Öffnungszeiten und Kontakt auf einer übersichtlichen Seite.', 'structure' => [ 'Startseite mit allen Abschnitten' ] ],
+    [ 'pages' => 3, 'title' => 'Mehr Raum für Ihre Leistung', 'example' => 'Zum Beispiel: Unternehmensberatung', 'purpose' => 'Angebot und Arbeitsweise erklären. Expertise zeigen, bevor jemand eine Anfrage stellt.', 'structure' => [ 'Startseite mit Kontakt', 'Leistungen', 'Über uns' ] ],
+    [ 'pages' => 5, 'title' => 'Jede Leistung mit eigener Seite', 'example' => 'Zum Beispiel: Sanitär- und Heizungsbetrieb', 'purpose' => 'Unterschiedliche Leistungen getrennt erklären und auf passende Suchanliegen ausrichten.', 'structure' => [ 'Startseite', 'Heizung', 'Sanitär', 'Wartung', 'Kontakt' ] ],
+];
 get_header();
 ?>
 <div id="website-content" class="doku anfrage-website" data-track-page="website_offer" data-website-product data-website-rules="<?php echo esc_attr( wp_json_encode( $rules ) ); ?>">
@@ -30,8 +35,8 @@ get_header();
     <div class="wrap">
       <div>
         <div class="produkt"><span class="marke-produkt">Die Anfrage-Website</span><span class="mono">WordPress · Neubau oder Relaunch</span></div>
-        <h1>WordPress-Website erstellen lassen.<br><span class="hero-akzent">Ihre Website. Ihr Code. Ihr nächster Auftrag.</span></h1>
-        <p class="lead">Eine individuell entwickelte WordPress-Website zum Einmalpreis. Mit Texten auf Wunsch, technischem SEO und einer vollständigen Anfragestrecke. Sie wählen den Umfang und sehen sofort, was es kostet.</p>
+        <h1>WordPress-Website erstellen lassen.<br><span class="hero-akzent">Ihr Angebot zeigen. Anfragen einfach machen.</span></h1>
+        <p class="lead">Für Unternehmen und Selbstständige: eine WordPress-Website mit Custom Code zum Einmalpreis. Texte auf Wunsch, technisches SEO und die Anfragestrecke sind inklusive. Sie wählen Seiten und Extras – Preis und Produktionszeit sehen Sie sofort.</p>
         <div class="aktion">
           <a class="btn" href="#angebot" data-track-action="website_offer_hero_configure" data-track-category="navigation" data-track-section="website_offer_hero">Website zusammenstellen <span aria-hidden="true">→</span></a>
           <a class="leise" href="#beleg" data-track-action="website_offer_to_beleg" data-track-category="navigation">Arbeit ansehen</a>
@@ -44,8 +49,9 @@ get_header();
         <p class="betrag"><?php echo esc_html( $eur( HU_FREELANCER_WEBSITE_MIN ) ); ?><small>netto</small></p>
         <p class="regel">Website mit einer Seite. Jede weitere Seite <?php echo esc_html( $eur( HU_FREELANCER_WEBSITE_EXTRA_PAGE ) ); ?>. Mit fertigen Inhalten ab <?php echo esc_html( $days( hu_website_quote( 1 )['components']['implementation'] ) ); ?> Umsetzung geplant. <span id="hero-bauzeit">Ihre Auswahl: <?php echo esc_html( $days( $quote['days'] ) ); ?> geplant.</span></p>
         <ul class="beispiele">
-          <li><span>3 Seiten</span><em><?php echo esc_html( $quote['days'] ); ?> Werktage</em><b><?php echo esc_html( $eur( $quote['price'] ) ); ?></b></li>
-          <li><span>5 Seiten</span><em><?php echo esc_html( hu_website_quote( 5, 'neubau', false, [ 'texte' => 1 ] )['days'] ); ?> Werktage</em><b><?php echo esc_html( $eur( hu_website_quote( 5 )['price'] ) ); ?></b></li>
+<?php foreach ( $scenarios as $scenario ) : $example_quote = hu_website_quote( $scenario['pages'], 'neubau', false, [ 'texte' => 1 ] ); ?>
+          <li><span><?php echo esc_html( $scenario['pages'] . ( 1 === $scenario['pages'] ? ' Seite' : ' Seiten' ) ); ?></span><em><?php echo esc_html( $days( $example_quote['days'] ) ); ?></em><b><?php echo esc_html( $eur( $example_quote['price'] ) ); ?></b></li>
+<?php endforeach; ?>
         </ul>
         <p class="aw-hinweis">Beispiele mit Texterstellung, ohne Erweiterungen. Kundenfreigaben und Starttermin separat.</p>
         <ul class="aw-basis-kurz"><li>Texte auf Wunsch · technisches SEO</li><li>Formular · Bestätigungsmail · Danke-Seite</li><li>Impressum · Datenschutz · Übergabe</li></ul>
@@ -57,12 +63,31 @@ get_header();
   <div class="wrap aw-qualitaet" aria-label="So wird Ihre Website gebaut">
     <div><span class="mono">01 · Entwicklung</span><strong>Custom Code. Kein Pagebuilder.</strong><p>Schlank entwickelt. Keine Pflichtlizenzen für einen Baukasten.</p></div>
     <div><span class="mono">02 · Inhalte</span><strong>Ihre Inhalte. Ihr Zugriff.</strong><p>Texte und Bilder selbst ändern – mit Gutenberg und ACF.</p></div>
-    <div><span class="mono">03 · Qualität</span><strong>Schnell gebaut. Kontrolliert geprüft.</strong><p>KI-Workflow, GitHub und Qualitätskontrollen vor dem Livegang.</p></div>
+    <div><span class="mono">03 · Qualität</span><strong>Vor dem Livegang geprüft.</strong><p>KI-Workflow und GitHub. Formular, Darstellung und Ladezeit werden geprüft.</p></div>
   </div>
+
+  <section class="abschnitt aw-szenarien" id="beispiele" aria-labelledby="h-beispiele">
+    <div class="wrap">
+      <div class="aw-szenarien-kopf"><div><p class="mono">Der passende Einstieg</p><h2 id="h-beispiele">Wie viel Website brauchen Sie?</h2></div><p>Drei Beispiele zur Orientierung.<br>Sie können jeden Umfang anpassen.</p></div>
+      <div class="aw-szenarien-raster">
+<?php foreach ( $scenarios as $scenario ) : $example_quote = hu_website_quote( $scenario['pages'], 'neubau', false, [ 'texte' => 1 ] ); ?>
+        <article class="aw-szenario" aria-labelledby="h-szenario-<?php echo esc_attr( (string) $scenario['pages'] ); ?>">
+          <p class="aw-szenario-anzahl"><b><?php echo esc_html( (string) $scenario['pages'] ); ?></b><span><?php echo 1 === $scenario['pages'] ? 'Seite' : 'Seiten'; ?></span></p>
+          <h3 id="h-szenario-<?php echo esc_attr( (string) $scenario['pages'] ); ?>"><?php echo esc_html( $scenario['title'] ); ?></h3>
+          <p class="aw-szenario-beispiel"><?php echo esc_html( $scenario['example'] ); ?></p>
+          <p class="aw-szenario-zweck"><?php echo esc_html( $scenario['purpose'] ); ?></p>
+          <ol class="aw-seitenplan" aria-label="Beispielhafte Seitenstruktur"><?php foreach ( $scenario['structure'] as $page_name ) : ?><li><?php echo esc_html( $page_name ); ?></li><?php endforeach; ?></ol>
+          <div class="aw-szenario-fuss"><p><strong><?php echo esc_html( $eur( $example_quote['price'] ) ); ?></strong><span>netto · ohne Extras</span></p><button type="button" data-website-controls hidden data-website-scenario="<?php echo esc_attr( (string) $scenario['pages'] ); ?>" aria-controls="angebot" aria-pressed="<?php echo 3 === $scenario['pages'] ? 'true' : 'false'; ?>" data-track-action="website_offer_scenario_<?php echo esc_attr( (string) $scenario['pages'] ); ?>" data-track-category="navigation" data-track-section="website_offer_examples"><?php echo esc_html( $scenario['pages'] . ( 1 === $scenario['pages'] ? ' Seite wählen' : ' Seiten wählen' ) ); ?> <span aria-hidden="true">→</span></button></div>
+        </article>
+<?php endforeach; ?>
+      </div>
+      <p class="aw-szenarien-hinweis">Texte auf Wunsch und Basisgestaltung sind enthalten. Impressum, Datenschutz, Danke- und 404-Seite kommen ohne Aufpreis dazu. Online-Terminbuchung und Shop werden separat kalkuliert. Bei der Auswahl bleiben Ihre Extras erhalten.</p>
+    </div>
+  </section>
 
   <section class="abschnitt aw-konfigurator" id="angebot" aria-labelledby="h-angebot">
     <div class="wrap">
-      <div class="aw-config-heading"><div><p class="mono">01 · Ihr Produkt, Ihre Auswahl</p><h2 id="h-angebot">Ihre Website. Klar kalkuliert.</h2></div><p>Seiten wählen. Extras ergänzen.<br><strong>Preis und Zeit rechnen direkt mit.</strong></p></div>
+      <div class="aw-config-heading"><div><p class="mono">01 · Ihr Produkt, Ihre Auswahl</p><h2 id="h-angebot" tabindex="-1">Ihre Website. Klar kalkuliert.</h2></div><p>Seiten wählen. Extras ergänzen.<br><strong>Preis und Zeit rechnen direkt mit.</strong></p></div>
       <noscript><p class="mikro">Beispiel: drei Seiten, Neubau, Texte inklusive, ohne Extras. Nennen Sie Ihren gewünschten Umfang in der Anfrage.</p></noscript>
       <div class="aw-config-grid">
         <div class="aw-config-controls">
@@ -89,7 +114,7 @@ get_header();
             <fieldset class="aw-feld aw-design">
               <legend><span class="aw-schritt">03</span> Design</legend>
               <div class="aw-extras" data-website-controls hidden role="radiogroup" aria-label="Design-Umfang">
-                <label class="aw-option"><input type="radio" name="website-design" id="design-basis" value="basis" checked><span class="aw-option-inhalt"><strong>Basisdesign</strong><small>Responsive Gestaltung passend zu Ihrem Unternehmen.</small></span><span class="aw-option-preis">Inklusive</span></label>
+                <label class="aw-option"><input type="radio" name="website-design" id="design-basis" value="basis" checked><span class="aw-option-inhalt"><strong>Basisgestaltung</strong><small>Bewährte Layouts, Ihre Farben und Typografie.</small></span><span class="aw-option-preis">Inklusive</span></label>
                 <label class="aw-option"><input type="radio" name="website-design" id="design-vorhanden" value="vorhanden"><span class="aw-option-inhalt"><strong>Design ist vorhanden</strong><small>Fertige Vorlage umsetzen. Umfang vorab prüfen.</small></span><span class="aw-option-preis">+0 €*</span></label>
                 <label class="aw-option"><input type="radio" name="website-design" id="screendesign" value="neu"><span class="aw-option-inhalt"><strong>Individuelles Screendesign</strong><small>Figma-Entwurf für Desktop &amp; Mobil.</small></span><span class="aw-option-preis">+<?php echo esc_html( $eur( HU_WEBSITE_DESIGN_FIRST ) ); ?><small>erstes Layout</small></span></label>
               </div>
@@ -195,7 +220,7 @@ get_header();
               </ul></details></div>
       </div>
       <div class="klartext">
-        <div><h3>Was als Seite zählt</h3><p>Jede Seite mit eigenem Inhalt, etwa Startseite, Leistung oder Über uns. Impressum, Datenschutz, Danke- und 404-Seite sind inklusive und zählen nicht mit.</p></div>
+        <div><h3>Was als Seite zählt</h3><p>Eine Inhaltsseite mit eigener URL, etwa Startseite, Leistung oder Über uns. Mehrere Abschnitte auf derselben Seite zählen zusammen als eine Seite. Impressum, Datenschutz, Danke- und 404-Seite sind inklusive und zählen nicht mit.</p></div>
         <div><h3>Was separat kalkuliert wird</h3><p>Daten-Dashboard, Keyword-Recherche, Fotos und Logo, Shop, weitere Schnittstellen und mehrere Sprachen. Screendesign, Conversion-Tracking und Standard-CRM sind oben zum festen Aufpreis wählbar. Mehr als zehn Seiten erhalten ein eigenes Angebot.</p></div>
         <div><h3>Was laufend kostet</h3><p>Domain und Hosting zahlen Sie direkt beim Anbieter. Bei externen CRM- oder Zusatzdiensten können laufende Kosten entstehen; sie stehen vorab im Angebot. Weiterentwicklung buchen Sie nach Bedarf.</p></div>
       </div>
@@ -211,17 +236,43 @@ get_header();
     </div>
   </section>
 
+  <section class="dunkel tafel" id="beleg" aria-labelledby="h-beleg">
+    <div class="wrap raster">
+      <p class="nr"><b>02</b><span>Beleg</span></p>
+      <div class="haupt">
+        <h2 id="h-beleg">Prüfen Sie die Arbeit, bevor Sie anfragen.</h2>
+        <p class="lead">Sehen Sie sich Gestaltung und Umsetzung an. Die redaktionellen Projekte zeigen die Arbeit am Inhalt; der PV-Fall zeigt eine größere Anfragestrecke mit eigener Messung.</p>
+        <div class="belege">
+          <figure>
+            <div class="bild"><img src="<?php echo esc_url( get_stylesheet_directory_uri() . '/assets/img/hasimuener-org-anfrage-website.webp' ); ?>" width="960" height="600" decoding="async" loading="lazy" alt="Startseite von hasimuener.org: großer Serifen-Schriftzug „Macht. Medien. Perspektive.“ über einer Navigation und einem Titelbild"></div>
+            <figcaption><a href="https://hasimuener.org/" target="_blank" rel="noopener">hasimuener.org ↗</a> · eigenes redaktionelles Projekt. Typografie, Raster und Lesefluss tragen die Gestaltung.</figcaption>
+          </figure>
+          <ul class="messliste">
+            <li><span class="mono">Diese Seite</span><p>Ohne Cookie-Banner, gebaut wie die Websites, die ich übergebe. <a href="<?php echo esc_url( $psi_url ); ?>" target="_blank" rel="noopener">Ladezeit selbst messen ↗</a></p></li>
+            <li><span class="mono">Fall · PV-Installationsbetrieb</span><span class="wert"><?php echo esc_html( hu_e3_metric( 'cpl_before' ) . ' → ' . hu_e3_metric( 'cpl_after' ) ); ?></span><p>Kosten pro qualifizierter Anfrage in sechs Monaten. Gebaut: Website, Landingpages, Formular und Übergabe an den Vertrieb. <a href="<?php echo esc_url( home_url( '/case-study-solar-leadgenerierung/' ) ); ?>">Herleitung lesen</a></p></li>
+            <li><span class="mono">Redaktioneller Bestand</span><p><a href="https://civaka-azad.org/" target="_blank" rel="noopener">civaka-azad.org ↗</a> · viele Inhalte, Navigation und Archive so gebaut, dass Themen auffindbar bleiben.</p></li>
+          </ul>
+        </div>
+        <div class="folgerung">
+          <a class="btn btn--glut" href="<?php echo esc_url( $contact_url ); ?>" data-website-cta="beleg" data-track-action="cta_website_offer_proof_project" data-track-category="lead_gen" data-track-section="website_offer_beleg">Website-Projekt anfragen <span aria-hidden="true">→</span></a>
+          <p>Antwort <?php echo esc_html( hu_response_promise( 'window' ) ); ?>.</p>
+        </div>
+      </div>
+      <aside class="rand"><span class="mono">Was der Fall belegt</span>Das Ergebnis gehört zur gesamten Maßnahme, mit Website, Kampagnen und Optimierung. Es ist keine Ergebniszusage für das Grundprodukt.</aside>
+    </div>
+  </section>
+
   <section class="dunkel tafel" id="unterschied" aria-labelledby="h-unterschied">
     <div class="wrap raster">
-      <p class="nr"><b>02</b><span>Unterschied</span></p>
+      <p class="nr"><b>03</b><span>Unterschied</span></p>
       <div class="haupt breit">
-        <h2 id="h-unterschied">Dieselbe Website, zweimal gebaut. Sieben Stellen entscheiden, ob Anfragen kommen.</h2>
+        <h2 id="h-unterschied">Sieben Punkte, an denen Sie die Qualität prüfen.</h2>
         <p class="lead">Prüfen Sie diese sieben Punkte bei jedem Angebot. Die Darstellung zeigt zwei beispielhafte Ausführungen, keine pauschale Bewertung anderer Anbieter.</p>
         <div class="schalter" data-website-controls hidden role="group" aria-label="Ansicht wählen">
-          <button type="button" id="m-klassisch" aria-pressed="true" data-modus="klassisch">Mögliche Schwachstellen</button>
-          <button type="button" id="m-anfragen" aria-pressed="false" data-modus="anfragen">Gebaut für Anfragen</button>
+          <button type="button" id="m-klassisch" aria-pressed="false" data-modus="klassisch">Mögliche Schwachstellen</button>
+          <button type="button" id="m-anfragen" aria-pressed="true" data-modus="anfragen">Gebaut für Anfragen</button>
         </div>
-        <div class="durch" id="durch" data-modus="klassisch">
+        <div class="durch" id="durch" data-modus="anfragen">
           <div>
             <div class="geraet" aria-hidden="true">
               <div class="aw-browser-bar"><span class="url">ihre-firma.de</span><span class="laden"><i id="ladebalken"></i></span></div>
@@ -274,32 +325,6 @@ get_header();
         </div>
         <p class="fair"><strong>Qualität lässt sich prüfen:</strong> Testen Sie Formular und Ladezeit, lassen Sie sich die Übergabe zeigen und prüfen Sie laufende Kosten vor dem Auftrag.</p>
       </div>
-    </div>
-  </section>
-
-  <section class="dunkel tafel" id="beleg" aria-labelledby="h-beleg">
-    <div class="wrap raster">
-      <p class="nr"><b>03</b><span>Beleg</span></p>
-      <div class="haupt">
-        <h2 id="h-beleg">Prüfen Sie die Arbeit, bevor Sie anfragen.</h2>
-        <p class="lead">Eine Website, die ich gebaut habe, ist die, auf der Sie gerade sind. Dazu zwei Projekte und ein Fall mit Zahlen.</p>
-        <div class="belege">
-          <figure>
-            <div class="bild"><img src="<?php echo esc_url( get_stylesheet_directory_uri() . '/assets/img/hasimuener-org-anfrage-website.webp' ); ?>" width="960" height="600" decoding="async" loading="lazy" alt="Startseite von hasimuener.org: großer Serifen-Schriftzug „Macht. Medien. Perspektive.“ über einer Navigation und einem Titelbild"></div>
-            <figcaption><a href="https://hasimuener.org/" target="_blank" rel="noopener">hasimuener.org ↗</a> · eigenes redaktionelles Projekt. Typografie, Raster und Lesefluss tragen die Gestaltung.</figcaption>
-          </figure>
-          <ul class="messliste">
-            <li><span class="mono">Diese Seite</span><p>Ohne Cookie-Banner, gebaut wie die Websites, die ich übergebe. <a href="<?php echo esc_url( $psi_url ); ?>" target="_blank" rel="noopener">Ladezeit selbst messen ↗</a></p></li>
-            <li><span class="mono">Fall · PV-Installationsbetrieb</span><span class="wert"><?php echo esc_html( hu_e3_metric( 'cpl_before' ) . ' → ' . hu_e3_metric( 'cpl_after' ) ); ?></span><p>Kosten pro qualifizierter Anfrage in sechs Monaten. Gebaut: Website, Landingpages, Formular und Übergabe an den Vertrieb. <a href="<?php echo esc_url( home_url( '/case-study-solar-leadgenerierung/' ) ); ?>">Herleitung lesen</a></p></li>
-            <li><span class="mono">Redaktioneller Bestand</span><p><a href="https://civaka-azad.org/" target="_blank" rel="noopener">civaka-azad.org ↗</a> · viele Inhalte, Navigation und Archive so gebaut, dass Themen auffindbar bleiben.</p></li>
-          </ul>
-        </div>
-        <div class="folgerung">
-          <a class="btn btn--glut" href="<?php echo esc_url( $contact_url ); ?>" data-website-cta="beleg" data-track-action="cta_website_offer_proof_project" data-track-category="lead_gen" data-track-section="website_offer_beleg">Website-Projekt anfragen <span aria-hidden="true">→</span></a>
-          <p>Antwort <?php echo esc_html( hu_response_promise( 'window' ) ); ?>.</p>
-        </div>
-      </div>
-      <aside class="rand"><span class="mono">Übertragbar?</span>Die Zahl aus dem Fall hängt an Markt und Angebot. Übertragbar ist die Bauweise.</aside>
     </div>
   </section>
 
@@ -360,12 +385,12 @@ get_header();
     <div class="wrap">
       <h2 id="h-anfrage">Neubau oder Relaunch: Was soll die Website können?</h2>
       <div>
-        <p>Ihre Auswahl steht schon fest. Ergänzen Sie, was Ihr Unternehmen anbietet und wann die Website stehen soll. Sie erhalten ein Angebot mit vollständigem Umfang, Preis und Termin.</p>
+        <p>Ihre Auswahl wird in die Anfrage übernommen. Ergänzen Sie, was Ihr Unternehmen anbietet und wann die Website stehen soll. Ich prüfe den Umfang und antworte mit Rückfragen oder einem Angebot. Beauftragt wird erst nach Ihrer Zusage.</p>
         <div class="aktion" style="margin-top:var(--s3)">
           <a class="btn" href="<?php echo esc_url( $contact_url ); ?>" data-website-cta="abschluss" data-track-action="cta_website_offer_close_project" data-track-category="lead_gen" data-track-section="website_offer_abschluss">Website-Projekt anfragen <span aria-hidden="true">→</span></a>
         </div>
         <p class="mikro">Persönlich, <?php echo esc_html( hu_response_promise( 'window' ) ); ?>.</p>
-        <p class="direkt mikro">Lieber direkt: <span><?php echo esc_html( hu_get_contact_email() ); ?></span> · <span><?php echo esc_html( hu_get_contact_phone() ); ?></span></p>
+        <p class="direkt mikro">Lieber direkt: <a href="<?php echo esc_url( hu_get_contact_mailto() ); ?>" data-track-action="website_offer_close_mail" data-track-category="lead_gen"><?php echo esc_html( hu_get_contact_email() ); ?></a> · <a href="<?php echo esc_url( hu_get_contact_phone( 'link' ) ); ?>" data-track-action="website_offer_close_tel" data-track-category="lead_gen"><?php echo esc_html( hu_get_contact_phone() ); ?></a></p>
       </div>
     </div>
   </section>

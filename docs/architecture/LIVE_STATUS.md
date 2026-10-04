@@ -309,6 +309,12 @@ Contract und Abnahme: `CHAT_ASSISTANT.md`.
 - **`/wordpress-website-erstellen-lassen/`** (`page-wordpress-website-erstellen-lassen.php`,
   Die Anfrage-Website, Produktdurchgang 04.10.2026): Kompakter Desktop-Konfigurator
   mit Seiten/Texte, Design/Extras und vollständiger Preis-/Zeitübersicht nebeneinander.
+  Zweiter Durchgang: drei klickbare Umfangsbeispiele davor (eine Seite Salon,
+  drei Beratung, fünf Sanitär/Heizung), mit exaktem Seitenplan, Kanonpreis und
+  Hinweis auf separate Online-Buchung/Shop. Übernahme ändert nur die Seitenzahl,
+  erhält Extras und führt mit Tastaturfokus zur Kalkulation. Zielgruppe hier:
+  Unternehmen/Selbstständige, auch mit Privatkunden. Belege vor dem Vergleich;
+  eigene Bauweise als Anfangszustand, PV-Ergebnis auf Gesamtmaßnahme begrenzt.
   Tablet/Mobil stapeln, Sticky-Auswahl editierbar; auf Desktop im Konfigurator
   verborgen, um die sichtbare Zusammenfassung nicht zu verdoppeln.
   Grundpreis/Zusatzseite unverändert, Texte auf Wunsch und technische SEO inklusive.

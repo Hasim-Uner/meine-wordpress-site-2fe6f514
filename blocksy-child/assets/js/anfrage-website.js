@@ -95,6 +95,7 @@
         $('#angebot-hinweis').hidden = !notes.length; $('#angebot-hinweis').textContent = notes.join(' ');
         $('#pos-weiterleitung').classList.toggle('aus', state.art !== 'relaunch');
         $$('.groessen button').forEach(function (button) { button.setAttribute('aria-pressed', String(Number(button.dataset.seiten) === state.seiten)); });
+        $$('[data-website-scenario]').forEach(function (button) { button.setAttribute('aria-pressed', String(Number(button.dataset.websiteScenario) === state.seiten)); });
         $$('.art button').forEach(function (button) { button.setAttribute('aria-pressed', String(button.dataset.art === state.art)); });
         var selected = [];
         if (newDesign) selected.push('Screendesign');
@@ -116,6 +117,14 @@
     $('#plus').addEventListener('click', function () { if (state.seiten < max) { state.seiten++; calculate(); } });
     $$('.groessen button').forEach(function (button) {
         button.addEventListener('click', function () { if (state.seiten !== Number(button.dataset.seiten)) { state.seiten = Number(button.dataset.seiten); calculate(); } });
+    });
+    $$('[data-website-scenario]').forEach(function (button) {
+        button.addEventListener('click', function () {
+            state.seiten = Number(button.dataset.websiteScenario);
+            calculate();
+            $('#angebot').scrollIntoView({ block: 'start', behavior: 'instant' });
+            $('#h-angebot').focus({ preventScroll: true });
+        });
     });
     $$('.art button').forEach(function (button) {
         button.addEventListener('click', function () { if (state.art !== button.dataset.art) { state.art = button.dataset.art; calculate(); } });
@@ -151,7 +160,7 @@
     calculate();
     root.classList.add('aw-ready');
     $$('[data-website-controls]').forEach(function (control) { control.hidden = false; });
-    mode('klassisch');
+    mode('anfragen');
     // Hide the CTA from both keyboard and accessibility tree at the hero and close.
     var bar = $('#leiste'), stickyCTA = $('#cta-leiste'), scheduled = false;
     function updateSticky() {
