@@ -31,10 +31,12 @@ Die Abbruchregel unten gilt daneben weiter.
 
 ## Was sich ändert, solange der Schalter an ist
 
-- **Startseite `/`**: In der finalen Fassung führen Kopf, Hero, Fall,
-  Preisabschluss und Seitenabschluss zur Ersteinschätzung. Im Hero steht
-  „Alle Preise“ daneben; Projektanfragen stehen in den Angeboten und als
-  zweiter Einstieg im Abschluss. Kanon-Schalter und Texte bleiben zentral.
+- **Startseite `/`**: Seit Freigabe 04.10.2026 führen Kopf, Fall,
+  Ersteinschätzungs-Tafel nach den Angeboten und Seitenabschluss zur
+  Ersteinschätzung. Die Hauptaktion im Hero führt unabhängig vom Versuch
+  zur Projektanfrage; daneben „Leistungsumfang & Preise“. Ein Preislink im
+  Kicker entfällt, der Kanonpreis bleibt Klartext. Kanon-Schalter und Texte
+  bleiben zentral; Vorher/Nachher des Hero-Routingwechsels separat auswerten.
   Schalter aus: Projektanfrage in Kopf, Hero und Fall; die zusätzliche Zeile
   bei den Preisen und die Ersteinschätzungs-Karte im Abschluss entfallen.
 - **`/kontakt/?focus=ersteinschaetzung`**: Kurzformular mit drei Feldern
@@ -103,6 +105,14 @@ vergleichbar. Ein längerer Weg bis zu den Preisen oder neue
 Ausgänge zu Produktseiten können Anfragen vom Hero-Button wegziehen.
 
 ### Hero als Messfläche (Auftrag 2026-10-02)
+
+Nachtrag 04.10.2026: Der Nutzer hat die Verdichtung der Hauptaktion bestätigt.
+`home_head_ersteinschaetzung` ist deshalb im Hero stillgelegt, dort gilt
+`home_head_contact`. Eine klare Tafel nach den Angeboten behält
+`home_offers_ersteinschaetzung`. Die folgende Messflächen-Hypothese beschreibt
+die vorige Fassung; ihre Hero-Klickzahlen nicht mit der neuen Projektanfrage
+als derselben Conversion vergleichen. Herkunftsprotokoll und Stationslinks
+bleiben technisch unverändert.
 
 Die nächste Änderung betrifft nur den Kopf und Abschnitt 01. Hero und Kopf
 bilden ein dunkles Messinstrument. Ein Herkunftsetikett und der Besuch als

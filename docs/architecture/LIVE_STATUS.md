@@ -166,7 +166,10 @@ Contract und Abnahme: `CHAT_ASSISTANT.md`.
   in `startseite-strecke.css`. Vier H1-Zeilen zeigen dieselbe Aussage; die Quelle
   dieses Besuchs hängt als dekoratives Etikett am letzten Satz. Die Herkunft
   bleibt in Station 01 für Hilfstechnik lesbar. Der Kicker enthält den Kanonpreis
-  (`home_hero_price_line`), darunter stehen Ersteinschätzung und „Alle Preise“.
+  als Klartext. Seit dem zweiten Produktdurchgang vom 04.10.2026 führt die
+  einzige Hauptaktion im Hero zur Projektanfrage (`home_head_contact`),
+  daneben „Leistungsumfang & Preise“; ein leiser Case-Link folgt bei jeder
+  Breite. Der frühere doppelte Preislink und Hero-Ersteinschätzungs-CTA entfallen.
   Das Protokoll ist die Bahn aus demselben Stationsarray wie Abschnitt 02:
   Herkunft, LCP und Klickstatus („noch offen“ / „geöffnet · Ort“), danach die
   gedämpften Stationen Messung, CRM und Anfrage. Das Signal hält bei Formular;
@@ -180,7 +183,9 @@ Contract und Abnahme: `CHAT_ASSISTANT.md`.
   ausschließlich per Transform. Der Prüfstand enthält Code, CI, PageSpeed mit
   dem lokal gemessenen LCP und die Referenzen (`#referenzen`). Unter fünf
   Angeboten (`#angebote`, alle Schema-Anker erhalten) stehen Weiterentwicklung,
-  Hosting-Hinweis und die bedingte Ersteinschätzungs-Zeile. Übergabe enthält
+  Hosting-Hinweis und eine bedingte Ersteinschätzungs-Tafel: Website-URL/Ziel,
+  schriftliche Befunde beziehungsweise Absage und Antwortzeit aus dem Kanon.
+  Übergabe enthält
   Eigentum, Ausfall-Einwand, Projektablauf und die Nebenwege zu White-Label und
   Solar/Wärmepumpe. Fünf sichtbare FAQ teilen ihr Array mit dem FAQPage-Schema.
   Der Abschluss (`#anfrage`, `#kontakt`) bleibt hell und enthält zwei Einstiege,
@@ -193,8 +198,9 @@ Contract und Abnahme: `CHAT_ASSISTANT.md`.
   Signal, die H1 bleibt gefüllt, Messwerte stehen auf „…“ mit Ausfallhinweis.
   Die Hero-Choreografie startet nach `document.fonts.ready`, animiert nur Transform
   und Opacity und vermisst Etikett und Bahn bei Größenwechseln neu.
-  Hypothese: mehr Hero-Ersteinschätzungen und Stationsöffnungen. Sechs Wochen
-  nach Livegang `home_head_ersteinschaetzung` (Section = hero) und
+  Hypothese ab Freigabe 04.10.2026: klarere Projektanfragen im Hero bei
+  erhaltenem Ersteinschätzungs-Weg nach den Angeboten. Sechs Wochen
+  nach Livegang `home_head_contact` (Section = hero) und
   `home_hero_station` gegen den vorherigen Zeitraum prüfen; Stationsöffnungen
   sind ein neuer Hook und haben vor diesem Release keine eigene Baseline.
   Das Protokoll zeigt lokale Herkunft (UTM oder Verweis-Domain), Ladezeit,

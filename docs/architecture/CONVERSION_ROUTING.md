@@ -18,7 +18,7 @@ A page can remain the canonical SEO destination for its query while its CTA rout
 
 | Route | Primary audience / intent | Page role | Primary CTA | Secondary CTA / bridge |
 | --- | --- | --- | --- | --- |
-| `/` | Brand and direct WordPress/Freelancer intent | Homepage and direct WordPress money page | `Projekt anfragen` with offer-specific focus; while the Ersteinschätzung experiment is switched on, header, hero, case, offer close and page close lead with it (`/kontakt/?focus=ersteinschaetzung`); project requests stay in the offers and page close | Proof / White-Label / Solar / tracking specialist |
+| `/` | Brand and direct WordPress/Freelancer intent | Homepage and direct WordPress money page | `Projekt anfragen` in the hero; offer-specific project requests in price rows. With the Ersteinschätzung experiment on, header, case, the assessment card after offers and page close retain `/kontakt/?focus=ersteinschaetzung` | Scope/prices, proof / White-Label / Solar / tracking specialist |
 | `/wordpress-freelancer-hannover/` | Retired direct-client route | 301 to `/`; excluded from sitemap | Homepage takes over content and query ownership | Legacy content anchors remain on `/` |
 | `/whitelabel-retainer/` | Agencies seeking delivery capacity | Agency money page | White-Label request form (`?case=aufgabe` / `?case=angebotsphase` / `?case=vormerken`) or scoped first project | 30-minute call / proof |
 | `/solar-waermepumpen-leadgenerierung/` | Solar, heat-pump and storage businesses | Energy vertical money page | Marktcheck for cold intent; `#analyse` and `#sofortkontakt` for direct purchase intent | Solar proof / case study |
@@ -105,14 +105,17 @@ Der Hook `home_offer_conversion` aus der Konsolidierungsentscheidung vom
 die Analyse läuft unter `home_offer_analysis`.
 
 **Versuch Ersteinschätzung (`HU_EXPERIMENT_ERSTEINSCHAETZUNG`):** Solange er an
-ist, führen Kopf, Hero, Fall, Preisabschluss und Seitenabschluss über
-`hu_first_assessment_url()` zur kostenlosen Ersteinschätzung. Die Kopf-Tür
-`ersteinschaetzung` trägt `nav_header_ersteinschaetzung`; Hero und Abschluss
-behalten `home_head_ersteinschaetzung` und `home_close_ersteinschaetzung`.
+ist, führen Kopf, Fall, Preisabschluss und Seitenabschluss über
+`hu_first_assessment_url()` zur kostenlosen Ersteinschätzung. Seit Freigabe
+vom 04.10.2026 ist im Hero die Projektanfrage (`home_head_contact`) die
+Hauptaktion, auch bei aktivem Versuch. Die Kopf-Tür `ersteinschaetzung` trägt
+`nav_header_ersteinschaetzung`; der Abschluss `home_close_ersteinschaetzung`.
 Neu sind `home_case_ersteinschaetzung` und `home_offers_ersteinschaetzung`.
-Im Hero steht daneben „Alle Preise“ (`home_hero_prices`), die Projektanfrage
-steht bei den Angeboten und als zweiter Einstieg im Abschluss.
-Preislink im Kicker: `home_hero_price_line` → `#angebote`, aus dem Preiskanon.
+Im Hero steht daneben „Leistungsumfang & Preise“ (`home_hero_prices`).
+Der Kanonpreis im Kicker ist Klartext. `home_hero_price_line` und
+`home_head_ersteinschaetzung` sind stillgelegt. Unter den Angeboten erklärt
+eine bedingte Ersteinschätzungs-Tafel Eingabe, drei Befunde und die Antwortzeit.
+`home_hero_case_proof` steht leise unter der Hauptaktion bei jeder Breite.
 Die frühere Hero-Seitennavigation mit `home_nav_prices`, `home_nav_case` und
 `home_nav_pruefstand` entfällt. Fall und Referenzen bleiben in der Belege-Leiste.
 Die sechs Hero-Stationslinks tragen `home_hero_station` mit dem Slug als
