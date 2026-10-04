@@ -1,6 +1,7 @@
 <?php
 /** Render the real product and shared navigation with WordPress boundaries only. */
 require __DIR__ . '/glossary-links-harness.php';
+require_once get_stylesheet_directory() . '/inc/canon/reference-canon.php';
 require_once get_stylesheet_directory() . '/inc/seo-meta.php';
 $GLOBALS['nav_test'] = [ 'path' => '/wordpress-website-erstellen-lassen/', 'front' => false, 'page' => 'wordpress-website-erstellen-lassen', 'template' => 'page-wordpress-website-erstellen-lassen.php' ];
 $_SERVER['REQUEST_URI'] = $GLOBALS['nav_test']['path'];

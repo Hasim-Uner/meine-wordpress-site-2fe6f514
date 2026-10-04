@@ -1,4 +1,138 @@
 /* Product-specific layouts on system.css; no external font request. */
+.anfrage-website .aw-referenzen {
+  border-block:1px solid var(--haar);
+}
+
+.anfrage-website .aw-referenzen-kopf {
+  max-width:48rem;
+}
+
+.anfrage-website .aw-referenzen-kopf h2 {
+  margin-top:var(--s2);
+}
+
+.anfrage-website .aw-referenzen-kopf .lead {
+  margin-top:var(--s2);
+}
+
+.anfrage-website .aw-projekte {
+  margin-top:var(--s5);
+}
+
+.anfrage-website .aw-projekt {
+  display:grid;
+  grid-template-columns:minmax(0,1fr);
+  gap:var(--s3);
+  padding-block:var(--s4);
+  border-top:1px solid var(--haar);
+  align-items:center;
+}
+
+.anfrage-website .aw-projekt > * {
+  min-width:0;
+}
+
+.anfrage-website .aw-projekt-browser {
+  display:flex;
+  flex-wrap:wrap;
+  justify-content:space-between;
+  gap:var(--s0) var(--s2);
+  padding:var(--s1) var(--s2);
+  border:1px solid var(--haar);
+  border-bottom:0;
+  background:var(--zone);
+  font-family:var(--mono);
+  font-size:var(--mono-s);
+  color:var(--grau);
+}
+
+.anfrage-website .aw-projekt .bild {
+  border-radius:var(--r0);
+}
+
+.anfrage-website .aw-projekt-fach {
+  color:var(--stempel);
+}
+
+.anfrage-website .aw-projekt-name {
+  margin-top:var(--s1);
+  color:var(--grau);
+  font-size:var(--grad-klein);
+}
+
+.anfrage-website .aw-projekt-copy h3 {
+  margin-top:var(--s2);
+  font-size:clamp(1.5rem,2.5vw,2.15rem);
+  line-height:1.12;
+  text-wrap:balance;
+}
+
+.anfrage-website .aw-projekt-text {
+  margin-top:var(--s2);
+  max-width:44ch;
+  color:var(--grau);
+}
+
+.anfrage-website .aw-projekt-gewerke,
+.anfrage-website .aw-projekt-flow {
+  display:flex;
+  flex-wrap:wrap;
+  gap:var(--s1) var(--s2);
+  list-style:none;
+  padding:0;
+  margin:var(--s3) 0 0;
+  font-family:var(--mono);
+  font-size:var(--mono-s);
+  color:var(--grau);
+}
+
+.anfrage-website .aw-projekt-gewerke li {
+  border-bottom:1px solid var(--haar);
+  padding-bottom:var(--s0);
+}
+
+.anfrage-website .aw-projekt-flow {
+  gap:var(--s1);
+  color:var(--tinte);
+}
+
+.anfrage-website .aw-projekt-flow li + li::before {
+  content:'→';
+  margin-right:var(--s1);
+  color:var(--stempel);
+}
+
+.anfrage-website .aw-projekt-link {
+  display:inline-flex;
+  align-items:center;
+  gap:var(--s1);
+  min-height:44px;
+  margin-top:var(--s2);
+  color:var(--tinte);
+  text-decoration-color:var(--stempel);
+}
+
+.anfrage-website .aw-projekt-link:focus-visible {
+  outline:2px solid var(--stempel);
+  outline-offset:var(--s0);
+}
+
+.anfrage-website .aw-referenzen-fuss {
+  border-top:1px solid var(--haar);
+  padding-top:var(--s3);
+  max-width:76ch;
+  color:var(--grau);
+  font-size:var(--grad-klein);
+}
+
+@media (min-width:900px) {
+  .anfrage-website .aw-projekt {
+    grid-template-columns:minmax(0,1.35fr) minmax(0,1fr);
+    gap:var(--s4);
+    padding-block:var(--s5);
+  }
+}
+
 .anfrage-website {
   --aw-paper: var(--papier);
   --aw-ink: var(--tinte);
@@ -781,19 +915,6 @@
   font-weight:600
 }
 
-.anfrage-website .belege {
-  display:grid;
-  gap:var(--s4);
-  margin-top:var(--s4)
-}
-
-@media (min-width:860px) {
-  .anfrage-website .belege {
-    grid-template-columns:minmax(0,1.15fr) minmax(0,.85fr)
-  }
-
-}
-
 .anfrage-website figure {
   margin:0
 }
@@ -822,45 +943,6 @@
 
 .anfrage-website figcaption a {
   color:var(--tinte)
-}
-
-.anfrage-website .messliste {
-  list-style:none;
-  margin:0;
-  padding:0;
-  display:grid;
-  border-top:1px solid var(--haar)
-}
-
-.anfrage-website .messliste li {
-  padding-block:var(--s2);
-  border-bottom:1px solid var(--haar)
-}
-
-.anfrage-website .messliste .mono {
-  color:var(--stempel)
-}
-
-.anfrage-website .messliste p {
-  margin-top:6px
-}
-
-.anfrage-website .messliste a {
-  color:var(--tinte);
-  text-decoration-color:var(--grau)
-}
-
-.anfrage-website .messliste a:hover {
-  text-decoration-color:var(--stempel)
-}
-
-.anfrage-website .wert {
-  font-family:var(--serif-display);
-  font-size:2rem;
-  letter-spacing:-.03em;
-  font-variant-numeric:tabular-nums;
-  display:block;
-  margin-top:6px
 }
 
 .anfrage-website .folgerung {
@@ -1245,7 +1327,7 @@
   line-height:1.5;
 }
 
-.anfrage-website .posten, .anfrage-website .stellen, .anfrage-website .messliste {
+.anfrage-website .posten, .anfrage-website .stellen {
   list-style:none;
 }
 
@@ -1260,17 +1342,6 @@
 .anfrage-website .schalter button[aria-pressed="true"] {
   background:var(--tinte);
   color:var(--papier);
-}
-
-@media (min-width:980px) {
-  .anfrage-website #beleg .haupt {
-    grid-column:2 / 4;
-  }
-
-  .anfrage-website #beleg .rand {
-    grid-column:3;
-  }
-
 }
 
 @media (max-width:420px) {

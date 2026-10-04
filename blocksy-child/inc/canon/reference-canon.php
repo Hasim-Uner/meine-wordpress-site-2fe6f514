@@ -64,3 +64,58 @@ function hu_public_reference_projects() {
 		],
 	];
 }
+
+/**
+ * Project portraits approved for the website product page.
+ *
+ * The named E3 reference describes the work only. It must not contain metrics
+ * or link to the separate anonymous case. Other reference surfaces retain
+ * their existing public project selection.
+ *
+ * @return array<int, array<string, mixed>>
+ */
+function hu_website_reference_projects() {
+	$public = array_column( hu_public_reference_projects(), null, 'name' );
+	$portraits = [
+		'hasimuener.org' => [
+			'title' => 'Ein Journal, das zum Lesen einlädt.',
+			'text' => 'Mein eigenes redaktionelles Projekt. Typografie, Seitenraster und Lesefluss geben Essays und längeren Texten einen ruhigen Rahmen.',
+			'screenshot' => 'hasimuener-org-anfrage-website.webp',
+			'alt' => 'Startseite von hasimuener.org mit dem Schriftzug Macht. Medien. Perspektive. und einem redaktionellen Titelbild',
+		],
+		'civaka-azad.org' => [
+			'title' => 'Viele Inhalte. Klare Wege.',
+			'text' => 'Ein redaktioneller Bestand braucht Orientierung. Ich habe Navigation und Archive so strukturiert, dass Leser zu den passenden Themen finden.',
+			'screenshot' => 'reference-civaka-azad.webp',
+			'alt' => 'Website-Ansicht von Civaka Azad mit Navigation und redaktionellen Inhalten',
+		],
+	];
+	$references = [];
+	foreach ( $portraits as $name => $portrait ) {
+		$references[] = array_merge( $public[ $name ], $portrait );
+	}
+	$references[] = [
+		'name' => 'hasimuener.de',
+		'url' => home_url( '/' ),
+		'tag' => 'Eigenes Projekt · Website & Anfragen',
+		'role' => 'Eigene Unternehmenswebsite',
+		'title' => 'Angebot, Anfrage und Übergabe.',
+		'text' => 'Diese Website zeigt meine Arbeit im Einsatz: eigenständiges Design, klare Angebote und eine geprüfte Formularstrecke. Vom ersten Überblick bis zur Projektanfrage greift alles ineinander.',
+		'stack' => [ 'WordPress', 'Anfrageformulare', 'Qualitätsprüfung' ],
+		'screenshot' => 'reference-hasimuener-de.webp',
+		'alt' => 'Startseite von hasimuener.de mit dem Website-Angebot und der Darstellung der Anfragestrecke',
+	];
+	$references[] = [
+		'name' => 'E3 New Energy',
+		'url' => 'https://e3-newenergy.de/',
+		'tag' => 'B2B-Projekt · Energie',
+		'role' => 'Funnel-Architektur',
+		'title' => 'Vom ersten Klick bis ins CRM.',
+		'text' => 'Für E3 New Energy habe ich die gesamte Funnel-Architektur aufgebaut: Website und Landingpages, Kampagnen, Anfrageformulare, Tracking und die Übergabe ins CRM.',
+		'stack' => [ 'Website & Landingpages', 'Tracking', 'CRM-Anbindung' ],
+		'screenshot' => 'reference-e3-new-energy.webp',
+		'alt' => 'Website-Ansicht von E3 New Energy mit Navigation und dem Angebot für erneuerbare Energien',
+		'flow' => [ 'Klick', 'Landingpage', 'Formular', 'Tracking', 'CRM' ],
+	];
+	return $references;
+}

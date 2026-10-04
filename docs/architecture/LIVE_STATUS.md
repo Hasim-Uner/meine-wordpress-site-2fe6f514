@@ -320,7 +320,12 @@ Contract und Abnahme: `CHAT_ASSISTANT.md`.
   Hinweis auf separate Online-Buchung/Shop. Übernahme ändert nur die Seitenzahl,
   erhält Extras und führt mit Tastaturfokus zur Kalkulation. Zielgruppe hier:
   Unternehmen/Selbstständige, auch mit Privatkunden. Belege vor dem Vergleich;
-  eigene Bauweise als Anfangszustand, PV-Ergebnis auf Gesamtmaßnahme begrenzt.
+  eigene Bauweise als Anfangszustand. Referenzdurchgang 05.10.2026: vier helle
+  Projektporträts mit lokalen Website-Screenshots (hasimuener.org, Civaka Azad,
+  hasimuener.de, E3 New Energy) und präzisem Beitrag je Projekt. E3 beschreibt
+  die gesamte Funnel-Architektur vom Klick bis CRM, ohne Kennzahlen oder Link
+  zum anonymisierten Zahlenfall. Referenzdaten aus `hu_website_reference_projects()`;
+  keine neue Asset-/Consent-Strecke, keine Änderung der übrigen Referenzflächen.
   Tablet/Mobil stapeln, Sticky-Auswahl editierbar; auf Desktop im Konfigurator
   verborgen, um die sichtbare Zusammenfassung nicht zu verdoppeln.
   Grundpreis/Zusatzseite unverändert, Texte auf Wunsch und technische SEO inklusive.
