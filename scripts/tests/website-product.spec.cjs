@@ -30,6 +30,7 @@ for (const width of [360, 768, 1440]) {
       const r=el.getBoundingClientRect(); return r.width>0 && r.right>innerWidth+1;
     }).map(el=>el.className));
     expect(overflow).toEqual([]);
+    await page.screenshot({ path: test.info().outputPath(`website-${width}.png`), fullPage: true });
     await expect(page.locator('#leiste')).toBeHidden();
     await page.locator('#m-anfragen').focus(); await page.keyboard.press('Space');
     await expect(page.locator('#m-anfragen')).toHaveAttribute('aria-pressed','true');
@@ -78,6 +79,11 @@ test('no JavaScript: both comparison rows and diagrams, valid static offer', asy
   await expect(page.locator('.stellen .k')).toHaveCount(7);await expect(page.locator('.stellen .a')).toHaveCount(7);
   expect(await page.locator('.stellen p').evaluateAll(els=>els.every(el=>getComputedStyle(el).display!=='none'))).toBe(true);
   await expect(page.locator('.schalter')).toBeHidden();await expect(page.locator('#leiste')).toBeHidden();
+  const overflow = await page.locator('body *').evaluateAll(els => els.filter(el => {
+    const r = el.getBoundingClientRect(); return r.width > 0 && r.right > innerWidth + 1;
+  }).map(el => ({ tag: el.tagName, class: el.className, right: el.getBoundingClientRect().right })));
+  await page.screenshot({ path: test.info().outputPath('website-no-js.png'), fullPage: true });
+  expect(overflow).toEqual([]);
   expect(await page.evaluate(()=>document.documentElement.scrollWidth<=innerWidth)).toBe(true);
   expect(new URL(await page.locator('#cta-angebot').getAttribute('href')).searchParams.get('seiten')).toBe('3');
   await context.close();

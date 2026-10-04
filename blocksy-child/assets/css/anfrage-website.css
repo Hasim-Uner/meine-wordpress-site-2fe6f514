@@ -1329,7 +1329,7 @@
 .anfrage-website .aw-feld { min-width: 0; margin: 0; padding: var(--s3); border: 0; }
 .anfrage-website .aw-feld + .aw-feld { border-top: 1px solid var(--haar); }
 .anfrage-website .aw-feld legend { float: left; width: 100%; padding: 0; margin-bottom: var(--s2); font-size: 1.05rem; font-weight: 600; display: flex; gap: var(--s1); align-items: baseline; }
-.anfrage-website .aw-feld legend + * { clear: both; }
+.anfrage-website .aw-feld > :not(legend) { clear: both; }
 .anfrage-website .aw-schritt { font: var(--mono-l) var(--mono); color: var(--stempel); }
 .anfrage-website .groessen { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: var(--s1); }
 .anfrage-website .groessen button { display: flex; flex-direction: column; align-items: flex-start; justify-content: start; text-align: left; gap: var(--s0); min-width: 0; padding: var(--s2); background: var(--papier); border: 1px solid var(--haar); border-radius: var(--r1); cursor: pointer; transition: border-color var(--t-norm) var(--ease-aus), background-color var(--t-norm) var(--ease-aus); }

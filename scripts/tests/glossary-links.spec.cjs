@@ -136,6 +136,7 @@ for (const fixture of ['homepage', 'whitelabel', 'website']) {
     const links = page.locator('.glossary-autolink');
     await expect(links).toHaveCount(fixture === 'website' ? 4 : 1);
     if (fixture === 'whitelabel') await page.locator('#lieferfelder details').nth(1).locator('summary').click();
+    if (fixture === 'website') await links.first().locator('xpath=ancestor::details').locator('summary').click();
     await links.first().hover();
     await expect(page.getByRole('tooltip').filter({ visible: true })).toBeVisible();
     await insideViewport(page, page.getByRole('tooltip').filter({ visible: true }));
