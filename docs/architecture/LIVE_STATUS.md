@@ -28,7 +28,8 @@ Abschnitt anzuhängen; der Verlauf gehört in Commit-Nachrichten.
 
 ### KI-Chat-Assistent: Admin-Spike auf der Live-Box
 
-`inc/chat-assistant/` bereitet den festen Bedrock-Hallo-Test auf
+`inc/chat-assistant/` bereitet den festen Bedrock-Zähltest (wahlweise mit
+4-KB-SSE-Padding, Komprimierung abgeschaltet) auf
 `POST /wp-json/nexus/v1/chat` vor. Er verlangt `HU_CHAT_MODE=preview`,
 vollständige private Konfiguration, geprüfte Tokenpreise und Admin samt
 REST-Nonce, unabhängig von der WordPress-Umgebung. Standard `off`; `live` ist
@@ -37,8 +38,10 @@ cURL fehlen Route und Admin-Menü. Die Admin-Testseite liegt unter Werkzeuge.
 Öffentliche Seiten erhalten weder Orb noch
 Chat-Assets. Prompt-Vorlage und frische Kanon-Ersetzung sind vorbereitet;
 Knowledge-Builder, öffentlicher Chat und CRM-/Brevo-Handover folgen nach dem
-nachgewiesenen SSE-Gate. Der Streaming-Durchlauf auf der Raidboxes-Live-Box
-steht noch aus.
+nachgewiesenen SSE-Gate. Der erste Durchlauf auf der Raidboxes-Live-Box
+lieferte einen Bedrock-Stream, aber alle Events in einem Chunk
+(`buffering_or_timing_unresolved`); die Wiederholung mit Zähltest und
+Padding-Vergleich steht aus.
 Contract und Abnahme: `CHAT_ASSISTANT.md`.
 
 - Öffentliche Rolle: WordPress Freelancer aus der Region Hannover; verbundene

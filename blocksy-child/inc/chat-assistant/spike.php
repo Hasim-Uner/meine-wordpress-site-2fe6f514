@@ -19,8 +19,9 @@ function hu_chat_spike_admin_page(): void {
 	?>
 	<div class="wrap">
 		<h1>Chat: Streaming-Test</h1>
-		<p>Nur Vorschau-Modus und eingeloggte Administratoren. Der Durchlauf ist auch auf der Live-Box möglich. Der Server sendet ausschließlich einen festen Hallo-Test an Bedrock.</p>
-		<p>Das Ergebnis bleibt im Browser. Das heruntergeladene Protokoll enthält Zeitpunkte und Transportstatus, keine Zugangsdaten.</p>
+		<p>Nur Vorschau-Modus und eingeloggte Administratoren. Der Durchlauf ist auch auf der Live-Box möglich. Der Server sendet ausschließlich den festen Zähltest an Bedrock: <?php echo esc_html( HU_CHAT_SPIKE_PROMPT ); ?></p>
+		<p>Das Ergebnis bleibt im Browser. Das heruntergeladene Protokoll enthält Zeitpunkte, Transportstatus und unkritische Antwort-Header, keine Zugangsdaten.</p>
+		<p><label><input type="checkbox" id="hu-chat-padding"> Nach <code>ready</code> 4 KB SSE-Padding senden (Proxy-Puffer füllen)</label></p>
 		<p><button type="button" class="button button-primary" id="hu-chat-spike">Streaming testen</button>
 		<button type="button" class="button" id="hu-chat-report" disabled>Protokoll herunterladen</button></p>
 		<pre id="hu-chat-result" role="status" aria-live="polite"></pre>
@@ -30,6 +31,11 @@ function hu_chat_spike_admin_page(): void {
 		const trigger = document.getElementById('hu-chat-spike');
 		const download = document.getElementById('hu-chat-report');
 		const output = document.getElementById('hu-chat-result');
+		const padding = document.getElementById('hu-chat-padding');
+		const endpoint = <?php echo wp_json_encode( rest_url( 'nexus/v1/chat' ) ); ?>;
+		// Transport evidence only; anything that could carry a credential stays out.
+		const named = /^(content-encoding|content-length|transfer-encoding|server|via|vary|x-cache)$/;
+		const secret = /nonce|token|auth|key|secret|session|cookie/i;
 		let report;
 		trigger.addEventListener('click', async () => {
 			trigger.disabled = true;
@@ -38,16 +44,20 @@ function hu_chat_spike_admin_page(): void {
 			const started = performance.now();
 			const controller = new AbortController();
 			const timer = setTimeout(() => controller.abort(), 80000);
-			report = { tested_at: new Date().toISOString(), status: 'unresolved', chunks: [], events: [] };
+			const variant = padding.checked ? 'padded' : 'plain';
+			report = { tested_at: new Date().toISOString(), variant, status: 'unresolved', headers: {}, chunks: [], events: [] };
 			try {
-				const response = await fetch(<?php echo wp_json_encode( rest_url( 'nexus/v1/chat' ) ); ?>, {
+				const response = await fetch(endpoint, {
 					method: 'POST', credentials: 'same-origin', cache: 'no-store', signal: controller.signal,
 					headers: { 'Content-Type': 'application/json', 'X-WP-Nonce': <?php echo wp_json_encode( wp_create_nonce( 'wp_rest' ) ); ?> },
-					body: '{}'
+					body: variant === 'padded' ? '{"padding":true}' : '{}'
 				});
 				report.http_status = response.status;
 				report.content_type = response.headers.get('Content-Type');
 				report.cache_control = response.headers.get('Cache-Control');
+				response.headers.forEach((value, name) => {
+					if ((named.test(name) || name.startsWith('x-')) && !secret.test(name)) report.headers[name] = value;
+				});
 				if (!response.ok || !response.body || !report.content_type.startsWith('text/event-stream')) throw new Error('unavailable');
 				const reader = response.body.getReader();
 				const decoder = new TextDecoder();
@@ -64,15 +74,31 @@ function hu_chat_spike_admin_page(): void {
 						buffer = buffer.slice(boundary + 2);
 						const event = /^event: (.+)$/m.exec(frame)?.[1];
 						const data = JSON.parse(/^data: (.+)$/m.exec(frame)?.[1] || '{}');
-						report.events.push({ event, stage: data.stage, transport: data.transport, server_ms: data.elapsed_ms, arrival_ms: arrival });
+						report.events.push({ event, stage: data.stage, variant: data.variant, transport: data.transport, server_ms: data.elapsed_ms, arrival_ms: arrival });
 						output.textContent = JSON.stringify(report, null, 2);
 					}
 				}
 				const ready = report.events.find(item => item.stage === 'ready');
 				const finish = report.events.find(item => item.event === 'done');
+				const texts = report.events.filter(item => item.event === 'text');
+				// Resource Timing is queued after the body ends; encoded vs decoded size shows compression.
+				await new Promise(resolve => setTimeout(resolve, 50));
+				const timing = performance.getEntriesByName(new URL(endpoint, location.href).href).pop();
+				report.summary = {
+					chunks: report.chunks.length,
+					text_events: texts.length,
+					text_arrivals_distinct: new Set(texts.map(item => item.arrival_ms)).size,
+					ready_arrival_ms: ready?.arrival_ms,
+					first_text_arrival_ms: texts[0]?.arrival_ms,
+					done_server_ms: finish?.server_ms,
+					done_arrival_ms: finish?.arrival_ms,
+					next_hop_protocol: timing?.nextHopProtocol,
+					encoded_body_size: timing?.encodedBodySize,
+					decoded_body_size: timing?.decodedBodySize,
+				};
 				if (!finish || report.events.some(item => item.event === 'error')) report.status = 'failed';
 				else if (finish.transport !== 'stream') report.status = 'fallback_only';
-				else if (ready && finish.server_ms >= 300 && finish.arrival_ms - ready.arrival_ms >= 200) report.status = 'incremental_delivery_observed';
+				else if (ready && finish.server_ms >= 300 && finish.arrival_ms - ready.arrival_ms >= 200 && report.summary.text_arrivals_distinct >= 2) report.status = 'incremental_delivery_observed';
 				else report.status = 'buffering_or_timing_unresolved';
 			} catch (error) {
 				report.status = 'failed';
@@ -87,7 +113,7 @@ function hu_chat_spike_admin_page(): void {
 			const url = URL.createObjectURL(new Blob([JSON.stringify(report, null, 2)], { type: 'application/json' }));
 			const link = document.createElement('a');
 			link.href = url;
-			link.download = 'chat-live-stream.json';
+			link.download = 'chat-live-stream-' + report.variant + '.json';
 			link.click();
 			setTimeout(() => URL.revokeObjectURL(url), 1000);
 		});
