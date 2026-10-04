@@ -53,4 +53,22 @@ check( HU_FREELANCER_WEBSITE_EXTRA_PAGE < HU_LANDINGPAGE_PRICE, 'an extra websit
 check( HU_WHITELABEL_LANDINGPAGE_MIN <= (int) round( HU_LANDINGPAGE_PRICE * 0.75 ), 'agencies pay at least 25 % less than end customers for a landing page' );
 check( str_contains( hu_freelancer_website_scope_display(), hu_freelancer_website_extra_page_price( true ) ), 'website scope phrase names the extra page price' );
 
+$ready = hu_website_quote( 1 );
+check( 3 === $ready['days'] && 0 === $ready['preparation_days'], 'one prepared page takes three planned working days, including QA' );
+check( 4 === hu_website_quote( 1, 'neubau', true )['days'], 'standard tracking adds one project day' );
+check( 6 === hu_website_quote( 1, 'neubau', true, [ 'design' => 'neu', 'design_layouts' => 1 ] )['days'], 'one page plus tracking and a new screen design takes six planned days' );
+check( 3 === hu_website_quote( 1, 'neubau', false, [ 'design' => 'vorhanden' ] )['days'], 'approved supplied design does not add design creation time' );
+check( hu_website_quote( 1, 'neubau', false, [ 'design' => 'vorhanden' ] )['price_review'], 'supplied designs require scope and price review' );
+check( 7 === hu_website_quote( 3, 'neubau', false, [ 'texte' => 1 ] )['days'], 'three pages with new texts include two preparation days' );
+$shared = hu_website_quote( 5, 'neubau', false, [ 'design' => 'neu', 'design_layouts' => 1 ] );
+$distinct = hu_website_quote( 5, 'neubau', false, [ 'design' => 'neu', 'design_layouts' => 5 ] );
+check( $shared['days'] < $distinct['days'] && $shared['price'] === $distinct['price'] && $distinct['price_review'], 'reused layouts save design time while design price stays open' );
+foreach ( range( 1, HU_WEBSITE_CALCULATOR_MAX ) as $pages ) {
+	$plain = hu_website_quote( $pages );
+	$tracked = hu_website_quote( $pages, 'neubau', true );
+	check( 1 === $tracked['days'] - $plain['days'], "tracking setup is not multiplied by $pages pages" );
+	$crm = hu_website_quote( $pages, 'neubau', false, [ 'crm' => 1 ] );
+	check( $crm['duration_open'] && $crm['price_review'] && $plain['days'] === $crm['days'], "unknown CRM duration is excluded and flagged at $pages pages" );
+}
+
 echo "OK tracking-ladder\n";

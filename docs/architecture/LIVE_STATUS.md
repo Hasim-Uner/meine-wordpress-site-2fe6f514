@@ -316,13 +316,19 @@ Contract und Abnahme: `CHAT_ASSISTANT.md`.
   Bestätigungsmail, Danke-Seite, technisches SEO sowie Impressum-/Datenschutz-Seiten
   mit gelieferten Rechtstexten sind Standard. Screendesign und CRM sind wählbar
   nach Angebot: Die bekannte Summe wird ausdrücklich ohne individuelle Extras
-  angezeigt. Rechner 1–10 Seiten. Basis-Bauzeit 2/3/4 Wochen (bis 2/5/10 Seiten),
-  Relaunch +1 Woche ab freigegebenen Inhalten; Gesamttermin bei Extras im Angebot.
+  angezeigt. Rechner 1–10 Seiten. Tagesfaktoren aus `hu_website_calculator_rules()`:
+  erste Seite drei Werktage inklusive QA, Zusatzseite ein Tag, Tracking einmal
+  ein Tag, Relaunch zwei Tage. Texte und neue unterschiedliche Layouts haben
+  eigene Vorbereitungszeit; fertige Vorlagen keine Erstellungsphase. CRM-Dauer
+  offen, bekannte Summe als Mindestwert ohne CRM. Vorlagenprüfung bei geliefertem
+  Design vor Bestätigung von Basispreis und Zeit. Planungswerte bis zum Abnahmestand,
+  Kundenfreigaben/Starttermin/Livegang separat. Keine Liefergarantie aus der Zahl.
   Zusammenfassung im Konfigurator und bearbeitbare Sticky-Auswahl. Lieferumfang
   in sechs nativen, initial geschlossenen Details-Gruppen. FAQ und Schema lesen
   denselben Getter. CTA-URLs übergeben Seiten, Art, `texte=0|1`, optional
-  `tracking=1`, `screendesign=1`, `crm=1`. Serverseitig validiert und erhalten in
-  Formular, beiden Mails und CRM; Preise werden serverseitig neu berechnet.
+  `tracking=1`, `screendesign=1`, `crm=1`, ergänzt um Designstatus und Layoutzahl.
+  Serverseitig validiert und erhalten in Formular, beiden Mails und CRM;
+  Preis, Tageskalkulation und Regelversion werden serverseitig neu berechnet.
   Keine Cookies, Browser-Speicherung oder Browser-Events durch den Konfigurator.
   Ohne JS bleiben Standardangebot und Leistungsdetails zugänglich. Reduced Motion
   wird respektiert. Globaler Kopf/Fuß, Query-Owner und Preisformel unverändert.

@@ -199,11 +199,11 @@ foreach ( [ false, true ] as $confirmation_mail ) {
 echo "Endpoint behavior passed; WP persistence and actual mail delivery are not exercised.\n";
 
 run_case( 'website scope reaches actual endpoint, both mails and CRM', static function () use ( $contact ) {
-	$p = array_merge( $contact, [ 'focus' => 'website', 'seiten' => '5', 'art' => 'relaunch', 'tracking' => '1', 'website_price' => 1, 'website_weeks' => 1 ] );
+	$p = array_merge( $contact, [ 'focus' => 'website', 'seiten' => '5', 'art' => 'relaunch', 'tracking' => '1', 'website_price' => 1, 'website_weeks' => 1, 'website_days' => 1, 'website_calc_version' => 'forged' ] );
 	$r = call_intake( 'contact', $p );
 	check( 201 === $r->status && true === $r->data['ok'], 'Product accepted' );
 	$v = nexus_validate_contact_request_payload( $p );
-	check( 3540 === $v['website_price'] && 4 === $v['website_weeks'], 'Price and duration are recalculated, tampering ignored' );
+	check( 3540 === $v['website_price'] && 10 === $v['website_days'] && 2 === $v['website_weeks'] && 'forged' !== $v['website_calc_version'], 'Price, working days and rule version are recalculated, tampering ignored' );
 	check( 5 === get_post_meta( 1, '_nexus_contact_website_pages' ) && 'relaunch' === get_post_meta( 1, '_nexus_contact_website_kind' ), 'Structured CRM scope persisted' );
 	check( 1 === get_post_meta( 1, '_nexus_contact_website_tracking' ), 'Tracking persisted' );
 	check( str_contains( nexus_get_contact_request_activity_summary( $v ), '3.540' ), 'CRM activity contains calculated scope' );
@@ -213,15 +213,15 @@ run_case( 'website scope reaches actual endpoint, both mails and CRM', static fu
 	}
 } );
 run_case( 'website boundaries, invalid configuration and generic compatibility', static function () use ( $contact ) {
-	foreach ( [ [1, 'neubau', 0, 1490, 2], [2, 'relaunch', 0, 1780, 3], [10, 'relaunch', 1, 4990, 5] ] as $case ) {
+	foreach ( [ [1, 'neubau', 0, 1490, 3], [2, 'relaunch', 0, 1780, 6], [10, 'relaunch', 1, 4990, 15] ] as $case ) {
 		$v = nexus_validate_contact_request_payload( array_merge( $contact, [ 'focus' => 'website', 'seiten' => (string) $case[0], 'art' => $case[1], 'tracking' => $case[2] ] ) );
-		check( ! is_wp_error( $v ) && $case[3] === $v['website_price'] && $case[4] === $v['website_weeks'], 'Boundary price/time' );
+		check( ! is_wp_error( $v ) && $case[3] === $v['website_price'] && $case[4] === $v['website_days'], 'Boundary price/time' );
 	}
 	foreach ( [ '0', '11', '-1', '1.5', '2oops', ['2'] ] as $pages ) {
 		$r = call_intake( 'contact', array_merge( $contact, [ 'focus' => 'website', 'seiten' => $pages ] ) );
 		check( 400 === $r->status && 'invalid_website_scope' === $r->data['error_code'], 'Invalid pages rejected' );
 	}
-	foreach ( [ ['art' => 'unknown'], ['tracking' => 'yes'] ] as $bad ) {
+	foreach ( [ ['art' => 'unknown'], ['tracking' => 'yes'], ['design' => 'unknown'], ['design' => [ 'neu' ] ], ['design' => 'basis', 'screendesign' => '1'], ['design' => 'neu', 'design_layouts' => '0'], ['design_layouts' => '4'], ['design_layouts' => [ '1' ] ] ] as $bad ) {
 		$v = nexus_validate_contact_request_payload( array_merge( $contact, [ 'focus' => 'website', 'seiten' => '3' ], $bad ) );
 		check( is_wp_error( $v ), 'Invalid kind/tracking rejected' );
 	}

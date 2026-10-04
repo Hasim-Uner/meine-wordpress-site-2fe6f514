@@ -191,9 +191,12 @@ if ( function_exists( 'hu_first_assessment_enabled' ) && hu_first_assessment_ena
 				<input type="hidden" name="seiten" value="<?php echo esc_attr( $website_scope['seiten'] ); ?>">
 				<input type="hidden" name="art" value="<?php echo esc_attr( $website_scope['art'] ); ?>">
 				<input type="hidden" name="tracking" value="<?php echo esc_attr( $website_scope['tracking'] ); ?>">
-				<?php foreach ( [ 'texte', 'screendesign', 'crm' ] as $option ) : ?>
+				<?php foreach ( [ 'texte', 'screendesign', 'crm', 'design' ] as $option ) : ?>
 				<input type="hidden" name="<?php echo esc_attr( $option ); ?>" value="<?php echo esc_attr( $website_scope[ $option ] ); ?>">
 				<?php endforeach; ?>
+				<?php if ( $website_scope['screendesign'] ) : ?>
+				<input type="hidden" name="design_layouts" value="<?php echo esc_attr( $website_scope['design_layouts'] ); ?>">
+				<?php endif; ?>
 				<?php endif; ?>
 
 				<div class="contact-form__honeypot" aria-hidden="true">
