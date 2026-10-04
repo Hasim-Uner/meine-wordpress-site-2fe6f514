@@ -97,6 +97,11 @@ function esc_html_e( $text, $domain = '' ) { echo esc_html( $text ); }
 function esc_attr_e( $text, $domain = '' ) { echo esc_attr( $text ); }
 function esc_html( $value ) { return htmlspecialchars( (string) $value, ENT_QUOTES, 'UTF-8' ); }
 function esc_attr( $value ) { return esc_html( $value ); }
+function selected( $selected, $current = true, $display = true ) {
+	$result = (string) $selected === (string) $current ? " selected='selected'" : '';
+	if ( $display ) { echo $result; }
+	return $result;
+}
 function esc_url( $value, $protocols = null ) { return esc_html( $value ); }
 function esc_url_raw( $value ) { return (string) $value; }
 function wp_kses_post( $value ) { return $value; }
