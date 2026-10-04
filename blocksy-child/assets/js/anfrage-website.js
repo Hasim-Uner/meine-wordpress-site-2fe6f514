@@ -167,7 +167,8 @@
         scheduled = false;
         var config = $('.aw-config-grid').getBoundingClientRect();
         var examples = $('#beispiele').getBoundingClientRect();
-        var examplesVisible = examples.top < window.innerHeight && examples.bottom > 0;
+        var viewportTop = parseFloat(getComputedStyle(root).getPropertyValue('--leiste-h')) || 52;
+        var examplesVisible = examples.top < window.innerHeight && examples.bottom > viewportTop;
         var summaryVisible = window.innerWidth >= 1100 && config.top < window.innerHeight && config.bottom > 0;
         var visible = !examplesVisible && !summaryVisible && $('#hero').getBoundingClientRect().bottom <= 0 && $('#anfrage').getBoundingClientRect().top >= window.innerHeight;
         if (!visible && bar.contains(document.activeElement)) $('[data-website-cta="abschluss"]').focus({ preventScroll: true });

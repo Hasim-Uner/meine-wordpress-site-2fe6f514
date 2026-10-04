@@ -156,7 +156,7 @@ test('homepage: FAQ schema, retained anchors and enquiry locations', async ({ pa
     if (e.target.closest('[data-track-category="lead_gen"]')) e.preventDefault();
   }));
   for (const [selector, name] of [
-    ['.leiste .rechts > .tuer', 'Kopf'], ['#klick .tun', 'Einstieg'], ['#arbeiten .tun', 'Fall'], ['#angebote .st-folge .tun', 'Preise'], ['#anfrage .tun', 'Ende'],
+    ['.leiste .rechts > .tuer', 'Kopf'], ['#klick .tun', 'Einstieg'], ['#arbeiten .tun', 'Fall'], ['#angebote .st-erstcheck .tun', 'Preise'], ['#anfrage .tun', 'Ende'],
   ]) {
     await page.locator(selector).click();
     await expect(page.locator('[data-st-wert="klick"]')).toHaveText('geöffnet · ' + name);
