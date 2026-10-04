@@ -53,7 +53,7 @@ class Chat_Test_DB {
 }
 $wpdb = new Chat_Test_DB();
 foreach ( [ 'canon/pricing-canon', 'canon/messaging-canon', 'mail' ] as $file ) require $root . '/blocksy-child/inc/' . $file . '.php';
-foreach ( [ 'config', 'sigv4', 'eventstream', 'bedrock-client', 'budget', 'prompt', 'rest', 'spike' ] as $file ) require $root . '/blocksy-child/inc/chat-assistant/' . $file . '.php';
+foreach ( [ 'config', 'sigv4', 'eventstream', 'bedrock-client', 'sse', 'budget', 'prompt', 'rest', 'spike' ] as $file ) require $root . '/blocksy-child/inc/chat-assistant/' . $file . '.php';
 require $root . '/blocksy-child/inc/api-telemetry.php';
 $checks = 0;
 function check_chat( bool $ok, string $label ): void {
@@ -163,7 +163,7 @@ $route = $GLOBALS['chat_test']['routes']['nexus/v1/chat'];
 check_chat( 'POST' === $route['methods'] && 'hu_chat_spike_permission' === $route['permission_callback'], 'production preview registers only privileged POST route' );
 check_chat( 1 === count( $GLOBALS['chat_test']['menus'] ) && 'manage_options' === $GLOBALS['chat_test']['menus'][0][2], 'production preview registers admin menu' );
 ob_start(); hu_chat_spike_admin_page(); $page = ob_get_clean();
-check_chat( str_contains( $page, 'id="hu-chat-padding"' ) && str_contains( $page, '{"padding":true}' ), 'admin page offers the padding variant' );
+check_chat( str_contains( $page, 'id="hu-chat-padding" checked' ) && str_contains( $page, '{"padding":true}' ) && str_contains( $page, '4096-Byte-Blöcke' ), 'admin page offers padded (default) and plain sends' );
 check_chat( str_contains( $page, 'content-encoding|content-length|transfer-encoding|server|via|vary|x-cache' ) && str_contains( $page, "name.startsWith('x-')" ), 'protocol records transport headers and all X-* headers' );
 check_chat( str_contains( $page, 'nonce|token|auth|key|secret|session|cookie' ), 'protocol excludes credential-like headers' );
 check_chat( ! str_contains( $page, 'fixture-salt' ) && ! str_contains( $page, 'EXAMPLE' ), 'admin page carries no secret' );
@@ -188,11 +188,49 @@ foreach ( [ '{"padding":"yes"}', '{"padding":1}', '{"padding":true,"messages":[]
 $probe = json_decode( hu_chat_spike_probe_body(), true, 8, JSON_THROW_ON_ERROR );
 check_chat( HU_CHAT_SPIKE_MAX_TOKENS === 200 && 200 === $probe['max_tokens'], 'probe output capped at 200 tokens' );
 check_chat( [ [ 'role' => 'user', 'content' => 'Zähle langsam von 1 bis 30, jede Zahl in eine eigene Zeile.' ] ] === $probe['messages'] && ! isset( $probe['system'] ), 'fixed counting prompt, no system prompt' );
-$pad = hu_chat_spike_padding();
-check_chat( 4096 === strlen( $pad ) && ':' === $pad[0] && "\n\n" === substr( $pad, -2 ) && '' === trim( substr( $pad, 1 ) ), 'padding is one 4 KB SSE comment of spaces' );
-$stream_headers = hu_chat_spike_stream_headers();
+$stream_headers = hu_chat_stream_headers();
 foreach ( [ 'Content-Type: text/event-stream; charset=UTF-8', 'Cache-Control: no-store, no-transform', 'Content-Encoding: identity', 'X-Accel-Buffering: no' ] as $line ) check_chat( in_array( $line, $stream_headers, true ), 'stream header ' . $line );
 check_chat( hu_chat_spike_prepare( new WP_REST_Request( '{"recipient":"attacker@example.test"}' ) )->data['status'] === 400, 'REST rejects arbitrary fields' );
+
+// Size-buffering proxy: collect text, send at most every 120 ms, pad every send to whole blocks.
+check_chat( 4096 === hu_chat_flush_pad(), 'flush pad defaults to 4096' );
+foreach ( [ '0' => 0, '8192' => 8192, '999999' => 65536, '-1' => 4096, 'abc' => 4096, '4096.5' => 4096 ] as $value => $expected ) {
+	putenv( 'HU_CHAT_FLUSH_PAD=' . $value );
+	check_chat( $expected === hu_chat_flush_pad(), 'HU_CHAT_FLUSH_PAD ' . $value );
+}
+putenv( 'HU_CHAT_FLUSH_PAD' );
+foreach ( [ [ 0, 4096, '' ], [ 4096, 4096, '' ], [ 4095, 4096, 'extra-block' ], [ 4094, 4096, 'extra-block' ], [ 4093, 4096, 3 ], [ 100, 4096, 3996 ], [ 5000, 4096, 3192 ], [ 100, 0, '' ] ] as [ $length, $block, $expected ] ) {
+	$comment = HU_Chat_SSE_Writer::padding( $length, $block );
+	if ( 'extra-block' === $expected ) $expected = 4096 - $length % 4096 + 4096;
+	check_chat( ( '' === $expected ? '' === $comment : strlen( $comment ) === $expected && ':' === $comment[0] && "\n\n" === substr( $comment, -2 ) && '' === trim( substr( $comment, 1 ) ) ), 'padding comment for ' . $length . '/' . $block );
+	if ( $block > 0 && '' !== $comment ) check_chat( 0 === ( $length + strlen( $comment ) ) % $block, 'padded send is whole blocks ' . $length );
+}
+$now = 0.0; $sent = [];
+$writer = new HU_Chat_SSE_Writer( 4096, static function ( $bytes ) use ( &$sent ) { $sent[] = $bytes; }, static function () use ( &$now ) { return $now; } );
+$writer->emit( 'probe', [ 'stage' => 'ready' ] );
+check_chat( 1 === count( $sent ) && 4096 === strlen( $sent[0] ) && str_starts_with( $sent[0], "event: probe\n" ), 'ready leaves at once as one padded block' );
+$now = 0.050; $writer->emit( 'text', [ 'text' => '1' ] );
+check_chat( 1 === count( $sent ), 'text within 120 ms of the last send waits' );
+$now = 0.130; $writer->emit( 'text', [ 'text' => "\n2" ] );
+check_chat( 2 === count( $sent ) && str_contains( $sent[1], '"text":"1\n2"' ), 'collected text leaves with the first delta after 120 ms' );
+foreach ( [ [ 0.170, "\n3" ], [ 0.210, "\n4" ], [ 0.249, "\n5" ] ] as [ $at, $delta ] ) { $now = $at; $writer->emit( 'text', [ 'text' => $delta ] ); }
+check_chat( 2 === count( $sent ), 'deltas inside 120 ms are collected' );
+$now = 0.251; $writer->tick();
+check_chat( 3 === count( $sent ) && str_contains( $sent[2], '"text":"\n3\n4\n5"' ) && 1 === substr_count( $sent[2], 'event: text' ), 'progress tick sends the collected deltas as one event after 120 ms' );
+check_chat( [] === array_filter( $sent, static fn( $bytes ) => 0 !== strlen( $bytes ) % 4096 ), 'every send is whole 4096-byte blocks' );
+$now = 0.260; $writer->emit( 'text', [ 'text' => "\n6" ] );
+$now = 0.270; $writer->emit( 'done', [ 'transport' => 'stream' ] );
+check_chat( 4 === count( $sent ) && strpos( $sent[3], '"\n6"' ) < strpos( $sent[3], 'event: done' ), 'done first sends pending text, in order, in the same block' );
+$writer->finish();
+check_chat( 4 === count( $sent ), 'finish without pending text sends nothing' );
+$sent = []; $now = 0.0;
+$writer = new HU_Chat_SSE_Writer( 0, static function ( $bytes ) use ( &$sent ) { $sent[] = $bytes; }, static function () use ( &$now ) { return $now; } );
+$writer->emit( 'text', [ 'text' => 'a' ] ); $now = 0.01; $writer->emit( 'text', [ 'text' => 'b' ] ); $writer->finish();
+check_chat( 2 === count( $sent ) && ! str_contains( implode( '', $sent ), "\n:" ) && ':' !== $sent[0][0], 'pad 0 sends no comment but still batches' );
+$ticks = 0;
+$client = new HU_Chat_Bedrock_Client( [], static function ( $body, $stream, $consume, $tick ) use ( $binary, &$ticks ) { $tick(); $ticks++; $consume( $binary ); return ''; } );
+check_chat( 'stream' === $client->invoke( '{}', static function () {}, static function () {} ) && 1 === $ticks, 'Bedrock client hands the progress tick to the transport' );
+
 for ( $i = 1; $i < 30; $i++ ) check_chat( hu_chat_spike_prepare( new WP_REST_Request() ) instanceof WP_REST_Response, 'rate-limit permits request ' . $i );
 check_chat( hu_chat_spike_prepare( new WP_REST_Request() )->data['status'] === 429, 'rate-limit stops next request' );
 $failure = new WP_Error( 'chat_spike_payload', 'Fixed error', [ 'status' => 400 ] );

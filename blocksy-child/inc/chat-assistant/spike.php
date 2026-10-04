@@ -21,7 +21,7 @@ function hu_chat_spike_admin_page(): void {
 		<h1>Chat: Streaming-Test</h1>
 		<p>Nur Vorschau-Modus und eingeloggte Administratoren. Der Durchlauf ist auch auf der Live-Box möglich. Der Server sendet ausschließlich den festen Zähltest an Bedrock: <?php echo esc_html( HU_CHAT_SPIKE_PROMPT ); ?></p>
 		<p>Das Ergebnis bleibt im Browser. Das heruntergeladene Protokoll enthält Zeitpunkte, Transportstatus und unkritische Antwort-Header, keine Zugangsdaten.</p>
-		<p><label><input type="checkbox" id="hu-chat-padding"> Nach <code>ready</code> 4 KB SSE-Padding senden (Proxy-Puffer füllen)</label></p>
+		<p><label><input type="checkbox" id="hu-chat-padding" checked> Jede Sendung auf volle <?php echo esc_html( (string) hu_chat_flush_pad() ); ?>-Byte-Blöcke auffüllen (<code>HU_CHAT_FLUSH_PAD</code>; Text höchstens alle <?php echo esc_html( (string) HU_CHAT_FLUSH_INTERVAL_MS ); ?> ms). Ohne Haken zum Vergleich ungepolstert.</label></p>
 		<p><button type="button" class="button button-primary" id="hu-chat-spike">Streaming testen</button>
 		<button type="button" class="button" id="hu-chat-report" disabled>Protokoll herunterladen</button></p>
 		<pre id="hu-chat-result" role="status" aria-live="polite"></pre>
@@ -74,7 +74,7 @@ function hu_chat_spike_admin_page(): void {
 						buffer = buffer.slice(boundary + 2);
 						const event = /^event: (.+)$/m.exec(frame)?.[1];
 						const data = JSON.parse(/^data: (.+)$/m.exec(frame)?.[1] || '{}');
-						report.events.push({ event, stage: data.stage, variant: data.variant, transport: data.transport, server_ms: data.elapsed_ms, arrival_ms: arrival });
+						report.events.push({ event, stage: data.stage, variant: data.variant, flush_pad: data.flush_pad, transport: data.transport, server_ms: data.elapsed_ms, arrival_ms: arrival });
 						output.textContent = JSON.stringify(report, null, 2);
 					}
 				}
@@ -85,6 +85,7 @@ function hu_chat_spike_admin_page(): void {
 				await new Promise(resolve => setTimeout(resolve, 50));
 				const timing = performance.getEntriesByName(new URL(endpoint, location.href).href).pop();
 				report.summary = {
+					flush_pad: ready?.flush_pad,
 					chunks: report.chunks.length,
 					text_events: texts.length,
 					text_arrivals_distinct: new Set(texts.map(item => item.arrival_ms)).size,

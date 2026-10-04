@@ -7,8 +7,6 @@ if ( ! defined( 'ABSPATH' ) ) {
 /** Fixed counting probe: long enough to show whether text arrives in several chunks. */
 const HU_CHAT_SPIKE_MAX_TOKENS = 200;
 const HU_CHAT_SPIKE_PROMPT     = 'Zähle langsam von 1 bis 30, jede Zahl in eine eigene Zeile.';
-/** SSE comment after `ready`; fills common proxy buffers when the padded variant is chosen. */
-const HU_CHAT_SPIKE_PADDING_BYTES = 4096;
 
 /** @return array<string, mixed> */
 function hu_chat_config() {

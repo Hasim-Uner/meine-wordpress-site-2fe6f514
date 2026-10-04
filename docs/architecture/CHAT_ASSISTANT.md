@@ -16,7 +16,8 @@ Der tatsächliche Testpfad:
 1. Ein eingeloggter Administrator öffnet **Werkzeuge → Chat: Streaming-Test**.
 2. Erst der Klick startet einen First-Party-POST an `/wp-json/nexus/v1/chat`.
 3. Das Payload ist exakt `{}` oder `{"padding":true|false}`; der einzige
-   Schalter wählt die Padding-Variante. Nachrichten, Empfänger, Adressen und
+   Schalter wählt, ob jede Sendung aufgefüllt wird (`padded`) oder zum
+   Vergleich nicht (`plain`). Nachrichten, Empfänger, Adressen und
    frei wählbare Modell- oder Hostnamen werden nicht akzeptiert.
 4. Die Route verlangt `HU_CHAT_MODE=preview`,
    vollständige Runtime-Konfiguration, `manage_options` und einen REST-Nonce.
@@ -45,17 +46,26 @@ Der tatsächliche Testpfad:
 `rest_pre_serve_request` liefert SSE ohne REST-JSON-Hülle. Vor dem ersten Byte
 schaltet die Route PHP-seitige Komprimierung ab (`zlib.output_compression`,
 `brotli.output_compression`, unter Apache `no-gzip`), schließt alle
-Output-Buffer und entfernt `Content-Length`. Gesendet werden
-`Content-Type: text/event-stream`, `Cache-Control: no-store, no-transform`,
-`Content-Encoding: identity` und `X-Accel-Buffering: no`; jedes Event endet
-mit `flush()`. `identity` ist keine registrierte Inhaltskodierung, aber nginx
+Output-Buffer und entfernt `Content-Length` (`hu_chat_stream_begin()` in
+`sse.php`). Gesendet werden `Content-Type: text/event-stream`,
+`Cache-Control: no-store, no-transform`, `Content-Encoding: identity` und
+`X-Accel-Buffering: no`. `identity` ist keine registrierte Inhaltskodierung, aber nginx
 und viele Proxys komprimieren nicht erneut, sobald eine Kodierung gesetzt ist.
 Was danach Raidboxes (nginx, Varnish, CDN) tut, kann PHP nicht erzwingen.
 
-Variante `padded`: direkt nach `ready` folgt ein SSE-Kommentar (`:` plus
-Leerzeichen, insgesamt 4096 Byte), der typische Proxy-Puffer füllt. Der
-Browser-Parser ignoriert ihn. `plain` sendet ihn nicht; beide Varianten
-werden auf der Testseite per Checkbox gewählt und getrennt protokolliert.
+**Sendetakt gegen größenbasierte Proxy-Puffer** (`HU_Chat_SSE_Writer`):
+Textdeltas werden gesammelt und höchstens alle 120 ms als ein `text`-Event
+gesendet (`HU_CHAT_FLUSH_INTERVAL_MS`). Andere Events (`probe`, `done`,
+`error`) gehen sofort raus, vorher der gesammelte Text. Damit Text auch
+während einer Bedrock-Pause rechtzeitig rausgeht, prüft cURLs
+Progress-Callback den Takt ebenfalls. Jede Sendung wird mit einem
+SSE-Kommentar (`:` plus Leerzeichen) auf ganze Blöcke von `HU_CHAT_FLUSH_PAD`
+Byte aufgefüllt, danach `flush()`. Standard 4096, per `wp-config.php`
+überschreibbar, `0` schaltet das Auffüllen ab, Maximum 65536, ungültige
+Werte behalten 4096. Der Browser-Parser ignoriert Kommentare. Kosten: ein
+Block je Sendung, also bei 120 ms Takt rund 33 KB je Sekunde Antwortzeit.
+Auf der Testseite wählt die Checkbox `padded` (Standard, konfigurierter
+Block) oder `plain` (ohne Auffüllen, gleicher Takt) zum Vergleich.
 Ein Client-Disconnect verhindert die abschließende Budgetabrechnung nicht.
 
 Fehlertexte nennen nur die kanonische Kontaktadresse. `error_log` und vorhandene
@@ -76,6 +86,7 @@ Konfiguration. Keine Zugangsdaten ins Repo, PR, Testprotokoll oder Chat kopieren
 | `HU_BEDROCK_REGION` | ausschließlich `eu-central-1` |
 | `HU_BEDROCK_MODEL_ID` | vorerst `eu.anthropic.claude-haiku-4-5-20251001-v1:0`, explizit setzen |
 | `HU_CHAT_MONTHLY_BUDGET_USD` | Standard `20` |
+| `HU_CHAT_FLUSH_PAD` | optional; Blockgröße der SSE-Auffüllung in Byte, Standard `4096`, `0` = aus |
 | `HU_CHAT_PRICE_INPUT` | verifizierter USD-Preis je Million Eingabetokens |
 | `HU_CHAT_PRICE_OUTPUT` | verifizierter USD-Preis je Million Ausgabetokens |
 | `HU_CHAT_PRICE_CACHE_WRITE` | verifizierter USD-Preis je Million Cache-Schreibtokens |
@@ -129,9 +140,13 @@ die Vorlage und verifiziert die aktuelle Kanon-Ersetzung.
 Erster Durchlauf (Hallo-Test, von Hasim gemeldet): `transport=stream`, also
 lieferte Bedrock tatsächlich einen Stream. Alle Events kamen aber in einem
 Chunk bei 630 ms an, obwohl `ready` bei `server_ms` 0 gesendet wurde. Status
-`buffering_or_timing_unresolved`. Verdacht: Puffer oder Komprimierung
-zwischen PHP und Browser. Der Zähltest, die Padding-Variante, die
-Header-Mitschrift und die abgeschaltete Komprimierung grenzen das ein.
+`buffering_or_timing_unresolved`.
+
+Zweiter Durchlauf (Zähltest mit einmaligem Padding nach `ready`, von Hasim
+gemeldet): Das Padding kam bei 91 ms an, alle folgenden kleinen Events
+gesammelt bei 763 ms. Befund: Die Strecke puffert größenbasiert (~4 KB).
+Daraus folgt der Sendetakt mit aufgefüllten Blöcken oben. Offen ist der
+dritte Durchlauf: `text_arrivals_distinct` muss größer als 1 sein.
 
 Nach Deploy und privater Konfiguration auf der Live-Box:
 
