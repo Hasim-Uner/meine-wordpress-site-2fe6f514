@@ -26,6 +26,8 @@ for (const width of [360, 768, 1440]) {
     const errors=[]; page.on('pageerror', e=>errors.push(e.message));
     await open(page,width);
     await expect(page).toHaveTitle('WordPress-Website erstellen lassen ab ' + euro(1490) + ' | Haşim Üner');
+    await expect(page.locator('h1')).toHaveCount(1);
+    await expect(page.locator('meta[name="description"]')).toHaveAttribute('content', /Custom Code, Texte und technisches SEO inklusive/);
     expect(await page.locator('h2').evaluateAll(els=>els.every(el=>el.id))).toBe(true);
     expect(await page.evaluate(()=>document.documentElement.scrollWidth <= innerWidth)).toBe(true);
     const overflow = await page.locator('.anfrage-website *').evaluateAll(els=>els.filter(el=>{
@@ -84,6 +86,47 @@ test('40 scopes: price, time and every CTA use the same configuration', async ({
   await expect(page.locator('.anfrage-website .gruppe')).toHaveCount(6);
   expect(await page.locator('.gruppe').evaluateAll(els=>els.every(el=>!el.open))).toBe(true);
 });
+for (const width of [390, 1440]) {
+  test(`scope examples preserve chosen extras and lead to the calculator at ${width}`, async ({ page }) => {
+    test.setTimeout(30000);
+    await open(page, width);
+    await expect(page.locator('.aw-szenario')).toHaveCount(3);
+    await expect(page.locator('.aw-szenario').nth(0)).toContainText('Friseursalon');
+    for (const [index, count] of [[0, 1], [1, 3], [2, 5]]) await expect(page.locator('.aw-szenario').nth(index).locator('.aw-seitenplan li')).toHaveCount(count);
+    await expect(page.locator('.aw-szenarien-hinweis')).toContainText('Online-Terminbuchung und Shop werden separat kalkuliert');
+    await page.locator('#beispiele').scrollIntoViewIfNeeded();
+    await page.screenshot({ path: test.info().outputPath(`website-scenarios-${width}.png`), fullPage: width === 390 });
+    await page.locator('#texte').uncheck();
+    await page.locator('#screendesign').check();
+    await page.locator('#design-layouts').selectOption('2');
+    for (const option of ['tracking', 'crm', 'dashboard']) await page.locator('#' + option).check();
+    await page.locator('.art [data-art="relaunch"]').click();
+    for (const pages of [1, 3, 5]) {
+      await page.locator(`[data-website-scenario="${pages}"]`).focus();
+      await page.keyboard.press('Enter');
+      await expect(page.locator('#h-angebot')).toBeFocused();
+      await expect(page.locator('#seiten')).toHaveText(String(pages));
+      for (const option of ['tracking', 'crm', 'dashboard', 'screendesign']) await expect(page.locator('#' + option)).toBeChecked();
+      await expect(page.locator('#texte')).not.toBeChecked();
+      await expect(page.locator('#design-layouts')).toHaveValue('1');
+      await expect(page.locator(`[data-website-scenario="${pages}"]`)).toHaveAttribute('aria-pressed', 'true');
+      await expect(page.locator('[data-website-scenario][aria-pressed="true"]')).toHaveCount(1);
+      const expected = canonicalQuotes([{ seiten: pages, art: 'relaunch', texte: 0, design: 'neu', design_layouts: 1, tracking: 1, crm: 1, dashboard: 1 }])[0];
+      await expect(page.locator('#gesamt')).toHaveText(euro(expected.price));
+      const targets = await page.locator('[data-website-cta]').evaluateAll(els => els.map(el => el.href));
+      expect(new Set(targets).size).toBe(1);
+      const url = new URL(targets[0]);
+      expect(Object.fromEntries(url.searchParams)).toEqual({ type: 'project', focus: 'website', seiten: String(pages), art: 'relaunch', texte: '0', tracking: '1', crm: '1', dashboard: '1', design: 'neu', screendesign: '1', design_layouts: '1' });
+    }
+    await page.locator('#plus').click();
+    await expect(page.locator('[data-website-scenario][aria-pressed="true"]')).toHaveCount(0);
+    const sectionOrder = await page.locator('#beleg, #unterschied').evaluateAll(els => els.map(el => el.id));
+    expect(sectionOrder).toEqual(['beleg', 'unterschied']);
+    await expect(page.locator('#durch')).toHaveAttribute('data-modus', 'anfragen');
+    await expect(page.locator('#anfrage .direkt a').first()).toHaveAttribute('href', /^mailto:/);
+    await expect(page.locator('#anfrage .direkt a').last()).toHaveAttribute('href', /^tel:/);
+  });
+}
 test('no JavaScript: both comparison rows and diagrams, valid static offer', async ({ browser }) => {
   const context=await browser.newContext({ javaScriptEnabled:false });const page=await context.newPage();
   await open(page,360);
@@ -91,6 +134,8 @@ test('no JavaScript: both comparison rows and diagrams, valid static offer', asy
   await expect(page.locator('.stellen .k')).toHaveCount(7);await expect(page.locator('.stellen .a')).toHaveCount(7);
   expect(await page.locator('.stellen p').evaluateAll(els=>els.every(el=>getComputedStyle(el).display!=='none'))).toBe(true);
   await expect(page.locator('.schalter')).toBeHidden();await expect(page.locator('#leiste')).toBeHidden();
+  await expect(page.locator('.aw-szenario')).toHaveCount(3);
+  expect(await page.locator('[data-website-scenario]').evaluateAll(els => els.every(el => el.hidden))).toBe(true);
   const overflow = await page.locator('body *').evaluateAll(els => els.filter(el => {
     const r = el.getBoundingClientRect(); return r.width > 0 && r.right > innerWidth + 1;
   }).map(el => ({ tag: el.tagName, class: el.className, right: el.getBoundingClientRect().right })));

@@ -390,3 +390,17 @@ Keine unbelegte Behauptung über fehlende Leistungen bei anderen Anbietern und
 kein unbelegter Rabatt gegenüber einem angeblichen Marktdurchschnitt.
 Landingpage, Übernahme-Check und Monatskontingente bleiben unverändert.
 Auswahl und serverseitige Kalkulation werden in Anfrage, Mails und CRM erhalten.
+
+Zweiter Durchgang 04.10.2026: Diese Produktseite spricht Unternehmen und
+Selbstständige an, auch wenn ihre eigenen Kunden Privatpersonen sind. Beispiele
+sind Umfangshilfen, keine weiteren Branchenpositionierungen oder garantierten
+Ergebnisse: eine Seite für einen Friseursalon, drei für Unternehmensberatung,
+fünf für einen Sanitär-/Heizungsbetrieb. Jeder Seitenplan enthält exakt die
+genannte Zahl an Inhaltsseiten; Kontakt darf ein Abschnitt sein. Buchungssystem
+und Shop werden durch das Salonbeispiel nicht inklusive. Beispielwahl verändert
+nur die Seitenzahl, erhält Extras und führt zum Konfigurator; Preise aus dem
+Kanon. Ein Inhaltsabschnitt ist keine zusätzliche Seite.
+Belege stehen vor dem Qualitätsvergleich. Die Produktseite startet den Vergleich
+mit der eigenen Bauweise; der PV-Fall belegt die gesamte Maßnahme, nicht den
+Erfolg einer kleinen Website zum Grundpreis. Basisgestaltung benennt bewährte
+Layouts mit angepassten Farben und Typografie; Figma-Screendesign bleibt optional.

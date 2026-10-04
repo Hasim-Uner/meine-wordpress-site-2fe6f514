@@ -670,6 +670,14 @@ If intent is unclear, do not guess based on the current business priority. Keep 
 
 ## Die Anfrage-Website (freigegeben 02.10.2026)
 
+Seit dem zweiten Produktdurchgang vom 04.10.2026 führen die drei
+`website_offer_scenario_1|3|5`-Hooks als Navigation zum Konfigurator. Die
+Beispielwahl übernimmt nur die Seitenzahl, erhält gewählte Extras und setzt
+den Fokus auf dessen Überschrift. Sie sendet keine neue Anfrage und fügt keine
+neue Messung hinzu. Direkte Wege im Abschluss: `website_offer_close_mail`
+und `website_offer_close_tel`. Belege stehen vor dem Qualitätsvergleich;
+der primäre nächste Schritt bleibt die konfigurierte Projektanfrage.
+
 Produkt-CTA-Hooks erhalten: `cta_website_offer_hero_project`,
 `cta_website_offer_scope_project`, `cta_website_offer_close_project`.
 Neu: `cta_website_offer_proof_project`, `cta_website_offer_sticky_project`.
