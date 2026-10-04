@@ -48,12 +48,15 @@ final class HU_Chat_Bedrock_Client {
 		$this->transport = $transport;
 	}
 
-	/** Return transport name; never retry after a visible partial response. */
-	public function invoke( string $body, callable $emit ): string {
+	/**
+	 * Return transport name; never retry after a visible partial response.
+	 * $tick runs from cURL's progress callback so collected text leaves on time while Bedrock pauses.
+	 */
+	public function invoke( string $body, callable $emit, ?callable $tick = null ): string {
 		$stream = new HU_Chat_Anthropic_Stream();
 		$this->attempts[] = null;
 		try {
-			$this->stream( $body, $stream, $emit );
+			$this->stream( $body, $stream, $emit, $tick );
 			$this->attempts[0] = $stream->usage;
 			return 'stream';
 		} catch ( Throwable $error ) {
@@ -82,9 +85,9 @@ final class HU_Chat_Bedrock_Client {
 		return 'fallback';
 	}
 
-	private function stream( string $body, HU_Chat_Anthropic_Stream $stream, callable $emit ): void {
+	private function stream( string $body, HU_Chat_Anthropic_Stream $stream, callable $emit, ?callable $tick ): void {
 		$decoder = new HU_Chat_Eventstream();
-		$this->request( $body, true, static function ( string $chunk ) use ( $decoder, $stream, $emit ): void {
+		$this->request( $body, true, $tick, static function ( string $chunk ) use ( $decoder, $stream, $emit ): void {
 			foreach ( $decoder->push( $chunk ) as $frame ) {
 				if ( 'event' !== ( $frame['headers'][':message-type'] ?? '' ) || 'chunk' !== ( $frame['headers'][':event-type'] ?? '' ) ) {
 					throw new RuntimeException( 'chat_bedrock_event_error' );
@@ -107,9 +110,9 @@ final class HU_Chat_Bedrock_Client {
 		}
 	}
 
-	private function request( string $body, bool $stream, ?callable $consume = null ): string {
+	private function request( string $body, bool $stream, ?callable $tick = null, ?callable $consume = null ): string {
 		if ( null !== $this->transport ) {
-			return ( $this->transport )( $body, $stream, $consume );
+			return ( $this->transport )( $body, $stream, $consume, $tick );
 		}
 		$url = 'https://bedrock-runtime.eu-central-1.amazonaws.com/model/' . rawurlencode( $this->config['model'] ) . ( $stream ? '/invoke-with-response-stream' : '/invoke' );
 		$headers = HU_Chat_SigV4::sign( 'POST', $url, $body, [
@@ -140,6 +143,13 @@ final class HU_Chat_Bedrock_Client {
 			CURLOPT_TIMEOUT => 35,
 			CURLOPT_SSL_VERIFYPEER => true,
 			CURLOPT_SSL_VERIFYHOST => 2,
+			CURLOPT_NOPROGRESS => null === $tick,
+			CURLOPT_XFERINFOFUNCTION => static function () use ( $tick ): int {
+				if ( null !== $tick ) {
+					$tick();
+				}
+				return 0;
+			},
 			CURLOPT_HEADERFUNCTION => static function ( $curl, string $line ) use ( &$status, &$content_type ): int {
 				if ( preg_match( '/^HTTP\/\S+\s+(\d{3})/', $line, $match ) ) {
 					$status = (int) $match[1];
