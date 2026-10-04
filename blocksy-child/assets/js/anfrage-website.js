@@ -89,7 +89,7 @@
         $('#summary-screendesign dt').textContent = 'Screendesign · ' + state.designLayouts + (state.designLayouts === 1 ? ' Layout' : ' Layouts');
         $('#preis-label').textContent = state.dashboard ? 'Einmalpreis ohne Dashboard' : 'Ihr Einmalpreis';
         var notes = [];
-        if (state.dashboard) notes.push('Zuzüglich Daten-Dashboard nach Angebot.');
+        if (state.dashboard) notes.push('Zuzüglich Daten-Dashboard nach Angebot: Preis und Zeit separat.');
         if (state.crm) notes.push('CRM: Standardumfang vorab prüfen.');
         if (state.design === 'vorhanden') notes.push('Vorlage: Umsetzungsumfang vorab prüfen.');
         $('#angebot-hinweis').hidden = !notes.length; $('#angebot-hinweis').textContent = notes.join(' ');

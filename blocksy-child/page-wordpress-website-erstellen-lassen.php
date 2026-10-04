@@ -133,11 +133,11 @@ get_header();
             <a class="btn" id="cta-angebot" href="<?php echo esc_url( $contact_url ); ?>" data-website-cta="angebot" data-track-action="cta_website_offer_scope_project" data-track-category="lead_gen" data-track-section="website_offer_angebot">Auswahl anfragen <span aria-hidden="true">→</span></a>
             <p class="aw-hinweis">Unverbindlich. Festpreis &amp; Starttermin im Angebot.</p>
           </div>
-          <p class="aw-eigentum"><strong>Kein Website-Abo. Keine Pflichtwartung.</strong>Domain und Hosting separat. Externe Dienstkosten werden vorab benannt.</p>
+          <p class="aw-eigentum"><strong>Kein Website-Abo. Keine Pflichtwartung.</strong></p>
           <p class="aw-live-status" id="konfiguration-status" role="status" aria-live="polite" aria-atomic="true"></p>
         </aside>
       </div>
-      <p class="aw-config-fuss">Alle Preise netto. Standardumfang bis zehn Seiten. *Vorhandene Designs und CRM werden vor Auftragserteilung geprüft. <a href="#erweiterungen">Umfang der Erweiterungen ↓</a></p>
+      <p class="aw-config-fuss">Alle Preise netto. Domain, Hosting und externe Dienstkosten separat. *Vorhandene Designs und CRM werden vor Auftragserteilung geprüft. <a href="#erweiterungen">Umfang der Erweiterungen ↓</a></p>
       <div class="inklusive" id="lieferumfang">
         <div class="inklusive-kopf"><div><p class="mono">Die Standardausstattung</p><h3>Das steckt schon drin.</h3></div><span class="aw-status">Ohne Aufpreis</span></div>
         <p class="mikro">Die wichtigsten Leistungen sind immer enthalten. Die Details öffnen Sie bei Bedarf.</p>

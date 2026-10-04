@@ -1435,6 +1435,18 @@
 @media (hover: hover) and (pointer: fine) {
   .anfrage-website .groessen button:hover, .anfrage-website .aw-option:hover { border-color: var(--stempel); }
 }
+/* Small laptop view: retain readable type and touch targets, compact repeated labels. */
+@media (min-width: 1100px) and (max-height: 800px) {
+  .anfrage-website .aw-config-heading .mono, .anfrage-website .aw-summary-kopf .aw-status, .anfrage-website #auswahl-design { display: none; }
+  .anfrage-website .aw-config-heading h2 { font-size: 2rem; }
+  .anfrage-website .aw-config-heading { margin-bottom: var(--s1); }
+  .anfrage-website .aw-feld { padding-block: var(--s0); }
+  .anfrage-website .aw-option { padding-block: var(--s0); min-height: 44px; }
+  .anfrage-website .aw-zusammenfassung h3 { margin-top: var(--s0); font-size: 1.2rem; }
+  .anfrage-website .aw-preispositionen { margin-top: var(--s1); }
+  .anfrage-website .summe { margin-top: var(--s1); padding-top: var(--s1); gap: var(--s0) var(--s1); }
+  .anfrage-website .aw-eigentum { padding-top: var(--s1); }
+}
 @media (max-width: 1099.98px) {
   .anfrage-website .aw-config-grid { grid-template-columns: minmax(0, 1fr); }
   .anfrage-website .aw-zusammenfassung { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: 0 var(--s3); padding: var(--s3); }
