@@ -1,45 +1,82 @@
 # Die Anfrage-Website
 
-Freigegeben durch Haşim am 02.10.2026, Versionen 3–6 des Auftrags.
-Diese Entscheidung ersetzt den Website-Teil von `preise-website-landingpage.md`.
+Grundprodukt freigegeben durch Haşim am 02.10.2026; Produktdurchgang und
+Standard-Erweiterungen beauftragt am 04.10.2026. Diese Entscheidung ersetzt
+den Website-Teil von `preise-website-landingpage.md` und die frühere offene
+Design-/CRM-Kalkulation aus dem ersten Tagesrechner.
 
-Produkt statt offener Dienstleistung: erste Seite 1.490 € netto, jede weitere
-290 €, Tracking optional 890 €. Bis zehn Seiten selbst rechnen; darüber Angebot.
-Ergänzung 04.10.2026: Jede gewählte Seite enthält Texte auf Wunsch, auf Basis
-der Kundenangaben. Technisches SEO, Formular, Bestätigungsmail, Danke-Seite sowie
-Impressum-/Datenschutz-Seiten mit gelieferten Rechtstexten sind Standard.
-Screendesign und CRM sind wählbar nach separatem Angebot; kein Preis erfunden.
-Die Landingpage behält ihren eigenen spezialisierten Angebotsumfang und Preis.
-Bauzeiten und Lieferzusagen sind ausdrücklich freigegeben, siehe Markenkanon.
-Die Produktoberfläche vom 04.10.2026 ersetzt die Angebotsdarstellung des Prototyps:
-Hero → Konfigurator mit Zusammenfassung und aufklappbarem Lieferumfang → Vergleich
-→ Beleg → Zeit → FAQ → Anfrage. Custom Code, Gutenberg/ACF, GitHub und KI-Workflow
-mit Prüfung sind sichtbare Qualitätsmerkmale. Der Kopf bleibt global. Auswertung nach acht Wochen oder 300 Aufrufen.
+Erste Seite 1.490 € netto, jede weitere 290 €. Texte auf Wunsch je Seite,
+responsive Basisgestaltung, technisches SEO, Formular mit gespeicherten
+Anfragen, Bestätigungsmail, Danke-Seite und Rechtstext-Seiten sind enthalten.
+Impressum/Datenschutz/Danke/404 zählen nicht als bezahlte Inhaltsseiten.
+Rechtstexte werden geliefert, keine Rechtsberatung. Custom Code, Gutenberg/ACF,
+GitHub und KI-Workflow mit Qualitätsprüfung; kein Pagebuilder, kein Website-Abo,
+keine Pflichtwartung oder Pflichtlizenzen im Grundprodukt. Externe Kosten transparent.
 
-## Ergänzung: adaptive Zeitkalkulation, 04.10.2026
+## Feste Erweiterungen
 
-Die Wochenstaffel wird durch Arbeitsphasen und Werktage ersetzt. Auslöser:
-fertige Texte/Designs sollen bei reiner Implementierung keine Erstellungszeit
-auslösen; Tracking ist ein Projekt-Setup und kein Aufwand pro Seite.
+| Erweiterung | Netto-Aufpreis | Produktionsbeitrag |
+| --- | ---: | ---: |
+| Screendesign, erstes unterschiedliches Layout | 690 € | 2 Werktage |
+| Weiteres unterschiedliches Layout | 250 € | 0,5 Werktage |
+| Conversion-Tracking Standard | 890 € | 1 Werktag |
+| CRM Standard | 990 € | 3 Werktage |
+| Daten-Dashboard | Nach Angebot | Zusätzlich nach Angebot |
 
-Die benannten Faktoren in `hu_website_calculator_rules()` sind die gemeinsame
-Konfiguration für PHP und Browser. Erste Seite drei Werktage inklusive QA,
-Zusatzseite ein Tag, Standard-Tracking einmal ein Tag. Neues Screendesign:
-erstes Layout zwei, weitere unterschiedliche Layouts je ein Tag. Texterstellung:
-eins plus ein halber je Zusatzseite, zusammen aufgerundet; im Seitenpreis enthalten.
-Relaunch: zwei Tage für Bestandsaufnahme und Weiterleitungen.
+Screendesign: eine Richtung in Figma, Desktop und Mobil je Layout, zwei
+gebündelte Korrekturrunden. Wiederverwendung zählt einmal. Vier Seiten mit
+Startseite und drei gleich aufgebauten Leistungsseiten benötigen zwei Layouts.
+Neue Marke/Logo, weitere Richtungen und komplexe Interaktionen separat.
+Preis ist eine eigene Produktkalkulation, kein behaupteter 2026-Marktdurchschnitt
+und keine öffentliche 35-Prozent-Rabattbehauptung.
 
-Die Zahlen sind logisch getrennte Planungsannahmen, keine gemessenen Projektzeiten.
-Werktage beschreiben geplante Durchlaufzeit, nicht abrechenbare Personentage.
-Freigabewartezeiten und Kapazitäts-/Starttermine sind separat. Ziel der angezeigten
-Zeit ist ein geprüfter Abnahmestand; der Veröffentlichungstermin steht im Angebot.
-Bei CRM gibt es keine erfundene Tageszahl. Die bekannte Summe ist als Mindestwert
-ohne CRM-Aufwand markiert. Vorhandene Designs werden vor Preis-/Zeitzusage geprüft.
+CRM Standard: ein Formular, vorhandenes HubSpot oder Bitrix24, bis zehn Felder,
+ein Kontakt- oder Lead-Objekt; Mapping, Dublettenregel, Fehlerbehandlung, Tests,
+Dokumentation. API/Berechtigungen/Tarif und Zielsystem vor Auftrag prüfen.
+Salesforce und weitere Systeme, Migration, Automationen und zusätzliche
+Objekte/Formulare separat. Externe CRM-Kosten nicht im Entwicklungspreis.
 
-Die Layoutzahl ist bei neuen Designs zunächst gleich der Seitenzahl (konservative
-Planung); der Kunde kann wiederverwendete Seitentypen zusammenfassen. Beim
-Verkleinern des Umfangs wird sie auf die Seitenzahl begrenzt. Weder Layoutzahl
-noch Designwahl ändern einen nicht freigegebenen Designpreis in einen Festpreis.
-Preisformel unverändert. Alte `screendesign=1`-Anfragen bleiben kompatibel und
-werden als neue Gestaltung behandelt. Dauer, Faktoren-Version und Optionen
-werden serverseitig berechnet, im CRM gespeichert und in beiden Mails dargestellt.
+Tracking umfasst GA4/GTM/Consent Mode und eine Google-Ads-Conversion für die
+Standard-Anfrage. Server-Side, Meta CAPI, Offline-Conversions und weitere Ziele
+separat. Ein erforderlicher Consent-Dienst wird mit Kosten vorab benannt.
+Dashboard ist nur eine auswählbare Angebotsleistung; kein Dashboard-Plugin oder
+Analytics-Setup auf der eigenen Website wird in diesem Auftrag gebaut.
+
+## Produktionszeit
+
+`hu_website_calculator_rules()` besitzt Preise, Staffeln und Faktoren; PHP
+und Browser rechnen aus derselben Konfiguration. Ein bis fünf Standardseiten:
+zwei Werktage Umsetzung mit QA. Sechs bis zehn: drei. Relaunch ergänzt zwei.
+Texterstellung: erster Beitrag eins, je Zusatzseite ein halber Tag. Fertige
+Texte und Designs haben keine neue Erstellungsphase. Layoutzahl zunächst gleich
+Seitenzahl (konservative Planung), manuell für Wiederverwendung reduzierbar;
+bei weniger Seiten wird sie begrenzt. Alle Bruchteile erst in der Gesamtsumme
+aufrunden. Beispiel zwei Seiten, neue Texte und zwei Layouts: 1,5 + 2,5 + 2 = 6.
+
+Dies sind Planungsannahmen für Durchlaufzeit bis zum geprüften Abnahmestand,
+keine gemessenen Personentage oder Liefergarantie. Vertrag, Umfang, Briefing,
+Bilder, Rechtstexte und Zugänge stehen vor Produktionsstart; gelieferte Vorlagen
+sind geprüft und freigegeben. Kundenfreigaben, Verfügbarkeit, Start und
+Veröffentlichung werden separat vereinbart. Vorhandene Designs und CRM
+brauchen Preflight. Dashboard-Auswahl markiert bekannte Zeit als Mindestwert
+und bekannte Summe ausdrücklich ohne Dashboard, vollständiges Angebot vor Auftrag.
+
+## Oberfläche und Datenpfad
+
+Hero → kompakter Konfigurator → aufklappbarer Lieferumfang und Erweiterungen
+→ Qualitätsvergleich → Belege → Zeitbeiträge → FAQ → Anfrage.
+Desktop: Seiten/Texte, Design/Extras und Preis/Zeit nebeneinander. Zielprüfung:
+bei 1366 × 768 und 1440 × 900 Pixel sämtliche Auswahlfelder,
+Layoutzahl und Anfrage-CTA sichtbar. Tablet/Mobil stapeln die Bereiche und
+halten eine bearbeitbare Preis-/Zeitleiste bereit. Keine künstliche Verkleinerung
+aller Inhalte auf eine einzige Handyansicht. Technische Details bleiben aufklappbar.
+
+CTA-URLs → Kontakt-Hidden-Felder → vorhandenes REST → Server-Neuberechnung
+→ CRM → beide Mails. `dashboard` erweitert den Vertrag kompatibel. Bestehendes
+`screendesign=1` funktioniert weiter. Serverpreise, Tage und Regelversion sind
+maßgeblich, gepostete Werte werden ignoriert. CRM hält Preis, Designpreis,
+Layoutzahl, Vorbereitung mit halben Tagen und Dashboard-Auswahl fest.
+Keine Änderung an Consent, Cache-Grenzen, Routing oder Deployment.
+Landingpage und Monatskontingente unverändert. Hypothese: klarer Umfang und
+sichtbare Gesamtkalkulation erhöhen Anfragen; prüfen nach acht Wochen oder
+300 Aufrufen laut `docs/experimente/anfrage-website.md`.
