@@ -1377,6 +1377,21 @@
 .anfrage-website .aw-angebot-hinweis { font-size: .85rem; color: var(--stempel); margin-top: var(--s2); border-left: 2px solid var(--stempel); padding-left: var(--s1); }
 .anfrage-website .aw-summary-inkl { padding-top: var(--s2); border-top: 1px solid var(--haar); }
 .anfrage-website .aw-live-status { position: absolute; width: 1px; height: 1px; margin: -1px; padding: 0; overflow: hidden; clip-path: inset(50%); white-space: nowrap; }
+.anfrage-website .aw-design-details { margin-top: var(--s2); padding: var(--s2); background: var(--zone); border-radius: var(--r1); }
+.anfrage-website .aw-design-details label { display: block; font-size: var(--grad-klein); font-weight: 600; margin-bottom: var(--s1); }
+.anfrage-website .aw-design-details select { width: 100%; min-height: 44px; padding: var(--s1) var(--s2); color: var(--tinte); background: var(--papier); border: 1px solid var(--haar); border-radius: var(--r1); font: inherit; }
+.anfrage-website .aw-zeitkalkulation { margin-top: var(--s3); padding-top: var(--s2); border-top: 1px solid var(--haar); }
+.anfrage-website .aw-zeitpositionen { margin: var(--s1) 0 0; font-size: .8rem; }
+.anfrage-website .aw-zeitpositionen > div { display: flex; justify-content: space-between; gap: var(--s1); padding-block: var(--s0); }
+.anfrage-website .aw-zeitpositionen dt { color: var(--grau); }
+.anfrage-website .aw-zeitpositionen dd { margin: 0; flex-shrink: 0; font-family: var(--mono); }
+.anfrage-website .aw-zeitkalkulation .bauzeit b { display: block; margin-top: var(--s0); color: var(--stempel); font-size: var(--grad-h2-leise); line-height: 1.25; }
+.anfrage-website .bahn { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: var(--s1); }
+.anfrage-website .phase { padding: var(--s2); gap: var(--s1); }
+.anfrage-website .phase.offen { border: 1px dashed var(--stempel); }
+@media (max-height: 899.98px) { .anfrage-website .aw-zusammenfassung { position: static; } }
+@media (max-width: 719.98px) { .anfrage-website .bahn { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
+@media (max-width: 379.98px) { .anfrage-website .bahn { grid-template-columns: minmax(0, 1fr); } }
 .anfrage-website .inklusive { margin-top: var(--s4); padding: var(--s3); background: var(--zone); border: 1px solid var(--haar); }
 .anfrage-website .inklusive-kopf { display: flex; flex-wrap: wrap; justify-content: space-between; align-items: center; gap: var(--s2); }
 .anfrage-website .inklusive-kopf .mono { color: var(--stempel); margin-bottom: var(--s1); }

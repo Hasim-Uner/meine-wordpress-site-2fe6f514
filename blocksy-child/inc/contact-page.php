@@ -769,24 +769,46 @@ function nexus_get_website_request_scope( $payload ) {
 	if ( ! in_array( $kind, [ 'neubau', 'relaunch' ], true ) ) {
 		return new WP_Error( 'invalid_website_scope', 'Bitte einen gültigen Website-Umfang wählen.' );
 	}
-	$quote = hu_website_quote( (int) $pages, $kind, (bool) $options['tracking'] );
-	return $options + [ 'seiten' => $quote['pages'], 'art' => $quote['kind'], 'website_price' => $quote['price'], 'website_weeks' => $quote['weeks'] ];
+	$design = $payload['design'] ?? ( $options['screendesign'] ? 'neu' : 'basis' );
+	if ( ! in_array( $design, [ 'basis', 'vorhanden', 'neu' ], true ) || ( isset( $payload['design'] ) && $options['screendesign'] && 'neu' !== $design ) ) {
+		return new WP_Error( 'invalid_website_scope', 'Bitte einen gültigen Design-Umfang wählen.' );
+	}
+	$layouts = $payload['design_layouts'] ?? (int) $pages;
+	if ( ! is_scalar( $layouts ) || ! preg_match( '/^[1-9][0-9]*$/D', (string) $layouts ) || (int) $layouts > (int) $pages ) {
+		return new WP_Error( 'invalid_website_scope', 'Bitte eine gültige Zahl unterschiedlicher Layouts wählen.' );
+	}
+	$options['screendesign'] = 'neu' === $design ? 1 : 0;
+	$options['design'] = $design;
+	$options['design_layouts'] = 'neu' === $design ? (int) $layouts : 0;
+	$quote = hu_website_quote( (int) $pages, $kind, (bool) $options['tracking'], $options );
+	return $options + [
+		'seiten' => $quote['pages'], 'art' => $quote['kind'], 'website_price' => $quote['price'], 'website_weeks' => $quote['weeks'],
+		'website_days' => $quote['days'], 'website_preparation_days' => $quote['preparation_days'],
+		'website_implementation_days' => $quote['implementation_days'], 'website_duration_open' => (int) $quote['duration_open'],
+		'website_calc_version' => $quote['version'],
+	];
 }
 
 /** Public scope summary, shared by form, mail and CRM. */
 function nexus_get_website_scope_summary( $payload ) {
 	if ( empty( $payload['seiten'] ) ) { return ''; }
-	$summary = sprintf( '%1$d %2$s · %3$s · Tracking %4$s · %5$s netto · %6$d Wochen Basis-Bauzeit ab freigegebenen Inhalten',
+	$summary = sprintf( '%1$d %2$s · %3$s · Tracking %4$s · %5$s netto · %6$s%7$d Werktage geplant bis zum Abnahmestand, ohne Kundenfreigabezeiten',
 		$payload['seiten'], 1 === (int) $payload['seiten'] ? 'Seite' : 'Seiten',
 		'relaunch' === $payload['art'] ? 'Relaunch' : 'Neubau', empty( $payload['tracking'] ) ? 'ohne' : 'dazu',
-		hu_format_eur( $payload['website_price'] ), $payload['website_weeks'] );
-	$summary .= empty( $payload['texte'] ) ? ' · Eigene Texte einpflegen' : ' · Texte erstellen lassen (inklusive)';
+		hu_format_eur( $payload['website_price'] ), empty( $payload['crm'] ) ? '' : 'mindestens ', $payload['website_days'] ?? ( ( $payload['website_weeks'] ?? 0 ) * 5 ) );
+	$summary .= empty( $payload['texte'] ) ? ' · Freigegebene Texte vorhanden' : ' · Texte erstellen lassen (inklusive)';
+	if ( 'vorhanden' === ( $payload['design'] ?? '' ) ) { $summary .= ' · Freigegebenes Design umsetzen; Basispreis und Zeit nach Vorlagenprüfung bestätigen'; }
+	if ( ! empty( $payload['screendesign'] ) ) {
+		$layouts = $payload['design_layouts'] ?? $payload['seiten'];
+		$summary .= sprintf( ' · Screendesign: %d %s erstellen', $layouts, 1 === (int) $layouts ? 'Layout' : 'Layouts' );
+	}
 	$extras = [];
 	if ( ! empty( $payload['screendesign'] ) ) { $extras[] = 'Screendesign'; }
 	if ( ! empty( $payload['crm'] ) ) { $extras[] = 'CRM-Anbindung'; }
 	if ( $extras ) {
 		$summary .= ' · Zuzüglich ' . implode( ' und ', $extras ) . ' nach separatem Angebot; vollständiger Gesamtpreis und Termin im Angebot';
 	}
+	if ( ! empty( $payload['crm'] ) ) { $summary .= ' · CRM-Aufwand noch nicht in der Zeit enthalten'; }
 	return $summary;
 }
 

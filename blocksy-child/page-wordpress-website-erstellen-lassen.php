@@ -15,13 +15,15 @@ add_action( 'wp_enqueue_scripts', static function () {
     hu_enqueue_css( 'hu-anfrage-website', 'anfrage-website.css', [ 'nexus-system-css' ] );
     hu_enqueue_js( 'hu-anfrage-website', 'anfrage-website.js', [] );
 }, 90 );
-$quote = hu_website_quote( 3 );
+$quote = hu_website_quote( 3, 'neubau', false, [ 'texte' => 1 ] );
+$rules = hu_website_calculator_rules();
+$days = static function ( $value ) { return (int) $value . ( 1 === (int) $value ? ' Werktag' : ' Werktage' ); };
 $contact_url = add_query_arg( [ 'seiten' => 3, 'art' => 'neubau', 'texte' => 1 ], hu_get_contact_intake_url( 'project', 'website' ) );
 $psi_url = 'https://pagespeed.web.dev/analysis?url=' . rawurlencode( home_url( '/wordpress-website-erstellen-lassen/' ) );
 $eur = static function ( $value ) { return str_replace( ' €', "\u{00A0}€", hu_format_eur( $value ) ); };
 get_header();
 ?>
-<div id="website-content" class="doku anfrage-website" data-track-page="website_offer" data-website-product data-base="<?php echo esc_attr( (string) HU_FREELANCER_WEBSITE_MIN ); ?>" data-page-price="<?php echo esc_attr( (string) HU_FREELANCER_WEBSITE_EXTRA_PAGE ); ?>" data-tracking-price="<?php echo esc_attr( (string) hu_tracking_price( 'measurement', 'setup', 'value' ) ); ?>" data-max-pages="<?php echo esc_attr( (string) HU_WEBSITE_CALCULATOR_MAX ); ?>">
+<div id="website-content" class="doku anfrage-website" data-track-page="website_offer" data-website-product data-website-rules="<?php echo esc_attr( wp_json_encode( $rules ) ); ?>">
   <nav class="wrap krumen" aria-label="Brotkrumen"><a href="<?php echo esc_url( home_url( '/' ) ); ?>">Startseite</a> / WordPress-Website erstellen lassen</nav>
 
   <section class="hero" id="hero">
@@ -40,11 +42,12 @@ get_header();
         <div class="aw-produkt-kopf"><span class="mono">Die Anfrage-Website</span><span class="aw-status">Erweiterbar</span></div>
         <p class="mono">Festpreis ab</p>
         <p class="betrag"><?php echo esc_html( $eur( HU_FREELANCER_WEBSITE_MIN ) ); ?><small>netto</small></p>
-        <p class="regel">Website mit einer Seite. Jede weitere Seite <?php echo esc_html( $eur( HU_FREELANCER_WEBSITE_EXTRA_PAGE ) ); ?>. Bauzeit ab zwei Wochen. <span id="hero-bauzeit">Ihr Umfang: 3 Wochen.</span></p>
+        <p class="regel">Website mit einer Seite. Jede weitere Seite <?php echo esc_html( $eur( HU_FREELANCER_WEBSITE_EXTRA_PAGE ) ); ?>. Mit fertigen Inhalten ab <?php echo esc_html( $days( $rules['days']['first_page'] ) ); ?> Umsetzung geplant. <span id="hero-bauzeit">Ihre Auswahl: <?php echo esc_html( $days( $quote['days'] ) ); ?> geplant.</span></p>
         <ul class="beispiele">
-          <li><span>3 Seiten</span><em>3 Wochen</em><b><?php echo esc_html( $eur( $quote['price'] ) ); ?></b></li>
-          <li><span>5 Seiten</span><em>3 Wochen</em><b><?php echo esc_html( $eur( hu_website_quote( 5 )['price'] ) ); ?></b></li>
+          <li><span>3 Seiten</span><em><?php echo esc_html( $quote['days'] ); ?> Werktage</em><b><?php echo esc_html( $eur( $quote['price'] ) ); ?></b></li>
+          <li><span>5 Seiten</span><em><?php echo esc_html( hu_website_quote( 5, 'neubau', false, [ 'texte' => 1 ] )['days'] ); ?> Werktage</em><b><?php echo esc_html( $eur( hu_website_quote( 5 )['price'] ) ); ?></b></li>
         </ul>
+        <p class="aw-hinweis">Beispiele mit Texterstellung, ohne individuelle Extras. Kundenfreigaben und Starttermin separat.</p>
         <ul class="aw-basis-kurz"><li>Texte auf Wunsch · technisches SEO</li><li>Formular · Bestätigungsmail · Danke-Seite</li><li>Impressum · Datenschutz · Übergabe</li></ul>
         <a class="zum leise" href="#angebot" data-track-action="website_offer_to_angebot" data-track-category="navigation">Seiten &amp; Extras auswählen ↓</a>
       </aside>
@@ -61,7 +64,7 @@ get_header();
     <div class="wrap">
       <div class="aw-section-kopf"><p class="mono">01 · Ihr Produkt</p><span class="aw-status">Grundprodukt + Erweiterungen</span></div>
       <h2 id="h-angebot">Stellen Sie Ihre Website zusammen.</h2>
-      <p class="lead">Wählen Sie den Umfang. Alles Inklusive bleibt dabei. Extras ergänzen Sie mit einem Klick.</p>
+      <p class="lead">Was steht schon, was soll entstehen? Ihre Auswahl berechnet Preis und geplante Projektzeit. Jeder Zeitbeitrag ist sichtbar.</p>
       <noscript><p class="mikro">Beispiel: drei Seiten, Neubau, Texte inklusive, ohne Extras. Für eine andere Auswahl nennen Sie Ihren gewünschten Umfang in der Anfrage.</p></noscript>
       <div class="aw-config-grid">
         <div class="aw-config-controls">
@@ -78,15 +81,28 @@ get_header();
           </fieldset>
           <fieldset class="aw-feld aw-inhalte">
             <legend><span class="aw-schritt">02</span> Wer schreibt die Texte?</legend>
-            <label class="aw-option aw-option--text" data-website-controls hidden><input type="checkbox" id="texte" checked><span class="aw-option-inhalt"><strong>Texte erstellen lassen</strong><small>Für jede gewählte Seite, auf Basis Ihrer Angaben. Sie geben die Texte frei.</small></span><span class="aw-option-preis">Inklusive</span></label>
-            <p class="aw-hinweis" id="text-hinweis">Sie können auch eigene Texte liefern. Der Preis bleibt gleich.</p>
+            <label class="aw-option aw-option--text" data-website-controls hidden><input type="checkbox" id="texte" checked><span class="aw-option-inhalt"><strong>Texte erstellen lassen</strong><small>Für jede gewählte Seite, auf Basis Ihrer Angaben. Sie geben die Texte frei. Abwählen, wenn Ihre Texte vollständig und freigegeben sind.</small></span><span class="aw-option-preis">Inklusive</span></label>
+            <p class="aw-hinweis" id="text-hinweis">Texterstellung: <?php echo esc_html( $days( $quote['components']['texts'] ) ); ?> Vorbereitung geplant. Der Seitenpreis bleibt gleich.</p>
+          </fieldset>
+          <fieldset class="aw-feld aw-design">
+            <legend><span class="aw-schritt">03</span> Wie steht es ums Design?</legend>
+            <div class="aw-extras" data-website-controls hidden role="radiogroup" aria-label="Design-Umfang">
+              <label class="aw-option"><input type="radio" name="website-design" id="design-basis" value="basis" checked><span class="aw-option-inhalt"><strong>Basisgestaltung nutzen</strong><small>Saubere responsive Gestaltung mit bewährten Bausteinen. In der Umsetzung enthalten.</small></span><span class="aw-option-preis">Inklusive</span></label>
+              <label class="aw-option"><input type="radio" name="website-design" id="design-vorhanden" value="vorhanden"><span class="aw-option-inhalt"><strong>Freigegebenes Design umsetzen</strong><small>Figma oder eine andere fertige Vorlage, inklusive mobiler Ansichten. Keine neue Gestaltung nötig.</small></span><span class="aw-option-preis">Vorlagenprüfung</span></label>
+              <label class="aw-option"><input type="radio" name="website-design" id="screendesign" value="neu"><span class="aw-option-inhalt"><strong>Screendesign erstellen lassen</strong><small>Individuelles UX/UI-Konzept, etwa in Figma, und abgestimmte Ansichten vor der Umsetzung.</small></span><span class="aw-option-preis">Nach Angebot</span></label>
+            </div>
+            <div class="aw-design-details" id="design-details" hidden>
+              <label for="design-layouts">Wie viele unterschiedliche Seitenlayouts?</label>
+              <select id="design-layouts" aria-describedby="design-layout-hinweis"><?php for ( $n = 1; $n <= 3; $n++ ) : ?><option value="<?php echo esc_attr( (string) $n ); ?>" <?php selected( $n, 3 ); ?>><?php echo esc_html( $n . ( 1 === $n ? ' Layout' : ' Layouts' ) ); ?></option><?php endfor; ?></select>
+              <p class="aw-hinweis" id="design-layout-hinweis">Etwa Startseite, Leistungsseite und Kontakt. Seiten mit demselben Aufbau verwenden ein Layout gemeinsam.</p>
+            </div>
+            <p class="aw-hinweis" id="design-hinweis">Die Basisgestaltung braucht keine separate Designphase.</p>
           </fieldset>
           <fieldset class="aw-feld aw-erweiterungen">
-            <legend><span class="aw-schritt">03</span> Was soll dazukommen?</legend>
+            <legend><span class="aw-schritt">04</span> Was soll dazukommen?</legend>
             <div class="aw-extras" data-website-controls hidden>
-              <label class="aw-option"><input type="checkbox" id="tracking"><span class="aw-option-inhalt"><strong>Conversion-Tracking</strong><small>GA4, Tag Manager, Consent Mode und Google Ads. Mit Abnahmeprotokoll und Einwilligungslösung.</small></span><span class="aw-option-preis">+ <?php echo esc_html( $eur( (int) hu_tracking_price( 'measurement', 'setup', 'value' ) ) ); ?></span></label>
-              <label class="aw-option"><input type="checkbox" id="screendesign"><span class="aw-option-inhalt"><strong>Individuelles Screendesign</strong><small>Eigenes UX/UI-Konzept und abgestimmte Ansichten vor der Umsetzung.</small></span><span class="aw-option-preis">Nach Angebot</span></label>
-              <label class="aw-option"><input type="checkbox" id="crm"><span class="aw-option-inhalt"><strong>CRM-Anbindung</strong><small>Formularanfragen direkt in Ihr CRM übergeben. Felder und Ablauf gemeinsam festlegen.</small></span><span class="aw-option-preis">Nach Angebot</span></label>
+              <label class="aw-option"><input type="checkbox" id="tracking"><span class="aw-option-inhalt"><strong>Conversion-Tracking</strong><small>GA4, Tag Manager, Consent Mode und Google Ads. Standard-Anfrage messen, testen und dokumentieren. +<?php echo esc_html( $days( $rules['days']['tracking'] ) ); ?> geplant, einmal je Projekt.</small></span><span class="aw-option-preis">+ <?php echo esc_html( $eur( (int) hu_tracking_price( 'measurement', 'setup', 'value' ) ) ); ?></span></label>
+              <label class="aw-option"><input type="checkbox" id="crm"><span class="aw-option-inhalt"><strong>CRM-Anbindung</strong><small>Formularanfragen direkt in Ihr CRM übergeben. Preis und zusätzliche Zeit nach Prüfung von System, Feldern und Ablauf.</small></span><span class="aw-option-preis">Nach Angebot</span></label>
             </div>
             <p class="aw-hinweis">Screendesign und CRM kalkuliere ich passend zu Ihrem Umfang. Den vollständigen Preis erhalten Sie vor der Beauftragung.</p>
           </fieldset>
@@ -95,6 +111,7 @@ get_header();
           <div class="aw-summary-kopf"><span class="mono">Ihre Konfiguration</span><span class="aw-status">Live berechnet</span></div>
           <h3 id="h-auswahl">Die Anfrage-Website</h3>
           <p class="aw-summary-sub" id="auswahl-art">3 Seiten · Neubau</p>
+          <p class="aw-summary-sub" id="auswahl-design">Responsive Basisgestaltung</p>
           <dl class="aw-preispositionen">
             <div><dt>Website mit erster Seite</dt><dd><?php echo esc_html( $eur( HU_FREELANCER_WEBSITE_MIN ) ); ?></dd></div>
             <div><dt><span id="weitere">2</span> weitere Seiten</dt><dd id="betrag-weitere"><?php echo esc_html( $eur( 2 * HU_FREELANCER_WEBSITE_EXTRA_PAGE ) ); ?></dd></div>
@@ -108,8 +125,20 @@ get_header();
             <p class="gesamt"><span id="gesamt"><?php echo esc_html( $eur( $quote['price'] ) ); ?></span><small>netto</small></p>
             <p class="rechnung" id="rechnung"><?php echo esc_html( hu_freelancer_website_price() . ' + 2 × ' . hu_freelancer_website_extra_page_price() ); ?></p>
             <p id="angebot-hinweis" class="aw-angebot-hinweis" hidden></p>
-            <p class="bauzeit">Basis-Bauzeit <b id="bauzeit">3 Wochen</b> · <a href="#zeit" data-track-action="website_offer_to_zeit" data-track-category="navigation">Details</a></p>
-            <p class="aw-hinweis">Ab freigegebenen Inhalten. Bei Screendesign oder CRM steht der Gesamttermin im Angebot.</p>
+            <div class="aw-zeitkalkulation">
+              <p class="mono">Ihre Zeitkalkulation</p>
+              <dl class="aw-zeitpositionen">
+                <div><dt>Umsetzung &amp; Prüfung</dt><dd id="tage-implementation"><?php echo esc_html( $days( $quote['components']['implementation'] ) ); ?></dd></div>
+                <div id="zeit-texte"><dt>Texte erstellen</dt><dd id="tage-texts"><?php echo esc_html( $days( $quote['components']['texts'] ) ); ?></dd></div>
+                <div id="zeit-design" hidden><dt>Screendesign</dt><dd id="tage-design"></dd></div>
+                <div id="zeit-tracking" hidden><dt>Tracking einrichten</dt><dd id="tage-tracking"></dd></div>
+                <div id="zeit-relaunch" hidden><dt>Bestand &amp; Weiterleitungen</dt><dd id="tage-relaunch"></dd></div>
+                <div id="zeit-crm" hidden><dt>CRM-Anbindung</dt><dd>Noch offen</dd></div>
+              </dl>
+              <p class="bauzeit"><span id="dauer-label">Geplante Projektzeit</span> <b id="bauzeit"><?php echo esc_html( $days( $quote['days'] ) ); ?></b> · <a href="#zeit" data-track-action="website_offer_to_zeit" data-track-category="navigation">Ablauf</a></p>
+              <p class="aw-hinweis" id="zeit-aufteilung">Vorbereitung <?php echo esc_html( $days( $quote['preparation_days'] ) ); ?> · Umsetzung <?php echo esc_html( $days( $quote['implementation_days'] ) ); ?></p>
+              <p class="aw-hinweis" id="zeit-hinweis">Planung bis zum geprüften Abnahmestand. Ihre Freigabezeiten und der Starttermin kommen separat dazu.</p>
+            </div>
             <a class="btn" id="cta-angebot" href="<?php echo esc_url( $contact_url ); ?>" data-website-cta="angebot" data-track-action="cta_website_offer_scope_project" data-track-category="lead_gen" data-track-section="website_offer_angebot">Mit dieser Auswahl anfragen <span aria-hidden="true">→</span></a>
             <p class="aw-hinweis">Unverbindlich. Ihre Auswahl wird in die Anfrage übernommen.</p>
           </div>
@@ -277,23 +306,24 @@ get_header();
       <p class="nr"><b>04</b><span>Zeit</span></p>
       <div class="haupt breit">
         <h2 id="h-zeit">Wie lange es dauert, und wovon das abhängt.</h2>
-        <p class="lead">Die Basis-Bauzeit startet mit freigegebenen Texten, Bildern und Rechtstexten. Schreiben wir Ihre Texte, liefern Sie dafür zuerst die Angaben zu Ihrem Angebot. Screendesign und CRM können den Gesamttermin erweitern; dieser steht im Angebot.</p>
+        <p class="lead">Fertige Texte und Designs sparen ihre Erstellungsphase. Neue Inhalte, neue Layouts und Tracking bekommen eigene Zeitbeiträge. Wir rechnen in Werktagen von Montag bis Freitag, ohne Feiertage; Ihre Freigabezeiten kommen separat dazu. Der verbindliche Start- und Veröffentlichungstermin steht im Angebot.</p>
         <div class="zeit">
-          <div class="zeit-kopf"><span class="mono" id="zeit-umfang">Ihr Umfang: 3 Seiten · Neubau</span><strong id="zeit-gesamt">3 Wochen Bauzeit</strong></div>
+          <div class="zeit-kopf"><span class="mono" id="zeit-umfang">Ihr Umfang: 3 Seiten · Neubau</span><strong id="zeit-gesamt"><?php echo esc_html( $days( $quote['days'] ) ); ?> geplant</strong></div>
           <div class="zeit-reihe">
-            <div class="vorlauf"><span class="mono">Vorlauf · bei Ihnen</span><p>Angebot freigeben, Angaben und Bilder liefern, Texte abstimmen.</p></div>
+            <div class="vorlauf"><span class="mono">Vor dem Start</span><p>Umfang vereinbaren, Briefing, Bilder, Rechtstexte und Zugänge liefern. Vorhandene Texte und Designs freigeben.</p></div>
             <div>
-              <p class="uhr">Ab hier läuft die Bauzeit</p>
+              <p class="uhr">Ab vereinbartem Start · bis zum Abnahmestand</p>
               <div class="bahn" id="bahn">
-                <div class="phase" style="--w:2"><span class="mono">Woche 1–2</span><b>Umsetzung auf der Testumgebung</b></div>
-                <div class="phase ende" style="--w:1"><span class="mono">Woche 3</span><b>Korrekturen, Abnahme, Livegang</b></div>
+                <div class="phase"><span class="mono"><?php echo esc_html( $days( $quote['components']['texts'] ) ); ?></span><b>Texte erstellen</b></div>
+                <div class="phase"><span class="mono"><?php echo esc_html( $days( $quote['components']['implementation'] - $rules['days']['qa'] ) ); ?></span><b>Umsetzung auf der Testumgebung</b></div>
+                <div class="phase ende"><span class="mono"><?php echo esc_html( $days( $rules['days']['qa'] ) ); ?></span><b>Qualitätsprüfung und Abnahmestand</b></div>
               </div>
             </div>
           </div>
         </div>
         <ol class="bedingungen">
-          <li><h3>Inhalte vollständig</h3><p>Die Bauzeit startet mit vollständig freigegebenen Inhalten. Eigene Texte liefern Sie; gewünschte Texte schreibe ich auf Basis Ihrer Angaben und Sie geben sie frei.</p></li>
-          <li><h3>Rückmeldung in fünf Werktagen</h3><p>Je Korrekturrunde. Brauchen Sie länger, verschiebt sich der Livegang um dieselbe Zeit.</p></li>
+          <li><h3>Klare Ausgangslage</h3><p>Fertige Vorlagen müssen vollständig und freigegeben sein. Soll ich Texte oder Design erstellen, brauchen wir zuerst Ihr Briefing; diese Arbeit wird separat in der Zeit gezeigt.</p></li>
+          <li><h3>Freigaben separat</h3><p>Für Ihre Rückmeldung sind je Korrekturrunde bis zu fünf Werktage vorgesehen. Diese Wartezeit und der Livegang gehören nicht zur angezeigten Produktionszeit.</p></li>
           <li><h3>Eine Person entscheidet</h3><p>Eine Ansprechperson, die freigibt. Abstimmungsschleifen im Team kosten die meiste Zeit.</p></li>
           <li><h3>Starttermin im Angebot</h3><p>Wann ich beginnen kann, steht mit Umfang und Preis im schriftlichen Angebot.</p></li>
         </ol>

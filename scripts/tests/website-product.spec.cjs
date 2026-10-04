@@ -5,6 +5,8 @@ const { execFileSync } = require('node:child_process');
 const theme = path.resolve(__dirname, '../../blocksy-child');
 const render = () => execFileSync('php', [path.join(__dirname, 'render-website.php')], { encoding: 'utf8' });
 const euro = n => n.toLocaleString('de-DE') + ' €';
+const workingDays = n => n + (n === 1 ? ' Werktag' : ' Werktage');
+const canonicalQuotes = cases => JSON.parse(execFileSync('php', [path.join(__dirname, 'quote-website-fixture.php')], { input:JSON.stringify(cases), encoding:'utf8' }));
 const types = { '.css':'text/css', '.js':'text/javascript', '.woff2':'font/woff2', '.webp':'image/webp' };
 async function open(page, width = 1440) {
   await page.setViewportSize({ width, height: 900 });
@@ -46,7 +48,7 @@ for (const width of [360, 768, 1440]) {
     await expect(page.locator('#minus')).toBeDisabled();
     await page.locator('#plus').focus(); await page.keyboard.press('Space');
     await expect(page.locator('#weitere')).toHaveText('1');
-    await expect(page.locator('#bauzeit')).toHaveText('2 Wochen');
+    await expect(page.locator('#bauzeit')).toHaveText(workingDays(6));
     await expect(page.locator('#leiste')).toBeVisible();
     await page.locator('[data-website-cta="abschluss"]').scrollIntoViewIfNeeded();
     await expect(page.locator('#leiste')).toBeHidden();
@@ -57,16 +59,19 @@ for (const width of [360, 768, 1440]) {
 test('40 scopes: price, time and every CTA use the same configuration', async ({ page }) => {
   test.setTimeout(30000);
   await open(page);
+  const cases=[];
+  for(let seiten=1;seiten<=10;seiten++) for(const art of ['neubau','relaunch']) for(const tracking of [false,true]) cases.push({seiten,art,tracking,texte:1});
+  const quotes=canonicalQuotes(cases);let index=0;
   for (let seiten=1;seiten<=10;seiten++) {
     await page.locator('.groessen [data-seiten="1"]').click();
     for(let n=1;n<seiten;n++) await page.locator('#plus').click();
     for(const art of ['neubau','relaunch']) for(const tracking of [false,true]) {
       await page.locator(`.art [data-art="${art}"]`).click();
       await page.locator('#tracking').setChecked(tracking);
-      const price=1490+(seiten-1)*290+(tracking?890:0), weeks=(seiten<=2?2:seiten<=5?3:4)+(art==='relaunch'?1:0);
+      const result=quotes[index++], price=result.price;
       await expect(page.locator('#gesamt')).toHaveText(price.toLocaleString('de-DE')+' €');
-      await expect(page.locator('#bauzeit')).toHaveText(weeks+' Wochen');
-      await expect(page.locator('#hero-bauzeit')).toHaveText('Ihr Umfang: '+weeks+' Wochen.');
+      await expect(page.locator('#bauzeit')).toHaveText(result.days+' Werktage');
+      await expect(page.locator('#hero-bauzeit')).toHaveText('Ihre Auswahl: '+result.days+' Werktage geplant.');
       const hrefs=await page.locator('[data-website-cta]').evaluateAll(els=>els.map(el=>el.href));
       expect(new Set(hrefs).size).toBe(1);
       const url=new URL(hrefs[0]);
@@ -105,11 +110,12 @@ test('product to contact to real intake: request, CRM and mails', async ({ page 
   await open(page);
   await page.locator('.groessen [data-seiten="5"]').click();await page.locator('.art [data-art="relaunch"]').click();await page.locator('#tracking').check();
   await page.locator('#screendesign').check();await page.locator('#crm').check();
+  await page.locator('#design-layouts').selectOption('2');
   const search=new URL(await page.locator('#cta-angebot').getAttribute('href')).searchParams.toString();
   const html=execFileSync('php',[path.join(__dirname,'render-contact.php'),'website',search],{encoding:'utf8'});
   await page.setContent('<style>.is-hidden,[hidden]{display:none!important}</style>'+html);
   await expect(page.locator('[name="focus"]')).toHaveValue('website');
-  await expect(page.locator('[data-website-scope]')).toContainText('5 Seiten · Relaunch · Tracking dazu · 3.540 € netto · 4 Wochen');
+  await expect(page.locator('[data-website-scope]')).toContainText('5 Seiten · Relaunch · Tracking dazu · 3.540 € netto · mindestens '+workingDays(16));
   let response;
   await page.route('**/wp-json/nexus/v1/contact-request', async route=>{
     response=JSON.parse(execFileSync('php',[path.join(__dirname,'submit-website-fixture.php')],{input:JSON.stringify(route.request().postDataJSON()),encoding:'utf8'}));
@@ -127,12 +133,19 @@ test('product to contact to real intake: request, CRM and mails', async ({ page 
   expect(response.meta['1']._nexus_contact_website_texts).toBe(1);
   expect(response.meta['1']._nexus_contact_website_screendesign).toBe(1);
   expect(response.meta['1']._nexus_contact_website_crm).toBe(1);
+  expect(response.meta['1']._nexus_contact_website_design).toBe('neu');
+  expect(response.meta['1']._nexus_contact_website_design_layouts).toBe(2);
+  expect(response.meta['1']._nexus_contact_website_days).toBe(16);
+  expect(response.meta['1']._nexus_contact_website_preparation_days).toBe(6);
+  expect(response.meta['1']._nexus_contact_website_implementation_days).toBe(10);
+  expect(response.meta['1']._nexus_contact_website_duration_open).toBe(1);
   expect(response.mails).toHaveLength(2);
   for(const mail of response.mails) {
     expect(mail.body).toContain('3.540');
     expect(mail.body).toContain('Texte erstellen lassen');
     expect(mail.body).toContain('Screendesign und CRM-Anbindung');
     expect(mail.body).toContain('separatem Angebot');
+    expect(mail.body).toContain('CRM-Aufwand noch nicht in der Zeit enthalten');
   }
 });
 
@@ -151,15 +164,73 @@ test('expandable product: included scope, extras and honest partial pricing', as
   await expect(page.locator('#summary-screendesign')).toBeVisible();
   await expect(page.locator('#summary-crm')).toBeVisible();
   await page.locator('#texte').uncheck();
-  await expect(page.locator('#auswahl-texte')).toHaveText('Eigene Texte einpflegen');
+  await expect(page.locator('#auswahl-texte')).toHaveText('Freigegebene Texte einpflegen');
   const url = new URL(await page.locator('#cta-angebot').getAttribute('href'));
   expect(url.searchParams.get('texte')).toBe('0');
   expect(url.searchParams.get('screendesign')).toBe('1');
   expect(url.searchParams.get('crm')).toBe('1');
-  await page.locator('#crm').uncheck(); await page.locator('#screendesign').uncheck();
+  await page.locator('#crm').uncheck(); await page.locator('#design-basis').check();
   await expect(page.locator('#angebot-hinweis')).toBeHidden();
   await expect(page.locator('#preis-label')).toHaveText('Ihr Festpreis');
   expect(new URL(await page.locator('#cta-angebot').getAttribute('href')).searchParams.has('crm')).toBe(false);
+});
+
+test('working-day factors: supplied content, reusable designs, tracking and open CRM', async ({ page }) => {
+  await open(page,390);
+  await page.locator('.groessen [data-seiten="1"]').click();
+  await page.locator('#texte').uncheck();
+  await expect(page.locator('#bauzeit')).toHaveText(workingDays(3));
+  await page.locator('#design-vorhanden').check();
+  await expect(page.locator('#bauzeit')).toHaveText(workingDays(3));
+  await expect(page.locator('#preis-label')).toHaveText('Basispreis vor Vorlagenprüfung');
+  await expect(page.locator('#angebot-hinweis')).toContainText('Vorlagen');
+  expect(new URL(await page.locator('#cta-angebot').getAttribute('href')).searchParams.get('design')).toBe('vorhanden');
+  await page.locator('#tracking').check();
+  await expect(page.locator('#bauzeit')).toHaveText(workingDays(4));
+  await page.locator('#screendesign').check();
+  await expect(page.locator('#bauzeit')).toHaveText(workingDays(6));
+  await expect(page.locator('#design-layouts option')).toHaveCount(1);
+  await page.locator('#crm').check();
+  await expect(page.locator('#bauzeit')).toHaveText('Mindestens '+workingDays(6));
+  await expect(page.locator('#zeit-hinweis')).toContainText('CRM-Aufwand');
+  await expect(page.locator('#zeit-crm')).toContainText('Noch offen');
+  await page.locator('#crm').uncheck();
+  await page.locator('.groessen [data-seiten="5"]').click();
+  await expect(page.locator('#design-layouts')).toHaveValue('5');
+  await page.locator('#design-layouts').selectOption('1');
+  await expect(page.locator('#bauzeit')).toHaveText(workingDays(10));
+  await expect(page.locator('#tage-tracking')).toHaveText(workingDays(1));
+  await page.locator('.groessen [data-seiten="3"]').click();
+  await expect(page.locator('#design-layouts')).toHaveValue('1');
+  await expect(page.locator('#bauzeit')).toHaveText(workingDays(8));
+  await page.locator('#design-layouts').selectOption('3');
+  await expect(page.locator('#bauzeit')).toHaveText(workingDays(10));
+  await page.locator('.groessen [data-seiten="1"]').click();
+  await expect(page.locator('#design-layouts')).toHaveValue('1');
+  await expect(page.locator('#bauzeit')).toHaveText(workingDays(6));
+  await page.screenshot({path:test.info().outputPath('website-smart-mobile.png'),fullPage:true});
+});
+
+test('complete factor combinations agree with the PHP canon', async ({ page }) => {
+  test.setTimeout(60000);
+  await open(page);
+  const cases=[];
+  for(const texte of [0,1]) for(const design of ['basis','vorhanden','neu']) for(const crm of [0,1]) for(const tracking of [0,1]) for(const art of ['neubau','relaunch']) cases.push({seiten:3,texte,design,crm,tracking,art,design_layouts:2});
+  const quotes=canonicalQuotes(cases);
+  for(let i=0;i<cases.length;i++) {
+    const state=cases[i], expected=quotes[i];
+    await page.locator('#texte').setChecked(Boolean(state.texte));
+    await page.locator(state.design==='neu'?'#screendesign':'#design-'+state.design).check();
+    if(state.design==='neu') await page.locator('#design-layouts').selectOption('2');
+    await page.locator('#crm').setChecked(Boolean(state.crm));await page.locator('#tracking').setChecked(Boolean(state.tracking));
+    await page.locator('.art [data-art="'+state.art+'"]').click();
+    await expect(page.locator('#bauzeit')).toHaveText((state.crm?'Mindestens ':'')+expected.days+' Werktage');
+    await expect(page.locator('#gesamt')).toHaveText(euro(expected.price));
+    const url=new URL(await page.locator('#cta-angebot').getAttribute('href'));
+    const scope=execFileSync('php',[path.join(__dirname,'render-contact.php'),'website',url.searchParams.toString()],{encoding:'utf8'});
+    expect(scope).toContain(expected.days+' Werktage geplant');
+  }
+  await page.screenshot({path:test.info().outputPath('website-smart-desktop.png'),fullPage:true});
 });
 
 for (const width of [320, 390, 768, 1440]) {

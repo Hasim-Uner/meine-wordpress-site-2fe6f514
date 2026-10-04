@@ -253,13 +253,18 @@ Risiko:
 ## Anfrage-Website → Kontakt (02.10.2026)
 
 `pricing-canon.php` liefert Basis, Zusatzseite, Tracking und Bauzeit;
-`anfrage-website.js` liest die numerischen Datenattribute und übergibt Umfang
+`anfrage-website.js` liest die gemeinsame JSON-Konfiguration und übergibt Umfang
 in allen CTA-URLs. Seit 04.10.2026 gehören `texte`, `screendesign` und `crm`
 zur Auswahl. `page-kontakt.php` übernimmt `focus=website`, Seiten, Art und die
 vier booleschen Optionen; `contact-page.php` validiert und berechnet serverseitig neu.
 `crm.php` speichert Dimensionen, Optionen und Umfang; beide Mails nennen ihn.
-Screendesign und CRM verändern den bekannten Festpreis nicht: Der Umfangstext
-benennt den offenen Zusatz und den Gesamttermin nach Angebot ausdrücklich.
+`hu_website_calculator_rules()` liefert seit 04.10.2026 Preise und Tagesfaktoren
+als gemeinsame Browser-Konfiguration. `design=basis|vorhanden|neu` und
+`design_layouts` (nur neue Gestaltung, höchstens Seitenzahl) ergänzen den Vertrag.
+Altes `screendesign=1` bleibt kompatibel. `contact-page.php` berechnet Werktage,
+Vorbereitungs-/Umsetzungstage und Regelversion selbst; Browserwerte werden ignoriert.
+CRM persistiert diese Planung. Screendesign und CRM haben offene Zusatzpreise;
+CRM-Dauer ist offen und vorhandene Designs erfordern Vorlagenprüfung.
 Die Skripte der Seite senden keine Browser-Ereignisse mehr; gezählt wird
 serverseitig über `inc/inquiry-events.php` (Formular `kontakt`).
 `helpers.php` besitzt FAQ-Copy, `org-schema.php` und Template lesen denselben Satz.

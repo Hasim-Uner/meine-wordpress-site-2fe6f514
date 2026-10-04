@@ -463,15 +463,51 @@ define( 'HU_FREELANCER_WEBSITE_PAGES', 1 );
 define( 'HU_FREELANCER_WEBSITE_EXTRA_PAGE', 290 );
 define( 'HU_WEBSITE_CALCULATOR_MAX', 10 );
 
-/** Quote the approved product scope; neither price nor duration comes from a client. */
-function hu_website_quote( $pages, $kind = 'neubau', $tracking = false ) {
+/** Planning factors shared with the browser. Working days, not measured effort hours. */
+function hu_website_calculator_rules() {
+	return [
+		'version' => '2026-10-04.days.v1',
+		'max_pages' => HU_WEBSITE_CALCULATOR_MAX,
+		'prices' => [ 'base' => HU_FREELANCER_WEBSITE_MIN, 'page' => HU_FREELANCER_WEBSITE_EXTRA_PAGE, 'tracking' => (int) hu_tracking_price( 'measurement', 'setup', 'value' ) ],
+		'days' => [
+			'first_page' => 3, 'extra_page' => 1, 'qa' => 1,
+			'tracking' => 1, 'relaunch' => 2,
+			'text_first' => 1, 'text_extra' => 0.5,
+			'design_first' => 2, 'design_extra_layout' => 1,
+		],
+	];
+}
+
+/** Quote a standard scope; custom design prices and CRM duration remain open. */
+function hu_website_quote( $pages, $kind = 'neubau', $tracking = false, $options = [] ) {
 	$pages = max( 1, min( HU_WEBSITE_CALCULATOR_MAX, (int) $pages ) );
+	$rules = hu_website_calculator_rules();
+	$factors = $rules['days'];
+	$design = $options['design'] ?? ( ! empty( $options['screendesign'] ) ? 'neu' : 'basis' );
+	$design = in_array( $design, [ 'basis', 'vorhanden', 'neu' ], true ) ? $design : 'basis';
+	$layouts = 'neu' === $design ? max( 1, min( $pages, (int) ( $options['design_layouts'] ?? $pages ) ) ) : 0;
+	$components = [
+		'implementation' => $factors['first_page'] + ( $pages - 1 ) * $factors['extra_page'],
+		'texts' => ! empty( $options['texte'] ) ? (int) ceil( $factors['text_first'] + ( $pages - 1 ) * $factors['text_extra'] ) : 0,
+		'design' => 'neu' === $design ? $factors['design_first'] + ( $layouts - 1 ) * $factors['design_extra_layout'] : 0,
+		'tracking' => $tracking ? $factors['tracking'] : 0,
+		'relaunch' => 'relaunch' === $kind ? $factors['relaunch'] : 0,
+	];
+	$days = array_sum( $components );
 	return [
 		'pages' => $pages,
 		'kind' => 'relaunch' === $kind ? 'relaunch' : 'neubau',
 		'tracking' => (bool) $tracking,
-		'price' => HU_FREELANCER_WEBSITE_MIN + ( $pages - 1 ) * HU_FREELANCER_WEBSITE_EXTRA_PAGE + ( $tracking ? (int) hu_tracking_price( 'measurement', 'setup', 'value' ) : 0 ),
-		'weeks' => ( $pages <= 2 ? 2 : ( $pages <= 5 ? 3 : 4 ) ) + ( 'relaunch' === $kind ? 1 : 0 ),
+		'design' => $design, 'design_layouts' => $layouts,
+		'price' => $rules['prices']['base'] + ( $pages - 1 ) * $rules['prices']['page'] + ( $tracking ? $rules['prices']['tracking'] : 0 ),
+		'days' => $days, 'components' => $components,
+		'preparation_days' => $components['texts'] + $components['design'],
+		'implementation_days' => $components['implementation'] + $components['tracking'] + $components['relaunch'],
+		'duration_open' => ! empty( $options['crm'] ),
+		'price_review' => 'basis' !== $design || ! empty( $options['crm'] ),
+		'version' => $rules['version'],
+		// Compatibility for existing integrations; public copy uses working days.
+		'weeks' => (int) ceil( $days / 5 ),
 	];
 }
 

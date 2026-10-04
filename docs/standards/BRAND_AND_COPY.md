@@ -346,11 +346,26 @@ freigegeben: Bei Auswahl zeigt die Oberfläche den berechenbaren Festpreis
 Preis und Gesamttermin stehen im Angebot. Laufende Kosten externer Dienste werden
 vorab benannt. Die responsive Basisgestaltung gehört zum Grundprodukt.
 
-Rechner bis zehn Seiten. Basis-Bauzeit ab freigegebenen Inhalten: bis zwei Seiten
-zwei Wochen, bis fünf drei, bis zehn vier; Relaunch eine Woche zusätzlich.
-Texterstellung, Screendesign und CRM sind im Projekttermin zu berücksichtigen.
-Starttermin im Angebot, eine entscheidende Person, Rückmeldung in fünf Werktagen
-je Runde. Keine Theme-/Plugin-Lizenzkosten im Grundprodukt, zwei Korrekturrunden,
+Rechner bis zehn Seiten. Seit 04.10.2026 berechnet
+`hu_website_calculator_rules()` nachvollziehbare Planungswerte in Werktagen.
+Eine Seite mit fertigen Inhalten: drei Tage einschließlich Qualitätsprüfung;
+jede weitere Standardseite ein Tag. Tracking einmal je Projekt ein Tag,
+Bestandsaufnahme/Weiterleitungen beim Relaunch zwei Tage. Neue Texte: ein Tag
+für die erste Seite plus ein halber je weiterer, zusammen aufgerundet. Neues
+Screendesign: zwei Tage für das erste individuelle Layout, jedes weitere ein
+Tag. Wiederverwendete Layouts zählen einmal. Die UI fragt vorhandene Texte und
+Basisgestaltung/freigegebenes Design/neues Screendesign getrennt ab.
+
+Diese Faktoren sind Planungsannahmen, keine empirisch gemessenen Leistungswerte
+oder Liefergarantie. Projektzeit umfasst Erstellung und Umsetzung bis zum
+geprüften Abnahmestand; Vorbereitung und Umsetzung werden separat gezeigt.
+Kundenfreigaben, Terminverfügbarkeit und Livegang gehören nicht zur Zahl.
+CRM-Zeit ist offen: mindestens bekannte Tage, zuzüglich separat zu prüfendem
+CRM-Aufwand. Vorhandene Designvorlagen brauchen keine Erstellungsphase, aber
+eine Umfangsprüfung, bevor der angezeigte Basispreis und die Zeit bestätigt sind.
+Start- und Veröffentlichungstermin im Angebot, eine entscheidende Person,
+Rückmeldung in fünf Werktagen je Runde als zusätzliche Wartezeit.
+Keine Theme-/Plugin-Lizenzkosten im Grundprodukt, zwei Korrekturrunden,
 Dokumentation, Editor-Einweisung, 30 Tage kostenlose Fehlerbehebung. Impressum,
 Datenschutz, Danke und 404 zählen nicht als Seite. Ausgenommen: Keyword-Recherche,
 Fotos/Logo, Rechtsberatung, Shop, weitere Schnittstellen und Mehrsprachigkeit.
