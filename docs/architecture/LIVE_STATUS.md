@@ -307,32 +307,31 @@ Contract und Abnahme: `CHAT_ASSISTANT.md`.
   Guthaben, Bing-Linkdaten nicht angebunden, im Repo nur Domain-Summary:
   31 Backlinks, 25 verweisende Domains); Entscheidung offen.
 - **`/wordpress-website-erstellen-lassen/`** (`page-wordpress-website-erstellen-lassen.php`,
-  Die Anfrage-Website, Fassung 04.10.2026): Erweiterbares Grundprodukt.
-  Hero → Konfigurator → Vergleich → Beleg → Zeit → FAQ → Anfrage. Custom Code
-  ohne Pagebuilder, Gutenberg/ACF, GitHub und KI-Workflow mit Qualitätsprüfung
-  sind sichtbar. `system.css` plus `anfrage-website.css`, Vanilla-JS.
-  Grundpreis und Zusatzseite aus dem Kanon, optional Conversion-Tracking aus der
-  Messung-Stufe. Texte für jede Seite auf Wunsch inklusive. Formular,
-  Bestätigungsmail, Danke-Seite, technisches SEO sowie Impressum-/Datenschutz-Seiten
-  mit gelieferten Rechtstexten sind Standard. Screendesign und CRM sind wählbar
-  nach Angebot: Die bekannte Summe wird ausdrücklich ohne individuelle Extras
-  angezeigt. Rechner 1–10 Seiten. Tagesfaktoren aus `hu_website_calculator_rules()`:
-  erste Seite drei Werktage inklusive QA, Zusatzseite ein Tag, Tracking einmal
-  ein Tag, Relaunch zwei Tage. Texte und neue unterschiedliche Layouts haben
-  eigene Vorbereitungszeit; fertige Vorlagen keine Erstellungsphase. CRM-Dauer
-  offen, bekannte Summe als Mindestwert ohne CRM. Vorlagenprüfung bei geliefertem
-  Design vor Bestätigung von Basispreis und Zeit. Planungswerte bis zum Abnahmestand,
-  Kundenfreigaben/Starttermin/Livegang separat. Keine Liefergarantie aus der Zahl.
-  Zusammenfassung im Konfigurator und bearbeitbare Sticky-Auswahl. Lieferumfang
-  in sechs nativen, initial geschlossenen Details-Gruppen. FAQ und Schema lesen
-  denselben Getter. CTA-URLs übergeben Seiten, Art, `texte=0|1`, optional
-  `tracking=1`, `screendesign=1`, `crm=1`, ergänzt um Designstatus und Layoutzahl.
-  Serverseitig validiert und erhalten in Formular, beiden Mails und CRM;
-  Preis, Tageskalkulation und Regelversion werden serverseitig neu berechnet.
-  Keine Cookies, Browser-Speicherung oder Browser-Events durch den Konfigurator.
-  Ohne JS bleiben Standardangebot und Leistungsdetails zugänglich. Reduced Motion
-  wird respektiert. Globaler Kopf/Fuß, Query-Owner und Preisformel unverändert.
-  Auswertung nach acht Wochen oder 300 Aufrufen, siehe `docs/experimente/anfrage-website.md`.
+  Die Anfrage-Website, Produktdurchgang 04.10.2026): Kompakter Desktop-Konfigurator
+  mit Seiten/Texte, Design/Extras und vollständiger Preis-/Zeitübersicht nebeneinander.
+  Tablet/Mobil stapeln, Sticky-Auswahl editierbar; auf Desktop im Konfigurator
+  verborgen, um die sichtbare Zusammenfassung nicht zu verdoppeln.
+  Grundpreis/Zusatzseite unverändert, Texte auf Wunsch und technische SEO inklusive.
+  Formular mit gespeicherter Anfrage, Bestätigungsmail und Danke-Seite sowie
+  Rechtstext-Seiten Standard. Custom Code statt Pagebuilder, Gutenberg/ACF,
+  GitHub, KI-Workflow mit Prüfung. Einmalpreis, kein Website-Abo/Pflichtwartung,
+  keine Pflichtlizenzen im Grundprodukt; Hosting und externe Dienste separat.
+  Feste Erweiterungen aus dem Preiskanon: individuelles Screendesign je Layout,
+  Standard-Tracking und CRM (ein Formular → bestehendes HubSpot/Bitrix24).
+  Daten-Dashboard nach Angebot; bekannte Summe und Zeit ausdrücklich ohne Dashboard.
+  Produktionsstaffel aus dem Kanon: 1–5 Standardseiten → 2 Tage mit QA, 6–10 → 3.
+  Neue Texte und Layouts eigene Erstellungsphase, Tracking/CRM je Projekt,
+  Relaunch-Zusatz; halbe Tage erst nach Gesamtsumme aufrunden. Planungswerte,
+  Kundenfreigaben/Start/Livegang separat. Fertige Designs/CRM vor Auftrag prüfen.
+  Sechs native geschlossene Liefergruppen, vier geschlossene Erweiterungsdetails.
+  FAQ und Schema derselbe Getter. CTA-URL → Kontakt → REST → CRM → beide Mails;
+  Optionen um `dashboard` kompatibel erweitert. Preis, Designpreis, halbe
+  Vorbereitungstage, Produktionstage und Regelversion serverseitig berechnet.
+  Kein Dashboard-Plugin/Analytics-Setup in diesem Auftrag, keine neue Messung,
+  Cookies oder Browser-Speicherung. No-JS zeigt gültiges Standardangebot;
+  Tastatur und Reduced Motion bleiben erhalten. Globaler Kopf/Fuß und Query-Owner
+  unverändert. Auswertung nach acht Wochen oder 300 Aufrufen, siehe
+  `docs/experimente/anfrage-website.md`.
 - **`/ga4-tracking-setup/`** (`page-ga4.php`, virtuelle Cluster-Route):
   Das Tracking-Angebot. Zeigt alle vier Stufen der Tracking-Leiter aus
   `hu_tracking_product_ladder()` als Karten `#stufe-1` bis `#stufe-4` (Raster

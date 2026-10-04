@@ -339,35 +339,54 @@ und On-Page sowie das Erstellen der Impressum- und Datenschutz-Seiten mit
 Einbindung gelieferter Rechtstexte sind inklusive. Keine Rechtsberatung oder
 Erstellung der Rechtstexte als Zusage.
 
-Individuelles Screendesign (UX/UI-Konzept vor Umsetzung) und CRM-Anbindung sind
-wählbare Erweiterungen nach separatem Angebot. Dafür ist kein Zusatzpreis
-freigegeben: Bei Auswahl zeigt die Oberfläche den berechenbaren Festpreis
-**ohne diese Extras** und benennt den offenen Zusatz ausdrücklich. Vollständiger
-Preis und Gesamttermin stehen im Angebot. Laufende Kosten externer Dienste werden
-vorab benannt. Die responsive Basisgestaltung gehört zum Grundprodukt.
+Seit dem Produktdurchgang vom 04.10.2026 sind individuelles Screendesign,
+Conversion-Tracking und Standard-CRM feste, vollständig eingerechnete Extras.
+Screendesign: erstes unterschiedliches Layout und jedes weitere nach Kanon;
+Desktop und Mobil bilden ein Layout, Wiederverwendung wird einmal berechnet.
+Eine Gestaltungsrichtung in Figma und zwei gebündelte Korrekturrunden sind
+enthalten. Neue Marke/Logo, weitere Richtungen oder komplexe Interaktionen separat.
+Die responsive Basisgestaltung bleibt inklusive; fertige Designs sparen die
+Erstellungsphase und benötigen eine Umfangsprüfung vor Beauftragung.
 
-Rechner bis zehn Seiten. Seit 04.10.2026 berechnet
-`hu_website_calculator_rules()` nachvollziehbare Planungswerte in Werktagen.
-Eine Seite mit fertigen Inhalten: drei Tage einschließlich Qualitätsprüfung;
-jede weitere Standardseite ein Tag. Tracking einmal je Projekt ein Tag,
-Bestandsaufnahme/Weiterleitungen beim Relaunch zwei Tage. Neue Texte: ein Tag
-für die erste Seite plus ein halber je weiterer, zusammen aufgerundet. Neues
-Screendesign: zwei Tage für das erste individuelle Layout, jedes weitere ein
-Tag. Wiederverwendete Layouts zählen einmal. Die UI fragt vorhandene Texte und
-Basisgestaltung/freigegebenes Design/neues Screendesign getrennt ab.
+Standard-CRM: ein Formular an bestehendes HubSpot oder Bitrix24, höchstens zehn
+Felder und ein Kontakt- oder Lead-Objekt. Feldzuordnung, Dublettenregel,
+Fehlerbehandlung, Tests und Dokumentation. Preis und Planungszeit aus dem Kanon,
+Voraussetzungen vor Auftrag prüfen. Andere CRMs, Salesforce, weitere Formulare,
+Objekte, Migration und Automationen separat. CRM-Lizenzen sind nicht enthalten.
+Conversion-Tracking: GA4/GTM/Consent Mode und eine Google-Ads-Conversion für die
+Standard-Anfrage; Server-Side/Meta/Offline und weitere Ziele separat.
+Ein gegebenenfalls benötigter Consent-Dienst wird vorab mit Kosten benannt.
 
-Diese Faktoren sind Planungsannahmen, keine empirisch gemessenen Leistungswerte
-oder Liefergarantie. Projektzeit umfasst Erstellung und Umsetzung bis zum
-geprüften Abnahmestand; Vorbereitung und Umsetzung werden separat gezeigt.
-Kundenfreigaben, Terminverfügbarkeit und Livegang gehören nicht zur Zahl.
-CRM-Zeit ist offen: mindestens bekannte Tage, zuzüglich separat zu prüfendem
-CRM-Aufwand. Vorhandene Designvorlagen brauchen keine Erstellungsphase, aber
-eine Umfangsprüfung, bevor der angezeigte Basispreis und die Zeit bestätigt sind.
-Start- und Veröffentlichungstermin im Angebot, eine entscheidende Person,
-Rückmeldung in fünf Werktagen je Runde als zusätzliche Wartezeit.
-Keine Theme-/Plugin-Lizenzkosten im Grundprodukt, zwei Korrekturrunden,
-Dokumentation, Editor-Einweisung, 30 Tage kostenlose Fehlerbehebung. Impressum,
-Datenschutz, Danke und 404 zählen nicht als Seite. Ausgenommen: Keyword-Recherche,
-Fotos/Logo, Rechtsberatung, Shop, weitere Schnittstellen und Mehrsprachigkeit.
-Domain/Hosting direkt beim Anbieter. Landingpage, Übernahme-Check und Monatskontingente
-bleiben im Preiskanon unverändert. Auswahl wird bis in Anfrage, Mails und CRM erhalten.
+Optionales Daten-Dashboard nach Angebot, keine pauschale Inklusivzusage:
+Website-, Klick-, Formular- und Marketingdaten je vereinbartem Umfang. Bei Auswahl
+stehen Preis und Zeit ausdrücklich **ohne Dashboard**, als bekannter Anteil.
+Die vollständige Kalkulation erfolgt vor Beauftragung. Kein neues Dashboard-
+Plugin und keine neue Messung auf Hasims Website durch diesen Konfigurator.
+Formularstrecke und gespeicherte Anfragen gehören zum Grundprodukt; ein
+funktionierendes Formular ist noch kein Conversion-Tracking.
+
+Rechner bis zehn Seiten. Preise, Produktionsstaffel und Tagesfaktoren liegen
+in `hu_website_calculator_rules()`. Bis fünf Standardseiten zwei Tage
+Umsetzung inklusive Prüfung, ab sechs bis zehn drei. Tracking einmal ein Tag,
+Standard-CRM einmal drei, Relaunch zwei. Neue Texte: eins plus ein halber je
+Zusatzseite, weiterhin preislich inklusive. Screendesign: erstes Layout zwei,
+jedes weitere unterschiedliche Layout ein halber Tag. Bruchteile erst nach
+Addition aller Phasen auf volle Gesamt-Werktage runden. Diese Werte sind
+Planungsannahmen, keine empirisch gemessenen Leistungswerte oder Liefergarantie.
+Projektzeit bis zum geprüften Abnahmestand; Vorbereitung und Umsetzung separat.
+Kundenfreigaben, Verfügbarkeit, Starttermin und Livegang kommen separat dazu.
+Start nach vereinbartem Umfang, Vertrag, Briefing, Bildern, Rechtstexten und
+Zugängen; gelieferte Texte/Designs müssen vollständig und freigegeben sein.
+Eine entscheidende Person, Rückmeldung in fünf Werktagen je Runde.
+
+Einmalpreis, kein Website-Abo, keine Pflichtwartung und keine Pflichtlizenzen
+im Grundprodukt. Keine pauschale Aussage, alle Projekte seien dauerhaft kostenlos.
+Gutenberg/ACF machen Inhalte pflegbar; keine implizite ACF-Pro-Lizenz im Grundpreis.
+Domain/Hosting direkt beim Anbieter, externe Dienste/Lizenzen vorab benennen.
+Zwei Korrekturrunden, Dokumentation, Editor-Einweisung und 30 Tage kostenlose
+Fehlerbehebung. Impressum, Datenschutz, Danke und 404 zählen nicht als Seite.
+Rechtstexte werden geliefert; ihre Erstellung/Prüfung ist nicht zugesagt.
+Keine unbelegte Behauptung über fehlende Leistungen bei anderen Anbietern und
+kein unbelegter Rabatt gegenüber einem angeblichen Marktdurchschnitt.
+Landingpage, Übernahme-Check und Monatskontingente bleiben unverändert.
+Auswahl und serverseitige Kalkulation werden in Anfrage, Mails und CRM erhalten.

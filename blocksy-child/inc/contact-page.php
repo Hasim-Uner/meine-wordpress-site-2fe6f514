@@ -756,7 +756,7 @@ function nexus_get_website_request_scope( $payload ) {
 	$pages = $payload['seiten'];
 	$kind = $payload['art'] ?? 'neubau';
 	$options = [];
-	foreach ( [ 'tracking', 'texte', 'screendesign', 'crm' ] as $key ) {
+	foreach ( [ 'tracking', 'texte', 'screendesign', 'crm', 'dashboard' ] as $key ) {
 		$value = $payload[ $key ] ?? '0';
 		if ( ! in_array( $value, [ '0', '1', 0, 1, false, true ], true ) ) {
 			return new WP_Error( 'invalid_website_scope', 'Bitte gültige Website-Optionen wählen.' );
@@ -786,6 +786,7 @@ function nexus_get_website_request_scope( $payload ) {
 		'website_days' => $quote['days'], 'website_preparation_days' => $quote['preparation_days'],
 		'website_implementation_days' => $quote['implementation_days'], 'website_duration_open' => (int) $quote['duration_open'],
 		'website_calc_version' => $quote['version'],
+		'website_design_price' => $quote['design_price'],
 	];
 }
 
@@ -795,20 +796,16 @@ function nexus_get_website_scope_summary( $payload ) {
 	$summary = sprintf( '%1$d %2$s · %3$s · Tracking %4$s · %5$s netto · %6$s%7$d Werktage geplant bis zum Abnahmestand, ohne Kundenfreigabezeiten',
 		$payload['seiten'], 1 === (int) $payload['seiten'] ? 'Seite' : 'Seiten',
 		'relaunch' === $payload['art'] ? 'Relaunch' : 'Neubau', empty( $payload['tracking'] ) ? 'ohne' : 'dazu',
-		hu_format_eur( $payload['website_price'] ), empty( $payload['crm'] ) ? '' : 'mindestens ', $payload['website_days'] ?? ( ( $payload['website_weeks'] ?? 0 ) * 5 ) );
+		hu_format_eur( $payload['website_price'] ), empty( $payload['dashboard'] ) ? '' : 'mindestens ', $payload['website_days'] ?? ( ( $payload['website_weeks'] ?? 0 ) * 5 ) );
 	$summary .= empty( $payload['texte'] ) ? ' · Freigegebene Texte vorhanden' : ' · Texte erstellen lassen (inklusive)';
 	if ( 'vorhanden' === ( $payload['design'] ?? '' ) ) { $summary .= ' · Freigegebenes Design umsetzen; Basispreis und Zeit nach Vorlagenprüfung bestätigen'; }
 	if ( ! empty( $payload['screendesign'] ) ) {
 		$layouts = $payload['design_layouts'] ?? $payload['seiten'];
-		$summary .= sprintf( ' · Screendesign: %d %s erstellen', $layouts, 1 === (int) $layouts ? 'Layout' : 'Layouts' );
+		$summary .= sprintf( ' · Screendesign: %d %s erstellen (%s im Preis enthalten)', $layouts, 1 === (int) $layouts ? 'Layout' : 'Layouts', hu_format_eur( $payload['website_design_price'] ?? ( HU_WEBSITE_DESIGN_FIRST + ( $layouts - 1 ) * HU_WEBSITE_DESIGN_EXTRA ) ) );
 	}
-	$extras = [];
-	if ( ! empty( $payload['screendesign'] ) ) { $extras[] = 'Screendesign'; }
-	if ( ! empty( $payload['crm'] ) ) { $extras[] = 'CRM-Anbindung'; }
-	if ( $extras ) {
-		$summary .= ' · Zuzüglich ' . implode( ' und ', $extras ) . ' nach separatem Angebot; vollständiger Gesamtpreis und Termin im Angebot';
-	}
-	if ( ! empty( $payload['crm'] ) ) { $summary .= ' · CRM-Aufwand noch nicht in der Zeit enthalten'; }
+	if ( ! empty( $payload['crm'] ) ) { $summary .= ' · CRM-Anbindung Standard (' . hu_format_eur( HU_WEBSITE_CRM_STANDARD ) . ' im Preis enthalten): ein Formular, bestehendes HubSpot oder Bitrix24, bis zehn Felder, ein Kontakt- oder Lead-Objekt; nach Systemprüfung bestätigen'; }
+	if ( ! empty( $payload['dashboard'] ) ) { $summary .= ' · Zuzüglich Daten-Dashboard nach Angebot; Dashboard-Aufwand noch nicht in Preis und Zeit enthalten'; }
+	$summary .= ' · Einmalpreis; verbindlicher Umfang, vollständiger Preis und Termin vor Beauftragung';
 	return $summary;
 }
 

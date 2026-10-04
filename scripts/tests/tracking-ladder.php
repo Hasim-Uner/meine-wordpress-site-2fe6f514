@@ -54,21 +54,26 @@ check( HU_WHITELABEL_LANDINGPAGE_MIN <= (int) round( HU_LANDINGPAGE_PRICE * 0.75
 check( str_contains( hu_freelancer_website_scope_display(), hu_freelancer_website_extra_page_price( true ) ), 'website scope phrase names the extra page price' );
 
 $ready = hu_website_quote( 1 );
-check( 3 === $ready['days'] && 0 === $ready['preparation_days'], 'one prepared page takes three planned working days, including QA' );
-check( 4 === hu_website_quote( 1, 'neubau', true )['days'], 'standard tracking adds one project day' );
-check( 6 === hu_website_quote( 1, 'neubau', true, [ 'design' => 'neu', 'design_layouts' => 1 ] )['days'], 'one page plus tracking and a new screen design takes six planned days' );
-check( 3 === hu_website_quote( 1, 'neubau', false, [ 'design' => 'vorhanden' ] )['days'], 'approved supplied design does not add design creation time' );
-check( hu_website_quote( 1, 'neubau', false, [ 'design' => 'vorhanden' ] )['price_review'], 'supplied designs require scope and price review' );
-check( 7 === hu_website_quote( 3, 'neubau', false, [ 'texte' => 1 ] )['days'], 'three pages with new texts include two preparation days' );
-$shared = hu_website_quote( 5, 'neubau', false, [ 'design' => 'neu', 'design_layouts' => 1 ] );
-$distinct = hu_website_quote( 5, 'neubau', false, [ 'design' => 'neu', 'design_layouts' => 5 ] );
-check( $shared['days'] < $distinct['days'] && $shared['price'] === $distinct['price'] && $distinct['price_review'], 'reused layouts save design time while design price stays open' );
+check( 2 === $ready['days'] && 0 === $ready['preparation_days'], 'prepared scope includes implementation and QA in two days' );
+check( 2 === hu_website_quote( 5 )['days'] && 3 === hu_website_quote( 6 )['days'] && 3 === hu_website_quote( 10 )['days'], 'implementation tiers change at the sixth page' );
+check( 3 === hu_website_quote( 1, 'neubau', true )['days'], 'tracking adds one project day' );
+check( 5 === hu_website_quote( 1, 'neubau', true, [ 'design' => 'neu', 'design_layouts' => 1 ] )['days'], 'one custom layout and tracking add their distinct phases' );
+check( 4 === hu_website_quote( 3, 'neubau', false, [ 'texte' => 1 ] )['days'], 'three pages with included new texts have four production days' );
+check( 2 === hu_website_quote( 1, 'neubau', false, [ 'design' => 'vorhanden' ] )['days'] && hu_website_quote( 1, 'neubau', false, [ 'design' => 'vorhanden' ] )['price_review'], 'supplied designs avoid a new design phase but require preflight' );
+$shared = hu_website_quote( 4, 'neubau', false, [ 'design' => 'neu', 'design_layouts' => 2 ] );
+check( 3300 === $shared['price'] && 940 === $shared['design_price'] && 5 === $shared['days'], 'four pages using two custom layouts pay once per layout' );
+$rounded = hu_website_quote( 2, 'neubau', false, [ 'texte' => 1, 'design' => 'neu', 'design_layouts' => 2 ] );
+check( 1.5 === $rounded['components']['texts'] && 2.5 === $rounded['components']['design'] && 6 === $rounded['days'], 'half-day phases are summed before rounding, not rounded independently' );
+$all = hu_website_quote( 3, 'neubau', true, [ 'crm' => 1, 'design' => 'neu', 'design_layouts' => 3 ] );
+check( 5140 === $all['price'] && 9 === $all['days'] && ! $all['duration_open'], 'all standardized extras form a complete price and duration' );
 foreach ( range( 1, HU_WEBSITE_CALCULATOR_MAX ) as $pages ) {
 	$plain = hu_website_quote( $pages );
 	$tracked = hu_website_quote( $pages, 'neubau', true );
-	check( 1 === $tracked['days'] - $plain['days'], "tracking setup is not multiplied by $pages pages" );
+	check( 1 === $tracked['days'] - $plain['days'], "tracking setup is project-based at $pages pages" );
 	$crm = hu_website_quote( $pages, 'neubau', false, [ 'crm' => 1 ] );
-	check( $crm['duration_open'] && $crm['price_review'] && $plain['days'] === $crm['days'], "unknown CRM duration is excluded and flagged at $pages pages" );
+	check( 990 === $crm['price'] - $plain['price'] && 3 === $crm['days'] - $plain['days'] && ! $crm['duration_open'] && $crm['price_review'], "CRM has one fixed contribution and requires preflight at $pages pages" );
+	$dashboard = hu_website_quote( $pages, 'neubau', false, [ 'dashboard' => 1 ] );
+	check( $dashboard['duration_open'] && $dashboard['price_review'] && $plain['price'] === $dashboard['price'] && $plain['days'] === $dashboard['days'], "dashboard remains an explicitly unpriced extension at $pages pages" );
 }
 
 echo "OK tracking-ladder\n";
