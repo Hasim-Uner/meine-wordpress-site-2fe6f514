@@ -2,7 +2,7 @@
 /**
  * Template Name: WordPress-Website erstellen lassen
  * Description: Die Anfrage-Website: Festpreis, Umfangsrechner und Bauzeit.
- * Copy/reihenfolge: freigegebener Prototyp anfrage-website.html (02.10.2026).
+ * Produktkonfigurator: Grundprodukt plus freigegebene Erweiterungen (04.10.2026).
  * Preise, FAQ und SEO bleiben in ihren zentralen Modulen.
  * @package Blocksy_Child
  */
@@ -16,7 +16,7 @@ add_action( 'wp_enqueue_scripts', static function () {
     hu_enqueue_js( 'hu-anfrage-website', 'anfrage-website.js', [] );
 }, 90 );
 $quote = hu_website_quote( 3 );
-$contact_url = add_query_arg( [ 'seiten' => 3, 'art' => 'neubau' ], hu_get_contact_intake_url( 'project', 'website' ) );
+$contact_url = add_query_arg( [ 'seiten' => 3, 'art' => 'neubau', 'texte' => 1 ], hu_get_contact_intake_url( 'project', 'website' ) );
 $psi_url = 'https://pagespeed.web.dev/analysis?url=' . rawurlencode( home_url( '/wordpress-website-erstellen-lassen/' ) );
 $eur = static function ( $value ) { return str_replace( ' €', "\u{00A0}€", hu_format_eur( $value ) ); };
 get_header();
@@ -28,15 +28,16 @@ get_header();
     <div class="wrap">
       <div>
         <div class="produkt"><span class="marke-produkt">Die Anfrage-Website</span><span class="mono">WordPress · Neubau oder Relaunch</span></div>
-        <h1>WordPress-Website erstellen lassen. Gebaut für Anfragen, zum Festpreis.</h1>
-        <p class="lead"><strong>Sie bekommen eine Website, die zu einer Anfrage führt.</strong> Das Angebot steht im ersten Bildschirm, die Formular-Mails kommen an, und Domain, Hosting und Code laufen von Anfang an auf Ihren Namen.</p>
+        <h1>WordPress-Website erstellen lassen.<br><span class="hero-akzent">Alles Wesentliche drin. Offen für mehr.</span></h1>
+        <p class="lead"><strong>Eine vollständige Website. Alles Wichtige schon dabei.</strong> Wählen Sie Ihre Seiten und ergänzen Sie, was Sie brauchen. Texte auf Wunsch, technisches SEO und die Formularstrecke bis zur Danke-Seite sind inklusive.</p>
         <div class="aktion">
-          <a class="btn" href="<?php echo esc_url( $contact_url ); ?>" data-website-cta="hero" data-track-action="cta_website_offer_hero_project" data-track-category="lead_gen" data-track-section="website_offer_hero">Website-Projekt anfragen <span aria-hidden="true">→</span></a>
-          <a class="leise" href="#unterschied" data-track-action="website_offer_to_unterschied" data-track-category="navigation">Was anders ist</a>
+          <a class="btn" href="#angebot" data-track-action="website_offer_hero_configure" data-track-category="navigation" data-track-section="website_offer_hero">Website zusammenstellen <span aria-hidden="true">→</span></a>
+          <a class="leise" href="#beleg" data-track-action="website_offer_to_beleg" data-track-category="navigation">Arbeit ansehen</a>
         </div>
         <p class="mikro">Antwort <?php echo esc_html( hu_response_promise( 'window' ) ); ?>, mit Rückfragen oder einem Festpreis-Angebot.</p>
       </div>
-      <aside class="formel" aria-label="Preis">
+      <aside class="formel tafel" aria-label="Grundprodukt und Einstiegspreis">
+        <div class="aw-produkt-kopf"><span class="mono">Die Anfrage-Website</span><span class="aw-status">Erweiterbar</span></div>
         <p class="mono">Festpreis ab</p>
         <p class="betrag"><?php echo esc_html( $eur( HU_FREELANCER_WEBSITE_MIN ) ); ?><small>netto</small></p>
         <p class="regel">Website mit einer Seite. Jede weitere Seite <?php echo esc_html( $eur( HU_FREELANCER_WEBSITE_EXTRA_PAGE ) ); ?>. Bauzeit ab zwei Wochen. <span id="hero-bauzeit">Ihr Umfang: 3 Wochen.</span></p>
@@ -44,15 +45,144 @@ get_header();
           <li><span>3 Seiten</span><em>3 Wochen</em><b><?php echo esc_html( $eur( $quote['price'] ) ); ?></b></li>
           <li><span>5 Seiten</span><em>3 Wochen</em><b><?php echo esc_html( $eur( hu_website_quote( 5 )['price'] ) ); ?></b></li>
         </ul>
-        <p class="mikro">Immer dabei: technisches SEO, Texte einpflegen, Impressum und Datenschutz, Übergabe auf Ihren Namen.</p>
-        <a class="zum leise" href="#angebot" data-track-action="website_offer_to_angebot" data-track-category="navigation">Endpreis selbst ausrechnen ↓</a>
+        <ul class="aw-basis-kurz"><li>Texte auf Wunsch · technisches SEO</li><li>Formular · Bestätigungsmail · Danke-Seite</li><li>Impressum · Datenschutz · Übergabe</li></ul>
+        <a class="zum leise" href="#angebot" data-track-action="website_offer_to_angebot" data-track-category="navigation">Seiten &amp; Extras auswählen ↓</a>
       </aside>
+    </div>
+  </section>
+
+  <div class="wrap aw-qualitaet" aria-label="So wird Ihre Website gebaut">
+    <div><span class="mono">01 · Entwicklung</span><strong>Custom Code. Kein Pagebuilder.</strong><p>Schlank gebaut, ohne Baukasten-Abhängigkeit.</p></div>
+    <div><span class="mono">02 · Inhalte</span><strong>Gutenberg &amp; ACF</strong><p>Inhalte selbst pflegen, Struktur sauber behalten.</p></div>
+    <div><span class="mono">03 · Qualität</span><strong>GitHub &amp; KI-Workflow</strong><p>Versioniert, geprüft und mit Freigabe veröffentlicht.</p></div>
+  </div>
+
+  <section class="abschnitt aw-konfigurator" id="angebot" aria-labelledby="h-angebot">
+    <div class="wrap">
+      <div class="aw-section-kopf"><p class="mono">01 · Ihr Produkt</p><span class="aw-status">Grundprodukt + Erweiterungen</span></div>
+      <h2 id="h-angebot">Stellen Sie Ihre Website zusammen.</h2>
+      <p class="lead">Wählen Sie den Umfang. Alles Inklusive bleibt dabei. Extras ergänzen Sie mit einem Klick.</p>
+      <noscript><p class="mikro">Beispiel: drei Seiten, Neubau, Texte inklusive, ohne Extras. Für eine andere Auswahl nennen Sie Ihren gewünschten Umfang in der Anfrage.</p></noscript>
+      <div class="aw-config-grid">
+        <div class="aw-config-controls">
+          <fieldset class="aw-feld">
+            <legend><span class="aw-schritt">01</span> Wie groß soll die Website werden?</legend>
+            <div class="groessen" data-website-controls hidden role="group" aria-label="Seitenanzahl wählen">
+              <button type="button" data-seiten="1" aria-pressed="false"><span>1 Seite</span><small>Kompakter Einstieg</small><b><?php echo esc_html( $eur( HU_FREELANCER_WEBSITE_MIN ) ); ?></b></button>
+              <button type="button" data-seiten="3" aria-pressed="true"><span>3 Seiten</span><small>Startseite + 2 Unterseiten</small><b><?php echo esc_html( $eur( $quote['price'] ) ); ?></b></button>
+              <button type="button" data-seiten="5" aria-pressed="false"><span>5 Seiten</span><small>Mehr Raum für Ihr Angebot</small><b><?php echo esc_html( $eur( hu_website_quote( 5 )['price'] ) ); ?></b></button>
+            </div>
+            <div class="aw-seitenzeile"><p>Oder individuell <small>Jede weitere Seite <?php echo esc_html( $eur( HU_FREELANCER_WEBSITE_EXTRA_PAGE ) ); ?></small></p><div class="stepper" data-website-controls hidden><button type="button" id="minus" aria-label="Eine Seite weniger">−</button><output id="seiten" aria-live="polite" aria-label="Gewählte Seitenanzahl">3</output><button type="button" id="plus" aria-label="Eine Seite mehr">+</button></div></div>
+            <p class="aw-hinweis">Impressum, Datenschutz, Danke- und 404-Seite kommen ohne Aufpreis dazu.</p>
+            <div class="art" data-website-controls hidden role="group" aria-label="Projektart"><button type="button" data-art="neubau" aria-pressed="true">Neue Website</button><button type="button" data-art="relaunch" aria-pressed="false">Bestehende Website erneuern</button></div>
+          </fieldset>
+          <fieldset class="aw-feld aw-inhalte">
+            <legend><span class="aw-schritt">02</span> Wer schreibt die Texte?</legend>
+            <label class="aw-option aw-option--text" data-website-controls hidden><input type="checkbox" id="texte" checked><span class="aw-option-inhalt"><strong>Texte erstellen lassen</strong><small>Für jede gewählte Seite, auf Basis Ihrer Angaben. Sie geben die Texte frei.</small></span><span class="aw-option-preis">Inklusive</span></label>
+            <p class="aw-hinweis" id="text-hinweis">Sie können auch eigene Texte liefern. Der Preis bleibt gleich.</p>
+          </fieldset>
+          <fieldset class="aw-feld aw-erweiterungen">
+            <legend><span class="aw-schritt">03</span> Was soll dazukommen?</legend>
+            <div class="aw-extras" data-website-controls hidden>
+              <label class="aw-option"><input type="checkbox" id="tracking"><span class="aw-option-inhalt"><strong>Conversion-Tracking</strong><small>GA4, Tag Manager, Consent Mode und Google Ads. Mit Abnahmeprotokoll und Einwilligungslösung.</small></span><span class="aw-option-preis">+ <?php echo esc_html( $eur( (int) hu_tracking_price( 'measurement', 'setup', 'value' ) ) ); ?></span></label>
+              <label class="aw-option"><input type="checkbox" id="screendesign"><span class="aw-option-inhalt"><strong>Individuelles Screendesign</strong><small>Eigenes UX/UI-Konzept und abgestimmte Ansichten vor der Umsetzung.</small></span><span class="aw-option-preis">Nach Angebot</span></label>
+              <label class="aw-option"><input type="checkbox" id="crm"><span class="aw-option-inhalt"><strong>CRM-Anbindung</strong><small>Formularanfragen direkt in Ihr CRM übergeben. Felder und Ablauf gemeinsam festlegen.</small></span><span class="aw-option-preis">Nach Angebot</span></label>
+            </div>
+            <p class="aw-hinweis">Screendesign und CRM kalkuliere ich passend zu Ihrem Umfang. Den vollständigen Preis erhalten Sie vor der Beauftragung.</p>
+          </fieldset>
+        </div>
+        <aside class="aw-zusammenfassung tafel" aria-labelledby="h-auswahl">
+          <div class="aw-summary-kopf"><span class="mono">Ihre Konfiguration</span><span class="aw-status">Live berechnet</span></div>
+          <h3 id="h-auswahl">Die Anfrage-Website</h3>
+          <p class="aw-summary-sub" id="auswahl-art">3 Seiten · Neubau</p>
+          <dl class="aw-preispositionen">
+            <div><dt>Website mit erster Seite</dt><dd><?php echo esc_html( $eur( HU_FREELANCER_WEBSITE_MIN ) ); ?></dd></div>
+            <div><dt><span id="weitere">2</span> weitere Seiten</dt><dd id="betrag-weitere"><?php echo esc_html( $eur( 2 * HU_FREELANCER_WEBSITE_EXTRA_PAGE ) ); ?></dd></div>
+            <div><dt id="auswahl-texte">Texte erstellen lassen</dt><dd>Inklusive</dd></div>
+            <div id="summary-tracking" hidden><dt>Conversion-Tracking</dt><dd><?php echo esc_html( $eur( (int) hu_tracking_price( 'measurement', 'setup', 'value' ) ) ); ?></dd></div>
+            <div id="summary-screendesign" hidden><dt>Screendesign</dt><dd>Nach Angebot</dd></div>
+            <div id="summary-crm" hidden><dt>CRM-Anbindung</dt><dd>Nach Angebot</dd></div>
+          </dl>
+          <div class="summe">
+            <p class="mono" id="preis-label">Ihr Festpreis</p>
+            <p class="gesamt"><span id="gesamt"><?php echo esc_html( $eur( $quote['price'] ) ); ?></span><small>netto</small></p>
+            <p class="rechnung" id="rechnung"><?php echo esc_html( hu_freelancer_website_price() . ' + 2 × ' . hu_freelancer_website_extra_page_price() ); ?></p>
+            <p id="angebot-hinweis" class="aw-angebot-hinweis" hidden></p>
+            <p class="bauzeit">Basis-Bauzeit <b id="bauzeit">3 Wochen</b> · <a href="#zeit" data-track-action="website_offer_to_zeit" data-track-category="navigation">Details</a></p>
+            <p class="aw-hinweis">Ab freigegebenen Inhalten. Bei Screendesign oder CRM steht der Gesamttermin im Angebot.</p>
+            <a class="btn" id="cta-angebot" href="<?php echo esc_url( $contact_url ); ?>" data-website-cta="angebot" data-track-action="cta_website_offer_scope_project" data-track-category="lead_gen" data-track-section="website_offer_angebot">Mit dieser Auswahl anfragen <span aria-hidden="true">→</span></a>
+            <p class="aw-hinweis">Unverbindlich. Ihre Auswahl wird in die Anfrage übernommen.</p>
+          </div>
+          <ul class="aw-summary-inkl"><li>Technisches SEO &amp; mobile Umsetzung</li><li>Formular, Bestätigungsmail &amp; Danke-Seite</li><li>Impressum- &amp; Datenschutz-Seite</li></ul>
+          <p class="aw-live-status" id="konfiguration-status" role="status" aria-live="polite" aria-atomic="true"></p>
+        </aside>
+      </div>
+      <div class="inklusive">
+        <div class="inklusive-kopf"><div><p class="mono">Die Standardausstattung</p><h3>Das steckt schon drin.</h3></div><span class="aw-status">Ohne Aufpreis</span></div>
+        <p class="mikro">Die wichtigsten Leistungen sind immer enthalten. Die Details öffnen Sie bei Bedarf.</p>
+        <div class="gruppen"><details class="gruppe"><summary><span>Inhalte</span><span class="aw-inkl-label">Inklusive</span></summary><ul>
+                <li>Gliederung jeder Seite: Angebot, Preis, Beleg</li>
+                <li>Texte für jede gewählte Seite auf Wunsch erstellt, auf Basis Ihrer Angaben</li>
+                <li>Ihre vorhandenen Texte und Bilder eingepflegt</li>
+                <li>Feinschliff der Texte</li>
+                <li>Bilder zugeschnitten und als <?php echo nexus_glossary_link( 'webp', 'WebP' ); ?> verkleinert</li>
+              </ul></details>
+<details class="gruppe"><summary><span>Technisches SEO und On-Page</span><span class="aw-inkl-label">Inklusive</span></summary><ul>
+                <li>Pro Seite ein Suchbegriff, auf den Title, Überschrift und Gliederung ausgerichtet sind</li>
+                <li>Title und Meta-Beschreibung je Seite</li>
+                <li>Saubere URLs und eine logische Überschriften-Struktur</li>
+                <li>Interne Links zwischen den Seiten</li>
+                <li>Alternativtexte für alle Bilder</li>
+                <li><?php echo nexus_glossary_link( 'canonical-url', 'Canonical' ); ?>, <?php echo nexus_glossary_link( 'xml-sitemap', 'XML-Sitemap' ); ?> und robots.txt</li>
+                <li><?php echo nexus_glossary_link( 'strukturierte-daten', 'Strukturierte Daten' ); ?>: Unternehmen, Brotkrumen, FAQ</li>
+                <li>Core Web Vitals: feste Bildmaße, kein Springen beim Laden</li>
+                <li>Google Search Console eingerichtet, Sie als Inhaber</li>
+                <li>Vorschau für WhatsApp, LinkedIn und Co.</li>
+              </ul></details>
+<details class="gruppe"><summary><span>Technik</span><span class="aw-inkl-label">Inklusive</span></summary><ul>
+                <li>WordPress mit Custom Code, ohne Pagebuilder</li>
+                <li>Inhalte im Gutenberg-Editor und mit ACF-Feldern pflegen</li>
+                <li>WordPress auf Ihrem Hosting, auch dem bestehenden</li>
+                <li>Keine Lizenzkosten für Themes oder Plugins</li>
+                <li>Domain verbunden, HTTPS</li>
+                <li>Für Handy und Desktop gebaut</li>
+                <li>Grundlagen der Barrierefreiheit: Kontraste, Tastatur, Alternativtexte</li>
+                <li>Favicon</li>
+                <li>Backup vor dem Livegang</li>
+              </ul></details>
+<details class="gruppe"><summary><span>Anfrage</span><span class="aw-inkl-label">Inklusive</span></summary><ul>
+                <li>Kontaktformular, Versand über SPF und DKIM abgesichert</li>
+                <li>E-Mail-Bestätigung an die anfragende Person</li>
+                <li>Spam-Schutz ohne Captcha</li>
+                <li>Danke-Seite mit nächstem Schritt</li>
+                <li>404-Seite, die zurück zum Angebot führt</li>
+              </ul></details>
+<details class="gruppe"><summary><span>Recht</span><span class="aw-inkl-label">Inklusive</span></summary><ul>
+                <li>Impressum und Datenschutz angelegt, Ihre Rechtstexte eingebunden</li>
+                <li>Ohne Tracking cookiefrei gebaut, Schriften lokal</li>
+              </ul></details>
+<details class="gruppe"><summary><span>Abnahme und Übergabe</span><span class="aw-inkl-label">Inklusive</span></summary><ul>
+                <li>GitHub-Versionierung und KI-gestützter Workflow mit Qualitätsprüfung</li>
+                <li>Testumgebung, live erst nach Ihrer Freigabe</li>
+                <li>Zwei Korrekturrunden</li>
+                <li>Abnahmeprotokoll: Testanfrage, Ladezeit, Weiterleitungen geprüft und dokumentiert</li>
+                <li id="pos-weiterleitung" class="aus">Weiterleitungsplan für jede alte URL</li>
+                <li>Domain, Hosting, Konten und Code auf Ihren Namen</li>
+                <li>Dokumentation und Einweisung in den Editor</li>
+                <li>30 Tage nach dem Livegang: Fehler behebe ich kostenlos</li>
+              </ul></details></div>
+      </div>
+      <div class="klartext">
+        <div><h3>Was als Seite zählt</h3><p>Jede Seite mit eigenem Inhalt, etwa Startseite, Leistung oder Über uns. Impressum, Datenschutz, Danke- und 404-Seite sind inklusive und zählen nicht mit.</p></div>
+        <div><h3>Was separat kalkuliert wird</h3><p>Individuelles Screendesign, CRM-Anbindung, Keyword-Recherche, Fotos und Logo, Shop, weitere Schnittstellen und mehrere Sprachen. Mehr als zehn Seiten erhalten ein eigenes Angebot.</p></div>
+        <div><h3>Was laufend kostet</h3><p>Domain und Hosting zahlen Sie direkt beim Anbieter. Bei externen CRM- oder Zusatzdiensten können laufende Kosten entstehen; sie stehen vorab im Angebot. Weiterentwicklung buchen Sie nach Bedarf.</p></div>
+      </div>
     </div>
   </section>
 
   <section class="dunkel tafel" id="unterschied" aria-labelledby="h-unterschied">
     <div class="wrap raster">
-      <p class="nr"><b>01</b><span>Unterschied</span></p>
+      <p class="nr"><b>02</b><span>Unterschied</span></p>
       <div class="haupt breit">
         <h2 id="h-unterschied">Dieselbe Website, zweimal gebaut. Sieben Stellen entscheiden, ob Anfragen kommen.</h2>
         <p class="lead">Hier sehen Sie, wie kleine Websites oft verkauft werden. Schalten Sie um und vergleichen Sie Stelle für Stelle.</p>
@@ -116,115 +246,6 @@ get_header();
     </div>
   </section>
 
-  <section class="abschnitt" id="angebot" aria-labelledby="h-angebot">
-    <div class="wrap raster">
-      <p class="nr"><b>02</b><span>Angebot</span></p>
-      <div class="haupt breit">
-        <h2 id="h-angebot">Was Sie bekommen und was es kostet. Rechnen Sie selbst.</h2>
-        <p class="lead">Das ist der Lieferumfang der Anfrage-Website, Position für Position. Stellen Sie Größe und Projektart ein, die Summe ist der Festpreis für diesen Umfang.</p>
-
-        <div class="groessen" data-website-controls hidden role="group" aria-label="Größe wählen">
-          <button type="button" data-seiten="1" aria-pressed="false">Eine Seite <b><?php echo esc_html( $eur( HU_FREELANCER_WEBSITE_MIN ) ); ?></b></button>
-          <button type="button" data-seiten="3" aria-pressed="true">Drei Seiten <b><?php echo esc_html( $eur( $quote['price'] ) ); ?></b></button>
-          <button type="button" data-seiten="5" aria-pressed="false">Fünf Seiten <b><?php echo esc_html( $eur( hu_website_quote( 5 )['price'] ) ); ?></b></button>
-        </div>
-        <div class="regler" data-website-controls hidden>
-          <div class="art" role="group" aria-label="Projektart">
-            <button type="button" data-art="neubau" aria-pressed="true">Neubau</button>
-            <button type="button" data-art="relaunch" aria-pressed="false">Relaunch</button>
-          </div>
-        </div>
-
-        <noscript><p class="mikro">Beispiel: drei Seiten, Neubau, ohne Tracking. Endpreis = Grundpreis + weitere Seiten × Seitenpreis + optionales Tracking. Schreiben Sie Ihren gewünschten Umfang in die Anfrage.</p></noscript>
-        <div class="dokument">
-          <div class="dok-kopf"><strong>Angebot vorab</strong><span class="mono">Anfrage-Website · Festpreis · netto</span></div>
-          <ol class="posten">
-            <li class="pos"><span class="p-nr">01</span><h3>Website mit erster Seite<small>Struktur, Umsetzung, technisches SEO, Ihre Inhalte eingepflegt</small></h3><span class="menge">1</span><span class="betrag-zeile"><?php echo esc_html( $eur( HU_FREELANCER_WEBSITE_MIN ) ); ?></span></li>
-            <li class="pos"><span class="p-nr">02</span><h3>Weitere Seiten<small>gleicher Aufbau, gleiche Sorgfalt</small></h3>
-              <span class="menge"><span class="stepper" data-website-controls hidden><button type="button" id="minus" aria-label="Eine Seite weniger">−</button><output id="weitere" aria-live="polite">2</output><button type="button" id="plus" aria-label="Eine Seite mehr">+</button></span></span>
-              <span class="betrag-zeile" id="betrag-weitere"><?php echo esc_html( $eur( 2 * HU_FREELANCER_WEBSITE_EXTRA_PAGE ) ); ?></span></li>
-            <li class="pos"><span class="p-nr">03</span><h3>Conversion-Tracking, optional<small>GA4, Tag Manager, Consent Mode und Google Ads, mit Abnahmeprotokoll. Mit Tracking braucht die Website eine Einwilligung der Besucher.</small></h3>
-              <span class="menge"><label class="wahl" data-website-controls hidden for="tracking"><input type="checkbox" id="tracking"> dazu</label></span>
-              <span class="betrag-zeile inkl" id="betrag-tracking"><?php echo esc_html( $eur( (int) hu_tracking_price( 'measurement', 'setup', 'value' ) ) ); ?></span></li>
-          </ol>
-          <div class="inklusive">
-            <div class="inklusive-kopf"><h3>In jedem Projekt enthalten</h3><span class="mono"><span id="anzahl">34</span> Punkte ohne Aufpreis</span></div>
-            <div class="gruppen">
-              <div class="gruppe"><h4>Inhalte</h4><ul>
-                <li>Gliederung jeder Seite: Angebot, Preis, Beleg</li>
-                <li>Ihre Texte und Bilder eingepflegt</li>
-                <li>Feinschliff der Texte</li>
-                <li>Bilder zugeschnitten und als <?php echo nexus_glossary_link( 'webp', 'WebP' ); ?> verkleinert</li>
-              </ul></div>
-              <div class="gruppe"><h4>Technisches SEO und On-Page</h4><ul>
-                <li>Pro Seite ein Suchbegriff, auf den Title, Überschrift und Gliederung ausgerichtet sind</li>
-                <li>Title und Meta-Beschreibung je Seite</li>
-                <li>Saubere URLs und eine logische Überschriften-Struktur</li>
-                <li>Interne Links zwischen den Seiten</li>
-                <li>Alternativtexte für alle Bilder</li>
-                <li><?php echo nexus_glossary_link( 'canonical-url', 'Canonical' ); ?>, <?php echo nexus_glossary_link( 'xml-sitemap', 'XML-Sitemap' ); ?> und robots.txt</li>
-                <li><?php echo nexus_glossary_link( 'strukturierte-daten', 'Strukturierte Daten' ); ?>: Unternehmen, Brotkrumen, FAQ</li>
-                <li>Core Web Vitals: feste Bildmaße, kein Springen beim Laden</li>
-                <li>Google Search Console eingerichtet, Sie als Inhaber</li>
-                <li>Vorschau für WhatsApp, LinkedIn und Co.</li>
-              </ul></div>
-              <div class="gruppe"><h4>Technik</h4><ul>
-                <li>WordPress auf Ihrem Hosting, auch dem bestehenden</li>
-                <li>Keine Lizenzkosten für Themes oder Plugins</li>
-                <li>Domain verbunden, HTTPS</li>
-                <li>Für Handy und Desktop gebaut</li>
-                <li>Grundlagen der Barrierefreiheit: Kontraste, Tastatur, Alternativtexte</li>
-                <li>Favicon</li>
-                <li>Backup vor dem Livegang</li>
-              </ul></div>
-              <div class="gruppe"><h4>Anfrage</h4><ul>
-                <li>Kontaktformular, Versand über SPF und DKIM abgesichert</li>
-                <li>Spam-Schutz ohne Captcha</li>
-                <li>Danke-Seite mit nächstem Schritt</li>
-                <li>404-Seite, die zurück zum Angebot führt</li>
-              </ul></div>
-              <div class="gruppe"><h4>Recht</h4><ul>
-                <li>Impressum und Datenschutz angelegt, Ihre Rechtstexte eingebunden</li>
-                <li>Cookiefrei gebaut, Schriften lokal</li>
-              </ul></div>
-              <div class="gruppe"><h4>Abnahme und Übergabe</h4><ul>
-                <li>Testumgebung, live erst nach Ihrer Freigabe</li>
-                <li>Zwei Korrekturrunden</li>
-                <li>Abnahmeprotokoll: Testanfrage, Ladezeit, Weiterleitungen geprüft und dokumentiert</li>
-                <li id="pos-weiterleitung" class="aus">Weiterleitungsplan für jede alte URL</li>
-                <li>Domain, Hosting, Konten und Code auf Ihren Namen</li>
-                <li>Dokumentation und Einweisung in den Editor</li>
-                <li>30 Tage nach dem Livegang: Fehler behebe ich kostenlos</li>
-              </ul></div>
-            </div>
-          </div>
-          <div class="summe">
-            <div>
-              <p class="mono">Festpreis für diesen Umfang</p>
-              <p class="gesamt" aria-live="polite"><span id="gesamt"><?php echo esc_html( $eur( $quote['price'] ) ); ?></span><small>netto</small></p>
-              <p class="rechnung" id="rechnung"><?php echo esc_html( hu_freelancer_website_price() . ' + 2 × ' . hu_freelancer_website_extra_page_price() ); ?></p>
-              <p class="bauzeit">Bauzeit <b id="bauzeit">3 Wochen</b> ab vollständigen Inhalten · <a href="#zeit" data-track-action="website_offer_to_zeit" data-track-category="navigation">wie gerechnet</a></p>
-            </div>
-            <a class="btn" id="cta-angebot" href="<?php echo esc_url( $contact_url ); ?>" data-website-cta="angebot" data-track-action="cta_website_offer_scope_project" data-track-category="lead_gen" data-track-section="website_offer_angebot">Mit diesem Umfang anfragen <span aria-hidden="true">→</span></a>
-          </div>
-        </div>
-        <div class="klartext">
-          <div><h3>Was als Seite zählt</h3><p>Jede Unterseite mit eigenem Inhalt, etwa Startseite, Leistung oder Über uns. Impressum, Datenschutz, Danke- und 404-Seite zählen nicht mit.</p></div>
-          <div><h3>Was nicht enthalten ist</h3><p>Texte schreiben, Keyword-Recherche, Fotos und Logo, Rechtsberatung, Shop, Schnittstellen, mehrere Sprachen. Mehr als zehn Seiten kalkuliere ich einzeln.</p></div>
-          <div><h3>Was danach laufend kostet</h3><p>Domain und Hosting zahlen Sie direkt beim Anbieter, auf Ihren Namen. Keine Lizenzen, kein Wartungsvertrag. Updates übernehmen Sie selbst oder über ein Kontingent.</p></div>
-        </div>
-
-        <div class="nach-dok">
-          <p class="stempel"><span class="mono">Grundsatz</span>Nach der Übergabe können Sie mich ersetzen. Das ist Absicht.</p>
-          <div class="einwand">
-            <h3>Und wenn Sie als Einzelperson ausfallen?</h3>
-            <p>Dann sage ich es Ihnen am selben Tag. Weil alles auf Ihren Namen läuft, kann jemand anderes ohne Umweg übernehmen.</p>
-          </div>
-        </div>
-      </div>
-    </div>
-  </section>
-
   <section class="dunkel tafel" id="beleg" aria-labelledby="h-beleg">
     <div class="wrap raster">
       <p class="nr"><b>03</b><span>Beleg</span></p>
@@ -256,11 +277,11 @@ get_header();
       <p class="nr"><b>04</b><span>Zeit</span></p>
       <div class="haupt breit">
         <h2 id="h-zeit">Wie lange es dauert, und wovon das abhängt.</h2>
-        <p class="lead">Die Bauzeit läuft ab dem Tag, an dem Texte, Bilder und Rechtstexte vollständig bei mir sind. Bis dahin bestimmen Sie das Tempo.</p>
+        <p class="lead">Die Basis-Bauzeit startet mit freigegebenen Texten, Bildern und Rechtstexten. Schreiben wir Ihre Texte, liefern Sie dafür zuerst die Angaben zu Ihrem Angebot. Screendesign und CRM können den Gesamttermin erweitern; dieser steht im Angebot.</p>
         <div class="zeit">
           <div class="zeit-kopf"><span class="mono" id="zeit-umfang">Ihr Umfang: 3 Seiten · Neubau</span><strong id="zeit-gesamt">3 Wochen Bauzeit</strong></div>
           <div class="zeit-reihe">
-            <div class="vorlauf"><span class="mono">Vorlauf · bei Ihnen</span><p>Angebot freigeben, Gliederung erhalten, Inhalte liefern.</p></div>
+            <div class="vorlauf"><span class="mono">Vorlauf · bei Ihnen</span><p>Angebot freigeben, Angaben und Bilder liefern, Texte abstimmen.</p></div>
             <div>
               <p class="uhr">Ab hier läuft die Bauzeit</p>
               <div class="bahn" id="bahn">
@@ -271,7 +292,7 @@ get_header();
           </div>
         </div>
         <ol class="bedingungen">
-          <li><h3>Inhalte vollständig</h3><p>Die Bauzeit startet, wenn alles da ist. Kommen die Inhalte in Teilen, zählt der Tag des letzten Teils.</p></li>
+          <li><h3>Inhalte vollständig</h3><p>Die Bauzeit startet mit vollständig freigegebenen Inhalten. Eigene Texte liefern Sie; gewünschte Texte schreibe ich auf Basis Ihrer Angaben und Sie geben sie frei.</p></li>
           <li><h3>Rückmeldung in fünf Werktagen</h3><p>Je Korrekturrunde. Brauchen Sie länger, verschiebt sich der Livegang um dieselbe Zeit.</p></li>
           <li><h3>Eine Person entscheidet</h3><p>Eine Ansprechperson, die freigibt. Abstimmungsschleifen im Team kosten die meiste Zeit.</p></li>
           <li><h3>Starttermin im Angebot</h3><p>Wann ich beginnen kann, steht mit Umfang und Preis im schriftlichen Angebot.</p></li>
@@ -298,7 +319,7 @@ get_header();
     <div class="wrap">
       <h2 id="h-anfrage">Neubau oder Relaunch: Was soll die Website können?</h2>
       <div>
-        <p>Schreiben Sie kurz, welche Seiten Sie brauchen und bis wann die Website stehen soll. Sie bekommen Rückfragen oder ein Festpreis-Angebot.</p>
+        <p>Ihre Auswahl steht schon fest. Ergänzen Sie, was Ihr Unternehmen anbietet und wann die Website stehen soll. Sie erhalten ein Angebot mit vollständigem Umfang, Preis und Termin.</p>
         <div class="aktion" style="margin-top:var(--s3)">
           <a class="btn" href="<?php echo esc_url( $contact_url ); ?>" data-website-cta="abschluss" data-track-action="cta_website_offer_close_project" data-track-category="lead_gen" data-track-section="website_offer_abschluss">Website-Projekt anfragen <span aria-hidden="true">→</span></a>
         </div>
@@ -310,7 +331,7 @@ get_header();
 
 
 <div class="leiste-unten tafel" hidden inert id="leiste" aria-hidden="true">
-  <p><span class="kurz-weg">Ihr Umfang: </span><b id="leiste-text"><?php echo esc_html( '3 Seiten · ' . hu_format_eur( $quote['price'] ) . ' netto · 3 Wochen' ); ?></b></p>
+  <a class="aw-auswahl-edit" href="#angebot" data-track-action="website_offer_edit_scope" data-track-category="navigation">Auswahl ändern ↑</a><p><b id="leiste-text"><?php echo esc_html( '3 Seiten · Neubau · Texte inklusive' ); ?></b><span id="leiste-preis"><?php echo esc_html( hu_format_eur( $quote['price'] ) . ' netto' ); ?></span></p>
   <a class="btn" id="cta-leiste" tabindex="-1" href="<?php echo esc_url( $contact_url ); ?>" data-website-cta="leiste" data-track-action="cta_website_offer_sticky_project" data-track-category="lead_gen" data-track-section="website_offer_leiste">Anfragen <span aria-hidden="true">→</span></a>
 </div>
 

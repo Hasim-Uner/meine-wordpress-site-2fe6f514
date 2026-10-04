@@ -755,24 +755,39 @@ function nexus_get_website_request_scope( $payload ) {
 	}
 	$pages = $payload['seiten'];
 	$kind = $payload['art'] ?? 'neubau';
-	$tracking = $payload['tracking'] ?? '0';
+	$options = [];
+	foreach ( [ 'tracking', 'texte', 'screendesign', 'crm' ] as $key ) {
+		$value = $payload[ $key ] ?? '0';
+		if ( ! in_array( $value, [ '0', '1', 0, 1, false, true ], true ) ) {
+			return new WP_Error( 'invalid_website_scope', 'Bitte gültige Website-Optionen wählen.' );
+		}
+		$options[ $key ] = (bool) $value ? 1 : 0;
+	}
 	if ( ! is_scalar( $pages ) || ! preg_match( '/^[1-9][0-9]*$/D', (string) $pages ) || (int) $pages > HU_WEBSITE_CALCULATOR_MAX ) {
 		return new WP_Error( 'invalid_website_scope', 'Bitte zwischen einer und zehn Seiten wählen.' );
 	}
-	if ( ! in_array( $kind, [ 'neubau', 'relaunch' ], true ) || ! in_array( $tracking, [ '0', '1', 0, 1, false, true ], true ) ) {
+	if ( ! in_array( $kind, [ 'neubau', 'relaunch' ], true ) ) {
 		return new WP_Error( 'invalid_website_scope', 'Bitte einen gültigen Website-Umfang wählen.' );
 	}
-	$quote = hu_website_quote( (int) $pages, $kind, (bool) $tracking );
-	return [ 'seiten' => $quote['pages'], 'art' => $quote['kind'], 'tracking' => $quote['tracking'] ? 1 : 0, 'website_price' => $quote['price'], 'website_weeks' => $quote['weeks'] ];
+	$quote = hu_website_quote( (int) $pages, $kind, (bool) $options['tracking'] );
+	return $options + [ 'seiten' => $quote['pages'], 'art' => $quote['kind'], 'website_price' => $quote['price'], 'website_weeks' => $quote['weeks'] ];
 }
 
 /** Public scope summary, shared by form, mail and CRM. */
 function nexus_get_website_scope_summary( $payload ) {
 	if ( empty( $payload['seiten'] ) ) { return ''; }
-	return sprintf( '%1$d %2$s · %3$s · Tracking %4$s · %5$s netto · %6$d Wochen ab vollständigen Inhalten',
+	$summary = sprintf( '%1$d %2$s · %3$s · Tracking %4$s · %5$s netto · %6$d Wochen Basis-Bauzeit ab freigegebenen Inhalten',
 		$payload['seiten'], 1 === (int) $payload['seiten'] ? 'Seite' : 'Seiten',
 		'relaunch' === $payload['art'] ? 'Relaunch' : 'Neubau', empty( $payload['tracking'] ) ? 'ohne' : 'dazu',
 		hu_format_eur( $payload['website_price'] ), $payload['website_weeks'] );
+	$summary .= empty( $payload['texte'] ) ? ' · Eigene Texte einpflegen' : ' · Texte erstellen lassen (inklusive)';
+	$extras = [];
+	if ( ! empty( $payload['screendesign'] ) ) { $extras[] = 'Screendesign'; }
+	if ( ! empty( $payload['crm'] ) ) { $extras[] = 'CRM-Anbindung'; }
+	if ( $extras ) {
+		$summary .= ' · Zuzüglich ' . implode( ' und ', $extras ) . ' nach separatem Angebot; vollständiger Gesamtpreis und Termin im Angebot';
+	}
+	return $summary;
 }
 
 /**

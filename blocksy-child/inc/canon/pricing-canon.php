@@ -449,7 +449,8 @@ function hu_tracking_ladder_display( $from_stage = 1 ) {
 }
 
 // ── WordPress-Freelancer-Nebenpfad ───────────────────────────────
-// Die Anfrage-Website: erste Seite mit Kontaktformular enthalten; jede weitere
+// Die Anfrage-Website: erste Seite, Texte auf Wunsch, technisches SEO und
+// Formularstrecke enthalten. Screendesign und CRM werden separat angeboten; jede weitere
 // Seite kostet HU_FREELANCER_WEBSITE_EXTRA_PAGE.
 // Deshalb steht der Betrag oeffentlich als "ab": mehr Seiten, hoeherer Preis.
 // Shop, Schnittstellen und Relaunches mit vielen Seiten werden separat
@@ -476,7 +477,7 @@ function hu_website_quote( $pages, $kind = 'neubau', $tracking = false ) {
 
 // Landingpage: eine Seite, ein Angebot, ein Ziel. Festpreis inklusive Text,
 // Anfrageformular und Herkunftsmessung. Der höhere Preis gegenüber einer
-// Anfrage-Website mit Kundentexten erklärt sich durch Text und Messung.
+// Anfrage-Website erklärt sich durch den spezialisierten Angebotsumfang und die Messung.
 define( 'HU_LANDINGPAGE_PRICE', 1990 );
 
 // Übernahme-Check: bezahlte Diagnose, bevor eine fremde WordPress-Installation
