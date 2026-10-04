@@ -123,8 +123,8 @@ for (const width of [390, 1440]) {
     const sectionOrder = await page.locator('#beleg, #unterschied').evaluateAll(els => els.map(el => el.id));
     expect(sectionOrder).toEqual(['beleg', 'unterschied']);
     await expect(page.locator('#durch')).toHaveAttribute('data-modus', 'anfragen');
-    await expect(page.locator('.direkt a').first()).toHaveAttribute('href', /^mailto:/);
-    await expect(page.locator('.direkt a').last()).toHaveAttribute('href', /^tel:/);
+    await expect(page.locator('#anfrage .direkt a').first()).toHaveAttribute('href', /^mailto:/);
+    await expect(page.locator('#anfrage .direkt a').last()).toHaveAttribute('href', /^tel:/);
   });
 }
 test('no JavaScript: both comparison rows and diagrams, valid static offer', async ({ browser }) => {

@@ -44,6 +44,27 @@ Live-Deploy nicht. Neue Darstellung über CI prüfen und nach Merge live ansehen
   Reduced Motion, keine Browser-Speicherung oder zusätzliche Analytics.
 - Bestehender REST-/CRM-/Mailvertrag und serverseitige Neuberechnung.
 
+## Gegenprobe der nachgereichten Gemini-Analyse
+
+Gemini nennt den SEO-Seitentitel der Startseite als angebliche H1 und bewertet
+die kostenlosen Ersteinschätzungs-CTAs sowie das Herkunftsprotokoll dieser
+Startseite. Das ist eine andere Route. Ihr H1 lautet bereits ergebnisorientiert;
+der angebliche Rollen-/Intent-Bruch ist so nicht belegt. Öffentlicher Abruf und
+`front-page.php` stimmen darin überein. Die Produktseite besitzt ihren eigenen
+Keyword-H1 und führt zur konfigurierten Projektanfrage.
+
+| Vorschlag | Bewertung für dieses Produkt |
+|---|---|
+| Nutzen im Hero, eine Hauptaktion | Übernehmen: konkrete Bauaufgabe und Konfigurator als Hauptaktion. Kein Messversprechen im Grundpreis; Tracking ist optional. |
+| Case früh als Proof | Übernehmen mit Scope-Grenze: tatsächliche Arbeit früher zeigen, PV-Zahlen auf gesamte Maßnahme begrenzen. |
+| Übergabe ohne Bindung | Beibehalten und konkret erklären: Code, Zugänge und Dokumentation, keine Pflichtwartung. |
+| Herkunftsprotokoll entfernen | Trifft die Startseite; deren Verständlichkeit wäre separat zu prüfen. Kein solches Protokoll im Produkt-Hero. |
+| Kostenlose Ersteinschätzung als weitere Sektion | Nicht hier ergänzen: schafft einen konkurrierenden Einstieg neben konkreter Produktwahl. Auf der Startseite ist es bereits ein eigener, anders motivierter Weg. |
+| „Kostet Conversions“ / allgemeine Wettbewerberprozente | Ohne Nutzungsdaten bzw. Marktstudie eine unbelegte Behauptung. Keine solche Zahl oder Kausalität übernehmen. |
+
+Grundlage: [Startseite](https://hasimuener.de/), öffentlicher Abruf am
+04.10.2026, und ihr Template; keine Änderung an der Startseite in diesem PR.
+
 ## SEO-Grenzen und Quellen
 
 SEO meint hier auffindbare und verständliche Inhalte sowie saubere technische
@@ -76,6 +97,9 @@ Keine Reindexierung oder WordPress-Adminänderung für diesen PR ausgeführt.
 >    Canon-Inhalte. Lade dann nur Route, CSS/JS, Preise/Zeit, FAQ, CTA-Routing,
 >    Query-Owner und berührte Intake-Verträge. Bestimme die geprüfte Revision.
 >    Trenne Repo, tatsächlich ausgelieferte Seite und Such-/Cache-Snapshot.
+>    Prüfe zuerst Route, tatsächlichen H1 und SEO-Title getrennt. Wenn eine
+>    Fremdanalyse eine andere Route oder den Title als H1 bewertet, markiere
+>    diesen Quellenfehler vor jeder Empfehlung.
 >    Keine erfundenen Messdaten, Marktpreise, Kundensätze oder Garantien.
 > 2. **Käuferpass ohne Vorwissen:** Kann jemand in einem kurzen Scan erkennen:
 >    Ist das für meinen Betrieb? Was erhalte ich? Wie wähle ich den Umfang?
