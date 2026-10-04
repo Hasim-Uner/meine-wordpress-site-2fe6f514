@@ -254,9 +254,12 @@ Risiko:
 
 `pricing-canon.php` liefert Basis, Zusatzseite, Tracking und Bauzeit;
 `anfrage-website.js` liest die numerischen Datenattribute und übergibt Umfang
-in allen CTA-URLs. `page-kontakt.php` übernimmt `focus=website`, Seiten, Art,
-Tracking; `contact-page.php` validiert und berechnet serverseitig neu.
-`crm.php` speichert die Dimensionen und Umfang, beide Mails nennen ihn.
+in allen CTA-URLs. Seit 04.10.2026 gehören `texte`, `screendesign` und `crm`
+zur Auswahl. `page-kontakt.php` übernimmt `focus=website`, Seiten, Art und die
+vier booleschen Optionen; `contact-page.php` validiert und berechnet serverseitig neu.
+`crm.php` speichert Dimensionen, Optionen und Umfang; beide Mails nennen ihn.
+Screendesign und CRM verändern den bekannten Festpreis nicht: Der Umfangstext
+benennt den offenen Zusatz und den Gesamttermin nach Angebot ausdrücklich.
 Die Skripte der Seite senden keine Browser-Ereignisse mehr; gezählt wird
 serverseitig über `inc/inquiry-events.php` (Formular `kontakt`).
 `helpers.php` besitzt FAQ-Copy, `org-schema.php` und Template lesen denselben Satz.

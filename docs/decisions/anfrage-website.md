@@ -5,8 +5,13 @@ Diese Entscheidung ersetzt den Website-Teil von `preise-website-landingpage.md`.
 
 Produkt statt offener Dienstleistung: erste Seite 1.490 € netto, jede weitere
 290 €, Tracking optional 890 €. Bis zehn Seiten selbst rechnen; darüber Angebot.
-Die Landingpage bleibt mit Text und Herkunftsmessung bei 1.990 €: der günstigere
-Website-Einstieg enthält Kundentexte, keinen geschriebenen Text und kein Tracking.
+Ergänzung 04.10.2026: Jede gewählte Seite enthält Texte auf Wunsch, auf Basis
+der Kundenangaben. Technisches SEO, Formular, Bestätigungsmail, Danke-Seite sowie
+Impressum-/Datenschutz-Seiten mit gelieferten Rechtstexten sind Standard.
+Screendesign und CRM sind wählbar nach separatem Angebot; kein Preis erfunden.
+Die Landingpage behält ihren eigenen spezialisierten Angebotsumfang und Preis.
 Bauzeiten und Lieferzusagen sind ausdrücklich freigegeben, siehe Markenkanon.
-Prototyp `anfrage-website.html` ist für Copy, Reihenfolge und Verhalten maßgeblich;
-der Kopf ist global. Auswertung nach acht Wochen oder 300 Aufrufen.
+Die Produktoberfläche vom 04.10.2026 ersetzt die Angebotsdarstellung des Prototyps:
+Hero → Konfigurator mit Zusammenfassung und aufklappbarem Lieferumfang → Vergleich
+→ Beleg → Zeit → FAQ → Anfrage. Custom Code, Gutenberg/ACF, GitHub und KI-Workflow
+mit Prüfung sind sichtbare Qualitätsmerkmale. Der Kopf bleibt global. Auswertung nach acht Wochen oder 300 Aufrufen.

@@ -30,6 +30,12 @@ for (const width of [360, 768, 1440]) {
       const r=el.getBoundingClientRect(); return r.width>0 && r.right>innerWidth+1;
     }).map(el=>el.className));
     expect(overflow).toEqual([]);
+    const priceFits = await page.locator('.formel .betrag small').evaluate(el => el.getBoundingClientRect().right <= el.closest('.formel').getBoundingClientRect().right);
+    expect(priceFits).toBe(true);
+    await page.locator('.bild img').scrollIntoViewIfNeeded();
+    await expect.poll(() => page.locator('.bild img').evaluate(el => el.complete && el.naturalWidth > 0)).toBe(true);
+    await page.evaluate(() => window.scrollTo({ top: 0, behavior: 'instant' }));
+    await page.screenshot({ path: test.info().outputPath(`website-${width}.png`), fullPage: true });
     await expect(page.locator('#leiste')).toBeHidden();
     await page.locator('#m-anfragen').focus(); await page.keyboard.press('Space');
     await expect(page.locator('#m-anfragen')).toHaveAttribute('aria-pressed','true');
@@ -64,12 +70,12 @@ test('40 scopes: price, time and every CTA use the same configuration', async ({
       const hrefs=await page.locator('[data-website-cta]').evaluateAll(els=>els.map(el=>el.href));
       expect(new Set(hrefs).size).toBe(1);
       const url=new URL(hrefs[0]);
-      expect(Object.fromEntries(url.searchParams)).toEqual({ type:'project',focus:'website',seiten:String(seiten),art,...(tracking?{tracking:'1'}:{}) });
+      expect(Object.fromEntries(url.searchParams)).toEqual({ type:'project',focus:'website',seiten:String(seiten),art,texte:'1',...(tracking?{tracking:'1'}:{}) });
     }
   }
   await expect(page.locator('#plus')).toBeDisabled();
-  const points=await page.locator('.anfrage-website .gruppe li').count();
-  await expect(page.locator('#anzahl')).toHaveText(String(points));
+  await expect(page.locator('.anfrage-website .gruppe')).toHaveCount(6);
+  expect(await page.locator('.gruppe').evaluateAll(els=>els.every(el=>!el.open))).toBe(true);
 });
 test('no JavaScript: both comparison rows and diagrams, valid static offer', async ({ browser }) => {
   const context=await browser.newContext({ javaScriptEnabled:false });const page=await context.newPage();
@@ -78,6 +84,11 @@ test('no JavaScript: both comparison rows and diagrams, valid static offer', asy
   await expect(page.locator('.stellen .k')).toHaveCount(7);await expect(page.locator('.stellen .a')).toHaveCount(7);
   expect(await page.locator('.stellen p').evaluateAll(els=>els.every(el=>getComputedStyle(el).display!=='none'))).toBe(true);
   await expect(page.locator('.schalter')).toBeHidden();await expect(page.locator('#leiste')).toBeHidden();
+  const overflow = await page.locator('body *').evaluateAll(els => els.filter(el => {
+    const r = el.getBoundingClientRect(); return r.width > 0 && r.right > innerWidth + 1;
+  }).map(el => ({ tag: el.tagName, class: el.className, right: el.getBoundingClientRect().right })));
+  await page.screenshot({ path: test.info().outputPath('website-no-js.png'), fullPage: true });
+  expect(overflow).toEqual([]);
   expect(await page.evaluate(()=>document.documentElement.scrollWidth<=innerWidth)).toBe(true);
   expect(new URL(await page.locator('#cta-angebot').getAttribute('href')).searchParams.get('seiten')).toBe('3');
   await context.close();
@@ -93,6 +104,7 @@ test('reduced motion: no transitions or load-bar animation, no browser storage',
 test('product to contact to real intake: request, CRM and mails', async ({ page }) => {
   await open(page);
   await page.locator('.groessen [data-seiten="5"]').click();await page.locator('.art [data-art="relaunch"]').click();await page.locator('#tracking').check();
+  await page.locator('#screendesign').check();await page.locator('#crm').check();
   const search=new URL(await page.locator('#cta-angebot').getAttribute('href')).searchParams.toString();
   const html=execFileSync('php',[path.join(__dirname,'render-contact.php'),'website',search],{encoding:'utf8'});
   await page.setContent('<style>.is-hidden,[hidden]{display:none!important}</style>'+html);
@@ -112,6 +124,53 @@ test('product to contact to real intake: request, CRM and mails', async ({ page 
   await expect(page.locator('[data-contact-feedback]')).toHaveClass(/is-success/);
   expect(response.status).toBe(201);
   expect(response.meta['1']._nexus_contact_website_pages).toBe(5);
+  expect(response.meta['1']._nexus_contact_website_texts).toBe(1);
+  expect(response.meta['1']._nexus_contact_website_screendesign).toBe(1);
+  expect(response.meta['1']._nexus_contact_website_crm).toBe(1);
   expect(response.mails).toHaveLength(2);
-  for(const mail of response.mails) expect(mail.body).toContain('3.540');
+  for(const mail of response.mails) {
+    expect(mail.body).toContain('3.540');
+    expect(mail.body).toContain('Texte erstellen lassen');
+    expect(mail.body).toContain('Screendesign und CRM-Anbindung');
+    expect(mail.body).toContain('separatem Angebot');
+  }
 });
+
+
+test('expandable product: included scope, extras and honest partial pricing', async ({ page }) => {
+  await open(page, 390);
+  expect(await page.locator('.gruppe').evaluateAll(els => els.every(el => !el.open))).toBe(true);
+  await page.locator('.gruppe summary').nth(0).focus(); await page.keyboard.press('Enter');
+  await expect(page.locator('.gruppe').nth(0)).toHaveAttribute('open', '');
+  await expect(page.locator('.gruppe').nth(0)).toContainText('Texte für jede gewählte Seite');
+  const price = await page.locator('#gesamt').textContent();
+  await page.locator('#screendesign').check(); await page.locator('#crm').check();
+  await expect(page.locator('#gesamt')).toHaveText(price);
+  await expect(page.locator('#preis-label')).toHaveText('Festpreis ohne individuelle Extras');
+  await expect(page.locator('#angebot-hinweis')).toContainText('Zuzüglich Screendesign und CRM-Anbindung');
+  await expect(page.locator('#summary-screendesign')).toBeVisible();
+  await expect(page.locator('#summary-crm')).toBeVisible();
+  await page.locator('#texte').uncheck();
+  await expect(page.locator('#auswahl-texte')).toHaveText('Eigene Texte einpflegen');
+  const url = new URL(await page.locator('#cta-angebot').getAttribute('href'));
+  expect(url.searchParams.get('texte')).toBe('0');
+  expect(url.searchParams.get('screendesign')).toBe('1');
+  expect(url.searchParams.get('crm')).toBe('1');
+  await page.locator('#crm').uncheck(); await page.locator('#screendesign').uncheck();
+  await expect(page.locator('#angebot-hinweis')).toBeHidden();
+  await expect(page.locator('#preis-label')).toHaveText('Ihr Festpreis');
+  expect(new URL(await page.locator('#cta-angebot').getAttribute('href')).searchParams.has('crm')).toBe(false);
+});
+
+for (const width of [320, 390, 768, 1440]) {
+  test(`expanded product and all selected extras fit at ${width}`, async ({ page }) => {
+    await open(page, width);
+    for (const option of ['tracking', 'screendesign', 'crm']) await page.locator('#' + option).check();
+    await page.locator('.gruppe').evaluateAll(els => els.forEach(el => { el.open = true; }));
+    expect(await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth)).toBe(true);
+    const overflow = await page.locator('.anfrage-website *').evaluateAll(els => els.filter(el => {
+      const r = el.getBoundingClientRect(); return r.width > 1 && (r.right > innerWidth + 1 || r.left < -1);
+    }).map(el => el.className));
+    expect(overflow).toEqual([]);
+  });
+}

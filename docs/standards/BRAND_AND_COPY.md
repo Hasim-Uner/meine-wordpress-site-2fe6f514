@@ -325,19 +325,34 @@ Marktcheck bleibt der primäre Schritt: persönliche Prüfung, schriftlicher
 E-Mail-Befund gemäß Antwortzeit-Kanon, danach freie Entscheidung. Kein
 Pflichtgespräch und keine Buchung durch das Absenden.
 
-## Die Anfrage-Website — Freigabe 02.10.2026
+## Die Anfrage-Website — Freigaben 02.10. und 04.10.2026
 
-Produktname: **Die Anfrage-Website**. Preisformel und Zahlen ausschließlich aus
+Produktname: **Die Anfrage-Website**. Erweiterbares Grundprodukt aus Custom Code
+ohne Pagebuilder, mit Gutenberg/ACF für pflegbare Inhalte, GitHub-Versionierung
+und KI-gestützter Umsetzung mit Qualitätsprüfung. Preise ausschließlich aus
 `inc/canon/pricing-canon.php`: Grundpreis inklusive erster Seite, jede weitere
-Seite als Zusatzposition; optional Conversion-Tracking aus der Messung-Stufe.
-Rechner bis zehn Seiten. Bauzeit ab vollständigen Inhalten: bis zwei Seiten zwei
-Wochen, bis fünf drei, bis zehn vier; Relaunch eine Woche zusätzlich. Starttermin
-im Angebot, eine entscheidende Person, Rückmeldung in fünf Werktagen je Runde.
-Keine Theme-/Plugin-Lizenzkosten, zwei Korrekturrunden, Dokumentation und
-Editor-Einweisung, 30 Tage kostenlose Fehlerbehebung. Enthalten: Inhaltseinpflege,
-Feinschliff, technisches SEO und On-Page, Rechtstexte des Kunden einbinden,
-Kontaktformular, Honeypot, lokale Schriften, Testumgebung, Backup und Abnahme.
-Impressum, Datenschutz, Danke und 404 zählen nicht als Seite. Ausgenommen: Texte
-schreiben, Keyword-Recherche, Fotos/Logo, Rechtsberatung, Shop, Schnittstellen und
-Mehrsprachigkeit. Domain/Hosting direkt beim Anbieter. Landingpage, Übernahme-Check
-und Monatskontingente bleiben im Preiskanon unverändert.
+Seite als Zusatzposition; Conversion-Tracking aus der Messung-Stufe optional.
+Texte für jede gewählte Seite auf Wunsch inklusive, auf Basis der Kundenangaben
+und mit Kundenfreigabe; eigene Texte bleiben möglich, gleicher Preis.
+Kontaktformular, Bestätigungsmail und Danke-Seite sind Standard. Technisches SEO
+und On-Page sowie das Erstellen der Impressum- und Datenschutz-Seiten mit
+Einbindung gelieferter Rechtstexte sind inklusive. Keine Rechtsberatung oder
+Erstellung der Rechtstexte als Zusage.
+
+Individuelles Screendesign (UX/UI-Konzept vor Umsetzung) und CRM-Anbindung sind
+wählbare Erweiterungen nach separatem Angebot. Dafür ist kein Zusatzpreis
+freigegeben: Bei Auswahl zeigt die Oberfläche den berechenbaren Festpreis
+**ohne diese Extras** und benennt den offenen Zusatz ausdrücklich. Vollständiger
+Preis und Gesamttermin stehen im Angebot. Laufende Kosten externer Dienste werden
+vorab benannt. Die responsive Basisgestaltung gehört zum Grundprodukt.
+
+Rechner bis zehn Seiten. Basis-Bauzeit ab freigegebenen Inhalten: bis zwei Seiten
+zwei Wochen, bis fünf drei, bis zehn vier; Relaunch eine Woche zusätzlich.
+Texterstellung, Screendesign und CRM sind im Projekttermin zu berücksichtigen.
+Starttermin im Angebot, eine entscheidende Person, Rückmeldung in fünf Werktagen
+je Runde. Keine Theme-/Plugin-Lizenzkosten im Grundprodukt, zwei Korrekturrunden,
+Dokumentation, Editor-Einweisung, 30 Tage kostenlose Fehlerbehebung. Impressum,
+Datenschutz, Danke und 404 zählen nicht als Seite. Ausgenommen: Keyword-Recherche,
+Fotos/Logo, Rechtsberatung, Shop, weitere Schnittstellen und Mehrsprachigkeit.
+Domain/Hosting direkt beim Anbieter. Landingpage, Übernahme-Check und Monatskontingente
+bleiben im Preiskanon unverändert. Auswahl wird bis in Anfrage, Mails und CRM erhalten.

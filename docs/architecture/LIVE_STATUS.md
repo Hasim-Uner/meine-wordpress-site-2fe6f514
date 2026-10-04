@@ -307,28 +307,26 @@ Contract und Abnahme: `CHAT_ASSISTANT.md`.
   Guthaben, Bing-Linkdaten nicht angebunden, im Repo nur Domain-Summary:
   31 Backlinks, 25 verweisende Domains); Entscheidung offen.
 - **`/wordpress-website-erstellen-lassen/`** (`page-wordpress-website-erstellen-lassen.php`,
-  Die Anfrage-Website, Fassung 02.10.2026): Produktseite nach dem freigegebenen
-  Prototyp. Hero → Durchleuchtung → Angebot mit Rechner → Beleg → Zeit → Fragen
-  → Anfrage. Zwei dunkle Messflächen; globaler Kopf und Fuß bleiben erhalten.
-  `system.css` plus gekapseltes `anfrage-website.css`, Vanilla-JS; kein Legacy-Provider.
-  Preis aus `hu_freelancer_website_price()` inklusive erster Seite, jede weitere
-  aus `hu_freelancer_website_extra_page_price()`, optional Tracking aus der Leiter. Rechner 1–10 Seiten. Bauzeit 2/3/4 Wochen (bis 2/5/10
-  Seiten), Relaunch +1 Woche, ab vollständigen Inhalten. Acht FAQ aus einem Getter,
-  identisch im sichtbaren Text und FAQPage; Service/Offer mit zwei Preispositionen,
-  Breadcrumb und Meta bleiben zentral. Alle fünf Produkt-CTAs übergeben
-  `/kontakt/?type=project&focus=website&seiten=N&art=neubau|relaunch&tracking=1`;
-  tracking wird bei Abwahl weggelassen. Kontakt zeigt den Umfang, validiert ihn
-  serverseitig und speichert ihn in Mail, Bestätigung und CRM. Rechnerwerte bleiben
-  ohne Cookies oder Speicherung; Matomo-Events nur Umfang/Position, keine Formulardaten.
-  Matomo-Transport und dessen Konfiguration werden vom vorhandenen Website-Setup
-  erwartet; keine neue Tracker-ID oder externe Laufzeit wird injiziert.
-  Ohne JS sind beide Vergleichsansichten und beide Textzeilen sichtbar, der
-  statische Beispielumfang wird korrekt übergeben. Sticky-CTA erst nach dem Hero,
-  am Abschluss ausgeblendet und aus der Tastaturfolge entfernt. Reduzierte Bewegung:
-  keine Überblendung, kein Ladebalken. Belegbild: geliefert `hasimuener-org.webp`.
-  Zufluss: Kontextlink „WordPress-Website zum Festpreis“ auf der lokalen Agenturseite,
-  Startseite, Landingpage und Fuß. Query-Owner unverändert. Auswertung nach acht
-  Wochen oder 300 Aufrufen, siehe `docs/experimente/anfrage-website.md`.
+  Die Anfrage-Website, Fassung 04.10.2026): Erweiterbares Grundprodukt.
+  Hero → Konfigurator → Vergleich → Beleg → Zeit → FAQ → Anfrage. Custom Code
+  ohne Pagebuilder, Gutenberg/ACF, GitHub und KI-Workflow mit Qualitätsprüfung
+  sind sichtbar. `system.css` plus `anfrage-website.css`, Vanilla-JS.
+  Grundpreis und Zusatzseite aus dem Kanon, optional Conversion-Tracking aus der
+  Messung-Stufe. Texte für jede Seite auf Wunsch inklusive. Formular,
+  Bestätigungsmail, Danke-Seite, technisches SEO sowie Impressum-/Datenschutz-Seiten
+  mit gelieferten Rechtstexten sind Standard. Screendesign und CRM sind wählbar
+  nach Angebot: Die bekannte Summe wird ausdrücklich ohne individuelle Extras
+  angezeigt. Rechner 1–10 Seiten. Basis-Bauzeit 2/3/4 Wochen (bis 2/5/10 Seiten),
+  Relaunch +1 Woche ab freigegebenen Inhalten; Gesamttermin bei Extras im Angebot.
+  Zusammenfassung im Konfigurator und bearbeitbare Sticky-Auswahl. Lieferumfang
+  in sechs nativen, initial geschlossenen Details-Gruppen. FAQ und Schema lesen
+  denselben Getter. CTA-URLs übergeben Seiten, Art, `texte=0|1`, optional
+  `tracking=1`, `screendesign=1`, `crm=1`. Serverseitig validiert und erhalten in
+  Formular, beiden Mails und CRM; Preise werden serverseitig neu berechnet.
+  Keine Cookies, Browser-Speicherung oder Browser-Events durch den Konfigurator.
+  Ohne JS bleiben Standardangebot und Leistungsdetails zugänglich. Reduced Motion
+  wird respektiert. Globaler Kopf/Fuß, Query-Owner und Preisformel unverändert.
+  Auswertung nach acht Wochen oder 300 Aufrufen, siehe `docs/experimente/anfrage-website.md`.
 - **`/ga4-tracking-setup/`** (`page-ga4.php`, virtuelle Cluster-Route):
   Das Tracking-Angebot. Zeigt alle vier Stufen der Tracking-Leiter aus
   `hu_tracking_product_ladder()` als Karten `#stufe-1` bis `#stufe-4` (Raster

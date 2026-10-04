@@ -191,8 +191,8 @@ jobs:
           PLAYWRIGHT_CHROMIUM_EXECUTABLE_PATH: ${{ steps.browser.outputs.path }}
         run: npm run test:navigation-ui -- --shard=${{ matrix.shard }}/4
 
-      - name: Upload failed browser test artifacts
-        if: failure() && steps.plan.outputs.runtime == 'true'
+      - name: Upload browser test review artifacts
+        if: always() && steps.plan.outputs.runtime == 'true'
         uses: actions/upload-artifact@v4
         with:
           name: browser-failures-shard-${{ matrix.shard }}
