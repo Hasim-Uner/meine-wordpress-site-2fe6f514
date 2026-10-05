@@ -92,6 +92,9 @@
         $('#betrag-weitere').textContent = eur(extra * pagePrice); $('#gesamt').textContent = eur(total);
         $('#rechnung').textContent = eur(base) + (extra ? ' + ' + extra + ' × ' + eur(pagePrice) : '') + (newDesign ? ' + ' + eur(result.designPrice) + ' Design' : '') + (state.tracking ? ' + ' + eur(trackingPrice) + ' Tracking' : '') + (state.crm ? ' + ' + eur(rules.prices.crm) + ' CRM' : '');
         $('#auswahl-art').textContent = scope;
+        $('#abschluss-umfang').textContent = scope;
+        $('#abschluss-preis').textContent = eur(total);
+        $('#abschluss-preiszusatz').textContent = 'netto · zzgl. USt.' + (state.dashboard ? ' · Zuzüglich Daten-Dashboard nach Angebot' : '');
         $('#auswahl-texte').textContent = state.texte ? 'Texte erstellen lassen' : 'Eigene Texte einpflegen';
         $('#text-hinweis').textContent = state.texte ? 'Texte bereits fertig? Abwählen. Sonst +' + days(result.components.texts) + ' Vorbereitung, ohne Aufpreis.' : 'Ihre Texte sind vollständig und freigegeben. Keine zusätzliche Texterstellung.';
         $('#auswahl-design').textContent = newDesign ? 'Screendesign · ' + state.designLayouts + (state.designLayouts === 1 ? ' Layout' : ' Layouts') : state.design === 'vorhanden' ? 'Vorhandenes Design umsetzen' : 'Basisdesign inklusive';
@@ -150,21 +153,16 @@
         input.addEventListener('change', function () { if (this.checked) { state.design = this.value; calculate(); } });
     });
     $('#design-layouts').addEventListener('change', function () { state.designLayouts = Number(this.value); calculate(); });
-    var animation;
     function mode(name) {
         $('#durch').dataset.modus = name;
         $$('.schalter button').forEach(function (button) { button.setAttribute('aria-pressed', String(button.dataset.modus === name)); });
         $('.geraet').style.setProperty('--pin2', name === 'klassisch' ? 'var(--stempel)' : 'var(--aw-paper)');
-        if (animation) animation.cancel();
-        var bar = $('#ladebalken');
-        if (!media.matches && bar.animate) animation = bar.animate([{ transform: 'scaleX(0)' }, { transform: 'scaleX(1)' }], { duration: name === 'klassisch' ? 2400 : 450, easing: 'ease-in-out' });
     }
     $$('.schalter button').forEach(function (button) {
         button.addEventListener('click', function () { if ($('#durch').dataset.modus !== button.dataset.modus) mode(button.dataset.modus); });
     });
     function cancelMotion() {
         if (!media.matches) return;
-        if (animation) animation.cancel();
         selectionAnimations.forEach(function (motion) { motion.cancel(); });
         selectionAnimations.clear();
     }
@@ -194,7 +192,11 @@
         var examplesVisible = examples.top < window.innerHeight && examples.bottom > viewportTop;
         var summaryVisible = summaryCTA.top < window.innerHeight && summaryCTA.bottom > viewportTop;
         var visible = !examplesVisible && !summaryVisible && $('#hero').getBoundingClientRect().bottom <= 0 && $('#anfrage').getBoundingClientRect().top >= window.innerHeight;
-        if (bar.contains(document.activeElement)) visible = true;
+        var focused = bar.contains(document.activeElement);
+        if (focused) visible = true;
+        bar.hidden = !visible;
+        // At large text sizes the normal summary remains available; avoid covering the page.
+        if (visible && !focused && bar.getBoundingClientRect().height > window.innerHeight / 3) visible = false;
         bar.hidden = !visible; bar.inert = !visible;
         bar.classList.toggle('zeigen', visible); bar.setAttribute('aria-hidden', String(!visible)); stickyCTA.tabIndex = visible ? 0 : -1;
         root.style.setProperty('--aw-sticky-space', visible ? bar.getBoundingClientRect().height + 'px' : '0px');
