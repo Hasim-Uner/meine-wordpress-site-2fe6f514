@@ -410,16 +410,19 @@ kein unbelegter Rabatt gegenüber einem angeblichen Marktdurchschnitt.
 Landingpage, Übernahme-Check und Monatskontingente bleiben unverändert.
 Auswahl und serverseitige Kalkulation werden in Anfrage, Mails und CRM erhalten.
 
-Zweiter Durchgang 04.10.2026: Diese Produktseite spricht Unternehmen und
-Selbstständige an, auch wenn ihre eigenen Kunden Privatpersonen sind. Beispiele
-sind Umfangshilfen, keine weiteren Branchenpositionierungen oder garantierten
-Ergebnisse: eine Seite für einen Friseursalon, drei für Unternehmensberatung,
-fünf für einen Sanitär-/Heizungsbetrieb. Jeder Seitenplan enthält exakt die
-genannte Zahl an Inhaltsseiten; Kontakt darf ein Abschnitt sein. Buchungssystem
-und Shop werden durch das Salonbeispiel nicht inklusive. Beispielwahl verändert
-nur die Seitenzahl, erhält Extras und führt zum Konfigurator; Preise aus dem
-Kanon. Ein Inhaltsabschnitt ist keine zusätzliche Seite.
-Belege stehen vor dem Qualitätsvergleich. Die Produktseite startet den Vergleich
-mit der eigenen Bauweise; der PV-Fall belegt die gesamte Maßnahme, nicht den
-Erfolg einer kleinen Website zum Grundpreis. Basisgestaltung benennt bewährte
-Layouts mit angepassten Farben und Typografie; Figma-Screendesign bleibt optional.
+Flow-Durchgang 05.10.2026: Diese Produktseite spricht Unternehmen und
+Selbstständige an, auch wenn ihre eigenen Kunden Privatpersonen sind. Die
+Umfangswahl ist einmal im Konfigurator integriert: eine Seite für das Angebot
+im Überblick, drei für Angebot/Leistung/Über uns, fünf für mehrere Leistungen.
+Auswahl ändert nur die Seitenzahl, erhält Extras und den Fokus. Ein
+Inhaltsabschnitt ist keine zusätzliche Seite. Shop und Buchung bleiben separat.
+Die Oberfläche folgt Umfang → Texte → Gestaltung → optionale Erweiterungen.
+Basisgestaltung bleibt inklusive. Individuelles Screendesign startet mit einem
+wiederverwendbaren Layout; weitere Layouts werden ausdrücklich gewählt. Der
+Optionspreis zeigt den aktuellen gesamten Design-Aufpreis. Preise und Zeit
+werden weiterhin aus dem Kanon und serverseitig berechnet. Dashboard bleibt
+zusätzlich nach Angebot. Kein verpflichtender Wizard.
+Ein kompakter Arbeitsbeleg steht vor dem Konfigurator, vollständige Referenzen
+vor dem Qualitätsvergleich. Drei Referenzen: E3 New Energy (Weiterentwicklung
+und Anfrageweg, kein eigener Website-Neubau), hasimuener.org (eigenes Projekt)
+und Civaka Azad. Keine vertraulichen Kennzahlen beim namentlichen Kunden.

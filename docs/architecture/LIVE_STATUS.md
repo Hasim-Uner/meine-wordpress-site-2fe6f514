@@ -313,21 +313,22 @@ Contract und Abnahme: `CHAT_ASSISTANT.md`.
   Guthaben, Bing-Linkdaten nicht angebunden, im Repo nur Domain-Summary:
   31 Backlinks, 25 verweisende Domains); Entscheidung offen.
 - **`/wordpress-website-erstellen-lassen/`** (`page-wordpress-website-erstellen-lassen.php`,
-  Die Anfrage-Website, Produktdurchgang 04.10.2026): Kompakter Desktop-Konfigurator
-  mit Seiten/Texte, Design/Extras und vollständiger Preis-/Zeitübersicht nebeneinander.
-  Zweiter Durchgang: drei klickbare Umfangsbeispiele davor (eine Seite Salon,
-  drei Beratung, fünf Sanitär/Heizung), mit exaktem Seitenplan, Kanonpreis und
-  Hinweis auf separate Online-Buchung/Shop. Übernahme ändert nur die Seitenzahl,
-  erhält Extras und führt mit Tastaturfokus zur Kalkulation. Zielgruppe hier:
-  Unternehmen/Selbstständige, auch mit Privatkunden. Belege vor dem Vergleich;
-  eigene Bauweise als Anfangszustand. Referenzdurchgang 05.10.2026: vier helle
-  Projektporträts mit lokalen Website-Screenshots (hasimuener.org, Civaka Azad,
-  hasimuener.de, E3 New Energy) und präzisem Beitrag je Projekt. E3 beschreibt
-  die gesamte Funnel-Architektur vom Klick bis CRM, ohne Kennzahlen oder Link
-  zum anonymisierten Zahlenfall. Referenzdaten aus `hu_website_reference_projects()`;
-  keine neue Asset-/Consent-Strecke, keine Änderung der übrigen Referenzflächen.
-  Tablet/Mobil stapeln, Sticky-Auswahl editierbar; auf Desktop im Konfigurator
-  verborgen, um die sichtbare Zusammenfassung nicht zu verdoppeln.
+  Die Anfrage-Website, Flow-Durchgang 05.10.2026): Eine Auswahlspalte für
+  Umfang, Texte und Gestaltung; optionale Erweiterungen in nativen Details.
+  Drei Umfangsvorlagen direkt in der Seitenwahl, ohne zweite Beispielstrecke.
+  Extras und Tastaturfokus bleiben erhalten. Helle, kompakte Preisübersicht
+  auf Desktop sticky; Preisdetails bei Bedarf. Individuelles Screendesign
+  startet mit einem wiederverwendbaren Layout statt einem Layout pro Seite.
+  Der Optionspreis zeigt den tatsächlichen Aufpreis der gewählten Layoutzahl.
+  Kurze unterbrechbare Bestätigung bei Preisänderung und abhängigen Optionen;
+  Preis sofort korrekt, Reduced Motion auch bei laufenden Animationen.
+  Früher Arbeitsbeleg und drei vollständige Projektporträts: E3 New Energy,
+  hasimuener.org und Civaka Azad; E3 als Weiterentwicklung vom Klick bis CRM,
+  ohne vertrauliche Zahlen oder Link zum anonymisierten Fall.
+  Referenzdaten aus `hu_website_reference_projects()`. Tablet/Mobil stapeln.
+  Sticky-Auswahl ausblenden, wenn Umfangswahl, Zusammenfassungs-CTA oder
+  Abschluss sichtbar sind; fokussierte Leiste bleibt bedienbar. Dynamische
+  Abstandreserve und Safe Area verhindern Überdeckung der Auswahlcontrols.
   Grundpreis/Zusatzseite unverändert, Texte auf Wunsch und technische SEO inklusive.
   Formular mit gespeicherter Anfrage, Bestätigungsmail und Danke-Seite sowie
   Rechtstext-Seiten Standard. Custom Code statt Pagebuilder, Gutenberg/ACF,
@@ -347,7 +348,8 @@ Contract und Abnahme: `CHAT_ASSISTANT.md`.
   Kein Dashboard-Plugin/Analytics-Setup in diesem Auftrag, keine neue Messung,
   Cookies oder Browser-Speicherung. No-JS zeigt gültiges Standardangebot;
   Tastatur und Reduced Motion bleiben erhalten. Globaler Kopf/Fuß und Query-Owner
-  unverändert. Auswertung nach acht Wochen oder 300 Aufrufen, siehe
+  im Inhalt unverändert; die Route erlaubt im vorhandenen Kopf/Fuß Umbrüche
+  bei vergrößerter Schrift. Auswertung nach acht Wochen oder 300 Aufrufen, siehe
   `docs/experimente/anfrage-website.md`.
 - **`/ga4-tracking-setup/`** (`page-ga4.php`, virtuelle Cluster-Route):
   Das Tracking-Angebot. Zeigt alle vier Stufen der Tracking-Leiter aus

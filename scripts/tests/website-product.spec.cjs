@@ -8,7 +8,7 @@ const euro = n => n.toLocaleString('de-DE') + ' €';
 const workingDays = n => n.toLocaleString('de-DE') + (n === 1 ? ' Werktag' : ' Werktage');
 const canonicalQuotes = cases => JSON.parse(execFileSync('php', [path.join(__dirname, 'quote-website-fixture.php')], { input:JSON.stringify(cases), encoding:'utf8' }));
 const types = { '.css':'text/css', '.js':'text/javascript', '.woff2':'font/woff2', '.webp':'image/webp' };
-async function open(page, width = 1440) {
+async function open(page, width = 1440, extensions = true, waitForFonts = true) {
   await page.setViewportSize({ width, height: 900 });
   await page.route('https://hasimuener.de/**', route => {
     const url = new URL(route.request().url()), prefix = '/wp-content/themes/blocksy-child/';
@@ -19,7 +19,9 @@ async function open(page, width = 1440) {
     return route.fulfill({ contentType:'text/html', body:render() });
   });
   await page.goto('https://hasimuener.de/wordpress-website-erstellen-lassen/');
-  await page.evaluate(() => document.fonts.ready);
+  if (waitForFonts) await page.evaluate(() => document.fonts.ready);
+  // Combination tests exercise the optional choices explicitly; the default-state test keeps them closed.
+  if (extensions && await page.locator('.aw-extras-panel').isVisible()) await page.locator('.aw-extras-panel summary').click();
 }
 for (const width of [320, 360, 768, 1440]) {
   test(`request website ${width}: layout, keyboard controls and sticky visibility`, async ({ page }) => {
@@ -68,7 +70,11 @@ for (const width of [320, 360, 768, 1440]) {
     await expect(page.locator('#bauzeit')).toHaveText(workingDays(4));
     await page.locator('#angebot').evaluate(el=>el.scrollIntoView({block:'start',behavior:'instant'}));
     if(width >= 1100) await expect(page.locator('#leiste')).toBeHidden();
-    else await expect(page.locator('#leiste')).toBeVisible();
+    else {
+      await expect(page.locator('#leiste')).toBeHidden();
+      await page.locator('.aw-design').evaluate(el=>el.scrollIntoView({block:'start',behavior:'instant'}));
+      await expect(page.locator('#leiste')).toBeVisible();
+    }
     await page.locator('[data-website-cta="abschluss"]').scrollIntoViewIfNeeded();
     await expect(page.locator('#leiste')).toBeHidden();
     await expect(page.locator('#cta-leiste')).toHaveAttribute('tabindex','-1');
@@ -102,16 +108,15 @@ test('40 scopes: price, time and every CTA use the same configuration', async ({
   expect(await page.locator('.gruppe').evaluateAll(els=>els.every(el=>!el.open))).toBe(true);
 });
 for (const width of [390, 1440]) {
-  test(`scope examples preserve chosen extras and lead to the calculator at ${width}`, async ({ page }) => {
+  test(`integrated scope choices preserve extras and keyboard focus at ${width}`, async ({ page }) => {
     test.setTimeout(30000);
     await open(page, width);
     await expect(page.locator('.aw-szenario')).toHaveCount(3);
-    await expect(page.locator('.aw-szenario').nth(0)).toContainText('Friseursalon');
-    for (const [index, count] of [[0, 1], [1, 3], [2, 5]]) await expect(page.locator('.aw-szenario').nth(index).locator('.aw-seitenplan li')).toHaveCount(count);
-    await expect(page.locator('.aw-szenarien-hinweis')).toContainText('Online-Terminbuchung und Shop werden separat kalkuliert');
+    await expect(page.locator('.aw-szenario').nth(0)).toContainText('Ihr Angebot im Überblick');
+    await expect(page.locator('#beispiele')).toHaveClass('groessen');
     await page.locator('#beispiele').scrollIntoViewIfNeeded();
     await expect(page.locator('#leiste')).toBeHidden();
-    await page.screenshot({ path: test.info().outputPath(`website-scenarios-${width}.png`), fullPage: width === 390 });
+    await page.screenshot({ path: test.info().outputPath(`website-scenarios-${width}.png`) });
     await page.locator('#texte').uncheck();
     await page.locator('#screendesign').check();
     await page.locator('#design-layouts').selectOption('2');
@@ -120,7 +125,7 @@ for (const width of [390, 1440]) {
     for (const pages of [1, 3, 5]) {
       await page.locator(`[data-website-scenario="${pages}"]`).focus();
       await page.keyboard.press('Enter');
-      await expect(page.locator('#h-angebot')).toBeFocused();
+      await expect(page.locator(`[data-website-scenario="${pages}"]`)).toBeFocused();
       await expect(page.locator('#seiten')).toHaveText(String(pages));
       for (const option of ['tracking', 'crm', 'dashboard', 'screendesign']) await expect(page.locator('#' + option)).toBeChecked();
       await expect(page.locator('#texte')).not.toBeChecked();
@@ -145,13 +150,13 @@ for (const width of [390, 1440]) {
 }
 test('no JavaScript: both comparison rows and diagrams, valid static offer', async ({ browser }) => {
   const context=await browser.newContext({ javaScriptEnabled:false });const page=await context.newPage();
-  await open(page,360);
+  await open(page,360,false,false);
   await expect(page.locator('.v-klassisch')).toBeVisible();await expect(page.locator('.v-anfragen')).toBeVisible();
   await expect(page.locator('.stellen .k')).toHaveCount(7);await expect(page.locator('.stellen .a')).toHaveCount(7);
   expect(await page.locator('.stellen p').evaluateAll(els=>els.every(el=>getComputedStyle(el).display!=='none'))).toBe(true);
   await expect(page.locator('.schalter')).toBeHidden();await expect(page.locator('#leiste')).toBeHidden();
   await expect(page.locator('.aw-szenario')).toHaveCount(3);
-  expect(await page.locator('[data-website-scenario]').evaluateAll(els => els.every(el => el.hidden))).toBe(true);
+  expect(await page.locator('[data-website-scenario]').evaluateAll(els => els.every(el => getComputedStyle(el).display === 'none' || el.getBoundingClientRect().width === 0))).toBe(true);
   const overflow = await page.locator('body *').evaluateAll(els => els.filter(el => {
     const r = el.getBoundingClientRect(); return r.width > 0 && r.right > innerWidth + 1;
   }).map(el => ({ tag: el.tagName, class: el.className, right: el.getBoundingClientRect().right })));
@@ -223,14 +228,15 @@ test('included scope, fixed extensions and explicitly unpriced dashboard', async
   await expect(page.locator('.gruppe').nth(0)).toHaveAttribute('open','');
   await expect(page.locator('.gruppe').nth(0)).toContainText('Texte für jede gewählte Seite');
   await page.locator('#screendesign').check();await page.locator('#crm').check();
-  await expect(page.locator('#gesamt')).toHaveText(euro(4250));
-  await expect(page.locator('#betrag-design')).toHaveText(euro(1190));
+  await expect(page.locator('#gesamt')).toHaveText(euro(3750));
+  await expect(page.locator('#betrag-design')).toHaveText(euro(690));
   await expect(page.locator('#preis-label')).toHaveText('Ihr Einmalpreis');
   await expect(page.locator('#angebot-hinweis')).toContainText('Standardumfang');
   await page.locator('#dashboard').check();
-  await expect(page.locator('#gesamt')).toHaveText(euro(4250));
+  await expect(page.locator('#gesamt')).toHaveText(euro(3750));
   await expect(page.locator('#preis-label')).toHaveText('Einmalpreis ohne Dashboard');
   await expect(page.locator('#angebot-hinweis')).toContainText('Zuzüglich Daten-Dashboard nach Angebot');
+  await page.locator('.aw-price-details summary').click();
   await expect(page.locator('#summary-dashboard')).toBeVisible();
   await page.locator('#texte').uncheck();
   await expect(page.locator('#auswahl-texte')).toHaveText('Eigene Texte einpflegen');
@@ -257,7 +263,7 @@ test('prepared scope, project extras, layout reuse and aggregate rounding', asyn
   await page.locator('#dashboard').check();await expect(page.locator('#bauzeit')).toHaveText('Mindestens '+workingDays(8));
   await expect(page.locator('#zeit-dashboard')).toContainText('Zusätzlich nach Angebot');
   await page.locator('#dashboard').uncheck();await page.locator('#crm').uncheck();
-  await page.locator('.groessen [data-seiten="5"]').click();await expect(page.locator('#design-layouts')).toHaveValue('5');
+  await page.locator('.groessen [data-seiten="5"]').click();await expect(page.locator('#design-layouts')).toHaveValue('1');
   await page.locator('#design-layouts').selectOption('1');await expect(page.locator('#bauzeit')).toHaveText(workingDays(5));
   await expect(page.locator('#tage-tracking')).toHaveText(workingDays(1));
   await page.locator('.groessen [data-seiten="3"]').click();await expect(page.locator('#design-layouts')).toHaveValue('1');
@@ -307,19 +313,63 @@ for (const width of [320, 390, 768, 1440]) {
 }
 
 for(const [width,height] of [[1366,768],[1440,900]]) {
-  test(`configuration choices and total fit in one desktop view at ${width}`, async ({page})=>{
+  test(`selection stays readable and summary remains available at ${width}`, async ({page})=>{
     await open(page,width);await page.setViewportSize({width,height});
-    await page.locator('#screendesign').check();await page.locator('#tracking').check();await page.locator('#crm').check();await page.locator('#dashboard').check();
-    await page.locator('#angebot').evaluate(el=>el.scrollIntoView({block:'start',behavior:'instant'}));
-    const bounds=await page.locator('.aw-config-grid').boundingBox();
-    expect(bounds.y).toBeGreaterThanOrEqual(0);expect(bounds.y+bounds.height).toBeLessThanOrEqual(height);
-    for(const id of ['plus','texte','design-basis','design-vorhanden','screendesign','design-layouts','tracking','crm','dashboard','gesamt','bauzeit','cta-angebot']) {
+    for(const id of ['screendesign','tracking','crm','dashboard']) await page.locator('#'+id).check();
+    for(const id of ['plus','texte','design-basis','design-vorhanden','screendesign','design-layouts','tracking','crm','dashboard']) {
+      await page.locator('#'+id).focus();
+      await page.locator('#'+id).scrollIntoViewIfNeeded();
       const rect=await page.locator('#'+id).boundingBox();
-      expect(rect.y, id+' top').toBeGreaterThanOrEqual(0);expect(rect.y+rect.height,id+' bottom').toBeLessThanOrEqual(height);
+      expect(rect.y, id+' visible below header').toBeGreaterThanOrEqual(52);
+      expect(rect.y+rect.height,id+' visible above bottom').toBeLessThanOrEqual(height);
+      const review=await page.locator('#cta-angebot').boundingBox();
+      expect(review.y, 'summary CTA visible').toBeGreaterThanOrEqual(52);
+      expect(review.y+review.height,'summary CTA fits').toBeLessThanOrEqual(height);
     }
     await expect(page.locator('#leiste')).toBeHidden();
     await page.screenshot({path:test.info().outputPath('website-configurator-'+width+'.png')});
-    await page.locator('#dashboard').uncheck();await page.locator('#crm').uncheck();await page.locator('#tracking').uncheck();await page.locator('#design-basis').check();
-    await page.screenshot({path:test.info().outputPath('website-configurator-base-'+width+'.png')});
+  });
+}
+
+test('default hierarchy, explicit layout price and interruptible motion', async ({page})=>{
+  await open(page,1440,false);
+  await expect(page.locator('.aw-extras-panel')).not.toHaveAttribute('open','');
+  await expect(page.locator('#tracking')).toBeHidden();
+  await expect(page.locator('.aw-config-column')).toHaveCount(1);
+  await expect(page.locator('[data-seiten]')).toHaveCount(3);
+  await page.locator('#screendesign').check();
+  await expect(page.locator('#design-layouts')).toHaveValue('1');
+  await expect(page.locator('#gesamt')).toHaveText(euro(2760));
+  await expect(page.locator('#design-option-preis')).toHaveText('+'+euro(690));
+  await page.locator('#design-layouts').selectOption('2');
+  await expect(page.locator('#design-option-preis')).toHaveText('+'+euro(940));
+  await page.locator('#design-basis').check();await page.locator('#screendesign').check();
+  await expect(page.locator('#design-layouts')).toHaveValue('2');
+  await page.locator('.aw-extras-panel summary').focus();await page.keyboard.press('Enter');
+  await expect(page.locator('#tracking')).toBeVisible();await expect(page.locator('.aw-extras-panel summary')).toBeFocused();
+  await page.locator('#tracking').focus();await page.keyboard.press('Space');
+  await expect(page.locator('#tracking')).toBeFocused();await expect(page.locator('#extras-count')).toHaveText('1 gewählt');
+  await page.locator('.aw-extras-panel summary').click();
+  await expect(page.locator('#tracking')).toBeHidden();
+  const quote=canonicalQuotes([{seiten:3,art:'neubau',texte:1,design:'neu',design_layouts:2,tracking:1,crm:0,dashboard:0}])[0];
+  await expect(page.locator('#gesamt')).toHaveText(euro(quote.price));
+  // Repeated changes keep the latest value and cancel previous selection animations.
+  await page.locator('#plus').evaluate(el=>{el.click();el.click();el.click();});
+  await expect(page.locator('#seiten')).toHaveText('6');
+  expect(await page.locator('#gesamt').evaluate(el=>el.getAnimations().length)).toBeLessThanOrEqual(1);
+  await page.emulateMedia({reducedMotion:'reduce'});
+  await expect.poll(()=>page.locator('.anfrage-website').evaluate(el=>el.getAnimations({subtree:true}).length)).toBe(0);
+});
+
+for (const width of [320, 390, 768, 1440]) {
+  test(`200 percent text: selected product and shared shell reflow at ${width}`, async ({ page }) => {
+    await open(page, width);
+    for (const id of ['screendesign', 'tracking', 'crm', 'dashboard']) await page.locator('#' + id).check();
+    await page.locator('.aw-price-details summary').click();
+    await page.locator('.gruppe').evaluateAll(els => els.forEach(el => { el.open = true; }));
+    await page.evaluate(() => { document.documentElement.style.fontSize = '200%'; });
+    await expect.poll(() => page.evaluate(() => document.documentElement.scrollWidth <= innerWidth)).toBe(true);
+    await expect(page.locator('#gesamt')).toHaveText(euro(4640));
+    await expect(page.locator('#preis-label')).toHaveText('Einmalpreis ohne Dashboard');
   });
 }

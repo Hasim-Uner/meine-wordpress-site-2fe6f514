@@ -10,8 +10,7 @@
     if (!rules || !rules.prices || !rules.days || !Array.isArray(rules.implementation_tiers) || !rules.implementation_tiers.length || !rules.implementation_tiers.every(function (tier) { return Number.isFinite(tier.max_pages) && Number.isFinite(tier.days); }) || !Object.values(rules.prices).concat(Object.values(rules.days), rules.max_pages).every(Number.isFinite)) return;
     var base = rules.prices.base, pagePrice = rules.prices.page, trackingPrice = rules.prices.tracking, max = rules.max_pages;
     var factors = rules.days;
-    var state = { seiten: 3, art: 'neubau', texte: true, tracking: false, design: 'basis', designLayouts: 3, crm: false, dashboard: false };
-    var automaticLayouts = true;
+    var state = { seiten: 3, art: 'neubau', texte: true, tracking: false, design: 'basis', designLayouts: 1, crm: false, dashboard: false };
     var media = window.matchMedia ? window.matchMedia('(prefers-reduced-motion: reduce)') : { matches: true };
     var eur = function (number) { return number.toLocaleString('de-DE') + '\u00a0€'; };
     var days = function (number) { return number.toLocaleString('de-DE') + (number === 1 ? ' Werktag' : ' Werktage'); };
@@ -61,8 +60,20 @@
         });
         $('#zeit-dashboard').hidden = !state.dashboard;
     }
+    var selectionAnimations = new Map(), announcement;
+    function confirmChange(element) {
+        if (selectionAnimations.has(element)) selectionAnimations.get(element).cancel();
+        if (media.matches || !element.animate) return;
+        var style = getComputedStyle(root);
+        var motion = element.animate([{ opacity: .7, transform: 'translateY(4px)' }, { opacity: 1, transform: 'translateY(0)' }], {
+            duration: parseFloat(style.getPropertyValue('--t-norm')) || 200,
+            easing: style.getPropertyValue('--ease-aus').trim() || 'ease-out'
+        });
+        selectionAnimations.set(element, motion);
+        motion.finished.then(function () { if (selectionAnimations.get(element) === motion) selectionAnimations.delete(element); }, function () {});
+    }
     function calculate() {
-        if (automaticLayouts) state.designLayouts = state.seiten;
+        var previousPrice = $('#gesamt').textContent, detailsWereHidden = $('#design-details').hidden;
         state.designLayouts = Math.min(state.seiten, Math.max(1, state.designLayouts));
         var layoutSelect = $('#design-layouts');
         if (layoutSelect.options.length !== state.seiten) {
@@ -75,6 +86,8 @@
         var result = quote(), newDesign = state.design === 'neu', extra = state.seiten - 1, total = result.price;
         var scope = state.seiten + (state.seiten === 1 ? ' Seite' : ' Seiten') + ' · ' + (state.art === 'relaunch' ? 'Relaunch' : 'Neubau');
         $('#seiten').textContent = state.seiten; $('#weitere').textContent = extra;
+        $('#weitere-label').textContent = extra === 1 ? 'weitere Seite' : 'weitere Seiten';
+        $('#summary-pages').hidden = !extra;
         $('#minus').disabled = state.seiten <= 1; $('#plus').disabled = state.seiten >= max;
         $('#betrag-weitere').textContent = eur(extra * pagePrice); $('#gesamt').textContent = eur(total);
         $('#rechnung').textContent = eur(base) + (extra ? ' + ' + extra + ' × ' + eur(pagePrice) : '') + (newDesign ? ' + ' + eur(result.designPrice) + ' Design' : '') + (state.tracking ? ' + ' + eur(trackingPrice) + ' Tracking' : '') + (state.crm ? ' + ' + eur(rules.prices.crm) + ' CRM' : '');
@@ -83,6 +96,10 @@
         $('#text-hinweis').textContent = state.texte ? 'Texte bereits fertig? Abwählen. Sonst +' + days(result.components.texts) + ' Vorbereitung, ohne Aufpreis.' : 'Ihre Texte sind vollständig und freigegeben. Keine zusätzliche Texterstellung.';
         $('#auswahl-design').textContent = newDesign ? 'Screendesign · ' + state.designLayouts + (state.designLayouts === 1 ? ' Layout' : ' Layouts') : state.design === 'vorhanden' ? 'Vorhandenes Design umsetzen' : 'Basisdesign inklusive';
         $('#design-details').hidden = !newDesign;
+        $('#design-option-preis').textContent = '+' + eur(rules.prices.design_first + (state.designLayouts - 1) * rules.prices.design_extra);
+        $('#design-option-layouts').textContent = state.designLayouts + (state.designLayouts === 1 ? ' Layout' : ' Layouts');
+        var extras = ['tracking', 'crm', 'dashboard'].filter(function (key) { return state[key]; }).length;
+        $('#extras-count').textContent = extras ? extras + ' gewählt' : 'Keine gewählt';
         $('#design-hinweis').textContent = newDesign ? eur(result.designPrice) + ' · +' + days(result.components.design) + ' · Desktop und Mobil inklusive.' : state.design === 'vorhanden' ? '*Kein Design-Aufpreis. Umfang, Mobilansichten und Sonderfunktionen vorab prüfen.' : 'Basisdesign inklusive.';
         ['tracking', 'crm', 'dashboard'].forEach(function (key) { $('#summary-' + key).hidden = !state[key]; });
         $('#summary-screendesign').hidden = !newDesign; $('#betrag-design').textContent = eur(result.designPrice);
@@ -104,7 +121,10 @@
         if (state.dashboard) selected.push('Dashboard nach Angebot');
         $('#leiste-text').textContent = scope + (selected.length ? ' · ' + selected.join(' · ') : '');
         $('#leiste-preis').textContent = eur(total) + ' netto' + (state.dashboard ? ' + Dashboard' : '') + ' · ' + (state.dashboard ? 'ab ' : '') + days(result.days);
-        $('#konfiguration-status').textContent = scope + ' · ' + eur(total) + ' netto. ' + (state.dashboard ? 'Daten-Dashboard zusätzlich nach Angebot. Mindestens ' : '') + days(result.days) + ' geplant.';
+        clearTimeout(announcement);
+        announcement = setTimeout(function () {
+            $('#konfiguration-status').textContent = scope + ' · ' + eur(total) + ' netto. ' + (state.dashboard ? 'Daten-Dashboard zusätzlich nach Angebot. Mindestens ' : '') + days(result.days) + ' geplant.';
+        }, 180);
         timeline(result);
         link.searchParams.set('seiten', state.seiten); link.searchParams.set('art', state.art); link.searchParams.set('texte', state.texte ? '1' : '0');
         ['tracking', 'crm', 'dashboard'].forEach(function (key) { if (state[key]) link.searchParams.set(key, '1'); else link.searchParams.delete(key); });
@@ -112,19 +132,13 @@
         if (newDesign) { link.searchParams.set('screendesign', '1'); link.searchParams.set('design_layouts', state.designLayouts); }
         else { link.searchParams.delete('screendesign'); link.searchParams.delete('design_layouts'); }
         $$('[data-website-cta]').forEach(function (cta) { cta.href = link.href; });
+        if (previousPrice !== $('#gesamt').textContent) confirmChange($('#gesamt'));
+        if (newDesign && detailsWereHidden) confirmChange($('#design-details'));
     }
     $('#minus').addEventListener('click', function () { if (state.seiten > 1) { state.seiten--; calculate(); } });
     $('#plus').addEventListener('click', function () { if (state.seiten < max) { state.seiten++; calculate(); } });
     $$('.groessen button').forEach(function (button) {
         button.addEventListener('click', function () { if (state.seiten !== Number(button.dataset.seiten)) { state.seiten = Number(button.dataset.seiten); calculate(); } });
-    });
-    $$('[data-website-scenario]').forEach(function (button) {
-        button.addEventListener('click', function () {
-            state.seiten = Number(button.dataset.websiteScenario);
-            calculate();
-            $('#angebot').scrollIntoView({ block: 'start', behavior: 'instant' });
-            $('#h-angebot').focus({ preventScroll: true });
-        });
     });
     $$('.art button').forEach(function (button) {
         button.addEventListener('click', function () { if (state.art !== button.dataset.art) { state.art = button.dataset.art; calculate(); } });
@@ -135,7 +149,7 @@
     $$('[name="website-design"]').forEach(function (input) {
         input.addEventListener('change', function () { if (this.checked) { state.design = this.value; calculate(); } });
     });
-    $('#design-layouts').addEventListener('change', function () { state.designLayouts = Number(this.value); automaticLayouts = false; calculate(); });
+    $('#design-layouts').addEventListener('change', function () { state.designLayouts = Number(this.value); calculate(); });
     var animation;
     function mode(name) {
         $('#durch').dataset.modus = name;
@@ -148,7 +162,16 @@
     $$('.schalter button').forEach(function (button) {
         button.addEventListener('click', function () { if ($('#durch').dataset.modus !== button.dataset.modus) mode(button.dataset.modus); });
     });
-    function cancelMotion() { if (media.matches && animation) animation.cancel(); }
+    function cancelMotion() {
+        if (!media.matches) return;
+        if (animation) animation.cancel();
+        selectionAnimations.forEach(function (motion) { motion.cancel(); });
+        selectionAnimations.clear();
+    }
+    $('.aw-extras-panel').addEventListener('toggle', function () {
+        if (this.open) confirmChange(this.querySelector('.aw-extras'));
+        scheduleSticky();
+    });
     if (media.addEventListener) media.addEventListener('change', cancelMotion);
     $$('.stellen li').forEach(function (item) {
         function highlight() {
@@ -165,22 +188,25 @@
     var bar = $('#leiste'), stickyCTA = $('#cta-leiste'), scheduled = false;
     function updateSticky() {
         scheduled = false;
-        var config = $('.aw-config-grid').getBoundingClientRect();
+        var summaryCTA = $('#cta-angebot').getBoundingClientRect();
         var examples = $('#beispiele').getBoundingClientRect();
         var viewportTop = parseFloat(getComputedStyle(root).getPropertyValue('--leiste-h')) || 52;
         var examplesVisible = examples.top < window.innerHeight && examples.bottom > viewportTop;
-        var summaryVisible = window.innerWidth >= 1100 && config.top < window.innerHeight && config.bottom > 0;
+        var summaryVisible = summaryCTA.top < window.innerHeight && summaryCTA.bottom > viewportTop;
         var visible = !examplesVisible && !summaryVisible && $('#hero').getBoundingClientRect().bottom <= 0 && $('#anfrage').getBoundingClientRect().top >= window.innerHeight;
-        if (!visible && bar.contains(document.activeElement)) $('[data-website-cta="abschluss"]').focus({ preventScroll: true });
+        if (bar.contains(document.activeElement)) visible = true;
         bar.hidden = !visible; bar.inert = !visible;
         bar.classList.toggle('zeigen', visible); bar.setAttribute('aria-hidden', String(!visible)); stickyCTA.tabIndex = visible ? 0 : -1;
+        root.style.setProperty('--aw-sticky-space', visible ? bar.getBoundingClientRect().height + 'px' : '0px');
     }
     function scheduleSticky() { if (!scheduled) { scheduled = true; requestAnimationFrame(updateSticky); } }
+    bar.addEventListener('focusout', scheduleSticky);
     window.addEventListener('scroll', scheduleSticky, { passive: true });
     window.addEventListener('resize', scheduleSticky, { passive: true });
     if (window.IntersectionObserver) {
         var observer = new IntersectionObserver(scheduleSticky);
-        observer.observe($('#hero')); observer.observe($('#beispiele')); observer.observe($('#anfrage'));
+        observer.observe($('#hero')); observer.observe($('#beispiele')); observer.observe($('#anfrage')); observer.observe($('#cta-angebot'));
     }
+    if (window.ResizeObserver) new ResizeObserver(scheduleSticky).observe(bar);
     updateSticky();
 })();
