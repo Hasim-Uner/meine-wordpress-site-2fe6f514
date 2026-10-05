@@ -358,6 +358,17 @@ und On-Page sowie das Erstellen der Impressum- und Datenschutz-Seiten mit
 Einbindung gelieferter Rechtstexte sind inklusive. Keine Rechtsberatung oder
 Erstellung der Rechtstexte als Zusage.
 
+Finale Seitengestaltung vom 06.10.2026: Der Einstieg erklärt die Anfrage-Website
+über ein verständliches Angebot, einen sichtbaren nächsten Schritt und den
+kanonischen Einstiegspreis. Früh sichtbare Qualitätsgründe führen zu Aufbau,
+Rechner, Lieferumfang und einer eigenständig ausführbaren Ladezeitprüfung.
+Reale Projekte stehen vor dem Konfigurator, E3 zuerst; die Illustrationen im
+Qualitätsabschnitt sind ausdrücklich keine Kundenprojekte oder Messergebnisse.
+Keine simulierte Ladezeit, kein behaupteter Qualitätsvorsprung oder Rankingsieg.
+Einheitliche lesbare Buttons und eine Kapitelzeile unterstützen die Entscheidung.
+Der Abschluss zeigt dieselbe Auswahl und denselben bekannten Preis wie der
+Rechner; unbekannte Dashboard-Kosten bleiben zusätzlich ausgewiesen.
+
 Seit dem Produktdurchgang vom 04.10.2026 sind individuelles Screendesign,
 Conversion-Tracking und Standard-CRM feste, vollständig eingerechnete Extras.
 Screendesign: erstes unterschiedliches Layout und jedes weitere nach Kanon;

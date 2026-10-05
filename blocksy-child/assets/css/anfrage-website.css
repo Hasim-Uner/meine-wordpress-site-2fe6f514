@@ -17,14 +17,17 @@
 }
 
 .anfrage-website .aw-projekte {
-  margin-top:var(--s5);
+  display:grid;
+  grid-template-columns:minmax(0,1fr);
+  gap:var(--s4);
+  margin-top:var(--s4);
 }
 
 .anfrage-website .aw-projekt {
   display:grid;
   grid-template-columns:minmax(0,1fr);
   gap:var(--s3);
-  padding-block:var(--s4);
+  padding-block:var(--s3);
   border-top:1px solid var(--haar);
   align-items:center;
 }
@@ -110,7 +113,13 @@
   min-height:44px;
   margin-top:var(--s2);
   color:var(--tinte);
-  text-decoration-color:var(--stempel);
+  padding:var(--s1) var(--s2);
+  border:1px solid var(--haar);
+  border-radius:var(--r1);
+  text-decoration:none;
+  font-size:var(--grad-klein);
+  font-weight:600;
+  transition:border-color var(--t-mikro) var(--ease-aus), background-color var(--t-mikro) var(--ease-aus);
 }
 
 .anfrage-website .aw-projekt-link:focus-visible {
@@ -127,7 +136,11 @@
 }
 
 @media (min-width:900px) {
-  .anfrage-website .aw-projekt {
+  .anfrage-website .aw-projekte {
+    grid-template-columns:repeat(2,minmax(0,1fr));
+  }
+  .anfrage-website .aw-projekt:first-child {
+    grid-column:1 / -1;
     grid-template-columns:minmax(0,1.35fr) minmax(0,1fr);
     gap:var(--s4);
     padding-block:var(--s5);
@@ -179,19 +192,20 @@
   align-items:center;
   gap:.6em;
   min-height:50px;
-  padding:0 22px;
+  justify-content:center;
+  padding:var(--s1) var(--s2);
   background:var(--stempel);
   color:var(--papier);
   text-decoration:none;
-  font-family:var(--mono);
-  font-size:.78rem;
-  font-weight:500;
-  letter-spacing:.1em;
-  text-transform:uppercase;
+  font-family:var(--serif);
+  font-size:var(--grad-text);
+  font-weight:600;
   border:0;
   border-radius:var(--r1);
   cursor:pointer;
-  transition:background-color .15s ease
+  line-height:1.4;
+  max-width:100%;
+  transition:background-color var(--t-mikro) var(--ease-aus), border-color var(--t-mikro) var(--ease-aus), color var(--t-mikro) var(--ease-aus)
 }
 
 .anfrage-website .btn span {
@@ -200,7 +214,7 @@
 }
 
 .anfrage-website .btn:hover {
-  background:var(--stempel)
+  background:var(--tinte)
 }
 
 .anfrage-website .btn:hover span {
@@ -209,6 +223,23 @@
 
 .anfrage-website .btn:active {
   transform:translateY(1px)
+}
+
+.anfrage-website .btn--sekundaer {
+  background:transparent;
+  color:var(--tinte);
+  border:1px solid var(--haar);
+}
+
+.anfrage-website .btn--sekundaer:hover {
+  background:var(--zone);
+  color:var(--tinte);
+  border-color:var(--tinte);
+}
+
+.anfrage-website :is(a, button, summary, input, select):focus-visible {
+  outline:2px solid var(--stempel);
+  outline-offset:var(--s0);
 }
 
 .anfrage-website .btn--klein {
@@ -363,7 +394,7 @@
 @media (min-width:980px) {
   .anfrage-website .hero .wrap {
     grid-template-columns:minmax(0,1.5fr) minmax(300px,.75fr);
-    align-items:end;
+    align-items:center;
     gap:var(--s5)
   }
 
@@ -515,6 +546,7 @@
 
 .anfrage-website .durch {
   display:grid;
+  grid-template-columns:minmax(0,1fr);
   gap:var(--s4);
   margin-top:var(--s4)
 }
@@ -555,22 +587,6 @@
   border-radius:var(--r1);
   flex:0 1 auto;
   white-space:nowrap
-}
-
-.anfrage-website .laden {
-  flex:1;
-  height:4px;
-  background:var(--aw-zone2);
-  border-radius:var(--r1);
-  overflow:hidden
-}
-
-.anfrage-website .laden i {
-  display:block;
-  height:100%;
-  background:var(--grau);
-  transform-origin:left;
-  transform:scaleX(1)
 }
 
 .anfrage-website .ansichten {
@@ -803,7 +819,7 @@
 }
 
 .anfrage-website .stellen .k::before {
-  content:"Oft";
+  content:"Risiko";
   color:var(--stempel)
 }
 
@@ -1216,6 +1232,7 @@
   color:var(--tinte);
   padding:10px clamp(16px,4vw,40px) calc(10px + env(safe-area-inset-bottom,0px));
   display:flex;
+  flex-wrap:wrap;
   align-items:center;
   justify-content:space-between;
   gap:var(--s2);
@@ -1238,9 +1255,10 @@
 }
 
 .anfrage-website .leiste-unten .btn {
-  min-height:42px;
-  font-size:.7rem;
-  padding:0 14px;
+  min-height:48px;
+  max-width:100%;
+  font-size:var(--grad-klein);
+  padding:var(--s1) var(--s2);
   white-space:nowrap
 }
 
@@ -1275,17 +1293,6 @@
 /* Theme reset for the prototype's scoped controls and native details. */
 .anfrage-website [hidden] {
   display:none!important;
-}
-
-.anfrage-website .btn {
-  color:var(--papier);
-  line-height:1.4;
-  max-width:100%;
-}
-
-.anfrage-website .btn:hover {
-  background:var(--stempel);
-  filter:brightness(.9);
 }
 
 .anfrage-website .tafel {
@@ -1369,14 +1376,6 @@
 
 }
 
-@media (prefers-reduced-motion:reduce) {
-  .anfrage-website .laden {
-    display:none;
-  }
-
-}
-
-
 /* Product configuration: compact selection workspace; details follow below. */
 .anfrage-website .hero h1 { max-width: 25ch; font-size: var(--grad-h2); }
 .anfrage-website .hero .wrap > *, .anfrage-website .abschluss > *, .anfrage-website .inklusive-kopf > * { min-width: 0; }
@@ -1393,18 +1392,36 @@
 .anfrage-website .aw-basis-kurz { padding: 0; list-style: none; margin: var(--s3) 0 0; font-size: var(--grad-klein); }
 .anfrage-website .aw-basis-kurz li { padding-block: var(--s0); }
 .anfrage-website .aw-basis-kurz li::before { content: "✓"; color: var(--stempel); margin-right: var(--s1); }
-.anfrage-website .aw-qualitaet { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); padding-block: var(--s3); border-block: 1px solid var(--haar); gap: var(--s3); }
-.anfrage-website .aw-qualitaet strong { display: block; font-size: 1.05rem; margin-top: var(--s1); }
+.anfrage-website .aw-hero-checks { display: flex; flex-wrap: wrap; gap: var(--s1) var(--s2); padding: 0; margin: var(--s2) 0 0; list-style: none; font-size: var(--grad-klein); color: var(--grau); }
+.anfrage-website .aw-hero-checks li::before { content: "✓"; color: var(--stempel); margin-right: var(--s0); }
+.anfrage-website .aw-kapitel { display: flex; flex-wrap: wrap; align-items: center; gap: 0 var(--s3); border-block: 1px solid var(--haar); padding-block: var(--s0); }
+.anfrage-website .aw-kapitel > span { color: var(--grau); }
+.anfrage-website .aw-kapitel a { display: inline-flex; align-items: center; min-height: 44px; color: var(--tinte); font-size: var(--grad-klein); text-decoration-color: var(--haar); }
+.anfrage-website .aw-kapitel a:hover { text-decoration-color: var(--stempel); }
+.anfrage-website :is(#qualitaet, #beleg, #unterschied, #zeit, #fragen, #anfrage) { scroll-margin-top: calc(var(--leiste-h, 54px) + var(--s3)); }
+.anfrage-website .aw-qualitaet { padding-block: var(--s5); margin-top: var(--s4); background: var(--zone); border-block: 1px solid var(--haar); }
+.anfrage-website .aw-qualitaet-kopf { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); align-items: end; gap: var(--s1) var(--s4); }
+.anfrage-website .aw-qualitaet-kopf > .mono { grid-column: 1 / -1; }
+.anfrage-website .aw-qualitaet h2 { font-size: var(--grad-h2-leise); max-width: 22ch; }
+.anfrage-website .aw-qualitaet-kopf > p:last-child { color: var(--grau); font-size: var(--grad-text); max-width: 52ch; }
+.anfrage-website .aw-qualitaetsgruende { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: var(--s4); margin-top: var(--s4); }
+.anfrage-website .aw-qualitaetsgruende > div { display: flex; flex-direction: column; min-width: 0; border-top: 1px solid var(--haar); padding-top: var(--s2); }
+.anfrage-website .aw-qualitaetsgruende h3 { font-size: var(--grad-text); line-height: 1.3; margin-top: var(--s2); }
 .anfrage-website .aw-qualitaet .mono { color: var(--stempel); }
-.anfrage-website .aw-qualitaet p { font-size: var(--grad-klein); color: var(--grau); margin-top: var(--s0); }
+.anfrage-website .aw-qualitaetsgruende p { flex: 1; font-size: var(--grad-klein); line-height: 1.65; color: var(--grau); margin-top: var(--s1); }
+.anfrage-website .aw-prueflink { display: inline-flex; align-items: center; gap: var(--s1); min-height: 44px; color: var(--tinte); font-size: var(--grad-klein); font-weight: 600; text-decoration-color: var(--haar); }
+.anfrage-website .aw-qualitaetsgruende .aw-prueflink { margin-top: var(--s2); align-self: start; }
+.anfrage-website .aw-qualitaet-fuss { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: var(--s1) var(--s3); padding-top: var(--s3); margin-top: var(--s3); border-top: 1px solid var(--haar); }
+.anfrage-website .aw-qualitaet-fuss p { max-width: 66ch; font-size: var(--grad-klein); color: var(--grau); }
+.anfrage-website .aw-referenzen .wrap { padding-bottom: var(--s5); }
+.anfrage-website .aw-projekt .bild img { object-position: top; }
+.anfrage-website .aw-schema-label { margin-left: auto; font: var(--mono-m) var(--mono); color: var(--aw-muted); }
+.anfrage-website .aw-pruefung { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: var(--s2) var(--s3); margin-top: var(--s4); padding-top: var(--s3); border-top: 1px solid var(--haar); }
+.anfrage-website .aw-pruefung p { max-width: 58ch; font-size: var(--grad-klein); color: var(--grau); }
+.anfrage-website .aw-pruefung strong { color: var(--tinte); }
 /* A single decision column and a compact, persistent review of the selection. */
-.anfrage-website .aw-arbeitsbeleg { display: grid; grid-template-columns: minmax(0, 1fr) auto; gap: var(--s1) var(--s3); padding-block: var(--s3); }
-.anfrage-website .aw-arbeitsbeleg .mono { grid-column: 1 / -1; color: var(--stempel); }
-.anfrage-website .aw-arbeitsbeleg p { font-size: var(--grad-klein); max-width: 76ch; color: var(--grau); }
-.anfrage-website .aw-arbeitsbeleg strong { color: var(--tinte); }
-.anfrage-website .aw-arbeitsbeleg a { align-self: end; color: var(--tinte); font-size: var(--grad-klein); padding-block: var(--s1); }
 .anfrage-website .direkt a { color: var(--tinte); }
-.anfrage-website .aw-konfigurator { scroll-margin-top: calc(var(--leiste-h, 54px) + var(--s2)); padding-top: 0; margin-top: var(--s4); }
+.anfrage-website .aw-konfigurator { scroll-margin-top: calc(var(--leiste-h, 54px) + var(--s2)); padding-top: 0; margin-top: var(--s6); }
 .anfrage-website .aw-config-heading { display: flex; align-items: end; justify-content: space-between; gap: var(--s3); margin-bottom: var(--s3); }
 .anfrage-website .aw-config-heading h2 { font-size: var(--grad-h2-leise); }
 .anfrage-website .aw-config-heading .mono { color: var(--stempel); margin-bottom: var(--s1); }
@@ -1511,6 +1528,15 @@
 .anfrage-website .aw-erweiterungsdetail > div { padding-bottom: var(--s3); max-width: 76ch; }
 .anfrage-website .aw-erweiterungsdetail p { margin-top: var(--s1); font-size: .95rem; line-height: 1.65; }
 .anfrage-website .aw-zeit-details { margin-bottom: var(--s3); padding-bottom: var(--s3); border-bottom: 1px solid var(--haar); }
+.anfrage-website .aw-plan-details { margin-top: var(--s3); border-top: 1px solid var(--haar); }
+.anfrage-website .aw-plan-details summary { font-size: var(--grad-klein); min-height: 44px; align-items: center; }
+.anfrage-website .aw-plan-details p { font-size: var(--grad-klein); line-height: 1.65; }
+.anfrage-website #fragen .haupt { grid-column: 2 / -1; max-width: 72ch; }
+.anfrage-website .aw-abschluss-kopf .mono { color: var(--stempel); margin-bottom: var(--s2); }
+.anfrage-website .abschluss .aw-close-scope { font: var(--grad-klein) var(--mono); margin-top: var(--s3); }
+.anfrage-website .abschluss .aw-close-price { color: var(--tinte); font: 600 var(--grad-h2-leise) var(--serif-display); margin-top: var(--s1); font-variant-numeric: tabular-nums; }
+.anfrage-website .aw-close-price small { display: block; color: var(--grau); font: var(--grad-klein) var(--serif); margin-top: var(--s0); }
+.anfrage-website .abschluss .aktion { margin-top: var(--s3); }
 .anfrage-website .aw-zeit-details > p:first-child { font-size: .95rem; }
 .anfrage-website .aw-zeitpositionen { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: var(--s0) var(--s3); margin-top: var(--s2); font-size: .85rem; }
 .anfrage-website .aw-zeitpositionen > div { display: flex; justify-content: space-between; gap: var(--s1); padding-block: var(--s0); }
@@ -1520,12 +1546,13 @@
 .anfrage-website .phase { padding: var(--s2); gap: var(--s1); }
 .anfrage-website .phase.offen { border: 1px dashed var(--stempel); }
 .anfrage-website .leiste-unten { border-top: 1px solid var(--haar); }
-.anfrage-website .leiste-unten p { flex: 1; }
+.anfrage-website .leiste-unten p { flex: 1 1 6rem; }
 .anfrage-website #leiste-text { display: block; font-size: var(--mono-m); color: var(--grau); }
 .anfrage-website #leiste-preis { display: block; font-size: 1rem; font-weight: 600; margin-top: var(--s0); }
 .anfrage-website .aw-auswahl-edit { flex-shrink: 0; font: var(--mono-m) var(--mono); color: var(--tinte); }
 @media (hover: hover) and (pointer: fine) {
   .anfrage-website .groessen button:hover, .anfrage-website .aw-option:hover { border-color: var(--stempel); }
+  .anfrage-website .aw-projekt-link:hover { background: var(--zone); border-color: var(--tinte); }
 }
 @media (max-width: 1099.98px) {
   .anfrage-website .aw-config-grid { grid-template-columns: minmax(0, 1fr); gap: var(--s3); }
@@ -1533,10 +1560,9 @@
 }
 @media (max-width: 719.98px) {
   .anfrage-website .hero h1 { font-size: var(--grad-h2); max-width: 24ch; }
-  .anfrage-website .aw-qualitaet { grid-template-columns: minmax(0, 1fr); gap: var(--s2); }
-  .anfrage-website .aw-qualitaet > div + div { border-top: 1px solid var(--haar); padding-top: var(--s2); }
-  .anfrage-website .aw-arbeitsbeleg { grid-template-columns: minmax(0, 1fr); }
-  .anfrage-website .aw-arbeitsbeleg a { justify-self: start; }
+  .anfrage-website .aw-qualitaet-kopf, .anfrage-website .aw-qualitaetsgruende { grid-template-columns: minmax(0, 1fr); gap: var(--s2); }
+  .anfrage-website .aw-qualitaetsgruende h3 { margin-top: var(--s1); }
+  .anfrage-website .aw-qualitaetsgruende .aw-prueflink { margin-top: var(--s1); }
   .anfrage-website .aw-config-heading { align-items: start; flex-direction: column; gap: var(--s1); }
   .anfrage-website .aw-zusammenfassung { padding: var(--s2); }
   .anfrage-website .aw-option { grid-template-columns: 20px minmax(0, 1fr); }
@@ -1564,7 +1590,12 @@
   .anfrage-website .aw-zeitpositionen > div { flex-wrap: wrap; }
 }
 @media (prefers-reduced-motion: reduce) {
-  .anfrage-website .groessen button, .anfrage-website .aw-option { transition: none; }
+  .anfrage-website .groessen button, .anfrage-website .aw-option, .anfrage-website .btn, .anfrage-website .btn span, .anfrage-website .aw-projekt-link { transition: none; }
+  .anfrage-website .btn:hover span, .anfrage-website .btn:active { transform: none; }
+}
+
+@media (max-width: 979.98px) {
+  .anfrage-website #fragen .haupt { grid-column: 1; }
 }
 
 .anfrage-website .aw-config-controls :is(button, input, select, summary) { scroll-margin-top: calc(var(--leiste-h, 54px) + var(--s3)); scroll-margin-bottom: calc(var(--aw-sticky-space, 0px) + var(--s3)); }

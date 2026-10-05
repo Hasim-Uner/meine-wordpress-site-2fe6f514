@@ -29,6 +29,8 @@ for (const width of [320, 360, 768, 1440]) {
     await open(page,width);
     await expect(page).toHaveTitle('WordPress-Website erstellen lassen ab ' + euro(1490) + ' | Haşim Üner');
     await expect(page.locator('h1')).toHaveCount(1);
+    expect(await page.locator('.anfrage-website > section').evaluateAll(els => els.map(el => el.id)))
+      .toEqual(['hero','qualitaet','beleg','angebot','erweiterungen','unterschied','zeit','fragen','anfrage']);
     await expect(page.locator('meta[name="description"]')).toHaveAttribute('content', /Custom Code, Texte und technisches SEO inklusive/);
     expect(await page.locator('h2').evaluateAll(els=>els.every(el=>el.id))).toBe(true);
     expect(await page.evaluate(()=>document.documentElement.scrollWidth <= innerWidth)).toBe(true);
@@ -95,6 +97,8 @@ test('40 scopes: price, time and every CTA use the same configuration', async ({
       await page.locator('#tracking').setChecked(tracking);
       const result=quotes[index++], price=result.price;
       await expect(page.locator('#gesamt')).toHaveText(price.toLocaleString('de-DE')+' €');
+      await expect(page.locator('#abschluss-preis')).toHaveText(euro(price));
+      await expect(page.locator('#abschluss-umfang')).toHaveText(seiten+(seiten===1?' Seite':' Seiten')+' · '+(art==='relaunch'?'Relaunch':'Neubau'));
       await expect(page.locator('#bauzeit')).toHaveText(result.days+' Werktage');
       await expect(page.locator('#hero-bauzeit')).toHaveText('Ihre Auswahl: '+result.days+' Werktage geplant.');
       const hrefs=await page.locator('[data-website-cta]').evaluateAll(els=>els.map(el=>el.href));
@@ -166,10 +170,10 @@ test('no JavaScript: both comparison rows and diagrams, valid static offer', asy
   expect(new URL(await page.locator('#cta-angebot').getAttribute('href')).searchParams.get('seiten')).toBe('3');
   await context.close();
 });
-test('reduced motion: no transitions or load-bar animation, no browser storage', async ({ page }) => {
+test('reduced motion: no transitions, no simulated loading, no browser storage', async ({ page }) => {
   await page.emulateMedia({reducedMotion:'reduce'});await open(page);
   await page.locator('#m-anfragen').click();
-  expect(await page.locator('.laden').isVisible()).toBe(false);
+  await expect(page.locator('.laden, #ladebalken')).toHaveCount(0);
   expect(await page.locator('.anfrage-website').evaluate(el=>el.getAnimations({subtree:true}).length)).toBe(0);
   await page.locator('#cta-angebot').evaluate(el=>{el.addEventListener('click',e=>e.preventDefault());el.click()});
   expect(await page.evaluate(()=>[localStorage.length,sessionStorage.length,document.cookie])).toEqual([0,0,'']);
@@ -236,6 +240,8 @@ test('included scope, fixed extensions and explicitly unpriced dashboard', async
   await expect(page.locator('#gesamt')).toHaveText(euro(3750));
   await expect(page.locator('#preis-label')).toHaveText('Einmalpreis ohne Dashboard');
   await expect(page.locator('#angebot-hinweis')).toContainText('Zuzüglich Daten-Dashboard nach Angebot');
+  await expect(page.locator('#abschluss-preis')).toHaveText(euro(3750));
+  await expect(page.locator('#abschluss-preiszusatz')).toContainText('Zuzüglich Daten-Dashboard nach Angebot');
   await page.locator('.aw-price-details summary').click();
   await expect(page.locator('#summary-dashboard')).toBeVisible();
   await page.locator('#texte').uncheck();
@@ -245,6 +251,7 @@ test('included scope, fixed extensions and explicitly unpriced dashboard', async
   await page.locator('#crm').uncheck();await page.locator('#dashboard').uncheck();await page.locator('#design-basis').check();
   await expect(page.locator('#angebot-hinweis')).toBeHidden();
   await expect(page.locator('#preis-label')).toHaveText('Ihr Einmalpreis');
+  await expect(page.locator('#abschluss-preiszusatz')).not.toContainText('Dashboard');
   const cleared=new URL(await page.locator('#cta-angebot').getAttribute('href'));
   expect(cleared.searchParams.has('crm')).toBe(false);expect(cleared.searchParams.has('dashboard')).toBe(false);
 });
@@ -369,6 +376,7 @@ for (const width of [320, 390, 768, 1440]) {
     await page.locator('.gruppe').evaluateAll(els => els.forEach(el => { el.open = true; }));
     await page.evaluate(() => { document.documentElement.style.fontSize = '200%'; });
     await expect.poll(() => page.evaluate(() => document.documentElement.scrollWidth <= innerWidth)).toBe(true);
+    await expect.poll(() => page.locator('#leiste').evaluate(el => el.hidden || el.getBoundingClientRect().height <= innerHeight / 3)).toBe(true);
     await expect(page.locator('#gesamt')).toHaveText(euro(4640));
     await expect(page.locator('#preis-label')).toHaveText('Einmalpreis ohne Dashboard');
   });

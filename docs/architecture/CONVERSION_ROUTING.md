@@ -687,6 +687,12 @@ Neu: `cta_website_offer_proof_project`, `cta_website_offer_sticky_project`.
 Agentur-Ausgang im Produkt-Hero und frühere Anlass/Relaunch/Zusatz-Hooks entfallen.
 Alle Produkt-CTAs tragen `data-website-cta` mit hero/angebot/beleg/leiste/abschluss.
 Der Rechner aktualisiert alle Ziele, Preis und Bauzeit aus demselben Zustand.
+Seit dem finalen Durchgang vom 06.10.2026 führen frühe Qualitäts-Prüflinks
+zu Aufbau, Umfang und Lieferumfang; der Ladezeitlink öffnet PageSpeed Insights.
+Die nicht-sticky Kapitelzeile führt zu Qualität, Projekten, Preis/Umfang,
+Ablauf und Fragen (`website_offer_chapter_*`). Reale Projektbelege stehen
+vor dem ausführlichen Rechner. Der Abschluss zeigt dieselbe Konfiguration
+und den bekannten Preis; die primären Anfrageziele und Hooks bleiben erhalten.
 `focus=website` ist ein gültiges Projekt-Thema; alte `focus=relaunch`-Links bleiben
 kompatibel. Konfiguration `seiten/art/tracking` wird angezeigt, serverseitig
 validiert, im CRM strukturiert gespeichert und in beiden Mails genannt.

@@ -313,7 +313,14 @@ Contract und Abnahme: `CHAT_ASSISTANT.md`.
   Guthaben, Bing-Linkdaten nicht angebunden, im Repo nur Domain-Summary:
   31 Backlinks, 25 verweisende Domains); Entscheidung offen.
 - **`/wordpress-website-erstellen-lassen/`** (`page-wordpress-website-erstellen-lassen.php`,
-  Die Anfrage-Website, Flow-Durchgang 05.10.2026): Eine Auswahlspalte für
+  Die Anfrage-Website, finale Gestaltung 06.10.2026): Frühe Qualitätsgründe
+  mit Prüflinks, Kapitelziele und reale Projekte vor dem Konfigurator.
+  E3 als erste große Referenz, die zwei weiteren auf Desktop nebeneinander.
+  Gut lesbare Haupt- und sekundäre Buttons mit Hover-, Fokus- und Touch-Zuständen.
+  Der Qualitätsvergleich zeigt schematischen Aufbau ohne simulierte Ladezeiten;
+  technische Lieferkriterien und Abnahmeprüfung bleiben konkret.
+  Abschlussumfang und bekannter Preis folgen demselben Rechnerzustand, auch
+  bei einem zusätzlich zu kalkulierenden Dashboard. Eine Auswahlspalte für
   Umfang, Texte und Gestaltung; optionale Erweiterungen in nativen Details.
   Drei Umfangsvorlagen direkt in der Seitenwahl, ohne zweite Beispielstrecke.
   Extras und Tastaturfokus bleiben erhalten. Helle, kompakte Preisübersicht
