@@ -11,11 +11,16 @@ module.exports = defineConfig({
   // this single spec file across independent runners; each runner stays single-worker.
   fullyParallel: true,
   workers: 1,
-  timeout: 10000,
+  // The test budget includes context/page setup. A cold GitHub runner spent
+  // 7 s creating its first page; keep startup headroom separate from the
+  // unchanged 10 s action and 1 s assertion limits below.
+  timeout: 30000,
   expect: { timeout: 1000 },
   reporter: 'list',
   use: {
     headless: true,
+    actionTimeout: 10000,
+    navigationTimeout: 10000,
     trace: 'retain-on-failure',
     screenshot: 'only-on-failure',
     launchOptions: executablePath ? { executablePath } : {},
