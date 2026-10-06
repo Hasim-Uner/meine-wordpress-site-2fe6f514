@@ -42,7 +42,7 @@ Sperrliste aufgenommen — nicht andersherum.
 
 - Entity / Marke: **Haşim Üner**, hasimuener.de
 - Fachliche Klammer: **WordPress · Tracking · Conversion**
-- Öffentliche Rolle: WordPress Freelancer für Unternehmen; für Agenturen zusätzlich White-Label-Partner
+- Öffentliche Rolle: **WordPress-Entwickler** für Unternehmen; für Agenturen zusätzlich White-Label-Partner. Die Startseite bleibt aus SEO-Gründen Query-Owner für `wordpress freelancer` / `wordpress freelancer hannover`, ohne „Freelancer“ zur globalen Entity-Rolle zu machen.
 - Kernkompetenzen: WordPress-Entwicklung, technisches SEO, Tracking/Attribution, Server-Side Tracking, Landingpages/Funnel, Conversion-Optimierung
 - Performance-Marketing ist eine vorhandene Kompetenz und kann als Leistung sichtbar sein, ist aber **nicht** der globale Rollen-Claim
 - Solar, Wärmepumpe und Speicher bleiben eine **spezialisierte Vertikale mit eigenem Funnel und starkem Proof**, nicht mehr die einzige globale Positionierung
@@ -64,7 +64,7 @@ Die Startseite ist zugleich Marke und direkte Freelancer-Money-Page. Sie überni
 
 ### Globaler Einstieg
 
-- `/` = WordPress-Freelancer-Positionierung + direkte Leistungen, Proof und Projektanfrage
+- `/` = zentraler direkter WordPress-Einstieg + Leistungen, Proof und Projektanfrage; SEO-Owner für den Freelancer-Intent
 - Globale sichtbare Kompetenz: WordPress, technisches SEO, Tracking, Conversion
 - Globaler generischer CTA außerhalb der Spezialfunnel: **Projekt anfragen**
 
