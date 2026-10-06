@@ -116,11 +116,11 @@ get_header();
 				<h2 id="problem">Das eigentliche Problem: Mehr Budget, gleiche Reibung</h2>
 				<p>Viele Unternehmen erhöhen jedes Jahr den Media-Spend in Ads. Trotzdem verbessert sich die Lead-Qualität nicht proportional. Die Ursache liegt meist nicht in der Kampagnenidee, sondern in der Zielseite und im technischen Fundament dahinter.</p>
 				<p>Wenn Landingpages langsam laden, mobil unklar sind und Tracking-Lücken enthalten, wird jedes weitere Budget ineffizient eingesetzt. In der Praxis bedeutet das: Das Marketing meldet mehr Klicks, der Vertrieb meldet gleichbleibende oder schlechtere Gesprächsqualität.</p>
-				<p>Technisches SEO ist deshalb kein redaktionelles Nebenthema, sondern Infrastruktur. Ohne saubere Basis verlieren Sie an drei Stellen gleichzeitig:</p>
+				<p>Technisches SEO ist deshalb kein redaktionelles Nebenthema, sondern Infrastruktur. Eine schwache technische Basis kann mehrere Probleme gleichzeitig verstärken:</p>
 				<ul>
-					<li>höhere Klickpreise bei gleicher Sichtbarkeit</li>
-					<li>niedrigere Conversion Rate trotz wachsendem Traffic</li>
-					<li>mehr manuelle Vorqualifizierung im Vertrieb</li>
+					<li>schlechtere Nutzbarkeit auf wichtigen Einstiegsseiten</li>
+					<li>mehr Reibung zwischen Klick, Inhalt und Formular</li>
+					<li>Messfehler, die Kampagnen- und Vertriebsentscheidungen erschweren</li>
 				</ul>
 				<p>Genau hier beginnt das Zusammenspiel aus <a href="<?php echo esc_url( $seo_url ); ?>">technischem SEO Audit</a>, <a href="<?php echo esc_url( $cwv_url ); ?>">Core Web Vitals</a> und sauberem <a href="<?php echo esc_url( $tracking_url ); ?>">Tracking</a>.</p>
 
@@ -153,8 +153,8 @@ get_header();
 				<h2 id="mythos">Mythos vs. Realität: SEO ist Infrastruktur, nicht Textkosmetik</h2>
 				<p><strong>Mythos 1:</strong> SEO bedeutet vor allem Keywords in Texte zu schreiben.<br>
 				<strong>Realität:</strong> SEO beginnt mit Crawlability, Ladezeit, Informationsarchitektur und Datensauberkeit.</p>
-				<p><strong>Mythos 2:</strong> Ads bringen Umsatz, SEO bringt später vielleicht Traffic.<br>
-				<strong>Realität:</strong> Ohne SEO-Substanz sinkt die Effizienz von Ads, weil Landingpages schlechter bewertet und schwacher konvertieren.</p>
+				<p><strong>Mythos 2:</strong> Ads und technisches SEO sind zwei vollständig getrennte Systeme.<br>
+				<strong>Realität:</strong> Beide können dieselbe Landingpage nutzen. Ladezeit, mobile Nutzbarkeit, Inhalt und Messung beeinflussen deshalb die Qualität der Zielseite — ohne dass daraus eine direkte SEO-zu-CPC-Formel folgt.</p>
 				<p><strong>Mythos 3:</strong> Technisches SEO ist nur für Konzerne relevant.<br>
 				<strong>Realität:</strong> Gerade im Mittelstand wirkt es stark, weil jede unproduktive Stunde im Vertrieb und jeder teure Klick direkt auf Marge und Kapazität drückt.</p>
 				<p>Eine belastbare SEO Strategie Mittelstand beantwortet deshalb keine Vanity-Fragen, sondern Management-Fragen:</p>
@@ -164,17 +164,17 @@ get_header();
 					<li>welche technischen Engpässe treiben Cost per Lead nach oben?</li>
 				</ul>
 
-				<h2 id="quality-score">Google Ads Quality Score, Core Web Vitals und CPC senken</h2>
-				<p>Google Ads bewertet nicht nur Gebot und Anzeigentext. Die Landingpage-Erfahrung ist Teil der Wirtschaftlichkeit. Genau dort greift technisches SEO direkt in Paid-Ergebnisse ein.</p>
-				<p>Laut Think with Google springen 53 Prozent mobiler Nutzer ab, wenn eine Seite länger als drei Sekunden lädt. Dieser Verlust passiert vor dem Formular, vor dem Sales-Call und vor jeder Lead-Qualifizierung.</p>
-				<p>Für die Praxis bedeutet das: Core Web Vitals sind kein Reporting-Sidequest, sondern ein CPL-Thema.</p>
+				<h2 id="quality-score">Landingpage-Erfahrung, Core Web Vitals und Google Ads sauber einordnen</h2>
+				<p>Google Ads bewertet die Qualität einer Anzeige unter anderem anhand der erwarteten Klickrate, Anzeigenrelevanz und Landingpage-Erfahrung. Der Quality Score ist dabei ein Diagnosewert und kein direkter Eingabefaktor der Auktion.</p>
+				<p>Core Web Vitals beschreiben reale Nutzungserfahrungen rund um Laden, Reaktionsfähigkeit und visuelle Stabilität. Sie sind ein Teil der gesamten Page Experience — aber weder eine Rankinggarantie noch eine direkte Formel für CPC oder Conversion.</p>
+				<p>Für die Praxis bedeutet das: technische Performance wird auf der konkreten Einstiegsseite gemessen und gemeinsam mit Suchintention, Inhalt und Conversion-Weg bewertet.</p>
 				<ul>
 					<li><strong>LCP</strong> zeigt, wie schnell der Hauptinhalt sichtbar wird</li>
 					<li><strong>INP</strong> zeigt, wie reaktionsfähig die Seite auf Interaktionen ist</li>
 					<li><strong>CLS</strong> zeigt visuelle Stabilität während des Ladens</li>
 				</ul>
-				<p>Wenn <?php echo nexus_glossary_link( 'lcp', 'LCP' ); ?>, <?php echo nexus_glossary_link( 'inp', 'INP' ); ?> und <?php echo nexus_glossary_link( 'cls', 'CLS' ); ?> stabil im grünen Bereich liegen, sinken Reibung und Absprünge. Benchmarks zeigen zudem, dass ein besserer Quality Score den CPC spürbar entlasten kann. Die größte Hebelwirkung entsteht dort, wo <a href="<?php echo esc_url( $cwv_url ); ?>">Core Web Vitals</a> und Anzeigenerlebnis gemeinsam optimiert werden.</p>
-				<p>Wenn Ihr Ziel "CPC senken" lautet, ist die Antwort selten "nur anderes Targeting". In vielen Konten ist die schnellste Rendite ein technischer Landingpage-Fix.</p>
+				<p>Wenn <?php echo nexus_glossary_link( 'lcp', 'LCP' ); ?>, <?php echo nexus_glossary_link( 'inp', 'INP' ); ?> und <?php echo nexus_glossary_link( 'cls', 'CLS' ); ?> stabil im guten Bereich liegen, ist ein technischer Teil der Nutzungserfahrung sauber. Ob dadurch weniger Absprünge, bessere Conversion oder bessere Kampagnenwerte entstehen, muss jedoch auf der konkreten Seite gemessen werden.</p>
+				<p>Wenn Ihr Ziel niedrigere Akquisekosten sind, prüfen Sie deshalb nicht nur Targeting und Gebot, sondern auch Ladeverhalten, Relevanz, Formularweg und Messqualität der Landingpage.</p>
 
 				<h2 id="seo-sea">SEO und SEA Zusammenspiel: Zwei Kanäle, ein System</h2>
 				<p>Das klassische Silodenken trennt organische Sichtbarkeit und Paid Traffic organisatorisch. Nutzer verhalten sich jedoch kanalunabhängig. Sie vergleichen, springen, kommen wieder, wechseln Endgeräte und treffen Entscheidungen in Wellen.</p>
@@ -285,7 +285,7 @@ get_header();
 					<li>Core Web Vitals Priorisierung nach Umsatzhebel statt nach Gesamttraffic</li>
 					<li>Fehlerbereinigung in Formularen, Tags, Consent und UTM-Logik</li>
 				</ul>
-				<p>Erwartbarer Effekt: Messbarkeit steigt, Datenlücken sinken, erste Reibungsverluste werden sofort sichtbar.</p>
+				<p>Messkriterium: Nach dieser Phase müssen definierte Events reproduzierbar auslösen, Consent-Zustände nachvollziehbar sein und technische Abweichungen dokumentiert werden. Ob sich daraus bessere Geschäftskennzahlen ergeben, wird anschließend separat gemessen.</p>
 				<h3>Phase 2 (Woche 5-8): Conversion-Logik und Qualifizierung aufbauen</h3>
 				<ul>
 					<li>Seitenstruktur nach Suchintention und Reifegrad neu ordnen</li>
