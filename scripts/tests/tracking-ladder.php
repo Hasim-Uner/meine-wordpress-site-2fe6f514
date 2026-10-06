@@ -70,7 +70,7 @@ $mixed_copy = hu_website_quote( 5, 'neubau', false, [
 	'sales_pages' => 2,
 	'texte' => 1,
 ] );
-check( 1070 === $mixed_copy['text_price'] && 5250 === $mixed_copy['price'] && 1.5 === $mixed_copy['components']['texts'], 'copy price and time follow the selected page types' );
+check( 1070 === $mixed_copy['text_price'] && 5250 === $mixed_copy['price'] && 2.0 === $mixed_copy['components']['texts'], 'copy price and time follow the selected page types' );
 
 check( 3 === hu_website_quote( 1, 'neubau', true )['days'], 'tracking adds one project day' );
 check( 5 === hu_website_quote( 1, 'neubau', true, [ 'design' => 'neu', 'design_layouts' => 1 ] )['days'], 'one custom layout and tracking add their distinct phases' );
