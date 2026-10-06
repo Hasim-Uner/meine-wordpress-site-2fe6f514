@@ -199,32 +199,55 @@ foreach ( [ false, true ] as $confirmation_mail ) {
 echo "Endpoint behavior passed; WP persistence and actual mail delivery are not exercised.\n";
 
 run_case( 'website scope reaches actual endpoint, both mails and CRM', static function () use ( $contact ) {
+	// Legacy links without page-type counters remain valid: extras become standard pages.
 	$p = array_merge( $contact, [ 'focus' => 'website', 'seiten' => '5', 'art' => 'relaunch', 'tracking' => '1', 'website_price' => 1, 'website_weeks' => 1, 'website_days' => 1, 'website_calc_version' => 'forged' ] );
 	$r = call_intake( 'contact', $p );
 	check( 201 === $r->status && true === $r->data['ok'], 'Product accepted' );
 	$v = nexus_validate_contact_request_payload( $p );
-	check( 4390 === $v['website_price'] && 5 === $v['website_days'] && 1 === $v['website_weeks'] && 'forged' !== $v['website_calc_version'], 'Price, working days and rule version are recalculated, tampering ignored' );
-	check( 5 === get_post_meta( 1, '_nexus_contact_website_pages' ) && 'relaunch' === get_post_meta( 1, '_nexus_contact_website_kind' ), 'Structured CRM scope persisted' );
+	check( 4390 === $v['website_price'] && 7 === $v['website_days'] && 2 === $v['website_weeks'] && 'forged' !== $v['website_calc_version'], 'Legacy price, typed production time and rule version are recalculated, tampering ignored' );
+	check( 5 === get_post_meta( 1, '_nexus_contact_website_pages' ) && 4 === get_post_meta( 1, '_nexus_contact_website_pages_standard' ) && 'relaunch' === get_post_meta( 1, '_nexus_contact_website_kind' ), 'Legacy scope is normalized to standard pages in CRM' );
 	check( 1 === get_post_meta( 1, '_nexus_contact_website_tracking' ), 'Tracking persisted' );
 	check( str_contains( nexus_get_contact_request_activity_summary( $v ), '4.390' ), 'CRM activity contains calculated scope' );
 	check( 2 === count( $GLOBALS['intake_test']['mails'] ), 'Both mails built' );
 	foreach ( $GLOBALS['intake_test']['mails'] as $mail ) {
-		check( str_contains( $mail['body'], '5 Seiten' ) && str_contains( $mail['body'], 'Relaunch' ) && str_contains( $mail['body'], '4.390' ), 'Mails carry the scope' );
+		check( str_contains( $mail['body'], '5 Seiten' ) && str_contains( $mail['body'], '4 Standardseiten' ) && str_contains( $mail['body'], '4.390' ), 'Mails carry normalized legacy scope' );
 	}
 } );
-run_case( 'website boundaries, invalid configuration and generic compatibility', static function () use ( $contact ) {
-	foreach ( [ [1, 'neubau', 0, 1900, 2], [2, 'relaunch', 0, 2300, 4], [10, 'relaunch', 1, 6390, 6] ] as $case ) {
+
+run_case( 'typed website scope prices copy per page type and persists dimensions', static function () use ( $contact ) {
+	$p = array_merge( $contact, [
+		'focus' => 'website', 'seiten' => '5', 'kurz' => '1', 'standard' => '1', 'leistung' => '2',
+		'art' => 'neubau', 'texte' => '1', 'website_price' => 1, 'website_text_price' => 1,
+	] );
+	$r = call_intake( 'contact', $p );
+	check( 201 === $r->status && true === $r->data['ok'], 'Typed product accepted' );
+	$v = nexus_validate_contact_request_payload( $p );
+	check( 5250 === $v['website_price'] && 2280 === $v['website_page_price'] && 1070 === $v['website_text_price'] && 7 === $v['website_days'], 'Typed scope price and copy contribution are recalculated' );
+	check( 1 === get_post_meta( 1, '_nexus_contact_website_pages_utility' ) && 1 === get_post_meta( 1, '_nexus_contact_website_pages_standard' ) && 2 === get_post_meta( 1, '_nexus_contact_website_pages_sales' ), 'Typed page dimensions persist in CRM' );
+	check( 2280 === get_post_meta( 1, '_nexus_contact_website_page_price' ) && 1070 === get_post_meta( 1, '_nexus_contact_website_text_price' ), 'Page and copy subtotals persist in CRM' );
+} );
+
+run_case( 'website boundaries, typed-count integrity and generic compatibility', static function () use ( $contact ) {
+	foreach ( [ [1, 'neubau', 0, 1900, 2], [2, 'relaunch', 0, 2300, 5], [10, 'relaunch', 1, 6390, 10] ] as $case ) {
 		$v = nexus_validate_contact_request_payload( array_merge( $contact, [ 'focus' => 'website', 'seiten' => (string) $case[0], 'art' => $case[1], 'tracking' => $case[2] ] ) );
-		check( ! is_wp_error( $v ) && $case[3] === $v['website_price'] && $case[4] === $v['website_days'], 'Boundary price/time' );
+		check( ! is_wp_error( $v ) && $case[3] === $v['website_price'] && $case[4] === $v['website_days'], 'Legacy boundary price/time' );
 	}
 	foreach ( [ '0', '11', '-1', '1.5', '2oops', ['2'] ] as $pages ) {
 		$r = call_intake( 'contact', array_merge( $contact, [ 'focus' => 'website', 'seiten' => $pages ] ) );
 		check( 400 === $r->status && 'invalid_website_scope' === $r->data['error_code'], 'Invalid pages rejected' );
 	}
-	foreach ( [ ['art' => 'unknown'], ['tracking' => 'yes'], ['dashboard' => 'yes'], ['crm' => ['1']], ['design' => 'unknown'], ['design' => [ 'neu' ] ], ['design' => 'basis', 'screendesign' => '1'], ['design' => 'neu', 'design_layouts' => '0'], ['design_layouts' => '4'], ['design_layouts' => [ '1' ] ] ] as $bad ) {
+	foreach ( [
+		['art' => 'unknown'], ['tracking' => 'yes'], ['dashboard' => 'yes'], ['crm' => ['1']],
+		['design' => 'unknown'], ['design' => [ 'neu' ] ], ['design' => 'basis', 'screendesign' => '1'],
+		['design' => 'neu', 'design_layouts' => '0'], ['design_layouts' => '4'], ['design_layouts' => [ '1' ] ],
+		['kurz' => '-1'], ['standard' => '1.5'], ['leistung' => ['1']],
+		['kurz' => '1', 'standard' => '1', 'leistung' => '0'],
+	] as $bad ) {
 		$v = nexus_validate_contact_request_payload( array_merge( $contact, [ 'focus' => 'website', 'seiten' => '3' ], $bad ) );
-		check( is_wp_error( $v ), 'Invalid kind/tracking rejected' );
+		check( is_wp_error( $v ), 'Invalid website configuration rejected' );
 	}
+	$typed = nexus_validate_contact_request_payload( array_merge( $contact, [ 'focus' => 'website', 'seiten' => '3', 'kurz' => '0', 'standard' => '1', 'leistung' => '1' ] ) );
+	check( ! is_wp_error( $typed ) && 3090 === $typed['website_price'], 'Valid mixed typed scope is accepted' );
 	check( ! is_wp_error( nexus_validate_contact_request_payload( $contact ) ), 'Other contact enquiries stay compatible' );
 } );
 
@@ -233,9 +256,9 @@ run_case( 'priced extensions and unpriced dashboard persist through intake', sta
 	$r = call_intake( 'contact', $p );
 	check( 201 === $r->status, 'All extensions accepted' );
 	$v = nexus_validate_contact_request_payload( $p );
-	check( 5120 === $v['website_price'] && 10 === $v['website_days'] && 4.0 === (float) $v['website_preparation_days'] && 940 === $v['website_design_price'] && 1 === $v['website_duration_open'], 'Server recalculates every factor and only dashboard is open' );
-	check( 1 === get_post_meta( 1, '_nexus_contact_website_dashboard' ) && 5120 === get_post_meta( 1, '_nexus_contact_website_price' ) && 940 === get_post_meta( 1, '_nexus_contact_website_design_price' ), 'Calculated prices and dashboard selection reach CRM' );
+	check( 5560 === $v['website_price'] && 10 === $v['website_days'] && 3.25 === (float) $v['website_preparation_days'] && 940 === $v['website_design_price'] && 1 === $v['website_duration_open'], 'Server recalculates every factor and only dashboard is open' );
+	check( 1 === get_post_meta( 1, '_nexus_contact_website_dashboard' ) && 5560 === get_post_meta( 1, '_nexus_contact_website_price' ) && 440 === get_post_meta( 1, '_nexus_contact_website_text_price' ) && 940 === get_post_meta( 1, '_nexus_contact_website_design_price' ), 'Calculated prices and dashboard selection reach CRM' );
 	foreach ( $GLOBALS['intake_test']['mails'] as $mail ) {
-		check( str_contains( $mail['body'], '5.120' ) && str_contains( $mail['body'], 'CRM-Anbindung Standard' ) && str_contains( $mail['body'], 'Daten-Dashboard nach Angebot' ), 'Both mails distinguish fixed extras and dashboard' );
+		check( str_contains( $mail['body'], '5.560' ) && str_contains( $mail['body'], 'Texterstellung 440' ) && str_contains( $mail['body'], 'CRM-Anbindung Standard' ) && str_contains( $mail['body'], 'Daten-Dashboard nach Angebot' ), 'Both mails distinguish copy, fixed extras and dashboard' );
 	}
 } );
