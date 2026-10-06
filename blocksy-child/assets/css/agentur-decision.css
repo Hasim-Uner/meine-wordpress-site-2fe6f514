@@ -346,14 +346,6 @@
   outline-offset: 4px;
 }
 
-.hu-agentur-decision-page .hu-authority-links__item b {
-  transition: none;
-}
-
-.hu-agentur-decision-page .hu-authority-links__item:hover b,
-.hu-agentur-decision-page .hu-authority-links__item:focus-visible b {
-  transform: none;
-}
 
 @media (max-width: 980px) {
   .agentur-decision .route-grid {
