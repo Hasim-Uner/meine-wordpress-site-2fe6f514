@@ -96,7 +96,7 @@ function hu_get_final_cut_authority_edges() : array {
 		'server_side' => [ 'tracking', 'conversion', 'whitelabel' ],
 		'conversion'  => [ 'landingpage', 'tracking', 'website' ],
 		'whitelabel'  => [ 'outsourcing', 'server_side', 'website' ],
-		'agentur_local'=> [ 'website', 'tracking', 'whitelabel' ],
+		'agentur_local'=> [ 'website', 'tracking', 'conversion' ],
 	];
 }
 
