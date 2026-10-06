@@ -1651,6 +1651,14 @@
   .anfrage-website #unterschied {
     padding-block:var(--s5);
   }
+  .anfrage-website .aw-prinzip-signal:not(.aw-prinzip-signal--besitz) {
+    display:grid;
+    grid-template-columns:repeat(3,minmax(0,1fr));
+    gap:var(--s1);
+  }
+  .anfrage-website .aw-prinzip-signal:not(.aw-prinzip-signal--besitz) i {
+    display:none;
+  }
   .anfrage-website .aw-prinzip-signal span {
     min-width:0;
     overflow-wrap:anywhere;
