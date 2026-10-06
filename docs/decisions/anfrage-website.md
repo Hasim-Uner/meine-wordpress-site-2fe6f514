@@ -79,11 +79,13 @@ und bekannte Summe ausdrücklich ohne Dashboard; vollständiges Angebot vor Auft
 
 ## Oberfläche und Datenpfad
 
-Hero → frühe Qualitätsgründe → reale Belege → kompakter Konfigurator
-→ aufklappbarer Lieferumfang und Erweiterungen → Qualitätsvergleich
-→ Zeitbeiträge → FAQ → Anfrage. Der Konfigurator startet mit Grundsystem und
-erster Hauptseite und unterscheidet zusätzliche kurze Seiten, Standardseiten
-und Leistungs-/Verkaufsseiten. Die drei Vorlagen setzen eine nachvollziehbare
+Hero → E3-Hauptbeleg → kompakter Konfigurator mit aufklappbarem
+Lieferumfang und Erweiterungen → drei Qualitätsprinzipien → kompakter Ablauf
+→ sechs Kauf-Fragen → Anfrage. Der frühere eigene Qualitätsblock, zwei
+zusätzliche Referenzkarten, doppelte PageSpeed-Verweise und der interaktive
+Sieben-Punkte-Vergleich sind seit der CRO-Kürzung vom 06.10.2026 entfernt.
+Der Konfigurator startet mit Grundsystem und erster Hauptseite und unterscheidet
+zusätzliche kurze Seiten, Standardseiten und Leistungs-/Verkaufsseiten. Die drei Vorlagen setzen eine nachvollziehbare
 Mischung dieser Seitentypen; sie sind Abkürzungen, keine Pakete.
 
 Texterstellung, Gestaltung und Projektmodule bleiben eigene Entscheidungen.
