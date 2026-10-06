@@ -19,7 +19,7 @@ if ( ! defined( 'ABSPATH' ) ) {
  * @return string
  */
 function hu_article_content_hygiene_version() : string {
-	return '2026-09-21-1';
+	return '2026-10-06-1';
 }
 
 /**
@@ -195,9 +195,95 @@ function hu_maybe_refresh_tracking_article_content() : void {
 		$replacement_count
 	);
 
+	// Final-Cut 2026-10: Der Artikel ist technischer Supporting Content.
+	// Kaufintent, Preise und Anbieter-Entscheidung gehoeren ausschliesslich der
+	// Money Page /server-side-tracking-b2b/. Gleichzeitig werden pauschale,
+	// unbelegte Prozent-, Compliance- und ROI-Versprechen aus dem Altartikel
+	// entfernt. Die technische Einordnung folgt damit dem aktuellen Proof-Standard.
+	$final_cut_claim_count = 0;
+	$content = str_replace(
+		[
+			'In Deutschland lehnen durchschnittlich 40 % der Website-Besucher das Cookie-Banner ab. Safari löscht Tracking-Cookies nach spätestens sieben Tagen, oft bereits nach 24 Stunden. Ad-Blocker verhindern bei rund 30 % der Desktop-Nutzer, dass Tracking-Skripte überhaupt laden. Das bedeutet: Die Daten, auf deren Basis Sie Ihre Marketingentscheidungen treffen, bilden bestenfalls 60 % der Realität ab.',
+			'Im B2B zählt jeder einzelne Lead. Wenn Sie 50 Leads pro Monat generieren und Ihr Tracking 20–40 % davon nicht erfasst, fehlen dem Google-Ads-Algorithmus 10–20 Conversion-Signale. Er lernt auf einem verzerrten Datensatz, optimiert falsch — und Ihr CPA steigt, ohne dass Sie den Grund erkennen.',
+			'Fünf messbare Vorteile von Server-Side Tracking',
+			'1. Deutlich mehr erfasste Conversions',
+			'Da das Tracking von Ihrer eigenen Domain kommt (First-Party-Kontext), wird es von Ad-Blockern und Browser-Restriktionen seltener blockiert. Unternehmen berichten nach dem Umstieg konsistent von 15 bis 55 % mehr erfassten Conversions. Bei Facebook-Tracking kann die Genauigkeit von unter 65 % auf über 90 % steigen.',
+			'2. Bessere Kampagnenperformance und niedrigere CPL',
+			'Mehr erfasste Conversions bedeuten nicht nur bessere Berichte — sie füttern die Algorithmen von Google Ads und Meta Ads mit vollständigeren Daten. Der Algorithmus lernt auf einem repräsentativeren Datensatz und kann dadurch besser optimieren. Das Ergebnis: niedrigere Cost-per-Lead und besserer ROAS.',
+			'3. Volle Datenkontrolle und DSGVO-Compliance',
+			'Jedes Tracking-Skript, das im Browser lädt, kostet Ladezeit. Google Analytics, Meta Pixel, LinkedIn Insight Tag — zusammen können das schnell 500 KB bis 1 MB JavaScript sein. Beim Server-Side Tracking wird nur ein schlankes Skript im Browser ausgeführt, der Rest passiert serverseitig.',
+			'Das verbessert direkt Ihre Core Web Vitals — und damit auch Ihr Google-Ranking. Denn Ladezeit ist ein Ranking-Faktor und beeinflusst die Conversion-Rate: Jede Sekunde über ~3 Sekunden LCP kostet messbar Leads.',
+			'Consent Mode V2: In Kombination mit Googles Consent Mode V2 können cookielose Pings gesendet werden, die den Werbe-Algorithmen aggregierte Signale liefern — ohne personenbezogene Daten zu übertragen. So bekommt der Algorithmus ein vollständigeres Bild, ohne den Datenschutz zu verletzen.',
+			'EU-Hosting: Wenn Ihr Server-Container auf einem europäischen Server läuft (z. B. Google Cloud in Frankfurt), verlassen die Daten Europa nur, wenn Sie es explizit erlauben.',
+			'Server-Side Tracking verbessert die Qualität der Daten, die Sie mit Einwilligung erheben. Wer einen guten Consent-Banner hat, bekommt durch Server-Side Tracking aus den vorhandenen Opt-ins deutlich mehr heraus. Die 60 % der Nutzer, die zustimmen, liefern mit Server-Side Tracking vollständigere und genauere Daten als vorher.',
+			'Das ist der Schlüssel, damit Ad-Blocker und Browser-Restriktionen Ihr Tracking nicht mehr blockieren.',
+			'Server-Side Tracking ist besonders sinnvoll, wenn Sie regelmäßig Werbebudget einsetzen (ab ca. 500 € monatlich lohnt sich die Investition fast immer), wenn Ihre Cookie-Banner-Ablehnungsrate hoch ist (in Deutschland typisch: 30–50 %), wenn Sie auf präzise Conversion-Daten für Kampagnenoptimierung angewiesen sind und wenn DSGVO-Compliance für Sie mehr als ein Lippenbekenntnis ist.',
+			'Stape/TAGGRS: Ab ca. 20–40 €/Monat, je nach Event-Volumen. Transparente Preise, ideal für KMUs.',
+			'Google Cloud Platform: Variabel, typisch 25–50 €/Monat für mittelgroße Websites. Erfordert technisches Know-how.',
+			'Die initiale Einrichtung durch einen spezialisierten Consultant liegt typisch zwischen 1.500 und 5.000 €, abhängig von der Komplexität Ihres bestehenden Tracking-Setups und der Anzahl der angebundenen Plattformen.',
+			'Rechnen Sie es durch: Wenn Sie 5.000 €/Monat in Google Ads investieren und durch Server-Side Tracking 20 % mehr Conversions erfassen, bekommt der Algorithmus bessere Signale. Das kann Ihren CPA um 10–20 % senken — bei 5.000 € Budget sind das 500–1.000 € Ersparnis pro Monat. Die Hosting-Kosten amortisieren sich in der Regel innerhalb des ersten Monats.',
+			'Die Frage ist nicht mehr „Server-Side Tracking ja oder nein?“, sondern: Wie schnell können wir umstellen?',
+			'Ja — vorausgesetzt, die Einwilligung der Nutzer wird korrekt eingeholt und die Datenverarbeitung transparent dokumentiert. Server-Side Tracking ersetzt nicht die Consent-Pflicht, verbessert aber die Kontrolle über Datenflüsse erheblich. In Kombination mit EU-Hosting und Consent Mode V2 ist es eine der datenschutzfreundlichsten Tracking-Methoden.',
+			'Die Hosting-Kosten liegen bei Anbietern wie Stape oder TAGGRS zwischen 20 und 40 € pro Monat. Bei Google Cloud Platform sind es typisch 25–50 €. Dazu kommen einmalige Setup-Kosten zwischen 1.500 und 5.000 €, abhängig von der Komplexität.',
+			'Besonders. Im B2B sind Leads wertvoller und Entscheidungszyklen länger. Jedes nicht erfasste Conversion-Signal verschlechtert die Kampagnenoptimierung. Ab ca. 500 € monatlichem Werbebudget amortisiert sich die Investition in der Regel innerhalb des ersten Monats.',
+			'Kostenlosen Journey Audit starten →',
+			'60 Sekunden · Kein Konto · Kein Sales-Call',
+		],
+		[
+			'Wie groß die Messlücke ist, lässt sich nicht aus allgemeinen Prozentwerten ableiten. Browser, Consent-Konfiguration, Event-Definitionen und Plattformen wirken je Setup unterschiedlich. Deshalb ist der belastbare Ausgangspunkt ein Paralleltest in den eigenen Konten.',
+			'Im B2B ist nicht die theoretische Zahl verlorener Events entscheidend, sondern ob dieselbe Anfrage in Browser, Server-Container, Ads-Plattform und CRM konsistent wiederzufinden ist. Genau diese Kette muss geprüft werden.',
+			'Fünf technische Hebel von Server-Side Tracking',
+			'1. Messsignale kontrollierter verarbeiten',
+			'Ein First-Party-Endpunkt kann die Messarchitektur robuster machen und gibt Ihnen mehr Kontrolle darüber, welche Daten weitergeleitet werden. Wie stark sich die gemessene Datenmenge verändert, muss im eigenen Setup per Paralleltest ermittelt werden.',
+			'2. Konsistentere Signale für Kampagnen',
+			'Server-Side Tracking kann die Datenqualität verbessern, garantiert aber weder niedrigere Leadkosten noch höheren ROAS. Entscheidend ist, ob Events sauber definiert, dedupliziert und den richtigen Conversion-Zielen zugeordnet sind.',
+			'3. Mehr Kontrolle über den Datenfluss',
+			'Serverseitiges Tagging kann Verarbeitung aus dem Browser verlagern und damit die Client-Last reduzieren. Der tatsächliche Performance-Effekt hängt jedoch davon ab, welche Bibliotheken und Requests clientseitig verbleiben und muss auf der konkreten Website gemessen werden.',
+			'Weniger Client-Verarbeitung kann die technische Performance unterstützen. Ob sich Core Web Vitals messbar verbessern, ist eine Frage des konkreten Setups und wird nicht aus dem Tracking-Modell allein abgeleitet.',
+			'Consent Mode V2 übermittelt Einwilligungszustände an unterstützte Google-Tags und beeinflusst deren Verhalten. Er ersetzt weder die Einwilligung noch das Consent-Management; welche Requests und Daten verarbeitet werden, hängt von der konkreten Konfiguration ab.',
+			'EU-Hosting kann ein Baustein der technischen und organisatorischen Gestaltung sein. Es sagt allein aber nicht, welche Daten anschließend an Google, Meta oder andere Empfänger weitergeleitet werden; dafür ist die tatsächliche Tag- und Consent-Konfiguration maßgeblich.',
+			'Server-Side Tracking kann die Datenverarbeitung besser kontrollierbar machen. Ob dadurch mehr nutzbare Signale entstehen, wird im Parallelbetrieb gegen die bisherige Messung geprüft — ohne pauschale Quote.',
+			'Eine eigene Domain bzw. Subdomain schafft einen First-Party-Kontext und kann Vorteile bei servergesetzten Cookies bieten. Sie ist jedoch keine Garantie dafür, dass jeder Browser oder Blocker jeden Request akzeptiert.',
+			'Server-Side Tracking ist sinnvoll, wenn ein konkretes Messproblem besteht: relevante Paid-Kampagnen, mehrere Conversion-Strecken, Anforderungen an Deduplizierung oder CRM-/Offline-Signale. Ohne klar definierte Conversions und operative Nutzung der Daten ist zusätzliche Infrastruktur nicht automatisch die richtige Priorität.',
+			'Die laufenden Hosting-Kosten hängen von Anbieter, Region, Event-Volumen und Betriebsmodell ab. Für die Entscheidung zählt deshalb nicht ein allgemeiner Marktpreis, sondern der benötigte technische Scope.',
+			'Google Cloud und spezialisierte Hosting-Anbieter haben unterschiedliche Betriebs- und Kostenmodelle. Die Infrastruktur wird vor dem Setup passend zu Volumen, Eigentum und Wartungsbedarf gewählt.',
+			sprintf( 'Für die Umsetzung gilt kein pauschaler Marktpreis. Den aktuellen Leistungsumfang und die kanonischen Preise finden Sie auf der <a href="%1$s">Server-Side-Tracking-Seite</a>.', esc_url( $tracking_url ) ),
+			'Ein seriöser ROI lässt sich vor der Messung nicht aus einer allgemeinen Prozentzahl berechnen. Im Paralleltest werden Event-Vollständigkeit, Dubletten, Plattformabweichungen und gegebenenfalls CRM-Rücksignale verglichen; erst daraus entsteht eine belastbare wirtschaftliche Einordnung.',
+			'Die richtige Frage lautet: Welches konkrete Messproblem soll Server-Side Tracking lösen — und lässt sich dieser Effekt im Paralleltest nachweisen?',
+			'Nicht automatisch. Server-Side Tracking verändert die technische Verarbeitung, ersetzt aber weder Einwilligung noch rechtliche Prüfung. Consent-Signale, Datenminimierung, Empfänger und Verträge müssen zum konkreten Setup passen.',
+			sprintf( 'Hosting und Setup hängen vom technischen Umfang ab. Aktuelle Paketpreise und die Abgrenzung zwischen Browser-Messung und Server-Side finden Sie auf der <a href="%1$s">Leistungsseite</a>.', esc_url( $tracking_url ) ),
+			'Nicht pauschal. Im B2B kann Server-Side Tracking sinnvoll sein, wenn relevante Paid-Kampagnen, mehrere Conversion-Wege oder CRM-/Offline-Signale vorliegen. Die Entscheidung folgt dem Messproblem, nicht einem festen Mindestbudget.',
+			'Server-Side-Setup prüfen →',
+			'Leistungsumfang, Preise und Abnahme ansehen.',
+		],
+		$content,
+		$final_cut_claim_count
+	);
+	$replacement_count += (int) $final_cut_claim_count;
+
+	// Der historische Zwischenstand trug die alte Systembezeichnung noch in
+	// einer leicht abweichenden Fassung. Diese Variante wird separat entfernt.
+	$owned_first_final_count = 0;
+	$content = str_replace(
+		'Es ist ein zentraler Baustein einer Owned-First-Strategie — dem Ansatz, eigene Kanäle zu optimieren, bevor man Werbebudgets skaliert.',
+		'Es ist ein Baustein einer belastbaren Messkette: Consent, Browser-Events, Server-Verarbeitung und CRM-Rücksignale werden als ein System geprüft.',
+		$content,
+		$owned_first_final_count
+	);
+	$replacement_count += (int) $owned_first_final_count;
+
 	$new_title = $current_title;
-	if ( 'Server-Side Tracking mit GTM: Warum deutsche B2B-Unternehmen jetzt umstellen müssen' === $current_title ) {
-		$new_title = 'Server-Side Tracking mit GTM: Setup, Consent und saubere Messketten';
+	if (
+		in_array(
+			$current_title,
+			[
+				'Server-Side Tracking mit GTM: Warum deutsche B2B-Unternehmen jetzt umstellen müssen',
+				'Server-Side Tracking mit GTM: Setup, Consent und saubere Messketten',
+			],
+			true
+		)
+	) {
+		$new_title = 'Server-Side Tracking mit GTM: Architektur, Consent und Paralleltest';
 	}
 
 	$needs_update = $content !== $current_content || $new_title !== $current_title;
@@ -230,6 +316,12 @@ function hu_maybe_refresh_tracking_article_content() : void {
 		'WordPress Growth Operating System (WGOS)',
 		'Owned-First-Systems',
 		'Owned-First-Strategie',
+		'bilden bestenfalls 60 % der Realität ab',
+		'15 bis 55 % mehr erfassten Conversions',
+		'DSGVO-Compliance',
+		'ab ca. 500 € monatlich lohnt sich die Investition fast immer',
+		'amortisieren sich in der Regel innerhalb des ersten Monats',
+		'Kostenlosen Journey Audit starten',
 	];
 
 	$remaining_content = $needs_update ? $content : $current_content;

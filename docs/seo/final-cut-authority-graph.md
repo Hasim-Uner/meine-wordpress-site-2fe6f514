@@ -40,6 +40,16 @@ Primäre Knoten:
 | Relaunch | `/website-relaunch/` | informationaler Relaunch-Owner |
 | Auslagern | `/wordpress-projekte-auslagern/` | informationaler Agentur-Owner |
 
+## Tracking-Support
+
+`/server-side-tracking-b2b/` bleibt alleiniger kommerzieller Owner für
+`server side tracking`, Anbieter-/Agentur- und DSGVO-nahe Kaufintents.
+
+`/server-side-tracking-gtm/` ist Supporting Content für die technische Frage:
+Architektur aus Web-GTM + Server-GTM, Consent-Signale, Deduplizierung und
+Paralleltest. Der Beitrag darf den Owner stärken, aber keine eigene Anbieter-
+oder Preispositionierung aufbauen.
+
 ## Regeln
 
 1. Pro Knoten höchstens drei Kontextziele.
