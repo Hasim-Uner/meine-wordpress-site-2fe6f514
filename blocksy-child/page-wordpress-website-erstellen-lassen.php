@@ -64,18 +64,6 @@ get_header();
     <a href="#fragen" data-track-action="website_offer_chapter_faq" data-track-category="navigation">Fragen</a>
   </nav>
 
-  <section class="aw-qualitaet" id="qualitaet" aria-labelledby="h-qualitaet">
-    <div class="wrap">
-      <div class="aw-qualitaet-kopf"><p class="mono">Gestaltung, die eine Aufgabe erfüllt</p><h2 id="h-qualitaet">Woran Sie die Qualität erkennen.</h2><p>Ein verständlicher Einstieg. Nachvollziehbare Kosten. Ein geprüfter Anfrageweg. Hier können Sie den Aufbau selbst ansehen und den Preis berechnen.</p></div>
-      <div class="aw-qualitaetsgruende">
-        <div><span class="mono">01 · Verständlichkeit</span><h3>Jeder Abschnitt führt weiter.</h3><p>Klare Überschriften, lesbare Inhalte und sichtbare Buttons helfen Besuchern, Ihr Angebot zu verstehen und den nächsten Schritt zu finden.</p><a class="aw-prueflink" href="#unterschied" data-track-action="website_offer_quality_structure" data-track-category="navigation">Aufbau ansehen <span aria-hidden="true">→</span></a></div>
-        <div><span class="mono">02 · Entscheidung</span><h3>Sie sehen, wofür Sie bezahlen.</h3><p>Seitentypen, Texterstellung, Gestaltung und Extras verändern Preis und Planungszeit direkt. Enthaltene Leistungen und zusätzliche Kosten bleiben getrennt sichtbar.</p><a class="aw-prueflink" href="#angebot" data-track-action="website_offer_quality_price" data-track-category="navigation">Preis selbst berechnen <span aria-hidden="true">→</span></a></div>
-        <div><span class="mono">03 · Betrieb</span><h3>Die Anfrage endet mit einer Bestätigung.</h3><p>Formular, gespeicherte Anfrage, Mailversand und Danke-Seite werden vor der Übergabe geprüft. Texte und Bilder können Sie danach selbst in WordPress pflegen.</p><a class="aw-prueflink" href="#lieferumfang" data-track-action="website_offer_quality_delivery" data-track-category="navigation">Lieferumfang prüfen <span aria-hidden="true">→</span></a></div>
-      </div>
-      <div class="aw-qualitaet-fuss"><p>Einmalpreis, Code und Zugänge in Ihrer Hand. Von der ersten Abstimmung bis zur Übergabe arbeiten Sie direkt mit mir.</p><a class="aw-prueflink" href="<?php echo esc_url( $psi_url ); ?>" target="_blank" rel="noopener" data-track-action="website_offer_quality_performance" data-track-category="proof">Diese Seite selbst messen <span aria-hidden="true">↗</span><span class="nur-vorlesen"> (PageSpeed Insights, öffnet in neuem Tab)</span></a></div>
-    </div>
-  </section>
-
   <section class="abschnitt aw-referenzen" id="beleg" aria-labelledby="h-beleg">
     <div class="wrap">
       <div class="aw-referenzen-kopf">
