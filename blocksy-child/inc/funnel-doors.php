@@ -251,10 +251,10 @@ function hu_funnel_reader_dossier( $post_slug = '' ) {
 		'leadgenerierung',
 	];
 	$labels   = [
-		'leadgenerierung'       => 'Eigene Anfragen & Leadökonomie',
-		'wordpress-performance' => 'WordPress & Performance',
-		'tracking'              => 'Tracking & Messbarkeit',
-		'cro'                   => 'Conversion & Anfragearchitektur',
+		'leadgenerierung'       => 'Leadökonomie & Energie',
+		'wordpress-performance' => 'WordPress & technisches SEO',
+		'tracking'              => 'Tracking & Attribution',
+		'cro'                   => 'Conversion & Landingpages',
 	];
 	$overrides = [
 		'aroundhome-solar-einordnung'           => 'leadgenerierung',
