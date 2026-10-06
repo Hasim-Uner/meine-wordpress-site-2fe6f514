@@ -233,9 +233,9 @@ run_case( 'priced extensions and unpriced dashboard persist through intake', sta
 	$r = call_intake( 'contact', $p );
 	check( 201 === $r->status, 'All extensions accepted' );
 	$v = nexus_validate_contact_request_payload( $p );
-	check( 4600 === $v['website_price'] && 10 === $v['website_days'] && 4.0 === (float) $v['website_preparation_days'] && 940 === $v['website_design_price'] && 1 === $v['website_duration_open'], 'Server recalculates every factor and only dashboard is open' );
-	check( 1 === get_post_meta( 1, '_nexus_contact_website_dashboard' ) && 4600 === get_post_meta( 1, '_nexus_contact_website_price' ) && 940 === get_post_meta( 1, '_nexus_contact_website_design_price' ), 'Calculated prices and dashboard selection reach CRM' );
+	check( 5120 === $v['website_price'] && 10 === $v['website_days'] && 4.0 === (float) $v['website_preparation_days'] && 940 === $v['website_design_price'] && 1 === $v['website_duration_open'], 'Server recalculates every factor and only dashboard is open' );
+	check( 1 === get_post_meta( 1, '_nexus_contact_website_dashboard' ) && 5120 === get_post_meta( 1, '_nexus_contact_website_price' ) && 940 === get_post_meta( 1, '_nexus_contact_website_design_price' ), 'Calculated prices and dashboard selection reach CRM' );
 	foreach ( $GLOBALS['intake_test']['mails'] as $mail ) {
-		check( str_contains( $mail['body'], '4.600' ) && str_contains( $mail['body'], 'CRM-Anbindung Standard' ) && str_contains( $mail['body'], 'Daten-Dashboard nach Angebot' ), 'Both mails distinguish fixed extras and dashboard' );
+		check( str_contains( $mail['body'], '5.120' ) && str_contains( $mail['body'], 'CRM-Anbindung Standard' ) && str_contains( $mail['body'], 'Daten-Dashboard nach Angebot' ), 'Both mails distinguish fixed extras and dashboard' );
 	}
 } );
