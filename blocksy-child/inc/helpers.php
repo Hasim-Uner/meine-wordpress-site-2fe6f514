@@ -697,6 +697,7 @@ function nexus_get_agentur_faq_items() {
 		],
 	];
 }
+
 /**
  * Return the FAQ set for the landing page offer /landingpage-erstellen-lassen/.
  *
