@@ -208,6 +208,13 @@ function hu_render_final_cut_authority_links() : void {
 		return;
 	}
 
+	// Die lokale Agentur-Entscheidungsseite rendert ihre drei benachbarten
+	// Query-Owner bewusst im Abschnitt #zusammenarbeit. Ein zweiter identischer
+	// Block vor dem Footer waere Link-Dopplung ohne zusaetzlichen Kontext.
+	if ( 'agentur_local' === $current ) {
+		return;
+	}
+
 	$links = hu_get_final_cut_authority_links( $current );
 	if ( empty( $links ) ) {
 		return;
