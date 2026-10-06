@@ -38,9 +38,9 @@ get_header();
       <div>
         <div class="produkt"><span class="marke-produkt">Die Anfrage-Website</span><span class="mono">WordPress · Neubau oder Relaunch</span></div>
         <h1 id="h-hero">WordPress-Website erstellen lassen.<br><span class="hero-akzent">Ihr Angebot klar.<br>Der nächste Schritt sichtbar.</span></h1>
-        <p class="aw-einstieg"><?php echo esc_html( $eur( HU_FREELANCER_WEBSITE_MIN ) ); ?> netto inkl. erster Seite · jede weitere Seite <?php echo esc_html( $eur( HU_FREELANCER_WEBSITE_EXTRA_PAGE ) ); ?></p>
+        <p class="aw-einstieg"><?php echo esc_html( $eur( HU_FREELANCER_WEBSITE_MIN ) ); ?> netto inkl. Grundsystem &amp; erster Hauptseite · weitere Seiten ab <?php echo esc_html( $eur( HU_WEBSITE_PAGE_UTILITY ) ); ?></p>
         <p class="lead">Für Unternehmen und Selbstständige, die ihre Leistungen erklären und passende Anfragen erhalten möchten. Ich entwickle Gestaltung, Inhalte und Anfrageweg zusammen: auf dem Handy genauso verständlich wie am großen Bildschirm.</p>
-        <ul class="aw-hero-checks" aria-label="Im Grundprodukt enthalten"><li>Texte &amp; responsive Gestaltung</li><li>Technisches SEO</li><li>Formular mit Bestätigung</li></ul>
+        <ul class="aw-hero-checks" aria-label="Im Grundprodukt enthalten"><li>Responsive Gestaltung</li><li>Technisches SEO</li><li>Formular mit Bestätigung</li></ul>
         <div class="aktion">
           <a class="btn" href="#angebot" data-track-action="website_offer_hero_configure" data-track-category="navigation" data-track-section="website_offer_hero">Website zusammenstellen <span aria-hidden="true">→</span></a>
           <a class="btn btn--sekundaer" href="#beleg" data-track-action="website_offer_to_beleg" data-track-category="navigation">Projekte ansehen <span aria-hidden="true">↓</span></a>
@@ -51,8 +51,8 @@ get_header();
         <div class="aw-produkt-kopf"><span class="mono">Die Anfrage-Website</span><span class="aw-status">Erweiterbar</span></div>
         <p class="mono">Festpreis ab</p>
         <p class="betrag"><?php echo esc_html( $eur( HU_FREELANCER_WEBSITE_MIN ) ); ?><small>netto</small></p>
-        <p class="regel">Website mit einer Seite. Jede weitere Seite <?php echo esc_html( $eur( HU_FREELANCER_WEBSITE_EXTRA_PAGE ) ); ?>. Mit fertigen Inhalten: <?php echo esc_html( $days( hu_website_quote( 1 )['components']['implementation'] ) ); ?> Umsetzung geplant. <span id="hero-bauzeit">Ihre Auswahl: <?php echo esc_html( $days( $quote['days'] ) ); ?> geplant.</span></p>
-        <ul class="aw-basis-kurz"><li>Texte auf Wunsch, Basisgestaltung inklusive</li><li>Formular, Bestätigungsmail &amp; Danke-Seite</li><li>Domain und Code gehören Ihnen</li></ul>
+        <p class="regel">Website mit Grundsystem und erster Hauptseite. Weitere Seiten nach Typ ab <?php echo esc_html( $eur( HU_WEBSITE_PAGE_UTILITY ) ); ?>. Mit fertigen Inhalten: <?php echo esc_html( $days( hu_website_quote( 1 )['components']['implementation'] ) ); ?> Umsetzung geplant. <span id="hero-bauzeit">Ihre Auswahl: <?php echo esc_html( $days( $quote['days'] ) ); ?> geplant.</span></p>
+        <ul class="aw-basis-kurz"><li>Basisgestaltung inklusive, Texterstellung optional</li><li>Formular, Bestätigungsmail &amp; Danke-Seite</li><li>Domain und Code gehören Ihnen</li></ul>
         <a class="zum leise" href="#angebot" data-track-action="website_offer_to_angebot" data-track-category="navigation">Seiten &amp; Extras auswählen ↓</a>
       </aside>
     </div>
@@ -130,21 +130,32 @@ get_header();
 
   <section class="abschnitt aw-konfigurator" id="angebot" aria-labelledby="h-angebot">
     <div class="wrap">
-      <div class="aw-config-heading"><div><p class="mono">02 · Preis &amp; Umfang</p><h2 id="h-angebot" tabindex="-1">Wie viel Website brauchen Sie?</h2></div><p>Texte und Basisgestaltung sind enthalten.<br><strong>Wählen Sie den Umfang, dann die Details.</strong></p></div>
-      <noscript><p class="mikro">Beispiel: drei Seiten, Neubau, Texte inklusive, ohne Extras. Nennen Sie Ihren gewünschten Umfang in der Anfrage.</p></noscript>
+      <div class="aw-config-heading"><div><p class="mono">02 · Preis &amp; Umfang</p><h2 id="h-angebot" tabindex="-1">Wie viel Website brauchen Sie?</h2></div><p>Basisgestaltung ist enthalten.<br><strong>Seitentypen, Texte und Extras werden getrennt kalkuliert.</strong></p></div>
+      <noscript><p class="mikro">Beispiel: drei Seiten, Neubau, fertige Texte, ohne Extras. Nennen Sie Seitentypen und gewünschten Umfang in der Anfrage.</p></noscript>
       <div class="aw-config-grid">
         <div class="aw-config-controls">
           <div class="aw-config-column">
             <fieldset class="aw-feld aw-umfang">
-              <legend><span class="aw-schritt">01</span> Wie viel Website brauchen Sie?</legend>
-              <p class="aw-feld-intro">Wählen Sie einen Ausgangspunkt. Jede weitere Seite können Sie einzeln ergänzen.</p>
-              <div id="beispiele" class="groessen" data-website-controls hidden role="group" aria-label="Seitenanzahl wählen">
-<?php foreach ( $scenarios as $scenario ) : $example_quote = hu_website_quote( $scenario['pages'], 'neubau', false, [ 'texte' => 1 ] ); ?>
-                <button type="button" class="aw-szenario" data-seiten="<?php echo esc_attr( (string) $scenario['pages'] ); ?>" data-website-scenario="<?php echo esc_attr( (string) $scenario['pages'] ); ?>" aria-pressed="<?php echo 3 === $scenario['pages'] ? 'true' : 'false'; ?>" data-track-action="website_offer_scenario_<?php echo esc_attr( (string) $scenario['pages'] ); ?>" data-track-category="navigation"><span><?php echo esc_html( $scenario['pages'] . ( 1 === $scenario['pages'] ? ' Seite' : ' Seiten' ) ); ?></span><small><?php echo esc_html( 1 === $scenario['pages'] ? 'Ihr Angebot im Überblick' : ( 3 === $scenario['pages'] ? 'Angebot, Leistung, Über uns' : 'Raum für mehrere Leistungen' ) ); ?></small><b><?php echo esc_html( $eur( $example_quote['price'] ) ); ?></b></button>
+              <legend><span class="aw-schritt">01</span> Welche Seiten brauchen Sie?</legend>
+              <p class="aw-feld-intro">Grundsystem und erste Hauptseite sind enthalten. Ergänzen Sie weitere Seiten nach Aufgabe – nicht nach einer pauschalen Seitenzahl.</p>
+              <div id="beispiele" class="groessen" data-website-controls hidden role="group" aria-label="Website-Beispiele wählen">
+<?php foreach ( $scenarios as $scenario ) :
+    $example_quote = hu_website_quote( $scenario['pages'], 'neubau', false, [
+        'utility_pages' => $scenario['utility'],
+        'standard_pages' => $scenario['standard'],
+        'sales_pages' => $scenario['sales'],
+        'texte' => 0,
+    ] );
+?>
+                <button type="button" class="aw-szenario" data-website-scenario="<?php echo esc_attr( (string) $scenario['pages'] ); ?>" data-utility="<?php echo esc_attr( (string) $scenario['utility'] ); ?>" data-standard="<?php echo esc_attr( (string) $scenario['standard'] ); ?>" data-sales="<?php echo esc_attr( (string) $scenario['sales'] ); ?>" aria-pressed="<?php echo 3 === $scenario['pages'] ? 'true' : 'false'; ?>" data-track-action="website_offer_scenario_<?php echo esc_attr( (string) $scenario['pages'] ); ?>" data-track-category="navigation"><span><?php echo esc_html( $scenario['title'] ); ?></span><small><?php echo esc_html( $scenario['example'] ); ?></small><b><?php echo esc_html( $eur( $example_quote['price'] ) ); ?></b></button>
 <?php endforeach; ?>
               </div>
-              <div class="aw-seitenzeile"><p>Individuell wählen<small>Weitere Seite +<?php echo esc_html( $eur( HU_FREELANCER_WEBSITE_EXTRA_PAGE ) ); ?></small></p><div class="stepper" data-website-controls hidden><button type="button" id="minus" aria-label="Eine Seite weniger">−</button><output id="seiten" aria-label="Gewählte Seitenanzahl">3</output><button type="button" id="plus" aria-label="Eine Seite mehr">+</button></div></div>
-              <p class="aw-hinweis">Impressum, Datenschutz, Danke- und 404-Seite zählen nicht mit.</p>
+              <div class="aw-seitentypen" data-website-controls hidden>
+                <div class="aw-seitenzeile" data-page-row="utility"><p>Kurze Seite<small>Kontakt, Standort, kurze Information · +<?php echo esc_html( $eur( HU_WEBSITE_PAGE_UTILITY ) ); ?></small></p><div class="stepper"><button type="button" id="utility-minus" data-page-type="utility" data-page-delta="-1" aria-label="Eine kurze Seite weniger">−</button><output id="utility-pages" aria-label="Kurze Seiten">0</output><button type="button" id="utility-plus" data-page-type="utility" data-page-delta="1" aria-label="Eine kurze Seite mehr">+</button></div></div>
+                <div class="aw-seitenzeile" data-page-row="standard"><p>Standardseite<small>Über uns, Team, Unternehmen · +<?php echo esc_html( $eur( HU_WEBSITE_PAGE_STANDARD ) ); ?></small></p><div class="stepper"><button type="button" id="standard-minus" data-page-type="standard" data-page-delta="-1" aria-label="Eine Standardseite weniger">−</button><output id="standard-pages" aria-label="Standardseiten">1</output><button type="button" id="standard-plus" data-page-type="standard" data-page-delta="1" aria-label="Eine Standardseite mehr">+</button></div></div>
+                <div class="aw-seitenzeile" data-page-row="sales"><p>Leistungs-/Verkaufsseite<small>Leistung, Angebot, Money Page · +<?php echo esc_html( $eur( HU_WEBSITE_PAGE_SALES ) ); ?></small></p><div class="stepper"><button type="button" id="sales-minus" data-page-type="sales" data-page-delta="-1" aria-label="Eine Leistungsseite weniger">−</button><output id="sales-pages" aria-label="Leistungsseiten">1</output><button type="button" id="sales-plus" data-page-type="sales" data-page-delta="1" aria-label="Eine Leistungsseite mehr">+</button></div></div>
+              </div>
+              <p class="aw-hinweis">Die erste Hauptseite ist immer enthalten. Maximal <?php echo esc_html( (string) HU_WEBSITE_CALCULATOR_MAX ); ?> Inhaltsseiten im Rechner; Impressum, Datenschutz, Danke- und 404-Seite zählen nicht mit.</p>
               <div class="art" data-website-controls hidden role="group" aria-label="Projektart"><button type="button" data-art="neubau" aria-pressed="true">Neubau</button><button type="button" data-art="relaunch" aria-pressed="false">Relaunch <small>+<?php echo esc_html( $days( $rules['days']['relaunch'] ) ); ?></small></button></div>
             </fieldset>
             <fieldset class="aw-feld aw-inhalte">
