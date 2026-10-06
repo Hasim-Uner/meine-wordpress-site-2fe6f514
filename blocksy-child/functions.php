@@ -22,6 +22,7 @@ $modules = [
 	'affiliate-links.php', // Affiliate-URL-Registry und Disclosure-Helper
 	'feature-flags.php',  // Staged Rollout-Schalter fuer neue Funnel-Routen und Submits
 	'article-content-hygiene.php',             // Einmalige Editor-Migrationen für Alt-Artikel
+	'article-content-hygiene-cwv.php',         // … Core-Web-Vitals-Artikel / Evidence Pass
 	'article-content-hygiene-ttfb.php',        // … TTFB-Artikel
 	'article-content-hygiene-landingpage.php', // … Landingpage-Artikel
 	'article-b2b-inquiry-system.php',          // … Artikel zum B2B-Anfragesystem
