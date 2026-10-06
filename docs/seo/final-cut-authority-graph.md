@@ -40,6 +40,14 @@ Primäre Knoten:
 | Relaunch | `/website-relaunch/` | informationaler Relaunch-Owner |
 | Auslagern | `/wordpress-projekte-auslagern/` | informationaler Agentur-Owner |
 
+## Relevante Kanten
+
+- `Agentur Hannover` → `Website` → transaktionaler Neubau-/Relaunch-Owner
+- `Agentur Hannover` → `Tracking` → Messbarkeits-Owner
+- `Agentur Hannover` → `Conversion` → Optimierungs-Owner
+
+Die lokale Agentur-Seite ist damit Entscheidungs-Hub für direkte Unternehmen. White-Label bleibt ein eigener Agentur-/Partner-Intent und ist kein Kontextziel dieser Route.
+
 ## Tracking-Support
 
 `/server-side-tracking-b2b/` bleibt alleiniger kommerzieller Owner für
