@@ -460,10 +460,13 @@ function hu_tracking_ladder_display( $from_stage = 1 ) {
 // kalkuliert. Bis 2026-09-26 lag der Einstieg bei 3.400 € ohne Seitenangabe;
 // der alte Betrag steht als website-3400 in scripts/canon-forbidden-values.txt.
 // Herleitung: docs/decisions/preise-website-landingpage.md.
-// Freigegeben 02.10.2026: Die Anfrage-Website, erste Seite inklusive.
-define( 'HU_FREELANCER_WEBSITE_MIN', 1490 );
+// Freigegeben 06.10.2026: Preisstrategie für die Anfrage-Website neu kalibriert.
+// 1.900 € inklusive erster Seite; jede weitere Inhaltsseite 400 €.
+// Der direkte Stundensatz von 95 € netto bleibt Kalkulations-/Abrechnungswert
+// für offene Stundenarbeit und ist kein öffentlicher Preisanker dieses Produkts.
+define( 'HU_FREELANCER_WEBSITE_MIN', 1900 );
 define( 'HU_FREELANCER_WEBSITE_PAGES', 1 );
-define( 'HU_FREELANCER_WEBSITE_EXTRA_PAGE', 290 );
+define( 'HU_FREELANCER_WEBSITE_EXTRA_PAGE', 400 );
 define( 'HU_WEBSITE_CALCULATOR_MAX', 10 );
 define( 'HU_WEBSITE_DESIGN_FIRST', 690 );
 define( 'HU_WEBSITE_DESIGN_EXTRA', 250 );
@@ -472,7 +475,7 @@ define( 'HU_WEBSITE_CRM_STANDARD', 990 );
 /** Planning factors shared with the browser. Working days, not measured effort hours. */
 function hu_website_calculator_rules() {
 	return [
-		'version' => '2026-10-04.product.v2',
+		'version' => '2026-10-06.price.v3',
 		'max_pages' => HU_WEBSITE_CALCULATOR_MAX,
 		'prices' => [ 'base' => HU_FREELANCER_WEBSITE_MIN, 'page' => HU_FREELANCER_WEBSITE_EXTRA_PAGE, 'tracking' => (int) hu_tracking_price( 'measurement', 'setup', 'value' ), 'design_first' => HU_WEBSITE_DESIGN_FIRST, 'design_extra' => HU_WEBSITE_DESIGN_EXTRA, 'crm' => HU_WEBSITE_CRM_STANDARD ],
 		'implementation_tiers' => [ [ 'max_pages' => 5, 'days' => 2 ], [ 'max_pages' => HU_WEBSITE_CALCULATOR_MAX, 'days' => 3 ] ],
