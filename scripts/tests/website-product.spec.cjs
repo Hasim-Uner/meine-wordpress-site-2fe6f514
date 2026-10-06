@@ -77,12 +77,16 @@ for (const width of [320, 360, 768, 1440]) {
       const card = document.querySelector('.aw-produktkarte');
       const price = card.querySelector('.betrag');
       const principle = document.querySelector('#unterschied .aw-prinzipien h3');
+      const resultBand = document.querySelector('#unterschied .aw-ergebnisband');
+      const resultText = resultBand.querySelector('strong');
       const included = document.querySelector('.aw-lieferumfang-kompakt .aw-status');
       return {
         cardBackground: getComputedStyle(card).backgroundColor,
         cardColor: getComputedStyle(card).color,
         priceColor: getComputedStyle(price).color,
         principleColor: getComputedStyle(principle).color,
+        resultBandBackground: getComputedStyle(resultBand).backgroundColor,
+        resultTextColor: getComputedStyle(resultText).color,
         includedBackground: getComputedStyle(included).backgroundColor,
         includedColor: getComputedStyle(included).color,
         cardHeight: card.getBoundingClientRect().height,
@@ -91,7 +95,9 @@ for (const width of [320, 360, 768, 1440]) {
     expect(premiumUi.cardBackground).toBe('rgb(23, 20, 15)');
     expect(premiumUi.cardColor).toBe('rgb(244, 241, 236)');
     expect(premiumUi.priceColor).toBe('rgb(244, 241, 236)');
-    expect(premiumUi.principleColor).toBe('rgb(244, 241, 236)');
+    expect(premiumUi.principleColor).toBe('rgb(23, 20, 18)');
+    expect(premiumUi.resultBandBackground).toBe('rgb(23, 20, 15)');
+    expect(premiumUi.resultTextColor).toBe('rgb(244, 241, 236)');
     expect(premiumUi.includedBackground).toBe('rgb(23, 20, 18)');
     expect(premiumUi.includedColor).toBe('rgb(255, 255, 255)');
     if (width === 1440) expect(premiumUi.cardHeight).toBeLessThan(540);

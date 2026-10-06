@@ -282,37 +282,37 @@ get_header();
     </div>
   </section>
 
-  <section class="dunkel tafel" id="unterschied" aria-labelledby="h-unterschied">
+  <section class="abschnitt aw-unterschied" id="unterschied" aria-labelledby="h-unterschied">
     <div class="wrap raster">
       <p class="nr"><b>03</b><span>Unterschied</span></p>
       <div class="haupt breit">
         <h2 id="h-unterschied">Drei Dinge müssen funktionieren.</h2>
-        <p class="lead">Nicht möglichst viele Effekte. Sondern Klarheit vor dem Klick, ein geprüfter Anfrageweg und eine Website, die Ihnen danach wirklich gehört.</p>
+        <p class="lead">Eine Website ist nicht fertig, wenn sie gut aussieht. Erst wenn Angebot, Anfrageweg und technische Verantwortung klar sind.</p>
         <div class="aw-prinzipien" data-principles>
           <article style="--aw-i:0">
-            <span class="mono">01 · Klarheit</span>
-            <div class="aw-prinzip-signal" aria-hidden="true"><span>Angebot</span><i></i><span>Beweis</span><i></i><span>CTA</span></div>
-            <h3>Das Angebot ist im ersten Bildschirm verständlich.</h3>
-            <p>Leistung, passende Zielgruppe und nächster Schritt werden priorisiert. Navigation und Buttons konkurrieren nicht um Aufmerksamkeit.</p>
+            <div class="aw-prinzip-kopf"><span class="mono">01 · Klarheit</span><span class="aw-prinzip-phase">vor dem Klick</span></div>
+            <h3>Bevor jemand klickt, muss er verstehen.</h3>
+            <p>Angebot, Zielgruppe und nächster Schritt sind im ersten Bildschirm erkennbar.</p>
+            <div class="aw-prinzip-signal" aria-hidden="true"><span>Angebot</span><i></i><span>Beweis</span><i></i><span>Nächster Schritt</span></div>
             <ul class="aw-prinzip-output"><li>klare Leistungslogik</li><li>eindeutiger nächster Schritt</li></ul>
           </article>
           <article style="--aw-i:1">
-            <span class="mono">02 · Anfrageweg</span>
-            <div class="aw-prinzip-signal aw-prinzip-signal--vier" aria-hidden="true"><span>Formular</span><i></i><span>Mail</span><i></i><span>Danke</span><i></i><span>CRM</span></div>
-            <h3>Eine Anfrage wird nicht nur abgeschickt, sondern geprüft.</h3>
-            <p>Formular, Speicherung, Mailversand, Bestätigung und Danke-Seite werden vor der Übergabe als zusammenhängende Strecke getestet.</p>
-            <ul class="aw-prinzip-output"><li>getestete Zustände</li><li>nachvollziehbare Übergabe</li></ul>
+            <div class="aw-prinzip-kopf"><span class="mono">02 · Anfrageweg</span><span class="aw-prinzip-phase">bis zur Übergabe</span></div>
+            <h3>Eine Anfrage endet nicht im Formular.</h3>
+            <p>Formular, Bestätigung, Versand und Übergabe werden als ein zusammenhängender Weg getestet.</p>
+            <div class="aw-prinzip-signal" aria-hidden="true"><span>Formular</span><i></i><span>Bestätigung</span><i></i><span>Übergabe</span></div>
+            <ul class="aw-prinzip-output"><li>getestete Zustände</li><li>saubere Übergabe</li></ul>
           </article>
           <article style="--aw-i:2">
-            <span class="mono">03 · Eigentum</span>
+            <div class="aw-prinzip-kopf"><span class="mono">03 · Eigentum</span><span class="aw-prinzip-phase">nach dem Livegang</span></div>
+            <h3>Die Website gehört Ihnen — nicht dem System.</h3>
+            <p>Domain, Code, Zugänge und Dokumentation bleiben nachvollziehbar in Ihrer Hand.</p>
             <div class="aw-prinzip-signal aw-prinzip-signal--besitz" aria-hidden="true"><span>Domain</span><span>Code</span><span>Zugänge</span></div>
-            <h3>Code, Zugänge und technische Grundlage bleiben in Ihrer Hand.</h3>
-            <p>Technisches SEO, responsive Umsetzung und Übergabe gehören zum System. Keine Pflichtwartung und kein Pagebuilder-Lock-in im Grundprodukt.</p>
-            <ul class="aw-prinzip-output"><li>kein technischer Lock-in</li><li>dokumentierte Übergabe</li></ul>
+            <ul class="aw-prinzip-output"><li>kein technischer Lock-in</li><li>dokumentiert übergeben</li></ul>
           </article>
         </div>
-        <div class="aw-ergebnisband"><span class="mono">Sie bekommen</span><strong>Verständlichkeit vor dem Klick.</strong><strong>Einen geprüften Anfrageweg.</strong><strong>Eine Website, die Ihnen gehört.</strong></div>
-        <div class="aw-pruefung"><p><strong>Vor der Abnahme:</strong> Handyansicht, Anfrageweg, technische Basis und Übergabe gemeinsam prüfen.</p><a class="btn btn--sekundaer" href="#lieferumfang" data-track-action="website_offer_quality_checklist" data-track-category="navigation">Lieferumfang ansehen <span aria-hidden="true">→</span></a></div>
+        <div class="aw-ergebnisband tafel"><span class="mono">Sie bekommen</span><strong><span>01</span>Klarheit vor dem Klick.</strong><strong><span>02</span>Einen geprüften Anfrageweg.</strong><strong><span>03</span>Eine Website, die Ihnen gehört.</strong></div>
+        <div class="aw-pruefung"><p><strong>Vor der Abnahme:</strong> Mobile Darstellung, Anfrageweg, technische Basis und Übergabe werden gemeinsam geprüft.</p><a class="btn btn--sekundaer" href="#lieferumfang" data-track-action="website_offer_quality_checklist" data-track-category="navigation">Lieferumfang ansehen <span aria-hidden="true">→</span></a></div>
       </div>
     </div>
   </section>

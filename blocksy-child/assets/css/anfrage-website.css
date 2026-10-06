@@ -160,6 +160,11 @@
   font-weight:600;
   line-height:1.08;
   letter-spacing:-.03em;
+  text-wrap:balance;
+}
+.anfrage-website h1,
+.anfrage-website h2 {
+  letter-spacing:-.04em;
 }
 
 .anfrage-website a {
@@ -1288,96 +1293,133 @@
 .anfrage-website #unterschied {
   position:relative;
   overflow:hidden;
-  background:var(--papier);
+  margin-top:var(--s6);
+  padding-block:var(--s6);
+  border-block:1px solid var(--haar);
+  background:color-mix(in srgb,var(--zone) 42%,var(--papier));
   color:var(--tinte);
+}
+.anfrage-website #unterschied::before {
+  content:"";
+  position:absolute;
+  inset:0 auto 0 0;
+  width:3px;
+  background:linear-gradient(180deg,var(--stempel),color-mix(in srgb,var(--stempel) 16%,transparent) 62%,transparent);
+  pointer-events:none;
 }
 .anfrage-website #unterschied::after {
   content:"";
   position:absolute;
-  width:34rem;
-  height:34rem;
+  width:32rem;
+  height:32rem;
   right:-18rem;
-  top:-12rem;
+  top:-15rem;
   border-radius:50%;
-  background:color-mix(in srgb,var(--stempel) 8%,transparent);
-  filter:blur(70px);
+  background:color-mix(in srgb,var(--stempel) 7%,transparent);
+  filter:blur(74px);
   pointer-events:none;
 }
+.anfrage-website #unterschied .wrap {
+  position:relative;
+  z-index:1;
+}
 .anfrage-website #unterschied .lead {
+  max-width:50ch;
   color:var(--grau);
 }
 .anfrage-website .aw-prinzipien {
   display:grid;
   grid-template-columns:repeat(3,minmax(0,1fr));
-  gap:var(--s2);
-  margin-top:var(--s4);
+  gap:0;
+  margin-top:var(--s5);
+  border-block:1px solid var(--haar);
 }
 .anfrage-website .aw-prinzipien article {
   position:relative;
   display:grid;
-  grid-template-rows:auto auto auto 1fr auto;
+  grid-template-rows:auto auto auto auto 1fr;
   min-width:0;
-  min-height:20rem;
+  min-height:18rem;
   padding:var(--s3);
-  border:1px solid var(--haar);
-  background:
-    linear-gradient(180deg,color-mix(in srgb,var(--tinte) 4%,transparent),transparent 46%),
-    var(--zone);
+  border-right:1px solid var(--haar);
+  background:transparent;
   transition:
-    opacity var(--t-norm) var(--ease-weich),
-    transform var(--t-norm) var(--ease-aus),
-    border-color var(--t-norm) var(--ease-weich),
+    opacity var(--t-gross) var(--ease-aus),
+    transform var(--t-gross) var(--ease-aus),
     background-color var(--t-norm) var(--ease-weich);
+}
+.anfrage-website .aw-prinzipien article:first-child {
+  padding-left:0;
+}
+.anfrage-website .aw-prinzipien article:last-child {
+  padding-right:0;
+  border-right:0;
 }
 .anfrage-website .aw-prinzipien article::before {
   content:"";
   position:absolute;
-  left:-1px;
+  left:var(--s3);
   top:-1px;
-  width:calc(100% + 2px);
+  width:2.6rem;
   height:2px;
   background:var(--stempel);
-  transform:scaleX(.16);
+  transform:scaleX(.45);
   transform-origin:left;
-  transition:transform 420ms var(--ease-aus);
+  transition:transform 520ms var(--ease-aus);
+}
+.anfrage-website .aw-prinzipien article:first-child::before {
+  left:0;
+}
+.anfrage-website .aw-prinzip-kopf {
+  display:flex;
+  flex-wrap:wrap;
+  align-items:baseline;
+  justify-content:space-between;
+  gap:var(--s1);
 }
 .anfrage-website .aw-prinzipien .mono {
   color:var(--stempel);
 }
+.anfrage-website .aw-prinzip-phase {
+  color:var(--matt);
+  font:var(--mono-s) var(--mono);
+  letter-spacing:.05em;
+  text-transform:uppercase;
+}
 .anfrage-website .aw-prinzipien h3 {
-  margin-top:var(--s2);
-  max-width:20ch;
+  margin-top:var(--s3);
+  max-width:17ch;
   color:var(--tinte);
-  font-size:clamp(1.18rem,1.05rem + .45vw,1.5rem);
-  line-height:1.28;
+  font-size:clamp(1.35rem,1.12rem + .65vw,1.75rem);
+  line-height:1.16;
+  letter-spacing:-.035em;
 }
 .anfrage-website .aw-prinzipien p {
   margin-top:var(--s2);
+  max-width:34ch;
   color:var(--grau);
   font-size:var(--grad-klein);
-  line-height:1.65;
+  line-height:1.62;
 }
 .anfrage-website .aw-prinzip-signal {
   display:flex;
   align-items:center;
   gap:7px;
-  min-height:42px;
-  margin-top:var(--s2);
-  padding:8px 9px;
-  border:1px solid var(--haar);
-  background:var(--papier);
+  min-height:34px;
+  margin-top:var(--s3);
+  padding:0;
 }
 .anfrage-website .aw-prinzip-signal span {
   flex:0 0 auto;
-  color:var(--grau);
-  font:.61rem var(--mono);
-  letter-spacing:.05em;
+  color:var(--matt);
+  font:var(--mono-s) var(--mono);
+  letter-spacing:.045em;
   text-transform:uppercase;
 }
 .anfrage-website .aw-prinzip-signal i {
   position:relative;
   flex:1 1 auto;
-  min-width:8px;
+  min-width:10px;
   height:1px;
   overflow:hidden;
   background:var(--haar);
@@ -1389,23 +1431,27 @@
   background:var(--stempel);
   transform:scaleX(0);
   transform-origin:left;
-  transition:transform 520ms var(--ease-aus);
+  transition:transform 620ms var(--ease-aus);
 }
 .anfrage-website .aw-prinzip-signal--besitz {
   display:grid;
   grid-template-columns:repeat(3,minmax(0,1fr));
+  gap:6px;
 }
 .anfrage-website .aw-prinzip-signal--besitz span {
-  padding:5px 4px;
+  min-width:0;
+  padding:6px 5px;
   text-align:center;
-  border:1px solid color-mix(in srgb,var(--stempel) 34%,var(--haar));
+  border:1px solid color-mix(in srgb,var(--stempel) 28%,var(--haar));
   color:var(--tinte);
+  background:var(--papier);
 }
 .anfrage-website .aw-prinzip-output {
-  display:grid;
+  display:flex;
+  flex-wrap:wrap;
   align-self:end;
-  gap:6px;
-  margin:var(--s2) 0 0;
+  gap:6px var(--s2);
+  margin:var(--s3) 0 0;
   padding:var(--s2) 0 0;
   list-style:none;
   border-top:1px solid var(--haar);
@@ -1419,52 +1465,66 @@
 }
 .anfrage-website .aw-ergebnisband {
   display:grid;
-  grid-template-columns:auto repeat(3,minmax(0,1fr));
-  gap:var(--s2);
+  grid-template-columns:minmax(8rem,.72fr) repeat(3,minmax(0,1fr));
+  gap:0;
+  align-items:stretch;
+  margin-top:var(--s4);
+  padding:0;
+  border:0;
+  border-radius:var(--r1);
+  overflow:hidden;
+}
+.anfrage-website .aw-ergebnisband > * {
+  display:flex;
   align-items:center;
-  margin-top:var(--s3);
-  padding-block:var(--s2);
-  border-block:1px solid var(--haar);
+  min-height:82px;
+  padding:var(--s2) var(--s3);
 }
 .anfrage-website .aw-ergebnisband .mono {
   color:var(--stempel);
   white-space:nowrap;
 }
 .anfrage-website .aw-ergebnisband strong {
+  gap:var(--s1);
+  border-left:1px solid var(--haar);
   color:var(--tinte);
   font-size:var(--grad-klein);
   font-weight:500;
 }
+.anfrage-website .aw-ergebnisband strong span {
+  color:var(--stempel);
+  font:var(--mono-s) var(--mono);
+  letter-spacing:.06em;
+}
 .anfrage-website.aw-motion-ready #unterschied .aw-prinzipien article {
   opacity:0;
-  transform:translateY(16px);
+  transform:translateY(14px);
 }
 .anfrage-website.aw-motion-ready #unterschied.is-visible .aw-prinzipien article {
   opacity:1;
   transform:translateY(0);
-  transition-delay:calc(var(--aw-i) * 70ms);
+  transition-delay:calc(var(--aw-i) * 80ms);
+}
+.anfrage-website.aw-motion-ready #unterschied.is-visible .aw-prinzipien article::before {
+  transform:scaleX(1);
+  transition-delay:calc(110ms + var(--aw-i) * 85ms);
 }
 .anfrage-website.aw-motion-ready #unterschied.is-visible .aw-prinzip-signal i::after {
   transform:scaleX(1);
-  transition-delay:calc(220ms + var(--aw-i) * 90ms);
-}
-@media (hover:hover) {
-  .anfrage-website .aw-prinzipien article:hover {
-    transform:translateY(-4px);
-    border-color:var(--stempel);
-    background-color:var(--zone2);
-  }
-  .anfrage-website .aw-prinzipien article:hover::before {
-    transform:scaleX(1);
-  }
+  transition-delay:calc(260ms + var(--aw-i) * 95ms);
 }
 .anfrage-website #unterschied .aw-pruefung {
-  border-top-color:var(--haar);
+  margin-top:var(--s3);
+  border-top:0;
 }
 .anfrage-website #unterschied .aw-pruefung p,
 .anfrage-website #unterschied .aw-pruefung strong {
   color:var(--tinte);
 }
+.anfrage-website #unterschied .aw-pruefung .btn--sekundaer {
+  background:var(--papier);
+}
+
 .anfrage-website .aw-lieferumfang-kompakt {
   margin-top:var(--s4);
   padding:0 var(--s3);
@@ -1552,16 +1612,49 @@
 .anfrage-website .aw-zeit-komponenten { margin-top: var(--s3); }
 .anfrage-website .aw-zeit-komponenten .aw-zeit-details { margin: 0; padding: 0 0 var(--s3); border-bottom: 0; }
 @media (max-width: 899.98px) {
-  .anfrage-website .aw-prinzipien, .anfrage-website .aw-erweiterungen-grid { grid-template-columns: minmax(0, 1fr); gap: var(--s2); }
-  .anfrage-website .aw-prinzipien article { min-height: 0; }
-  .anfrage-website .aw-ergebnisband { grid-template-columns: minmax(0, 1fr); gap: var(--s1); }
+  .anfrage-website .aw-prinzipien,
+  .anfrage-website .aw-erweiterungen-grid {
+    grid-template-columns:minmax(0,1fr);
+  }
+  .anfrage-website .aw-prinzipien {
+    border-bottom:0;
+  }
+  .anfrage-website .aw-prinzipien article,
+  .anfrage-website .aw-prinzipien article:first-child,
+  .anfrage-website .aw-prinzipien article:last-child {
+    min-height:0;
+    padding:var(--s3) 0 var(--s4);
+    border-right:0;
+    border-bottom:1px solid var(--haar);
+  }
+  .anfrage-website .aw-prinzipien article::before,
+  .anfrage-website .aw-prinzipien article:first-child::before {
+    left:0;
+  }
+  .anfrage-website .aw-prinzipien h3,
+  .anfrage-website .aw-prinzipien p {
+    max-width:42ch;
+  }
+  .anfrage-website .aw-ergebnisband {
+    grid-template-columns:minmax(0,1fr);
+  }
+  .anfrage-website .aw-ergebnisband > * {
+    min-height:0;
+    padding:var(--s2) var(--s3);
+  }
+  .anfrage-website .aw-ergebnisband strong {
+    border-left:0;
+    border-top:1px solid var(--haar);
+  }
 }
 @media (max-width: 719.98px) {
+  .anfrage-website #unterschied {
+    padding-block:var(--s5);
+  }
   .anfrage-website .aw-prinzip-signal:not(.aw-prinzip-signal--besitz) {
     display:grid;
-    grid-template-columns:repeat(2,minmax(0,1fr));
-    gap:6px;
-    padding:7px;
+    grid-template-columns:repeat(3,minmax(0,1fr));
+    gap:var(--s1);
   }
   .anfrage-website .aw-prinzip-signal:not(.aw-prinzip-signal--besitz) i {
     display:none;
@@ -1569,14 +1662,8 @@
   .anfrage-website .aw-prinzip-signal span {
     min-width:0;
     overflow-wrap:anywhere;
-    text-align:center;
     font-size:.56rem;
     letter-spacing:.03em;
-  }
-  .anfrage-website .aw-prinzip-signal:not(.aw-prinzip-signal--besitz) span {
-    padding:5px 4px;
-    border:1px solid var(--haar);
-    background:var(--zone);
   }
   .anfrage-website .aw-prinzip-signal--besitz {
     grid-template-columns:repeat(3,minmax(0,1fr));
