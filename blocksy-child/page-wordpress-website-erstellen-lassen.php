@@ -270,7 +270,7 @@ get_header();
       </details>
       <div class="aw-erweiterungsumfang" id="erweiterungen">
         <details class="aw-erweiterungen-kompakt">
-          <summary><span><span class="mono">Erweiterungen</span><strong>Was Design, Tracking, CRM und Dashboard genau enthalten</strong></span><span>Details ↓</span></summary>
+          <summary><span><span class="mono">Erweiterungen</span><strong>Was Design, Tracking, CRM und Dashboard genau enthalten</strong></span><span>Details</span></summary>
           <div class="aw-erweiterungen-grid">
             <div><h3>Individuelles Screendesign</h3><p>Gestaltungsrichtung in Figma, Desktop und Mobil je gebuchtem Layout, zwei gebündelte Korrekturrunden.</p></div>
             <div><h3>Conversion-Tracking</h3><p>GA4, Google Tag Manager, Consent Mode und eine Google-Ads-Conversion für erfolgreich abgesendete Standard-Anfragen.</p></div>
