@@ -111,7 +111,7 @@
   align-items:center;
   gap:var(--s1);
   min-height:44px;
-  margin-top:var(--s2);
+  margin-top:var(--s1);
   color:var(--tinte);
   padding:var(--s1) var(--s2);
   border:1px solid var(--haar);
@@ -1092,7 +1092,7 @@
   isolation:isolate;
   align-self:center;
   overflow:hidden;
-  padding:clamp(1.35rem,1rem + 1vw,1.9rem);
+  padding:var(--s3);
   background:
     linear-gradient(145deg,color-mix(in srgb,var(--stempel) 8%,transparent),transparent 44%),
     var(--papier);
@@ -1127,7 +1127,7 @@
   margin-top:.45rem;
   color:var(--tinte);
   -webkit-text-fill-color:var(--tinte);
-  font-size:clamp(3.8rem,3.15rem + 2.4vw,5.25rem);
+  font-size:clamp(3.55rem,3rem + 1.8vw,4.65rem);
   line-height:.92;
 }
 .anfrage-website .aw-produktkarte .betrag small {
@@ -1146,7 +1146,7 @@
   gap:var(--s1);
 }
 .anfrage-website .aw-produkt-kopf {
-  margin-bottom:var(--s2);
+  margin-bottom:var(--s1);
 }
 .anfrage-website .aw-status {
   display:inline-flex;
@@ -1170,7 +1170,7 @@
   box-shadow:0 0 0 3px color-mix(in srgb,var(--stempel) 14%,transparent);
 }
 .anfrage-website .aw-preis-lockup {
-  padding-block:var(--s1) var(--s2);
+  padding-block:var(--s0) var(--s1);
 }
 .anfrage-website .aw-preis-lockup > .mono {
   color:var(--grau);
@@ -1178,20 +1178,20 @@
   text-transform:uppercase;
 }
 .anfrage-website .aw-produktkern {
-  margin-top:var(--s1);
+  margin-top:var(--s0);
   color:var(--tinte);
-  font-size:clamp(1rem,.96rem + .2vw,1.1rem);
+  font-size:clamp(.96rem,.93rem + .18vw,1.06rem);
   font-weight:600;
   letter-spacing:-.01em;
 }
 .anfrage-website .aw-modulband {
   display:grid;
   grid-template-columns:repeat(4,minmax(0,1fr));
-  margin-top:var(--s1);
+  margin-top:var(--s0);
   border-block:1px solid var(--haar);
 }
 .anfrage-website .aw-modulband span {
-  padding:8px 4px;
+  padding:7px 4px;
   text-align:center;
   color:var(--grau);
   font:var(--mono-s) var(--mono);
@@ -1204,23 +1204,29 @@
 .anfrage-website .aw-produktmeta {
   display:grid;
   grid-template-columns:repeat(2,minmax(0,1fr));
-  margin-top:var(--s2);
+  margin-top:var(--s1);
   border-bottom:1px solid var(--haar);
 }
 .anfrage-website .aw-produktmeta > div {
   display:grid;
   gap:5px;
   min-width:0;
-  padding:0 var(--s2) var(--s2) 0;
+  padding:0 var(--s2) var(--s1) 0;
 }
 .anfrage-website .aw-produktmeta > div + div {
   padding-left:var(--s2);
   border-left:1px solid var(--haar);
 }
 .anfrage-website .aw-produktmeta strong {
+  min-width:0;
+  overflow-wrap:anywhere;
   color:var(--tinte);
   font-size:.98rem;
   font-weight:600;
+}
+.anfrage-website .aw-produktmeta .mono {
+  min-width:0;
+  overflow-wrap:anywhere;
 }
 .anfrage-website .aw-produktzeit {
   margin-top:var(--s2);
@@ -1238,8 +1244,8 @@
   align-items:center;
   justify-content:space-between;
   gap:var(--s2);
-  min-height:48px;
-  margin-top:var(--s2);
+  min-height:46px;
+  margin-top:var(--s1);
   padding:0 var(--s2);
   border:1px solid var(--tinte);
   border-radius:var(--r1);
@@ -1551,17 +1557,26 @@
   .anfrage-website .aw-ergebnisband { grid-template-columns: minmax(0, 1fr); gap: var(--s1); }
 }
 @media (max-width: 719.98px) {
-  .anfrage-website .aw-prinzip-signal {
-    gap:5px;
-    padding-inline:7px;
+  .anfrage-website .aw-prinzip-signal:not(.aw-prinzip-signal--besitz) {
+    display:grid;
+    grid-template-columns:repeat(2,minmax(0,1fr));
+    gap:6px;
+    padding:7px;
+  }
+  .anfrage-website .aw-prinzip-signal:not(.aw-prinzip-signal--besitz) i {
+    display:none;
   }
   .anfrage-website .aw-prinzip-signal span {
     min-width:0;
+    overflow-wrap:anywhere;
+    text-align:center;
     font-size:.56rem;
     letter-spacing:.03em;
   }
-  .anfrage-website .aw-prinzip-signal i {
-    min-width:4px;
+  .anfrage-website .aw-prinzip-signal:not(.aw-prinzip-signal--besitz) span {
+    padding:5px 4px;
+    border:1px solid var(--haar);
+    background:var(--zone);
   }
   .anfrage-website .aw-prinzip-signal--besitz {
     grid-template-columns:repeat(3,minmax(0,1fr));
