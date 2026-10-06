@@ -452,39 +452,127 @@ function hu_tracking_ladder_display( $from_stage = 1 ) {
 }
 
 // ── WordPress-Freelancer-Nebenpfad ───────────────────────────────
-// Die Anfrage-Website: erste Seite, Texte auf Wunsch, technisches SEO und
-// Formularstrecke enthalten. Screendesign und Standard-CRM sind feste Extras; jede weitere
-// Seite kostet HU_FREELANCER_WEBSITE_EXTRA_PAGE.
-// Deshalb steht der Betrag oeffentlich als "ab": mehr Seiten, hoeherer Preis.
-// Shop, Schnittstellen und Relaunches mit vielen Seiten werden separat
-// kalkuliert. Bis 2026-09-26 lag der Einstieg bei 3.400 € ohne Seitenangabe;
-// der alte Betrag steht als website-3400 in scripts/canon-forbidden-values.txt.
-// Herleitung: docs/decisions/preise-website-landingpage.md.
-// Freigegeben 06.10.2026: Preisstrategie für die Anfrage-Website neu kalibriert.
-// 1.900 € inklusive erster Seite; jede weitere Inhaltsseite 400 €.
-// Der direkte Stundensatz von 95 € netto bleibt Kalkulations-/Abrechnungswert
-// für offene Stundenarbeit und ist kein öffentlicher Preisanker dieses Produkts.
+// Die Anfrage-Website wird nicht mehr als "Seitenzahl × Einheitsbetrag"
+// kalkuliert. Das Grundprodukt trägt Systemkosten + erste Hauptseite.
+// Zusatzseiten, Texterstellung und Projektmodule sind getrennte Einheiten.
+// Öffentliche Festpreise bleiben gerundet; die internen Produktionsstunden
+// dokumentieren den Aufwand hinter den Einheiten. Direkte offene Stundenarbeit
+// wird mit 95 EUR/h kalkuliert, Agentur-/White-Label-Arbeit mit 70 EUR/h.
+// Diese Sätze sind keine öffentlichen Preisanker des Produktkonfigurators.
 define( 'HU_FREELANCER_WEBSITE_MIN', 1900 );
 define( 'HU_FREELANCER_WEBSITE_PAGES', 1 );
-define( 'HU_FREELANCER_WEBSITE_EXTRA_PAGE', 400 );
+define( 'HU_FREELANCER_WEBSITE_EXTRA_PAGE', 400 ); // Kompatibilität: Standard-Unterseite.
 define( 'HU_WEBSITE_CALCULATOR_MAX', 10 );
+define( 'HU_WEBSITE_PAGE_UTILITY', 300 );
+define( 'HU_WEBSITE_PAGE_STANDARD', 400 );
+define( 'HU_WEBSITE_PAGE_SALES', 790 );
+define( 'HU_WEBSITE_COPY_BASE', 290 );
+define( 'HU_WEBSITE_COPY_UTILITY', 50 );
+define( 'HU_WEBSITE_COPY_STANDARD', 150 );
+define( 'HU_WEBSITE_COPY_SALES', 290 );
 define( 'HU_WEBSITE_DESIGN_FIRST', 690 );
 define( 'HU_WEBSITE_DESIGN_EXTRA', 250 );
 define( 'HU_WEBSITE_CRM_STANDARD', 990 );
 
-/** Planning factors shared with the browser. Working days, not measured effort hours. */
-function hu_website_calculator_rules() {
+/**
+ * Canonical production units behind the public website configurator.
+ *
+ * Hours are productive-effort estimates, not public billing items. Public
+ * prices are intentionally rounded product prices. Working-day factors model
+ * planning capacity and may differ from hours / 8 because reviews and QA are
+ * scheduled as explicit production phases.
+ *
+ * @return array<string, mixed>
+ */
+function hu_website_scope_units() {
 	return [
-		'version' => '2026-10-06.price.v3',
+		'base' => [ 'price' => HU_FREELANCER_WEBSITE_MIN, 'hours' => 20, 'days' => 2 ],
+		'pages' => [
+			'utility'  => [ 'price' => HU_WEBSITE_PAGE_UTILITY, 'hours' => 3, 'days' => 0.5 ],
+			'standard' => [ 'price' => HU_WEBSITE_PAGE_STANDARD, 'hours' => 4, 'days' => 0.5 ],
+			'sales'    => [ 'price' => HU_WEBSITE_PAGE_SALES, 'hours' => 8, 'days' => 1 ],
+		],
+		'copy' => [
+			'base'     => [ 'price' => HU_WEBSITE_COPY_BASE, 'hours' => 3, 'days' => 0.5 ],
+			'utility'  => [ 'price' => HU_WEBSITE_COPY_UTILITY, 'hours' => 0.5, 'days' => 0.25 ],
+			'standard' => [ 'price' => HU_WEBSITE_COPY_STANDARD, 'hours' => 1.5, 'days' => 0.25 ],
+			'sales'    => [ 'price' => HU_WEBSITE_COPY_SALES, 'hours' => 3, 'days' => 0.5 ],
+		],
+		'design' => [ 'first_hours' => 7, 'extra_hours' => 2.5 ],
+		'tracking' => [ 'hours' => 9 ],
+		'crm' => [ 'hours' => 10 ],
+	];
+}
+
+/** Planning and pricing factors shared with the browser. */
+function hu_website_calculator_rules() {
+	$units = hu_website_scope_units();
+
+	return [
+		'version' => '2026-10-06.scope.v4',
 		'max_pages' => HU_WEBSITE_CALCULATOR_MAX,
-		'prices' => [ 'base' => HU_FREELANCER_WEBSITE_MIN, 'page' => HU_FREELANCER_WEBSITE_EXTRA_PAGE, 'tracking' => (int) hu_tracking_price( 'measurement', 'setup', 'value' ), 'design_first' => HU_WEBSITE_DESIGN_FIRST, 'design_extra' => HU_WEBSITE_DESIGN_EXTRA, 'crm' => HU_WEBSITE_CRM_STANDARD ],
-		'implementation_tiers' => [ [ 'max_pages' => 5, 'days' => 2 ], [ 'max_pages' => HU_WEBSITE_CALCULATOR_MAX, 'days' => 3 ] ],
+		'prices' => [
+			'base' => HU_FREELANCER_WEBSITE_MIN,
+			'page' => HU_FREELANCER_WEBSITE_EXTRA_PAGE,
+			'page_utility' => HU_WEBSITE_PAGE_UTILITY,
+			'page_standard' => HU_WEBSITE_PAGE_STANDARD,
+			'page_sales' => HU_WEBSITE_PAGE_SALES,
+			'copy_base' => HU_WEBSITE_COPY_BASE,
+			'copy_utility' => HU_WEBSITE_COPY_UTILITY,
+			'copy_standard' => HU_WEBSITE_COPY_STANDARD,
+			'copy_sales' => HU_WEBSITE_COPY_SALES,
+			'tracking' => (int) hu_tracking_price( 'measurement', 'setup', 'value' ),
+			'design_first' => HU_WEBSITE_DESIGN_FIRST,
+			'design_extra' => HU_WEBSITE_DESIGN_EXTRA,
+			'crm' => HU_WEBSITE_CRM_STANDARD,
+		],
 		'days' => [
-			'qa' => 1, 'tracking' => 1, 'relaunch' => 2, 'crm' => 3,
-			'text_first' => 1, 'text_extra' => 0.5,
-			'design_first' => 2, 'design_extra_layout' => 0.5,
+			'qa' => 1,
+			'base_implementation' => $units['base']['days'],
+			'page_utility' => $units['pages']['utility']['days'],
+			'page_standard' => $units['pages']['standard']['days'],
+			'page_sales' => $units['pages']['sales']['days'],
+			'copy_base' => $units['copy']['base']['days'],
+			'copy_utility' => $units['copy']['utility']['days'],
+			'copy_standard' => $units['copy']['standard']['days'],
+			'copy_sales' => $units['copy']['sales']['days'],
+			'tracking' => 1,
+			'relaunch' => 2,
+			'crm' => 3,
+			'design_first' => 2,
+			'design_extra_layout' => 0.5,
 		],
 	];
+}
+
+/**
+ * Normalize page-type counts.
+ *
+ * New requests send the three explicit counts. Legacy requests that only send
+ * "seiten" remain valid and are interpreted as standard content pages.
+ *
+ * @param int   $pages   Total pages from legacy callers.
+ * @param array $options Quote options.
+ * @return array<string, int>
+ */
+function hu_website_page_type_counts( $pages, $options = [] ) {
+	$has_explicit = array_key_exists( 'utility_pages', $options ) || array_key_exists( 'standard_pages', $options ) || array_key_exists( 'sales_pages', $options );
+	if ( ! $has_explicit ) {
+		return [ 'utility' => 0, 'standard' => max( 0, (int) $pages - 1 ), 'sales' => 0 ];
+	}
+
+	$counts = [
+		'utility' => max( 0, (int) ( $options['utility_pages'] ?? 0 ) ),
+		'standard' => max( 0, (int) ( $options['standard_pages'] ?? 0 ) ),
+		'sales' => max( 0, (int) ( $options['sales_pages'] ?? 0 ) ),
+	];
+	$remaining = HU_WEBSITE_CALCULATOR_MAX - 1;
+	foreach ( [ 'utility', 'standard', 'sales' ] as $key ) {
+		$counts[ $key ] = min( $counts[ $key ], $remaining );
+		$remaining -= $counts[ $key ];
+	}
+
+	return $counts;
 }
 
 /** Standard production plan; only a bespoke dashboard remains unpriced. */
@@ -492,16 +580,34 @@ function hu_website_quote( $pages, $kind = 'neubau', $tracking = false, $options
 	$pages = max( 1, min( HU_WEBSITE_CALCULATOR_MAX, (int) $pages ) );
 	$rules = hu_website_calculator_rules();
 	$factors = $rules['days'];
+	$counts = hu_website_page_type_counts( $pages, $options );
+	$pages = 1 + array_sum( $counts );
 	$design = $options['design'] ?? ( ! empty( $options['screendesign'] ) ? 'neu' : 'basis' );
 	$design = in_array( $design, [ 'basis', 'vorhanden', 'neu' ], true ) ? $design : 'basis';
-	$layouts = 'neu' === $design ? max( 1, min( $pages, (int) ( $options['design_layouts'] ?? $pages ) ) ) : 0;
-	$implementation = 0;
-	foreach ( $rules['implementation_tiers'] as $tier ) {
-		if ( $pages <= $tier['max_pages'] ) { $implementation = $tier['days']; break; }
-	}
+	$layouts = 'neu' === $design ? max( 1, min( $pages, (int) ( $options['design_layouts'] ?? 1 ) ) ) : 0;
+
+	$page_price =
+		$counts['utility'] * $rules['prices']['page_utility']
+		+ $counts['standard'] * $rules['prices']['page_standard']
+		+ $counts['sales'] * $rules['prices']['page_sales'];
+	$text_price = ! empty( $options['texte'] )
+		? $rules['prices']['copy_base']
+			+ $counts['utility'] * $rules['prices']['copy_utility']
+			+ $counts['standard'] * $rules['prices']['copy_standard']
+			+ $counts['sales'] * $rules['prices']['copy_sales']
+		: 0;
+
 	$components = [
-		'implementation' => $implementation,
-		'texts' => ! empty( $options['texte'] ) ? $factors['text_first'] + ( $pages - 1 ) * $factors['text_extra'] : 0,
+		'implementation' => $factors['base_implementation']
+			+ $counts['utility'] * $factors['page_utility']
+			+ $counts['standard'] * $factors['page_standard']
+			+ $counts['sales'] * $factors['page_sales'],
+		'texts' => ! empty( $options['texte'] )
+			? $factors['copy_base']
+				+ $counts['utility'] * $factors['copy_utility']
+				+ $counts['standard'] * $factors['copy_standard']
+				+ $counts['sales'] * $factors['copy_sales']
+			: 0,
 		'design' => 'neu' === $design ? $factors['design_first'] + ( $layouts - 1 ) * $factors['design_extra_layout'] : 0,
 		'tracking' => $tracking ? $factors['tracking'] : 0,
 		'relaunch' => 'relaunch' === $kind ? $factors['relaunch'] : 0,
@@ -509,14 +615,24 @@ function hu_website_quote( $pages, $kind = 'neubau', $tracking = false, $options
 	];
 	$days = (int) ceil( array_sum( $components ) );
 	$design_price = $layouts ? $rules['prices']['design_first'] + ( $layouts - 1 ) * $rules['prices']['design_extra'] : 0;
+	$price = $rules['prices']['base'] + $page_price + $text_price
+		+ ( $tracking ? $rules['prices']['tracking'] : 0 )
+		+ $design_price
+		+ ( ! empty( $options['crm'] ) ? $rules['prices']['crm'] : 0 );
+
 	return [
 		'pages' => $pages,
+		'page_types' => $counts,
 		'kind' => 'relaunch' === $kind ? 'relaunch' : 'neubau',
 		'tracking' => (bool) $tracking,
-		'design' => $design, 'design_layouts' => $layouts,
-		'price' => $rules['prices']['base'] + ( $pages - 1 ) * $rules['prices']['page'] + ( $tracking ? $rules['prices']['tracking'] : 0 ) + $design_price + ( ! empty( $options['crm'] ) ? $rules['prices']['crm'] : 0 ),
+		'design' => $design,
+		'design_layouts' => $layouts,
+		'price' => $price,
+		'page_price' => $page_price,
+		'text_price' => $text_price,
 		'design_price' => $design_price,
-		'days' => $days, 'components' => $components,
+		'days' => $days,
+		'components' => $components,
 		'preparation_days' => $components['texts'] + $components['design'],
 		'implementation_days' => $components['implementation'] + $components['tracking'] + $components['relaunch'] + $components['crm'],
 		'duration_open' => ! empty( $options['dashboard'] ),
