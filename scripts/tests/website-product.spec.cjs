@@ -72,6 +72,30 @@ for (const width of [320, 360, 768, 1440]) {
     await expect(page.locator('.aw-modulband span')).toHaveCount(4);
     await expect(page.locator('#unterschied .aw-prinzipien article')).toHaveCount(3);
     await expect(page.locator('#unterschied .aw-ergebnisband')).toContainText('Eine Website, die Ihnen gehört.');
+
+    const premiumUi = await page.evaluate(() => {
+      const card = document.querySelector('.aw-produktkarte');
+      const price = card.querySelector('.betrag');
+      const principle = document.querySelector('#unterschied .aw-prinzipien h3');
+      const included = document.querySelector('.aw-lieferumfang-kompakt .aw-status');
+      return {
+        cardBackground: getComputedStyle(card).backgroundColor,
+        cardColor: getComputedStyle(card).color,
+        priceColor: getComputedStyle(price).color,
+        principleColor: getComputedStyle(principle).color,
+        includedBackground: getComputedStyle(included).backgroundColor,
+        includedColor: getComputedStyle(included).color,
+        cardHeight: card.getBoundingClientRect().height,
+      };
+    });
+    expect(premiumUi.cardBackground).toBe('rgb(23, 20, 15)');
+    expect(premiumUi.cardColor).toBe('rgb(244, 241, 236)');
+    expect(premiumUi.priceColor).toBe('rgb(244, 241, 236)');
+    expect(premiumUi.principleColor).toBe('rgb(244, 241, 236)');
+    expect(premiumUi.includedBackground).toBe('rgb(23, 20, 18)');
+    expect(premiumUi.includedColor).toBe('rgb(255, 255, 255)');
+    if (width === 1440) expect(premiumUi.cardHeight).toBeLessThan(540);
+
     await expect(page.locator('#fragen details')).toHaveCount(6);
     await expect(page.locator('#beleg')).not.toContainText(/150\s*€|22\s*€|85\s*%|1[.,]750|15\s*%/);
 
