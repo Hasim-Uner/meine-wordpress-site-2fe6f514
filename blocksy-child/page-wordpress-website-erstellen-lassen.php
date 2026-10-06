@@ -160,8 +160,8 @@ get_header();
             </fieldset>
             <fieldset class="aw-feld aw-inhalte">
               <legend><span class="aw-schritt">02</span> Texte</legend>
-              <label class="aw-option" data-website-controls hidden><input type="checkbox" id="texte" checked><span class="aw-option-inhalt"><strong>Für mich erstellen</strong><small>Texte für jede gewählte Seite, auf Basis Ihrer Angaben.</small></span><span class="aw-option-preis">Inklusive</span></label>
-              <p class="aw-hinweis" id="text-hinweis">Texte bereits fertig? Abwählen. Der Seitenpreis bleibt gleich.</p>
+              <label class="aw-option" data-website-controls hidden><input type="checkbox" id="texte"><span class="aw-option-inhalt"><strong>Texte erstellen lassen</strong><small>Auf Basis Ihrer Angaben. Der Aufwand richtet sich nach den gewählten Seitentypen.</small></span><span class="aw-option-preis" id="text-option-preis">+<?php echo esc_html( $eur( $text_quote['text_price'] ) ); ?></span></label>
+              <p class="aw-hinweis" id="text-hinweis">Fertige, freigegebene Texte werden ohne Texterstellungs-Aufpreis eingepflegt.</p>
             </fieldset>
             <fieldset class="aw-feld aw-design">
               <legend><span class="aw-schritt">03</span> Wie soll sie aussehen?</legend>
@@ -194,12 +194,12 @@ get_header();
         <aside class="aw-zusammenfassung" aria-labelledby="h-auswahl">
           <div class="aw-summary-kopf"><span class="mono">Ihre Konfiguration</span><span class="aw-status">Einmalpreis</span></div>
           <h3 id="h-auswahl">Ihre Auswahl</h3>
-          <p class="aw-summary-sub" id="auswahl-art">3 Seiten · Neubau</p>
+          <p class="aw-summary-sub" id="auswahl-art">3 Seiten · Neubau · 1 Standard · 1 Leistung</p>
           <p class="aw-summary-sub" id="auswahl-design">Basisdesign inklusive</p>
           <div class="summe">
             <p class="mono" id="preis-label">Ihr Einmalpreis</p>
             <p class="gesamt"><span id="gesamt"><?php echo esc_html( $eur( $quote['price'] ) ); ?></span><small>netto · zzgl. USt.</small></p>
-            <p class="rechnung" id="rechnung"><?php echo esc_html( hu_freelancer_website_price() . ' + 2 × ' . hu_freelancer_website_extra_page_price() ); ?></p>
+            <p class="rechnung" id="rechnung"><?php echo esc_html( hu_freelancer_website_price() . ' + ' . hu_format_eur( HU_WEBSITE_PAGE_STANDARD ) . ' Standard + ' . hu_format_eur( HU_WEBSITE_PAGE_SALES ) . ' Leistung' ); ?></p>
             <p id="angebot-hinweis" class="aw-angebot-hinweis" hidden></p>
             <div class="aw-zeitkalkulation"><span id="dauer-label">Produktionszeit</span><b id="bauzeit"><?php echo esc_html( $days( $quote['days'] ) ); ?></b><a href="#zeit" data-track-action="website_offer_to_zeit" data-track-category="navigation">Zeitbeiträge ansehen ↓</a></div>
             <a class="btn" id="cta-angebot" href="<?php echo esc_url( $contact_url ); ?>" data-website-cta="angebot" data-track-action="cta_website_offer_scope_project" data-track-category="lead_gen" data-track-section="website_offer_angebot">Weiter zur Anfrage <span aria-hidden="true">→</span></a>
@@ -207,9 +207,11 @@ get_header();
           </div>
           <details class="aw-price-details"><summary>So setzt sich der Preis zusammen</summary>
           <dl class="aw-preispositionen">
-            <div><dt>Website mit erster Seite</dt><dd><?php echo esc_html( $eur( HU_FREELANCER_WEBSITE_MIN ) ); ?></dd></div>
-            <div id="summary-pages"><dt><span id="weitere">2</span> <span id="weitere-label">weitere Seiten</span></dt><dd id="betrag-weitere"><?php echo esc_html( $eur( 2 * HU_FREELANCER_WEBSITE_EXTRA_PAGE ) ); ?></dd></div>
-            <div><dt id="auswahl-texte">Texte erstellen lassen</dt><dd>Inklusive</dd></div>
+            <div><dt>Grundsystem + erste Hauptseite</dt><dd><?php echo esc_html( $eur( HU_FREELANCER_WEBSITE_MIN ) ); ?></dd></div>
+            <div id="summary-utility" hidden><dt><span id="count-utility">0</span> kurze Seiten</dt><dd id="betrag-utility"><?php echo esc_html( $eur( 0 ) ); ?></dd></div>
+            <div id="summary-standard"><dt><span id="count-standard">1</span> Standardseite</dt><dd id="betrag-standard"><?php echo esc_html( $eur( HU_WEBSITE_PAGE_STANDARD ) ); ?></dd></div>
+            <div id="summary-sales"><dt><span id="count-sales">1</span> Leistungsseite</dt><dd id="betrag-sales"><?php echo esc_html( $eur( HU_WEBSITE_PAGE_SALES ) ); ?></dd></div>
+            <div id="summary-copy"><dt id="auswahl-texte">Eigene Texte</dt><dd id="betrag-texte"><?php echo esc_html( $eur( 0 ) ); ?></dd></div>
             <div id="summary-tracking" hidden><dt>Conversion-Tracking</dt><dd><?php echo esc_html( $eur( $rules['prices']['tracking'] ) ); ?></dd></div>
             <div id="summary-screendesign" hidden><dt>Screendesign</dt><dd id="betrag-design"></dd></div>
             <div id="summary-crm" hidden><dt>CRM-Anbindung</dt><dd><?php echo esc_html( $eur( HU_WEBSITE_CRM_STANDARD ) ); ?></dd></div>
@@ -226,9 +228,9 @@ get_header();
         <p class="mikro">Die wichtigsten Leistungen sind immer enthalten. Die Details öffnen Sie bei Bedarf.</p>
         <div class="gruppen"><details class="gruppe"><summary><span>Inhalte</span><span class="aw-inkl-label">Inklusive</span></summary><ul>
                 <li>Gliederung jeder Seite: Angebot, Preis, Beleg</li>
-                <li>Texte für jede gewählte Seite auf Wunsch erstellt, auf Basis Ihrer Angaben</li>
+                <li>Texterstellung optional je Seitentyp kalkulierbar, auf Basis Ihrer Angaben</li>
                 <li>Ihre vorhandenen Texte und Bilder eingepflegt</li>
-                <li>Feinschliff der Texte</li>
+                <li>Einpflege und technischer Feinschliff Ihrer freigegebenen Texte</li>
                 <li>Bilder zugeschnitten und als <?php echo nexus_glossary_link( 'webp', 'WebP' ); ?> verkleinert</li>
               </ul></details>
 <details class="gruppe"><summary><span>Technisches SEO und On-Page</span><span class="aw-inkl-label">Inklusive</span></summary><ul>
@@ -366,11 +368,11 @@ get_header();
       <div class="haupt breit">
         <h2 id="h-zeit">Vom Briefing zur geprüften Website.</h2>
         <p class="lead">Ihre Auswahl bestimmt die geplante Produktionszeit. Die Übersicht trennt Vorbereitung, Umsetzung und Prüfung. Starttermin, Ihre Freigaben und Veröffentlichung stimmen wir separat ab.</p>
-        <details class="aw-plan-details"><summary>Welche Annahmen hinter der Zeitplanung stehen</summary><p>Fertige Texte und Designs sparen ihre Erstellungsphase. Neue Texte, individuelle Layouts, Tracking und CRM bekommen eigene Zeitbeiträge. Bis <?php echo esc_html( $rules['implementation_tiers'][0]['max_pages'] ); ?> Standardseiten sind <?php echo esc_html( $days( $rules['implementation_tiers'][0]['days'] ) ); ?> Umsetzung und Prüfung vorgesehen, bis <?php echo esc_html( $rules['implementation_tiers'][1]['max_pages'] ); ?> Seiten <?php echo esc_html( $days( $rules['implementation_tiers'][1]['days'] ) ); ?>. Wir rechnen in Werktagen von Montag bis Freitag, ohne Feiertage; Ihre Freigabezeiten kommen separat dazu. Der verbindliche Start- und Veröffentlichungstermin steht im Angebot.</p></details>
+        <details class="aw-plan-details"><summary>Welche Annahmen hinter der Zeitplanung stehen</summary><p>Grundsystem und erste Hauptseite bilden die Basis. Kurze und Standardseiten benötigen weniger Produktionszeit als eigenständige Leistungs-/Verkaufsseiten. Fertige Texte sparen die Texterstellung; individuelle Layouts, Tracking und CRM bekommen eigene Zeitbeiträge. Wir rechnen in Werktagen von Montag bis Freitag, ohne Feiertage; Ihre Freigabezeiten kommen separat dazu. Der verbindliche Start- und Veröffentlichungstermin steht im Angebot.</p></details>
         <div class="zeit">
           <div class="aw-zeit-details"><p id="zeit-aufteilung">Vorbereitung <?php echo esc_html( $days( $quote['preparation_days'] ) ); ?> · Umsetzung <?php echo esc_html( $days( $quote['implementation_days'] ) ); ?></p><dl class="aw-zeitpositionen">
             <div><dt>Umsetzung &amp; Prüfung</dt><dd id="tage-implementation"><?php echo esc_html( $days( $quote['components']['implementation'] ) ); ?></dd></div>
-            <div id="zeit-texte"><dt>Texte erstellen</dt><dd id="tage-texts"><?php echo esc_html( $days( $quote['components']['texts'] ) ); ?></dd></div>
+            <div id="zeit-texte" hidden><dt>Texte erstellen</dt><dd id="tage-texts"><?php echo esc_html( $days( $quote['components']['texts'] ) ); ?></dd></div>
             <div id="zeit-design" hidden><dt>Screendesign</dt><dd id="tage-design"></dd></div>
             <div id="zeit-tracking" hidden><dt>Tracking einrichten</dt><dd id="tage-tracking"></dd></div>
             <div id="zeit-relaunch" hidden><dt>Bestand &amp; Weiterleitungen</dt><dd id="tage-relaunch"></dd></div>
@@ -383,7 +385,6 @@ get_header();
             <div>
               <p class="uhr">Ab vereinbartem Start · bis zum Abnahmestand</p>
               <div class="bahn" id="bahn">
-                <div class="phase"><span class="mono"><?php echo esc_html( $days( $quote['components']['texts'] ) ); ?></span><b>Texte erstellen</b></div>
                 <div class="phase"><span class="mono"><?php echo esc_html( $days( $quote['components']['implementation'] - $rules['days']['qa'] ) ); ?></span><b>Umsetzung auf der Testumgebung</b></div>
                 <div class="phase ende"><span class="mono"><?php echo esc_html( $days( $rules['days']['qa'] ) ); ?></span><b>Qualitätsprüfung und Abnahmestand</b></div>
               </div>
@@ -431,7 +432,7 @@ get_header();
 
 
 <div class="leiste-unten tafel" hidden inert id="leiste" aria-hidden="true">
-  <a class="aw-auswahl-edit" href="#angebot" data-track-action="website_offer_edit_scope" data-track-category="navigation">Auswahl ändern ↑</a><p><b id="leiste-text"><?php echo esc_html( '3 Seiten · Neubau · Texte inklusive' ); ?></b><span id="leiste-preis"><?php echo esc_html( hu_format_eur( $quote['price'] ) . ' netto' ); ?></span></p>
+  <a class="aw-auswahl-edit" href="#angebot" data-track-action="website_offer_edit_scope" data-track-category="navigation">Auswahl ändern ↑</a><p><b id="leiste-text"><?php echo esc_html( '3 Seiten · Neubau · 1 Standard · 1 Leistung' ); ?></b><span id="leiste-preis"><?php echo esc_html( hu_format_eur( $quote['price'] ) . ' netto' ); ?></span></p>
   <a class="btn" id="cta-leiste" tabindex="-1" href="<?php echo esc_url( $contact_url ); ?>" data-website-cta="leiste" data-track-action="cta_website_offer_sticky_project" data-track-category="lead_gen" data-track-section="website_offer_leiste">Anfragen <span aria-hidden="true">→</span></a>
 </div>
 
