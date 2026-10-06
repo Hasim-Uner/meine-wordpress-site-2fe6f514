@@ -129,7 +129,7 @@
 }
 
 .hu-about .about-loop-node.is-core small {
-  color: var(--grau);
+  color: color-mix(in srgb, var(--papier) 72%, var(--tinte));
 }
 
 .hu-about .about-loop-connector {
@@ -564,7 +564,7 @@
 }
 
 .hu-about .about-shortlist-result small {
-  color: var(--grau);
+  color: color-mix(in srgb, var(--papier) 72%, var(--tinte));
 }
 
 .hu-about .about-return-flow {
@@ -783,7 +783,7 @@
 }
 
 .hu-about .about-visual-discovery .about-visual-label {
-  color: var(--grau);
+  color: color-mix(in srgb, var(--papier) 68%, var(--tinte));
 }
 
 .hu-about .about-discovery-sources {
@@ -794,8 +794,8 @@
 
 .hu-about .about-discovery-sources span {
   padding: var(--s1);
-  border: 1px solid var(--haar);
-  color: var(--grau);
+  border: 1px solid color-mix(in srgb, var(--papier) 22%, var(--tinte));
+  color: color-mix(in srgb, var(--papier) 72%, var(--tinte));
   text-align: center;
   font-family: var(--mono);
   font-size: var(--mono-s);
@@ -841,7 +841,7 @@
 }
 
 .hu-about .about-discovery-core small {
-  color: var(--grau);
+  color: color-mix(in srgb, var(--papier) 72%, var(--tinte));
 }
 
 .hu-about .about-discovery-pulse {
@@ -857,7 +857,7 @@
 
 .hu-about .about-discovery-output {
   margin-top: var(--s3);
-  color: var(--grau);
+  color: color-mix(in srgb, var(--papier) 72%, var(--tinte));
   text-align: center;
   font-family: var(--mono);
   font-size: var(--mono-s);
@@ -901,7 +901,7 @@
 }
 
 .hu-about .about-principle-panel .about-copy p {
-  color: var(--grau);
+  color: color-mix(in srgb, var(--papier) 76%, var(--tinte));
 }
 
 /* ══ Zusammenarbeit 07 ═════════════════════════════════════════ */
@@ -1049,7 +1049,7 @@
 }
 
 .hu-about .about-origin-now small {
-  color: var(--grau);
+  color: color-mix(in srgb, var(--papier) 72%, var(--tinte));
 }
 
 /* ══ Finale ════════════════════════════════════════════════════ */
@@ -1197,6 +1197,28 @@
   }
 }
 
+@keyframes about-signal-travel-y {
+  0%,
+  18% {
+    transform: translateY(-140%);
+    opacity: 0;
+  }
+
+  28% {
+    opacity: 1;
+  }
+
+  72% {
+    opacity: 1;
+  }
+
+  82%,
+  100% {
+    transform: translateY(390%);
+    opacity: 0;
+  }
+}
+
 @keyframes about-pulse {
   0%,
   100% {
@@ -1338,6 +1360,7 @@
     width: 1px;
     height: 35%;
     transform: translateY(-140%);
+    animation-name: about-signal-travel-y;
   }
 
   .hu-about .about-loop-return {
