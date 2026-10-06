@@ -90,15 +90,13 @@ function hu_get_final_cut_authority_nodes() : array {
  */
 function hu_get_final_cut_authority_edges() : array {
 	return [
-		'website'     => [ 'landingpage', 'tracking', 'conversion' ],
+		'website'     => [ 'relaunch', 'tracking', 'conversion' ],
 		'landingpage' => [ 'website', 'tracking', 'conversion' ],
 		'tracking'    => [ 'server_side', 'conversion', 'website' ],
 		'server_side' => [ 'tracking', 'conversion', 'whitelabel' ],
 		'conversion'  => [ 'landingpage', 'tracking', 'website' ],
 		'whitelabel'  => [ 'outsourcing', 'server_side', 'website' ],
 		'agentur_local'=> [ 'website', 'tracking', 'whitelabel' ],
-		'relaunch'    => [ 'website', 'conversion', 'tracking' ],
-		'outsourcing' => [ 'whitelabel', 'website', 'server_side' ],
 	];
 }
 
@@ -108,10 +106,19 @@ function hu_get_final_cut_authority_edges() : array {
  * @return array<string,string>
  */
 function hu_get_final_cut_authority_path_map() : array {
-	$nodes = hu_get_final_cut_authority_nodes();
-	$map   = [];
+	$nodes   = hu_get_final_cut_authority_nodes();
+	$edges   = hu_get_final_cut_authority_edges();
+	$map     = [];
 
-	foreach ( $nodes as $key => $node ) {
+	// Supporting articles can be link targets, but the visible block belongs
+	// only to commercial/query-owner pages. Their editorial body already owns
+	// the contextual return link and should not gain a second SEO-looking panel.
+	foreach ( array_keys( $edges ) as $key ) {
+		if ( ! isset( $nodes[ $key ] ) ) {
+			continue;
+		}
+
+		$node = $nodes[ $key ];
 		$path = (string) wp_parse_url( (string) $node['url'], PHP_URL_PATH );
 		if ( '' === $path ) {
 			continue;
