@@ -321,7 +321,7 @@ get_template_part( 'template-parts/blog-header' );
 		<?php
 		$canonical_author = function_exists( 'hu_get_canonical_author_person' ) ? hu_get_canonical_author_person() : [];
 		$author_name      = ! empty( $canonical_author['name'] ) ? (string) $canonical_author['name'] : get_the_author();
-		$author_role      = ! empty( $canonical_author['jobTitle'] ) ? (string) $canonical_author['jobTitle'] . ' · Hannover' : __( 'WordPress-Entwicklung & Performance-Marketing · Hannover', 'blocksy-child' );
+		$author_role      = ! empty( $canonical_author['jobTitle'] ) ? (string) $canonical_author['jobTitle'] . ' · Hannover' : __( 'WordPress-Entwickler · Tracking & Conversion · Hannover', 'blocksy-child' );
 		$author_text      = ! empty( $canonical_author['description'] ) ? (string) $canonical_author['description'] : __( 'Ich verbinde WordPress-Entwicklung, technische Sichtbarkeit, Tracking und Conversion zu belastbaren Anfragepfaden.', 'blocksy-child' );
 		$author_portrait  = function_exists( 'nexus_asset_url' ) ? nexus_asset_url( 'img/hasim-portrait-192.webp' ) : get_stylesheet_directory_uri() . '/assets/img/hasim-portrait-192.webp';
 		?>
