@@ -68,6 +68,10 @@ for (const width of [320, 360, 768, 1440]) {
     await expect(references.nth(0)).toContainText('E3 New Energy');
     await expect(page.locator('#qualitaet, #durch, #m-anfragen, #m-klassisch')).toHaveCount(0);
     await expect(page.locator('.aw-kapitel a')).toHaveCount(3);
+    await expect(page.locator('.aw-produktkarte')).toBeVisible();
+    await expect(page.locator('.aw-modulband span')).toHaveCount(4);
+    await expect(page.locator('#unterschied .aw-prinzipien article')).toHaveCount(3);
+    await expect(page.locator('#unterschied .aw-ergebnisband')).toContainText('Eine Website, die Ihnen gehört.');
     await expect(page.locator('#fragen details')).toHaveCount(6);
     await expect(page.locator('#beleg')).not.toContainText(/150\s*€|22\s*€|85\s*%|1[.,]750|15\s*%/);
 
@@ -92,6 +96,17 @@ for (const width of [320, 360, 768, 1440]) {
     expect(errors).toEqual([]);
   });
 }
+
+test('FAQ keeps only one answer open at a time', async ({ page }) => {
+  await open(page);
+  const items = page.locator('#fragen details');
+  await items.nth(0).locator('summary').click();
+  await expect(items.nth(0)).toHaveAttribute('open', '');
+
+  await items.nth(1).locator('summary').click();
+  await expect(items.nth(1)).toHaveAttribute('open', '');
+  await expect(items.nth(0)).not.toHaveAttribute('open', '');
+});
 
 test('presets, project-wide tracking and CTA contract agree with PHP canon', async ({ page }) => {
   await open(page);

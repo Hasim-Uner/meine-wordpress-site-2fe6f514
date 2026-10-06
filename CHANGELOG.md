@@ -2,6 +2,13 @@
 
 ## 2026-10
 
+### Anfrage-Website: Produktinszenierung nach CRO-Kürzung
+
+- FAQ arbeitet jetzt exklusiv: Beim Öffnen einer Frage schließen andere offene Fragen derselben Gruppe automatisch.
+- Die 1.900-€-Hero-Karte ist als konfigurierbares Produktmodul geschärft: Status-Badge, Preis-Lockup, Modulband für Seiten/Text/Design/Tracking und klarere Feature-Hierarchie.
+- Der dunkle Qualitätsblock zeigt drei konkrete Systemmodule mit sichtbaren Pfaden, Outputs und einem Ergebnisband statt großer leerer Fläche.
+- Entrance- und Hover-Motion nutzt nur transform/opacity und respektiert Reduced Motion; Preis-, Scope-, Kontakt- und CRM-Verträge bleiben unverändert.
+
 ### Anfrage-Website: CRO-Redundanz entfernt
 
 - Eigenen frühen Qualitätsblock entfernt; Sprungnavigation auf Preis & Umfang, Projekte und Fragen reduziert.

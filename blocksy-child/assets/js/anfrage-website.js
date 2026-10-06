@@ -235,6 +235,31 @@
         if (this.open) confirmChange(this.querySelector('.aw-extras'));
         scheduleSticky();
     });
+    $$('[data-exclusive-details]').forEach(function (group) {
+        var items = Array.from(group.children).filter(function (item) { return item.tagName === 'DETAILS'; });
+        items.forEach(function (item) {
+            item.addEventListener('toggle', function () {
+                if (!item.open) return;
+                items.forEach(function (other) {
+                    if (other !== item && other.open) other.open = false;
+                });
+            });
+        });
+    });
+    var qualitySection = $('#unterschied');
+    if (qualitySection && !media.matches && window.IntersectionObserver) {
+        root.classList.add('aw-motion-ready');
+        var qualityObserver = new IntersectionObserver(function (entries, observer) {
+            entries.forEach(function (entry) {
+                if (!entry.isIntersecting) return;
+                entry.target.classList.add('is-visible');
+                observer.unobserve(entry.target);
+            });
+        }, { threshold: 0.22 });
+        qualityObserver.observe(qualitySection);
+    } else if (qualitySection) {
+        qualitySection.classList.add('is-visible');
+    }
     if (media.addEventListener) media.addEventListener('change', cancelMotion);
     calculate();
     root.classList.add('aw-ready');
