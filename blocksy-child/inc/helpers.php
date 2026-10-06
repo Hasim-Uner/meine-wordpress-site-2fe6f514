@@ -748,7 +748,7 @@ function nexus_get_landingpage_faq_items() {
 		[
 			'key'      => 'website',
 			'question' => 'Wann ist eine Website die bessere Wahl?',
-			'answer'   => sprintf( 'Wenn Sie mehrere Leistungen zeigen wollen oder noch keine Website haben. Eine Website mit erster Seite und Kontaktformular kostet ab %2$s. Jede weitere Seite kostet ' . hu_freelancer_website_extra_page_price( true ) . '. Die Landingpage ist für ein einzelnes Angebot gedacht, auf das Sie Besucher gezielt schicken.', hu_pricing_count_word( HU_FREELANCER_WEBSITE_PAGES ), $website_price ),
+			'answer'   => sprintf( 'Wenn Sie mehrere Leistungen zeigen wollen oder noch keine Website haben. Die Anfrage-Website startet bei %s für Grundsystem und erste Hauptseite; weitere Seiten werden nach Aufgabe kalkuliert. Die Landingpage ist für ein einzelnes Angebot gedacht, auf das Sie Besucher gezielt schicken.', $website_price ),
 		],
 		[
 			'key'      => 'pflege',
