@@ -677,7 +677,7 @@ function hu_freelancer_website_price( $with_net = false ) {
 }
 
 /**
- * Display the canonical price of one page beyond the included first page.
+ * Display the compatibility price for a standard page beyond the first page.
  *
  * @param bool $with_net Append the "netto" qualifier.
  * @return string
@@ -698,8 +698,8 @@ function hu_freelancer_website_extra_page_price( $with_net = false ) {
  */
 function hu_freelancer_website_scope_display() {
 	return sprintf(
-		'Festpreis inklusive erster Seite mit Kontaktformular, jede weitere Seite %s',
-		hu_freelancer_website_extra_page_price( true )
+		'Festpreis für Grundsystem und erste Hauptseite; weitere Seiten ab %s netto nach Seitentyp',
+		hu_format_eur( HU_WEBSITE_PAGE_UTILITY )
 	);
 }
 
