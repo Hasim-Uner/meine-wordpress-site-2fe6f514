@@ -349,13 +349,15 @@ Pflichtgespräch und keine Buchung durch das Absenden.
 Produktname: **Die Anfrage-Website**. Erweiterbares Grundprodukt aus Custom Code
 ohne Pagebuilder, mit Gutenberg/ACF für pflegbare Inhalte, GitHub-Versionierung
 und KI-gestützter Umsetzung mit Qualitätsprüfung. Preise ausschließlich aus
-`inc/canon/pricing-canon.php`: Grundpreis inklusive erster Seite, jede weitere
-Seite als Zusatzposition; Conversion-Tracking aus der Messung-Stufe optional.
-Seit der Preisfreigabe vom 06.10.2026 ist diese Produktformel der öffentliche
-Preisanker. Ein Stundensatz wird auf der Produktseite nicht daneben gestellt
-und der Konfigurator bleibt eine unverbindliche Scope-Anfrage, kein Shop-Checkout.
-Texte für jede gewählte Seite auf Wunsch inklusive, auf Basis der Kundenangaben
-und mit Kundenfreigabe; eigene Texte bleiben möglich, gleicher Preis.
+`inc/canon/pricing-canon.php`: Grundpreis für Grundsystem und erste Hauptseite;
+weitere Seiten nach Aufgabe als kurze Seite, Standardseite oder
+Leistungs-/Verkaufsseite. Conversion-Tracking aus der Messung-Stufe ist optional
+und wird projektweit berechnet. Seit der Preispräzisierung vom 06.10.2026 ist
+diese Produktformel der öffentliche Preisanker. Ein Stundensatz wird auf der
+Produktseite nicht daneben gestellt und der Konfigurator bleibt eine
+unverbindliche Scope-Anfrage, kein Shop-Checkout. Fertige, freigegebene Texte
+werden eingepflegt; Texterstellung ist ein optionaler, je Seitentyp
+kalkulierter Baustein.
 Kontaktformular, Bestätigungsmail und Danke-Seite sind Standard. Technisches SEO
 und On-Page sowie das Erstellen der Impressum- und Datenschutz-Seiten mit
 Einbindung gelieferter Rechtstexte sind inklusive. Keine Rechtsberatung oder

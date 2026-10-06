@@ -31,9 +31,9 @@ zwei Qualitätsgründe und nächsten Schritt ohne vorgegebenes Urteil benennen.
 
 | Entscheidung | Optionen / Default | Preis und Zeit | Abhängigkeit / Hilfe |
 | --- | --- | --- | --- |
-| Seiten | 1–10 / 3 | Kanonischer Grundpreis plus Zusatzseiten | Vorlagen 1/3/5 ändern nur Seitenzahl |
+| Seitentypen | Hauptseite inklusive; kurze / Standard- / Leistungsseiten, gesamt 1–10 / 3 | Eigene Preis- und Zeitbeiträge je Typ | Vorlagen 1/3/5 setzen eine nachvollziehbare Typmischung |
 | Art | Neubau / Relaunch; Neubau | Kanonische Relaunch-Zeit | Bestand und Weiterleitungen bei Relaunch |
-| Texte | Erstellen / vorhanden; erstellen | Inklusive, eigene Vorbereitungszeit | Kundenangaben und Freigabe erforderlich |
+| Texte | Fertig / erstellen; fertig | Optionaler Preis und Zeit je Seitentyp | Kundenangaben und Freigabe bei Texterstellung erforderlich |
 | Gestaltung | Basis / vorhanden / neu; Basis | Bestehender Designkanon | Layoutzahl nur bei neuem Screendesign |
 | Erweiterungen | Tracking / CRM / Dashboard; keine | Feste Extras aus Kanon; Dashboard separat | Explizite unbekannte Kosten / Zeit |
 

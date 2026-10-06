@@ -6,13 +6,16 @@ auf einen gehobenen, aber zugänglichen Direktkundenpreis neu kalibriert. Diese 
 den Website-Teil von `preise-website-landingpage.md` und die frühere offene
 Design-/CRM-Kalkulation aus dem ersten Tagesrechner.
 
-Preisstrategie am 06.10.2026 neu kalibriert: erste Seite 1.900 € netto,
-jede weitere Inhaltsseite 400 €. Damit kosten die drei sichtbaren Beispiele
-1.900 €, 2.700 € und 3.500 € netto. Die Preisformel ist der öffentliche
-Produktanker; der reguläre Direktkunden-Stundensatz von 95 € netto wird auf
-dieser Produktseite nicht als Vergleichs- oder Rückrechnungsanker gezeigt.
-Texte auf Wunsch je Seite, responsive Basisgestaltung, technisches SEO,
-Formular mit gespeicherten
+Preisstrategie am 06.10.2026 als Produktionsmodell präzisiert:
+1.900 € netto für Grundsystem und erste Hauptseite. Weitere Seiten werden nach
+Aufgabe kalkuliert: kurze Seite 300 €, Standardseite 400 €,
+Leistungs-/Verkaufsseite 790 €. Fertige, freigegebene Texte werden eingepflegt;
+Texterstellung ist optional und kostet 290 € für die erste Hauptseite, 50 € je
+kurzer Seite, 150 € je Standardseite und 290 € je Leistungs-/Verkaufsseite.
+Die Festpreise leiten sich intern aus produktivem Aufwand ab; der reguläre
+Direktkunden-Stundensatz von 95 € netto und der Agenturfaktor von 70 € netto
+werden auf der Produktseite nicht als Vergleichs- oder Rückrechnungsanker gezeigt.
+Responsive Basisgestaltung, technisches SEO, Formular mit gespeicherten
 Anfragen, Bestätigungsmail, Danke-Seite und Rechtstext-Seiten sind enthalten.
 Impressum/Datenschutz/Danke/404 zählen nicht als bezahlte Inhaltsseiten.
 Rechtstexte werden geliefert, keine Rechtsberatung. Custom Code, Gutenberg/ACF,

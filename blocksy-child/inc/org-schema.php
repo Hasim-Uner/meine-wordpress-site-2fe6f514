@@ -1487,8 +1487,10 @@ function hu_output_schema()
                     'price' => HU_FREELANCER_WEBSITE_MIN,
                     'priceCurrency' => 'EUR',
                     'priceSpecification' => [
-                        [ '@type' => 'UnitPriceSpecification', 'price' => HU_FREELANCER_WEBSITE_MIN, 'priceCurrency' => 'EUR', 'valueAddedTaxIncluded' => false, 'description' => 'Website mit einer Seite' ],
-                        [ '@type' => 'UnitPriceSpecification', 'price' => HU_FREELANCER_WEBSITE_EXTRA_PAGE, 'priceCurrency' => 'EUR', 'valueAddedTaxIncluded' => false, 'description' => 'jede weitere Seite' ],
+                        [ '@type' => 'UnitPriceSpecification', 'price' => HU_FREELANCER_WEBSITE_MIN, 'priceCurrency' => 'EUR', 'valueAddedTaxIncluded' => false, 'description' => 'Grundsystem und erste Hauptseite' ],
+                        [ '@type' => 'UnitPriceSpecification', 'price' => HU_WEBSITE_PAGE_UTILITY, 'priceCurrency' => 'EUR', 'valueAddedTaxIncluded' => false, 'description' => 'zusätzliche kurze Seite' ],
+                        [ '@type' => 'UnitPriceSpecification', 'price' => HU_WEBSITE_PAGE_STANDARD, 'priceCurrency' => 'EUR', 'valueAddedTaxIncluded' => false, 'description' => 'zusätzliche Standardseite' ],
+                        [ '@type' => 'UnitPriceSpecification', 'price' => HU_WEBSITE_PAGE_SALES, 'priceCurrency' => 'EUR', 'valueAddedTaxIncluded' => false, 'description' => 'zusätzliche Leistungs- oder Verkaufsseite' ],
                     ],
                     'url' => home_url('/wordpress-website-erstellen-lassen/'),
                 ],

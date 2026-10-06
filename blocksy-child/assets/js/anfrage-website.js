@@ -7,26 +7,56 @@
     var $$ = function (selector) { return Array.prototype.slice.call(root.querySelectorAll(selector)); };
     var rules;
     try { rules = JSON.parse(root.dataset.websiteRules); } catch (error) { return; }
-    if (!rules || !rules.prices || !rules.days || !Array.isArray(rules.implementation_tiers) || !rules.implementation_tiers.length || !rules.implementation_tiers.every(function (tier) { return Number.isFinite(tier.max_pages) && Number.isFinite(tier.days); }) || !Object.values(rules.prices).concat(Object.values(rules.days), rules.max_pages).every(Number.isFinite)) return;
-    var base = rules.prices.base, pagePrice = rules.prices.page, trackingPrice = rules.prices.tracking, max = rules.max_pages;
+    if (!rules || !rules.prices || !rules.days || !Number.isFinite(rules.max_pages) || !Object.values(rules.prices).concat(Object.values(rules.days)).every(Number.isFinite)) return;
+    var base = rules.prices.base, trackingPrice = rules.prices.tracking, max = rules.max_pages;
     var factors = rules.days;
-    var state = { seiten: 3, art: 'neubau', texte: true, tracking: false, design: 'basis', designLayouts: 1, crm: false, dashboard: false };
+    var state = { utility: 0, standard: 1, sales: 1, art: 'neubau', texte: false, tracking: false, design: 'basis', designLayouts: 1, crm: false, dashboard: false };
     var media = window.matchMedia ? window.matchMedia('(prefers-reduced-motion: reduce)') : { matches: true };
     var eur = function (number) { return number.toLocaleString('de-DE') + '\u00a0€'; };
     var days = function (number) { return number.toLocaleString('de-DE') + (number === 1 ? ' Werktag' : ' Werktage'); };
+    var totalPages = function () { return 1 + state.utility + state.standard + state.sales; };
+    function scopeLabel() {
+        var pages = totalPages();
+        var parts = [pages + (pages === 1 ? ' Seite' : ' Seiten'), state.art === 'relaunch' ? 'Relaunch' : 'Neubau'];
+        if (state.utility) parts.push(state.utility + (state.utility === 1 ? ' kurze Seite' : ' kurze Seiten'));
+        if (state.standard) parts.push(state.standard + (state.standard === 1 ? ' Standard' : ' Standard'));
+        if (state.sales) parts.push(state.sales + (state.sales === 1 ? ' Leistung' : ' Leistungen'));
+        return parts.join(' · ');
+    }
+    function prospectiveTextPrice() {
+        return rules.prices.copy_base
+            + state.utility * rules.prices.copy_utility
+            + state.standard * rules.prices.copy_standard
+            + state.sales * rules.prices.copy_sales;
+    }
     function quote() {
-        var tier = rules.implementation_tiers.find(function (entry) { return state.seiten <= entry.max_pages; });
         var components = {
-            implementation: tier.days,
-            texts: state.texte ? factors.text_first + (state.seiten - 1) * factors.text_extra : 0,
+            implementation: factors.base_implementation
+                + state.utility * factors.page_utility
+                + state.standard * factors.page_standard
+                + state.sales * factors.page_sales,
+            texts: state.texte ? factors.copy_base
+                + state.utility * factors.copy_utility
+                + state.standard * factors.copy_standard
+                + state.sales * factors.copy_sales : 0,
             design: state.design === 'neu' ? factors.design_first + (state.designLayouts - 1) * factors.design_extra_layout : 0,
             tracking: state.tracking ? factors.tracking : 0,
             relaunch: state.art === 'relaunch' ? factors.relaunch : 0,
             crm: state.crm ? factors.crm : 0
         };
+        var pagePrice = state.utility * rules.prices.page_utility
+            + state.standard * rules.prices.page_standard
+            + state.sales * rules.prices.page_sales;
+        var textPrice = state.texte ? prospectiveTextPrice() : 0;
         var designPrice = state.design === 'neu' ? rules.prices.design_first + (state.designLayouts - 1) * rules.prices.design_extra : 0;
-        return { components: components, days: Math.ceil(Object.values(components).reduce(function (a, b) { return a + b; }, 0)), designPrice: designPrice,
-            price: base + (state.seiten - 1) * pagePrice + (state.tracking ? trackingPrice : 0) + designPrice + (state.crm ? rules.prices.crm : 0) };
+        return {
+            components: components,
+            days: Math.ceil(Object.values(components).reduce(function (a, b) { return a + b; }, 0)),
+            pagePrice: pagePrice,
+            textPrice: textPrice,
+            designPrice: designPrice,
+            price: base + pagePrice + textPrice + (state.tracking ? trackingPrice : 0) + designPrice + (state.crm ? rules.prices.crm : 0)
+        };
     }
     var link = new URL($('[data-website-cta]').href, window.location.href);
     function timeline(result) {
@@ -34,7 +64,7 @@
         if (parts.relaunch) phases.push({ name: 'Bestand und Weiterleitungen', duration: parts.relaunch });
         if (parts.texts) phases.push({ name: 'Texte erstellen', duration: parts.texts });
         if (parts.design) phases.push({ name: 'Screendesign erstellen', duration: parts.design });
-        phases.push({ name: 'WordPress umsetzen', duration: parts.implementation - factors.qa });
+        phases.push({ name: 'WordPress umsetzen', duration: Math.max(0, parts.implementation - factors.qa) });
         if (parts.tracking) phases.push({ name: 'Conversion-Tracking einrichten', duration: parts.tracking });
         if (parts.crm) phases.push({ name: 'Standard-CRM anbinden', duration: parts.crm });
         phases.push({ name: 'Qualitätsprüfung und Abnahmestand', duration: factors.qa, className: 'ende' });
@@ -48,12 +78,12 @@
         });
         var duration = (state.dashboard ? 'Mindestens ' : '') + days(result.days);
         $('#zeit-gesamt').textContent = duration + ' geplant';
-        $('#zeit-umfang').textContent = 'Ihr Umfang: ' + state.seiten + (state.seiten === 1 ? ' Seite' : ' Seiten') + ' · ' + (state.art === 'relaunch' ? 'Relaunch' : 'Neubau');
+        $('#zeit-umfang').textContent = 'Ihr Umfang: ' + scopeLabel();
         $('#bauzeit').textContent = duration;
         $('#hero-bauzeit').textContent = 'Ihre Auswahl: ' + (state.dashboard ? 'mindestens ' : '') + days(result.days) + ' geplant.';
         $('#dauer-label').textContent = state.dashboard ? 'Produktionszeit ohne Dashboard' : 'Produktionszeit';
         $('#zeit-aufteilung').textContent = 'Vorbereitung ' + days(parts.texts + parts.design) + ' · Umsetzung ' + days(parts.implementation + parts.tracking + parts.relaunch + parts.crm);
-        $('#zeit-hinweis').textContent = 'Planung bis zum geprüften Abnahmestand. Ihre Freigabezeiten und der Starttermin kommen separat dazu. Halbe Tage werden erst in der Gesamtsumme aufgerundet.' + (state.dashboard ? ' Dashboard-Aufwand ist noch nicht enthalten.' : '') + (state.crm ? ' CRM-Standardumfang nach Systemprüfung bestätigen.' : '') + (state.design === 'vorhanden' ? ' Vorlagen vor Beauftragung prüfen.' : '');
+        $('#zeit-hinweis').textContent = 'Planung bis zum geprüften Abnahmestand. Ihre Freigabezeiten und der Starttermin kommen separat dazu. Teil-Tage werden erst in der Gesamtsumme aufgerundet.' + (state.dashboard ? ' Dashboard-Aufwand ist noch nicht enthalten.' : '') + (state.crm ? ' CRM-Standardumfang nach Systemprüfung bestätigen.' : '') + (state.design === 'vorhanden' ? ' Vorlagen vor Beauftragung prüfen.' : '');
         ['implementation', 'texts', 'design', 'tracking', 'relaunch', 'crm'].forEach(function (key) {
             $('#tage-' + key).textContent = days(parts[key]);
             if (key !== 'implementation') $('#zeit-' + (key === 'texts' ? 'texte' : key)).hidden = !parts[key];
@@ -74,29 +104,49 @@
     }
     function calculate() {
         var previousPrice = $('#gesamt').textContent, detailsWereHidden = $('#design-details').hidden;
-        state.designLayouts = Math.min(state.seiten, Math.max(1, state.designLayouts));
+        var pages = totalPages();
+        state.designLayouts = Math.min(pages, Math.max(1, state.designLayouts));
         var layoutSelect = $('#design-layouts');
-        if (layoutSelect.options.length !== state.seiten) {
+        if (layoutSelect.options.length !== pages) {
             layoutSelect.replaceChildren();
-            for (var n = 1; n <= state.seiten; n++) {
+            for (var n = 1; n <= pages; n++) {
                 var option = document.createElement('option'); option.value = n; option.textContent = n + (n === 1 ? ' Layout' : ' Layouts'); layoutSelect.append(option);
             }
         }
         layoutSelect.value = state.designLayouts;
-        var result = quote(), newDesign = state.design === 'neu', extra = state.seiten - 1, total = result.price;
-        var scope = state.seiten + (state.seiten === 1 ? ' Seite' : ' Seiten') + ' · ' + (state.art === 'relaunch' ? 'Relaunch' : 'Neubau');
-        $('#seiten').textContent = state.seiten; $('#weitere').textContent = extra;
-        $('#weitere-label').textContent = extra === 1 ? 'weitere Seite' : 'weitere Seiten';
-        $('#summary-pages').hidden = !extra;
-        $('#minus').disabled = state.seiten <= 1; $('#plus').disabled = state.seiten >= max;
-        $('#betrag-weitere').textContent = eur(extra * pagePrice); $('#gesamt').textContent = eur(total);
-        $('#rechnung').textContent = eur(base) + (extra ? ' + ' + extra + ' × ' + eur(pagePrice) : '') + (newDesign ? ' + ' + eur(result.designPrice) + ' Design' : '') + (state.tracking ? ' + ' + eur(trackingPrice) + ' Tracking' : '') + (state.crm ? ' + ' + eur(rules.prices.crm) + ' CRM' : '');
+        var result = quote(), newDesign = state.design === 'neu', total = result.price, scope = scopeLabel();
+
+        ['utility', 'standard', 'sales'].forEach(function (key) {
+            $('#' + key + '-pages').textContent = state[key];
+            $('#' + key + '-minus').disabled = state[key] <= 0;
+            $('#' + key + '-plus').disabled = pages >= max;
+            $('#summary-' + key).hidden = state[key] === 0;
+            $('#count-' + key).textContent = state[key];
+            $('#betrag-' + key).textContent = eur(state[key] * rules.prices['page_' + key]);
+        });
+
+        $('#gesamt').textContent = eur(total);
+        var equation = [eur(base)];
+        if (state.utility) equation.push(state.utility + ' × ' + eur(rules.prices.page_utility) + ' kurz');
+        if (state.standard) equation.push(state.standard + ' × ' + eur(rules.prices.page_standard) + ' Standard');
+        if (state.sales) equation.push(state.sales + ' × ' + eur(rules.prices.page_sales) + ' Leistung');
+        if (state.texte) equation.push(eur(result.textPrice) + ' Texte');
+        if (newDesign) equation.push(eur(result.designPrice) + ' Design');
+        if (state.tracking) equation.push(eur(trackingPrice) + ' Tracking');
+        if (state.crm) equation.push(eur(rules.prices.crm) + ' CRM');
+        $('#rechnung').textContent = equation.join(' + ');
         $('#auswahl-art').textContent = scope;
         $('#abschluss-umfang').textContent = scope;
         $('#abschluss-preis').textContent = eur(total);
         $('#abschluss-preiszusatz').textContent = 'netto · zzgl. USt.' + (state.dashboard ? ' · Zuzüglich Daten-Dashboard nach Angebot' : '');
-        $('#auswahl-texte').textContent = state.texte ? 'Texte erstellen lassen' : 'Eigene Texte einpflegen';
-        $('#text-hinweis').textContent = state.texte ? 'Texte bereits fertig? Abwählen. Sonst +' + days(result.components.texts) + ' Vorbereitung, ohne Aufpreis.' : 'Ihre Texte sind vollständig und freigegeben. Keine zusätzliche Texterstellung.';
+
+        $('#text-option-preis').textContent = '+' + eur(prospectiveTextPrice());
+        $('#auswahl-texte').textContent = state.texte ? 'Texte erstellen lassen' : 'Eigene Texte';
+        $('#betrag-texte').textContent = state.texte ? eur(result.textPrice) : eur(0);
+        $('#text-hinweis').textContent = state.texte
+            ? eur(result.textPrice) + ' für die gewählten Seitentypen · +' + days(result.components.texts) + ' Vorbereitung.'
+            : 'Fertige, freigegebene Texte werden eingepflegt. Texterstellung für diese Auswahl: +' + eur(prospectiveTextPrice()) + '.';
+
         $('#auswahl-design').textContent = newDesign ? 'Screendesign · ' + state.designLayouts + (state.designLayouts === 1 ? ' Layout' : ' Layouts') : state.design === 'vorhanden' ? 'Vorhandenes Design umsetzen' : 'Basisdesign inklusive';
         $('#design-details').hidden = !newDesign;
         $('#design-option-preis').textContent = '+' + eur(rules.prices.design_first + (state.designLayouts - 1) * rules.prices.design_extra);
@@ -114,10 +164,17 @@
         if (state.design === 'vorhanden') notes.push('Vorlage: Umsetzungsumfang vorab prüfen.');
         $('#angebot-hinweis').hidden = !notes.length; $('#angebot-hinweis').textContent = notes.join(' ');
         $('#pos-weiterleitung').classList.toggle('aus', state.art !== 'relaunch');
-        $$('.groessen button').forEach(function (button) { button.setAttribute('aria-pressed', String(Number(button.dataset.seiten) === state.seiten)); });
-        $$('[data-website-scenario]').forEach(function (button) { button.setAttribute('aria-pressed', String(Number(button.dataset.websiteScenario) === state.seiten)); });
+
+        $$('[data-website-scenario]').forEach(function (button) {
+            var match = Number(button.dataset.utility) === state.utility
+                && Number(button.dataset.standard) === state.standard
+                && Number(button.dataset.sales) === state.sales;
+            button.setAttribute('aria-pressed', String(match));
+        });
         $$('.art button').forEach(function (button) { button.setAttribute('aria-pressed', String(button.dataset.art === state.art)); });
+
         var selected = [];
+        if (state.texte) selected.push('Texte');
         if (newDesign) selected.push('Screendesign');
         if (state.tracking) selected.push('Tracking');
         if (state.crm) selected.push('CRM');
@@ -129,7 +186,13 @@
             $('#konfiguration-status').textContent = scope + ' · ' + eur(total) + ' netto. ' + (state.dashboard ? 'Daten-Dashboard zusätzlich nach Angebot. Mindestens ' : '') + days(result.days) + ' geplant.';
         }, 180);
         timeline(result);
-        link.searchParams.set('seiten', state.seiten); link.searchParams.set('art', state.art); link.searchParams.set('texte', state.texte ? '1' : '0');
+
+        link.searchParams.set('seiten', pages);
+        link.searchParams.set('art', state.art);
+        link.searchParams.set('kurz', state.utility);
+        link.searchParams.set('standard', state.standard);
+        link.searchParams.set('leistung', state.sales);
+        link.searchParams.set('texte', state.texte ? '1' : '0');
         ['tracking', 'crm', 'dashboard'].forEach(function (key) { if (state[key]) link.searchParams.set(key, '1'); else link.searchParams.delete(key); });
         if (state.design !== 'basis') link.searchParams.set('design', state.design); else link.searchParams.delete('design');
         if (newDesign) { link.searchParams.set('screendesign', '1'); link.searchParams.set('design_layouts', state.designLayouts); }
@@ -138,10 +201,23 @@
         if (previousPrice !== $('#gesamt').textContent) confirmChange($('#gesamt'));
         if (newDesign && detailsWereHidden) confirmChange($('#design-details'));
     }
-    $('#minus').addEventListener('click', function () { if (state.seiten > 1) { state.seiten--; calculate(); } });
-    $('#plus').addEventListener('click', function () { if (state.seiten < max) { state.seiten++; calculate(); } });
-    $$('.groessen button').forEach(function (button) {
-        button.addEventListener('click', function () { if (state.seiten !== Number(button.dataset.seiten)) { state.seiten = Number(button.dataset.seiten); calculate(); } });
+    $$('[data-page-delta]').forEach(function (button) {
+        button.addEventListener('click', function () {
+            var key = button.dataset.pageType, delta = Number(button.dataset.pageDelta);
+            if (!Object.prototype.hasOwnProperty.call(state, key) || !Number.isFinite(delta)) return;
+            if (delta > 0 && totalPages() >= max) return;
+            state[key] = Math.max(0, state[key] + delta);
+            calculate();
+        });
+    });
+    $$('[data-website-scenario]').forEach(function (button) {
+        button.addEventListener('click', function () {
+            state.utility = Number(button.dataset.utility) || 0;
+            state.standard = Number(button.dataset.standard) || 0;
+            state.sales = Number(button.dataset.sales) || 0;
+            state.designLayouts = Math.min(state.designLayouts, totalPages());
+            calculate();
+        });
     });
     $$('.art button').forEach(function (button) {
         button.addEventListener('click', function () { if (state.art !== button.dataset.art) { state.art = button.dataset.art; calculate(); } });

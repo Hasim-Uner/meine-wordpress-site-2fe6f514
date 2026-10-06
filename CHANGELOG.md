@@ -2,6 +2,14 @@
 
 ## 2026-10
 
+### Anfrage-Website: Kalkulator nach Produktionsaufwand
+
+- Der Rechner unterscheidet jetzt Grundsystem plus erste Hauptseite, kurze Seiten (300 €), Standardseiten (400 €) und Leistungs-/Verkaufsseiten (790 €), statt jede Zusatzseite pauschal gleich zu behandeln.
+- Texterstellung ist ein eigener optionaler Baustein: 290 € für die Hauptseite, 50 € je kurzer Seite, 150 € je Standardseite und 290 € je Leistungs-/Verkaufsseite. Fertige, freigegebene Texte werden ohne Copy-Aufpreis eingepflegt.
+- Screendesign wird weiter je unterschiedlichem Layout kalkuliert; Conversion-Tracking und CRM bleiben projektweite Module und vervielfachen sich nicht mit der Seitenzahl.
+- Browser, Kontaktformular und CRM übergeben die Seitentypen strukturiert. Der Server prüft Gesamtseitenzahl gegen die Typzähler und berechnet Preis, Produktionszeit und Text-/Designanteile ausschließlich aus dem Kanon neu. Alte Links ohne Typzähler bleiben als Standardseiten kompatibel.
+- Öffentliche Festpreise bleiben vom internen Kalkulationsmodell getrennt: 95 €/h Direktkunde und 70 €/h Agentur sind keine öffentlichen Produktanker.
+
 ### Anfrage-Website: Preisstrategie auf gehobenen Direktkundenpreis kalibriert
 
 - Das Grundprodukt startet jetzt bei 1.900 € netto inklusive erster Inhaltsseite; jede weitere Inhaltsseite kostet 400 € netto. Die sichtbaren 1-/3-/5-Seiten-Beispiele liegen damit bei 1.900 €, 2.700 € und 3.500 € netto.
