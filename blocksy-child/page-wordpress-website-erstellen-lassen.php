@@ -272,20 +272,17 @@ get_header();
           </div>
         </div>
       </details>
-    </div>
-  </section>
-
-  <section class="abschnitt aw-erweiterungsumfang" id="erweiterungen" aria-labelledby="h-erweiterungen">
-    <div class="wrap">
-      <details class="aw-erweiterungen-kompakt">
-        <summary><span><span class="mono">Erweiterungen</span><strong>Was Design, Tracking, CRM und Dashboard genau enthalten</strong></span><span>Details ↓</span></summary>
-        <div class="aw-erweiterungen-grid">
-          <div><h3>Individuelles Screendesign</h3><p>Gestaltungsrichtung in Figma, Desktop und Mobil je gebuchtem Layout, zwei gebündelte Korrekturrunden.</p></div>
-          <div><h3>Conversion-Tracking</h3><p>GA4, Google Tag Manager, Consent Mode und eine Google-Ads-Conversion für erfolgreich abgesendete Standard-Anfragen.</p></div>
-          <div><h3>CRM-Anbindung Standard</h3><p>Ein Formular an ein bestehendes HubSpot oder Bitrix24, bis zu zehn Felder und ein Kontakt- oder Lead-Objekt.</p></div>
-          <div><h3>Daten-Dashboard</h3><p>Umfang, Datenquellen, Preis und zusätzliche Produktionszeit werden vor Auftrag separat festgelegt.</p></div>
-        </div>
-      </details>
+      <div class="aw-erweiterungsumfang" id="erweiterungen">
+        <details class="aw-erweiterungen-kompakt">
+          <summary><span><span class="mono">Erweiterungen</span><strong>Was Design, Tracking, CRM und Dashboard genau enthalten</strong></span><span>Details ↓</span></summary>
+          <div class="aw-erweiterungen-grid">
+            <div><h3>Individuelles Screendesign</h3><p>Gestaltungsrichtung in Figma, Desktop und Mobil je gebuchtem Layout, zwei gebündelte Korrekturrunden.</p></div>
+            <div><h3>Conversion-Tracking</h3><p>GA4, Google Tag Manager, Consent Mode und eine Google-Ads-Conversion für erfolgreich abgesendete Standard-Anfragen.</p></div>
+            <div><h3>CRM-Anbindung Standard</h3><p>Ein Formular an ein bestehendes HubSpot oder Bitrix24, bis zu zehn Felder und ein Kontakt- oder Lead-Objekt.</p></div>
+            <div><h3>Daten-Dashboard</h3><p>Umfang, Datenquellen, Preis und zusätzliche Produktionszeit werden vor Auftrag separat festgelegt.</p></div>
+          </div>
+        </details>
+      </div>
     </div>
   </section>
 
