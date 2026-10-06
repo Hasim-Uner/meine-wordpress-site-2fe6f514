@@ -1,12 +1,18 @@
 # Die Anfrage-Website
 
 Grundprodukt freigegeben durch Haşim am 02.10.2026; Produktdurchgang und
-Standard-Erweiterungen beauftragt am 04.10.2026. Diese Entscheidung ersetzt
+Standard-Erweiterungen beauftragt am 04.10.2026; Preisstrategie am 06.10.2026
+auf einen gehobenen, aber zugänglichen Direktkundenpreis neu kalibriert. Diese Entscheidung ersetzt
 den Website-Teil von `preise-website-landingpage.md` und die frühere offene
 Design-/CRM-Kalkulation aus dem ersten Tagesrechner.
 
-Erste Seite 1.490 € netto, jede weitere 290 €. Texte auf Wunsch je Seite,
-responsive Basisgestaltung, technisches SEO, Formular mit gespeicherten
+Preisstrategie am 06.10.2026 neu kalibriert: erste Seite 1.900 € netto,
+jede weitere Inhaltsseite 400 €. Damit kosten die drei sichtbaren Beispiele
+1.900 €, 2.700 € und 3.500 € netto. Die Preisformel ist der öffentliche
+Produktanker; der reguläre Direktkunden-Stundensatz von 95 € netto wird auf
+dieser Produktseite nicht als Vergleichs- oder Rückrechnungsanker gezeigt.
+Texte auf Wunsch je Seite, responsive Basisgestaltung, technisches SEO,
+Formular mit gespeicherten
 Anfragen, Bestätigungsmail, Danke-Seite und Rechtstext-Seiten sind enthalten.
 Impressum/Datenschutz/Danke/404 zählen nicht als bezahlte Inhaltsseiten.
 Rechtstexte werden geliefert, keine Rechtsberatung. Custom Code, Gutenberg/ACF,
