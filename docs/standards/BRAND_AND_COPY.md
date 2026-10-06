@@ -351,6 +351,9 @@ ohne Pagebuilder, mit Gutenberg/ACF für pflegbare Inhalte, GitHub-Versionierung
 und KI-gestützter Umsetzung mit Qualitätsprüfung. Preise ausschließlich aus
 `inc/canon/pricing-canon.php`: Grundpreis inklusive erster Seite, jede weitere
 Seite als Zusatzposition; Conversion-Tracking aus der Messung-Stufe optional.
+Seit der Preisfreigabe vom 06.10.2026 ist diese Produktformel der öffentliche
+Preisanker. Ein Stundensatz wird auf der Produktseite nicht daneben gestellt
+und der Konfigurator bleibt eine unverbindliche Scope-Anfrage, kein Shop-Checkout.
 Texte für jede gewählte Seite auf Wunsch inklusive, auf Basis der Kundenangaben
 und mit Kundenfreigabe; eigene Texte bleiben möglich, gleicher Preis.
 Kontaktformular, Bestätigungsmail und Danke-Seite sind Standard. Technisches SEO

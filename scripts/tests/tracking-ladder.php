@@ -47,7 +47,7 @@ check( 3 === substr_count( hu_tracking_ladder_display( 2 ), ' €' ), 'ladder ph
 // eine Seite kostet weniger als das kleinste Website-Paket, eine Zusatzseite
 // weniger als eine Landingpage, und Agenturen zahlen fuer die Landingpage
 // rund 30 % weniger als Endkunden.
-check( HU_FREELANCER_WEBSITE_MIN === 1490 && HU_FREELANCER_WEBSITE_PAGES === 1, 'approved request website includes its first page' );
+check( HU_FREELANCER_WEBSITE_MIN === 1900 && HU_FREELANCER_WEBSITE_PAGES === 1, 'approved request website includes its first page' );
 check( HU_LANDINGPAGE_PRICE === 1990, 'landing page with copy remains unchanged' );
 check( HU_FREELANCER_WEBSITE_EXTRA_PAGE < HU_LANDINGPAGE_PRICE, 'an extra website page costs less than a landing page' );
 check( HU_WHITELABEL_LANDINGPAGE_MIN <= (int) round( HU_LANDINGPAGE_PRICE * 0.75 ), 'agencies pay at least 25 % less than end customers for a landing page' );
@@ -61,11 +61,11 @@ check( 5 === hu_website_quote( 1, 'neubau', true, [ 'design' => 'neu', 'design_l
 check( 4 === hu_website_quote( 3, 'neubau', false, [ 'texte' => 1 ] )['days'], 'three pages with included new texts have four production days' );
 check( 2 === hu_website_quote( 1, 'neubau', false, [ 'design' => 'vorhanden' ] )['days'] && hu_website_quote( 1, 'neubau', false, [ 'design' => 'vorhanden' ] )['price_review'], 'supplied designs avoid a new design phase but require preflight' );
 $shared = hu_website_quote( 4, 'neubau', false, [ 'design' => 'neu', 'design_layouts' => 2 ] );
-check( 3300 === $shared['price'] && 940 === $shared['design_price'] && 5 === $shared['days'], 'four pages using two custom layouts pay once per layout' );
+check( 4040 === $shared['price'] && 940 === $shared['design_price'] && 5 === $shared['days'], 'four pages using two custom layouts pay once per layout' );
 $rounded = hu_website_quote( 2, 'neubau', false, [ 'texte' => 1, 'design' => 'neu', 'design_layouts' => 2 ] );
 check( 1.5 === $rounded['components']['texts'] && 2.5 === $rounded['components']['design'] && 6 === $rounded['days'], 'half-day phases are summed before rounding, not rounded independently' );
 $all = hu_website_quote( 3, 'neubau', true, [ 'crm' => 1, 'design' => 'neu', 'design_layouts' => 3 ] );
-check( 5140 === $all['price'] && 9 === $all['days'] && ! $all['duration_open'], 'all standardized extras form a complete price and duration' );
+check( 5770 === $all['price'] && 9 === $all['days'] && ! $all['duration_open'], 'all standardized extras form a complete price and duration' );
 foreach ( range( 1, HU_WEBSITE_CALCULATOR_MAX ) as $pages ) {
 	$plain = hu_website_quote( $pages );
 	$tracked = hu_website_quote( $pages, 'neubau', true );

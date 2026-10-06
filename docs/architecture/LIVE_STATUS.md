@@ -336,7 +336,11 @@ Contract und Abnahme: `CHAT_ASSISTANT.md`.
   Sticky-Auswahl ausblenden, wenn Umfangswahl, Zusammenfassungs-CTA oder
   Abschluss sichtbar sind; fokussierte Leiste bleibt bedienbar. Dynamische
   Abstandreserve und Safe Area verhindern Überdeckung der Auswahlcontrols.
-  Grundpreis/Zusatzseite unverändert, Texte auf Wunsch und technische SEO inklusive.
+  Preisstrategie seit 06.10.2026: Grundprodukt plus feste Zusatzseite aus dem
+  zentralen Preiskanon; die Formel steht bereits im Hero und der Konfigurator
+  führt mit „Weiter zur Anfrage“ in die unverbindliche Scope-Übergabe. Der
+  Direktkunden-Stundensatz ist kein öffentlicher Preisanker dieser Produktseite.
+  Texte auf Wunsch und technisches SEO inklusive.
   Formular mit gespeicherter Anfrage, Bestätigungsmail und Danke-Seite sowie
   Rechtstext-Seiten Standard. Custom Code statt Pagebuilder, Gutenberg/ACF,
   GitHub, KI-Workflow mit Prüfung. Einmalpreis, kein Website-Abo/Pflichtwartung,

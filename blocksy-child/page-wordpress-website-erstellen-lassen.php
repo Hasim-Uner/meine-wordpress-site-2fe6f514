@@ -37,7 +37,7 @@ get_header();
       <div>
         <div class="produkt"><span class="marke-produkt">Die Anfrage-Website</span><span class="mono">WordPress · Neubau oder Relaunch</span></div>
         <h1 id="h-hero">WordPress-Website erstellen lassen.<br><span class="hero-akzent">Ihr Angebot klar.<br>Der nächste Schritt sichtbar.</span></h1>
-        <p class="aw-einstieg">Ab <?php echo esc_html( $eur( HU_FREELANCER_WEBSITE_MIN ) ); ?> netto · Texte und Basisgestaltung inklusive</p>
+        <p class="aw-einstieg"><?php echo esc_html( $eur( HU_FREELANCER_WEBSITE_MIN ) ); ?> netto inkl. erster Seite · jede weitere Seite <?php echo esc_html( $eur( HU_FREELANCER_WEBSITE_EXTRA_PAGE ) ); ?></p>
         <p class="lead">Für Unternehmen und Selbstständige, die ihre Leistungen erklären und passende Anfragen erhalten möchten. Ich entwickle Gestaltung, Inhalte und Anfrageweg zusammen: auf dem Handy genauso verständlich wie am großen Bildschirm.</p>
         <ul class="aw-hero-checks" aria-label="Im Grundprodukt enthalten"><li>Texte &amp; responsive Gestaltung</li><li>Technisches SEO</li><li>Formular mit Bestätigung</li></ul>
         <div class="aktion">
@@ -190,7 +190,7 @@ get_header();
             <p class="rechnung" id="rechnung"><?php echo esc_html( hu_freelancer_website_price() . ' + 2 × ' . hu_freelancer_website_extra_page_price() ); ?></p>
             <p id="angebot-hinweis" class="aw-angebot-hinweis" hidden></p>
             <div class="aw-zeitkalkulation"><span id="dauer-label">Produktionszeit</span><b id="bauzeit"><?php echo esc_html( $days( $quote['days'] ) ); ?></b><a href="#zeit" data-track-action="website_offer_to_zeit" data-track-category="navigation">Zeitbeiträge ansehen ↓</a></div>
-            <a class="btn" id="cta-angebot" href="<?php echo esc_url( $contact_url ); ?>" data-website-cta="angebot" data-track-action="cta_website_offer_scope_project" data-track-category="lead_gen" data-track-section="website_offer_angebot">Auswahl anfragen <span aria-hidden="true">→</span></a>
+            <a class="btn" id="cta-angebot" href="<?php echo esc_url( $contact_url ); ?>" data-website-cta="angebot" data-track-action="cta_website_offer_scope_project" data-track-category="lead_gen" data-track-section="website_offer_angebot">Weiter zur Anfrage <span aria-hidden="true">→</span></a>
             <p class="aw-hinweis">Ihre Auswahl wird übernommen. Antwort <?php echo esc_html( hu_response_promise( 'window' ) ); ?>.</p>
           </div>
           <details class="aw-price-details"><summary>So setzt sich der Preis zusammen</summary>

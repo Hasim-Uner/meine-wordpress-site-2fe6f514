@@ -2,6 +2,13 @@
 
 ## 2026-10
 
+### Anfrage-Website: Preisstrategie auf gehobenen Direktkundenpreis kalibriert
+
+- Das Grundprodukt startet jetzt bei 1.900 € netto inklusive erster Inhaltsseite; jede weitere Inhaltsseite kostet 400 € netto. Die sichtbaren 1-/3-/5-Seiten-Beispiele liegen damit bei 1.900 €, 2.700 € und 3.500 € netto.
+- Die Preisformel steht im Hero statt nur eines abstrakten „ab“-Signals. Der Konfigurator behält Produktionszeit und Extras; sein Hauptbutton heißt „Weiter zur Anfrage“, weil Scope und Starttermin vor einem verbindlichen Auftrag bestätigt werden und kein künstlicher Warenkorb simuliert wird.
+- SEO-Title, Meta-Description, Service-Offer, Kontaktübergabe und serverseitige Neuberechnung lesen weiter denselben Kanon. Tests und Intake-Grenzfälle wurden auf den neuen Preisstand umgestellt.
+- Der reguläre Direktkunden-Stundensatz dient nicht als öffentlicher Anker dieses Festpreisprodukts; die Seite verkauft definierten Umfang, Übergabe und Ergebnis statt Stunden.
+
 ### White-Label: finale Strecke mit echtem Abnahmeprotokoll
 
 - Acht Abschnitte: Auftrag, Felder, Belege, Ablauf, Preise, Absicherung, Fragen, Anfrage. Native Felder-Akkordeons; Fehler/Änderung im Ablauf, Ausstieg in der Absicherung, übrige fünf FAQ-Antworten unverändert.
