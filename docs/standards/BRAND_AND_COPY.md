@@ -446,7 +446,10 @@ unterschiedliche Layouts werden ausdrücklich gewählt. Tracking und CRM sind
 Projektmodule und vervielfachen sich nicht mit der Seitenzahl. Preise und Zeit
 werden aus dem Kanon und serverseitig neu berechnet. Dashboard bleibt zusätzlich
 nach Angebot. Kein verpflichtender Wizard.
-Ein kompakter Arbeitsbeleg steht vor dem Konfigurator, vollständige Referenzen
-vor dem Qualitätsvergleich. Drei Referenzen: E3 New Energy (Weiterentwicklung
-und Anfrageweg, kein eigener Website-Neubau), hasimuener.org (eigenes Projekt)
-und Civaka Azad. Keine vertraulichen Kennzahlen beim namentlichen Kunden.
+Seit der CRO-Kürzung vom 06.10.2026 steht vor dem Konfigurator nur E3
+New Energy als Hauptbeleg. Der Beitrag wird korrekt als Weiterentwicklung und
+Anfrageweg beschrieben, nicht als eigener Website-Neubau; vertrauliche
+Kennzahlen bleiben unsichtbar. hasimuener.org und Civaka Azad werden auf dieser
+Produktseite nicht mehr als eigene Referenzkarten wiederholt. Nach dem Rechner
+folgen nur drei Differenzierungsprinzipien (Klarheit, geprüfter Anfrageweg,
+Eigentum), ein kompakter Drei-Stufen-Ablauf und sechs Kauf-Fragen.

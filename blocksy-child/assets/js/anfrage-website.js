@@ -60,30 +60,27 @@
     }
     var link = new URL($('[data-website-cta]').href, window.location.href);
     function timeline(result) {
-        var parts = result.components, phases = [];
-        if (parts.relaunch) phases.push({ name: 'Bestand und Weiterleitungen', duration: parts.relaunch });
-        if (parts.texts) phases.push({ name: 'Texte erstellen', duration: parts.texts });
-        if (parts.design) phases.push({ name: 'Screendesign erstellen', duration: parts.design });
-        phases.push({ name: 'WordPress umsetzen', duration: Math.max(0, parts.implementation - factors.qa) });
-        if (parts.tracking) phases.push({ name: 'Conversion-Tracking einrichten', duration: parts.tracking });
-        if (parts.crm) phases.push({ name: 'Standard-CRM anbinden', duration: parts.crm });
-        phases.push({ name: 'Qualitätsprüfung und Abnahmestand', duration: factors.qa, className: 'ende' });
-        if (state.dashboard) phases.push({ name: 'Daten-Dashboard zusätzlich', duration: 0, className: 'offen' });
+        var parts = result.components;
+        var duration = (state.dashboard ? 'Mindestens ' : '') + days(result.days);
+        var phases = [
+            { name: 'Briefing & Material', label: 'Vor dem Start' },
+            { name: 'Umsetzung & Prüfung', label: duration },
+            { name: 'Freigabe & Livegang', label: 'danach', className: 'ende' }
+        ];
         $('#bahn').replaceChildren();
         phases.forEach(function (phase) {
             var box = document.createElement('div'), label = document.createElement('span'), title = document.createElement('b');
             box.className = 'phase ' + (phase.className || ''); label.className = 'mono';
-            label.textContent = phase.duration ? days(phase.duration) : 'Zeit nach Angebot';
-            title.textContent = phase.name; box.append(label, title); $('#bahn').append(box);
+            label.textContent = phase.label; title.textContent = phase.name;
+            box.append(label, title); $('#bahn').append(box);
         });
-        var duration = (state.dashboard ? 'Mindestens ' : '') + days(result.days);
         $('#zeit-gesamt').textContent = duration + ' geplant';
         $('#zeit-umfang').textContent = 'Ihr Umfang: ' + scopeLabel();
         $('#bauzeit').textContent = duration;
         $('#hero-bauzeit').textContent = 'Ihre Auswahl: ' + (state.dashboard ? 'mindestens ' : '') + days(result.days) + ' geplant.';
         $('#dauer-label').textContent = state.dashboard ? 'Produktionszeit ohne Dashboard' : 'Produktionszeit';
         $('#zeit-aufteilung').textContent = 'Vorbereitung ' + days(parts.texts + parts.design) + ' · Umsetzung ' + days(parts.implementation + parts.tracking + parts.relaunch + parts.crm);
-        $('#zeit-hinweis').textContent = 'Planung bis zum geprüften Abnahmestand. Ihre Freigabezeiten und der Starttermin kommen separat dazu. Teil-Tage werden erst in der Gesamtsumme aufgerundet.' + (state.dashboard ? ' Dashboard-Aufwand ist noch nicht enthalten.' : '') + (state.crm ? ' CRM-Standardumfang nach Systemprüfung bestätigen.' : '') + (state.design === 'vorhanden' ? ' Vorlagen vor Beauftragung prüfen.' : '');
+        $('#zeit-hinweis').textContent = 'Planung bis zum geprüften Abnahmestand. Ihre Freigabezeiten und der Starttermin kommen separat dazu.' + (state.dashboard ? ' Dashboard-Aufwand ist noch nicht enthalten.' : '') + (state.crm ? ' CRM-Standardumfang nach Systemprüfung bestätigen.' : '') + (state.design === 'vorhanden' ? ' Vorlagen vor Beauftragung prüfen.' : '');
         ['implementation', 'texts', 'design', 'tracking', 'relaunch', 'crm'].forEach(function (key) {
             $('#tage-' + key).textContent = days(parts[key]);
             if (key !== 'implementation') $('#zeit-' + (key === 'texts' ? 'texte' : key)).hidden = !parts[key];
@@ -229,14 +226,6 @@
         input.addEventListener('change', function () { if (this.checked) { state.design = this.value; calculate(); } });
     });
     $('#design-layouts').addEventListener('change', function () { state.designLayouts = Number(this.value); calculate(); });
-    function mode(name) {
-        $('#durch').dataset.modus = name;
-        $$('.schalter button').forEach(function (button) { button.setAttribute('aria-pressed', String(button.dataset.modus === name)); });
-        $('.geraet').style.setProperty('--pin2', name === 'klassisch' ? 'var(--stempel)' : 'var(--aw-paper)');
-    }
-    $$('.schalter button').forEach(function (button) {
-        button.addEventListener('click', function () { if ($('#durch').dataset.modus !== button.dataset.modus) mode(button.dataset.modus); });
-    });
     function cancelMotion() {
         if (!media.matches) return;
         selectionAnimations.forEach(function (motion) { motion.cancel(); });
@@ -247,17 +236,9 @@
         scheduleSticky();
     });
     if (media.addEventListener) media.addEventListener('change', cancelMotion);
-    $$('.stellen li').forEach(function (item) {
-        function highlight() {
-            var active = item.matches(':hover') || document.activeElement === item;
-            $$('.pin[data-pin="' + item.dataset.pin + '"]').forEach(function (pin) { pin.classList.toggle('an', active); });
-        }
-        ['mouseenter', 'mouseleave', 'focus', 'blur'].forEach(function (name) { item.addEventListener(name, highlight); });
-    });
     calculate();
     root.classList.add('aw-ready');
     $$('[data-website-controls]').forEach(function (control) { control.hidden = false; });
-    mode('anfragen');
     // Hide the CTA from both keyboard and accessibility tree at the hero and close.
     var bar = $('#leiste'), stickyCTA = $('#cta-leiste'), scheduled = false;
     function updateSticky() {

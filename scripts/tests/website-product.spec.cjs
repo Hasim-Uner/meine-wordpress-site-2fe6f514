@@ -54,7 +54,7 @@ for (const width of [320, 360, 768, 1440]) {
     await expect(page.locator('meta[name="description"]')).toHaveAttribute('content', /Grundsystem, technisches SEO, Formular und Übergabe/);
     await expect(page.locator('h1')).toHaveCount(1);
     expect(await page.locator('.anfrage-website > section').evaluateAll(els => els.map(el => el.id)))
-      .toEqual(['hero','qualitaet','beleg','angebot','erweiterungen','unterschied','zeit','fragen','anfrage']);
+      .toEqual(['hero','beleg','angebot','unterschied','zeit','fragen','anfrage']);
 
     expect(await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth)).toBe(true);
     const overflow = await page.locator('.anfrage-website *').evaluateAll(els => els.filter(el => {
@@ -64,8 +64,11 @@ for (const width of [320, 360, 768, 1440]) {
     expect(overflow).toEqual([]);
 
     const references = page.locator('#beleg .aw-projekt');
-    await expect(references).toHaveCount(3);
+    await expect(references).toHaveCount(1);
     await expect(references.nth(0)).toContainText('E3 New Energy');
+    await expect(page.locator('#qualitaet, #durch, #m-anfragen, #m-klassisch')).toHaveCount(0);
+    await expect(page.locator('.aw-kapitel a')).toHaveCount(3);
+    await expect(page.locator('#fragen details')).toHaveCount(6);
     await expect(page.locator('#beleg')).not.toContainText(/150\s*€|22\s*€|85\s*%|1[.,]750|15\s*%/);
 
     await expect(page.locator('.aw-szenario')).toHaveCount(3);
@@ -290,7 +293,6 @@ test('no JavaScript keeps a valid static three-page offer', async ({ browser }) 
 test('reduced motion has no simulated loading or browser storage', async ({ page }) => {
   await page.emulateMedia({ reducedMotion:'reduce' });
   await open(page);
-  await page.locator('#m-anfragen').click();
   await expect(page.locator('.laden, #ladebalken')).toHaveCount(0);
   expect(await page.locator('.anfrage-website').evaluate(el => el.getAnimations({ subtree:true }).length)).toBe(0);
   await page.locator('#cta-angebot').evaluate(el => { el.addEventListener('click', e => e.preventDefault()); el.click(); });

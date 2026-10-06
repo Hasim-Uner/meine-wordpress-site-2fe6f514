@@ -20,8 +20,7 @@ $text_quote = hu_website_quote( 3, 'neubau', false, [ 'utility_pages' => 0, 'sta
 $rules = hu_website_calculator_rules();
 $days = static function ( $value ) { return number_format( (float) $value, floor( (float) $value ) === (float) $value ? 0 : 1, ',', '.' ) . ( 1.0 === (float) $value ? ' Werktag' : ' Werktage' ); };
 $contact_url = add_query_arg( [ 'seiten' => 3, 'art' => 'neubau', 'kurz' => 0, 'standard' => 1, 'leistung' => 1, 'texte' => 0 ], hu_get_contact_intake_url( 'project', 'website' ) );
-$psi_url = 'https://pagespeed.web.dev/analysis?url=' . rawurlencode( home_url( '/wordpress-website-erstellen-lassen/' ) );
-$references = hu_website_reference_projects();
+$references = array_slice( hu_website_reference_projects(), 0, 1 );
 $eur = static function ( $value ) { return str_replace( ' €', "\u{00A0}€", hu_format_eur( $value ) ); };
 $scenarios = [
     [ 'pages' => 1, 'utility' => 0, 'standard' => 0, 'sales' => 0, 'title' => 'Kompakt', 'example' => 'Eine Hauptseite', 'purpose' => 'Angebot, Beleg und Kontakt auf einer Seite.' ],
@@ -60,37 +59,23 @@ get_header();
 
   <nav class="wrap aw-kapitel" aria-label="Auf dieser Seite">
     <span class="mono">Direkt zu</span>
-    <a href="#qualitaet" data-track-action="website_offer_chapter_quality" data-track-category="navigation">Qualität</a>
-    <a href="#beleg" data-track-action="website_offer_chapter_proof" data-track-category="navigation">Projekte</a>
     <a href="#angebot" data-track-action="website_offer_chapter_scope" data-track-category="navigation">Preis &amp; Umfang</a>
-    <a href="#zeit" data-track-action="website_offer_chapter_time" data-track-category="navigation">Ablauf</a>
+    <a href="#beleg" data-track-action="website_offer_chapter_proof" data-track-category="navigation">Projekte</a>
     <a href="#fragen" data-track-action="website_offer_chapter_faq" data-track-category="navigation">Fragen</a>
   </nav>
-
-  <section class="aw-qualitaet" id="qualitaet" aria-labelledby="h-qualitaet">
-    <div class="wrap">
-      <div class="aw-qualitaet-kopf"><p class="mono">Gestaltung, die eine Aufgabe erfüllt</p><h2 id="h-qualitaet">Woran Sie die Qualität erkennen.</h2><p>Ein verständlicher Einstieg. Nachvollziehbare Kosten. Ein geprüfter Anfrageweg. Hier können Sie den Aufbau selbst ansehen und den Preis berechnen.</p></div>
-      <div class="aw-qualitaetsgruende">
-        <div><span class="mono">01 · Verständlichkeit</span><h3>Jeder Abschnitt führt weiter.</h3><p>Klare Überschriften, lesbare Inhalte und sichtbare Buttons helfen Besuchern, Ihr Angebot zu verstehen und den nächsten Schritt zu finden.</p><a class="aw-prueflink" href="#unterschied" data-track-action="website_offer_quality_structure" data-track-category="navigation">Aufbau ansehen <span aria-hidden="true">→</span></a></div>
-        <div><span class="mono">02 · Entscheidung</span><h3>Sie sehen, wofür Sie bezahlen.</h3><p>Seitentypen, Texterstellung, Gestaltung und Extras verändern Preis und Planungszeit direkt. Enthaltene Leistungen und zusätzliche Kosten bleiben getrennt sichtbar.</p><a class="aw-prueflink" href="#angebot" data-track-action="website_offer_quality_price" data-track-category="navigation">Preis selbst berechnen <span aria-hidden="true">→</span></a></div>
-        <div><span class="mono">03 · Betrieb</span><h3>Die Anfrage endet mit einer Bestätigung.</h3><p>Formular, gespeicherte Anfrage, Mailversand und Danke-Seite werden vor der Übergabe geprüft. Texte und Bilder können Sie danach selbst in WordPress pflegen.</p><a class="aw-prueflink" href="#lieferumfang" data-track-action="website_offer_quality_delivery" data-track-category="navigation">Lieferumfang prüfen <span aria-hidden="true">→</span></a></div>
-      </div>
-      <div class="aw-qualitaet-fuss"><p>Einmalpreis, Code und Zugänge in Ihrer Hand. Von der ersten Abstimmung bis zur Übergabe arbeiten Sie direkt mit mir.</p><a class="aw-prueflink" href="<?php echo esc_url( $psi_url ); ?>" target="_blank" rel="noopener" data-track-action="website_offer_quality_performance" data-track-category="proof">Diese Seite selbst messen <span aria-hidden="true">↗</span><span class="nur-vorlesen"> (PageSpeed Insights, öffnet in neuem Tab)</span></a></div>
-    </div>
-  </section>
 
   <section class="abschnitt aw-referenzen" id="beleg" aria-labelledby="h-beleg">
     <div class="wrap">
       <div class="aw-referenzen-kopf">
-        <p class="mono">01 · Ausgewählte Arbeiten</p>
-        <h2 id="h-beleg">Die Website sehen.<br>Die Arbeit dahinter verstehen.</h2>
-        <p class="lead">Gestaltung, Orientierung und Anfragewege an realen Projekten. Jede Beschreibung nennt meinen tatsächlichen Beitrag.</p>
+        <p class="mono">01 · Ein reales Projekt</p>
+        <h2 id="h-beleg">Nicht nur Website.<br>Der Anfrageweg dahinter.</h2>
+        <p class="lead">E3 New Energy zeigt die Arbeit, die über Gestaltung hinausgeht: Landingpages, technisches SEO, Tracking und die Strecke bis ins CRM.</p>
       </div>
-      <div class="aw-projekte">
+      <div class="aw-projekte aw-projekte--fokus">
 <?php foreach ( $references as $index => $reference ) : $reference_id = 'aw-projekt-' . ( $index + 1 ); ?>
         <article class="aw-projekt" aria-labelledby="<?php echo esc_attr( $reference_id ); ?>">
           <figure class="aw-projekt-ansicht">
-            <div class="aw-projekt-browser" aria-hidden="true"><span><?php echo esc_html( wp_parse_url( $reference['url'], PHP_URL_HOST ) ); ?></span><span>Website-Ansicht</span></div>
+            <div class="aw-projekt-browser" aria-hidden="true"><span><?php echo esc_html( wp_parse_url( $reference['url'], PHP_URL_HOST ) ); ?></span><span>Projektansicht</span></div>
             <div class="bild"><img src="<?php echo esc_url( get_stylesheet_directory_uri() . '/assets/img/' . $reference['screenshot'] ); ?>" width="960" height="600" decoding="async" loading="lazy" alt="<?php echo esc_attr( $reference['alt'] ); ?>"></div>
             <figcaption><?php echo esc_html( $reference['role'] ); ?></figcaption>
           </figure>
@@ -105,25 +90,14 @@ get_header();
               <li><?php echo esc_html( $step ); ?></li>
 <?php endforeach; ?>
             </ol>
-<?php else : ?>
-            <ul class="aw-projekt-gewerke" aria-label="Geleistete Arbeit">
-<?php foreach ( $reference['stack'] as $discipline ) : ?>
-              <li><?php echo esc_html( $discipline ); ?></li>
-<?php endforeach; ?>
-            </ul>
 <?php endif; ?>
-            <a class="aw-projekt-link" href="<?php echo esc_url( $reference['url'] ); ?>" target="_blank" rel="noopener" data-track-action="website_offer_reference_open" data-track-category="proof" data-track-section="website_offer_beleg">Website ansehen <span aria-hidden="true">↗</span><span class="nur-vorlesen">: <?php echo esc_html( $reference['name'] ); ?> (öffnet in neuem Tab)</span></a>
+            <a class="aw-projekt-link" href="<?php echo esc_url( $reference['url'] ); ?>" target="_blank" rel="noopener" data-track-action="website_offer_reference_open" data-track-category="proof" data-track-section="website_offer_beleg">Projekt ansehen <span aria-hidden="true">↗</span><span class="nur-vorlesen">: <?php echo esc_html( $reference['name'] ); ?> (öffnet in neuem Tab)</span></a>
           </div>
         </article>
 <?php endforeach; ?>
       </div>
-      <div class="aw-referenzen-fuss">
-        <p>Die Ansichten zeigen den öffentlichen Website-Stand. Die Beschreibung nennt meinen Beitrag; die Funnel-Architektur bei E3 geht über das Grundprodukt hinaus.</p>
-        <a class="leise" href="<?php echo esc_url( $psi_url ); ?>" target="_blank" rel="noopener">Auch diese Website ist ein Arbeitsbeleg: Ladezeit selbst messen <span aria-hidden="true">↗</span></a>
-      </div>
       <div class="folgerung">
-        <a class="btn" href="<?php echo esc_url( $contact_url ); ?>" data-website-cta="beleg" data-track-action="cta_website_offer_proof_project" data-track-category="lead_gen" data-track-section="website_offer_beleg">Website-Projekt anfragen <span aria-hidden="true">→</span></a>
-        <p>Antwort <?php echo esc_html( hu_response_promise( 'window' ) ); ?>.</p>
+        <a class="btn btn--sekundaer" href="#angebot" data-track-action="website_offer_proof_to_scope" data-track-category="navigation">Eigene Website zusammenstellen <span aria-hidden="true">→</span></a>
       </div>
     </div>
   </section>
@@ -223,10 +197,11 @@ get_header();
         </aside>
       </div>
       <p class="aw-config-fuss">Alle Preise netto. Domain, Hosting und externe Dienstkosten separat. *Vorhandene Designs und CRM werden vor Auftragserteilung geprüft. <a href="#erweiterungen">Umfang der Erweiterungen ↓</a></p>
-      <div class="inklusive" id="lieferumfang" aria-labelledby="h-lieferumfang">
-        <div class="inklusive-kopf"><div><p class="mono">Die Standardausstattung</p><h3 id="h-lieferumfang">Das erhalten Sie mit jeder Website.</h3></div><span class="aw-status">Ohne Aufpreis</span></div>
-        <p class="mikro">Die wichtigsten Leistungen sind immer enthalten. Die Details öffnen Sie bei Bedarf.</p>
-        <div class="gruppen"><details class="gruppe"><summary><span>Inhalte</span><span class="aw-inkl-label">Inklusive</span></summary><ul>
+      <details class="inklusive aw-lieferumfang-kompakt" id="lieferumfang">
+        <summary><span><span class="mono">Standardausstattung</span><strong>Vollständigen Lieferumfang ansehen</strong></span><span class="aw-status">Inklusive</span></summary>
+        <div class="aw-lieferumfang-inhalt">
+          <p class="mikro">Technisches SEO, responsive Umsetzung, Anfrageweg, Rechtstext-Seiten, QA und Übergabe sind im Grundprodukt enthalten.</p>
+          <div class="gruppen"><details class="gruppe"><summary><span>Inhalte</span><span class="aw-inkl-label">Inklusive</span></summary><ul>
                 <li>Gliederung jeder Seite: Angebot, Preis, Beleg</li>
                 <li>Texterstellung optional je Seitentyp kalkulierbar, auf Basis Ihrer Angaben</li>
                 <li>Ihre vorhandenen Texte und Bilder eingepflegt</li>
@@ -278,21 +253,24 @@ get_header();
                 <li>Dokumentation und Einweisung in den Editor</li>
                 <li>30 Tage nach dem Livegang: Fehler behebe ich kostenlos</li>
               </ul></details></div>
+          <div class="klartext">
+            <div><h3>Was als Seite zählt</h3><p>Eine Inhaltsseite mit eigener URL. Impressum, Datenschutz, Danke- und 404-Seite zählen nicht mit.</p></div>
+            <div><h3>Separat kalkuliert</h3><p>Keyword-Recherche, Fotos und Logo, Shop, weitere Schnittstellen, mehrere Sprachen und mehr als zehn Inhaltsseiten.</p></div>
+            <div><h3>Laufende Kosten</h3><p>Domain, Hosting und externe Dienste zahlen Sie direkt beim jeweiligen Anbieter.</p></div>
+          </div>
+        </div>
+      </details>
+      <div class="aw-erweiterungsumfang" id="erweiterungen">
+        <details class="aw-erweiterungen-kompakt">
+          <summary><span><span class="mono">Erweiterungen</span><strong>Was Design, Tracking, CRM und Dashboard genau enthalten</strong></span><span>Details ↓</span></summary>
+          <div class="aw-erweiterungen-grid">
+            <div><h3>Individuelles Screendesign</h3><p>Gestaltungsrichtung in Figma, Desktop und Mobil je gebuchtem Layout, zwei gebündelte Korrekturrunden.</p></div>
+            <div><h3>Conversion-Tracking</h3><p>GA4, Google Tag Manager, Consent Mode und eine Google-Ads-Conversion für erfolgreich abgesendete Standard-Anfragen.</p></div>
+            <div><h3>CRM-Anbindung Standard</h3><p>Ein Formular an ein bestehendes HubSpot oder Bitrix24, bis zu zehn Felder und ein Kontakt- oder Lead-Objekt.</p></div>
+            <div><h3>Daten-Dashboard</h3><p>Umfang, Datenquellen, Preis und zusätzliche Produktionszeit werden vor Auftrag separat festgelegt.</p></div>
+          </div>
+        </details>
       </div>
-      <div class="klartext">
-        <div><h3>Was als Seite zählt</h3><p>Eine Inhaltsseite mit eigener URL, etwa Startseite, Leistung oder Über uns. Mehrere Abschnitte auf derselben Seite zählen zusammen als eine Seite. Impressum, Datenschutz, Danke- und 404-Seite sind inklusive und zählen nicht mit.</p></div>
-        <div><h3>Was separat kalkuliert wird</h3><p>Daten-Dashboard, Keyword-Recherche, Fotos und Logo, Shop, weitere Schnittstellen und mehrere Sprachen. Screendesign, Conversion-Tracking und Standard-CRM sind oben zum festen Aufpreis wählbar. Mehr als zehn Seiten erhalten ein eigenes Angebot.</p></div>
-        <div><h3>Was laufend kostet</h3><p>Domain und Hosting zahlen Sie direkt beim Anbieter. Bei externen CRM- oder Zusatzdiensten können laufende Kosten entstehen; sie stehen vorab im Angebot. Weiterentwicklung buchen Sie nach Bedarf.</p></div>
-      </div>
-    </div>
-  </section>
-
-  <section class="abschnitt aw-erweiterungsumfang" id="erweiterungen" aria-labelledby="h-erweiterungen">
-    <div class="wrap"><p class="mono">Die Erweiterungen im Detail</p><h2 id="h-erweiterungen">Mehr Möglichkeiten. Klarer Umfang.</h2>
-      <details class="aw-erweiterungsdetail"><summary><span>Individuelles Screendesign</span><span><?php echo esc_html( $eur( HU_WEBSITE_DESIGN_FIRST ) ); ?> + <?php echo esc_html( $eur( HU_WEBSITE_DESIGN_EXTRA ) ); ?> je weiterem Layout</span></summary><div><p>Nach einem kurzen Briefing entwickle ich eine Gestaltungsrichtung in Figma. Jedes gebuchte Layout enthält Desktop und Mobil. Zwei gebündelte Korrekturrunden sind enthalten; nach Ihrer Freigabe setze ich das Design um.</p><p>Ein Layout ist ein unterschiedlicher Seitenaufbau. Startseite und drei gleich aufgebaute Leistungsseiten sind vier Seiten, aber zwei Layouts. Ein neues Logo, weitere Gestaltungsrichtungen und komplexe Interaktionen brauchen ein separates Angebot.</p></div></details>
-      <details class="aw-erweiterungsdetail"><summary><span>Conversion-Tracking</span><span><?php echo esc_html( $eur( $rules['prices']['tracking'] ) ); ?></span></summary><div><p>GA4, Google Tag Manager, Consent Mode und eine Google-Ads-Conversion für erfolgreich abgesendete Standard-Anfragen. Einrichtung, Tests und Dokumentation sind enthalten. Ein funktionierendes Formular mit Bestätigungsmail und Danke-Seite gehört bereits zur Website; Marketing-Messung ist diese Erweiterung.</p><p>Server-Side Tracking, Meta CAPI, Offline-Conversions und weitere Ziele kalkuliere ich separat. Ein gegebenenfalls benötigter Consent-Dienst und seine laufenden Kosten werden vor Beauftragung benannt.</p></div></details>
-      <details class="aw-erweiterungsdetail"><summary><span>CRM-Anbindung Standard</span><span><?php echo esc_html( $eur( HU_WEBSITE_CRM_STANDARD ) ); ?></span></summary><div><p>Ein Website-Formular an Ihr bestehendes HubSpot oder Bitrix24 anbinden: bis zu zehn Felder und ein Kontakt- oder Lead-Objekt. Feldzuordnung, Umgang mit Dubletten, Fehlerbehandlung, Testanfragen und Dokumentation sind enthalten.</p><p>Voraussetzung sind nutzbare API-Zugänge, passende Berechtigungen und ein bereits eingerichtetes Zielsystem. Ich prüfe die Anbindung vor Beauftragung. Salesforce, andere Systeme, mehrere Formulare oder Objekte, Datenmigration und Vertriebsautomationen erhalten ein eigenes Angebot. CRM-Lizenzen sind separat.</p></div></details>
-      <details class="aw-erweiterungsdetail"><summary><span>Daten-Dashboard</span><span>Nach Angebot</span></summary><div><p>Ein optionales Dashboard in WordPress bündelt die vereinbarten Website-, Klick-, Formular- und Marketingdaten. Welche Kennzahlen sinnvoll sind, welche Daten bereits erfasst werden und welche Schnittstellen fehlen, klären wir vor der Kalkulation.</p><p>Messung und Anbindungen gehören zum vereinbarten Umfang. Vollständiger Festpreis und zusätzliche Zeit stehen vor Beauftragung im Angebot. Das Dashboard gehört nicht zum oben berechneten Standardpreis.</p></div></details>
     </div>
   </section>
 
@@ -300,103 +278,44 @@ get_header();
     <div class="wrap raster">
       <p class="nr"><b>03</b><span>Unterschied</span></p>
       <div class="haupt breit">
-        <h2 id="h-unterschied">Gute Gestaltung führt bis zur Anfrage.</h2>
-        <p class="lead">Überschriften, Buttons und Formular gehören zusammen. Wechseln Sie die schematische Ansicht und prüfen Sie, was sich am Aufbau verändert. Die Punkte daneben zeigen den vereinbarten Qualitätsmaßstab.</p>
-        <div class="schalter" data-website-controls hidden role="group" aria-label="Ansicht wählen">
-          <button type="button" id="m-klassisch" aria-pressed="false" data-modus="klassisch">Ohne klare Führung</button>
-          <button type="button" id="m-anfragen" aria-pressed="true" data-modus="anfragen">Mit klarem Anfrageweg</button>
+        <h2 id="h-unterschied">Drei Dinge müssen funktionieren.</h2>
+        <p class="lead">Nicht möglichst viele Effekte. Sondern Klarheit vor dem Klick, ein geprüfter Anfrageweg und eine Website, die Ihnen danach wirklich gehört.</p>
+        <div class="aw-prinzipien">
+          <article><span class="mono">01 · Klarheit</span><h3>Das Angebot ist im ersten Bildschirm verständlich.</h3><p>Leistung, passende Zielgruppe und nächster Schritt werden priorisiert. Navigation und Buttons konkurrieren nicht um Aufmerksamkeit.</p></article>
+          <article><span class="mono">02 · Anfrageweg</span><h3>Eine Anfrage wird nicht nur abgeschickt, sondern geprüft.</h3><p>Formular, Speicherung, Mailversand, Bestätigung und Danke-Seite werden vor der Übergabe als zusammenhängende Strecke getestet.</p></article>
+          <article><span class="mono">03 · Eigentum</span><h3>Code, Zugänge und technische Grundlage bleiben in Ihrer Hand.</h3><p>Technisches SEO, responsive Umsetzung und Übergabe gehören zum System. Keine Pflichtwartung und kein Pagebuilder-Lock-in im Grundprodukt.</p></article>
         </div>
-        <div class="durch" id="durch" data-modus="anfragen">
-          <div>
-            <div class="geraet" aria-hidden="true">
-              <div class="aw-browser-bar"><span class="url">ihre-firma.de</span><span class="aw-schema-label">Aufbau</span></div>
-              <div class="ansichten">
-                <div class="ansicht v-klassisch">
-                  <div class="wf-nav"><span class="wf-logo"></span><span class="wf-link"></span><span class="wf-link"></span><span class="wf-link"></span><span class="wf-link"></span><span class="wf-link"></span><span class="wf-link"></span></div>
-                  <div class="wf-bild"></div>
-                  <div class="wf-z dick" style="width:62%"></div>
-                  <div class="wf-z" style="width:88%"></div><div class="wf-z" style="width:74%"></div>
-                  <div class="wf-karten"><span></span><span></span><span></span></div>
-                  <div class="wf-z" style="width:40%"></div>
-                  <div class="wf-form" style="width:56%"><div class="wf-feld"></div><div class="wf-feld"></div><div class="wf-feld"></div><div class="wf-feld"></div><div class="wf-feld" style="height:20px"></div></div>
-                  <div class="wf-fuss"></div>
-                  <span class="pin" data-pin="1" style="top:22%;left:50%">1</span>
-                  <span class="pin" data-pin="3" style="top:79%;left:30%">3</span>
-                  <span class="pin" data-pin="4" style="top:55%;left:72%">4</span>
-                  <span class="pin" data-pin="6" style="top:95%;left:84%">6</span>
-                  <span class="pin" data-pin="7" style="top:95%;left:16%">7</span>
-                </div>
-                <div class="ansicht v-anfragen">
-                  <div class="wf-nav"><span class="wf-logo"></span><span class="wf-link"></span><span class="wf-link"></span><span class="wf-knopf"></span></div>
-                  <div class="wf-z dick" style="width:78%;margin-top:10px"></div>
-                  <div class="wf-z dick" style="width:52%"></div>
-                  <div class="wf-z" style="width:70%"></div>
-                  <div class="wf-reihe"><span class="wf-knopf" style="width:96px;height:22px"></span><span class="wf-preis"></span></div>
-                  <div class="wf-belege"><span></span><span></span><span></span></div>
-                  <div class="wf-form"><div class="wf-feld"></div><div class="wf-feld"></div><div class="wf-feld" style="height:20px"></div><span class="wf-knopf" style="width:90px"></span></div>
-                  <div class="wf-fuss"></div>
-                  <span class="pin" data-pin="1" style="top:17%;left:88%">1</span>
-                  <span class="pin" data-pin="3" style="top:76%;left:92%">3</span>
-                  <span class="pin" data-pin="4" style="top:52%;left:8%">4</span>
-                  <span class="pin" data-pin="6" style="top:95%;left:84%">6</span>
-                  <span class="pin" data-pin="7" style="top:95%;left:16%">7</span>
-                </div>
-              </div>
-              <span class="pin" data-pin="2" style="top:20px;left:72%;background:var(--pin2,var(--stempel));color:var(--papier)">2</span>
-              <span class="pin" data-pin="5" style="top:20px;left:24px;background:var(--pin2,var(--stempel));color:var(--papier)">5</span>
-            </div>
-            <p class="schema-hinweis">Illustration des Aufbaus, kein Kundenprojekt oder Messergebnis.</p>
-          </div>
-          <ol class="stellen">
-            <li data-pin="1" tabindex="0"><span class="n">1</span><div><h3>Ein verständlicher Einstieg</h3><p class="k">Unklare Überschrift, viele gleich wichtige Links. Der nächste Schritt bleibt offen.</p><p class="a">Angebot, passende Zielgruppe und nächster Schritt im ersten Bildschirm. Buttons sagen, wohin sie führen.</p></div></li>
-            <li data-pin="2" tabindex="0"><span class="n">2</span><div><h3>Lesbar und schnell auf dem Handy</h3><p class="k">Große Bilder und unnötige Skripte bremsen den Aufbau.</p><p class="a">Verkleinerte Bilder, feste Bildmaße und eine Ladezeitprüfung. Sie können das Ergebnis vor der Abnahme selbst messen.</p></div></li>
-            <li data-pin="3" tabindex="0"><span class="n">3</span><div><h3>Ein geprüfter Anfrageweg</h3><p class="k">Eine Versandmeldung allein zeigt noch nicht, ob die Anfrage gespeichert wurde.</p><p class="a">Gespeicherte Anfrage, geprüfter Mailversand, wenige Pflichtfelder und eine Danke-Seite mit dem nächsten Schritt.</p></div></li>
-            <li data-pin="4" tabindex="0"><span class="n">4</span><div><h3>Eine saubere Grundlage für Google</h3><p class="k">Geänderte URLs können Besucher auf nicht vorhandene Seiten führen.</p><p class="a">Title, Meta-Beschreibung, Canonical, Sitemap und passende strukturierte Daten. Bestehende URLs beim Relaunch prüfen und weiterleiten.</p></div></li>
-            <li data-pin="5" tabindex="0"><span class="n">5</span><div><h3>Code und Zugänge in Ihrer Hand</h3><p class="k">Fehlende Zugänge machen Änderungen und Anbieterwechsel mühsam.</p><p class="a">Domain, Hosting und Konten auf Ihren Namen. Projektcode, Dokumentation und Einweisung gehören zur Übergabe.</p></div></li>
-            <li data-pin="6" tabindex="0"><span class="n">6</span><div><h3>Laufende Kosten vorab kennen</h3><p class="k">Unklare Folgekosten erschweren den Vergleich von Angeboten.</p><p class="a">Einmalpreis ohne Pflichtwartung oder Pflichtlizenzen im Grundprodukt. Domain, Hosting und externe Dienste stehen separat im Angebot.</p></div></li>
-            <li data-pin="7" tabindex="0"><span class="n">7</span><div><h3>Externe Dienste bewusst wählen</h3><p class="k">Zusätzliche Dienste verändern Datenflüsse und laufende Kosten.</p><p class="a">Schriften lokal. Tracking und weitere Anbindungen nur nach Abstimmung; benötigte Dienste und Kosten vor Beauftragung klären.</p></div></li>
-          </ol>
-        </div>
-        <div class="aw-pruefung"><p><strong>Vor der Abnahme gemeinsam prüfen:</strong> Handyansicht, Ladezeit, Formular und Übergabe. So sehen Sie, was umgesetzt wurde.</p><a class="btn btn--sekundaer" href="#lieferumfang" data-track-action="website_offer_quality_checklist" data-track-category="navigation">Lieferumfang prüfen <span aria-hidden="true">→</span></a></div>
+        <div class="aw-pruefung"><p><strong>Vor der Abnahme:</strong> Handyansicht, Anfrageweg, technische Basis und Übergabe gemeinsam prüfen.</p><a class="btn btn--sekundaer" href="#lieferumfang" data-track-action="website_offer_quality_checklist" data-track-category="navigation">Lieferumfang ansehen <span aria-hidden="true">→</span></a></div>
       </div>
     </div>
   </section>
 
   <section class="abschnitt" id="zeit" aria-labelledby="h-zeit">
     <div class="wrap raster">
-      <p class="nr"><b>04</b><span>Zeit</span></p>
+      <p class="nr"><b>04</b><span>Ablauf</span></p>
       <div class="haupt breit">
-        <h2 id="h-zeit">Vom Briefing zur geprüften Website.</h2>
-        <p class="lead">Ihre Auswahl bestimmt die geplante Produktionszeit. Die Übersicht trennt Vorbereitung, Umsetzung und Prüfung. Starttermin, Ihre Freigaben und Veröffentlichung stimmen wir separat ab.</p>
-        <details class="aw-plan-details"><summary>Welche Annahmen hinter der Zeitplanung stehen</summary><p>Grundsystem und erste Hauptseite bilden die Basis. Kurze und Standardseiten benötigen weniger Produktionszeit als eigenständige Leistungs-/Verkaufsseiten. Fertige Texte sparen die Texterstellung; individuelle Layouts, Tracking und CRM bekommen eigene Zeitbeiträge. Wir rechnen in Werktagen von Montag bis Freitag, ohne Feiertage; Ihre Freigabezeiten kommen separat dazu. Der verbindliche Start- und Veröffentlichungstermin steht im Angebot.</p></details>
+        <h2 id="h-zeit">Vom Briefing zum Livegang.</h2>
+        <p class="lead">Der Rechner zeigt die geplante Produktionszeit. Starttermin und Ihre Freigabezeiten werden separat vereinbart.</p>
         <div class="zeit">
-          <div class="aw-zeit-details"><p id="zeit-aufteilung">Vorbereitung <?php echo esc_html( $days( $quote['preparation_days'] ) ); ?> · Umsetzung <?php echo esc_html( $days( $quote['implementation_days'] ) ); ?></p><dl class="aw-zeitpositionen">
-            <div><dt>Umsetzung &amp; Prüfung</dt><dd id="tage-implementation"><?php echo esc_html( $days( $quote['components']['implementation'] ) ); ?></dd></div>
-            <div id="zeit-texte" hidden><dt>Texte erstellen</dt><dd id="tage-texts"><?php echo esc_html( $days( $quote['components']['texts'] ) ); ?></dd></div>
-            <div id="zeit-design" hidden><dt>Screendesign</dt><dd id="tage-design"></dd></div>
-            <div id="zeit-tracking" hidden><dt>Tracking einrichten</dt><dd id="tage-tracking"></dd></div>
-            <div id="zeit-relaunch" hidden><dt>Bestand &amp; Weiterleitungen</dt><dd id="tage-relaunch"></dd></div>
-            <div id="zeit-crm" hidden><dt>Standard-CRM</dt><dd id="tage-crm"></dd></div>
-            <div id="zeit-dashboard" hidden><dt>Daten-Dashboard</dt><dd>Zusätzlich nach Angebot</dd></div>
-          </dl><p class="aw-hinweis" id="zeit-hinweis">Planung bis zum geprüften Abnahmestand. Ihre Freigabezeiten und der Starttermin kommen separat dazu. Halbe Tage werden erst in der Gesamtsumme aufgerundet.</p></div>
           <div class="zeit-kopf"><span class="mono" id="zeit-umfang">Ihr Umfang: 3 Seiten · Neubau</span><strong id="zeit-gesamt"><?php echo esc_html( $days( $quote['days'] ) ); ?> geplant</strong></div>
-          <div class="zeit-reihe">
-            <div class="vorlauf"><span class="mono">Vor dem Start</span><p>Umfang vereinbaren, Briefing, Bilder, Rechtstexte und Zugänge liefern. Vorhandene Texte und Designs freigeben.</p></div>
-            <div>
-              <p class="uhr">Ab vereinbartem Start · bis zum Abnahmestand</p>
-              <div class="bahn" id="bahn">
-                <div class="phase"><span class="mono"><?php echo esc_html( $days( $quote['components']['implementation'] - $rules['days']['qa'] ) ); ?></span><b>Umsetzung auf der Testumgebung</b></div>
-                <div class="phase ende"><span class="mono"><?php echo esc_html( $days( $rules['days']['qa'] ) ); ?></span><b>Qualitätsprüfung und Abnahmestand</b></div>
-              </div>
-            </div>
+          <div class="bahn aw-bahn-kompakt" id="bahn">
+            <div class="phase"><span class="mono">Vor dem Start</span><b>Briefing &amp; Material</b></div>
+            <div class="phase"><span class="mono"><?php echo esc_html( $days( $quote['days'] ) ); ?></span><b>Umsetzung &amp; Prüfung</b></div>
+            <div class="phase ende"><span class="mono">danach</span><b>Freigabe &amp; Livegang</b></div>
           </div>
+          <details class="aw-plan-details aw-zeit-komponenten">
+            <summary>Zeitbeiträge der Auswahl ansehen</summary>
+            <div class="aw-zeit-details"><p id="zeit-aufteilung">Vorbereitung <?php echo esc_html( $days( $quote['preparation_days'] ) ); ?> · Umsetzung <?php echo esc_html( $days( $quote['implementation_days'] ) ); ?></p><dl class="aw-zeitpositionen">
+              <div><dt>Umsetzung &amp; Prüfung</dt><dd id="tage-implementation"><?php echo esc_html( $days( $quote['components']['implementation'] ) ); ?></dd></div>
+              <div id="zeit-texte" hidden><dt>Texte erstellen</dt><dd id="tage-texts"><?php echo esc_html( $days( $quote['components']['texts'] ) ); ?></dd></div>
+              <div id="zeit-design" hidden><dt>Screendesign</dt><dd id="tage-design"></dd></div>
+              <div id="zeit-tracking" hidden><dt>Tracking</dt><dd id="tage-tracking"></dd></div>
+              <div id="zeit-relaunch" hidden><dt>Relaunch</dt><dd id="tage-relaunch"></dd></div>
+              <div id="zeit-crm" hidden><dt>CRM</dt><dd id="tage-crm"></dd></div>
+              <div id="zeit-dashboard" hidden><dt>Daten-Dashboard</dt><dd>Zusätzlich nach Angebot</dd></div>
+            </dl><p class="aw-hinweis" id="zeit-hinweis">Planung bis zum geprüften Abnahmestand. Ihre Freigabezeiten und der Starttermin kommen separat dazu.</p></div>
+          </details>
         </div>
-        <ol class="bedingungen">
-          <li><h3>Klare Ausgangslage</h3><p>Fertige Vorlagen müssen vollständig und freigegeben sein. Soll ich Texte oder Design erstellen, brauchen wir zuerst Ihr Briefing; diese Arbeit wird separat in der Zeit gezeigt.</p></li>
-          <li><h3>Freigaben separat</h3><p>Für Ihre Rückmeldung sind je Korrekturrunde bis zu fünf Werktage vorgesehen. Diese Wartezeit und der Livegang gehören nicht zur angezeigten Produktionszeit.</p></li>
-          <li><h3>Eine Person entscheidet</h3><p>Eine Ansprechperson, die freigibt. Abstimmungsschleifen im Team kosten die meiste Zeit.</p></li>
-          <li><h3>Starttermin im Angebot</h3><p>Wann ich beginnen kann, steht mit Umfang und Preis im schriftlichen Angebot.</p></li>
-        </ol>
       </div>
     </div>
   </section>

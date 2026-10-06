@@ -699,18 +699,21 @@ als Standardseiten interpretiert. Preis- oder Zeitwerte aus dem Browser werden
 niemals als Angebotswerte übernommen. Der normalisierte Scope wird im
 Kontaktformular, in beiden Mails und im CRM weitergeführt.
 
-Frühe Qualitäts-Prüflinks führen zu Aufbau, Umfang und Lieferumfang; der
-Ladezeitlink öffnet PageSpeed Insights. Die nicht-sticky Kapitelzeile führt zu
-Qualität, Projekten, Preis/Umfang, Ablauf und Fragen
-(`website_offer_chapter_*`). Direkte Wege im Abschluss:
+Seit der CRO-Kürzung vom 06.10.2026 gibt es keinen eigenen frühen
+Qualitätsblock, keinen PageSpeed-Prüflink und keinen interaktiven
+Sieben-Punkte-Vergleich mehr. Die Kapitelzeile enthält nur Preis & Umfang,
+Projekte und Fragen. E3 ist der einzige ausführliche Projektbeleg und führt
+weiter in den Rechner. Lieferumfang und Erweiterungsdetails bleiben direkt beim
+Konfigurator; danach folgen drei statische Qualitätsprinzipien, der kompakte
+Ablauf und sechs FAQ. Direkte Wege im Abschluss:
 `website_offer_close_mail` und `website_offer_close_tel`.
 `focus=website` ist das gültige Projekt-Thema; alte
 `focus=relaunch`-Links bleiben kompatibel.
 
 Matomo: Kategorie `anfrage_website`, Aktionen `cta_click`,
-`rechner_change`, `toggle_durchleuchtung`, `form_submit`; JSON-Eventname
-mit den jeweiligen Dimensionen. `form_submit` erst nach bestätigter
-erfolgreicher Antwort.
+`rechner_change` und `form_submit`; `toggle_durchleuchtung` ist mit dem
+entfernten Vergleich retired. `form_submit` erst nach bestätigter erfolgreicher
+Antwort.
 
 ## Entfernung der ehemaligen Asset-Struktur (2026-10-03)
 
