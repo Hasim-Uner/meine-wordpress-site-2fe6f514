@@ -1,0 +1,102 @@
+/* Final-Cut Authority Graph
+   Route-spezifische Kontextlinks zwischen den primären Query-Ownern.
+   Nur System-Tokens: keine zweite Farb- oder Abstandswelt. */
+
+.hu-authority-links {
+  border-top: 1px solid var(--haar);
+  background: var(--zone);
+  padding-block: var(--s5);
+}
+
+.hu-authority-links__head {
+  max-width: var(--satz);
+  margin-bottom: var(--s3);
+}
+
+.hu-authority-links__head .mono {
+  margin-bottom: var(--s1);
+}
+
+.hu-authority-links__grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  border-top: 1px solid var(--haar);
+}
+
+.hu-authority-links__item {
+  position: relative;
+  display: grid;
+  align-content: start;
+  gap: var(--s1);
+  min-width: 0;
+  padding: var(--s2) var(--s3) var(--s2) 0;
+  border-bottom: 1px solid var(--haar);
+  color: var(--tinte);
+  text-decoration: none;
+}
+
+.hu-authority-links__item + .hu-authority-links__item {
+  padding-left: var(--s3);
+  border-left: 1px solid var(--haar);
+}
+
+.hu-authority-links__role {
+  font-family: var(--mono);
+  font-size: var(--mono-s);
+  line-height: 1.35;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--stempel);
+}
+
+.hu-authority-links__item strong {
+  max-width: 24ch;
+  font-family: var(--serif-display);
+  font-size: var(--grad-text);
+  line-height: 1.25;
+  font-weight: 650;
+}
+
+.hu-authority-links__item > span:not(.hu-authority-links__role) {
+  max-width: 38ch;
+  color: var(--grau);
+  font-size: var(--grad-klein);
+  line-height: 1.55;
+}
+
+.hu-authority-links__item b {
+  justify-self: end;
+  align-self: end;
+  font-family: var(--mono);
+  font-weight: 500;
+  color: var(--stempel);
+  transition: transform var(--t-mikro) var(--ease-aus);
+}
+
+.hu-authority-links__item:hover b,
+.hu-authority-links__item:focus-visible b {
+  transform: translateX(var(--s0));
+}
+
+.hu-authority-links__item:focus-visible {
+  outline: 2px solid var(--stempel);
+  outline-offset: var(--s0);
+}
+
+@media (max-width: 900px) {
+  .hu-authority-links__grid {
+    grid-template-columns: 1fr;
+  }
+
+  .hu-authority-links__item,
+  .hu-authority-links__item + .hu-authority-links__item {
+    padding: var(--s2) 0;
+    border-left: 0;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .hu-authority-links__item b {
+    transition: none;
+  }
+}
