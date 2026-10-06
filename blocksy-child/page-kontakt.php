@@ -189,6 +189,9 @@ if ( function_exists( 'hu_first_assessment_enabled' ) && hu_first_assessment_ena
 				<?php if ( ! empty( $website_scope ) ) : ?>
 				<p class="contact-website-scope" data-website-scope><?php echo esc_html( nexus_get_website_scope_summary( $website_scope ) ); ?></p>
 				<input type="hidden" name="seiten" value="<?php echo esc_attr( $website_scope['seiten'] ); ?>">
+				<input type="hidden" name="kurz" value="<?php echo esc_attr( $website_scope['kurz'] ); ?>">
+				<input type="hidden" name="standard" value="<?php echo esc_attr( $website_scope['standard'] ); ?>">
+				<input type="hidden" name="leistung" value="<?php echo esc_attr( $website_scope['leistung'] ); ?>">
 				<input type="hidden" name="art" value="<?php echo esc_attr( $website_scope['art'] ); ?>">
 				<input type="hidden" name="tracking" value="<?php echo esc_attr( $website_scope['tracking'] ); ?>">
 				<?php foreach ( [ 'texte', 'screendesign', 'crm', 'dashboard', 'design' ] as $option ) : ?>
