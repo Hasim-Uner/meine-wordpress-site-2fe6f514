@@ -97,7 +97,7 @@ function hu_maybe_refresh_cwv_article_evidence() : void {
 	}
 
 	$legacy_markers = [
-		'strafft der Algorithmus langsame Seiten systematisch ab',
+		'straft der Algorithmus langsame Seiten systematisch ab',
 		'0,1 Sekunden',
 		'32% der Besucher',
 		'Nur diese zählen für das Ranking',
