@@ -252,11 +252,14 @@ Risiko:
 
 ## Anfrage-Website → Kontakt (02.10.2026)
 
-`pricing-canon.php` liefert Basis, Zusatzseite, Tracking und Bauzeit;
+`pricing-canon.php` liefert Grundsystem, drei Seitentypen,
+Texterstellung je Seitentyp, Tracking und Produktionszeit;
 `anfrage-website.js` liest die gemeinsame JSON-Konfiguration und übergibt Umfang
-in allen CTA-URLs. Seit 04.10.2026 gehören `texte`, `screendesign` und `crm`
-zur Auswahl. `page-kontakt.php` übernimmt `focus=website`, Seiten, Art und die
-fünf booleschen Optionen einschließlich `dashboard`; `contact-page.php` validiert und berechnet serverseitig neu.
+in allen CTA-URLs. Seit 06.10.2026 gehören die Zähler `kurz`, `standard` und
+`leistung` zum Vertrag; `texte`, `screendesign`, `crm` und `dashboard`
+bleiben Optionen. `page-kontakt.php` übernimmt `focus=website`, Gesamtseiten,
+Seitentypen, Art und Optionen; `contact-page.php` prüft, dass Zähler und
+Gesamtseitenzahl zusammenpassen, und berechnet Preis und Zeit serverseitig neu.
 `crm.php` speichert Dimensionen, Optionen und Umfang; beide Mails nennen ihn.
 `hu_website_calculator_rules()` liefert seit 04.10.2026 Preise und Tagesfaktoren
 als gemeinsame Browser-Konfiguration. `design=basis|vorhanden|neu` und
@@ -266,7 +269,7 @@ Vorbereitungs-/Umsetzungstage und Regelversion selbst; Browserwerte werden ignor
 CRM persistiert diese Planung, Gesamt-/Designpreis und Dashboard-Auswahl.
 Screendesign und Standard-CRM sind vollständig eingerechnete feste Extras.
 Nur das Daten-Dashboard hat offenen Zusatzpreis und zusätzliche Zeit; fertige
-Designs und CRM benötigen Preflight. Staffel und halbe Tagesbeiträge stehen im
+Designs und CRM benötigen Preflight. Seitentyp- und Teil-Tagesbeiträge stehen im
 Kanon; Rundung erst nach Addition aller Phasen. Es wird kein Dashboard-Plugin
 oder Analytics-System mit dieser Angebotsoption installiert.
 Die Skripte der Seite senden keine Browser-Ereignisse mehr; gezählt wird
