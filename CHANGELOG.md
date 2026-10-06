@@ -2,6 +2,15 @@
 
 ## 2026-10
 
+### Anfrage-Website: CRO-Redundanz entfernt
+
+- Eigenen frühen Qualitätsblock entfernt; Sprungnavigation auf Preis & Umfang, Projekte und Fragen reduziert.
+- E3 New Energy bleibt als einziger ausführlicher Projektbeleg; zwei zusätzliche Referenzkarten und doppelte PageSpeed-Verweise entfallen.
+- Lieferumfang und Erweiterungen bleiben direkt am Rechner, aber hinter kompakten Details.
+- Der interaktive Sieben-Punkte-Qualitätsvergleich samt Toggle-/Pin-JavaScript und zugehörigem CSS ist durch drei statische Prinzipien ersetzt: Klarheit, geprüfter Anfrageweg, Eigentum.
+- Ablauf auf drei Stufen reduziert; detaillierte Zeitbeiträge nur noch aufklappbar.
+- Website-FAQ von zehn auf sechs kaufrelevante Fragen reduziert. Preis-, Scope-, Kontakt- und CRM-Verträge bleiben unverändert.
+
 ### Anfrage-Website: Kalkulator nach Produktionsaufwand
 
 - Der Rechner unterscheidet jetzt Grundsystem plus erste Hauptseite, kurze Seiten (300 €), Standardseiten (400 €) und Leistungs-/Verkaufsseiten (790 €), statt jede Zusatzseite pauschal gleich zu behandeln.
