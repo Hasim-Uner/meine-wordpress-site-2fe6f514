@@ -121,6 +121,7 @@ require_once __DIR__ . '/../blocksy-child/inc/org-schema.php';
 require_once __DIR__ . '/../blocksy-child/inc/helpers.php';
 require_once __DIR__ . '/../blocksy-child/inc/llms-txt.php';
 require_once __DIR__ . '/../blocksy-child/inc/commercial-routing.php';
+require_once __DIR__ . '/../blocksy-child/inc/final-cut-authority.php';
 require_once __DIR__ . '/../blocksy-child/inc/schema-positioning.php';
 
 // --- robots.txt -----------------------------------------------------------
@@ -606,6 +607,95 @@ foreach ( (array) ( $catalog['itemListElement'] ?? [] ) as $entry ) {
 		"catalog Service names the Organization as provider: {$label}"
 	);
 }
+
+// --- Final-Cut commercial authority ---------------------------------------
+
+echo "\n########## Final-Cut authority graph ##########\n\n";
+
+$catalog_services = array_map(
+	static function ( $entry ) {
+		return (array) ( $entry['itemOffered'] ?? [] );
+	},
+	(array) ( $catalog['itemListElement'] ?? [] )
+);
+$catalog_names = array_map(
+	static function ( $service ) {
+		return (string) ( $service['name'] ?? '' );
+	},
+	$catalog_services
+);
+$catalog_urls = array_map(
+	static function ( $service ) {
+		return (string) ( $service['url'] ?? '' );
+	},
+	$catalog_services
+);
+
+hu_lint_assert(
+	'WordPress-Website erstellen lassen' === ( $catalog_names[0] ?? '' ),
+	'OfferCatalog starts with the direct WordPress product, not the Energy specialization'
+);
+
+foreach (
+	[
+		home_url( '/wordpress-website-erstellen-lassen/' ),
+		home_url( '/landingpage-erstellen-lassen/' ),
+		home_url( '/ga4-tracking-setup/' ),
+		home_url( '/server-side-tracking-b2b/' ),
+		home_url( '/conversion-optimierung/' ),
+		home_url( '/whitelabel-retainer/' ),
+		home_url( '/solar-waermepumpen-leadgenerierung/' ),
+	] as $expected_service_url
+) {
+	hu_lint_assert(
+		in_array( $expected_service_url, $catalog_urls, true ),
+		"OfferCatalog exposes the canonical service owner: {$expected_service_url}"
+	);
+}
+
+hu_lint_assert(
+	home_url( '/solar-waermepumpen-leadgenerierung/' ) === ( $catalog_urls[ count( $catalog_urls ) - 1 ] ?? '' ),
+	'Energy remains a specialization at the end of the global OfferCatalog'
+);
+
+$authority_nodes = hu_get_final_cut_authority_nodes();
+$authority_edges = hu_get_final_cut_authority_edges();
+
+foreach ( [ 'website', 'landingpage', 'tracking', 'server_side', 'conversion', 'whitelabel', 'agentur_local' ] as $required_node ) {
+	hu_lint_assert(
+		isset( $authority_nodes[ $required_node ] ),
+		"Final-Cut graph contains commercial node: {$required_node}"
+	);
+}
+
+foreach ( $authority_edges as $source => $targets ) {
+	hu_lint_assert(
+		isset( $authority_nodes[ $source ] ),
+		"Final-Cut graph source exists: {$source}"
+	);
+	hu_lint_assert(
+		count( $targets ) <= 3,
+		"Final-Cut graph keeps contextual outlinks curated (max 3): {$source}"
+	);
+	foreach ( $targets as $target ) {
+		hu_lint_assert(
+			isset( $authority_nodes[ $target ] ) && $target !== $source,
+			"Final-Cut graph edge resolves without self-link: {$source} -> {$target}"
+		);
+	}
+}
+
+$authority_urls = array_map(
+	static function ( $node ) {
+		return (string) ( $node['url'] ?? '' );
+	},
+	$authority_nodes
+);
+
+hu_lint_assert(
+	! in_array( home_url( '/solar-waermepumpen-leadgenerierung/' ), $authority_urls, true ),
+	'Core authority graph stays separate from the Solar/Waermepumpe cluster'
+);
 
 // --- Sichtbare NAP --------------------------------------------------------
 

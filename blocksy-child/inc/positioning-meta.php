@@ -44,20 +44,20 @@ if ( ! defined( 'ABSPATH' ) ) {
 function hu_get_positioned_blog_dossier_taxonomy() : array {
 	return [
 		'leadgenerierung' => [
-			'name'        => 'Eigene Anfragen & Leadökonomie',
-			'description' => 'Portale, Leadkosten, CPO, Vorqualifizierung und eigene Nachfrage-Infrastruktur.',
+			'name'        => 'Leadökonomie & Energie',
+			'description' => 'Solar- und Wärmepumpen-Nachfrage, Portale, Leadkosten, CPO, Vorqualifizierung und eigene Anfragesysteme als spezialisierte Vertikale.',
 		],
 		'wordpress-performance' => [
-			'name'        => 'WordPress & Performance',
-			'description' => 'WordPress-Architektur, technisches SEO, Performance, Core Web Vitals und Relaunch.',
+			'name'        => 'WordPress & technisches SEO',
+			'description' => 'WordPress-Architektur, technisches SEO, Performance, Core Web Vitals, Relaunch und belastbare Übergabe.',
 		],
 		'tracking' => [
-			'name'        => 'Tracking & Messbarkeit',
-			'description' => 'Server-Side Tracking, Attribution, Consent, Analytics und belastbare Messketten.',
+			'name'        => 'Tracking & Attribution',
+			'description' => 'Conversion Tracking, Server-Side Tracking, Attribution, Consent, Analytics und CRM-Rücksignale.',
 		],
 		'cro' => [
-			'name'        => 'Conversion & Anfragearchitektur',
-			'description' => 'Conversion-Optimierung, Landingpages, Formulare, CRM-Übergaben und Anfragearchitektur.',
+			'name'        => 'Conversion & Landingpages',
+			'description' => 'Conversion-Optimierung, Landingpages, Formulare, Proof, Anfragewege und CRM-Übergaben.',
 		],
 	];
 }
@@ -106,7 +106,7 @@ function hu_get_positioned_blog_taxonomy_signature() : string {
 		? (string) hu_get_blog_pillar_posts_seed_version()
 		: 'pillar-none';
 
-	return implode( '|', [ '2026-09-05-1', $provider_version, $pillar_version ] );
+	return implode( '|', [ '2026-10-06-1', $provider_version, $pillar_version ] );
 }
 
 /**
@@ -190,7 +190,7 @@ function hu_maybe_migrate_positioned_blog_taxonomy() : void {
 		return;
 	}
 
-	$schema_version = '2026-09-05-1';
+	$schema_version = '2026-10-06-1';
 	$refresh_copy   = (string) get_option( 'hu_positioned_blog_taxonomy_schema', '' ) !== $schema_version;
 	$canonical      = hu_get_positioned_blog_dossier_taxonomy();
 	$canonical_ids  = [];
@@ -343,20 +343,20 @@ function hu_positioned_blog_category_seo_map( $map ) : array {
 	$map = is_array( $map ) ? $map : [];
 
 	$map['leadgenerierung'] = [
-		'title'       => 'Eigene Anfragen & Leadökonomie | Haşim Üner',
-		'description' => 'Analysen zu Leadkosten, CPO, Portalen, Vorqualifizierung und eigener Nachfrage-Infrastruktur — mit Fokus auf belastbare Wirtschaftlichkeit statt Lead-Menge.',
+		'title'       => 'Leadökonomie & Energie | Haşim Üner',
+		'description' => 'Analysen zu Solar- und Wärmepumpen-Nachfrage, Leadkosten, CPO, Portalen und Vorqualifizierung — die spezialisierte Energie-Vertikale der Domain.',
 	];
 	$map['wordpress-performance'] = [
-		'title'       => 'WordPress & Performance | Haşim Üner',
-		'description' => 'WordPress-Architektur, technisches SEO, Core Web Vitals, Hosting und Relaunch: technische Entscheidungen mit Wirkung auf Sichtbarkeit und Conversion.',
+		'title'       => 'WordPress & technisches SEO | Haşim Üner',
+		'description' => 'WordPress-Architektur, technisches SEO, Core Web Vitals, Hosting und Relaunch: technische Entscheidungen mit Wirkung auf Sichtbarkeit, Performance und Übergabe.',
 	];
 	$map['tracking'] = [
-		'title'       => 'Tracking & Messbarkeit | Haşim Üner',
-		'description' => 'Server-Side Tracking, Attribution, Consent und Analytics: Messketten, die Entscheidungen statt nur Dashboard-Zahlen liefern.',
+		'title'       => 'Tracking & Attribution | Haşim Üner',
+		'description' => 'Conversion Tracking, Server-Side Tracking, Attribution, Consent und Analytics: Messketten mit Abnahme statt nur Dashboard-Zahlen.',
 	];
 	$map['cro'] = [
-		'title'       => 'Conversion & Anfragearchitektur | Haşim Üner',
-		'description' => 'Conversion-Optimierung, Landingpages, Formulare und CRM-Übergaben: wie aus Besuchern nachvollziehbar qualifizierte Anfragen werden.',
+		'title'       => 'Conversion & Landingpages | Haşim Üner',
+		'description' => 'Conversion-Optimierung, Landingpages, Formulare, Proof und CRM-Übergaben: wie aus Besuchern nachvollziehbar passende Anfragen werden.',
 	];
 
 	return $map;

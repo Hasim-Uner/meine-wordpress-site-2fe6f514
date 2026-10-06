@@ -71,6 +71,7 @@ $modules = [
 	'post-permalink-author-redirect.php', // 301 von /beitrag/<autor>/ auf den Beitrag
 	'org-schema.php',     // JSON-LD Structured Data
 	'commercial-routing.php',  // Kanonische Routen für Direkt, White-Label und Energie
+	'final-cut-authority.php', // Kontextueller Core-Graph für WordPress, Tracking, CRO und White-Label
 	'funnel-doors.php',      // Türentscheidung für Kopf und Fuß: sechs Türen, Modus, Weg
 	'schema-positioning.php', // Repositioning-Normalisierung der kanonischen Schema-Entitäten
 	'shortcodes.php',     // Startseiten-Shortcodes

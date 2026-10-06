@@ -1,350 +1,193 @@
-# SEO CONTENT SYSTEM – GROWTH ARCHITECT WEBSITE
+# SEO CONTENT SYSTEM – FINAL CUT
+
+Stand: 2026-10-06
+
+## Ziel
+
+Das Content-System baut nicht möglichst viel Traffic auf, sondern die
+kommerziell passende Autorität der aktuellen Positionierung:
+
+- WordPress-Entwicklung
+- technisches SEO
+- Tracking & Attribution
+- Conversion-Optimierung
+- Landingpages
+- White-Label für Agenturen
+
+Solar/Wärmepumpe bleibt eine spezialisierte Vertikale mit eigenem Cluster und
+eigenem Proof. Historische Solar-Sichtbarkeit ist ein vorhandenes Asset, aber
+nicht das globale Zielbild.
+
+## 1. Architektur vor Content
+
+Jede neue Idee durchläuft zuerst das Query-Ownership-Gate:
+
+1. Welche Suchintention liegt vor?
+2. Welche bestehende URL besitzt sie?
+3. Gibt es GSC-/SERP-Signale für einen bestehenden Owner?
+4. Kann die bestehende URL den Intent besser bedienen?
+5. Nur wenn kein sinnvoller Owner existiert, darf eine neue URL entstehen.
+
+Autoritative Zuordnung: `docs/seo/query-ownership.csv`.
+
+## 2. Content-Ebenen
+
+### Service Content
+
+Commercial / transactional.
+
+Beispiele:
+
+- WordPress-Website erstellen lassen
+- Landingpage erstellen lassen
+- Conversion Tracking
+- Server-Side Tracking
+- Conversion-Optimierung
+- White-Label
+
+Ziel: Entscheidung und Anfrage.
+
+Service-Seiten erklären nicht jede Grundlage selbst. Sie verlinken auf
+passende Definitionen, Leitfäden und Belege.
+
+### Pillar / Expertise Content
+
+Informational oder investigational.
+
+Ziel: eine fachliche Frage so gut beantworten, dass die Seite als Referenz,
+interne Autoritätsquelle und potenziell zitierfähige Quelle für generative
+Systeme funktioniert.
+
+Priorität haben originäre Themen:
+
+- technische Entscheidungen
+- QA- und Abnahmeprotokolle
+- Relaunch-Architektur
+- Tracking-Testmethoden
+- Übergabe/Handover
+- eigene Messungen und nachvollziehbare Modelle
+
+Kein Commodity-Content nur zur Keyword-Abdeckung.
+
+### Proof Content
+
+Validation / Bottom Funnel.
+
+Ziel: Methode und eigene Arbeit prüfbar machen.
+
+Bevorzugt:
+
+- reale Projektanteile
+- dokumentierte Methodik
+- Vorher/Nachher nur bei belastbaren Daten
+- öffentliche Referenzen
+- technische Abnahme- oder Messprotokolle
+
+Keine Erfolgsbehauptung, wenn nur der Prozess belegt ist.
+
+### Glossar
+
+Definitorischer Supporting Layer.
 
 Ziel:
-Ein skalierbares Content-System, das:
 
-- Traffic aufbaut
-- Autorität erhöht
-- Conversion unterstützt
-- Keyword-Kannibalisierung verhindert
+- Begriffe eindeutig erklären
+- interne Verlinkung erleichtern
+- Service-/Pillar-Seiten entlasten
 
-Die Website folgt keinem klassischen Blog-Modell.
-Sie folgt einem Authority-Cluster-Modell.
+Glossar ist kein Volumenprogramm und darf keine kommerziellen Query-Owner
+kannibalisieren.
 
----
+## 3. Interner Authority Graph
 
-## 1. CONTENT EBENEN
+Der kommerzielle Kern wird in
+`blocksy-child/inc/final-cut-authority.php` kuratiert.
 
-Es gibt vier strategische Content-Ebenen:
+Grundregeln:
 
-1. GLOSSAR CONTENT
-2. PILLAR CONTENT
-3. SERVICE CONTENT
-4. PROOF CONTENT
+- maximal drei kontextuelle Ziele je kommerziellem Owner
+- exakte, beschreibende Anker statt „Mehr erfahren“
+- Supporting Content stärkt Money Pages
+- Service-Seiten verbinden angrenzende, aber getrennte Intents
+- Solar bleibt in seinem eigenen Cluster
+- Footer-Navigation und fachlicher Kontextgraph sind zwei verschiedene Ebenen
 
-Jede Ebene erfüllt eine andere SEO- und Funnel-Funktion.
+## 4. GEO / Generative Search
 
----
+GEO ist eine zusätzliche Qualitätsprüfung, kein separates Tricksystem.
 
-## 2. GLOSSAR CONTENT
+Eine Seite ist GEO-stark, wenn sie:
 
-Suchintention:
-Informational
+- eine klare Entität und einen klaren Autor besitzt
+- originäre oder prüfbare Aussagen liefert
+- konkrete Fragen direkt beantwortet
+- Quellen und Methodik sauber trennt
+- intern eindeutig einem Thema/Service zugeordnet ist
+- crawlbar und indexierbar ist
+- Person-, Organization- und Service-Schema nicht widerspricht
 
-Typische Keywords:
-- was ist …
-- definition …
-- erklärung …
-- grundlagen …
+`llms.txt` und AI-Crawler-Regeln unterstützen Retrieval, ersetzen aber weder
+klassische SEO noch Entity- und Content-Qualität.
 
-Ziel:
-- Longtail Traffic
-- thematische Breite
-- interne Verlinkungsbasis
+## 5. Kannibalisierungs-Schutz
 
-Conversion:
-Soft.
+- ein primärer Intent = ein Owner
+- lokale Vergleichsseite ist keine zweite globale Money Page
+- breites Conversion Tracking und Server-Side Tracking bleiben getrennte Owner
+- Website-Relaunch bleibt informational; Website-Angebot bleibt transactional
+- White-Label-/Agentur-Intent bleibt vom Direktkundengeschäft getrennt
+- Energie-Cluster darf seine historische Sichtbarkeit behalten, ohne globale
+  WordPress-/Tracking-Seiten semantisch zurück in Solar zu ziehen
 
-CTA:
-Strategie / System verstehen.
+## 6. Priorisierungsmodell
 
-Glossar darf NICHT:
-- auf „Agentur“ Keywords optimieren
-- direkte Verkaufsbotschaft enthalten
-- gleiche Suchintention wie Service Pages haben.
+Neue SEO-Arbeit wird in dieser Reihenfolge bewertet:
 
-Glossar UX:
-- ruhig
-- editorial
-- hochwertige, schmale Textbreite
-- keine Landingpage-Optik
+1. technischer/indexatorischer Fehler
+2. falsche Query Ownership oder Cannibalization
+3. schwacher kommerzieller Owner mit bestehendem Nachfrage-Signal
+4. fehlender Supporting Content für einen strategischen Owner
+5. fehlender Proof
+6. Glossar-/Longtail-Erweiterung
 
-Glossar Hub:
-- Intro Text
-- alphabetische Liste
-- thematische Cluster
-- interne Autorität
+Business Impact, Datenlage, Aufwand und Reversibilität bestimmen die Reihenfolge.
 
-Glossar Term Page:
-1. Begriff Erklärung
-2. Kontext
-3. Beispiel
-4. Related Begriffe
-5. Soft CTA
+## 7. Messung
 
-Optional:
-- Mini Grafik
-- KPI Hinweis
-- interne Links
+Classic Search:
 
----
+- Impressionen
+- Klicks
+- CTR
+- Position
+- Query-Verteilung je Owner
+- Mehrfachranking
 
-## 3. PILLAR CONTENT
+Generative Search:
 
-Suchintention:
-Mixed (informational + investigational)
+- AI-/Generative-Impressionen nach URL, soweit Search Console verfügbar
+- zitierte/ausgewählte URLs
+- Themen, bei denen die Domain als Quelle erscheint
 
-Typische Keywords:
-- SEO Strategie
-- Conversion Optimierung
-- WordPress Performance Guide
+Business:
 
-Ziel:
-- thematische Autorität
-- Rankingbasis
-- Cluster bündeln
+- Projektanfragen
+- Anfrageart
+- Qualität/Fit
+- Übergang von Content zu Service
+- interne Klicks auf den Authority Graph
 
-Conversion:
-Mid Funnel.
+## 8. Arbeitsregel
 
-CTA:
-Strategiegespräch / Audit vorbereiten.
+Keine Seite wird geändert, nur weil eine allgemeine SEO-Best-Practice existiert.
 
-Regel:
-Service Pitch untergeordnet halten.
+Jede Änderung braucht:
 
----
-
-## 4. SERVICE CONTENT
-
-Suchintention:
-Commercial
-
-Typische Keywords:
-- SEO Agentur Hannover
-- CRO Beratung
-- WordPress Optimierung
-
-Ziel:
-- Leads generieren
-- Expertise beweisen
-- Vertrauen aufbauen
-
-Conversion:
-High.
-
-CTA:
-Audit starten.
-
-Regel:
-Keine Grundlagen erklären → intern auf Glossar verlinken.
-
----
-
-## 5. PROOF CONTENT
-
-Suchintention:
-Validation
-
-Typische Keywords:
-- Case Study
-- Ergebnisse
-- Erfolgsgeschichte
-
-Ziel:
-- Einwände reduzieren
-- Vertrauen erhöhen
-- Abschluss vorbereiten
-
-Conversion:
-Bottom Funnel.
-
-CTA:
-Audit.
-
----
-
-## 6. KEYWORD-ENTSCHEIDUNGSMODELL
-
-Neue Keyword Idee?
-
-Fragen:
-
-1. Sucht User Wissen?
-→ Glossar
-
-2. Sucht User Überblick?
-→ Pillar
-
-3. Sucht User Anbieter?
-→ Service
-
-4. Sucht User Beweis?
-→ Case Study
-
----
-
-## 7. INTERNE LINK STRATEGIE
-
-Glossar → Pillar
-Glossar → Glossar
-
-Pillar → Service
-Pillar → Glossar
-
-Service → Proof
-Service → Pillar
-
-Proof → Service
-
-So entsteht ein Authority Loop.
-
----
-
-## 8. KANNIBALISIERUNG SCHUTZ
-
-Regeln:
-
-- jede Seite hat klare Suchintention
-- keine zwei Seiten mit gleichem Keyword-Ziel
-- Service Keywords gehören nur Service Pages
-
-Glossar nutzt:
-informational Varianten.
-
----
-
-## 9. CONTENT RHYTHMUS
-
-Skalierung:
-
-- zuerst Glossar Cluster aufbauen
-- danach Pillar erweitern
-- danach Service optimieren
-- Proof kontinuierlich ergänzen
-
-SEO Wachstum ist systemisch.
-
----
-
-## 10. INTERNE LINK ARCHITEKTUR
-
-Authority Flow:
-
-Glossar → Pillar → Service → Proof → Anfrage
-
-Priorität 1:
-
-- Glossar → Pillar
-- Pillar → Service
-- Service → Proof
-
-Priorität 2:
-
-- Glossar → Service
-- Pillar → Glossar
-- Service → Pillar
-
-Priorität 3:
-
-- Glossar → Glossar
-- Proof → Pillar
-- Proof → Glossar
-
-Navigation und Footer zählen als schwache Links.
-
----
-
-## 11. ANCHOR TEXT REGELN
-
-Glossar:
-
-- neutral
-- erklärend
-- Keyword-Varianten erlaubt
-
-Pillar:
-
-- teiloptimiert
-- natürlich
-- semantisch erweitert
-
-Service:
-
-- präzise
-- Intent-orientiert
-- nicht überoptimieren
-
-Beispiel:
-
-Glossar Anchor:
-→ „Core Web Vitals verstehen“
-
-Service Anchor:
-→ „Core Web Vitals optimieren lassen“
-
----
-
-## 12. LINK TIEFE UND MODULE
-
-Wichtige Seiten dürfen maximal:
-
-- 3 Klicks von der Startseite entfernt sein
-
-Service Seiten:
-
-- ideal 1–2 Klicks
-
-Glossar:
-
-- darf tiefer liegen
-- Hub muss immer erreichbar sein
-
-Related Content Module:
-
-- am Ende von Glossar
-- am Ende von Pillar
-- nach Case Study
-
-Struktur:
-
-- 3–5 relevante Links
-- kurze Begründung
-- keine Keyword-Spam-Titel
-
----
-
-## 13. LINK RHYTHMUS UND NO-LINK-ZONEN
-
-Pro 600–800 Wörter:
-
-- 2–4 sinnvolle interne Links
-
-Service Pages:
-
-- weniger
-- gezielter
-
-Glossar:
-
-- mehr möglich
-
-Vermeiden:
-
-- übermäßige Footer Links
-- random „Mehr erfahren“
-- irrelevante Crosslinks
-- Linklisten ohne Kontext
-
-Qualität > Quantität.
-
----
-
-## 14. AUTHORITY FLYWHEEL
-
-Glossar → Rankings
-Rankings → Vertrauen
-Vertrauen → Klicks
-Klicks → Leads
-Leads → Case Studies
-Case Studies → mehr Rankings
-
-Das System verstärkt sich selbst.
-
----
-
-## 15. PRAKTISCHE PRIORISIERUNG
-
-Die dauerhafte Umsetzungsdoku für Money-Keyword-Fit, Zielseiten und 90-Tage-Rollout liegt in:
-
-- `docs/seo/money-keyword-implementation.md`
+- Befund
+- Beleg
+- Ursache
+- strategische Bedeutung
+- konkrete Maßnahme
+- Priorität
+- Messkriterium
+- Revisionsbedingung
