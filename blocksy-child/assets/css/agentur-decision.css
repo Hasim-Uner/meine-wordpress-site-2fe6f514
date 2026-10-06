@@ -1,27 +1,185 @@
 /* WordPress Agentur Hannover — lokale Entscheidungsseite.
-   Baut ausschliesslich auf system.css-Tokens auf; kein eigenes Farbsystem. */
+   Konzept: Verantwortungswege sichtbar machen, nicht Agenturästhetik imitieren.
+   Ausschließlich System-Tokens; keine hover-getriebene Inszenierung. */
 
-.agentur-decision .entscheidung-grid {
+.agentur-decision .kopfteil .blatt {
+  position: relative;
+}
+
+.agentur-decision .kopfteil .blatt::after {
+  content: "";
+  position: absolute;
+  top: var(--s3);
+  right: 0;
+  width: min(14rem, 24vw);
+  height: 1px;
+  background: var(--stempel);
+  box-shadow:
+    0 var(--s2) 0 var(--haar),
+    0 calc(var(--s2) * 2) 0 var(--haar);
+  pointer-events: none;
+}
+
+.agentur-decision .agentur-proofline {
+  display: grid;
+  grid-template-columns: auto minmax(0, 1fr);
+  align-items: baseline;
+  gap: var(--s2);
+  width: fit-content;
+  max-width: 100%;
+  margin-top: var(--s3);
+  padding: var(--s2) 0;
+  border-block: 1px solid var(--strich);
+  color: var(--tinte);
+  text-decoration: none;
+}
+
+.agentur-decision .agentur-proofline strong {
+  font-family: var(--mono);
+  font-size: clamp(1.7rem, 4vw, 3.25rem);
+  line-height: 1;
+  letter-spacing: -.06em;
+  color: var(--stempel);
+}
+
+.agentur-decision .agentur-proofline span {
+  max-width: 42rem;
+}
+
+.agentur-decision .modellvergleich {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: var(--s2);
+  margin-top: var(--s4);
+}
+
+.agentur-decision .modellpfad {
+  position: relative;
+  padding: var(--s3);
+  border: 1px solid var(--haar);
+  background: var(--zone);
+}
+
+.agentur-decision .modellpfad--direkt {
+  border-color: var(--strich);
+  box-shadow: inset 3px 0 0 var(--stempel);
+}
+
+.agentur-decision .modellpfad h3 {
+  margin: var(--s0) 0 var(--s2);
+}
+
+.agentur-decision .modellpfad > p:last-child {
+  margin-bottom: 0;
+}
+
+.agentur-decision .modellpfad__linie {
+  display: grid;
+  gap: 0;
+  margin: var(--s3) 0;
+  border-top: 1px solid var(--strich);
+}
+
+.agentur-decision .modellpfad__schritt {
+  position: relative;
+  display: grid;
+  grid-template-columns: 2rem minmax(0, 1fr);
+  align-items: center;
+  min-height: 3.1rem;
+  border-bottom: 1px solid var(--haar);
+  font-family: var(--mono);
+  font-size: var(--mono-m);
+}
+
+.agentur-decision .modellpfad__schritt::before {
+  content: "";
+  width: .55rem;
+  height: .55rem;
+  border: 1px solid var(--strich);
+  border-radius: 50%;
+  background: var(--papier);
+}
+
+.agentur-decision .modellpfad--direkt .modellpfad__schritt::before {
+  border-color: var(--stempel);
+  background: var(--stempel);
+}
+
+.agentur-decision .proof-messung {
+  display: grid;
+  grid-template-columns: minmax(12rem, .7fr) minmax(0, 1.3fr);
+  gap: clamp(var(--s3), 5vw, var(--s5));
+  align-items: center;
+  padding: clamp(var(--s3), 6vw, var(--s5));
+  background: var(--tinte);
+  color: var(--papier);
+}
+
+.agentur-decision .proof-messung__zahl {
+  display: flex;
+  align-items: flex-start;
+  line-height: .8;
+  font-family: var(--mono);
+  letter-spacing: -.08em;
+}
+
+.agentur-decision .proof-messung__zahl span {
+  font-size: clamp(4.5rem, 12vw, 9.5rem);
+}
+
+.agentur-decision .proof-messung__zahl small {
+  margin-top: .55rem;
+  font-size: clamp(1.2rem, 3vw, 2.15rem);
+  color: var(--stempel);
+}
+
+.agentur-decision .proof-messung__text .mono {
+  color: var(--stempel);
+}
+
+.agentur-decision .proof-messung__text h2 {
+  margin: var(--s0) 0 var(--s2);
+  color: var(--papier);
+}
+
+.agentur-decision .proof-messung__text p:last-child {
+  margin-bottom: 0;
+  color: var(--papier);
+  opacity: .82;
+}
+
+.agentur-decision .beleg-links {
   display: grid;
   grid-template-columns: repeat(2, minmax(0, 1fr));
   gap: var(--s2);
   margin-top: var(--s3);
 }
 
-.agentur-decision .entscheidung-karte {
-  border: 1px solid var(--haar);
-  background: var(--zone);
-  padding: var(--s3);
-  border-radius: 3px;
+.agentur-decision .beleg-link {
+  display: grid;
+  align-content: start;
+  gap: var(--s0);
+  border-top: 2px solid var(--strich);
+  padding: var(--s2) 0 0;
+  color: var(--tinte);
+  text-decoration: none;
 }
 
-.agentur-decision .entscheidung-karte h3,
-.agentur-decision .vergleich-kopf strong {
-  margin: 0 0 var(--s1);
+.agentur-decision .beleg-link span {
+  font-family: var(--mono);
+  font-size: var(--mono-s);
+  color: var(--stempel);
+  text-transform: uppercase;
+  letter-spacing: .08em;
 }
 
-.agentur-decision .entscheidung-karte p:last-child {
-  margin-bottom: 0;
+.agentur-decision .beleg-link strong {
+  max-width: 28rem;
+}
+
+.agentur-decision .beleg-link em {
+  color: var(--matt);
+  font-style: normal;
 }
 
 .agentur-decision .vergleich {
@@ -31,7 +189,7 @@
 
 .agentur-decision .vergleich-zeile {
   display: grid;
-  grid-template-columns: minmax(9rem, .85fr) repeat(2, minmax(0, 1.5fr));
+  grid-template-columns: minmax(10rem, .9fr) repeat(2, minmax(0, 1.45fr));
   gap: var(--s2);
   padding: var(--s2) 0;
   border-bottom: 1px solid var(--haar);
@@ -49,6 +207,10 @@
   letter-spacing: .02em;
 }
 
+.agentur-decision .vergleich-zeile > :last-child strong {
+  font-weight: 600;
+}
+
 .agentur-decision .vergleich-kopf {
   border-bottom-color: var(--strich);
 }
@@ -58,24 +220,66 @@
   color: var(--tinte);
 }
 
-.agentur-decision .beleg-links {
+.agentur-decision .verantwortung-grid {
   display: grid;
   grid-template-columns: repeat(2, minmax(0, 1fr));
-  gap: var(--s2);
+  margin-top: var(--s3);
+  border-top: 1px solid var(--strich);
+  border-left: 1px solid var(--haar);
+}
+
+.agentur-decision .verantwortung-grid > div {
+  min-height: 12rem;
+  padding: var(--s3);
+  border-right: 1px solid var(--haar);
+  border-bottom: 1px solid var(--haar);
+}
+
+.agentur-decision .verantwortung-grid span {
+  font-family: var(--mono);
+  font-size: var(--mono-s);
+  color: var(--stempel);
+}
+
+.agentur-decision .verantwortung-grid h3 {
+  margin: var(--s1) 0;
+}
+
+.agentur-decision .verantwortung-grid p {
+  margin-bottom: 0;
+}
+
+.agentur-decision .route-intro {
+  margin-top: var(--s5);
+  padding-top: var(--s3);
+  border-top: 1px solid var(--strich);
+}
+
+.agentur-decision .route-intro h3 {
+  margin: var(--s0) 0 0;
+}
+
+.agentur-decision .route-grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: var(--s1);
   margin-top: var(--s3);
 }
 
-.agentur-decision .beleg-link {
-  display: block;
-  border-top: 1px solid var(--strich);
-  padding-top: var(--s2);
+.agentur-decision .route-grid a {
+  display: grid;
+  align-content: start;
+  gap: var(--s1);
+  min-height: 12rem;
+  padding: var(--s2);
+  border: 1px solid var(--haar);
+  border-top: 3px solid var(--stempel);
+  background: var(--zone);
   color: var(--tinte);
   text-decoration: none;
 }
 
-.agentur-decision .beleg-link span {
-  display: block;
-  margin-bottom: var(--s0);
+.agentur-decision .route-grid span {
   font-family: var(--mono);
   font-size: var(--mono-s);
   color: var(--stempel);
@@ -83,15 +287,10 @@
   letter-spacing: .08em;
 }
 
-.agentur-decision .beleg-link strong {
-  display: block;
-  margin-bottom: var(--s0);
-}
-
-.agentur-decision .beleg-link:hover strong,
-.agentur-decision .beleg-link:focus-visible strong {
-  text-decoration: underline;
-  text-underline-offset: .18em;
+.agentur-decision .route-grid small {
+  color: var(--matt);
+  font-size: inherit;
+  line-height: inherit;
 }
 
 .agentur-decision .lokal-zeile {
@@ -118,10 +317,64 @@
   margin: var(--s0) 0 0;
 }
 
+/* Die Seite funktioniert nicht über Hover. Interaktive Zustände bleiben
+   nur für Tastaturfokus sichtbar; Maus-Hover verändert weder Fläche noch Lage. */
+.agentur-decision .tun,
+.agentur-decision .tun .pf,
+.agentur-decision .textlink,
+.agentur-decision .beleg-link,
+.agentur-decision .route-grid a {
+  transition: none;
+}
+
+.agentur-decision .tun:hover {
+  background: var(--stempel);
+  color: var(--papier);
+}
+
+.agentur-decision .tun.still:hover {
+  background: transparent;
+  color: var(--tinte);
+}
+
+.agentur-decision .tun:hover .pf {
+  transform: translateY(-0.5px);
+}
+
+.agentur-decision a:focus-visible {
+  outline: 2px solid var(--stempel);
+  outline-offset: 4px;
+}
+
+.hu-agentur-decision-page .hu-authority-links__item b {
+  transition: none;
+}
+
+.hu-agentur-decision-page .hu-authority-links__item:hover b,
+.hu-agentur-decision-page .hu-authority-links__item:focus-visible b {
+  transform: none;
+}
+
+@media (max-width: 980px) {
+  .agentur-decision .route-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .agentur-decision .route-grid a {
+    min-height: auto;
+  }
+}
+
 @media (max-width: 840px) {
-  .agentur-decision .entscheidung-grid,
+  .agentur-decision .kopfteil .blatt::after {
+    display: none;
+  }
+
+  .agentur-decision .modellvergleich,
   .agentur-decision .beleg-links,
-  .agentur-decision .lokal-zeile {
+  .agentur-decision .verantwortung-grid,
+  .agentur-decision .lokal-zeile,
+  .agentur-decision .proof-messung {
     grid-template-columns: 1fr;
   }
 
@@ -139,5 +392,19 @@
     color: var(--stempel);
     text-transform: uppercase;
     letter-spacing: .07em;
+  }
+
+  .agentur-decision .verantwortung-grid {
+    border-left: 0;
+  }
+
+  .agentur-decision .verantwortung-grid > div {
+    min-height: auto;
+    padding-inline: 0;
+    border-right: 0;
+  }
+
+  .agentur-decision .agentur-proofline {
+    grid-template-columns: 1fr;
   }
 }
