@@ -111,7 +111,7 @@
   align-items:center;
   gap:var(--s1);
   min-height:44px;
-  margin-top:var(--s2);
+  margin-top:var(--s1);
   color:var(--tinte);
   padding:var(--s1) var(--s2);
   border:1px solid var(--haar);
@@ -1088,95 +1088,187 @@
 .anfrage-website .hero-akzent { color: var(--stempel); }
 .anfrage-website .formel { padding: var(--s3); border-top: 0; }
 .anfrage-website .aw-produktkarte {
-  position: relative;
-  isolation: isolate;
-  overflow: hidden;
-  border: 1px solid color-mix(in srgb, var(--stempel) 26%, var(--haar));
+  position:relative;
+  isolation:isolate;
+  align-self:center;
+  overflow:hidden;
+  padding:var(--s3);
   background:
-    linear-gradient(145deg, color-mix(in srgb, var(--stempel) 7%, transparent), transparent 42%),
-    var(--tinte);
+    linear-gradient(145deg,color-mix(in srgb,var(--stempel) 8%,transparent),transparent 44%),
+    var(--papier);
+  color:var(--tinte);
+  border:1px solid color-mix(in srgb,var(--stempel) 30%,var(--haar));
   box-shadow:
-    0 1px 0 color-mix(in srgb, var(--papier) 8%, transparent) inset,
-    0 22px 50px color-mix(in srgb, var(--tinte) 18%, transparent);
+    0 1px 0 color-mix(in srgb,var(--tinte) 8%,transparent) inset,
+    0 18px 44px color-mix(in srgb,var(--papier) 28%,transparent);
 }
 .anfrage-website .aw-produktkarte::before {
-  content: "";
-  position: absolute;
-  z-index: -1;
-  width: 13rem;
-  height: 13rem;
-  right: -5rem;
-  top: -6rem;
-  border-radius: 50%;
-  background: color-mix(in srgb, var(--stempel) 16%, transparent);
-  filter: blur(34px);
-  opacity: .72;
-  pointer-events: none;
+  content:"";
+  position:absolute;
+  z-index:-1;
+  width:12rem;
+  height:12rem;
+  right:-4.5rem;
+  top:-5.5rem;
+  border-radius:50%;
+  background:color-mix(in srgb,var(--stempel) 18%,transparent);
+  filter:blur(34px);
+  opacity:.66;
+  pointer-events:none;
 }
-.anfrage-website .formel .betrag { display: flex; flex-wrap: wrap; align-items: baseline; gap: var(--s1); font-size: clamp(4rem, 3.1rem + 3vw, 5.8rem); }
-.anfrage-website .aw-produkt-kopf, .anfrage-website .aw-summary-kopf { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: var(--s1); }
-.anfrage-website .aw-produkt-kopf { margin-bottom: var(--s3); }
+.anfrage-website .aw-produktkarte .mono {
+  color:var(--grau);
+}
+.anfrage-website .formel .betrag {
+  display:flex;
+  flex-wrap:wrap;
+  align-items:baseline;
+  gap:.45rem;
+  margin-top:.45rem;
+  color:var(--tinte);
+  -webkit-text-fill-color:var(--tinte);
+  font-size:clamp(3.55rem,3rem + 1.8vw,4.65rem);
+  line-height:.92;
+}
+.anfrage-website .aw-produktkarte .betrag small {
+  color:var(--grau);
+  -webkit-text-fill-color:currentColor;
+  font-size:.22em;
+  letter-spacing:.06em;
+  text-transform:uppercase;
+}
+.anfrage-website .aw-produkt-kopf,
+.anfrage-website .aw-summary-kopf {
+  display:flex;
+  flex-wrap:wrap;
+  align-items:center;
+  justify-content:space-between;
+  gap:var(--s1);
+}
+.anfrage-website .aw-produkt-kopf {
+  margin-bottom:var(--s1);
+}
 .anfrage-website .aw-status {
-  display: inline-flex;
-  align-items: center;
-  gap: var(--s0);
-  font: var(--mono-m) var(--mono);
-  padding: 6px 9px;
-  border: 1px solid color-mix(in srgb, var(--stempel) 64%, transparent);
-  border-radius: var(--r1);
-  color: var(--papier);
-  background: color-mix(in srgb, var(--stempel) 12%, transparent);
+  display:inline-flex;
+  align-items:center;
+  gap:var(--s0);
+  min-height:32px;
+  padding:5px 9px;
+  border:1px solid var(--tinte);
+  border-radius:var(--r1);
+  background:var(--tinte);
+  color:var(--papier);
+  font:var(--mono-m) var(--mono);
+  line-height:1;
 }
 .anfrage-website .aw-status i {
-  width: 7px;
-  height: 7px;
-  border-radius: 50%;
-  background: var(--stempel);
-  box-shadow: 0 0 0 4px color-mix(in srgb, var(--stempel) 13%, transparent);
+  width:7px;
+  height:7px;
+  flex:0 0 7px;
+  border-radius:50%;
+  background:var(--stempel);
+  box-shadow:0 0 0 3px color-mix(in srgb,var(--stempel) 14%,transparent);
 }
-.anfrage-website .aw-preis-lockup { padding-block: var(--s1) var(--s2); }
-.anfrage-website .aw-preis-lockup > .mono { color: color-mix(in srgb, var(--papier) 58%, transparent); }
+.anfrage-website .aw-preis-lockup {
+  padding-block:var(--s0) var(--s1);
+}
+.anfrage-website .aw-preis-lockup > .mono {
+  color:var(--grau);
+  letter-spacing:.12em;
+  text-transform:uppercase;
+}
 .anfrage-website .aw-produktkern {
-  margin-top: var(--s1);
-  color: var(--papier);
-  font-weight: 600;
-  letter-spacing: -.01em;
+  margin-top:var(--s0);
+  color:var(--tinte);
+  font-size:clamp(.96rem,.93rem + .18vw,1.06rem);
+  font-weight:600;
+  letter-spacing:-.01em;
 }
 .anfrage-website .aw-modulband {
-  display: grid;
-  grid-template-columns: repeat(4, minmax(0, 1fr));
-  margin-top: var(--s2);
-  border-block: 1px solid color-mix(in srgb, var(--papier) 15%, transparent);
+  display:grid;
+  grid-template-columns:repeat(4,minmax(0,1fr));
+  margin-top:var(--s0);
+  border-block:1px solid var(--haar);
 }
 .anfrage-website .aw-modulband span {
-  padding: 9px 4px;
-  text-align: center;
-  font: var(--mono-s) var(--mono);
-  letter-spacing: .08em;
-  text-transform: uppercase;
-  color: color-mix(in srgb, var(--papier) 68%, transparent);
+  padding:7px 4px;
+  text-align:center;
+  color:var(--grau);
+  font:var(--mono-s) var(--mono);
+  letter-spacing:.08em;
+  text-transform:uppercase;
 }
-.anfrage-website .aw-modulband span + span { border-left: 1px solid color-mix(in srgb, var(--papier) 12%, transparent); }
-.anfrage-website .aw-produktkarte .regel { margin-top: var(--s2); color: color-mix(in srgb, var(--papier) 82%, transparent); }
-.anfrage-website .aw-produktkarte #hero-bauzeit { display: block; margin-top: var(--s1); color: var(--papier); font-weight: 600; }
-.anfrage-website .aw-basis-kurz { padding: 0; list-style: none; margin: var(--s3) 0 0; font-size: var(--grad-klein); }
-.anfrage-website .aw-basis-kurz li {
-  display: grid;
-  grid-template-columns: 1rem minmax(0, 1fr);
-  gap: var(--s1);
-  padding-block: 7px;
-  border-top: 1px solid color-mix(in srgb, var(--papier) 9%, transparent);
+.anfrage-website .aw-modulband span + span {
+  border-left:1px solid var(--haar);
 }
-.anfrage-website .aw-basis-kurz li::before { content: "✓"; color: var(--stempel); margin-right: 0; }
-.anfrage-website .aw-produktkarte .zum {
-  display: inline-flex;
-  align-items: center;
-  gap: var(--s1);
-  margin-top: var(--s3);
-  color: var(--papier);
-  text-decoration-color: color-mix(in srgb, var(--stempel) 50%, transparent);
+.anfrage-website .aw-produktmeta {
+  display:grid;
+  grid-template-columns:repeat(2,minmax(0,1fr));
+  margin-top:var(--s1);
+  border-bottom:1px solid var(--haar);
 }
-.anfrage-website .aw-produktkarte .zum:hover { color: var(--stempel); }
+.anfrage-website .aw-produktmeta > div {
+  display:grid;
+  gap:5px;
+  min-width:0;
+  padding:0 var(--s2) var(--s1) 0;
+}
+.anfrage-website .aw-produktmeta > div + div {
+  padding-left:var(--s2);
+  border-left:1px solid var(--haar);
+}
+.anfrage-website .aw-produktmeta strong {
+  min-width:0;
+  overflow-wrap:anywhere;
+  color:var(--tinte);
+  font-size:.98rem;
+  font-weight:600;
+}
+.anfrage-website .aw-produktmeta .mono {
+  min-width:0;
+  overflow-wrap:anywhere;
+}
+.anfrage-website .aw-produktzeit {
+  margin-top:var(--s2);
+  color:var(--tinte);
+  font-size:.95rem;
+  font-weight:600;
+}
+.anfrage-website .aw-produktnote {
+  margin-top:4px;
+  color:var(--grau);
+  font-size:.74rem;
+}
+.anfrage-website .aw-produkt-cta {
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap:var(--s2);
+  min-height:46px;
+  margin-top:var(--s1);
+  padding:0 var(--s2);
+  border:1px solid var(--tinte);
+  border-radius:var(--r1);
+  background:var(--tinte);
+  color:var(--papier);
+  text-decoration:none;
+  font-weight:650;
+  transition:transform var(--t-mikro) var(--ease-aus),background-color var(--t-mikro) var(--ease-aus),border-color var(--t-mikro) var(--ease-aus);
+}
+.anfrage-website .aw-produkt-cta span {
+  color:var(--stempel);
+  transition:transform var(--t-mikro) var(--ease-aus);
+}
+@media (hover:hover) {
+  .anfrage-website .aw-produkt-cta:hover {
+    transform:translateY(-2px);
+    background:color-mix(in srgb,var(--tinte) 92%,var(--stempel));
+    border-color:var(--tinte);
+  }
+  .anfrage-website .aw-produkt-cta:hover span {
+    transform:translateX(3px);
+  }
+}
 .anfrage-website .aw-hero-checks { display: flex; flex-wrap: wrap; gap: var(--s1) var(--s2); padding: 0; margin: var(--s2) 0 0; list-style: none; font-size: var(--grad-klein); color: var(--grau); }
 .anfrage-website .aw-hero-checks li::before { content: "✓"; color: var(--stempel); margin-right: var(--s0); }
 .anfrage-website .aw-kapitel { display: flex; flex-wrap: wrap; align-items: center; gap: 0 var(--s3); border-block: 1px solid var(--haar); padding-block: var(--s0); }
@@ -1194,36 +1286,43 @@
 .anfrage-website .aw-projekte--fokus { grid-template-columns: minmax(0, 1fr); }
 .anfrage-website .aw-projekte--fokus .aw-projekt { max-width: none; }
 .anfrage-website #unterschied {
-  position: relative;
-  overflow: hidden;
+  position:relative;
+  overflow:hidden;
+  background:var(--papier);
+  color:var(--tinte);
 }
 .anfrage-website #unterschied::after {
-  content: "";
-  position: absolute;
-  width: 34rem;
-  height: 34rem;
-  right: -18rem;
-  top: -12rem;
-  border-radius: 50%;
-  background: color-mix(in srgb, var(--stempel) 8%, transparent);
-  filter: blur(70px);
-  pointer-events: none;
+  content:"";
+  position:absolute;
+  width:34rem;
+  height:34rem;
+  right:-18rem;
+  top:-12rem;
+  border-radius:50%;
+  background:color-mix(in srgb,var(--stempel) 8%,transparent);
+  filter:blur(70px);
+  pointer-events:none;
+}
+.anfrage-website #unterschied .lead {
+  color:var(--grau);
 }
 .anfrage-website .aw-prinzipien {
-  display: grid;
-  grid-template-columns: repeat(3, minmax(0, 1fr));
-  gap: var(--s2);
-  margin-top: var(--s4);
+  display:grid;
+  grid-template-columns:repeat(3,minmax(0,1fr));
+  gap:var(--s2);
+  margin-top:var(--s4);
 }
 .anfrage-website .aw-prinzipien article {
-  position: relative;
-  min-width: 0;
-  min-height: 24rem;
-  padding: var(--s3);
-  border: 1px solid color-mix(in srgb, var(--papier) 16%, transparent);
+  position:relative;
+  display:grid;
+  grid-template-rows:auto auto auto 1fr auto;
+  min-width:0;
+  min-height:20rem;
+  padding:var(--s3);
+  border:1px solid var(--haar);
   background:
-    linear-gradient(180deg, color-mix(in srgb, var(--papier) 5%, transparent), transparent 46%),
-    color-mix(in srgb, var(--papier) 2%, transparent);
+    linear-gradient(180deg,color-mix(in srgb,var(--tinte) 4%,transparent),transparent 46%),
+    var(--zone);
   transition:
     opacity var(--t-norm) var(--ease-weich),
     transform var(--t-norm) var(--ease-aus),
@@ -1231,132 +1330,220 @@
     background-color var(--t-norm) var(--ease-weich);
 }
 .anfrage-website .aw-prinzipien article::before {
-  content: "";
-  position: absolute;
-  left: -1px;
-  top: -1px;
-  width: calc(100% + 2px);
-  height: 2px;
-  background: var(--stempel);
-  transform: scaleX(.16);
-  transform-origin: left;
-  transition: transform 420ms var(--ease-aus);
+  content:"";
+  position:absolute;
+  left:-1px;
+  top:-1px;
+  width:calc(100% + 2px);
+  height:2px;
+  background:var(--stempel);
+  transform:scaleX(.16);
+  transform-origin:left;
+  transition:transform 420ms var(--ease-aus);
 }
-.anfrage-website .aw-prinzipien .mono { color: var(--stempel); }
+.anfrage-website .aw-prinzipien .mono {
+  color:var(--stempel);
+}
 .anfrage-website .aw-prinzipien h3 {
-  margin-top: var(--s3);
-  font-size: clamp(1.18rem, 1.05rem + .45vw, 1.5rem);
-  line-height: 1.28;
-  color: var(--papier);
-  max-width: 20ch;
+  margin-top:var(--s2);
+  max-width:20ch;
+  color:var(--tinte);
+  font-size:clamp(1.18rem,1.05rem + .45vw,1.5rem);
+  line-height:1.28;
 }
 .anfrage-website .aw-prinzipien p {
-  margin-top: var(--s2);
-  color: color-mix(in srgb, var(--papier) 70%, transparent);
-  font-size: var(--grad-klein);
-  line-height: 1.65;
+  margin-top:var(--s2);
+  color:var(--grau);
+  font-size:var(--grad-klein);
+  line-height:1.65;
 }
 .anfrage-website .aw-prinzip-signal {
-  display: flex;
-  align-items: center;
-  gap: 7px;
-  min-height: 42px;
-  margin-top: var(--s3);
-  padding: 8px 9px;
-  border: 1px solid color-mix(in srgb, var(--papier) 12%, transparent);
-  background: color-mix(in srgb, var(--tinte) 72%, transparent);
+  display:flex;
+  align-items:center;
+  gap:7px;
+  min-height:42px;
+  margin-top:var(--s2);
+  padding:8px 9px;
+  border:1px solid var(--haar);
+  background:var(--papier);
 }
 .anfrage-website .aw-prinzip-signal span {
-  flex: 0 0 auto;
-  font: .61rem var(--mono);
-  letter-spacing: .05em;
-  text-transform: uppercase;
-  color: color-mix(in srgb, var(--papier) 72%, transparent);
+  flex:0 0 auto;
+  color:var(--grau);
+  font:.61rem var(--mono);
+  letter-spacing:.05em;
+  text-transform:uppercase;
 }
 .anfrage-website .aw-prinzip-signal i {
-  position: relative;
-  flex: 1 1 auto;
-  height: 1px;
-  min-width: 8px;
-  overflow: hidden;
-  background: color-mix(in srgb, var(--papier) 18%, transparent);
+  position:relative;
+  flex:1 1 auto;
+  min-width:8px;
+  height:1px;
+  overflow:hidden;
+  background:var(--haar);
 }
 .anfrage-website .aw-prinzip-signal i::after {
-  content: "";
-  position: absolute;
-  inset: 0;
-  background: var(--stempel);
-  transform: scaleX(0);
-  transform-origin: left;
-  transition: transform 520ms var(--ease-aus);
+  content:"";
+  position:absolute;
+  inset:0;
+  background:var(--stempel);
+  transform:scaleX(0);
+  transform-origin:left;
+  transition:transform 520ms var(--ease-aus);
 }
-.anfrage-website .aw-prinzip-signal--besitz { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); }
+.anfrage-website .aw-prinzip-signal--besitz {
+  display:grid;
+  grid-template-columns:repeat(3,minmax(0,1fr));
+}
 .anfrage-website .aw-prinzip-signal--besitz span {
-  padding: 5px 4px;
-  text-align: center;
-  border: 1px solid color-mix(in srgb, var(--stempel) 30%, transparent);
-  color: var(--papier);
+  padding:5px 4px;
+  text-align:center;
+  border:1px solid color-mix(in srgb,var(--stempel) 34%,var(--haar));
+  color:var(--tinte);
 }
 .anfrage-website .aw-prinzip-output {
-  display: grid;
-  gap: 6px;
-  margin: var(--s3) 0 0;
-  padding: var(--s2) 0 0;
-  list-style: none;
-  border-top: 1px solid color-mix(in srgb, var(--papier) 12%, transparent);
-  color: color-mix(in srgb, var(--papier) 84%, transparent);
-  font-size: var(--grad-klein);
+  display:grid;
+  align-self:end;
+  gap:6px;
+  margin:var(--s2) 0 0;
+  padding:var(--s2) 0 0;
+  list-style:none;
+  border-top:1px solid var(--haar);
+  color:var(--tinte);
+  font-size:var(--grad-klein);
 }
-.anfrage-website .aw-prinzip-output li::before { content: "↳"; margin-right: 7px; color: var(--stempel); }
+.anfrage-website .aw-prinzip-output li::before {
+  content:"↳";
+  margin-right:7px;
+  color:var(--stempel);
+}
 .anfrage-website .aw-ergebnisband {
-  display: grid;
-  grid-template-columns: auto repeat(3, minmax(0, 1fr));
-  gap: var(--s2);
-  align-items: center;
-  margin-top: var(--s3);
-  padding-block: var(--s2);
-  border-block: 1px solid color-mix(in srgb, var(--papier) 16%, transparent);
+  display:grid;
+  grid-template-columns:auto repeat(3,minmax(0,1fr));
+  gap:var(--s2);
+  align-items:center;
+  margin-top:var(--s3);
+  padding-block:var(--s2);
+  border-block:1px solid var(--haar);
 }
-.anfrage-website .aw-ergebnisband .mono { color: var(--stempel); white-space: nowrap; }
+.anfrage-website .aw-ergebnisband .mono {
+  color:var(--stempel);
+  white-space:nowrap;
+}
 .anfrage-website .aw-ergebnisband strong {
-  color: var(--papier);
-  font-size: var(--grad-klein);
-  font-weight: 500;
+  color:var(--tinte);
+  font-size:var(--grad-klein);
+  font-weight:500;
 }
 .anfrage-website.aw-motion-ready #unterschied .aw-prinzipien article {
-  opacity: 0;
-  transform: translateY(16px);
+  opacity:0;
+  transform:translateY(16px);
 }
 .anfrage-website.aw-motion-ready #unterschied.is-visible .aw-prinzipien article {
-  opacity: 1;
-  transform: translateY(0);
-  transition-delay: calc(var(--aw-i) * 70ms);
+  opacity:1;
+  transform:translateY(0);
+  transition-delay:calc(var(--aw-i) * 70ms);
 }
 .anfrage-website.aw-motion-ready #unterschied.is-visible .aw-prinzip-signal i::after {
-  transform: scaleX(1);
-  transition-delay: calc(220ms + var(--aw-i) * 90ms);
+  transform:scaleX(1);
+  transition-delay:calc(220ms + var(--aw-i) * 90ms);
 }
 @media (hover:hover) {
   .anfrage-website .aw-prinzipien article:hover {
-    transform: translateY(-4px);
-    border-color: color-mix(in srgb, var(--stempel) 48%, transparent);
-    background-color: color-mix(in srgb, var(--papier) 4%, transparent);
+    transform:translateY(-4px);
+    border-color:var(--stempel);
+    background-color:var(--zone2);
   }
-  .anfrage-website .aw-prinzipien article:hover::before { transform: scaleX(1); }
+  .anfrage-website .aw-prinzipien article:hover::before {
+    transform:scaleX(1);
+  }
 }
-.anfrage-website #unterschied .aw-pruefung { border-top-color: color-mix(in srgb, var(--papier) 25%, transparent); }
-.anfrage-website #unterschied .aw-pruefung p, .anfrage-website #unterschied .aw-pruefung strong { color: var(--papier); }
-.anfrage-website .aw-lieferumfang-kompakt { margin-top: var(--s4); border: 1px solid var(--haar); border-radius: var(--r1); padding: 0 var(--s3); }
-.anfrage-website .aw-lieferumfang-kompakt > summary { display: flex; align-items: center; justify-content: space-between; gap: var(--s2); min-height: 72px; cursor: pointer; }
-.anfrage-website .aw-lieferumfang-kompakt > summary > span:first-child { display: grid; gap: var(--s0); }
-.anfrage-website .aw-lieferumfang-kompakt > summary strong { font-size: var(--grad-text); }
-.anfrage-website .aw-lieferumfang-inhalt { padding-bottom: var(--s3); }
-.anfrage-website .aw-erweiterungsumfang { padding-top: 0; scroll-margin-top: calc(var(--leiste-h, 54px) + var(--s3)); }
-.anfrage-website .aw-erweiterungen-kompakt { border-block: 1px solid var(--haar); }
-.anfrage-website .aw-erweiterungen-kompakt > summary { display: flex; align-items: center; justify-content: space-between; gap: var(--s2); min-height: 72px; cursor: pointer; }
-.anfrage-website .aw-erweiterungen-kompakt > summary > span:first-child { display: grid; gap: var(--s0); }
-.anfrage-website .aw-erweiterungen-kompakt > summary .mono { color: var(--stempel); }
-.anfrage-website .aw-erweiterungen-kompakt > summary > span:last-child { font: var(--mono-m) var(--mono); color: var(--grau); }
+.anfrage-website #unterschied .aw-pruefung {
+  border-top-color:var(--haar);
+}
+.anfrage-website #unterschied .aw-pruefung p,
+.anfrage-website #unterschied .aw-pruefung strong {
+  color:var(--tinte);
+}
+.anfrage-website .aw-lieferumfang-kompakt {
+  margin-top:var(--s4);
+  padding:0 var(--s3);
+  border:1px solid var(--haar);
+  border-radius:var(--r1);
+  background:color-mix(in srgb,var(--zone) 52%,var(--papier));
+}
+.anfrage-website .aw-lieferumfang-kompakt > summary,
+.anfrage-website .aw-erweiterungen-kompakt > summary {
+  display:grid;
+  grid-template-columns:minmax(0,1fr) auto auto;
+  align-items:center;
+  gap:var(--s2);
+  min-height:76px;
+  cursor:pointer;
+}
+.anfrage-website .aw-lieferumfang-kompakt > summary > span:first-child,
+.anfrage-website .aw-erweiterungen-kompakt > summary > span:first-child {
+  display:grid;
+  gap:var(--s0);
+}
+.anfrage-website .aw-lieferumfang-kompakt > summary strong {
+  font-size:var(--grad-text);
+}
+.anfrage-website .aw-lieferumfang-kompakt .aw-status {
+  min-height:34px;
+  padding-inline:10px;
+  border-color:var(--tinte);
+  background:var(--tinte);
+  color:var(--papier);
+}
+.anfrage-website .aw-lieferumfang-kompakt .aw-status::before {
+  content:"";
+  width:7px;
+  height:7px;
+  flex:0 0 7px;
+  border-radius:50%;
+  background:var(--stempel);
+  box-shadow:0 0 0 3px color-mix(in srgb,var(--stempel) 14%,transparent);
+}
+.anfrage-website .aw-lieferumfang-kompakt > summary::after,
+.anfrage-website .aw-erweiterungen-kompakt > summary::after {
+  display:grid;
+  width:30px;
+  height:30px;
+  place-items:center;
+  border:1px solid var(--haar);
+  border-radius:var(--r1);
+  background:var(--papier);
+  color:var(--stempel);
+}
+.anfrage-website .aw-lieferumfang-kompakt > summary:hover::after,
+.anfrage-website .aw-erweiterungen-kompakt > summary:hover::after {
+  border-color:var(--stempel);
+}
+.anfrage-website .aw-lieferumfang-inhalt {
+  padding-bottom:var(--s3);
+}
+.anfrage-website .aw-erweiterungsumfang {
+  padding-top:0;
+  scroll-margin-top:calc(var(--leiste-h,54px) + var(--s3));
+}
+.anfrage-website .aw-erweiterungen-kompakt {
+  border-block:1px solid var(--haar);
+}
+.anfrage-website .aw-erweiterungen-kompakt > summary .mono {
+  color:var(--stempel);
+}
+.anfrage-website .aw-erweiterungen-kompakt > summary > span:last-child {
+  display:inline-flex;
+  align-items:center;
+  min-height:34px;
+  padding-inline:10px;
+  border:1px solid var(--haar);
+  border-radius:var(--r1);
+  background:var(--papier);
+  color:var(--tinte);
+  font:var(--mono-m) var(--mono);
+}
 .anfrage-website .aw-erweiterungen-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: var(--s3); padding: 0 0 var(--s4); }
 .anfrage-website .aw-erweiterungen-grid > div { border-top: 1px solid var(--haar); padding-top: var(--s2); }
 .anfrage-website .aw-erweiterungen-grid h3 { font-size: var(--grad-text); }
@@ -1371,39 +1558,76 @@
 }
 @media (max-width: 719.98px) {
   .anfrage-website .aw-prinzip-signal:not(.aw-prinzip-signal--besitz) {
-    display: grid;
-    grid-template-columns: minmax(0, 1fr);
-    gap: 6px;
-  }
-  .anfrage-website .aw-prinzip-signal:not(.aw-prinzip-signal--besitz) span {
-    min-width: 0;
-    overflow-wrap: anywhere;
+    display:grid;
+    grid-template-columns:repeat(2,minmax(0,1fr));
+    gap:6px;
+    padding:7px;
   }
   .anfrage-website .aw-prinzip-signal:not(.aw-prinzip-signal--besitz) i {
-    width: 100%;
-    min-width: 0;
+    display:none;
+  }
+  .anfrage-website .aw-prinzip-signal span {
+    min-width:0;
+    overflow-wrap:anywhere;
+    text-align:center;
+    font-size:.56rem;
+    letter-spacing:.03em;
+  }
+  .anfrage-website .aw-prinzip-signal:not(.aw-prinzip-signal--besitz) span {
+    padding:5px 4px;
+    border:1px solid var(--haar);
+    background:var(--zone);
   }
   .anfrage-website .aw-prinzip-signal--besitz {
-    grid-template-columns: minmax(0, 1fr);
+    grid-template-columns:repeat(3,minmax(0,1fr));
   }
   .anfrage-website .aw-prinzip-signal--besitz span,
   .anfrage-website .aw-modulband span,
   .anfrage-website .aw-ergebnisband strong {
-    min-width: 0;
-    overflow-wrap: anywhere;
+    min-width:0;
+    overflow-wrap:anywhere;
   }
   .anfrage-website .aw-produkt-kopf {
-    align-items: flex-start;
+    align-items:flex-start;
   }
   .anfrage-website .aw-status {
-    max-width: 100%;
-    white-space: normal;
+    max-width:100%;
+    white-space:normal;
   }
-  .anfrage-website .aw-modulband { grid-template-columns: repeat(2, minmax(0, 1fr)); }
-  .anfrage-website .aw-modulband span:nth-child(3) { border-left: 0; border-top: 1px solid color-mix(in srgb, var(--papier) 12%, transparent); }
-  .anfrage-website .aw-modulband span:nth-child(4) { border-top: 1px solid color-mix(in srgb, var(--papier) 12%, transparent); }
-  .anfrage-website .aw-lieferumfang-kompakt { padding-inline: var(--s2); }
-  .anfrage-website .aw-lieferumfang-kompakt > summary, .anfrage-website .aw-erweiterungen-kompakt > summary { align-items: flex-start; flex-direction: column; justify-content: center; padding-block: var(--s1); }
+  .anfrage-website .aw-modulband {
+    grid-template-columns:repeat(2,minmax(0,1fr));
+  }
+  .anfrage-website .aw-modulband span:nth-child(3) {
+    border-left:0;
+    border-top:1px solid var(--haar);
+  }
+  .anfrage-website .aw-modulband span:nth-child(4) {
+    border-top:1px solid var(--haar);
+  }
+  .anfrage-website .aw-produktmeta {
+    grid-template-columns:minmax(0,1fr);
+  }
+  .anfrage-website .aw-produktmeta > div {
+    padding:0 0 var(--s1);
+  }
+  .anfrage-website .aw-produktmeta > div + div {
+    padding:var(--s1) 0;
+    border-left:0;
+    border-top:1px solid var(--haar);
+  }
+  .anfrage-website .aw-lieferumfang-kompakt {
+    padding-inline:var(--s2);
+  }
+  .anfrage-website .aw-lieferumfang-kompakt > summary,
+  .anfrage-website .aw-erweiterungen-kompakt > summary {
+    grid-template-columns:minmax(0,1fr) auto;
+    align-items:center;
+    padding-block:var(--s2);
+  }
+  .anfrage-website .aw-lieferumfang-kompakt > summary > span:first-child,
+  .anfrage-website .aw-erweiterungen-kompakt > summary > span:first-child {
+    grid-column:1 / -1;
+  }
 }
 
 /* A single decision column and a compact, persistent review of the selection. */
