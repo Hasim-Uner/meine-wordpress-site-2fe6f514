@@ -1551,40 +1551,68 @@
   .anfrage-website .aw-ergebnisband { grid-template-columns: minmax(0, 1fr); gap: var(--s1); }
 }
 @media (max-width: 719.98px) {
-  .anfrage-website .aw-prinzip-signal:not(.aw-prinzip-signal--besitz) {
-    display: grid;
-    grid-template-columns: minmax(0, 1fr);
-    gap: 6px;
+  .anfrage-website .aw-prinzip-signal {
+    gap:5px;
+    padding-inline:7px;
   }
-  .anfrage-website .aw-prinzip-signal:not(.aw-prinzip-signal--besitz) span {
-    min-width: 0;
-    overflow-wrap: anywhere;
+  .anfrage-website .aw-prinzip-signal span {
+    min-width:0;
+    font-size:.56rem;
+    letter-spacing:.03em;
   }
-  .anfrage-website .aw-prinzip-signal:not(.aw-prinzip-signal--besitz) i {
-    width: 100%;
-    min-width: 0;
+  .anfrage-website .aw-prinzip-signal i {
+    min-width:4px;
   }
   .anfrage-website .aw-prinzip-signal--besitz {
-    grid-template-columns: minmax(0, 1fr);
+    grid-template-columns:repeat(3,minmax(0,1fr));
   }
   .anfrage-website .aw-prinzip-signal--besitz span,
   .anfrage-website .aw-modulband span,
   .anfrage-website .aw-ergebnisband strong {
-    min-width: 0;
-    overflow-wrap: anywhere;
+    min-width:0;
+    overflow-wrap:anywhere;
   }
   .anfrage-website .aw-produkt-kopf {
-    align-items: flex-start;
+    align-items:flex-start;
   }
   .anfrage-website .aw-status {
-    max-width: 100%;
-    white-space: normal;
+    max-width:100%;
+    white-space:normal;
   }
-  .anfrage-website .aw-modulband { grid-template-columns: repeat(2, minmax(0, 1fr)); }
-  .anfrage-website .aw-modulband span:nth-child(3) { border-left: 0; border-top: 1px solid color-mix(in srgb, var(--papier) 12%, transparent); }
-  .anfrage-website .aw-modulband span:nth-child(4) { border-top: 1px solid color-mix(in srgb, var(--papier) 12%, transparent); }
-  .anfrage-website .aw-lieferumfang-kompakt { padding-inline: var(--s2); }
-  .anfrage-website .aw-lieferumfang-kompakt > summary, .anfrage-website .aw-erweiterungen-kompakt > summary { align-items: flex-start; flex-direction: column; justify-content: center; padding-block: var(--s1); }
+  .anfrage-website .aw-modulband {
+    grid-template-columns:repeat(2,minmax(0,1fr));
+  }
+  .anfrage-website .aw-modulband span:nth-child(3) {
+    border-left:0;
+    border-top:1px solid var(--haar);
+  }
+  .anfrage-website .aw-modulband span:nth-child(4) {
+    border-top:1px solid var(--haar);
+  }
+  .anfrage-website .aw-produktmeta {
+    grid-template-columns:minmax(0,1fr);
+  }
+  .anfrage-website .aw-produktmeta > div {
+    padding:0 0 var(--s1);
+  }
+  .anfrage-website .aw-produktmeta > div + div {
+    padding:var(--s1) 0;
+    border-left:0;
+    border-top:1px solid var(--haar);
+  }
+  .anfrage-website .aw-lieferumfang-kompakt {
+    padding-inline:var(--s2);
+  }
+  .anfrage-website .aw-lieferumfang-kompakt > summary,
+  .anfrage-website .aw-erweiterungen-kompakt > summary {
+    grid-template-columns:minmax(0,1fr) auto;
+    align-items:center;
+    padding-block:var(--s2);
+  }
+  .anfrage-website .aw-lieferumfang-kompakt > summary > span:first-child,
+  .anfrage-website .aw-erweiterungen-kompakt > summary > span:first-child {
+    grid-column:1 / -1;
+  }
 }
 
 /* A single decision column and a compact, persistent review of the selection. */
