@@ -235,7 +235,7 @@
         if (this.open) confirmChange(this.querySelector('.aw-extras'));
         scheduleSticky();
     });
-    $('[data-exclusive-details]').forEach(function (group) {
+    $$('[data-exclusive-details]').forEach(function (group) {
         var items = Array.from(group.children).filter(function (item) { return item.tagName === 'DETAILS'; });
         items.forEach(function (item) {
             item.addEventListener('toggle', function () {
