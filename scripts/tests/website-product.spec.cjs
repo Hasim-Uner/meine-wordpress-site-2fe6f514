@@ -27,7 +27,7 @@ for (const width of [320, 360, 768, 1440]) {
   test(`request website ${width}: layout, keyboard controls and sticky visibility`, async ({ page }) => {
     const errors=[]; page.on('pageerror', e=>errors.push(e.message));
     await open(page,width);
-    await expect(page).toHaveTitle('WordPress-Website erstellen lassen ab ' + euro(1490) + ' | Haşim Üner');
+    await expect(page).toHaveTitle('WordPress-Website erstellen lassen ab ' + euro(1900) + ' | Haşim Üner');
     await expect(page.locator('h1')).toHaveCount(1);
     expect(await page.locator('.anfrage-website > section').evaluateAll(els => els.map(el => el.id)))
       .toEqual(['hero','qualitaet','beleg','angebot','erweiterungen','unterschied','zeit','fragen','anfrage']);
