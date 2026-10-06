@@ -171,7 +171,7 @@ test('copywriting is priced by selected page type instead of being free', async 
   await choosePreset(page, 5);
   await expect(page.locator('#text-option-preis')).toHaveText('+' + euro(1070));
   await expect(page.locator('#gesamt')).toHaveText(euro(5250));
-  await expect(page.locator('#tage-texts')).toHaveText(workingDays(1.5));
+  await expect(page.locator('#tage-texts')).toHaveText(workingDays(2));
 
   await page.locator('#texte').uncheck();
   await expect(page.locator('#gesamt')).toHaveText(euro(4180));
