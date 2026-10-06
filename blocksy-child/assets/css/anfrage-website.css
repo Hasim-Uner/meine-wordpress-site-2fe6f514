@@ -1123,7 +1123,7 @@
   font: var(--mono-m) var(--mono);
   padding: 6px 9px;
   border: 1px solid color-mix(in srgb, var(--stempel) 64%, transparent);
-  border-radius: 999px;
+  border-radius: var(--r1);
   color: var(--papier);
   background: color-mix(in srgb, var(--stempel) 12%, transparent);
 }
