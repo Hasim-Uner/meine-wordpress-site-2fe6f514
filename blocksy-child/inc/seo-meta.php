@@ -316,6 +316,12 @@ function hu_get_forced_singular_seo_map() {
 				'title'       => 'Server-Side Tracking einrichten lassen | GA4, Ads & Consent',
 				'description' => sprintf( 'Server-Side Tracking für GA4, Google Ads und Meta CAPI: geprüft, eingerichtet, parallel getestet und dokumentiert. Setup ab %s netto.', $tracking_setup_price ),
 			],
+			// Informationaler Supporting-Artikel. Der Kaufintent und die Anbieter-
+			// Queries bleiben beim Owner /server-side-tracking-b2b/.
+			'server-side-tracking-gtm' => [
+				'title'       => 'Server-Side Tracking mit GTM: Architektur & Paralleltest',
+				'description' => 'Technischer Leitfaden zu Web-GTM, Server-GTM, Consent, Deduplizierung und Paralleltest. Umsetzung und Preise bleiben auf der Server-Side-Leistungsseite.',
+			],
 			// Diese Seite besitzt laut docs/seo/query-ownership.csv ausschliesslich
 			// Gewerbe-PV-Intent: "pv termine b2b", "pv leads gewerbe", "b2b
 			// photovoltaik". Das generische "Photovoltaik Leads" bleibt draussen,
