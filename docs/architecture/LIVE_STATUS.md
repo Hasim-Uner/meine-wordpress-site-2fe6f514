@@ -118,6 +118,34 @@ Contract und Abnahme: `CHAT_ASSISTANT.md`.
   aria-current, bekannte Routen) und `scripts/tests/navigation.spec.cjs`
   (Desktop, Mobil, Tastatur, ohne JavaScript) laufen in CI.
 
+## SEO / GEO Final Cut
+
+- Seit 2026-10-06 gilt die kommerzielle Kernarchitektur als Final Cut:
+  WordPress-Entwicklung, technisches SEO, Tracking/Attribution, Conversion,
+  Landingpages und White-Label. Solar/Wärmepumpe bleibt eine spezialisierte
+  Vertikale mit eigenem Cluster und eigenem Funnel.
+- `inc/final-cut-authority.php` bildet den kontextuellen Core-Graph zwischen
+  den kommerziellen Query-Ownern. Pro Seite maximal drei fachlich angrenzende
+  Ziele; Supporting-Artikel können Ziel sein, rendern aber keinen zusätzlichen
+  Linkblock. Der Solar-Cluster bleibt davon getrennt.
+- `inc/schema-positioning.php` spiegelt dieselbe Hierarchie im globalen
+  OfferCatalog: Website, Landingpage, Conversion Tracking, Server-Side,
+  Conversion, White-Label; Energie zuletzt als Spezialisierung.
+- Die öffentliche Entity-Rolle ist WordPress-Entwickler. Die Startseite bleibt
+  aus SEO-Gründen Query-Owner für `wordpress freelancer` und
+  `wordpress freelancer hannover`; Suchintent und Entity-Rolle werden nicht
+  mehr gleichgesetzt.
+- Die vier Werkstatt-Dossiers heißen ab derselben Revision:
+  Leadökonomie & Energie, WordPress & technisches SEO, Tracking & Attribution,
+  Conversion & Landingpages.
+- Historische GSC-Sichtbarkeit, insbesondere Solar/Leadgen, wird als
+  Legacy-/Bestandssignal interpretiert und nicht als Zielgewicht der neuen
+  Positionierung. Neue Entscheidungen folgen Query Ownership, aktuellem Intent,
+  Business-Fit und stabilen Nachher-Daten.
+- GEO bleibt Teil der SEO-Architektur: Person/Organization/Service-Konsistenz,
+  zitierfähige Primärsubstanz und Retrieval-Zugänglichkeit; kein eigener
+  Sonder-Markup-Pfad neben klassischer SEO.
+
 ## SEO Cockpit
 
 - Die operative Content-Arbeitsfläche heißt `Content-Chancen`. Sie setzt auf
