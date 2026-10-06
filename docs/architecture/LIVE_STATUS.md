@@ -118,6 +118,23 @@ Contract und Abnahme: `CHAT_ASSISTANT.md`.
   aria-current, bekannte Routen) und `scripts/tests/navigation.spec.cjs`
   (Desktop, Mobil, Tastatur, ohne JavaScript) laufen in CI.
 
+## Semantic Cleanup / Evidence Pass (2026-10-07)
+
+- Homepage-E3-Proof beschreibt den tatsächlichen Projektanteil: bestehende
+  Unternehmenswebsite vorhanden; umgesetzt/verbunden wurden Landingpages,
+  Kampagnen, Vorqualifizierung, Server-Side Tracking und Vertriebsübergabe.
+- Strategische Blogbeiträge besitzen jeweils ein primäres Dossier. Kategorien
+  sind Architektur, keine Tags; angrenzende Themen werden über interne Links
+  verbunden.
+- Core-Web-Vitals-Artikel auf Evidenzstandard umgestellt: keine deterministischen
+  Ranking-, Conversion- oder ROI-Versprechen; Labor- und Felddaten werden
+  getrennt, Page Experience wird nicht als Rankinggarantie dargestellt.
+- Technisches-SEO-Cornerstone trennt Landingpage-Erfahrung, Quality Score und
+  Core Web Vitals: keine direkte SEO→CPC-Formel, keine pauschalen Uplift-Claims.
+- Globale Rollen-/Blog-Sprache folgt Final Cut; „Anfragesysteme“ bleibt dort
+  erhalten, wo es die Energie-Vertikale oder einen konkreten Anfragepfad
+  beschreibt, aber nicht mehr als globale Personen-/Blog-Identität.
+
 ## SEO / GEO Final Cut
 
 - Seit 2026-10-06 gilt die kommerzielle Kernarchitektur als Final Cut:

@@ -665,7 +665,7 @@ function nexus_get_agentur_faq_items() {
 	return [
 		[
 			'question' => 'Welche WordPress Agentur in Hannover passt für anspruchsvolle B2B-Angebote?',
-			'answer'   => 'Eine, die WordPress-Entwicklung, technisches SEO, Tracking und Conversion-Führung als ein System behandelt — nicht als getrennte Einzelleistungen. Genau darauf ist diese Seite ausgerichtet: WordPress als Anfragesystem, geprüft an vier Kauf-Signalen, bevor ein Relaunch überhaupt zur Debatte steht.',
+			'answer'   => 'Eine, die WordPress-Entwicklung, technisches SEO, Tracking und Conversion-Führung als ein System behandelt — nicht als getrennte Einzelleistungen. Genau darauf ist diese Seite ausgerichtet: WordPress, technische Sichtbarkeit, Messung und Conversion als ein System, bevor ein Relaunch überhaupt zur Debatte steht.',
 		],
 		[
 			'question' => 'Arbeiten Sie nur mit Unternehmen aus Hannover?',

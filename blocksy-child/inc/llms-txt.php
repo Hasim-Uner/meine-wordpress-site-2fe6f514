@@ -249,7 +249,7 @@ function nexus_get_llms_txt_sections() {
 				[
 					'label'       => 'Blog',
 					'url'         => $urls['blog'] ?? home_url( '/blog/' ),
-					'description' => 'Artikel zu SEO, Tracking, WordPress-Performance, Conversion und Anfragesystemen.',
+					'description' => 'Artikel zu WordPress, technischem SEO, Tracking, Conversion und Leadökonomie.',
 				],
 				[
 					'label'       => 'Glossar',

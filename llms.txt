@@ -39,5 +39,5 @@ Standort: Pattensen bei Hannover, Niedersachsen (DE). Persönliche Termine, Work
 - [Kunden gewinnen für Solarteure](/kunden-gewinnen-solarteure/) - Pillar-Page mit systematischen Hebeln für Solar-Betriebe im DACH-Mittelstand.
 
 ## Wissen
-- [Blog](/blog/) - Artikel zu SEO, Tracking, WordPress-Performance, Conversion und Anfragesystemen.
+- [Blog](/blog/) - Artikel zu WordPress, technischem SEO, Tracking, Conversion und Leadökonomie.
 - [Glossar](/glossar/) - 60 kurze Erklärungen mit Beispielen: jeweils zwölf zu Anfragen, Ladezeit & Technik, Tracking, SEO und Conversion.

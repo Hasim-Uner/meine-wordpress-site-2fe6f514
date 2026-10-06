@@ -96,7 +96,7 @@ function hu_get_blog_archive_title() {
 function hu_get_blog_archive_description() {
 	return (string) apply_filters(
 		'hu_blog_archive_seo_description',
-		'Analysen zu WordPress, technischem SEO, Tracking, Conversion und Performance. Dazu Praxiswissen zu B2B-Anfragesystemen und digitaler Nachfrage.'
+		'Analysen zu WordPress, technischem SEO, Tracking, Conversion und Leadökonomie. Dazu technische Praxis, Messmethoden und dokumentierte Projektarbeit.'
 	);
 }
 
@@ -321,6 +321,10 @@ function hu_get_forced_singular_seo_map() {
 			'server-side-tracking-gtm' => [
 				'title'       => 'Server-Side Tracking mit GTM: Architektur & Paralleltest',
 				'description' => 'Technischer Leitfaden zu Web-GTM, Server-GTM, Consent, Deduplizierung und Paralleltest. Umsetzung und Preise bleiben auf der Server-Side-Leistungsseite.',
+			],
+			'core-web-vitals-wachstum-seo-und-roas' => [
+				'title'       => 'Core Web Vitals in WordPress: messen & optimieren',
+				'description' => 'LCP, INP und CLS in WordPress mit Feld- und Labordaten einordnen, Engpässe priorisieren und Optimierungen ohne Ranking- oder Umsatzversprechen prüfen.',
 			],
 			// Diese Seite besitzt laut docs/seo/query-ownership.csv ausschliesslich
 			// Gewerbe-PV-Intent: "pv termine b2b", "pv leads gewerbe", "b2b

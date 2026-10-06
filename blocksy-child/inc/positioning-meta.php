@@ -106,7 +106,7 @@ function hu_get_positioned_blog_taxonomy_signature() : string {
 		? (string) hu_get_blog_pillar_posts_seed_version()
 		: 'pillar-none';
 
-	return implode( '|', [ '2026-10-06-1', $provider_version, $pillar_version ] );
+	return implode( '|', [ '2026-10-07-1', $provider_version, $pillar_version ] );
 }
 
 /**
@@ -190,7 +190,7 @@ function hu_maybe_migrate_positioned_blog_taxonomy() : void {
 		return;
 	}
 
-	$schema_version = '2026-10-06-1';
+	$schema_version = '2026-10-07-1';
 	$refresh_copy   = (string) get_option( 'hu_positioned_blog_taxonomy_schema', '' ) !== $schema_version;
 	$canonical      = hu_get_positioned_blog_dossier_taxonomy();
 	$canonical_ids  = [];
@@ -270,6 +270,70 @@ function hu_maybe_migrate_positioned_blog_taxonomy() : void {
 	}
 }
 add_action( 'init', 'hu_maybe_migrate_positioned_blog_taxonomy', 40 );
+
+/**
+ * Canonical primary dossier for strategically important mixed-topic articles.
+ *
+ * Categories are architecture, not tags. Adjacent topics stay connected by
+ * internal links; one article should not surface as a primary member of three
+ * dossiers at once.
+ *
+ * @return array<string,string>
+ */
+function hu_get_positioned_blog_primary_dossier_map() : array {
+	return [
+		'server-side-tracking-gtm'           => 'tracking',
+		'core-web-vitals-wachstum-seo-und-roas' => 'wordpress-performance',
+		'technisches-seo-performance-fundament' => 'wordpress-performance',
+		'wordpress-seo-keine-anfragen'       => 'cro',
+		'wordpress-ttfb-google-ads-ladezeit' => 'wordpress-performance',
+	];
+}
+
+/**
+ * Enforce one primary dossier for the mixed-topic Final-Cut support articles.
+ *
+ * @return void
+ */
+function hu_maybe_assign_positioned_blog_primary_dossiers() : void {
+	if ( wp_installing() || wp_doing_ajax() || wp_doing_cron() ) {
+		return;
+	}
+
+	$version    = '2026-10-07-1';
+	$option_key = 'hu_positioned_blog_primary_dossiers_version';
+
+	if ( (string) get_option( $option_key, '' ) === $version ) {
+		return;
+	}
+
+	$canonical = hu_get_positioned_blog_dossier_taxonomy();
+	$all_done  = true;
+
+	foreach ( hu_get_positioned_blog_primary_dossier_map() as $post_slug => $dossier_slug ) {
+		$post = get_page_by_path( $post_slug, 'OBJECT', 'post' );
+		if ( ! $post instanceof WP_Post || empty( $canonical[ $dossier_slug ] ) ) {
+			$all_done = false;
+			continue;
+		}
+
+		$term_id = hu_ensure_positioned_blog_dossier_term( $dossier_slug, $canonical[ $dossier_slug ], false );
+		if ( $term_id <= 0 ) {
+			$all_done = false;
+			continue;
+		}
+
+		$result = wp_set_post_terms( (int) $post->ID, [ $term_id ], 'category', false );
+		if ( is_wp_error( $result ) ) {
+			$all_done = false;
+		}
+	}
+
+	if ( $all_done ) {
+		update_option( $option_key, $version, false );
+	}
+}
+add_action( 'init', 'hu_maybe_assign_positioned_blog_primary_dossiers', 41 );
 
 /**
  * Preserve public equity from retired category archive URLs.

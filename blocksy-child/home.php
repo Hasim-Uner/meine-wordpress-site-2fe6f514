@@ -63,25 +63,25 @@ $resolve_dossier_category = static function ( $slugs ) use ( $blog_url ) {
 $dossiers = [
 	[
 		'number'      => '01',
-		'title'       => 'Eigene Anfragen & Leadökonomie',
-		'description' => 'Portale, CPL, CPO, Vorqualifizierung und die Frage, wann eigene Nachfrage wirtschaftlich besser wird.',
+		'title'       => 'Leadökonomie & Energie',
+		'description' => 'Solar- und Wärmepumpen-Nachfrage, Portale, Leadkosten, Vorqualifizierung und die Wirtschaftlichkeit eigener Nachfrage.',
 		'category'    => $resolve_dossier_category( [ 'leadgenerierung', 'markteinordnung' ] ),
 	],
 	[
 		'number'      => '02',
-		'title'       => 'WordPress & Performance',
+		'title'       => 'WordPress & technisches SEO',
 		'description' => 'Relaunch, technische Architektur, Ladezeit und Messprotokolle — ohne Labwerte mit Felddaten zu verwechseln.',
 		'category'    => $resolve_dossier_category( [ 'wordpress-performance', 'performance-marketing', 'wordpress', 'seo-sichtbarkeit' ] ),
 	],
 	[
 		'number'      => '03',
-		'title'       => 'Tracking & Messbarkeit',
+		'title'       => 'Tracking & Attribution',
 		'description' => 'Server-Side Tracking, Attribution, Consent und die Stellen, an denen Datenketten in echten Setups brechen.',
 		'category'    => $resolve_dossier_category( [ 'tracking', 'analytics' ] ),
 	],
 	[
 		'number'      => '04',
-		'title'       => 'Conversion & Anfragearchitektur',
+		'title'       => 'Conversion & Landingpages',
 		'description' => 'Landingpages, Formulare, CRM-Übergaben und Entscheidungswege zwischen Klick und qualifizierter Anfrage.',
 		'category'    => $resolve_dossier_category( [ 'strategie', 'conversion', 'cro' ] ),
 	],
@@ -170,7 +170,7 @@ get_header();
 	<header class="blatt kopfteil blog-index__kopf" aria-labelledby="blog-archive-heading">
 		<p class="gegenstand">Werkstatt / Blog</p>
 		<h1 id="blog-archive-heading">Was ich messe, baue und zerlege.</h1>
-		<p class="aufriss">Messprotokolle, Entscheidungsmodelle und Baupläne aus echten WordPress-, Tracking- und Anfragesystemen.</p>
+		<p class="aufriss">Messprotokolle, Entscheidungsmodelle und Baupläne zu WordPress, technischem SEO, Tracking, Conversion und Leadökonomie.</p>
 
 		<div class="meta blog-index__meta" aria-label="Einordnung des Blogs">
 			<dl>
