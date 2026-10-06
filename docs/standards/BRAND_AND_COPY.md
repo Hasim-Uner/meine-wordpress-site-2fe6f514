@@ -400,14 +400,17 @@ Plugin und keine neue Messung auf Hasims Website durch diesen Konfigurator.
 Formularstrecke und gespeicherte Anfragen gehören zum Grundprodukt; ein
 funktionierendes Formular ist noch kein Conversion-Tracking.
 
-Rechner bis zehn Seiten. Preise, Produktionsstaffel und Tagesfaktoren liegen
-in `hu_website_calculator_rules()`. Bis fünf Standardseiten zwei Tage
-Umsetzung inklusive Prüfung, ab sechs bis zehn drei. Tracking einmal ein Tag,
-Standard-CRM einmal drei, Relaunch zwei. Neue Texte: eins plus ein halber je
-Zusatzseite, weiterhin preislich inklusive. Screendesign: erstes Layout zwei,
-jedes weitere unterschiedliche Layout ein halber Tag. Bruchteile erst nach
-Addition aller Phasen auf volle Gesamt-Werktage runden. Diese Werte sind
-Planungsannahmen, keine empirisch gemessenen Leistungswerte oder Liefergarantie.
+Rechner bis zehn Inhaltsseiten. Preise und Zeitfaktoren liegen in
+`hu_website_calculator_rules()`. Grundsystem und erste Hauptseite bilden die
+Basis; zusätzliche kurze Seiten, Standardseiten und Leistungs-/Verkaufsseiten
+haben eigene Preis- und Zeitbeiträge. Tracking und Standard-CRM werden je
+Projekt gerechnet, nicht pro URL; Relaunch besitzt einen eigenen Zeitbeitrag.
+Texterstellung ist optional und folgt dem gewählten Seitentyp. Fertige,
+freigegebene Texte werden ohne Copy-Aufpreis eingepflegt. Screendesign wird pro
+unterschiedlichem Layout gerechnet; Wiederverwendung erzeugt keinen zweiten
+Designpreis. Teil-Tage werden erst nach Addition aller Phasen auf volle
+Gesamt-Werktage gerundet. Diese Werte sind Planungsannahmen, keine empirisch
+gemessenen Leistungswerte oder Liefergarantie.
 Projektzeit bis zum geprüften Abnahmestand; Vorbereitung und Umsetzung separat.
 Kundenfreigaben, Verfügbarkeit, Starttermin und Livegang kommen separat dazu.
 Start nach vereinbartem Umfang, Vertrag, Briefing, Bildern, Rechtstexten und
@@ -426,18 +429,23 @@ kein unbelegter Rabatt gegenüber einem angeblichen Marktdurchschnitt.
 Landingpage, Übernahme-Check und Monatskontingente bleiben unverändert.
 Auswahl und serverseitige Kalkulation werden in Anfrage, Mails und CRM erhalten.
 
-Flow-Durchgang 05.10.2026: Diese Produktseite spricht Unternehmen und
-Selbstständige an, auch wenn ihre eigenen Kunden Privatpersonen sind. Die
-Umfangswahl ist einmal im Konfigurator integriert: eine Seite für das Angebot
-im Überblick, drei für Angebot/Leistung/Über uns, fünf für mehrere Leistungen.
-Auswahl ändert nur die Seitenzahl, erhält Extras und den Fokus. Ein
-Inhaltsabschnitt ist keine zusätzliche Seite. Shop und Buchung bleiben separat.
-Die Oberfläche folgt Umfang → Texte → Gestaltung → optionale Erweiterungen.
-Basisgestaltung bleibt inklusive. Individuelles Screendesign startet mit einem
-wiederverwendbaren Layout; weitere Layouts werden ausdrücklich gewählt. Der
-Optionspreis zeigt den aktuellen gesamten Design-Aufpreis. Preise und Zeit
-werden weiterhin aus dem Kanon und serverseitig berechnet. Dashboard bleibt
-zusätzlich nach Angebot. Kein verpflichtender Wizard.
+Flow-Durchgang 05.10.2026, Scope-Präzisierung 06.10.2026: Diese
+Produktseite spricht Unternehmen und Selbstständige an, auch wenn ihre eigenen
+Kunden Privatpersonen sind. Die Umfangswahl ist einmal im Konfigurator
+integriert. Grundsystem und erste Hauptseite sind die Basis; zusätzliche Seiten
+werden als kurze Seite, Standardseite oder Leistungs-/Verkaufsseite gewählt.
+Die drei sichtbaren Vorlagen setzen nur passende Typmischungen und bleiben
+jederzeit manuell veränderbar. Ein Inhaltsabschnitt ist keine zusätzliche
+Seite. Shop und Buchung bleiben separat.
+
+Die Oberfläche folgt Seitentypen → Texte → Gestaltung → optionale
+Erweiterungen. Fertige Texte sind der Default; Texterstellung ist ein
+preiswirksamer Zusatz je Seitentyp. Basisgestaltung bleibt inklusive.
+Individuelles Screendesign startet mit einem wiederverwendbaren Layout; weitere
+unterschiedliche Layouts werden ausdrücklich gewählt. Tracking und CRM sind
+Projektmodule und vervielfachen sich nicht mit der Seitenzahl. Preise und Zeit
+werden aus dem Kanon und serverseitig neu berechnet. Dashboard bleibt zusätzlich
+nach Angebot. Kein verpflichtender Wizard.
 Ein kompakter Arbeitsbeleg steht vor dem Konfigurator, vollständige Referenzen
 vor dem Qualitätsvergleich. Drei Referenzen: E3 New Energy (Weiterentwicklung
 und Anfrageweg, kein eigener Website-Neubau), hasimuener.org (eigenes Projekt)

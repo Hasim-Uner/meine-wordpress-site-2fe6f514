@@ -53,14 +53,21 @@ Analytics-Setup auf der eigenen Website wird in diesem Auftrag gebaut.
 
 ## Produktionszeit
 
-`hu_website_calculator_rules()` besitzt Preise, Staffeln und Faktoren; PHP
-und Browser rechnen aus derselben Konfiguration. Ein bis fünf Standardseiten:
-zwei Werktage Umsetzung mit QA. Sechs bis zehn: drei. Relaunch ergänzt zwei.
-Texterstellung: erster Beitrag eins, je Zusatzseite ein halber Tag. Fertige
-Texte und Designs haben keine neue Erstellungsphase. Layoutzahl zunächst gleich
-Seitenzahl (konservative Planung), manuell für Wiederverwendung reduzierbar;
-bei weniger Seiten wird sie begrenzt. Alle Bruchteile erst in der Gesamtsumme
-aufrunden. Beispiel zwei Seiten, neue Texte und zwei Layouts: 1,5 + 2,5 + 2 = 6.
+`hu_website_calculator_rules()` besitzt Preise und Zeitfaktoren; PHP und
+Browser rechnen aus derselben Konfiguration. Das Grundsystem mit erster
+Hauptseite trägt zwei geplante Werktage. Zusätzliche kurze und Standardseiten
+ergänzen je einen halben Tag, Leistungs-/Verkaufsseiten einen ganzen Tag.
+Relaunch ergänzt zwei, Conversion-Tracking einmal einen und Standard-CRM einmal
+drei Werktage. Texterstellung ist optional und folgt dem gewählten Seitentyp:
+Hauptseite ein halber Tag, kurze Seite ein Viertel, Standardseite ein Viertel
+und Leistungs-/Verkaufsseite ein halber Tag. Fertige, freigegebene Texte haben
+keine neue Texterstellungsphase.
+
+Individuelles Screendesign startet mit zwei Werktagen für das erste
+unterschiedliche Layout; jedes weitere unterschiedliche Layout ergänzt einen
+halben Tag. Wiederverwendete Seitenlayouts werden nicht mehrfach berechnet.
+Teil-Tage werden erst nach Addition aller Produktionsphasen auf volle
+Gesamt-Werktage gerundet.
 
 Dies sind Planungsannahmen für Durchlaufzeit bis zum geprüften Abnahmestand,
 keine gemessenen Personentage oder Liefergarantie. Vertrag, Umfang, Briefing,
@@ -68,26 +75,28 @@ Bilder, Rechtstexte und Zugänge stehen vor Produktionsstart; gelieferte Vorlage
 sind geprüft und freigegeben. Kundenfreigaben, Verfügbarkeit, Start und
 Veröffentlichung werden separat vereinbart. Vorhandene Designs und CRM
 brauchen Preflight. Dashboard-Auswahl markiert bekannte Zeit als Mindestwert
-und bekannte Summe ausdrücklich ohne Dashboard, vollständiges Angebot vor Auftrag.
+und bekannte Summe ausdrücklich ohne Dashboard; vollständiges Angebot vor Auftrag.
 
 ## Oberfläche und Datenpfad
 
-Hero → Qualität kurz → drei Umfangsbeispiele → kompakter Konfigurator
-→ aufklappbarer Lieferumfang und Erweiterungen → Belege → Qualitätsvergleich
-→ Zeitbeiträge → FAQ → Anfrage. Die Beispiele (eine Seite Salon, drei Beratung,
-fünf Sanitär/Heizung) zeigen mögliche Inhaltsseiten und lesen den Grundpreis
-aus dem Kanon. Sie ändern nur die Seitenzahl; Textstatus, Design und Extras
-bleiben erhalten. Manuell gewählte Layoutzahlen werden bei weniger Seiten
-begrenzt, nicht heimlich durch ein neues Paket ersetzt. Eine eigene URL zählt
-als Inhaltsseite, nicht jeder Bildschirm oder Abschnitt. Buchungssysteme und
-Shops bleiben separat. Diese Route spricht Unternehmen und Selbstständige an,
-auch wenn deren Zielkunden privat sind. Audit und wiederverwendbarer Prompt:
+Hero → frühe Qualitätsgründe → reale Belege → kompakter Konfigurator
+→ aufklappbarer Lieferumfang und Erweiterungen → Qualitätsvergleich
+→ Zeitbeiträge → FAQ → Anfrage. Der Konfigurator startet mit Grundsystem und
+erster Hauptseite und unterscheidet zusätzliche kurze Seiten, Standardseiten
+und Leistungs-/Verkaufsseiten. Die drei Vorlagen setzen eine nachvollziehbare
+Mischung dieser Seitentypen; sie sind Abkürzungen, keine Pakete.
+
+Texterstellung, Gestaltung und Projektmodule bleiben eigene Entscheidungen.
+Tracking und CRM werden projektweit berechnet, nicht pro URL. Manuell gewählte
+Layoutzahlen werden bei weniger Seiten begrenzt. Eine eigene URL zählt als
+Inhaltsseite, nicht jeder Bildschirm oder Abschnitt. Buchungssysteme und Shops
+bleiben separat. Diese Route spricht Unternehmen und Selbstständige an, auch
+wenn deren Zielkunden privat sind. Audit und wiederverwendbarer Prompt:
 `docs/audits/anfrage-website-produkt-review-2026-10-04.md`.
-Desktop: Seiten/Texte, Design/Extras und Preis/Zeit nebeneinander. Zielprüfung:
-bei 1366 × 768 und 1440 × 900 Pixel sämtliche Auswahlfelder,
-Layoutzahl und Anfrage-CTA sichtbar. Tablet/Mobil stapeln die Bereiche und
-halten eine bearbeitbare Preis-/Zeitleiste bereit. Keine künstliche Verkleinerung
-aller Inhalte auf eine einzige Handyansicht. Technische Details bleiben aufklappbar.
+Desktop zeigt Auswahl und Preis-/Zeitzusammenfassung nebeneinander; Tablet und
+Mobil stapeln die Bereiche. Technische Details und Erweiterungen bleiben
+aufklappbar. Der Abschluss übernimmt denselben Scope und denselben bekannten
+Preis aus dem Rechner.
 
 CTA-URLs → Kontakt-Hidden-Felder → vorhandenes REST → Server-Neuberechnung
 → CRM → beide Mails. `dashboard` erweitert den Vertrag kompatibel. Bestehendes

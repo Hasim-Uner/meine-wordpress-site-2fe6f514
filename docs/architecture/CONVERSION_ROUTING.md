@@ -673,33 +673,44 @@ If intent is unclear, do not guess based on the current business priority. Keep 
 
 ## Die Anfrage-Website (freigegeben 02.10.2026)
 
-Seit dem Flow-Durchgang vom 05.10.2026 liegen die drei
-`website_offer_scenario_1|3|5`-Hooks direkt in der Umfangswahl. Sie ändern
-nur die Seitenzahl und erhalten gewählte Extras. Tastaturfokus bleibt auf
-der aktivierten Auswahl; es gibt keinen automatischen Scroll-/Fokuswechsel. Sie sendet keine neue Anfrage und fügt keine
-neue Messung hinzu. Direkte Wege im Abschluss: `website_offer_close_mail`
-und `website_offer_close_tel`. Belege stehen vor dem Qualitätsvergleich;
-der primäre nächste Schritt bleibt die konfigurierte Projektanfrage.
+Die Route verkauft ein konfigurierbares Website-Grundprodukt. Der Hero führt
+mit `website_offer_hero_configure` in die Umfangswahl; er löst selbst keine
+Projektanfrage aus. Reale Projektbelege stehen vor dem Rechner. Direkte
+Anfrageziele liegen nach dem Proof, in der Rechner-Zusammenfassung, im Abschluss
+und in der kontextuellen Sticky-Leiste:
+`cta_website_offer_proof_project`,
+`cta_website_offer_scope_project`,
+`cta_website_offer_close_project` und
+`cta_website_offer_sticky_project`.
 
-Produkt-CTA-Hooks erhalten: `cta_website_offer_hero_project`,
-`cta_website_offer_scope_project`, `cta_website_offer_close_project`.
-Neu: `cta_website_offer_proof_project`, `cta_website_offer_sticky_project`.
-Agentur-Ausgang im Produkt-Hero und frühere Anlass/Relaunch/Zusatz-Hooks entfallen.
-Alle Produkt-CTAs tragen `data-website-cta` mit hero/angebot/beleg/leiste/abschluss.
-Der Rechner aktualisiert alle Ziele, Preis und Bauzeit aus demselben Zustand.
-Seit dem finalen Durchgang vom 06.10.2026 führen frühe Qualitäts-Prüflinks
-zu Aufbau, Umfang und Lieferumfang; der Ladezeitlink öffnet PageSpeed Insights.
-Die nicht-sticky Kapitelzeile führt zu Qualität, Projekten, Preis/Umfang,
-Ablauf und Fragen (`website_offer_chapter_*`). Reale Projektbelege stehen
-vor dem ausführlichen Rechner. Der Abschluss zeigt dieselbe Konfiguration
-und den bekannten Preis; die primären Anfrageziele und Hooks bleiben erhalten.
-`focus=website` ist ein gültiges Projekt-Thema; alte `focus=relaunch`-Links bleiben
-kompatibel. Konfiguration `seiten/art/tracking` wird angezeigt, serverseitig
-validiert, im CRM strukturiert gespeichert und in beiden Mails genannt.
-Preis oder Bauzeit aus dem Browser werden niemals als Angebotswerte übernommen.
-Matomo: Kategorie `anfrage_website`, Aktionen `cta_click`, `rechner_change`,
-`toggle_durchleuchtung`, `form_submit`; JSON-Eventname mit den jeweiligen
-Dimensionen. `form_submit` erst nach bestätigter erfolgreicher Antwort.
+Die drei `website_offer_scenario_1|3|5`-Hooks sind Abkürzungen für
+Seitentyp-Mischungen, keine Pakete. Seit 06.10.2026 setzen sie
+`kurz`, `standard` und `leistung` passend zur Gesamtseitenzahl.
+Texterstellung, Design und Projektmodule bleiben bei einem Preset-Wechsel
+erhalten. Tastaturfokus bleibt auf der aktivierten Auswahl; es gibt keinen
+automatischen Scroll-/Fokuswechsel. Die Auswahl sendet keine Anfrage.
+
+Der Browser übergibt `seiten`, `kurz`, `standard`, `leistung`, `art`,
+`texte`, optional `design`/`design_layouts`, `tracking`, `crm` und
+`dashboard`. Der Server prüft, dass Seitentypen und Gesamtseitenzahl
+zusammenpassen, und berechnet Preis sowie Produktionszeit ausschließlich aus
+dem Kanon neu. Alte Links ohne Seitentyp-Zähler bleiben kompatibel und werden
+als Standardseiten interpretiert. Preis- oder Zeitwerte aus dem Browser werden
+niemals als Angebotswerte übernommen. Der normalisierte Scope wird im
+Kontaktformular, in beiden Mails und im CRM weitergeführt.
+
+Frühe Qualitäts-Prüflinks führen zu Aufbau, Umfang und Lieferumfang; der
+Ladezeitlink öffnet PageSpeed Insights. Die nicht-sticky Kapitelzeile führt zu
+Qualität, Projekten, Preis/Umfang, Ablauf und Fragen
+(`website_offer_chapter_*`). Direkte Wege im Abschluss:
+`website_offer_close_mail` und `website_offer_close_tel`.
+`focus=website` ist das gültige Projekt-Thema; alte
+`focus=relaunch`-Links bleiben kompatibel.
+
+Matomo: Kategorie `anfrage_website`, Aktionen `cta_click`,
+`rechner_change`, `toggle_durchleuchtung`, `form_submit`; JSON-Eventname
+mit den jeweiligen Dimensionen. `form_submit` erst nach bestätigter
+erfolgreicher Antwort.
 
 ## Entfernung der ehemaligen Asset-Struktur (2026-10-03)
 
