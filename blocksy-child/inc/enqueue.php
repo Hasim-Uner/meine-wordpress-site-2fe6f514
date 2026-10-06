@@ -327,11 +327,12 @@ function hu_enqueue_assets() {
 	}
 
 	// ── E) Personenseite /hasim-uener/ ────────────────────────────
-	// Slug-Route statt Template-Auswahl: die beiden alten Ueber-Mich-
-	// Templates sind entfallen, die Seite haengt jetzt am Dateinamen.
+	// Das Story-Delta steht auf system.css. Das kleine Seitenskript setzt nur
+	// den aktiven Abschnitt und den Fortschritt; alle Inhalte bleiben ohne JS
+	// sichtbar und prefers-reduced-motion wird im Stylesheet respektiert.
 	if ( hu_is_person_page() ) {
 		hu_enqueue_css( 'nexus-about-css', 'hasim-uener.css', [ 'nexus-system-css' ] );
-		// Native disclosures and static document layout need no route-local script.
+		hu_enqueue_js( 'nexus-about-js', 'hasim-uener.js', [] );
 	}
 
 	// ── E2) Kontakt ───────────────────────────────────────────────

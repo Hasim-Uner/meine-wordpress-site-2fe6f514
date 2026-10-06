@@ -1,111 +1,1119 @@
-/* Personal methodology in the shared document system (system.css).
- * Motion intensity: 0. Text and evidence are always present; native details
- * disclose visitor examples. Focus and disclosure feedback come from system.css.
- * No scroll reveals, entrance timeline or page-specific JavaScript required.
+/* Über-mich-Seite: Story-System
+ *
+ * Die Seite nutzt system.css als Fundament. Dieses Delta übersetzt die Copy
+ * in eine visuelle Strecke: Hero-Gesprächsschleife, aktive Story-Stationen,
+ * Diagnose-Trias, Discovery-Fläche, Ownership und Herkunft. Inhalte bleiben
+ * ohne JavaScript vollständig sichtbar; hasim-uener.js ergänzt nur Zustand.
  */
+
+/* ══ Hero ═══════════════════════════════════════════════════════ */
+
+.hu-about .about-head {
+  position: relative;
+  overflow: clip;
+}
+
+.hu-about .about-head::before {
+  content: "";
+  position: absolute;
+  inset: 0 0 auto;
+  height: 1px;
+  background: linear-gradient(90deg, transparent, var(--haar), transparent);
+  pointer-events: none;
+}
+
 .hu-about .about-hero {
   display: grid;
-  grid-template-columns: minmax(0, 1fr) minmax(14rem, 20rem);
+  grid-template-columns: minmax(0, 1.24fr) minmax(19rem, 0.76fr);
   gap: var(--s5);
   align-items: center;
+  min-height: min(46rem, calc(100svh - var(--leiste-h)));
+  padding-block: var(--s5);
 }
+
+.hu-about .about-hero-copy {
+  min-width: 0;
+}
+
 .hu-about .about-hero h1 {
-  font-size: clamp(2.05rem, 1.2rem + 3.2vw, 3.8rem);
-  max-width: 20ch;
+  max-width: 16ch;
+  font-size: var(--grad-h1);
+  letter-spacing: -0.035em;
 }
-.hu-about .about-start { margin-top: var(--s3); }
-.hu-about .about-portrait { margin: 0; }
+
+.hu-about .about-hero .aufriss {
+  max-width: 54ch;
+  margin-top: var(--s3);
+  color: var(--grau);
+}
+
+.hu-about .about-hero-actions {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--s2) var(--s3);
+  margin-top: var(--s3);
+}
+
+.hu-about .about-hero-meta {
+  font-family: var(--mono);
+  font-size: var(--mono-m);
+  letter-spacing: 0.08em;
+  color: var(--matt);
+}
+
+.hu-about .about-start {
+  margin: 0;
+}
+
+/* Gesprächsschleife im Hero: keine Infografik um der Infografik willen.
+   Die drei Knoten zeigen die Kernlogik der ganzen Seite bereits im ersten
+   Viewport. */
+.hu-about .about-loop {
+  position: relative;
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) 3.5rem minmax(0, 1fr) 3.5rem minmax(0, 1fr);
+  align-items: center;
+  gap: var(--s1);
+  max-width: 46rem;
+  margin-top: var(--s5);
+  padding: var(--s3);
+  border: 1px solid var(--haar);
+  background: color-mix(in srgb, var(--zone) 64%, var(--papier));
+  overflow: hidden;
+}
+
+.hu-about .about-loop::after {
+  content: "";
+  position: absolute;
+  inset: auto -8% -65% 38%;
+  width: 58%;
+  aspect-ratio: 1;
+  border: 1px solid var(--haar);
+  border-radius: 50%;
+  pointer-events: none;
+}
+
+.hu-about .about-loop-node {
+  position: relative;
+  z-index: 1;
+  display: grid;
+  gap: var(--s0);
+  min-width: 0;
+}
+
+.hu-about .about-loop-node.is-core {
+  padding: var(--s2);
+  background: var(--tinte);
+  color: var(--papier);
+}
+
+.hu-about .about-loop-kicker {
+  font-family: var(--mono);
+  font-size: var(--mono-s);
+  letter-spacing: 0.14em;
+  color: var(--stempel);
+}
+
+.hu-about .about-loop-node strong {
+  font-family: var(--serif-display);
+  font-size: 1.05rem;
+  font-weight: 500;
+  line-height: 1.15;
+}
+
+.hu-about .about-loop-node small {
+  color: var(--matt);
+  font-size: 0.76rem;
+  line-height: 1.35;
+}
+
+.hu-about .about-loop-node.is-core small {
+  color: color-mix(in srgb, var(--papier) 72%, var(--tinte));
+}
+
+.hu-about .about-loop-connector {
+  position: relative;
+  height: 1px;
+  background: var(--haar);
+  overflow: hidden;
+}
+
+.hu-about .about-loop-pulse {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 35%;
+  height: 1px;
+  background: var(--stempel);
+  transform: translateX(-140%);
+}
+
+.hu-about .about-loop-return {
+  position: absolute;
+  left: var(--s3);
+  right: var(--s3);
+  bottom: var(--s1);
+  display: flex;
+  align-items: center;
+  gap: var(--s1);
+  font-family: var(--mono);
+  font-size: var(--mono-s);
+  letter-spacing: 0.06em;
+  color: var(--matt);
+}
+
+.hu-about .about-loop-return-line {
+  flex: 0 0 2.5rem;
+  height: 1px;
+  background: var(--stempel);
+}
+
+/* Portrait: bewusst Foto statt "Card". Der Rahmen ist Instrument, nicht
+   Dekoration: Signalpunkt und Raster binden die Person an die Systemidee. */
+.hu-about .about-portrait {
+  position: relative;
+  margin: 0;
+  width: min(100%, 27rem);
+  justify-self: end;
+}
+
+.hu-about .about-portrait-frame {
+  position: relative;
+  background: var(--zone);
+  border: 1px solid var(--haar);
+  padding: var(--s1);
+  overflow: hidden;
+}
+
+.hu-about .about-portrait-frame::before,
+.hu-about .about-portrait-frame::after {
+  content: "";
+  position: absolute;
+  z-index: 2;
+  pointer-events: none;
+}
+
+.hu-about .about-portrait-frame::before {
+  top: var(--s2);
+  right: var(--s2);
+  width: 2.8rem;
+  height: 1px;
+  background: var(--stempel);
+}
+
+.hu-about .about-portrait-frame::after {
+  top: var(--s2);
+  right: var(--s2);
+  width: 1px;
+  height: 2.8rem;
+  background: var(--stempel);
+}
+
 .hu-about .about-portrait img {
+  position: relative;
+  z-index: 1;
   display: block;
   width: 100%;
   height: auto;
-  border-radius: var(--r0);
+  aspect-ratio: 4 / 5;
+  object-fit: cover;
+  object-position: center 32%;
+  filter: saturate(0.92) contrast(1.02);
 }
+
+.hu-about .about-portrait-grid {
+  position: absolute;
+  z-index: 2;
+  inset: var(--s1);
+  pointer-events: none;
+  opacity: 0.2;
+  background-image:
+    linear-gradient(90deg, transparent 49.5%, var(--papier) 50%, transparent 50.5%),
+    linear-gradient(transparent 49.5%, var(--papier) 50%, transparent 50.5%);
+  background-size: 33.333% 33.333%;
+}
+
+.hu-about .about-portrait-signal {
+  position: absolute;
+  z-index: 3;
+  right: var(--s2);
+  bottom: var(--s2);
+  display: inline-flex;
+  align-items: center;
+  gap: var(--s1);
+  padding: var(--s1) var(--s2);
+  background: var(--tinte);
+  color: var(--papier);
+  font-family: var(--mono);
+  font-size: var(--mono-s);
+  letter-spacing: 0.08em;
+}
+
+.hu-about .about-portrait-dot {
+  width: 0.55rem;
+  height: 0.55rem;
+  border-radius: 50%;
+  background: var(--stempel);
+  transform-origin: center;
+}
+
 .hu-about .about-portrait figcaption {
   display: grid;
-  gap: var(--s0);
+  grid-template-columns: auto minmax(0, 1fr);
+  gap: var(--s1) var(--s2);
+  align-items: baseline;
   padding-top: var(--s2);
-  font-size: 0.9rem;
-  line-height: 1.5;
+  font-size: 0.82rem;
+  line-height: 1.45;
 }
-.hu-about .about-portrait figcaption span { color: var(--grau); }
+
+.hu-about .about-portrait figcaption strong {
+  font-family: var(--serif-display);
+  font-weight: 500;
+}
+
+.hu-about .about-portrait figcaption span {
+  color: var(--grau);
+  text-align: right;
+}
+
+/* ══ Seitenindex ═══════════════════════════════════════════════ */
+
 .hu-about .about-index {
-  display: flex;
-  flex-wrap: wrap;
-  gap: var(--s1) var(--s3);
+  display: grid;
+  grid-template-columns: repeat(6, minmax(0, 1fr));
+  margin-top: 0;
+  border-top: 1px solid var(--haar);
+  border-bottom: 1px solid var(--haar);
+}
+
+.hu-about .about-index a {
+  display: grid;
+  gap: var(--s0);
+  min-width: 0;
+  padding: var(--s2) var(--s1);
+  color: var(--grau);
+  text-decoration: none;
+  font-family: var(--mono);
+  font-size: var(--mono-s);
+  letter-spacing: 0.06em;
+  transition:
+    color var(--t-norm) var(--ease-weich),
+    background-color var(--t-norm) var(--ease-weich);
+}
+
+.hu-about .about-index a + a {
+  border-left: 1px solid var(--haar);
+}
+
+.hu-about .about-index a span {
+  color: var(--matt);
+  font-size: 0.92em;
+}
+
+.hu-about .about-index a:hover,
+.hu-about .about-index a.is-current {
+  color: var(--tinte);
+  background: var(--zone);
+}
+
+.hu-about .about-index a.is-current span {
+  color: var(--stempel);
+}
+
+/* ══ Story-Strecke ═════════════════════════════════════════════ */
+
+.hu-about .about-story {
+  position: relative;
+}
+
+.hu-about .about-story-rail {
+  position: absolute;
+  z-index: 2;
+  top: var(--s5);
+  bottom: var(--s5);
+  left: var(--s3);
+  width: 1px;
+  pointer-events: none;
+}
+
+.hu-about .about-story-track,
+.hu-about .about-story-progress {
+  position: absolute;
+  inset: 0;
+  display: block;
+  width: 1px;
+  transform-origin: top;
+}
+
+.hu-about .about-story-track {
+  background: var(--haar);
+}
+
+.hu-about .about-story-progress {
+  background: var(--stempel);
+  transform: scaleY(0);
+  transition: transform var(--t-gross) var(--ease-aus);
+}
+
+.hu-about .about-step {
+  position: relative;
+}
+
+.hu-about .about-step::after {
+  content: "";
+  position: absolute;
+  left: calc(var(--s3) - 0.3rem);
+  top: 50%;
+  width: 0.65rem;
+  height: 0.65rem;
+  border: 1px solid var(--haar);
+  border-radius: 50%;
+  background: var(--papier);
+  transform: translateY(-50%);
+  transition:
+    border-color var(--t-norm) var(--ease-weich),
+    background-color var(--t-norm) var(--ease-weich),
+    transform var(--t-norm) var(--ease-aus);
+}
+
+.hu-about .about-step.is-active::after {
+  border-color: var(--stempel);
+  background: var(--stempel);
+  transform: translateY(-50%) scale(1.18);
+}
+
+.hu-about .about-step.is-active .kapitel .nr,
+.hu-about .about-step.aktiv .kapitel .nr {
+  color: var(--stempel);
+}
+
+.hu-about .about-step.is-active .kapitel .strich,
+.hu-about .about-step.aktiv .kapitel .strich {
+  background: var(--stempel);
+  transform: scaleX(1.6);
+}
+
+.hu-about .about-copy {
+  max-width: 68ch;
+}
+
+.hu-about .about-copy > p {
+  margin-top: var(--s3);
+}
+
+.hu-about .about-copy > h2 + p {
   margin-top: var(--s4);
-  padding-top: var(--s2);
+}
+
+.hu-about .about-section-kicker {
+  margin: 0 0 var(--s2) !important;
+  font-family: var(--mono);
+  font-size: var(--mono-s);
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--stempel);
+}
+
+.hu-about .about-story-grid {
+  display: grid;
+  grid-template-columns: minmax(0, 1.18fr) minmax(18rem, 0.82fr);
+  gap: var(--s5);
+  align-items: center;
+}
+
+.hu-about .about-story-grid > * {
+  min-width: 0;
+}
+
+/* JS ist progressive enhancement. Erst wenn die Klasse gesetzt wurde,
+   werden Nebengrafiken im inaktiven Zustand leicht zurückgenommen. */
+.has-about-motion .hu-about .about-step .about-visual,
+.has-about-motion .hu-about .about-step .about-principle-panel,
+.has-about-motion .hu-about .about-step .about-origin-map {
+  opacity: 0.72;
+  transform: translateY(var(--s1));
+  transition:
+    opacity var(--t-gross) var(--ease-weich),
+    transform var(--t-gross) var(--ease-aus);
+}
+
+.has-about-motion .hu-about .about-step.is-active .about-visual,
+.has-about-motion .hu-about .about-step.is-active .about-principle-panel,
+.has-about-motion .hu-about .about-step.is-active .about-origin-map {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* ══ Visuelle Erzählmodule 01–03 ═══════════════════════════════ */
+
+.hu-about .about-visual {
+  position: relative;
+  min-height: 18rem;
+  padding: var(--s3);
+  border: 1px solid var(--haar);
+  background: var(--zone);
+  overflow: hidden;
+}
+
+.hu-about .about-visual::before {
+  content: "";
+  position: absolute;
+  inset: var(--s2) var(--s2) auto auto;
+  width: 2.5rem;
+  height: 1px;
+  background: var(--stempel);
+}
+
+.hu-about .about-visual-label {
+  position: relative;
+  z-index: 1;
+  margin: 0 0 var(--s4);
+  font-family: var(--mono);
+  font-size: var(--mono-s);
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--matt);
+}
+
+.hu-about .about-language-row {
+  position: relative;
+  z-index: 1;
+  display: grid;
+  grid-template-columns: auto minmax(2rem, 1fr) minmax(0, 1.8fr);
+  gap: var(--s1);
+  align-items: center;
+  padding-block: var(--s2);
   border-top: 1px solid var(--haar);
 }
-.hu-about .about-index a {
-  padding-block: var(--s1);
+
+.hu-about .about-language-row span {
   font-family: var(--mono);
-  font-size: 0.78rem;
-  text-underline-offset: var(--s0);
+  font-size: var(--mono-s);
+  color: var(--matt);
 }
-.hu-about .about-copy { max-width: 68ch; }
-.hu-about .about-copy > p { margin-top: var(--s3); }
-.hu-about .about-copy > h2 + p { margin-top: var(--s4); }
-.hu-about .about-copy .about-thesis {
-  border-left: 2px solid var(--stempel);
-  padding: var(--s2) var(--s3);
+
+.hu-about .about-language-row i {
+  height: 1px;
+  background: var(--haar);
+  transform-origin: left;
+}
+
+.hu-about .about-language-row strong {
+  font-size: 0.92rem;
+  font-weight: 500;
+  line-height: 1.35;
+}
+
+.hu-about .about-visual-foot {
+  position: relative;
+  z-index: 1;
+  margin-top: var(--s2);
+  color: var(--stempel);
+  font-family: var(--mono);
+  font-size: var(--mono-s);
+  letter-spacing: 0.06em;
+}
+
+.hu-about .about-shortlist-flow {
+  display: grid;
+  grid-template-columns: 1fr auto 1fr auto 1fr;
+  gap: var(--s1);
+  align-items: center;
+  color: var(--grau);
+}
+
+.hu-about .about-shortlist-flow span {
+  padding: var(--s1);
+  border: 1px solid var(--haar);
+  text-align: center;
+  font-family: var(--mono);
+  font-size: var(--mono-s);
+}
+
+.hu-about .about-shortlist-flow b {
+  color: var(--stempel);
+  font-weight: 400;
+}
+
+.hu-about .about-shortlist-result {
+  position: relative;
+  display: grid;
+  gap: var(--s0);
   margin-top: var(--s4);
-  font-size: clamp(1.1rem, 1rem + 0.5vw, 1.35rem);
+  padding: var(--s3) var(--s3) var(--s3) calc(var(--s3) + var(--s2));
+  background: var(--tinte);
+  color: var(--papier);
+}
+
+.hu-about .about-shortlist-dot {
+  position: absolute;
+  left: var(--s2);
+  top: var(--s3);
+  width: 0.55rem;
+  height: 0.55rem;
+  border-radius: 50%;
+  background: var(--stempel);
+}
+
+.hu-about .about-shortlist-result strong {
+  font-family: var(--serif-display);
+  font-size: 1.45rem;
+  font-weight: 500;
+}
+
+.hu-about .about-shortlist-result small {
+  color: color-mix(in srgb, var(--papier) 72%, var(--tinte));
+}
+
+.hu-about .about-return-flow {
+  display: grid;
+  grid-template-columns: auto 1fr auto 1fr auto 1fr auto;
+  gap: var(--s1);
+  align-items: center;
+}
+
+.hu-about .about-return-flow span {
+  font-family: var(--mono);
+  font-size: var(--mono-s);
+  color: var(--grau);
+}
+
+.hu-about .about-return-flow i {
+  height: 1px;
+  background: var(--haar);
+  transform-origin: left;
+}
+
+.hu-about .about-return-loop {
+  position: relative;
+  display: grid;
+  gap: var(--s0);
+  margin-top: var(--s5);
+  padding-left: var(--s4);
+}
+
+.hu-about .about-return-loop > span {
+  position: absolute;
+  left: 0;
+  top: 50%;
+  width: var(--s3);
+  height: var(--s3);
+  border-left: 1px solid var(--stempel);
+  border-bottom: 1px solid var(--stempel);
+  transform: translateY(-50%);
+}
+
+.hu-about .about-return-loop strong {
+  font-family: var(--serif-display);
+  font-size: 1.55rem;
+  font-weight: 500;
+}
+
+.hu-about .about-return-loop small {
+  color: var(--matt);
+}
+
+/* ══ Methode / Diagnose 04 ═════════════════════════════════════ */
+
+.hu-about .about-step-method {
+  background: color-mix(in srgb, var(--zone) 68%, var(--papier));
+}
+
+.hu-about .about-decisions {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  margin-top: var(--s5);
+  border-top: 1px solid var(--strich);
+  border-bottom: 1px solid var(--strich);
+}
+
+.hu-about .about-decision {
+  position: relative;
+  display: grid;
+  grid-template-rows: auto 1fr auto;
+  gap: var(--s3);
+  min-width: 0;
+  padding: var(--s3);
+  background: var(--papier);
+  overflow: hidden;
+  transition:
+    background-color var(--t-norm) var(--ease-weich),
+    transform var(--t-norm) var(--ease-aus);
+}
+
+.hu-about .about-decision + .about-decision {
+  border-left: 1px solid var(--haar);
+}
+
+.hu-about .about-decision:hover {
+  background: var(--zone);
+  transform: translateY(calc(var(--s0) * -1));
+}
+
+.hu-about .about-decision-head {
+  display: flex;
+  justify-content: space-between;
+  gap: var(--s1);
+  align-items: center;
+  font-family: var(--mono);
+  font-size: var(--mono-s);
+  letter-spacing: 0.08em;
+}
+
+.hu-about .about-decision-index {
+  color: var(--stempel);
+}
+
+.hu-about .about-decision-state {
+  color: var(--matt);
+  text-transform: uppercase;
+}
+
+.hu-about .about-decision h3 {
+  margin: 0 0 var(--s2);
+  font-size: 1.45rem;
+}
+
+.hu-about .about-decision p {
+  color: var(--grau);
+  font-size: 0.94rem;
+}
+
+.hu-about .about-decision-symbol {
+  position: relative;
+  width: 100%;
+  height: 2.5rem;
+  border-top: 1px solid var(--haar);
+}
+
+.hu-about .about-decision-symbol span {
+  position: absolute;
+  top: var(--s1);
+  width: 0.65rem;
+  height: 0.65rem;
+  border-radius: 50%;
+  border: 1px solid var(--stempel);
+}
+
+.hu-about .about-decision-symbol span:first-child {
+  left: 0;
+  background: var(--stempel);
+}
+
+.hu-about .about-decision-symbol span:last-child {
+  right: 0;
+}
+
+.hu-about .about-decision-symbol.is-choice::after {
+  content: "";
+  position: absolute;
+  left: 50%;
+  top: var(--s1);
+  width: 1px;
+  height: var(--s2);
+  background: var(--stempel);
+}
+
+.hu-about .about-decision-symbol.is-hypothesis span:nth-child(2) {
+  left: calc(50% - 0.325rem);
+  background: var(--zone2);
+}
+
+.hu-about .about-thesis {
+  max-width: 68ch;
+  margin-top: var(--s4);
+  padding: var(--s3);
+  border-left: 2px solid var(--stempel);
+  background: var(--papier);
+  font-size: 1.12rem;
   font-weight: 500;
   line-height: 1.5;
 }
-.hu-about .about-decisions {
-  margin-top: var(--s4);
-  border-top: 1px solid var(--strich);
-}
-.hu-about .about-decision {
+
+.hu-about .about-proof {
   display: grid;
-  grid-template-columns: minmax(10rem, 0.7fr) minmax(0, 1.3fr);
-  gap: var(--s3);
-  padding-block: var(--s4);
-  border-bottom: 1px solid var(--haar);
-}
-.hu-about .about-decision h3 {
-  font-size: clamp(1.5rem, 1.3rem + 0.7vw, 1.9rem);
-  margin-top: var(--s1);
-}
-/* Der Beleg traegt die Kennzahl jetzt im Satz statt in einer eigenen Kachel.
- * Eine Haarlinie und das Mono-Label reichen, um ihn vom Fliesstext zu
- * trennen — der fruehere dunkle Solar-Kasten war die lauteste Flaeche der
- * Seite und hat den Abschnitt davor uebertoent. */
-.hu-about .about-beleg {
+  grid-template-columns: minmax(12rem, 0.7fr) minmax(0, 1.3fr);
+  gap: var(--s4);
+  align-items: end;
   max-width: 68ch;
-  margin-top: var(--s4);
+  margin-top: var(--s5);
   padding-top: var(--s3);
   border-top: 1px solid var(--strich);
 }
-.hu-about .about-beleg > p:not(.mono) { margin-top: var(--s2); }
-.hu-about .about-beleg-link em { color: var(--grau); font-size: 0.9rem; font-style: normal; }
-.hu-about .about-reference {
-  margin-top: var(--s4);
-  padding: var(--s3);
-  background: var(--zone);
-  border-left: 2px solid var(--stempel);
+
+.hu-about .about-proof-number {
+  display: grid;
+  gap: var(--s1);
 }
-.hu-about .about-reference h3 { font-size: 1.4rem; margin-block: var(--s2); overflow-wrap: anywhere; }
-.hu-about .about-reference p:not(.mono) { color: var(--grau); max-width: 64ch; }
-.hu-about .about-reference .textlink { margin-top: var(--s3); }
-.hu-about .about-principle { margin-top: var(--s4); }
-.hu-about .about-principle h3 { font-size: 1.35rem; }
+
+.hu-about .about-proof-number strong {
+  font-family: var(--serif-display);
+  font-size: clamp(2rem, 3.5vw, 3.5rem);
+  font-weight: 500;
+  letter-spacing: -0.04em;
+  line-height: 1;
+  white-space: nowrap;
+}
+
+.hu-about .about-proof-number strong i {
+  color: var(--stempel);
+  font-style: normal;
+  font-weight: 300;
+}
+
+.hu-about .about-proof-copy p {
+  color: var(--grau);
+}
+
+.hu-about .about-proof-copy .textlink {
+  margin-top: var(--s2);
+}
+
+/* ══ Wandel 05 ═════════════════════════════════════════════════ */
+
+.hu-about .about-visual-discovery {
+  background: var(--tinte);
+  color: var(--papier);
+}
+
+.hu-about .about-visual-discovery::before {
+  background: var(--stempel);
+}
+
+.hu-about .about-visual-discovery .about-visual-label {
+  color: color-mix(in srgb, var(--papier) 68%, var(--tinte));
+}
+
+.hu-about .about-discovery-sources {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: var(--s1);
+}
+
+.hu-about .about-discovery-sources span {
+  padding: var(--s1);
+  border: 1px solid color-mix(in srgb, var(--papier) 22%, var(--tinte));
+  color: color-mix(in srgb, var(--papier) 72%, var(--tinte));
+  text-align: center;
+  font-family: var(--mono);
+  font-size: var(--mono-s);
+}
+
+.hu-about .about-discovery-lines {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: var(--s1);
+  width: 68%;
+  height: var(--s3);
+  margin: var(--s1) auto 0;
+}
+
+.hu-about .about-discovery-lines i {
+  position: relative;
+  border-left: 1px solid var(--haar);
+}
+
+.hu-about .about-discovery-lines i:first-child {
+  transform: skewX(28deg);
+}
+
+.hu-about .about-discovery-lines i:last-child {
+  transform: skewX(-28deg);
+}
+
+.hu-about .about-discovery-core {
+  position: relative;
+  display: grid;
+  gap: var(--s0);
+  width: 70%;
+  margin: 0 auto;
+  padding: var(--s2) var(--s3);
+  border: 1px solid var(--stempel);
+  text-align: center;
+}
+
+.hu-about .about-discovery-core strong {
+  font-family: var(--serif-display);
+  font-size: 1.3rem;
+  font-weight: 500;
+}
+
+.hu-about .about-discovery-core small {
+  color: color-mix(in srgb, var(--papier) 72%, var(--tinte));
+}
+
+.hu-about .about-discovery-pulse {
+  position: absolute;
+  left: 50%;
+  top: 0;
+  width: 0.6rem;
+  height: 0.6rem;
+  border-radius: 50%;
+  background: var(--stempel);
+  transform: translate(-50%, -50%);
+}
+
+.hu-about .about-discovery-output {
+  margin-top: var(--s3);
+  color: color-mix(in srgb, var(--papier) 72%, var(--tinte));
+  text-align: center;
+  font-family: var(--mono);
+  font-size: var(--mono-s);
+}
+
+/* ══ Haltung 06 ════════════════════════════════════════════════ */
+
+.hu-about .about-step-principle {
+  overflow: hidden;
+}
+
+.hu-about .about-principle-panel {
+  display: grid;
+  grid-template-columns: minmax(15rem, 0.82fr) minmax(0, 1.18fr);
+  gap: var(--s5);
+  align-items: center;
+  padding: var(--s5);
+  background: var(--tinte);
+  color: var(--papier);
+}
+
+.hu-about .about-principle-mark {
+  display: grid;
+  gap: var(--s1);
+  align-content: center;
+  min-height: 17rem;
+  border-right: 1px solid var(--haar);
+  font-family: var(--serif-display);
+  font-size: clamp(1.5rem, 3vw, 2.7rem);
+  line-height: 1;
+}
+
+.hu-about .about-principle-mark span:last-child {
+  color: var(--grau);
+}
+
+.hu-about .about-principle-mark b {
+  color: var(--stempel);
+  font-family: var(--mono);
+  font-weight: 400;
+}
+
+.hu-about .about-principle-panel .about-copy p {
+  color: color-mix(in srgb, var(--papier) 76%, var(--tinte));
+}
+
+/* ══ Zusammenarbeit 07 ═════════════════════════════════════════ */
+
+.hu-about .about-ownership {
+  background: var(--papier);
+}
+
+.hu-about .about-ownership-row {
+  position: relative;
+  display: grid;
+  grid-template-columns: minmax(5rem, 0.65fr) minmax(0, 1fr) auto;
+  gap: var(--s2);
+  align-items: center;
+  padding-block: var(--s2);
+  border-top: 1px solid var(--haar);
+}
+
+.hu-about .about-ownership-row span {
+  color: var(--matt);
+  font-family: var(--mono);
+  font-size: var(--mono-s);
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+}
+
+.hu-about .about-ownership-row strong {
+  font-size: 0.98rem;
+  font-weight: 500;
+}
+
+.hu-about .about-ownership-row i {
+  width: 0.6rem;
+  height: 0.6rem;
+  border-radius: 50%;
+  background: var(--stempel);
+}
+
+.hu-about .about-ownership-footer {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--s1);
+  margin-top: var(--s4);
+  padding: var(--s2);
+  background: var(--tinte);
+  color: var(--papier);
+  font-family: var(--mono);
+  font-size: var(--mono-s);
+  letter-spacing: 0.06em;
+}
+
+.hu-about .about-ownership-footer b {
+  color: var(--stempel);
+  font-weight: 400;
+}
+
+/* ══ Herkunft 08 ═══════════════════════════════════════════════ */
+
+.hu-about .about-origin {
+  display: grid;
+  grid-template-columns: minmax(0, 0.95fr) minmax(20rem, 1.05fr);
+  gap: var(--s5);
+  align-items: start;
+}
+
+.hu-about .about-origin-map {
+  position: relative;
+  padding: var(--s3);
+  border: 1px solid var(--haar);
+  background: var(--zone);
+}
+
+.hu-about .about-origin-map::before {
+  content: "";
+  position: absolute;
+  left: calc(var(--s3) + 0.5rem);
+  top: var(--s4);
+  bottom: 5.7rem;
+  width: 1px;
+  background: var(--haar);
+}
+
+.hu-about .about-origin-line {
+  position: relative;
+  display: grid;
+  grid-template-columns: 2.5rem minmax(0, 1fr);
+  gap: var(--s0) var(--s2);
+  padding-block: var(--s2);
+}
+
+.hu-about .about-origin-line::before {
+  content: "";
+  position: absolute;
+  left: 0.2rem;
+  top: 50%;
+  width: 0.65rem;
+  height: 0.65rem;
+  border-radius: 50%;
+  border: 1px solid var(--matt);
+  background: var(--zone);
+  transform: translateY(-50%);
+}
+
+.hu-about .about-origin-year {
+  grid-row: 1 / 3;
+  align-self: center;
+  color: var(--stempel);
+  font-family: var(--mono);
+  font-size: var(--mono-s);
+}
+
+.hu-about .about-origin-line strong {
+  font-family: var(--serif-display);
+  font-weight: 500;
+}
+
+.hu-about .about-origin-line small {
+  color: var(--matt);
+}
+
+.hu-about .about-origin-now {
+  position: relative;
+  display: grid;
+  gap: var(--s0);
+  margin-top: var(--s2);
+  padding: var(--s3);
+  background: var(--tinte);
+  color: var(--papier);
+}
+
+.hu-about .about-origin-now > span {
+  position: absolute;
+  left: calc(var(--s3) * -1 - 1px);
+  top: 50%;
+  width: var(--s3);
+  height: 1px;
+  background: var(--stempel);
+}
+
+.hu-about .about-origin-now strong {
+  font-family: var(--serif-display);
+  font-size: 1.35rem;
+  font-weight: 500;
+}
+
+.hu-about .about-origin-now small {
+  color: color-mix(in srgb, var(--papier) 72%, var(--tinte));
+}
+
+/* ══ Finale ════════════════════════════════════════════════════ */
+
+.hu-about .about-finale {
+  position: relative;
+}
+
+.hu-about .about-finale::before {
+  content: "";
+  position: absolute;
+  inset: 0 0 auto;
+  height: 1px;
+  background: var(--haar);
+}
+
 .hu-about .about-close {
   display: grid;
-  grid-template-columns: minmax(0, 1.5fr) minmax(0, 1fr);
-  gap: var(--s4);
+  grid-template-columns: minmax(0, 1.5fr) minmax(17rem, 0.72fr);
+  gap: var(--s5);
 }
-.hu-about .about-close h2 { margin-top: var(--s2); }
-.hu-about .about-agency { align-self: end; border-left: 1px solid var(--haar); padding-left: var(--s3); }
-.hu-about .about-agency h3 { font-size: 1.3rem; margin-block: var(--s2); }
-.hu-about .about-agency p:not(.mono) { color: var(--grau); font-size: 0.95rem; }
-.hu-about .about-agency .textlink { margin-top: var(--s3); }
-.hu-about .about-reply { margin-top: var(--s2); color: var(--grau); font-size: 0.9rem; }
-/* Die beiden leisen Ausgaenge unter dem Button. Sie haben die eigene
- * Orientierungs-Sektion abgeloest: dieselben zwei Ziele, aber dort, wo
- * jemand ohnehin entscheidet, statt in einem eigenen Kapitel davor. */
+
+.hu-about .about-close h2 {
+  max-width: 17ch;
+  margin-top: var(--s2);
+  font-size: var(--grad-h2);
+}
+
+.hu-about .about-close .aufriss {
+  max-width: 58ch;
+  margin-top: var(--s3);
+  color: var(--grau);
+}
+
+.hu-about .about-close .ausgang {
+  margin-top: var(--s3);
+}
+
+.hu-about .about-agency {
+  align-self: end;
+  padding-left: var(--s3);
+  border-left: 1px solid var(--haar);
+}
+
+.hu-about .about-agency h3 {
+  margin-block: var(--s2);
+  font-size: 1.3rem;
+}
+
+.hu-about .about-agency p:not(.mono) {
+  color: var(--grau);
+  font-size: 0.95rem;
+}
+
+.hu-about .about-agency .textlink {
+  margin-top: var(--s3);
+}
+
+.hu-about .about-reply {
+  margin-top: var(--s2);
+  color: var(--grau);
+  font-size: 0.9rem;
+}
+
 .hu-about .about-exits {
   display: flex;
   flex-wrap: wrap;
@@ -113,6 +1121,7 @@
   margin-top: var(--s3);
   font-size: 0.95rem;
 }
+
 .hu-about .about-personal {
   display: flex;
   flex-wrap: wrap;
@@ -122,15 +1131,350 @@
   color: var(--grau);
   font-size: 0.9rem;
 }
-.hu-about .about-personal > p { max-width: 58ch; }
-.hu-about .about-personal ul { display: flex; flex-wrap: wrap; gap: var(--s3); margin: 0; padding: 0; list-style: none; }
-.hu-about .about-hero > *, .hu-about .about-decision > *, .hu-about .about-close > * { min-width: 0; }
-@media (max-width: 960px) {
-  .hu-about .about-hero { grid-template-columns: minmax(0, 1fr) minmax(12rem, 16rem); gap: var(--s3); }
+
+.hu-about .about-personal > p {
+  max-width: 58ch;
 }
-@media (max-width: 640px) {
-  .hu-about .about-hero, .hu-about .about-decision, .hu-about .about-close { grid-template-columns: minmax(0, 1fr); }
-  .hu-about .about-portrait { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1.3fr); gap: var(--s3); align-items: center; }
-  .hu-about .about-portrait figcaption { padding-top: 0; }
-  .hu-about .about-agency { border-left: 0; border-top: 1px solid var(--haar); padding-left: 0; padding-top: var(--s3); }
+
+.hu-about .about-personal ul {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--s3);
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+/* ══ Motion ════════════════════════════════════════════════════ */
+
+@media (prefers-reduced-motion: no-preference) {
+  .hu-about .about-loop-pulse {
+    animation: about-signal-travel 3.2s var(--ease-aus) infinite;
+  }
+
+  .hu-about .about-loop-connector:nth-of-type(4) .about-loop-pulse {
+    animation-delay: 1.6s;
+  }
+
+  .hu-about .about-portrait-dot,
+  .hu-about .about-discovery-pulse {
+    animation: about-pulse 2.8s var(--ease-weich) infinite;
+  }
+
+  .hu-about .about-step.is-active .about-language-row i,
+  .hu-about .about-step.is-active .about-return-flow i {
+    animation: about-line-in var(--t-gross) var(--ease-aus) both;
+  }
+
+  .hu-about .about-step.is-active .about-language-row:nth-child(3) i {
+    animation-delay: var(--t-mikro);
+  }
+
+  .hu-about .about-step.is-active .about-language-row:nth-child(4) i {
+    animation-delay: var(--t-norm);
+  }
+}
+
+@keyframes about-signal-travel {
+  0%,
+  18% {
+    transform: translateX(-140%);
+    opacity: 0;
+  }
+
+  28% {
+    opacity: 1;
+  }
+
+  72% {
+    opacity: 1;
+  }
+
+  82%,
+  100% {
+    transform: translateX(390%);
+    opacity: 0;
+  }
+}
+
+@keyframes about-signal-travel-y {
+  0%,
+  18% {
+    transform: translateY(-140%);
+    opacity: 0;
+  }
+
+  28% {
+    opacity: 1;
+  }
+
+  72% {
+    opacity: 1;
+  }
+
+  82%,
+  100% {
+    transform: translateY(390%);
+    opacity: 0;
+  }
+}
+
+@keyframes about-pulse {
+  0%,
+  100% {
+    transform: scale(1);
+    opacity: 1;
+  }
+
+  50% {
+    transform: scale(1.35);
+    opacity: 0.62;
+  }
+}
+
+@keyframes about-line-in {
+  from {
+    transform: scaleX(0.15);
+    opacity: 0.3;
+  }
+
+  to {
+    transform: scaleX(1);
+    opacity: 1;
+  }
+}
+
+/* ══ Responsive ════════════════════════════════════════════════ */
+
+.hu-about .about-hero > *,
+.hu-about .about-decisions > *,
+.hu-about .about-close > *,
+.hu-about .about-origin > * {
+  min-width: 0;
+}
+
+@media (max-width: 1100px) {
+  .hu-about .about-story-rail,
+  .hu-about .about-step::after {
+    display: none;
+  }
+
+  .hu-about .about-story-grid {
+    grid-template-columns: minmax(0, 1.08fr) minmax(16rem, 0.92fr);
+    gap: var(--s4);
+  }
+
+  .hu-about .about-index {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+
+  .hu-about .about-index a:nth-child(4) {
+    border-left: 0;
+  }
+
+  .hu-about .about-index a:nth-child(n + 4) {
+    border-top: 1px solid var(--haar);
+  }
+}
+
+@media (max-width: 960px) {
+  .hu-about .about-hero {
+    grid-template-columns: minmax(0, 1fr) minmax(16rem, 20rem);
+    gap: var(--s4);
+    min-height: auto;
+  }
+
+  .hu-about .about-loop {
+    grid-template-columns: minmax(0, 1fr) 2rem minmax(0, 1fr) 2rem minmax(0, 1fr);
+    padding: var(--s2);
+  }
+
+  .hu-about .about-story-grid,
+  .hu-about .about-origin {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .hu-about .about-visual,
+  .hu-about .about-origin-map {
+    max-width: 42rem;
+  }
+
+  .hu-about .about-decisions {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .hu-about .about-decision + .about-decision {
+    border-left: 0;
+    border-top: 1px solid var(--haar);
+  }
+
+  .hu-about .about-decision {
+    grid-template-columns: 7rem minmax(0, 1fr) 6rem;
+    grid-template-rows: auto;
+    align-items: center;
+  }
+
+  .hu-about .about-principle-panel {
+    grid-template-columns: minmax(12rem, 0.7fr) minmax(0, 1.3fr);
+    padding: var(--s4);
+  }
+
+  .hu-about .about-close {
+    grid-template-columns: minmax(0, 1fr) minmax(15rem, 0.7fr);
+    gap: var(--s4);
+  }
+}
+
+@media (max-width: 720px) {
+  .hu-about .about-hero {
+    grid-template-columns: minmax(0, 1fr);
+    padding-top: var(--s4);
+  }
+
+  .hu-about .about-portrait {
+    width: min(100%, 24rem);
+    justify-self: start;
+  }
+
+  .hu-about .about-portrait figcaption {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .hu-about .about-portrait figcaption span {
+    text-align: left;
+  }
+
+  .hu-about .about-loop {
+    grid-template-columns: minmax(0, 1fr);
+    gap: var(--s1);
+    padding-bottom: var(--s4);
+  }
+
+  .hu-about .about-loop-connector {
+    width: 1px;
+    height: var(--s2);
+    margin-left: var(--s2);
+  }
+
+  .hu-about .about-loop-pulse {
+    width: 1px;
+    height: 35%;
+    transform: translateY(-140%);
+    animation-name: about-signal-travel-y;
+  }
+
+  .hu-about .about-loop-return {
+    left: var(--s2);
+    right: var(--s2);
+  }
+
+  .hu-about .about-index {
+    display: flex;
+    overflow-x: auto;
+    scrollbar-width: thin;
+  }
+
+  .hu-about .about-index a {
+    flex: 0 0 9.5rem;
+    border-top: 0 !important;
+  }
+
+  .hu-about .about-index a + a,
+  .hu-about .about-index a:nth-child(4) {
+    border-left: 1px solid var(--haar);
+  }
+
+  .hu-about .about-proof,
+  .hu-about .about-principle-panel,
+  .hu-about .about-close {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .hu-about .about-principle-panel {
+    gap: var(--s4);
+  }
+
+  .hu-about .about-principle-mark {
+    min-height: auto;
+    padding-bottom: var(--s3);
+    border-right: 0;
+    border-bottom: 1px solid var(--haar);
+  }
+
+  .hu-about .about-agency {
+    padding-top: var(--s3);
+    padding-left: 0;
+    border-top: 1px solid var(--haar);
+    border-left: 0;
+  }
+
+  .hu-about .about-decision {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .hu-about .about-decision-symbol {
+    max-width: 8rem;
+  }
+}
+
+@media (max-width: 520px) {
+  .hu-about .about-language-row {
+    grid-template-columns: minmax(0, 1fr);
+    gap: var(--s0);
+  }
+
+  .hu-about .about-language-row i {
+    width: var(--s4);
+  }
+
+  .hu-about .about-shortlist-flow,
+  .hu-about .about-return-flow {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .hu-about .about-shortlist-flow b {
+    transform: rotate(90deg);
+    justify-self: center;
+  }
+
+  .hu-about .about-return-flow i {
+    width: 1px;
+    height: var(--s2);
+    margin-left: var(--s2);
+  }
+
+  .hu-about .about-discovery-sources {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .hu-about .about-discovery-lines {
+    display: none;
+  }
+
+  .hu-about .about-discovery-core {
+    width: 100%;
+    margin-top: var(--s2);
+  }
+
+  .hu-about .about-proof-number strong {
+    white-space: normal;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .hu-about *,
+  .hu-about *::before,
+  .hu-about *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    scroll-behavior: auto !important;
+    transition-duration: 0.01ms !important;
+  }
+
+  .has-about-motion .hu-about .about-step .about-visual,
+  .has-about-motion .hu-about .about-step .about-principle-panel,
+  .has-about-motion .hu-about .about-step .about-origin-map {
+    opacity: 1;
+    transform: none;
+  }
 }
