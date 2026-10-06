@@ -54,9 +54,13 @@ get_header();
           <p class="aw-produktkern">Grundsystem + erste Hauptseite</p>
         </div>
         <div class="aw-modulband" aria-label="Modular erweiterbar um Seiten, Texte, Design und Tracking"><span>Seiten</span><span>Texte</span><span>Design</span><span>Tracking</span></div>
-        <p class="regel">Weitere Seiten nach Typ ab <?php echo esc_html( $eur( HU_WEBSITE_PAGE_UTILITY ) ); ?>. Mit fertigen Inhalten: <?php echo esc_html( $days( hu_website_quote( 1 )['components']['implementation'] ) ); ?> Umsetzung geplant. <span id="hero-bauzeit">Ihre Auswahl: <?php echo esc_html( $days( $quote['days'] ) ); ?> geplant.</span></p>
-        <ul class="aw-basis-kurz"><li>Basisgestaltung inklusive, Texterstellung optional</li><li>Formular, Bestätigungsmail &amp; Danke-Seite</li><li>Domain und Code gehören Ihnen</li></ul>
-        <a class="zum leise" href="#angebot" data-track-action="website_offer_to_angebot" data-track-category="navigation">Produkt konfigurieren <span aria-hidden="true">↓</span></a>
+        <div class="aw-produktmeta" aria-label="Preis- und Zeitrahmen">
+          <div><span class="mono">Weitere Seiten</span><strong>ab <?php echo esc_html( $eur( HU_WEBSITE_PAGE_UTILITY ) ); ?></strong></div>
+          <div><span class="mono">Basis-Umsetzung</span><strong><?php echo esc_html( $days( hu_website_quote( 1 )['components']['implementation'] ) ); ?>*</strong></div>
+        </div>
+        <p class="aw-produktzeit" id="hero-bauzeit">Ihre Auswahl: <?php echo esc_html( $days( $quote['days'] ) ); ?> geplant.</p>
+        <p class="aw-produktnote">* bei fertigen, freigegebenen Inhalten</p>
+        <a class="aw-produkt-cta" href="#angebot" data-track-action="website_offer_to_angebot" data-track-category="navigation">Produkt konfigurieren <span aria-hidden="true">→</span></a>
       </aside>
     </div>
   </section>
