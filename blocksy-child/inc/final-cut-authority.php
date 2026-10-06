@@ -62,7 +62,7 @@ function hu_get_final_cut_authority_nodes() : array {
 			'url'         => $routes['whitelabel'] ?? home_url( '/whitelabel-retainer/' ),
 			'role'        => 'Agenturen',
 		],
-		'agence_local' => [
+		'agentur_local' => [
 			'label'       => 'WordPress Agentur Hannover',
 			'description' => 'Lokale Entscheidungsseite: klassische Agentur oder direkter technischer Umsetzungspartner.',
 			'url'         => $routes['agentur_local'] ?? home_url( '/wordpress-agentur-hannover/' ),
@@ -96,7 +96,7 @@ function hu_get_final_cut_authority_edges() : array {
 		'server_side' => [ 'tracking', 'conversion', 'whitelabel' ],
 		'conversion'  => [ 'landingpage', 'tracking', 'website' ],
 		'whitelabel'  => [ 'outsourcing', 'server_side', 'website' ],
-		'agence_local'=> [ 'website', 'tracking', 'whitelabel' ],
+		'agentur_local'=> [ 'website', 'tracking', 'whitelabel' ],
 		'relaunch'    => [ 'website', 'conversion', 'tracking' ],
 		'outsourcing' => [ 'whitelabel', 'website', 'server_side' ],
 	];
