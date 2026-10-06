@@ -142,7 +142,10 @@ function hu_get_identity_knows_about() {
         'Tracking & Attribution',
         'Server-Side Tracking',
         'Conversion Rate Optimization',
-        'Landingpages & Funnel',
+        'Landingpages',
+        'Website-Relaunch',
+        'CRM-Integration',
+        'White-Label WordPress',
         'Core Web Vitals',
         'Performance Marketing',
         'Solar- und Wärmepumpen-Leadgenerierung',
@@ -168,7 +171,7 @@ function hu_get_person_node() {
         // frueher hier stehende Claim "Architekt fuer eigene Anfragesysteme"
         // ist ein Hard Ban (docs/standards/BRAND_AND_COPY.md) und wurde bisher
         // nur beim Rendern ueberschrieben — im Graph-Builder blieb er stehen.
-        'jobTitle'    => 'WordPress Freelancer und Tracking-Spezialist',
+        'jobTitle'    => 'WordPress-Entwickler und Tracking-Spezialist',
         'url'         => hu_person_profile_url(),
         'image'       => hu_get_profile_image_url(),
         'worksFor'    => [ '@id' => home_url( '/#organization' ) ],
