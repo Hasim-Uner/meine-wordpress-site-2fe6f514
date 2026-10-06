@@ -311,7 +311,7 @@ function hu_maybe_assign_positioned_blog_primary_dossiers() : void {
 	$all_done  = true;
 
 	foreach ( hu_get_positioned_blog_primary_dossier_map() as $post_slug => $dossier_slug ) {
-		$post = get_page_by_path( $post_slug, OBJECT, 'post' );
+		$post = get_page_by_path( $post_slug, 'OBJECT', 'post' );
 		if ( ! $post instanceof WP_Post || empty( $canonical[ $dossier_slug ] ) ) {
 			$all_done = false;
 			continue;
