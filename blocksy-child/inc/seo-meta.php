@@ -1065,7 +1065,7 @@ function hu_get_resolved_document_title() {
 	}
 
 	if ( hu_is_seo_cornerstone_article() ) {
-		return 'Technisches SEO + Performance Marketing: Fundament fehlt';
+		return 'Technisches SEO für B2B: Performance, Tracking & Landingpages';
 	}
 
 	if ( is_singular( 'post' ) ) {
@@ -1381,8 +1381,8 @@ function hu_get_seo_meta() {
 		}
 
 		if ( 'technisches-seo-performance-fundament' === $slug ) {
-			$meta['og_title']    = 'Technisches SEO + Performance Marketing: Fundament fehlt';
-			$meta['description'] = 'Performance Marketing ohne technisches SEO-Fundament verbrennt Budget. So wirken Technik, CRO und Tracking zusammen - inklusive Entscheider-Checkliste.';
+			$meta['og_title']    = 'Technisches SEO für B2B: Performance, Tracking & Landingpages';
+			$meta['description'] = 'Technisches SEO im B2B: Crawlability, Core Web Vitals, Landingpage-Erfahrung und Tracking gemeinsam prüfen — ohne direkte SEO-zu-CPC-Versprechen.';
 		}
 
 
