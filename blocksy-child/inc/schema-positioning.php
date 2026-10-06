@@ -40,19 +40,18 @@ if ( ! defined( 'ABSPATH' ) ) {
  */
 function hu_get_positioned_schema_offer_catalog() : array {
 	$routes = function_exists( 'hu_get_commercial_route_map' ) ? hu_get_commercial_route_map() : [];
-	$marketcheck_url = $routes['marketcheck'] ?? (
-		function_exists( 'hu_get_request_analysis_url' )
-			? hu_get_request_analysis_url()
-			: home_url( '/solar-waermepumpen-leadgenerierung/#marktcheck' )
-	);
+
+	$website_url = $routes['website'] ?? home_url( '/wordpress-website-erstellen-lassen/' );
+	$landingpage_url = $routes['landingpage'] ?? home_url( '/landingpage-erstellen-lassen/' );
+	$tracking_url = $routes['tracking_setup'] ?? home_url( '/ga4-tracking-setup/' );
+	$server_side_url = $routes['tracking_b2b'] ?? home_url( '/server-side-tracking-b2b/' );
+	$conversion_url = $routes['conversion'] ?? home_url( '/conversion-optimierung/' );
 	$whitelabel_url = $routes['whitelabel'] ?? (
 		function_exists( 'nexus_get_whitelabel_page_url' )
 			? nexus_get_whitelabel_page_url()
 			: home_url( '/whitelabel-retainer/' )
 	);
-	$freelancer_url = $routes['freelancer'] ?? home_url( '/' );
-	$tracking_url   = $routes['tracking_b2b'] ?? home_url( '/server-side-tracking-b2b/' );
-	$energy_url     = $routes['energy'] ?? home_url( '/solar-waermepumpen-leadgenerierung/' );
+	$energy_url = $routes['energy'] ?? home_url( '/solar-waermepumpen-leadgenerierung/' );
 
 	$offer = static function ( string $name, string $description, string $url, string $service_type ) : array {
 		return [
@@ -70,43 +69,49 @@ function hu_get_positioned_schema_offer_catalog() : array {
 
 	return [
 		'@type'           => 'OfferCatalog',
-		'name'            => 'WordPress, Tracking, Conversion und spezialisierte Anfragesysteme',
+		'name'            => 'WordPress-Entwicklung, Tracking, Conversion und White-Label',
 		'itemListElement' => [
 			$offer(
-				'WordPress-Entwicklung',
-				'WordPress-Websites und Landingpages mit technischer SEO, Performance und sauberer Weiterentwicklung.',
-				$freelancer_url,
+				'WordPress-Website erstellen lassen',
+				'WordPress-Neubau oder Relaunch mit technischem SEO, Anfrageweg, sauberer Übergabe und optionalem Tracking.',
+				$website_url,
 				'WordPress-Entwicklung'
 			),
 			$offer(
-				'Server-Side Tracking & Attribution',
-				'Server-GTM, GA4, Google Ads, Meta CAPI und nachvollziehbare Messkonzepte für belastbare Conversion-Signale.',
+				'Landingpage erstellen lassen',
+				'Landingpage für ein konkretes Angebot mit Konzept, Text, Anfrageformular, Herkunftsmessung und Abnahme.',
+				$landingpage_url,
+				'Landingpage-Entwicklung'
+			),
+			$offer(
+				'Conversion Tracking',
+				'GA4, Google Tag Manager, Consent Mode und Google Ads mit Messplan, Testfällen und dokumentierter Abnahme.',
 				$tracking_url,
-				'Tracking & Attribution'
+				'Conversion Tracking'
+			),
+			$offer(
+				'Server-Side Tracking & Attribution',
+				'Server-GTM, eigene Tracking-Subdomain, Enhanced Conversions, Meta CAPI und CRM-Rücksignale nach technischem Bedarf.',
+				$server_side_url,
+				'Server-Side Tracking'
 			),
 			$offer(
 				'Conversion-Optimierung',
-				'Optimierung von Landingpages, Funnels, Proof und Anfragewegen mit Fokus auf messbare Conversion.',
-				$freelancer_url,
+				'Analyse und Optimierung von Landingpages, Proof, Formularen und Anfragewegen mit Fokus auf passende B2B-Anfragen.',
+				$conversion_url,
 				'Conversion Rate Optimization'
 			),
 			$offer(
 				'White-Label für Agenturen',
-				'WordPress-, Tracking-, CRO- und technische SEO-Umsetzung im Hintergrund für Agenturprojekte.',
+				'WordPress-, Tracking- und technische SEO-Umsetzung im Hintergrund mit definiertem Scope, QA, Abnahme und Übergabe.',
 				$whitelabel_url,
 				'White-Label-Umsetzung'
 			),
 			$offer(
 				'Anfragesysteme für Solar & Wärmepumpe',
-				'Spezialisierte Nachfrage- und Anfragewege für Solar-, Wärmepumpen- und Speicher-Anbieter.',
+				'Spezialisierte Nachfrage- und Anfragewege für Solar-, Wärmepumpen- und Speicher-Anbieter als eigene Branchenvertikale.',
 				$energy_url,
-				'Anfragesystem'
-			),
-			$offer(
-				'Marktcheck für Solar & Wärmepumpe',
-				'Diagnostischer Einstieg für den Energie-Cluster: Region, Anfragequalität, Datenlage und nächster sinnvoller Schritt.',
-				$marketcheck_url,
-				'Marktcheck'
+				'Anfragesystem Energie'
 			),
 		],
 	];
@@ -158,7 +163,7 @@ function hu_normalize_positioned_schema_node( array $schema ) : array {
 	}
 
 	if ( function_exists( 'hu_person_schema_id' ) && hu_person_schema_id() === $id ) {
-		$schema['jobTitle']    = 'WordPress Freelancer und Tracking-Spezialist';
+		$schema['jobTitle']    = 'WordPress-Entwickler und Tracking-Spezialist';
 		$schema['description'] = 'Haşim Üner verbindet WordPress-Entwicklung, technisches SEO, Tracking und Conversion für direkte Projekte und White-Label-Agenturarbeit. Anfragesysteme für Solar- und Wärmepumpen-Anbieter sind eine spezialisierte Vertikale.';
 		// Eine Quelle fuer beide Knoten; siehe hu_get_identity_knows_about().
 		$schema['knowsAbout']  = hu_get_identity_knows_about();
