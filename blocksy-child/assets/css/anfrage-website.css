@@ -1225,6 +1225,7 @@
     linear-gradient(180deg, color-mix(in srgb, var(--papier) 5%, transparent), transparent 46%),
     color-mix(in srgb, var(--papier) 2%, transparent);
   transition:
+    opacity var(--t-norm) var(--ease-weich),
     transform var(--t-norm) var(--ease-aus),
     border-color var(--t-norm) var(--ease-weich),
     background-color var(--t-norm) var(--ease-weich);
