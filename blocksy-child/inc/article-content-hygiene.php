@@ -19,7 +19,7 @@ if ( ! defined( 'ABSPATH' ) ) {
  * @return string
  */
 function hu_article_content_hygiene_version() : string {
-	return '2026-10-06-1';
+	return '2026-10-06-2';
 }
 
 /**
@@ -271,6 +271,61 @@ function hu_maybe_refresh_tracking_article_content() : void {
 		$owned_first_final_count
 	);
 	$replacement_count += (int) $owned_first_final_count;
+
+	// Editor-HTML hardening: dieselben Altclaims koennen durch <strong>,
+	// <em>, &nbsp; oder Link-Markup unterbrochen sein. Deshalb werden die
+	// bekannten problematischen Paragraphen auf HTML-Ebene robust ersetzt.
+	$html_hardening = [
+		[
+			'~<p>In Deutschland lehnen durchschnittlich 40 %.*?bilden bestenfalls 60 % der Realität ab\.</strong></p>~us',
+			'<p>Wie groß eine Messlücke tatsächlich ist, lässt sich nicht aus allgemeinen Prozentwerten ableiten. Browser, Consent-Konfiguration, Event-Definitionen und Plattformen wirken je Setup unterschiedlich. Deshalb ist der belastbare Ausgangspunkt ein Paralleltest in den eigenen Konten.</p>',
+		],
+		[
+			'~<p>Da das Tracking von Ihrer eigenen Domain kommt.*?15 bis 55 % mehr erfassten Conversions.*?</p>~us',
+			'<p>Ein First-Party-Endpunkt kann die Messarchitektur robuster machen und gibt Ihnen mehr Kontrolle darüber, welche Daten weitergeleitet werden. Wie stark sich die gemessene Datenmenge verändert, muss im eigenen Setup per Paralleltest ermittelt werden.</p>',
+		],
+		[
+			'~<p><strong>Consent Mode V2:</strong>.*?</p>~us',
+			'<p><strong>Consent Mode V2:</strong> Consent Mode übermittelt Einwilligungszustände an unterstützte Google-Tags und beeinflusst deren Verhalten. Er ersetzt weder die Einwilligung noch das Consent-Management; welche Requests und Daten verarbeitet werden, hängt von der konkreten Konfiguration ab.</p>',
+		],
+		[
+			'~<p><strong>EU-Hosting:</strong>.*?</p>~us',
+			'<p><strong>EU-Hosting:</strong> Der Standort des Tagging-Servers ist nur ein Teil der Architektur. Entscheidend bleibt, welche Daten anschließend an Google, Meta oder andere Empfänger weitergegeben werden und welche Consent- und Vertragsgrundlagen dafür gelten.</p>',
+		],
+		[
+			'~<p>Server-Side Tracking ist besonders sinnvoll, wenn Sie.*?DSGVO-Compliance.*?</p>~us',
+			'<p>Server-Side Tracking ist sinnvoll, wenn ein konkretes Messproblem besteht: relevante Paid-Kampagnen, mehrere Conversion-Strecken, Anforderungen an Deduplizierung oder CRM-/Offline-Signale. Ohne klar definierte Conversions und operative Nutzung der Daten ist zusätzliche Infrastruktur nicht automatisch die richtige Priorität.</p>',
+		],
+		[
+			'~<p><strong>Stape/TAGGRS:</strong>.*?</p>~us',
+			'<p><strong>Spezialisierte Hosting-Anbieter:</strong> Kosten und Betriebsmodelle hängen von Region, Event-Volumen und Funktionsumfang ab. Für die Auswahl zählt der technische Scope, nicht ein pauschaler Marktpreis.</p>',
+		],
+		[
+			'~<p><strong>Google Cloud Platform:</strong>.*?</p>~us',
+			'<p><strong>Google Cloud:</strong> Der Aufwand hängt von Architektur, Skalierung und Betrieb ab. Infrastruktur und Eigentum werden deshalb vor der Implementierung festgelegt.</p>',
+		],
+		[
+			'~<p>Wer heute seine eigene Dateninfrastruktur aufbaut, investiert nicht nur in Compliance.*?</p>~us',
+			'<p>Der Nutzen liegt in kontrollierbarer Verarbeitung, klar definierten Events und einer prüfbaren Messkette. Ob daraus wirtschaftlicher Mehrwert entsteht, zeigt erst der Vergleich mit den eigenen Ausgangsdaten.</p>',
+		],
+		[
+			'~<p>Die Frage ist nicht mehr „Server-Side Tracking ja oder nein\?"?, sondern:.*?</p>~us',
+			'<p>Die richtige Frage lautet deshalb: <strong>Welches konkrete Messproblem soll Server-Side Tracking lösen — und lässt sich dieser Effekt im Paralleltest nachweisen?</strong></p>',
+		],
+		[
+			'~<p><a href="https://hasimuener\.de/solar-waermepumpen-leadgenerierung/#marktcheck"><strong>Server-Side-Setup prüfen →</strong></a></p>~u',
+			sprintf( '<p><a href="%1$s"><strong>Server-Side-Setup prüfen →</strong></a></p>', esc_url( $tracking_url ) ),
+		],
+	];
+
+	foreach ( $html_hardening as $rule ) {
+		$content = hu_article_content_hygiene_replace_pattern(
+			$content,
+			$rule[0],
+			$rule[1],
+			$replacement_count
+		);
+	}
 
 	$new_title = $current_title;
 	if (
