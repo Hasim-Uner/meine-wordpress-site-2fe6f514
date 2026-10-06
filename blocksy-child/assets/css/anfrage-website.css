@@ -845,6 +845,8 @@
   margin-top:var(--s3);
   border-top:1px solid var(--tinte)
 }
+.anfrage-website .fragen details[open] > summary { color: var(--stempel); }
+.anfrage-website .fragen details[open] > p { color: color-mix(in srgb, var(--tinte) 72%, transparent); }
 
 .anfrage-website details {
   border-bottom:1px solid var(--haar)
@@ -1085,13 +1087,96 @@
 @media (min-width: 980px) { .anfrage-website .aw-einstieg { display: none; } }
 .anfrage-website .hero-akzent { color: var(--stempel); }
 .anfrage-website .formel { padding: var(--s3); border-top: 0; }
-.anfrage-website .formel .betrag { display: flex; flex-wrap: wrap; align-items: baseline; gap: var(--s1); font-size: var(--grad-h1); }
+.anfrage-website .aw-produktkarte {
+  position: relative;
+  isolation: isolate;
+  overflow: hidden;
+  border: 1px solid color-mix(in srgb, var(--stempel) 26%, var(--haar));
+  background:
+    linear-gradient(145deg, color-mix(in srgb, var(--stempel) 7%, transparent), transparent 42%),
+    var(--tinte);
+  box-shadow:
+    0 1px 0 color-mix(in srgb, var(--papier) 8%, transparent) inset,
+    0 22px 50px color-mix(in srgb, var(--tinte) 18%, transparent);
+}
+.anfrage-website .aw-produktkarte::before {
+  content: "";
+  position: absolute;
+  z-index: -1;
+  width: 13rem;
+  height: 13rem;
+  right: -5rem;
+  top: -6rem;
+  border-radius: 50%;
+  background: color-mix(in srgb, var(--stempel) 16%, transparent);
+  filter: blur(34px);
+  opacity: .72;
+  pointer-events: none;
+}
+.anfrage-website .formel .betrag { display: flex; flex-wrap: wrap; align-items: baseline; gap: var(--s1); font-size: clamp(4rem, 3.1rem + 3vw, 5.8rem); }
 .anfrage-website .aw-produkt-kopf, .anfrage-website .aw-summary-kopf { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: var(--s1); }
 .anfrage-website .aw-produkt-kopf { margin-bottom: var(--s3); }
-.anfrage-website .aw-status { font: var(--mono-m) var(--mono); padding: var(--s0) var(--s1); border: 1px solid var(--haar); border-radius: var(--r1); }
+.anfrage-website .aw-status {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--s0);
+  font: var(--mono-m) var(--mono);
+  padding: 6px 9px;
+  border: 1px solid color-mix(in srgb, var(--stempel) 64%, transparent);
+  border-radius: 999px;
+  color: var(--papier);
+  background: color-mix(in srgb, var(--stempel) 12%, transparent);
+}
+.anfrage-website .aw-status i {
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background: var(--stempel);
+  box-shadow: 0 0 0 4px color-mix(in srgb, var(--stempel) 13%, transparent);
+}
+.anfrage-website .aw-preis-lockup { padding-block: var(--s1) var(--s2); }
+.anfrage-website .aw-preis-lockup > .mono { color: color-mix(in srgb, var(--papier) 58%, transparent); }
+.anfrage-website .aw-produktkern {
+  margin-top: var(--s1);
+  color: var(--papier);
+  font-weight: 600;
+  letter-spacing: -.01em;
+}
+.anfrage-website .aw-modulband {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  margin-top: var(--s2);
+  border-block: 1px solid color-mix(in srgb, var(--papier) 15%, transparent);
+}
+.anfrage-website .aw-modulband span {
+  padding: 9px 4px;
+  text-align: center;
+  font: var(--mono-s) var(--mono);
+  letter-spacing: .08em;
+  text-transform: uppercase;
+  color: color-mix(in srgb, var(--papier) 68%, transparent);
+}
+.anfrage-website .aw-modulband span + span { border-left: 1px solid color-mix(in srgb, var(--papier) 12%, transparent); }
+.anfrage-website .aw-produktkarte .regel { margin-top: var(--s2); color: color-mix(in srgb, var(--papier) 82%, transparent); }
+.anfrage-website .aw-produktkarte #hero-bauzeit { display: block; margin-top: var(--s1); color: var(--papier); font-weight: 600; }
 .anfrage-website .aw-basis-kurz { padding: 0; list-style: none; margin: var(--s3) 0 0; font-size: var(--grad-klein); }
-.anfrage-website .aw-basis-kurz li { padding-block: var(--s0); }
-.anfrage-website .aw-basis-kurz li::before { content: "✓"; color: var(--stempel); margin-right: var(--s1); }
+.anfrage-website .aw-basis-kurz li {
+  display: grid;
+  grid-template-columns: 1rem minmax(0, 1fr);
+  gap: var(--s1);
+  padding-block: 7px;
+  border-top: 1px solid color-mix(in srgb, var(--papier) 9%, transparent);
+}
+.anfrage-website .aw-basis-kurz li::before { content: "✓"; color: var(--stempel); margin-right: 0; }
+.anfrage-website .aw-produktkarte .zum {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--s1);
+  margin-top: var(--s3);
+  color: var(--papier);
+  text-decoration-color: color-mix(in srgb, var(--stempel) 50%, transparent);
+}
+.anfrage-website .aw-produktkarte .zum:hover { color: var(--stempel); }
 .anfrage-website .aw-hero-checks { display: flex; flex-wrap: wrap; gap: var(--s1) var(--s2); padding: 0; margin: var(--s2) 0 0; list-style: none; font-size: var(--grad-klein); color: var(--grau); }
 .anfrage-website .aw-hero-checks li::before { content: "✓"; color: var(--stempel); margin-right: var(--s0); }
 .anfrage-website .aw-kapitel { display: flex; flex-wrap: wrap; align-items: center; gap: 0 var(--s3); border-block: 1px solid var(--haar); padding-block: var(--s0); }
@@ -1108,11 +1193,157 @@
 /* CRO cut: one proof, one calculator, three differentiators. */
 .anfrage-website .aw-projekte--fokus { grid-template-columns: minmax(0, 1fr); }
 .anfrage-website .aw-projekte--fokus .aw-projekt { max-width: none; }
-.anfrage-website .aw-prinzipien { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: var(--s4); margin-top: var(--s4); }
-.anfrage-website .aw-prinzipien article { min-width: 0; padding-top: var(--s2); border-top: 1px solid color-mix(in srgb, var(--papier) 28%, transparent); }
+.anfrage-website #unterschied {
+  position: relative;
+  overflow: hidden;
+}
+.anfrage-website #unterschied::after {
+  content: "";
+  position: absolute;
+  width: 34rem;
+  height: 34rem;
+  right: -18rem;
+  top: -12rem;
+  border-radius: 50%;
+  background: color-mix(in srgb, var(--stempel) 8%, transparent);
+  filter: blur(70px);
+  pointer-events: none;
+}
+.anfrage-website .aw-prinzipien {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: var(--s2);
+  margin-top: var(--s4);
+}
+.anfrage-website .aw-prinzipien article {
+  position: relative;
+  min-width: 0;
+  min-height: 24rem;
+  padding: var(--s3);
+  border: 1px solid color-mix(in srgb, var(--papier) 16%, transparent);
+  background:
+    linear-gradient(180deg, color-mix(in srgb, var(--papier) 5%, transparent), transparent 46%),
+    color-mix(in srgb, var(--papier) 2%, transparent);
+  transition:
+    opacity var(--t-norm) var(--ease-weich),
+    transform var(--t-norm) var(--ease-aus),
+    border-color var(--t-norm) var(--ease-weich),
+    background-color var(--t-norm) var(--ease-weich);
+}
+.anfrage-website .aw-prinzipien article::before {
+  content: "";
+  position: absolute;
+  left: -1px;
+  top: -1px;
+  width: calc(100% + 2px);
+  height: 2px;
+  background: var(--stempel);
+  transform: scaleX(.16);
+  transform-origin: left;
+  transition: transform 420ms var(--ease-aus);
+}
 .anfrage-website .aw-prinzipien .mono { color: var(--stempel); }
-.anfrage-website .aw-prinzipien h3 { margin-top: var(--s1); font-size: var(--grad-text); line-height: 1.35; color: var(--papier); }
-.anfrage-website .aw-prinzipien p { margin-top: var(--s1); color: color-mix(in srgb, var(--papier) 72%, transparent); font-size: var(--grad-klein); line-height: 1.65; }
+.anfrage-website .aw-prinzipien h3 {
+  margin-top: var(--s3);
+  font-size: clamp(1.18rem, 1.05rem + .45vw, 1.5rem);
+  line-height: 1.28;
+  color: var(--papier);
+  max-width: 20ch;
+}
+.anfrage-website .aw-prinzipien p {
+  margin-top: var(--s2);
+  color: color-mix(in srgb, var(--papier) 70%, transparent);
+  font-size: var(--grad-klein);
+  line-height: 1.65;
+}
+.anfrage-website .aw-prinzip-signal {
+  display: flex;
+  align-items: center;
+  gap: 7px;
+  min-height: 42px;
+  margin-top: var(--s3);
+  padding: 8px 9px;
+  border: 1px solid color-mix(in srgb, var(--papier) 12%, transparent);
+  background: color-mix(in srgb, var(--tinte) 72%, transparent);
+}
+.anfrage-website .aw-prinzip-signal span {
+  flex: 0 0 auto;
+  font: .61rem var(--mono);
+  letter-spacing: .05em;
+  text-transform: uppercase;
+  color: color-mix(in srgb, var(--papier) 72%, transparent);
+}
+.anfrage-website .aw-prinzip-signal i {
+  position: relative;
+  flex: 1 1 auto;
+  height: 1px;
+  min-width: 8px;
+  overflow: hidden;
+  background: color-mix(in srgb, var(--papier) 18%, transparent);
+}
+.anfrage-website .aw-prinzip-signal i::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: var(--stempel);
+  transform: scaleX(0);
+  transform-origin: left;
+  transition: transform 520ms var(--ease-aus);
+}
+.anfrage-website .aw-prinzip-signal--besitz { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); }
+.anfrage-website .aw-prinzip-signal--besitz span {
+  padding: 5px 4px;
+  text-align: center;
+  border: 1px solid color-mix(in srgb, var(--stempel) 30%, transparent);
+  color: var(--papier);
+}
+.anfrage-website .aw-prinzip-output {
+  display: grid;
+  gap: 6px;
+  margin: var(--s3) 0 0;
+  padding: var(--s2) 0 0;
+  list-style: none;
+  border-top: 1px solid color-mix(in srgb, var(--papier) 12%, transparent);
+  color: color-mix(in srgb, var(--papier) 84%, transparent);
+  font-size: var(--grad-klein);
+}
+.anfrage-website .aw-prinzip-output li::before { content: "↳"; margin-right: 7px; color: var(--stempel); }
+.anfrage-website .aw-ergebnisband {
+  display: grid;
+  grid-template-columns: auto repeat(3, minmax(0, 1fr));
+  gap: var(--s2);
+  align-items: center;
+  margin-top: var(--s3);
+  padding-block: var(--s2);
+  border-block: 1px solid color-mix(in srgb, var(--papier) 16%, transparent);
+}
+.anfrage-website .aw-ergebnisband .mono { color: var(--stempel); white-space: nowrap; }
+.anfrage-website .aw-ergebnisband strong {
+  color: var(--papier);
+  font-size: var(--grad-klein);
+  font-weight: 500;
+}
+.anfrage-website.aw-motion-ready #unterschied .aw-prinzipien article {
+  opacity: 0;
+  transform: translateY(16px);
+}
+.anfrage-website.aw-motion-ready #unterschied.is-visible .aw-prinzipien article {
+  opacity: 1;
+  transform: translateY(0);
+  transition-delay: calc(var(--aw-i) * 70ms);
+}
+.anfrage-website.aw-motion-ready #unterschied.is-visible .aw-prinzip-signal i::after {
+  transform: scaleX(1);
+  transition-delay: calc(220ms + var(--aw-i) * 90ms);
+}
+@media (hover:hover) {
+  .anfrage-website .aw-prinzipien article:hover {
+    transform: translateY(-4px);
+    border-color: color-mix(in srgb, var(--stempel) 48%, transparent);
+    background-color: color-mix(in srgb, var(--papier) 4%, transparent);
+  }
+  .anfrage-website .aw-prinzipien article:hover::before { transform: scaleX(1); }
+}
 .anfrage-website #unterschied .aw-pruefung { border-top-color: color-mix(in srgb, var(--papier) 25%, transparent); }
 .anfrage-website #unterschied .aw-pruefung p, .anfrage-website #unterschied .aw-pruefung strong { color: var(--papier); }
 .anfrage-website .aw-lieferumfang-kompakt { margin-top: var(--s4); border: 1px solid var(--haar); border-radius: var(--r1); padding: 0 var(--s3); }
@@ -1133,8 +1364,15 @@
 .anfrage-website .aw-bahn-kompakt .phase { min-height: 104px; }
 .anfrage-website .aw-zeit-komponenten { margin-top: var(--s3); }
 .anfrage-website .aw-zeit-komponenten .aw-zeit-details { margin: 0; padding: 0 0 var(--s3); border-bottom: 0; }
-@media (max-width: 719.98px) {
+@media (max-width: 899.98px) {
   .anfrage-website .aw-prinzipien, .anfrage-website .aw-erweiterungen-grid { grid-template-columns: minmax(0, 1fr); gap: var(--s2); }
+  .anfrage-website .aw-prinzipien article { min-height: 0; }
+  .anfrage-website .aw-ergebnisband { grid-template-columns: minmax(0, 1fr); gap: var(--s1); }
+}
+@media (max-width: 719.98px) {
+  .anfrage-website .aw-modulband { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .anfrage-website .aw-modulband span:nth-child(3) { border-left: 0; border-top: 1px solid color-mix(in srgb, var(--papier) 12%, transparent); }
+  .anfrage-website .aw-modulband span:nth-child(4) { border-top: 1px solid color-mix(in srgb, var(--papier) 12%, transparent); }
   .anfrage-website .aw-lieferumfang-kompakt { padding-inline: var(--s2); }
   .anfrage-website .aw-lieferumfang-kompakt > summary, .anfrage-website .aw-erweiterungen-kompakt > summary { align-items: flex-start; flex-direction: column; justify-content: center; padding-block: var(--s1); }
 }
