@@ -46,7 +46,7 @@ Primäre Knoten:
 - `Agentur Hannover` → `Tracking` → Messbarkeits-Owner
 - `Agentur Hannover` → `Conversion` → Optimierungs-Owner
 
-Die lokale Agentur-Seite ist damit Entscheidungs-Hub für direkte Unternehmen. White-Label bleibt ein eigener Agentur-/Partner-Intent und ist kein Kontextziel dieser Route.
+Die lokale Agentur-Seite ist damit Entscheidungs-Hub für direkte Unternehmen. Diese drei Kanten werden dort im Abschnitt `#zusammenarbeit` kontextuell gerendert; der generische Footer-Authority-Block bleibt auf dieser Route aus, damit die Ziele nicht doppelt erscheinen. White-Label bleibt ein eigener Agentur-/Partner-Intent und ist kein Kontextziel dieser Route.
 
 ## Tracking-Support
 
