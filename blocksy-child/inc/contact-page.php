@@ -788,7 +788,7 @@ function nexus_get_website_request_scope( $payload ) {
 		}
 	}
 	if ( $has_typed_pages ) {
-		if ( 1 + $typed_total !== (int) $pages || 1 + $typed_total > HU_WEBSITE_CALCULATOR_MAX ) {
+		if ( 1 + $typed_total !== (int) $pages ) {
 			return new WP_Error( 'invalid_website_scope', 'Seitentypen und Seitenzahl passen nicht zusammen.' );
 		}
 	} else {
