@@ -241,7 +241,7 @@ run_case( 'website boundaries, typed-count integrity and generic compatibility',
 		['design' => 'unknown'], ['design' => [ 'neu' ] ], ['design' => 'basis', 'screendesign' => '1'],
 		['design' => 'neu', 'design_layouts' => '0'], ['design_layouts' => '4'], ['design_layouts' => [ '1' ] ],
 		['kurz' => '-1'], ['standard' => '1.5'], ['leistung' => ['1']],
-		['kurz' => '1', 'standard' => '1', 'leistung' => '0'],
+		['kurz' => '1', 'standard' => '0', 'leistung' => '0'],
 	] as $bad ) {
 		$v = nexus_validate_contact_request_payload( array_merge( $contact, [ 'focus' => 'website', 'seiten' => '3' ], $bad ) );
 		check( is_wp_error( $v ), 'Invalid website configuration rejected' );
