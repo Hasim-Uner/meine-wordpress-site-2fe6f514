@@ -31,7 +31,7 @@ for (const width of [320, 360, 768, 1440]) {
     await expect(page.locator('h1')).toHaveCount(1);
     expect(await page.locator('.anfrage-website > section').evaluateAll(els => els.map(el => el.id)))
       .toEqual(['hero','qualitaet','beleg','angebot','erweiterungen','unterschied','zeit','fragen','anfrage']);
-    await expect(page.locator('meta[name="description"]')).toHaveAttribute('content', /Custom Code, Texte und technisches SEO inklusive/);
+    await expect(page.locator('meta[name="description"]')).toHaveAttribute('content', /Texte, technisches SEO, Formular und Übergabe inklusive/);
     expect(await page.locator('h2').evaluateAll(els=>els.every(el=>el.id))).toBe(true);
     expect(await page.evaluate(()=>document.documentElement.scrollWidth <= innerWidth)).toBe(true);
     const overflow = await page.locator('.anfrage-website *').evaluateAll(els=>els.filter(el=>{
@@ -65,7 +65,7 @@ for (const width of [320, 360, 768, 1440]) {
     await page.locator('.stellen li').nth(0).focus();
     await expect(page.locator('.v-anfragen .pin[data-pin="1"]')).toHaveClass(/an/);
     await page.locator('.groessen [data-seiten="1"]').focus(); await page.keyboard.press('Enter');
-    await expect(page.locator('#gesamt')).toHaveText(euro(1490));
+    await expect(page.locator('#gesamt')).toHaveText(euro(1900));
     await expect(page.locator('#minus')).toBeDisabled();
     await page.locator('#plus').focus(); await page.keyboard.press('Space');
     await expect(page.locator('#weitere')).toHaveText('1');
@@ -187,7 +187,7 @@ test('product to contact to real intake: request, CRM and mails', async ({ page 
   const html=execFileSync('php',[path.join(__dirname,'render-contact.php'),'website',search],{encoding:'utf8'});
   await page.setContent('<style>.is-hidden,[hidden]{display:none!important}</style>'+html);
   await expect(page.locator('[name="focus"]')).toHaveValue('website');
-  await expect(page.locator('[data-website-scope]')).toContainText('5 Seiten · Relaunch · Tracking dazu · 5.470 € netto · mindestens '+workingDays(14));
+  await expect(page.locator('[data-website-scope]')).toContainText('5 Seiten · Relaunch · Tracking dazu · 6.320 € netto · mindestens '+workingDays(14));
   let response;
   await page.route('**/wp-json/nexus/v1/contact-request', async route=>{
     response=JSON.parse(execFileSync('php',[path.join(__dirname,'submit-website-fixture.php')],{input:JSON.stringify(route.request().postDataJSON()),encoding:'utf8'}));
@@ -212,11 +212,11 @@ test('product to contact to real intake: request, CRM and mails', async ({ page 
   expect(response.meta['1']._nexus_contact_website_implementation_days).toBe(8);
   expect(response.meta['1']._nexus_contact_website_duration_open).toBe(1);
   expect(response.meta['1']._nexus_contact_website_dashboard).toBe(1);
-  expect(response.meta['1']._nexus_contact_website_price).toBe(5470);
+  expect(response.meta['1']._nexus_contact_website_price).toBe(6320);
   expect(response.meta['1']._nexus_contact_website_design_price).toBe(940);
   expect(response.mails).toHaveLength(2);
   for(const mail of response.mails) {
-    expect(mail.body).toContain('5.470');
+    expect(mail.body).toContain('6.320');
     expect(mail.body).toContain('Texte erstellen lassen');
     expect(mail.body).toContain('CRM-Anbindung Standard');
     expect(mail.body).toContain('Daten-Dashboard nach Angebot');
@@ -232,15 +232,15 @@ test('included scope, fixed extensions and explicitly unpriced dashboard', async
   await expect(page.locator('.gruppe').nth(0)).toHaveAttribute('open','');
   await expect(page.locator('.gruppe').nth(0)).toContainText('Texte für jede gewählte Seite');
   await page.locator('#screendesign').check();await page.locator('#crm').check();
-  await expect(page.locator('#gesamt')).toHaveText(euro(3750));
+  await expect(page.locator('#gesamt')).toHaveText(euro(4380));
   await expect(page.locator('#betrag-design')).toHaveText(euro(690));
   await expect(page.locator('#preis-label')).toHaveText('Ihr Einmalpreis');
   await expect(page.locator('#angebot-hinweis')).toContainText('Standardumfang');
   await page.locator('#dashboard').check();
-  await expect(page.locator('#gesamt')).toHaveText(euro(3750));
+  await expect(page.locator('#gesamt')).toHaveText(euro(4380));
   await expect(page.locator('#preis-label')).toHaveText('Einmalpreis ohne Dashboard');
   await expect(page.locator('#angebot-hinweis')).toContainText('Zuzüglich Daten-Dashboard nach Angebot');
-  await expect(page.locator('#abschluss-preis')).toHaveText(euro(3750));
+  await expect(page.locator('#abschluss-preis')).toHaveText(euro(4380));
   await expect(page.locator('#abschluss-preiszusatz')).toContainText('Zuzüglich Daten-Dashboard nach Angebot');
   await page.locator('.aw-price-details summary').click();
   await expect(page.locator('#summary-dashboard')).toBeVisible();
@@ -346,7 +346,7 @@ test('default hierarchy, explicit layout price and interruptible motion', async 
   await expect(page.locator('[data-seiten]')).toHaveCount(3);
   await page.locator('#screendesign').check();
   await expect(page.locator('#design-layouts')).toHaveValue('1');
-  await expect(page.locator('#gesamt')).toHaveText(euro(2760));
+  await expect(page.locator('#gesamt')).toHaveText(euro(3390));
   await expect(page.locator('#design-option-preis')).toHaveText('+'+euro(690));
   await page.locator('#design-layouts').selectOption('2');
   await expect(page.locator('#design-option-preis')).toHaveText('+'+euro(940));
@@ -377,7 +377,7 @@ for (const width of [320, 390, 768, 1440]) {
     await page.evaluate(() => { document.documentElement.style.fontSize = '200%'; });
     await expect.poll(() => page.evaluate(() => document.documentElement.scrollWidth <= innerWidth)).toBe(true);
     await expect.poll(() => page.locator('#leiste').evaluate(el => el.hidden || el.getBoundingClientRect().height <= innerHeight / 3)).toBe(true);
-    await expect(page.locator('#gesamt')).toHaveText(euro(4640));
+    await expect(page.locator('#gesamt')).toHaveText(euro(5270));
     await expect(page.locator('#preis-label')).toHaveText('Einmalpreis ohne Dashboard');
   });
 }
