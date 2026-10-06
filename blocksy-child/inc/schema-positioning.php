@@ -214,7 +214,7 @@ function hu_get_wordpress_freelancer_service_schema() : array {
 		'@type'            => 'Service',
 		'@id'              => $service_id,
 		'url'              => $freelancer_url,
-		'name'             => 'WordPress Freelancer Hannover',
+		'name'             => 'WordPress-Entwicklung für Unternehmen',
 		'description'      => 'WordPress-Websites, Landingpages und Anfragestrecken; Tracking, technisches SEO und Conversion-Optimierung nach vereinbartem Umfang. Sitz in Pattensen in der Region Hannover; Projekte remote im DACH-Raum.',
 		'provider'         => [ '@id' => $provider_id ],
 		'serviceType'      => 'WordPress-Entwicklung, Tracking und Conversion-Optimierung',
