@@ -59,10 +59,10 @@ get_header();
 					<span class="nexus-reading-time">8 Min. Lesezeit</span>
 				</div>
 
-				<h1 class="nexus-title">Warum Performance Marketing ohne technisches SEO Budget verbrennt</h1>
+				<h1 class="nexus-title">Technisches SEO für B2B: Performance, Tracking und Landingpages</h1>
 
 				<p class="seo-cornerstone__subtitle">
-					Das Fundament für skalierbares Wachstum: technisches SEO, CRO, Tracking und Performance Marketing als ein System.
+					Technisches SEO als Infrastruktur: Crawlability, Page Experience, Tracking und Conversion gemeinsam prüfen — ohne Kanal-Kausalitäten zu erfinden.
 				</p>
 
 				<div class="seo-cornerstone__meta">
@@ -95,7 +95,7 @@ get_header();
 						<li><a href="#rechnung">Rechenbeispiel: Der stille Verlust</a></li>
 						<li><a href="#hausmodell">Das Haus-Modell</a></li>
 						<li><a href="#mythos">Mythos vs. Realität</a></li>
-						<li><a href="#quality-score">Quality Score, Core Web Vitals und CPC</a></li>
+						<li><a href="#quality-score">Landingpage-Erfahrung, Core Web Vitals und Ads</a></li>
 						<li><a href="#seo-sea">SEO und SEA Zusammenspiel</a></li>
 						<li><a href="#qualifizierung">Lead-Qualifizierung und CRM</a></li>
 						<li><a href="#ownership">Eigentum statt Miete</a></li>
