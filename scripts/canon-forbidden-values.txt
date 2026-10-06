@@ -76,12 +76,11 @@ rule	anon-begruendung	[Aa]nonymisiert,[[:space:]]*weil	-	Anonymisierte Faelle we
 # damit nicht jeder andere Betrag mit denselben Ziffern anschlaegt.
 rule	preis-uebernahme-check	(^|[^0-9.])390[[:space:]]*(€|&euro;|Euro)	Übernahme	Preis kommt aus hu_freelancer_takeover_check_price().
 rule	preis-retainer-kontingent	(^|[^0-9.])(490|950)[[:space:]]*(€|&euro;|Euro)	Stunden	Kontingent kommt aus hu_freelancer_retainer_display().
-# Website Kompakt, Zusatzseite und Landingpage (seit 2026-09-26). Der
-# fruehere Website-Einstieg 3.400 € ist ein abgeloester Wert und gilt ohne
-# Kontext; die aktiven Website-Betraege nur mit Kontextwort, weil 400 und 1.900
-# auch in anderen Preis- oder Trackingzusammenhaengen vorkommen koennen.
-rule	website-3400	(^|[^0-9.,])3\.?400[[:space:]]*(€|&nbsp;€|&euro;|Euro)	-	Website-Preis kommt aus hu_freelancer_website_price() inklusive erster Seite; Freigabe 02.10.2026.
-rule	preis-website-kompakt	(^|[^0-9.,])(1\.?900|400)[[:space:]]*(€|&nbsp;€|&euro;|Euro)	[Ww]ebsite|Seite	Preis kommt aus hu_freelancer_website_price() / hu_freelancer_website_scope_display().
+# Anfrage-Website, Seitentypen und Landingpage. Der frühere
+# Website-Einstieg 3.400 € ist abgelöst. Aktive Website-Beträge nur mit
+# Kontextwort prüfen, weil dieselben Zahlen in anderen Produkten vorkommen.
+rule	website-3400	(^|[^0-9.,])3\.?400[[:space:]]*(€|&nbsp;€|&euro;|Euro)	-	Website-Preis kommt aus hu_freelancer_website_price(); Freigabe 02.10.2026.
+rule	preis-website-scope	(^|[^0-9.,])(1\.?900|300|400|790)[[:space:]]*(€|&nbsp;€|&euro;|Euro)	[Ww]ebsite|[Ss]eite|Leistung	Website-Preise kommen aus hu_website_calculator_rules() / hu_freelancer_website_scope_display().
 rule	preis-landingpage	(^|[^0-9.,])1\.?990[[:space:]]*(€|&nbsp;€|&euro;|Euro)	[Ll]anding	Preis kommt aus hu_landingpage_price().
 
 # ── Tracking-Leiter ───────────────────────────────────────────────────────
