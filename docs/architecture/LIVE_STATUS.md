@@ -336,21 +336,23 @@ Contract und Abnahme: `CHAT_ASSISTANT.md`.
   Sticky-Auswahl ausblenden, wenn Umfangswahl, Zusammenfassungs-CTA oder
   Abschluss sichtbar sind; fokussierte Leiste bleibt bedienbar. Dynamische
   Abstandreserve und Safe Area verhindern Überdeckung der Auswahlcontrols.
-  Preisstrategie seit 06.10.2026: Grundprodukt plus feste Zusatzseite aus dem
-  zentralen Preiskanon; die Formel steht bereits im Hero und der Konfigurator
-  führt mit „Weiter zur Anfrage“ in die unverbindliche Scope-Übergabe. Der
-  Direktkunden-Stundensatz ist kein öffentlicher Preisanker dieser Produktseite.
-  Texte auf Wunsch und technisches SEO inklusive.
+  Preisstrategie seit 06.10.2026: 1.900 € für Grundsystem und erste
+  Hauptseite; zusätzliche kurze Seiten, Standardseiten und Leistungs-/Verkaufsseiten
+  haben eigene kanonische Preis- und Zeitbeiträge. Die Formel steht im Hero und
+  der Konfigurator führt mit „Weiter zur Anfrage“ in die unverbindliche
+  Scope-Übergabe. Direktkunden-Stundensatz und Agenturfaktor sind keine
+  öffentlichen Preisanker dieser Produktseite. Fertige Texte werden eingepflegt;
+  Texterstellung ist optional und je Seitentyp kalkuliert. Technisches SEO,
   Formular mit gespeicherter Anfrage, Bestätigungsmail und Danke-Seite sowie
-  Rechtstext-Seiten Standard. Custom Code statt Pagebuilder, Gutenberg/ACF,
+  Rechtstext-Seiten sind Standard. Custom Code statt Pagebuilder, Gutenberg/ACF,
   GitHub, KI-Workflow mit Prüfung. Einmalpreis, kein Website-Abo/Pflichtwartung,
   keine Pflichtlizenzen im Grundprodukt; Hosting und externe Dienste separat.
-  Feste Erweiterungen aus dem Preiskanon: individuelles Screendesign je Layout,
-  Standard-Tracking und CRM (ein Formular → bestehendes HubSpot/Bitrix24).
-  Daten-Dashboard nach Angebot; bekannte Summe und Zeit ausdrücklich ohne Dashboard.
-  Produktionsstaffel aus dem Kanon: 1–5 Standardseiten → 2 Tage mit QA, 6–10 → 3.
-  Neue Texte und Layouts eigene Erstellungsphase, Tracking/CRM je Projekt,
-  Relaunch-Zusatz; halbe Tage erst nach Gesamtsumme aufrunden. Planungswerte,
+  Feste Erweiterungen aus dem Preiskanon: individuelles Screendesign je
+  unterschiedlichem Layout, projektweites Standard-Tracking und CRM (ein Formular
+  → bestehendes HubSpot/Bitrix24). Daten-Dashboard nach Angebot; bekannte Summe
+  und Zeit ausdrücklich ohne Dashboard. Produktionszeit wird aus Grundsystem,
+  Seitentypen, optionaler Texterstellung und Projektmodulen addiert; Teil-Tage
+  erst nach der Gesamtsumme aufrunden. Planungswerte,
   Kundenfreigaben/Start/Livegang separat. Fertige Designs/CRM vor Auftrag prüfen.
   Sechs native geschlossene Liefergruppen, vier geschlossene Erweiterungsdetails.
   FAQ und Schema derselbe Getter. CTA-URL → Kontakt → REST → CRM → beide Mails;
