@@ -753,6 +753,7 @@ function nexus_get_website_request_scope( $payload ) {
 	if ( 'website' !== ( $payload['focus'] ?? '' ) || 'project' !== ( $payload['request_type'] ?? '' ) || ! isset( $payload['seiten'] ) ) {
 		return [];
 	}
+
 	$pages = $payload['seiten'];
 	$kind = $payload['art'] ?? 'neubau';
 	$options = [];
@@ -769,22 +770,59 @@ function nexus_get_website_request_scope( $payload ) {
 	if ( ! in_array( $kind, [ 'neubau', 'relaunch' ], true ) ) {
 		return new WP_Error( 'invalid_website_scope', 'Bitte einen gültigen Website-Umfang wählen.' );
 	}
+
+	$type_map = [ 'kurz' => 'utility_pages', 'standard' => 'standard_pages', 'leistung' => 'sales_pages' ];
+	$has_typed_pages = false;
+	$typed_total = 0;
+	foreach ( $type_map as $request_key => $option_key ) {
+		if ( array_key_exists( $request_key, $payload ) ) {
+			$has_typed_pages = true;
+			$value = $payload[ $request_key ];
+			if ( ! is_scalar( $value ) || ! preg_match( '/^[0-9]+$/D', (string) $value ) ) {
+				return new WP_Error( 'invalid_website_scope', 'Bitte gültige Seitentypen wählen.' );
+			}
+			$options[ $option_key ] = (int) $value;
+			$typed_total += (int) $value;
+		} else {
+			$options[ $option_key ] = 0;
+		}
+	}
+	if ( $has_typed_pages ) {
+		if ( 1 + $typed_total !== (int) $pages || 1 + $typed_total > HU_WEBSITE_CALCULATOR_MAX ) {
+			return new WP_Error( 'invalid_website_scope', 'Seitentypen und Seitenzahl passen nicht zusammen.' );
+		}
+	} else {
+		// Alte Links bleiben gültig: zusätzliche Seiten werden als Standardseiten interpretiert.
+		$options['standard_pages'] = (int) $pages - 1;
+	}
+
 	$design = $payload['design'] ?? ( $options['screendesign'] ? 'neu' : 'basis' );
 	if ( ! in_array( $design, [ 'basis', 'vorhanden', 'neu' ], true ) || ( isset( $payload['design'] ) && $options['screendesign'] && 'neu' !== $design ) ) {
 		return new WP_Error( 'invalid_website_scope', 'Bitte einen gültigen Design-Umfang wählen.' );
 	}
-	$layouts = $payload['design_layouts'] ?? (int) $pages;
+	$layouts = $payload['design_layouts'] ?? 1;
 	if ( ! is_scalar( $layouts ) || ! preg_match( '/^[1-9][0-9]*$/D', (string) $layouts ) || (int) $layouts > (int) $pages ) {
 		return new WP_Error( 'invalid_website_scope', 'Bitte eine gültige Zahl unterschiedlicher Layouts wählen.' );
 	}
 	$options['screendesign'] = 'neu' === $design ? 1 : 0;
 	$options['design'] = $design;
 	$options['design_layouts'] = 'neu' === $design ? (int) $layouts : 0;
+
 	$quote = hu_website_quote( (int) $pages, $kind, (bool) $options['tracking'], $options );
 	return $options + [
-		'seiten' => $quote['pages'], 'art' => $quote['kind'], 'website_price' => $quote['price'], 'website_weeks' => $quote['weeks'],
-		'website_days' => $quote['days'], 'website_preparation_days' => $quote['preparation_days'],
-		'website_implementation_days' => $quote['implementation_days'], 'website_duration_open' => (int) $quote['duration_open'],
+		'seiten' => $quote['pages'],
+		'kurz' => $quote['page_types']['utility'],
+		'standard' => $quote['page_types']['standard'],
+		'leistung' => $quote['page_types']['sales'],
+		'art' => $quote['kind'],
+		'website_price' => $quote['price'],
+		'website_page_price' => $quote['page_price'],
+		'website_text_price' => $quote['text_price'],
+		'website_weeks' => $quote['weeks'],
+		'website_days' => $quote['days'],
+		'website_preparation_days' => $quote['preparation_days'],
+		'website_implementation_days' => $quote['implementation_days'],
+		'website_duration_open' => (int) $quote['duration_open'],
 		'website_calc_version' => $quote['version'],
 		'website_design_price' => $quote['design_price'],
 	];
@@ -793,18 +831,54 @@ function nexus_get_website_request_scope( $payload ) {
 /** Public scope summary, shared by form, mail and CRM. */
 function nexus_get_website_scope_summary( $payload ) {
 	if ( empty( $payload['seiten'] ) ) { return ''; }
-	$summary = sprintf( '%1$d %2$s · %3$s · Tracking %4$s · %5$s netto · %6$s%7$d Werktage geplant bis zum Abnahmestand, ohne Kundenfreigabezeiten',
-		$payload['seiten'], 1 === (int) $payload['seiten'] ? 'Seite' : 'Seiten',
-		'relaunch' === $payload['art'] ? 'Relaunch' : 'Neubau', empty( $payload['tracking'] ) ? 'ohne' : 'dazu',
-		hu_format_eur( $payload['website_price'] ), empty( $payload['dashboard'] ) ? '' : 'mindestens ', $payload['website_days'] ?? ( ( $payload['website_weeks'] ?? 0 ) * 5 ) );
-	$summary .= empty( $payload['texte'] ) ? ' · Freigegebene Texte vorhanden' : ' · Texte erstellen lassen (inklusive)';
-	if ( 'vorhanden' === ( $payload['design'] ?? '' ) ) { $summary .= ' · Freigegebenes Design umsetzen; Basispreis und Zeit nach Vorlagenprüfung bestätigen'; }
-	if ( ! empty( $payload['screendesign'] ) ) {
-		$layouts = $payload['design_layouts'] ?? $payload['seiten'];
-		$summary .= sprintf( ' · Screendesign: %d %s erstellen (%s im Preis enthalten)', $layouts, 1 === (int) $layouts ? 'Layout' : 'Layouts', hu_format_eur( $payload['website_design_price'] ?? ( HU_WEBSITE_DESIGN_FIRST + ( $layouts - 1 ) * HU_WEBSITE_DESIGN_EXTRA ) ) );
+
+	$summary = sprintf(
+		'%1$d %2$s · %3$s · Tracking %4$s · %5$s netto · %6$s%7$d Werktage geplant bis zum Abnahmestand, ohne Kundenfreigabezeiten',
+		$payload['seiten'],
+		1 === (int) $payload['seiten'] ? 'Seite' : 'Seiten',
+		'relaunch' === $payload['art'] ? 'Relaunch' : 'Neubau',
+		empty( $payload['tracking'] ) ? 'ohne' : 'dazu',
+		hu_format_eur( $payload['website_price'] ),
+		empty( $payload['dashboard'] ) ? '' : 'mindestens ',
+		$payload['website_days'] ?? ( ( $payload['website_weeks'] ?? 0 ) * 5 )
+	);
+
+	$types = [];
+	if ( ! empty( $payload['kurz'] ) ) {
+		$types[] = (int) $payload['kurz'] . ' kurze ' . ( 1 === (int) $payload['kurz'] ? 'Seite' : 'Seiten' );
 	}
-	if ( ! empty( $payload['crm'] ) ) { $summary .= ' · CRM-Anbindung Standard (' . hu_format_eur( HU_WEBSITE_CRM_STANDARD ) . ' im Preis enthalten): ein Formular, bestehendes HubSpot oder Bitrix24, bis zehn Felder, ein Kontakt- oder Lead-Objekt; nach Systemprüfung bestätigen'; }
-	if ( ! empty( $payload['dashboard'] ) ) { $summary .= ' · Zuzüglich Daten-Dashboard nach Angebot; Dashboard-Aufwand noch nicht in Preis und Zeit enthalten'; }
+	if ( ! empty( $payload['standard'] ) ) {
+		$types[] = (int) $payload['standard'] . ' ' . ( 1 === (int) $payload['standard'] ? 'Standardseite' : 'Standardseiten' );
+	}
+	if ( ! empty( $payload['leistung'] ) ) {
+		$types[] = (int) $payload['leistung'] . ' ' . ( 1 === (int) $payload['leistung'] ? 'Leistungsseite' : 'Leistungsseiten' );
+	}
+	if ( $types ) {
+		$summary .= ' · Zusatzseiten: ' . implode( ', ', $types );
+	}
+
+	$summary .= empty( $payload['texte'] )
+		? ' · Freigegebene Texte vorhanden'
+		: ' · Texterstellung ' . hu_format_eur( $payload['website_text_price'] ?? 0 ) . ' im Preis enthalten';
+
+	if ( 'vorhanden' === ( $payload['design'] ?? '' ) ) {
+		$summary .= ' · Freigegebenes Design umsetzen; Basispreis und Zeit nach Vorlagenprüfung bestätigen';
+	}
+	if ( ! empty( $payload['screendesign'] ) ) {
+		$layouts = $payload['design_layouts'] ?? 1;
+		$summary .= sprintf(
+			' · Screendesign: %d %s erstellen (%s im Preis enthalten)',
+			$layouts,
+			1 === (int) $layouts ? 'Layout' : 'Layouts',
+			hu_format_eur( $payload['website_design_price'] ?? ( HU_WEBSITE_DESIGN_FIRST + ( $layouts - 1 ) * HU_WEBSITE_DESIGN_EXTRA ) )
+		);
+	}
+	if ( ! empty( $payload['crm'] ) ) {
+		$summary .= ' · CRM-Anbindung Standard (' . hu_format_eur( HU_WEBSITE_CRM_STANDARD ) . ' im Preis enthalten): ein Formular, bestehendes HubSpot oder Bitrix24, bis zehn Felder, ein Kontakt- oder Lead-Objekt; nach Systemprüfung bestätigen';
+	}
+	if ( ! empty( $payload['dashboard'] ) ) {
+		$summary .= ' · Zuzüglich Daten-Dashboard nach Angebot; Dashboard-Aufwand noch nicht in Preis und Zeit enthalten';
+	}
 	$summary .= ' · Einmalpreis; verbindlicher Umfang, vollständiger Preis und Termin vor Beauftragung';
 	return $summary;
 }
