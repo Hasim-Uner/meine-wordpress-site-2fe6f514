@@ -29,7 +29,7 @@ function hu_maybe_refresh_cwv_article_evidence() : void {
 		return;
 	}
 
-	$post = get_page_by_path( 'core-web-vitals-wachstum-seo-und-roas', OBJECT, 'post' );
+	$post = get_page_by_path( 'core-web-vitals-wachstum-seo-und-roas', 'OBJECT', 'post' );
 	if ( ! $post instanceof WP_Post ) {
 		return;
 	}
