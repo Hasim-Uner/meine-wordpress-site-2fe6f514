@@ -15,17 +15,18 @@ add_action( 'wp_enqueue_scripts', static function () {
     hu_enqueue_css( 'hu-anfrage-website', 'anfrage-website.css', [ 'nexus-system-css' ] );
     hu_enqueue_js( 'hu-anfrage-website', 'anfrage-website.js', [] );
 }, 90 );
-$quote = hu_website_quote( 3, 'neubau', false, [ 'texte' => 1 ] );
+$quote = hu_website_quote( 3, 'neubau', false, [ 'utility_pages' => 0, 'standard_pages' => 1, 'sales_pages' => 1, 'texte' => 0 ] );
+$text_quote = hu_website_quote( 3, 'neubau', false, [ 'utility_pages' => 0, 'standard_pages' => 1, 'sales_pages' => 1, 'texte' => 1 ] );
 $rules = hu_website_calculator_rules();
 $days = static function ( $value ) { return number_format( (float) $value, floor( (float) $value ) === (float) $value ? 0 : 1, ',', '.' ) . ( 1.0 === (float) $value ? ' Werktag' : ' Werktage' ); };
-$contact_url = add_query_arg( [ 'seiten' => 3, 'art' => 'neubau', 'texte' => 1 ], hu_get_contact_intake_url( 'project', 'website' ) );
+$contact_url = add_query_arg( [ 'seiten' => 3, 'art' => 'neubau', 'kurz' => 0, 'standard' => 1, 'leistung' => 1, 'texte' => 0 ], hu_get_contact_intake_url( 'project', 'website' ) );
 $psi_url = 'https://pagespeed.web.dev/analysis?url=' . rawurlencode( home_url( '/wordpress-website-erstellen-lassen/' ) );
 $references = hu_website_reference_projects();
 $eur = static function ( $value ) { return str_replace( ' €', "\u{00A0}€", hu_format_eur( $value ) ); };
 $scenarios = [
-    [ 'pages' => 1, 'title' => 'Ihr Angebot auf einen Blick', 'example' => 'Zum Beispiel: Friseursalon', 'purpose' => 'Leistungen, Preise, Team, Öffnungszeiten und Kontakt auf einer übersichtlichen Seite.', 'structure' => [ 'Startseite mit allen Abschnitten' ] ],
-    [ 'pages' => 3, 'title' => 'Mehr Raum für Ihre Leistung', 'example' => 'Zum Beispiel: Unternehmensberatung', 'purpose' => 'Angebot und Arbeitsweise erklären. Expertise zeigen, bevor jemand eine Anfrage stellt.', 'structure' => [ 'Startseite mit Kontakt', 'Leistungen', 'Über uns' ] ],
-    [ 'pages' => 5, 'title' => 'Jede Leistung mit eigener Seite', 'example' => 'Zum Beispiel: Sanitär- und Heizungsbetrieb', 'purpose' => 'Unterschiedliche Leistungen getrennt erklären und auf passende Suchanliegen ausrichten.', 'structure' => [ 'Startseite', 'Heizung', 'Sanitär', 'Wartung', 'Kontakt' ] ],
+    [ 'pages' => 1, 'utility' => 0, 'standard' => 0, 'sales' => 0, 'title' => 'Kompakt', 'example' => 'Eine Hauptseite', 'purpose' => 'Angebot, Beleg und Kontakt auf einer Seite.' ],
+    [ 'pages' => 3, 'utility' => 0, 'standard' => 1, 'sales' => 1, 'title' => 'Unternehmen', 'example' => 'Hauptseite + Leistung + Über uns', 'purpose' => 'Ein Angebot verkaufen und das Unternehmen separat erklären.' ],
+    [ 'pages' => 5, 'utility' => 1, 'standard' => 1, 'sales' => 2, 'title' => 'Leistungswebsite', 'example' => 'Hauptseite + 2 Leistungen + Über uns + Kontakt', 'purpose' => 'Mehrere Leistungen mit eigener Such- und Verkaufslogik.' ],
 ];
 get_header();
 ?>
