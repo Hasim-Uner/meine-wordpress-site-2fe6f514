@@ -203,13 +203,13 @@ run_case( 'website scope reaches actual endpoint, both mails and CRM', static fu
 	$r = call_intake( 'contact', $p );
 	check( 201 === $r->status && true === $r->data['ok'], 'Product accepted' );
 	$v = nexus_validate_contact_request_payload( $p );
-	check( 3540 === $v['website_price'] && 5 === $v['website_days'] && 1 === $v['website_weeks'] && 'forged' !== $v['website_calc_version'], 'Price, working days and rule version are recalculated, tampering ignored' );
+	check( 4390 === $v['website_price'] && 5 === $v['website_days'] && 1 === $v['website_weeks'] && 'forged' !== $v['website_calc_version'], 'Price, working days and rule version are recalculated, tampering ignored' );
 	check( 5 === get_post_meta( 1, '_nexus_contact_website_pages' ) && 'relaunch' === get_post_meta( 1, '_nexus_contact_website_kind' ), 'Structured CRM scope persisted' );
 	check( 1 === get_post_meta( 1, '_nexus_contact_website_tracking' ), 'Tracking persisted' );
-	check( str_contains( nexus_get_contact_request_activity_summary( $v ), '3.540' ), 'CRM activity contains calculated scope' );
+	check( str_contains( nexus_get_contact_request_activity_summary( $v ), '4.390' ), 'CRM activity contains calculated scope' );
 	check( 2 === count( $GLOBALS['intake_test']['mails'] ), 'Both mails built' );
 	foreach ( $GLOBALS['intake_test']['mails'] as $mail ) {
-		check( str_contains( $mail['body'], '5 Seiten' ) && str_contains( $mail['body'], 'Relaunch' ) && str_contains( $mail['body'], '3.540' ), 'Mails carry the scope' );
+		check( str_contains( $mail['body'], '5 Seiten' ) && str_contains( $mail['body'], 'Relaunch' ) && str_contains( $mail['body'], '4.390' ), 'Mails carry the scope' );
 	}
 } );
 run_case( 'website boundaries, invalid configuration and generic compatibility', static function () use ( $contact ) {
