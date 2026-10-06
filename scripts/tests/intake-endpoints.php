@@ -213,7 +213,7 @@ run_case( 'website scope reaches actual endpoint, both mails and CRM', static fu
 	}
 } );
 run_case( 'website boundaries, invalid configuration and generic compatibility', static function () use ( $contact ) {
-	foreach ( [ [1, 'neubau', 0, 1490, 2], [2, 'relaunch', 0, 1780, 4], [10, 'relaunch', 1, 4990, 6] ] as $case ) {
+	foreach ( [ [1, 'neubau', 0, 1900, 2], [2, 'relaunch', 0, 2300, 4], [10, 'relaunch', 1, 6390, 6] ] as $case ) {
 		$v = nexus_validate_contact_request_payload( array_merge( $contact, [ 'focus' => 'website', 'seiten' => (string) $case[0], 'art' => $case[1], 'tracking' => $case[2] ] ) );
 		check( ! is_wp_error( $v ) && $case[3] === $v['website_price'] && $case[4] === $v['website_days'], 'Boundary price/time' );
 	}
