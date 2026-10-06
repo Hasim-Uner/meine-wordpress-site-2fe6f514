@@ -12,7 +12,7 @@
     var factors = rules.days;
     var state = { utility: 0, standard: 1, sales: 1, art: 'neubau', texte: false, tracking: false, design: 'basis', designLayouts: 1, crm: false, dashboard: false };
     var media = window.matchMedia ? window.matchMedia('(prefers-reduced-motion: reduce)') : { matches: true };
-    var eur = function (number) { return number.toLocaleString('de-DE') + '\\u00a0€'; };
+    var eur = function (number) { return number.toLocaleString('de-DE') + '\u00a0€'; };
     var days = function (number) { return number.toLocaleString('de-DE') + (number === 1 ? ' Werktag' : ' Werktage'); };
     var totalPages = function () { return 1 + state.utility + state.standard + state.sales; };
     function scopeLabel() {
