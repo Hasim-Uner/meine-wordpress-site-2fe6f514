@@ -46,13 +46,17 @@ get_header();
         </div>
         <p class="mikro">Antwort <?php echo esc_html( hu_response_promise( 'window' ) ); ?>, mit Rückfragen oder einem Festpreis-Angebot.</p>
       </div>
-      <aside class="formel tafel" aria-label="Grundprodukt und Einstiegspreis">
-        <div class="aw-produkt-kopf"><span class="mono">Die Anfrage-Website</span><span class="aw-status">Erweiterbar</span></div>
-        <p class="mono">Festpreis ab</p>
-        <p class="betrag"><?php echo esc_html( $eur( HU_FREELANCER_WEBSITE_MIN ) ); ?><small>netto</small></p>
-        <p class="regel">Website mit Grundsystem und erster Hauptseite. Weitere Seiten nach Typ ab <?php echo esc_html( $eur( HU_WEBSITE_PAGE_UTILITY ) ); ?>. Mit fertigen Inhalten: <?php echo esc_html( $days( hu_website_quote( 1 )['components']['implementation'] ) ); ?> Umsetzung geplant. <span id="hero-bauzeit">Ihre Auswahl: <?php echo esc_html( $days( $quote['days'] ) ); ?> geplant.</span></p>
+      <aside class="formel tafel aw-produktkarte" aria-label="Grundprodukt und Einstiegspreis">
+        <div class="aw-produkt-kopf"><span class="mono">Die Anfrage-Website</span><span class="aw-status"><i aria-hidden="true"></i>Erweiterbar</span></div>
+        <div class="aw-preis-lockup">
+          <p class="mono">Festpreis ab</p>
+          <p class="betrag"><?php echo esc_html( $eur( HU_FREELANCER_WEBSITE_MIN ) ); ?><small>netto</small></p>
+          <p class="aw-produktkern">Grundsystem + erste Hauptseite</p>
+        </div>
+        <div class="aw-modulband" aria-label="Modular erweiterbar um Seiten, Texte, Design und Tracking"><span>Seiten</span><span>Texte</span><span>Design</span><span>Tracking</span></div>
+        <p class="regel">Weitere Seiten nach Typ ab <?php echo esc_html( $eur( HU_WEBSITE_PAGE_UTILITY ) ); ?>. Mit fertigen Inhalten: <?php echo esc_html( $days( hu_website_quote( 1 )['components']['implementation'] ) ); ?> Umsetzung geplant. <span id="hero-bauzeit">Ihre Auswahl: <?php echo esc_html( $days( $quote['days'] ) ); ?> geplant.</span></p>
         <ul class="aw-basis-kurz"><li>Basisgestaltung inklusive, Texterstellung optional</li><li>Formular, Bestätigungsmail &amp; Danke-Seite</li><li>Domain und Code gehören Ihnen</li></ul>
-        <a class="zum leise" href="#angebot" data-track-action="website_offer_to_angebot" data-track-category="navigation">Seiten &amp; Extras auswählen ↓</a>
+        <a class="zum leise" href="#angebot" data-track-action="website_offer_to_angebot" data-track-category="navigation">Produkt konfigurieren <span aria-hidden="true">↓</span></a>
       </aside>
     </div>
   </section>
@@ -280,11 +284,30 @@ get_header();
       <div class="haupt breit">
         <h2 id="h-unterschied">Drei Dinge müssen funktionieren.</h2>
         <p class="lead">Nicht möglichst viele Effekte. Sondern Klarheit vor dem Klick, ein geprüfter Anfrageweg und eine Website, die Ihnen danach wirklich gehört.</p>
-        <div class="aw-prinzipien">
-          <article><span class="mono">01 · Klarheit</span><h3>Das Angebot ist im ersten Bildschirm verständlich.</h3><p>Leistung, passende Zielgruppe und nächster Schritt werden priorisiert. Navigation und Buttons konkurrieren nicht um Aufmerksamkeit.</p></article>
-          <article><span class="mono">02 · Anfrageweg</span><h3>Eine Anfrage wird nicht nur abgeschickt, sondern geprüft.</h3><p>Formular, Speicherung, Mailversand, Bestätigung und Danke-Seite werden vor der Übergabe als zusammenhängende Strecke getestet.</p></article>
-          <article><span class="mono">03 · Eigentum</span><h3>Code, Zugänge und technische Grundlage bleiben in Ihrer Hand.</h3><p>Technisches SEO, responsive Umsetzung und Übergabe gehören zum System. Keine Pflichtwartung und kein Pagebuilder-Lock-in im Grundprodukt.</p></article>
+        <div class="aw-prinzipien" data-principles>
+          <article style="--aw-i:0">
+            <span class="mono">01 · Klarheit</span>
+            <div class="aw-prinzip-signal" aria-hidden="true"><span>Angebot</span><i></i><span>Beweis</span><i></i><span>CTA</span></div>
+            <h3>Das Angebot ist im ersten Bildschirm verständlich.</h3>
+            <p>Leistung, passende Zielgruppe und nächster Schritt werden priorisiert. Navigation und Buttons konkurrieren nicht um Aufmerksamkeit.</p>
+            <ul class="aw-prinzip-output"><li>klare Leistungslogik</li><li>eindeutiger nächster Schritt</li></ul>
+          </article>
+          <article style="--aw-i:1">
+            <span class="mono">02 · Anfrageweg</span>
+            <div class="aw-prinzip-signal aw-prinzip-signal--vier" aria-hidden="true"><span>Formular</span><i></i><span>Mail</span><i></i><span>Danke</span><i></i><span>CRM</span></div>
+            <h3>Eine Anfrage wird nicht nur abgeschickt, sondern geprüft.</h3>
+            <p>Formular, Speicherung, Mailversand, Bestätigung und Danke-Seite werden vor der Übergabe als zusammenhängende Strecke getestet.</p>
+            <ul class="aw-prinzip-output"><li>getestete Zustände</li><li>nachvollziehbare Übergabe</li></ul>
+          </article>
+          <article style="--aw-i:2">
+            <span class="mono">03 · Eigentum</span>
+            <div class="aw-prinzip-signal aw-prinzip-signal--besitz" aria-hidden="true"><span>Domain</span><span>Code</span><span>Zugänge</span></div>
+            <h3>Code, Zugänge und technische Grundlage bleiben in Ihrer Hand.</h3>
+            <p>Technisches SEO, responsive Umsetzung und Übergabe gehören zum System. Keine Pflichtwartung und kein Pagebuilder-Lock-in im Grundprodukt.</p>
+            <ul class="aw-prinzip-output"><li>kein technischer Lock-in</li><li>dokumentierte Übergabe</li></ul>
+          </article>
         </div>
+        <div class="aw-ergebnisband"><span class="mono">Sie bekommen</span><strong>Verständlichkeit vor dem Klick.</strong><strong>Einen geprüften Anfrageweg.</strong><strong>Eine Website, die Ihnen gehört.</strong></div>
         <div class="aw-pruefung"><p><strong>Vor der Abnahme:</strong> Handyansicht, Anfrageweg, technische Basis und Übergabe gemeinsam prüfen.</p><a class="btn btn--sekundaer" href="#lieferumfang" data-track-action="website_offer_quality_checklist" data-track-category="navigation">Lieferumfang ansehen <span aria-hidden="true">→</span></a></div>
       </div>
     </div>
@@ -326,7 +349,7 @@ get_header();
       <div class="haupt">
         <h2 id="h-fragen">Antworten vor dem Auftrag.</h2>
         <p class="lead">Kosten, Inhalte, Gestaltung und späterer Betrieb. Die wichtigsten Grenzen und Leistungen stehen hier zusammen.</p>
-        <div class="fragen">
+        <div class="fragen" data-exclusive-details>
 <?php foreach ( nexus_get_website_faq_items() as $faq ) : ?>
 <details><summary><?php echo esc_html( $faq['question'] ); ?></summary><p><?php echo esc_html( $faq['answer'] ); ?></p></details>
 <?php endforeach; ?>
