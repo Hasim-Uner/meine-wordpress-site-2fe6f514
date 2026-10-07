@@ -112,7 +112,6 @@ $setup_price         = $format_eur( (int) ( $pricing_canon['entry_setup_price'] 
 // ── Marktcheck (Diagnose-Canon) ────────────────────────────────
 $diagnose_canon    = function_exists( 'hu_diagnose_canon' ) ? hu_diagnose_canon() : [];
 $marketcheck_reply = hu_marketcheck_reply_label();
-$marketcheck_visible_steps = (int) ( $diagnose_canon['marketcheck_visible_steps'] ?? 2 );
 $marketcheck_fit_q        = (int) ( $diagnose_canon['marketcheck_fit_questions'] ?? 4 );
 $marketcheck_mins         = (int) ( $diagnose_canon['marketcheck_minutes'] ?? 2 );
 
