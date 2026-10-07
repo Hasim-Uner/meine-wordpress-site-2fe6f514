@@ -358,7 +358,7 @@ $references = [
 	[ 'f' => 'Was ist ein realistischer CPL in Photovoltaik?', 'z' => 'Drei Szenarien und Kostentreiber',            'url' => home_url( '/cost-per-lead-photovoltaik/' ) ],
 	[ 'f' => 'Was gilt bei Wärmepumpen-Leads anders?',         'z' => 'Eigene Anfragequelle für SHK und Wärmepumpe', 'url' => home_url( '/waermepumpen-leads/' ) ],
 	[ 'f' => 'Wie läuft gewerbliche PV-Leadgenerierung?',      'z' => 'Buying-Center und Vorqualifizierung im B2B',  'url' => home_url( '/b2b-solar-leads/' ) ],
-	[ 'f' => 'Wie wird die Strecke belastbar gemessen?',       'z' => 'Server-Side Tracking, Ads und Consent',       'url' => $tracking_url ],
+	[ 'f' => 'Wie wird die Strecke belastbar gemessen?',       'z' => 'Tracking-Setup, Ads und Consent',             'url' => $tracking_url ],
 ];
 
 // ── Abschluss: Protokollzeile ──────────────────────────────────
@@ -634,13 +634,13 @@ get_header();
 						</div>
 						<div>
 							<span class="hero-beleg-wert zahl"><?php echo esc_html( $e3_lead_count ); ?></span>
-							<span class="hero-beleg-label">Anfragen in <?php echo esc_html( $e3_timeframe ); ?></span>
+							<span class="hero-beleg-label">Anfragen · Zeitraum: <?php echo esc_html( $e3_timeframe ); ?></span>
 						</div>
 						<div>
 							<span class="hero-beleg-wert zahl"><?php echo esc_html( $e3_sales_conv ); ?></span>
 							<span class="hero-beleg-label">Abschlussquote vorqualifizierter CRM-Leads</span>
 						</div>
-						<p>Dokumentierter Fall eines <?php echo esc_html( $e3_case_label ); ?> in DACH. Keine Prognose für Ihren Betrieb.</p>
+						<p>Dokumentierter Fall · <?php echo esc_html( ucfirst( $e3_case_label ) ); ?> in DACH. Keine Prognose für Ihren Betrieb.</p>
 					</div>
 
 					<div class="meta">
@@ -981,7 +981,7 @@ get_header();
 				<div class="voll">
 					<h2 class="kopf" id="fall">Was sich im dokumentierten Fall tatsächlich verändert hat.</h2>
 					<p class="vorspann">
-						<?php echo esc_html( $e3_timeframe ); ?> bei einem <?php echo esc_html( $e3_case_label ); ?> in DACH: erst Strategie und Landingpages, dann Kampagnen, anschließend Tracking und CRM-Rückführung.
+						Zeitraum: <?php echo esc_html( $e3_timeframe ); ?>. Fall: <?php echo esc_html( ucfirst( $e3_case_label ) ); ?> in DACH. Erst Strategie und Landingpages, dann Kampagnen, anschließend Tracking und CRM-Rückführung.
 						Die Entwicklung beruht auf dem Zusammenspiel der Maßnahmen; der isolierte Beitrag einzelner Bausteine ist nicht gemessen.
 					</p>
 
