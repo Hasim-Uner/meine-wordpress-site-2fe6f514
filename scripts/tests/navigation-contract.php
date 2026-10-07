@@ -92,7 +92,7 @@ nav_check( '/server-side-tracking-b2b/' === nav_path( $routes['tracking_b2b'] ),
 nav_check( 'Tracking' === $tracking['label'] && $routes['tracking_setup'] === $tracking['url'], 'header "Tracking" links the Tracking offer' );
 nav_check( 'https://hasimuener.de/kontakt/?type=project' === $header['cta']['url'], 'header CTA is the open project request' );
 nav_check( [ 'freelancer', 'tracking', 'whitelabel', 'energy' ] === array_column( $footer['routes'], 'route' ), 'footer ways follow the header order' );
-nav_check( [ [ 'projekt' ], [ 'tracking' ], [ 'aufgabe' ], [ 'marktcheck', 'analyse', 'sofort' ] ] === array_column( $footer['routes'], 'doors' ), 'footer ways carry their door keys; the Energy way ends in the paid ladder' );
+nav_check( [ [ 'projekt' ], [ 'tracking' ], [ 'aufgabe' ], [ 'marktcheck', 'system', 'sofort' ] ] === array_column( $footer['routes'], 'doors' ), 'footer ways carry their door keys; Energy exposes Marktcheck, system and Sofortkontakt' );
 nav_check( ! array_key_exists( 'picks', $footer ), 'footer contract no longer carries landing-page picks' );
 nav_check( 'Ich bin Solar- oder Wärmepumpenbetrieb und kaufe heute Portal-Anfragen.' === implode( '', array_map( static function ( $part ) use ( $footer ) { return $footer['routes'][3][ $part ]; }, [ 'pre', 'strong', 'post' ] ) ), 'footer Energy sentence names today\'s portal buyers' );
 nav_check( count( hu_get_site_footer_door_urls() ) === count( array_unique( hu_get_site_footer_door_urls() ) ) && 0 < count( hu_get_site_footer_door_urls() ), 'footer door URLs are listed once for the SEO cockpit' );
@@ -112,12 +112,13 @@ $door_spec = [
 	'ersteinschaetzung' => [ hu_first_assessment_text( 'label' ), hu_first_assessment_text( 'label' ), hu_format_eur( 0 ), '/kontakt/?focus=ersteinschaetzung', 'nav_header_ersteinschaetzung' ],
 	'tracking'   => [ 'Tracking anfragen', 'Tracking', 'ab ' . hu_tracking_price( 'measurement', 'setup' ), '/kontakt/?type=project&focus=tracking', 'nav_header_door_tracking' ],
 	'aufgabe'    => [ 'Test-Sprint anfragen', 'Test-Sprint', hu_format_eur( HU_WHITELABEL_TEST_SPRINT_PRICE ), '/whitelabel-retainer/#aufgabe', 'nav_header_door_whitelabel' ],
-	'marktcheck' => [ 'Marktcheck', 'Marktcheck', hu_format_eur( 0 ), '/solar-waermepumpen-leadgenerierung/#marktcheck', 'nav_header_door_marktcheck' ],
+	'marktcheck' => [ 'Marktcheck', 'Marktcheck', hu_marketcheck_price(), '/solar-waermepumpen-leadgenerierung/#marktcheck', 'nav_header_door_marktcheck' ],
+	'system'     => [ 'Anfragesystem konfigurieren', 'Anfragesystem', 'ab ' . hu_foundation_price_display(), '/solar-waermepumpen-leadgenerierung/#einstieg', 'nav_header_door_system' ],
 	'analyse'    => [ 'Analyse anfragen', 'Analyse', hu_analysis_price(), '/solar-waermepumpen-leadgenerierung/#einstieg', 'nav_header_door_analyse' ],
-	'sofort'     => [ 'Sofortkontakt', 'Sofortkontakt', hu_entry_setup_price(), '/solar-waermepumpen-leadgenerierung/#einstieg', 'nav_header_door_sofortkontakt' ],
+	'sofort'     => [ 'Sofortkontakt', 'Sofortkontakt', hu_entry_setup_price(), '/kontakt/?type=implementation&focus=response_setup', 'nav_header_door_sofortkontakt' ],
 ];
 
-nav_check( array_keys( $door_spec ) === array_keys( $doors ), 'doors include the homepage assessment and the six footer doors' );
+nav_check( array_keys( $door_spec ) === array_keys( $doors ), 'doors include the homepage assessment, Smartflow system and legacy analysis door' );
 
 foreach ( $door_spec as $key => $spec ) {
 	$door = $doors[ $key ] ?? [];
@@ -137,9 +138,10 @@ foreach ( $door_spec as $key => $spec ) {
 nav_check( $doors['tracking']['amount'] === 'ab ' . hu_tracking_price( 'measurement', 'setup' ), 'tracking door amount is the canon measurement setup' );
 nav_check( min( HU_TRACKING_STANDARD_SETUP, HU_TRACKING_PRO_SETUP, HU_TRACKING_CUSTOM_SETUP_MIN ) >= HU_TRACKING_MEASUREMENT_SETUP, 'tracking "ab" amount is not above any price of the tracking ladder' );
 nav_check( $doors['aufgabe']['amount'] === hu_format_eur( HU_WHITELABEL_TEST_SPRINT_PRICE ), 'White-Label door amount is the canon test sprint price' );
-nav_check( $doors['analyse']['amount'] === hu_analysis_price() && $doors['sofort']['amount'] === hu_entry_setup_price(), 'analysis and Sofortkontakt amounts come from the canon' );
+nav_check( $doors['marktcheck']['amount'] === hu_marketcheck_price() && $doors['system']['amount'] === 'ab ' . hu_foundation_price_display(), 'Marketcheck and Anfragesystem amounts come from the canon' );
+nav_check( $doors['analyse']['amount'] === hu_analysis_price() && $doors['sofort']['amount'] === hu_entry_setup_price(), 'legacy analysis and Sofortkontakt amounts still come from the canon' );
 nav_check( '' === $doors['projekt']['amount'], 'project door bundles several products and carries no amount' );
-nav_check( [ 'tracking' ] === array_keys( array_filter( array_column( $doors, 'amount', 'key' ), static function ( $amount ) { return 0 === strpos( (string) $amount, 'ab ' ); } ) ), 'only the tracking door carries an "ab" amount' );
+nav_check( [ 'tracking', 'system' ] === array_keys( array_filter( array_column( $doors, 'amount', 'key' ), static function ( $amount ) { return 0 === strpos( (string) $amount, 'ab ' ); } ) ), 'only tracking and the configurable system carry an "ab" amount' );
 
 foreach ( [ 'inc/funnel-doors.php', 'template-parts/site-header.php', 'template-parts/site-footer.php' ] as $source ) {
 	nav_check( ! preg_match( '/\d[\d.]*\s*(?:€|EUR|&euro;)/u', (string) file_get_contents( get_stylesheet_directory() . '/' . $source ) ), "{$source}: no price literal, amounts come from the canon" );
@@ -149,8 +151,9 @@ foreach ( [ 'inc/funnel-doors.php', 'template-parts/site-header.php', 'template-
 // sich nicht umdefinieren, deshalb ein zweiter Prozess.
 $flag_run = shell_exec( escapeshellarg( PHP_BINARY ) . ' -r ' . escapeshellarg( 'define("HU_FEATURE_SOLAR_DOORS", true); require ' . var_export( __DIR__ . '/navigation-harness.php', true ) . '; nav_test_use_context("imprint"); echo json_encode(array_column(hu_funnel_doors(), "url", "key"));' ) );
 $flag_on  = json_decode( (string) $flag_run, true );
-nav_check( 'https://hasimuener.de/solar-waermepumpen-leadgenerierung/#einstieg' === $doors['analyse']['url'] && $doors['analyse']['url'] === $doors['sofort']['url'], 'flag off: analysis and Sofortkontakt doors point at #einstieg' );
-nav_check( is_array( $flag_on ) && str_ends_with( (string) $flag_on['analyse'], '/#analyse' ) && str_ends_with( (string) $flag_on['sofort'], '/#sofortkontakt' ) && str_ends_with( (string) $flag_on['marktcheck'], '/#marktcheck' ), 'flag on: analysis and Sofortkontakt doors point at their own anchors' );
+nav_check( 'https://hasimuener.de/solar-waermepumpen-leadgenerierung/#einstieg' === $doors['analyse']['url'], 'flag off: legacy analysis door points at #einstieg' );
+nav_check( 'https://hasimuener.de/kontakt/?type=implementation&focus=response_setup' === $doors['sofort']['url'], 'Sofortkontakt always hands off to its scoped contact intake' );
+nav_check( is_array( $flag_on ) && str_ends_with( (string) $flag_on['analyse'], '/#analyse' ) && str_ends_with( (string) $flag_on['marktcheck'], '/#marktcheck' ) && str_contains( (string) $flag_on['sofort'], '/kontakt/?type=implementation&focus=response_setup' ), 'flag on changes only the legacy analysis anchor; Sofortkontakt remains external' );
 
 // --- 1c. Decision per context ---------------------------------------------------
 
