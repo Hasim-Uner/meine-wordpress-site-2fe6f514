@@ -19,6 +19,8 @@ function nexus_solar_event_names() {
 		'cta_strecke_analyse_submit', 'cta_strecke_marktcheck_fallback_kontakt',
 		'cta_strecke_marktcheck_to_about', 'cta_strecke_abschluss_to_marktcheck',
 		'cta_strecke_abschluss_to_sofortkontakt',
+		'cta_strecke_configurator_project', 'cta_strecke_configurator_marktcheck',
+		'cta_strecke_sofortkontakt_external',
 	];
 }
 
