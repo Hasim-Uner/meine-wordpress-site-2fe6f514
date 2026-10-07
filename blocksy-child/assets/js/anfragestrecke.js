@@ -2,12 +2,11 @@
    ANFRAGESTRECKE — Rechner, gezielte Bewegungen, Kapitelmarke
    /solar-waermepumpen-leadgenerierung/
 
-   Bewusst klein und ohne Abhaengigkeiten. Der Marktcheck selbst
-   (Formular, Validierung, REST) liegt unveraendert in
-   solar-leadgenerierung-solara.js — diese Datei fasst ihn nicht an.
+   Bewusst klein und ohne Abhaengigkeiten. Die Seite ist formularfrei;
+   Marktcheck und Sofortkontakt werden auf separate Intake-Wege uebergeben.
 
-   Ohne JavaScript bleibt die Seite vollstaendig: der Rechner zeigt
-   dann seine Platzhalter, beide Grafiken stehen fertig da.
+   Ohne JavaScript bleibt die Seite vollstaendig: Rechner und Konfigurator
+   zeigen serverseitig gerenderte Ausgangswerte und funktionierende Links.
    ══════════════════════════════════════════════════════════════ */
 
 (function () {
@@ -17,41 +16,6 @@
   if (!wurzel) {
     return;
   }
-
-  /* Der Marktcheck besitzt seit 09/2026 einen eigenen visuellen Layer.
-     Er bleibt als separate Datei wartbar, wird aber nur auf dieser Route
-     geladen. Neben der Script-Version traegt das CSS eine eigene Revision,
-     damit reine CSS-Aenderungen nicht an einem alten Browser-/CDN-Cache
-     haengen bleiben. */
-  function marktcheckStyles() {
-    if (document.querySelector('link[data-strecke-marketcheck-style]')) {
-      return;
-    }
-
-    var script = document.currentScript;
-    if (!script || !script.src || script.src.indexOf('/assets/js/anfragestrecke.js') === -1) {
-      var scripts = document.querySelectorAll('script[src*="/assets/js/anfragestrecke.js"]');
-      script = scripts.length ? scripts[scripts.length - 1] : null;
-    }
-
-    if (!script || !script.src) {
-      return;
-    }
-
-    var href = script.src.replace(
-      '/assets/js/anfragestrecke.js',
-      '/assets/css/anfragestrecke-marketcheck.css'
-    );
-    href += (href.indexOf('?') === -1 ? '?' : '&') + 'mc=20261001-kante';
-
-    var link = document.createElement('link');
-    link.rel = 'stylesheet';
-    link.href = href;
-    link.setAttribute('data-strecke-marketcheck-style', '');
-    document.head.appendChild(link);
-  }
-
-  marktcheckStyles();
 
   var ruhig = false;
   try {
@@ -153,7 +117,7 @@
       return isFinite(roh) && roh > 0 ? roh : ersatz;
     }
 
-    var AUFBAU = konstante('aufbau', 14900);
+    var AUFBAU = konstante('aufbau', 9999);
     var MONATE = konstante('monate', 24);
     var HOSTING = konstante('hosting', 50);
 
@@ -295,6 +259,103 @@
     rechne();
   }
 
+  /* ── Produktkonfigurator ──────────────────────────────────────
+     Eine Produktstrecke ist im Grundpreis enthalten. Jede weitere
+     erweitert den Preis um den Canon-Wert aus dem Markup. Die Ziel-URL
+     traegt nur die ausgewaehlten Produktkennungen, keine Personendaten. */
+
+  function konfigurator() {
+    var box = wurzel.querySelector('[data-system-configurator]');
+    if (!box) {
+      return;
+    }
+
+    var controls = [].slice.call(box.querySelectorAll('[data-system-product]'));
+    var priceNode = box.querySelector('[data-config-price]');
+    var selectionNode = box.querySelector('[data-config-selection]');
+    var cta = box.querySelector('[data-system-configurator-cta]');
+    var base = parseFloat(box.getAttribute('data-base-price')) || 9999;
+    var extra = parseFloat(box.getAttribute('data-extra-price')) || 1000;
+    var euro = new Intl.NumberFormat('de-DE', {
+      style: 'currency',
+      currency: 'EUR',
+      maximumFractionDigits: 0
+    });
+
+    if (priceNode) {
+      priceNode.setAttribute('aria-live', 'polite');
+    }
+
+    function activeControls() {
+      return controls.filter(function (control) { return control.checked; });
+    }
+
+    function labelFor(control) {
+      var label = control.closest('label');
+      var strong = label ? label.querySelector('.produktwahl__text strong') : null;
+      return strong ? strong.textContent.trim() : control.value;
+    }
+
+    function animateValue(node) {
+      if (!node || ruhig || typeof node.animate !== 'function') {
+        return;
+      }
+      node.animate(
+        [
+          { opacity: 0.45, transform: 'translateY(5px)' },
+          { opacity: 1, transform: 'translateY(0)' }
+        ],
+        { duration: 180, easing: 'cubic-bezier(0.23, 1, 0.32, 1)' }
+      );
+    }
+
+    function sync(changed) {
+      var active = activeControls();
+      if (!active.length && changed) {
+        changed.checked = true;
+        active = [changed];
+      }
+      if (!active.length && controls.length) {
+        controls[0].checked = true;
+        active = [controls[0]];
+      }
+
+      var total = base + Math.max(0, active.length - 1) * extra;
+      if (priceNode) {
+        var nextPrice = euro.format(total);
+        if (priceNode.textContent !== nextPrice) {
+          priceNode.textContent = nextPrice;
+          animateValue(priceNode);
+        }
+      }
+      if (selectionNode) {
+        selectionNode.textContent = active.map(labelFor).join(' + ');
+      }
+
+      var activeKeys = active.map(function (control) { return control.value; });
+      [].slice.call(box.querySelectorAll('[data-system-path]')).forEach(function (path) {
+        path.classList.toggle('ist-aktiv', activeKeys.indexOf(path.getAttribute('data-system-path')) >= 0);
+      });
+
+      if (cta) {
+        try {
+          var baseHref = cta.getAttribute('data-base-href') || cta.getAttribute('href');
+          var url = new URL(baseHref, window.location.href);
+          url.searchParams.set('produkte', activeKeys.join(','));
+          cta.setAttribute('href', url.pathname + url.search + url.hash);
+        } catch (error) {
+          // Der serverseitige Default-Link bleibt funktionsfaehig.
+        }
+      }
+    }
+
+    controls.forEach(function (control) {
+      control.addEventListener('change', function () { sync(control); });
+    });
+
+    sync(null);
+  }
+
   /* Bandbreiten bauen sich beim ersten Sichtkontakt auf. Die drei
      Fallphasen verbinden Hover und Tastaturfokus mit der Grafik. */
   function bandtreppe() {
@@ -369,66 +430,6 @@
 
     beobachter.observe(el);
     window.setTimeout(aufdecken, 6000);
-  }
-
-  /* ── Marktcheck-Schrittwechsel ───────────────────────────────── */
-
-  function marktcheckBewegung() {
-    var mount = wurzel.querySelector('#sol-quiz-mount');
-    if (!mount || ruhig || !('MutationObserver' in window)) {
-      return;
-    }
-
-    var letzter = null;
-    var initialisiert = false;
-    var geplant = false;
-
-    function aktuellesElement() {
-      return mount.querySelector('.sol-quiz, .sol-quiz-success');
-    }
-
-    function bewegen() {
-      geplant = false;
-      var aktuell = aktuellesElement();
-
-      if (!aktuell || aktuell === letzter) {
-        return;
-      }
-
-      letzter = aktuell;
-
-      if (!initialisiert) {
-        initialisiert = true;
-        return;
-      }
-
-      if (typeof aktuell.animate !== 'function') {
-        return;
-      }
-
-      aktuell.animate(
-        [
-          { opacity: 0, transform: 'translateY(8px)' },
-          { opacity: 1, transform: 'translateY(0)' }
-        ],
-        {
-          duration: 200,
-          easing: 'cubic-bezier(0.23, 1, 0.32, 1)'
-        }
-      );
-    }
-
-    function planen() {
-      if (geplant) {
-        return;
-      }
-      geplant = true;
-      window.requestAnimationFrame(bewegen);
-    }
-
-    var beobachter = new MutationObserver(planen);
-    beobachter.observe(mount, { childList: true, subtree: true });
-    planen();
   }
 
   /* ── Kapitelmarke ────────────────────────────────────────────── */
@@ -509,9 +510,9 @@
   function start() {
     kopfUndRegister();
     rechner();
+    konfigurator();
     einmalig(wurzel.querySelector('.buehne'), 0.25, 1400);
     bandtreppe();
-    marktcheckBewegung();
     kapitelmarke();
     leiste();
   }
