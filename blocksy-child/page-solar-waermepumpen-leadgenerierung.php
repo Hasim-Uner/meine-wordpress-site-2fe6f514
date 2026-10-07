@@ -72,8 +72,8 @@ $e3_cpl_after_val  = (int) ( $e3_metrics['cpl_after']['value'] ?? 22 );
 
 // ── Preise (Pricing-Canon) ─────────────────────────────────────
 // Erst die Rohwerte, dann die Anzeigeform daraus. Ein Fallback-Literal
-// wie '14.900 €' waere eine zweite Preisquelle im Template — genau das,
-// was scripts/lint-canon-drift.sh verhindert.
+// Ein ausgeschriebener Aufbaupreis waere eine zweite Preisquelle im Template —
+// genau das verhindert der Preis-Kanon.
 $pricing_canon = function_exists( 'hu_pricing_canon' ) ? hu_pricing_canon() : [];
 
 // Rohwerte gehen zusaetzlich als data-Attribute ins Markup, damit das
@@ -1135,7 +1135,7 @@ get_header();
 				<?php $render_chapter( $chapter_by_id['marktcheck'] ); ?>
 				<div class="voll">
 					<h2 class="kopf" id="marktcheck-titel">Marktcheck für <?php echo esc_html( $marketcheck_price ); ?>. Erst einordnen, dann investieren.</h2>
-					<p class="vorspann">Der Marktcheck ist der kleine Funnel vor einem fünfstelligen Aufbau: kurze Ausgangslage, persönliche Prüfung und eine schriftliche Empfehlung. Das Formular liegt bewusst auf dem separaten Anfrageweg, damit diese Money Page eine Entscheidung erklärt statt drei Formulare gleichzeitig zu betreiben.</p>
+					<p class="vorspann">Der Marktcheck ist der kleine Einstieg vor einem größeren Aufbau: kurze Ausgangslage, persönliche Prüfung und eine schriftliche Empfehlung. Ihre Angaben erfassen Sie anschließend in einem separaten, kurzen Formular.</p>
 
 					<div class="gate gate--handoff">
 						<div>
