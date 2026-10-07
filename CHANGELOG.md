@@ -1,5 +1,12 @@
 # CHANGELOG
 
+## 2026-10-07 — Solar-Money-Page Final Cut
+
+- **Premium-Prinzip statt Dekoration:** Hero auf Ergebnis + Eigentum verdichtet: eigene Anfragequelle auf der eigenen Domain, ein dominanter Marktcheck und ein leiser Sofortkontakt-Ausgang für bestehende Portal-Nutzer. Direkt darunter stehen drei belegte Kennzahlen aus dem dokumentierten Fall samt Einzelfall-Hinweis.
+- **Entscheidungsfolge:** Mechanismus → Wirtschaftlichkeit → dokumentierter Fall → Preis & Einstieg → Passung → Marktcheck. Der Aufbaupreis steht vor der Qualifizierung sichtbar; Marktcheck bleibt der primäre Kalt-Intent-Pfad. FAQ und Vertiefungen sind auf kaufrelevante Fragen reduziert.
+- **Vertrauen:** echtes Haşim-Porträt als Verantwortlichkeitssignal, keine neue dekorative Motion oder generische Kartenfamilie. Das Gutachten-/Messprotokoll-System und der Cost-per-Order-Rechner bleiben die eigenständigen Kernelemente.
+- **Konsistenzfix:** Die FAQ zeigte das Sofortkontakt-Setup versehentlich mit dem Analysepreis 690 €. Sie liest jetzt korrekt den Setup-Preis von 790 € aus dem Preis-Kanon.
+
 ## 2026-10-07 — Anfrage-Website als messbares System
 
 - **USP:** `/wordpress-website-erstellen-lassen/` positioniert das Grundprodukt jetzt als geschlossene Strecke **technisches SEO → geprüfte Anfrage-Strecke → Basis-Daten-Cockpit**. Das Cockpit bündelt Search Console, gespeicherte Formularanfragen und Top-Landingpages und benötigt im Grundprodukt kein GA4.

@@ -137,14 +137,14 @@ $market_disclaimer = function_exists( 'hu_market_figures_disclaimer' ) ? hu_mark
 // die Abschnitts-IDs. Die neuen Namen (fall, leiter) haengen zusaetzlich
 // an der jeweiligen H2.
 $chapters = [
-	[ 'nr' => '01', 'id' => 'strecke',    'titel' => 'Die Strecke',  'kurz' => 'Strecke' ],
-	[ 'nr' => '02', 'id' => 'rechnung',   'titel' => 'Die Rechnung', 'kurz' => 'Rechnung' ],
-	[ 'nr' => '03', 'id' => 'ergebnisse', 'titel' => 'Der Fall',     'kurz' => 'Fall' ],
-	[ 'nr' => '04', 'id' => 'einstieg',   'titel' => 'Ihr Einstieg', 'kurz' => 'Einstieg' ],
-	[ 'nr' => '05', 'id' => 'anteil',     'titel' => 'Was es braucht', 'kurz' => 'Was es braucht' ],
-	[ 'nr' => '06', 'id' => 'marktcheck', 'titel' => 'Marktcheck',   'kurz' => 'Marktcheck' ],
-	[ 'nr' => '07', 'id' => 'fragen',     'titel' => 'Fragen',       'kurz' => 'Fragen' ],
-	[ 'nr' => '08', 'id' => 'verweise',   'titel' => 'Verweise',     'kurz' => 'Verweise' ],
+	[ 'nr' => '01', 'id' => 'strecke',    'titel' => 'Der Mechanismus',      'kurz' => 'Mechanismus' ],
+	[ 'nr' => '02', 'id' => 'rechnung',   'titel' => 'Wirtschaftlichkeit',   'kurz' => 'Rechnung' ],
+	[ 'nr' => '03', 'id' => 'ergebnisse', 'titel' => 'Der Fall',             'kurz' => 'Fall' ],
+	[ 'nr' => '04', 'id' => 'einstieg',   'titel' => 'Preis & Einstieg',     'kurz' => 'Einstieg' ],
+	[ 'nr' => '05', 'id' => 'anteil',     'titel' => 'Passung',              'kurz' => 'Passung' ],
+	[ 'nr' => '06', 'id' => 'marktcheck', 'titel' => 'Marktcheck',           'kurz' => 'Marktcheck' ],
+	[ 'nr' => '07', 'id' => 'fragen',     'titel' => 'Entscheidungsfragen',  'kurz' => 'Fragen' ],
+	[ 'nr' => '08', 'id' => 'verweise',   'titel' => 'Vertiefung',           'kurz' => 'Vertiefung' ],
 ];
 
 $chapter_by_id = [];
@@ -317,7 +317,7 @@ $faq_items = [
 		'id'   => 'faq-kosten',
 		'q'    => 'Was kostet es, eigene Photovoltaik-Anfragen zu generieren statt zu kaufen?',
 		'lead' => sprintf( 'Der Aufbau einer eigenen Anfragestrecke liegt bei %s netto einmalig plus rund %s Hosting im Monat; das Werbebudget kommt separat hinzu und bleibt auf dem Konto des Betriebs.', $foundation_price, $hosting_price ),
-		'rest' => sprintf( 'Zwei kleinere Stufen davor: die Anfragesystem-Analyse für %s netto, die bei Umsetzung angerechnet wird, und das Sofortkontakt-Setup für %s netto, das auf bereits vorhandene Anfragen wirkt.', $analysis_price, $entry_price ),
+		'rest' => sprintf( 'Zwei kleinere Stufen davor: die Anfragesystem-Analyse für %s netto, die bei Umsetzung angerechnet wird, und das Sofortkontakt-Setup für %s netto, das auf bereits vorhandene Anfragen wirkt.', $analysis_price, $setup_price ),
 	],
 	[
 		'id'   => 'faq-cpo',
@@ -353,16 +353,12 @@ $faq_answer_text = static function ( $item ) {
 // Nach der Frage sortiert, die dahintersteckt — nicht nach Kategorie.
 // Wer sucht, sucht eine Antwort, keine Rubrik.
 $references = [
-	[ 'f' => 'Was kosten Solar-Leads am Markt?',              'z' => 'Marktstudie DACH, Preise je Modell',        'url' => home_url( '/solar-leads-kosten-studie/' ) ],
-	[ 'f' => 'Soll ich PV-Leads überhaupt kaufen?',           'z' => 'Einordnung der Anbieter und die Alternative', 'url' => home_url( '/solar-leads-kaufen-alternative/' ) ],
-	[ 'f' => 'Was ist ein realistischer CPL in Photovoltaik?', 'z' => 'Drei Szenarien, versteckte Kostentreiber',   'url' => home_url( '/cost-per-lead-photovoltaik/' ) ],
-	[ 'f' => 'Woran erkenne ich eine qualifizierte PV-Anfrage?', 'z' => 'Vier Merkmale plus Warnsignale',          'url' => home_url( '/qualifizierte-pv-anfragen/' ) ],
-	[ 'f' => 'Portal oder eigenes System über 24 Monate?',    'z' => 'Vergleich über acht Kriterien',              'url' => home_url( '/eigene-leadgenerierung-vs-portale/' ) ],
-	[ 'f' => 'Wie ist ein Solar-Funnel aufgebaut?',           'z' => 'Fünf Stufen einer belastbaren Architektur',  'url' => home_url( '/lead-funnel-solar/' ) ],
-	[ 'f' => 'Wie funktioniert Server-Side-Tracking im B2B?', 'z' => 'GA4, Meta CAPI, Consent Mode v2',            'url' => $tracking_url ],
-	[ 'f' => 'Was gilt bei Wärmepumpen-Leads anders?',        'z' => 'Marktmodelle und CPL im Heizungstausch',     'url' => home_url( '/waermepumpen-leads/' ) ],
-	[ 'f' => 'Wie läuft gewerbliche PV-Leadgenerierung?',     'z' => 'Buying-Center-Funnel im B2B',                'url' => home_url( '/b2b-solar-leads/' ) ],
-	[ 'f' => 'Wie gewinnen Solarteure systematisch Kunden?',  'z' => 'Fünf Hebel im DACH-Mittelstand',             'url' => home_url( '/kunden-gewinnen-solarteure/' ) ],
+	[ 'f' => 'Was kosten Solar-Leads am Markt?',               'z' => 'Marktstudie DACH, Preise je Modell',          'url' => home_url( '/solar-leads-kosten-studie/' ) ],
+	[ 'f' => 'Soll ich PV-Leads überhaupt kaufen?',            'z' => 'Portalmodell einordnen und Alternative prüfen', 'url' => home_url( '/solar-leads-kaufen-alternative/' ) ],
+	[ 'f' => 'Was ist ein realistischer CPL in Photovoltaik?', 'z' => 'Drei Szenarien und Kostentreiber',            'url' => home_url( '/cost-per-lead-photovoltaik/' ) ],
+	[ 'f' => 'Was gilt bei Wärmepumpen-Leads anders?',         'z' => 'Eigene Anfragequelle für SHK und Wärmepumpe', 'url' => home_url( '/waermepumpen-leads/' ) ],
+	[ 'f' => 'Wie läuft gewerbliche PV-Leadgenerierung?',      'z' => 'Buying-Center und Vorqualifizierung im B2B',  'url' => home_url( '/b2b-solar-leads/' ) ],
+	[ 'f' => 'Wie wird die Strecke belastbar gemessen?',       'z' => 'Server-Side Tracking, Ads und Consent',       'url' => $tracking_url ],
 ];
 
 // ── Abschluss: Protokollzeile ──────────────────────────────────
@@ -607,14 +603,14 @@ get_header();
 
 			<div class="reihe">
 				<div class="haupt breit">
-					<p class="gegenstand">Gegenstand · Anfragegewinnung für Photovoltaik, Wärmepumpe und Speicher</p>
+					<p class="gegenstand">Eigenes Anfragesystem · Photovoltaik · Wärmepumpe · Speicher</p>
 
-					<h1>Anfragen, die nur bei Ihnen ankommen. <em>Für Solar und Wärmepumpe.</em></h1>
+					<h1>Anfragen, die nur bei Ihnen ankommen. <em>Auf einem System, das Ihnen gehört.</em></h1>
 
 					<p class="aufriss">
-						<span class="erst">Ein Portal-Kontakt geht an 3 bis 5 Betriebe. Eine Anfrage über Ihre eigene Seite nur an Sie.</span>
-						Ich entwickle Landingpages, optimiere Kampagnen und verbinde Formulare, Tracking und CRM.
-						So kommen Anfragen mit Produktinteresse und Herkunft bei Ihrem Vertrieb an; Code, Konten und Daten bleiben bei Ihnen.
+						<span class="erst">Statt denselben Portal-Kontakt mit mehreren Betrieben zu teilen, bauen Sie auf Ihrer Domain eine eigene Anfragequelle.</span>
+						Ich verbinde Landingpages, Vorqualifizierung, Tracking und CRM zu einer Strecke — von der Herkunft bis zum Abschluss.
+						Code, Werbekonten und Daten bleiben bei Ihrem Betrieb.
 					</p>
 
 					<div class="ausgang">
@@ -623,30 +619,46 @@ get_header();
 							data-track-category="lead_gen"
 							data-track-section="dokumentkopf"
 						>Kostenlosen Marktcheck starten <span class="pf" aria-hidden="true">→</span></a>
-						<a class="tun still" href="#sofortkontakt"
+						<a class="hero-nebenweg" href="#sofortkontakt"
 							data-track-action="cta_strecke_kopf_to_sofortkontakt"
 							data-track-category="lead_gen"
 							data-track-section="dokumentkopf"
-						>Sie kaufen schon Leads? Sofortkontakt</a>
+						>Sie kaufen bereits Portal-Leads? Sofortkontakt-Setup →</a>
+					</div>
+					<p class="cta-sicherheit"><?php echo esc_html( sprintf( '%d Minuten · keine Buchung · persönlicher Befund %s', $marketcheck_mins, $marketcheck_reply ) ); ?></p>
+
+					<div class="hero-beleg" aria-label="Kennzahlen des dokumentierten Referenzfalls">
+						<div>
+							<span class="hero-beleg-wert zahl"><?php echo esc_html( $e3_cpl_before ); ?> → <?php echo esc_html( $e3_cpl_after ); ?></span>
+							<span class="hero-beleg-label">Kosten pro qualifizierter Anfrage</span>
+						</div>
+						<div>
+							<span class="hero-beleg-wert zahl"><?php echo esc_html( $e3_lead_count ); ?></span>
+							<span class="hero-beleg-label">Anfragen in <?php echo esc_html( $e3_timeframe ); ?></span>
+						</div>
+						<div>
+							<span class="hero-beleg-wert zahl"><?php echo esc_html( $e3_sales_conv ); ?></span>
+							<span class="hero-beleg-label">Abschlussquote vorqualifizierter CRM-Leads</span>
+						</div>
+						<p>Dokumentierter Fall eines <?php echo esc_html( $e3_case_label ); ?> in DACH. Keine Prognose für Ihren Betrieb.</p>
 					</div>
 
 					<div class="meta">
 						<dl>
 							<div>
-								<dt>Für wen</dt>
-								<dd>Solar- und SHK-Betriebe mit eigenem Vertrieb</dd>
-							</div>
-							<div>
-								<dt>Einstieg</dt>
-								<dd>Marktcheck, kostenlos · Befund <?php echo esc_html( $marketcheck_reply ); ?></dd>
-							</div>
-							<div>
 								<dt>Aufbau</dt>
-								<dd><span class="zahl"><?php echo esc_html( $foundation_price ); ?></span> netto · Einstieg ab <span class="zahl"><?php echo esc_html( $entry_price ); ?></span></dd>
+								<dd><span class="zahl"><?php echo esc_html( $foundation_price ); ?></span> netto · plus rund <span class="zahl"><?php echo esc_html( $hosting_price ); ?></span>/Mon. Hosting</dd>
 							</div>
 							<div>
-								<dt>Bearbeitet von</dt>
-								<dd>Haşim Üner · Strategie und Umsetzung persönlich</dd>
+								<dt>Eigentum</dt>
+								<dd>Domain, Code, Werbekonten und Daten bleiben bei Ihrem Betrieb.</dd>
+							</div>
+							<div>
+								<dt>Verantwortlich</dt>
+								<dd class="hero-person">
+									<img src="<?php echo esc_url( get_stylesheet_directory_uri() . '/assets/img/hasim-freelancer-portrait-112.webp' ); ?>" alt="" width="44" height="44" decoding="async">
+									<span>Haşim Üner · Strategie, Umsetzung und Befund persönlich</span>
+								</dd>
 							</div>
 						</dl>
 					</div>
@@ -658,8 +670,8 @@ get_header();
 			<div class="reihe schrieb">
 				<div class="haupt breit tafel">
 					<div class="kopfzeile">
-						<h2 id="messschrieb">Kosten pro qualifizierter Anfrage</h2>
-						<span class="mono">Dokumentierter Fall · PV-Mittelstand · <?php echo esc_html( $e3_timeframe ); ?></span>
+						<h2 id="messschrieb">Dokumentierter Fall: <?php echo esc_html( $e3_cpl_before ); ?> → <?php echo esc_html( $e3_cpl_after ); ?></h2>
+						<span class="mono">Kosten pro qualifizierter Anfrage · <?php echo esc_html( $e3_timeframe ); ?> · Einzelfall</span>
 					</div>
 
 					<figure class="bandtreppe" aria-labelledby="messschrieb treppe-hinweis">
@@ -770,11 +782,11 @@ get_header();
 			<div class="blatt reihe">
 				<?php $render_chapter( $chapter_by_id['strecke'] ); ?>
 				<div class="voll">
-					<h2 class="kopf" id="strecke-titel">Was aus einem Monatsbudget von <?php echo esc_html( $format_eur( $calc_defaults['b1'] ) ); ?> wird.</h2>
-					<p class="vorspann">Zwei Wege, dasselbe Budget. Beide verlieren Anfragen. Der Unterschied ist, wo das passiert und ob es schon bezahlt war.</p>
+					<h2 class="kopf" id="strecke-titel">Fünf Stationen entscheiden, ob aus Nachfrage ein Auftrag wird.</h2>
+					<p class="vorspann">Der Hebel ist nicht nur mehr Traffic. Quelle, Vorqualifizierung, Reaktionszeit, Nachfassen und Abschlussdaten müssen als eine Strecke zusammenarbeiten. Das Modell darunter zeigt, wo sich Lead-Einkauf und eigene Anfragequelle strukturell unterscheiden.</p>
 
 					<div class="streckenmodul tafel" id="modul" data-streckenmodul data-counts="<?php echo esc_attr( wp_json_encode( $module_counts ) ); ?>">
-						<div class="modul-kopf"><h3>Zwei Wege, ein Budget.</h3><span class="mono">Ein Punkt = eine Anfrage</span></div>
+						<div class="modul-kopf"><h3>Wo der Unterschied entsteht.</h3><span class="mono">Modellrechnung · ein Punkt = eine Anfrage</span></div>
 						<div class="modul-buehne" data-module-stage>
 							<?php
 							$module_layouts = [
@@ -856,8 +868,8 @@ get_header();
 			<div class="blatt reihe">
 				<?php $render_chapter( $chapter_by_id['rechnung'] ); ?>
 				<div class="voll">
-					<h2 class="kopf" id="rechnung-titel">Nicht pro Anfrage rechnen. Pro Auftrag.</h2>
-					<p class="vorspann">Vergleichen Sie beide Wege mit Ihren eigenen Annahmen. Entscheidend sind Anfragekosten, Abschlussquote und laufender Aufwand. Die vorbelegten Werte sind Rechenbeispiele, keine Prognose für Ihren Betrieb.</p>
+					<h2 class="kopf" id="rechnung-titel">Der CPL endet am Formular. Entscheidend ist der Auftrag.</h2>
+					<p class="vorspann">Rechnen Sie beide Wege mit denselben Bezugsgrößen. Anfragekosten, Abschlussquote und laufender Aufwand müssen zusammenpassen. Die vorbelegten Werte sind ein Rechenbeispiel, keine Prognose.</p>
 
 					<div class="rechenblatt"
 						data-strecke-rechner
@@ -967,11 +979,10 @@ get_header();
 			<div class="blatt reihe">
 				<?php $render_chapter( $chapter_by_id['ergebnisse'] ); ?>
 				<div class="voll">
-					<h2 class="kopf" id="fall"><?php echo esc_html( $e3_timeframe ); ?>, ein Betrieb, drei Phasen.</h2>
+					<h2 class="kopf" id="fall">Was sich im dokumentierten Fall tatsächlich verändert hat.</h2>
 					<p class="vorspann">
-						Ein <?php echo esc_html( $e3_case_label ); ?> in DACH.
-						Die Projektmonate zählen ab Beginn der Vorbereitung, nicht ab Kampagnenstart.
-						Die Entwicklung beruht auf dem Zusammenspiel der Maßnahmen; der isolierte Beitrag des Trackings ist nicht gemessen.
+						<?php echo esc_html( $e3_timeframe ); ?> bei einem <?php echo esc_html( $e3_case_label ); ?> in DACH: erst Strategie und Landingpages, dann Kampagnen, anschließend Tracking und CRM-Rückführung.
+						Die Entwicklung beruht auf dem Zusammenspiel der Maßnahmen; der isolierte Beitrag einzelner Bausteine ist nicht gemessen.
 					</p>
 
 					<div class="phasen">
@@ -1000,12 +1011,12 @@ get_header();
 			<div class="blatt reihe">
 				<?php $render_chapter( $chapter_by_id['einstieg'] ); ?>
 				<div class="voll">
-					<h2 class="kopf" id="leiter">Welcher Einstieg zu Ihrer Ausgangslage passt.</h2>
-					<p class="vorspann">Der kostenlose Marktcheck klärt den Bedarf. Danach entscheiden Sie, ob eine vertiefte Analyse, ein einzelnes Setup oder der Aufbau sinnvoll ist. Es gibt keine Pflicht, alle Stufen zu buchen.</p>
+					<h2 class="kopf" id="leiter">Der Aufbau kostet <?php echo esc_html( $foundation_price ); ?> netto. Prüfen Sie zuerst, ob er sich trägt.</h2>
+					<p class="vorspann">Der Marktcheck ist der Standard-Einstieg. Analyse und Sofortkontakt sind Abkürzungen für Betriebe mit einem konkreten Diagnose- oder Portal-Problem. Sie buchen keine künstliche Paketleiter und müssen keine Vorstufe kaufen.</p>
 
 					<div class="leiter">
 						<?php foreach ( $ladder as $rung_index => $rung ) : ?>
-							<article class="stufe">
+							<article class="stufe<?php echo 'stufe-aufbau' === $rung['id'] ? ' ist-hauptangebot' : ''; ?>">
 								<span class="i" aria-hidden="true"><?php echo esc_html( sprintf( '%02d', $rung_index + 1 ) ); ?></span>
 								<div>
 									<h3 id="<?php echo esc_attr( $rung['id'] ); ?>"><?php echo esc_html( $rung['titel'] ); ?></h3>
@@ -1092,8 +1103,8 @@ get_header();
 				<?php $render_chapter( $chapter_by_id['anteil'] ); ?>
 				<div class="voll">
 					<span id="passung" aria-hidden="true"></span>
-					<h2 class="kopf leise" id="anteil-titel">Was es für eine eigene Anfragestrecke braucht.</h2>
-					<p class="vorspann">Das Angebot richtet sich an Installationsbetriebe, die eigene Anfragen gewinnen und selbst bearbeiten. Dafür brauche ich Ihre Zugänge, eine Person für Entscheidungen und einen Vertrieb, der Anfragen bearbeitet.</p>
+					<h2 class="kopf leise" id="anteil-titel">Passt ein eigener Anfrageweg zu Ihrem Betrieb?</h2>
+					<p class="vorspann">Das System ist für ausführende Solar-, Wärmepumpen- und Speicherbetriebe mit eigenem Vertrieb gebaut. Drei Dinge müssen vorhanden sein: Zugriff auf die eigenen Konten, eine entscheidungsfähige Person und ein Vertrieb, der konsequent nachfasst.</p>
 					<div class="bedingungen">
 						<?php foreach ( $conditions as $condition_index => $condition ) : ?>
 							<div>
@@ -1139,8 +1150,8 @@ get_header();
 			<div class="blatt reihe">
 				<?php $render_chapter( $chapter_by_id['marktcheck'] ); ?>
 				<div class="voll">
-					<h2 class="kopf" id="marktcheck-titel">So geht es nach Ihrer Anfrage weiter.</h2>
-					<p class="vorspann">Beantworten Sie <?php echo esc_html( (string) $marketcheck_fit_q ); ?> kurze Fragen und hinterlassen Sie Ihre Kontaktdaten. Ich prüfe Ihre Angaben persönlich und sende den Befund <?php echo esc_html( $marketcheck_reply ); ?> per E-Mail. Sie entscheiden danach, ob wir weiterarbeiten. Kein Pflichtgespräch, keine Buchung durch das Absenden.</p>
+					<h2 class="kopf" id="marktcheck-titel">Vier Angaben. Danach bekommen Sie eine klare Empfehlung.</h2>
+					<p class="vorspann">Ich prüfe Betrieb, Projekt-Fit, Vertriebsstruktur und Zeithorizont persönlich. Den schriftlichen Befund erhalten Sie <?php echo esc_html( $marketcheck_reply ); ?> per E-Mail: jetzt aufbauen, später vorbereiten oder nicht investieren. Kein Pflichtgespräch, keine Buchung durch das Absenden.</p>
 
 					<div class="gate">
 						<div>
@@ -1224,11 +1235,8 @@ get_header();
 			<div class="blatt reihe">
 				<?php $render_chapter( $chapter_by_id['fragen'] ); ?>
 				<div class="haupt">
-					<h2 class="kopf leise" id="fragen-titel">Bevor Sie fragen.</h2>
-					<p class="vorspann">
-						Was hier nicht beantwortet wird, klären wir im Marktcheck — schriftlich, ohne
-						Verkaufsgespräch.
-					</p>
+					<h2 class="kopf leise" id="fragen-titel">Was Sie vor einer Entscheidung wissen sollten.</h2>
+					<p class="vorspann">Kosten, Risiko, Tracking, bestehende Website und Eigentum müssen vor einem fünfstelligen Aufbau geklärt sein. Die wichtigsten Antworten stehen hier; den Rest klären wir schriftlich im Marktcheck.</p>
 
 					<div class="fragen">
 						<?php foreach ( $faq_items as $faq_item ) : ?>
@@ -1252,7 +1260,7 @@ get_header();
 						<span class="label">Anmerkung</span>
 						<b>Cost per Order</b> heißt: was ein gewonnener Auftrag kostet, nicht was ein Kontakt
 						kostet. Beziehen Sie zusätzlich Marge und Vertriebsaufwand ein. Den Vergleich finden Sie in
-						<a class="satzlink" href="#rechnung">Abschnitt 03</a>.
+						<a class="satzlink" href="#rechnung">Abschnitt 02</a>.
 					</div>
 				</div>
 			</div>
@@ -1263,12 +1271,8 @@ get_header();
 			<div class="blatt reihe">
 				<?php $render_chapter( $chapter_by_id['verweise'] ); ?>
 				<div class="voll">
-					<h2 class="kopf leise" id="verweise-titel">Einzelne Fragen vertiefen.</h2>
-					<p class="vorspann">
-						<?php echo esc_html( (string) count( $references ) ); ?> Seiten zu Strategie,
-						Lead-Qualität, Funnel-Architektur und Markteinordnung — nach der Frage sortiert,
-						die dahintersteckt. Jede ist unabhängig lesbar.
-					</p>
+					<h2 class="kopf leise" id="verweise-titel">Nur die Vertiefungen, die eine Entscheidung verändern.</h2>
+					<p class="vorspann"><?php echo esc_html( (string) count( $references ) ); ?> Fachseiten für Kosten, Lead-Kauf, Wärmepumpe, Gewerbe-PV und Messung. Kein vollständiges Inhaltsverzeichnis — nur die nächsten sinnvollen Wege.</p>
 
 					<div class="verweise">
 						<?php foreach ( $references as $reference_index => $reference ) : ?>
@@ -1293,19 +1297,19 @@ get_header();
 			<div class="blatt">
 				<div class="tafel reihe">
 					<div class="haupt breit">
-						<h2 id="abschluss">Passt ein eigener Anfrageweg zu Ihrem Betrieb?</h2>
-						<p class="aufriss">Starten Sie mit dem kostenlosen Marktcheck. Sie erhalten meine schriftliche Einschätzung und einen konkreten nächsten Schritt.</p>
+						<h2 id="abschluss">Erst prüfen. Dann investieren.</h2>
+						<p class="aufriss">Der Marktcheck klärt schriftlich, ob ein eigener Anfrageweg zu Projektwert, Region und Vertrieb Ihres Betriebs passt. Wenn nicht, sage ich das genauso klar.</p>
 						<div class="ausgang">
 							<a class="tun" href="#marktcheck"
 								data-track-action="cta_strecke_abschluss_to_marktcheck"
 								data-track-category="lead_gen"
 								data-track-section="abschluss"
 							>Kostenlosen Marktcheck starten <span class="pf" aria-hidden="true">→</span></a>
-							<a class="tun still" href="#sofortkontakt"
+							<a class="hero-nebenweg" href="#sofortkontakt"
 								data-track-action="cta_strecke_abschluss_to_sofortkontakt"
 								data-track-category="lead_gen"
 								data-track-section="abschluss"
-							>Sie kaufen schon Leads? Sofortkontakt</a>
+							>Portal-Leads bereits im Einsatz? Sofortkontakt-Setup →</a>
 						</div>
 					</div>
 					<div class="marg">
