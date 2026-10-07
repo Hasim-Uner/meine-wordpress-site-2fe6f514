@@ -17,7 +17,7 @@ Stand: 2026-10-03. Diese Karte beschreibt Systemgrenzen und Abhängigkeiten nach
 | Public Proof Layer | zentraler oeffentlicher Proof- und Vokabular-Layer fuer kaufnahe Seiten | `blocksy-child/inc/helpers.php`, `blocksy-child/inc/shortcodes.php`, `blocksy-child/front-page.php`, `blocksy-child/page-wordpress-agentur.php`, `blocksy-child/page-kontakt.php`, `blocksy-child/inc/contact-page.php` | WordPress-Editor, oeffentliche Cases und Profile | live |
 | Content- und SEO-System | Blog, Kategorie-Archive, Cornerstone-Content, Glossar-Registry und interne Verlinkung | `blocksy-child/home.php`, `blocksy-child/category.php`, `blocksy-child/single.php`, `blocksy-child/template-parts/post-title-visual.php`, `blocksy-child/page-seo-cornerstone.php`, `blocksy-child/inc/glossary/`, `blocksy-child/inc/blog-provider-posts.php`, `content/blog-drafts/` | WordPress-Editor, einmalige Theme-Seeds | live plus Ausbau |
 | Client Portal | Kunden-Cockpit mit Login, Upload und optionalen Nutzer-Metadaten für Ressourcen, KPI und Roadmap | `blocksy-child/template-portal.php`, `blocksy-child/inc/client-portal.php`, `blocksy-child/inc/snippets.php` | WordPress-User-System, User Meta, Media Library | live; keine Mock-Daten mehr, Empty-State ohne gepflegtes `nexus_client_portal`; Pflege im Benutzerprofil |
-| Marktcheck / System-Diagnose-Legacy | aktiver B2B-System-Intake auf der Solar-Landingpage; frühere System-Diagnose-Route bleibt als Redirect erhalten | `blocksy-child/page-solar-waermepumpen-leadgenerierung.php`, `blocksy-child/assets/js/solar-leadgenerierung-solara.js`, `blocksy-child/assets/js/solar-marketcheck-compact.js`, `blocksy-child/inc/system-diagnose-page.php`, `blocksy-child/inc/review-crm.php` | WordPress, Audit-CRM, Brevo/wp_mail, Cal.com | System-Intake aktiv über `/wp-json/nexus/v1/audit-request` mit Contract `2026-05-26.audit-request.v1`, Trace-ID und strukturierten Fehlern; `/system-diagnose/`, `/readiness-diagnose/` und `/anfrage/` als Legacy-Redirects |
+| Marktcheck / System-Diagnose-Legacy | bezahlter Energy-Marktcheck als gescopter Kontakt-Intake; frühere System-Diagnose-Route bleibt als Redirect erhalten | `blocksy-child/page-solar-waermepumpen-leadgenerierung.php`, `blocksy-child/page-kontakt.php`, `blocksy-child/inc/contact-page.php`, `blocksy-child/inc/system-diagnose-page.php`, `blocksy-child/inc/review-crm.php` | WordPress, Nexus Contact/CRM, Brevo/wp_mail | Default-Pfad `/kontakt/?type=audit&focus=audit_scope`; die frühere `audit-request`-Runtime bleibt für Legacy-Kompatibilität im Repo, wird von der Solar-Money-Page aber nicht mehr geladen; `/system-diagnose/`, `/readiness-diagnose/` und `/anfrage/` als Legacy-Redirects |
 | Agenten- und Skill-System | Kontext, Guardrails und wiederholbare Skills; konkrete public Routes werden an `llms.txt` delegiert | `AGENTS.md`, `agents/skills/`, `llms.txt` | keine direkte Laufzeitabhaengigkeit | aktiv verdichtet |
 
 ## Website
@@ -83,15 +83,15 @@ Systemische Rolle:
 
 ## Marktcheck / System-Diagnose-Legacy
 
-- Aktive Route: `/solar-waermepumpen-leadgenerierung/#marktcheck`
-- Legacy: `/system-diagnose/`, `/readiness-diagnose/` und `/anfrage/` leiten per 301 weiter
-- Contract: aktiver REST-Contract `2026-05-26.audit-request.v1`
-- Status: B2B-System-Intake im Marktcheck-Abschnitt der Solar-Landingpage, sichtbar in zwei Schritten (`HU_MARKETCHECK_VISIBLE_STEPS`), intern fünf Datengruppen (`HU_MARKETCHECK_STEPS`); vier tatsächliche Fit-Signale (`solution_focus`, `business_fit`, `sales_team_size`, `project_timing`) führen zu den geschäftlichen Kontaktdaten. CPL, Anfragevolumen oder Engpass werden nicht aus anderen Antworten abgeleitet; die Firmen-PLZ bleibt Pflicht für die regionale Einordnung. Die frühere Audit-/Instant-Results-UI ist aus der Runtime entfernt
-- WordPress REST: `/wp-json/nexus/v1/audit-request`; Antworten tragen `contractVersion`, `traceId` sowie `X-Nexus-Contract-Version`/`X-Nexus-Trace-Id`
-- Bezahlte Energie-Einstiege: `#analyse` und `#sofortkontakt` senden als getrennte `intake_variant`-Werte an denselben Endpunkt; `solar-order-forms.js` nutzt den gemeinsamen, cachefesten Submit-Helfer. Die vier Portal-Entscheidungsbeiträge führen primär zum Sofortkontakt und sekundär zum Marktcheck.
-- CRM: `nexus_review_request`, Audit-Typ `B2B-System-Intake`; Legacy-Energy-Intakes bleiben als `Marktcheck` rückwärtskompatibel
-- Mail: interne Admin-Benachrichtigung und Lead-Bestätigung über zentrale Brevo-/`wp_mail`-Schicht
-- Default-Fragepfad: Leistungsfokus, wirtschaftlicher Projekt-Fit, Vertriebsverantwortung, Umsetzungshorizont, Firma, Name, Position, geschäftliche E-Mail und Firmen-PLZ; keine personenbezogenen Endkundendaten
+- Öffentliche Entscheidungsroute: `/solar-waermepumpen-leadgenerierung/#marktcheck`
+- Aktiver Marktcheck-Intake: `/kontakt/?type=audit&focus=audit_scope`
+- Preis: `HU_MARKETCHECK_PRICE` aus `inc/canon/pricing-canon.php`; bei Aufbau vollständig anrechenbar
+- Die Solar-Money-Page ist formularfrei. Sie lädt weder `solar-leadgenerierung-solara.js` noch `solar-order-forms.js`
+- Das konfigurierbare Anfragesystem übergibt nach `/kontakt/?type=project&focus=energy_system&produkte=…`
+- Sofortkontakt übergibt nach `/kontakt/?type=implementation&focus=response_setup`
+- Die frühere Energy-Analyse ist aus der sichtbaren Solar-Produktarchitektur entfernt; ihr globaler Preis-Canon bleibt für andere Routen bestehen
+- Legacy: `/system-diagnose/`, `/readiness-diagnose/` und `/anfrage/` leiten weiter. Der bestehende `audit-request`-Contract und `nexus_review_request` bleiben für rückwärtskompatible/alte Intakes erhalten, sind aber nicht mehr Default-Pfad der Money Page
+- Default-Kontaktpfad speichert weiterhin Landingpage, Attribution und gescopten Fokus im gemeinsamen Nexus-Contact/CRM-Modell; keine Endkundendaten werden abgefragt
 
 ## Growth-Audit-Legacypfad
 
