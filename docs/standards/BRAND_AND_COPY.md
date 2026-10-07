@@ -251,7 +251,7 @@ Regeln:
 - Sie ist **kein globaler Rollen-Claim** und kein primärer Navigationspunkt.
 - Der getrennte Freelancer-Intent gehört auf `/`.
 - Der Begriff `WordPress Agentur Hannover` darf im SEO-Title/H1 dieser Route stehen, weil er die Suchintention besitzt.
-- Die Seite darf direkte Zusammenarbeit als Alternative sichtbar zur Freelancer-Route weiterführen.
+- Die Seite positioniert direkte Verantwortung als Alternative zur klassischen Agentur und führt anschließend zu den passenden Produkt-Ownern für Website, Tracking oder Conversion weiter.
 - Benachbarte Kategoriebegriffe nicht wahllos ergänzen. Der Versuch mit `Webdesign-Agentur`, `Internetagentur` und `Webagentur` verschlechterte 2026 die Money-Query ohne belegten Zusatznutzen.
 - Regressionen auf dieser Route prüft `agents/skills/seo-drift/scripts/drift-report.sh`.
 
