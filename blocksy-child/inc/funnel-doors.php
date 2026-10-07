@@ -9,8 +9,8 @@
  * entscheidet pro Anfrage Modus, Tuer und Weg.
  *
  * Betraege kommen ausschliesslich aus dem Kanon (inc/canon/pricing-canon.php).
- * Ein "ab"-Betrag steht nur an einer Tuer mit einem Produkt und ist die echte
- * Untergrenze dessen, was dahinter liegt. Die Tuer "Projekt anfragen" buendelt
+ * Ein "ab"-Betrag steht nur an einer Tuer mit einer echten Produktuntergrenze
+ * (Tracking-Messung oder Anfragesystem). Die Tuer "Projekt anfragen" buendelt
  * Website, Landingpage, Relaunch und Optimierung und traegt deshalb keinen
  * Betrag. Tracking beginnt bei der Messung, nicht beim Basis-Paket.
  *
