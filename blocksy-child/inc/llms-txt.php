@@ -99,7 +99,7 @@ function nexus_get_llms_txt_sections() {
 				[
 					'label'       => 'Anfragestrecke für Photovoltaik, Wärmepumpe und Speicher',
 					'url'         => $urls['energy'] ?? home_url( '/solar-waermepumpen-leadgenerierung/' ),
-					'description' => 'Money Page des Energie-Clusters. Definiert den Begriff „eigenes Anfragesystem“, beschreibt die fünf Stationen einer Anfragestrecke, rechnet Cost per Order gegen Lead-Einkauf und führt eine Angebotsleiter von 0 € (Marktcheck) über 690 € (Analyse) und 790 € (Sofortkontakt) bis zum Aufbau. Enthält den dokumentierten Fall mit 150 € auf 22 € pro qualifizierter Anfrage.',
+					'description' => 'Money Page des Energie-Clusters. Definiert den Begriff „eigenes Anfragesystem“, beschreibt die fünf Stationen einer Anfragestrecke und rechnet Cost per Order gegen Lead-Einkauf. Smartflow mit zwei Hauptprodukten: Marktcheck 99 € und Anfragesystem ab 9.999 € für eine Produktstrecke; jede weitere eigenständige Produktstrecke +1.000 €. Sofortkontakt bleibt ein separater Spezialpfad für vorhandene Leads. Enthält den dokumentierten Fall mit 150 € auf 22 € pro qualifizierter Anfrage.',
 				],
 				[
 					'label'       => 'Projekt anfragen',
@@ -109,7 +109,7 @@ function nexus_get_llms_txt_sections() {
 				[
 					'label'       => 'Marktcheck',
 					'url'         => $urls['audit'] ?? home_url( '/solar-waermepumpen-leadgenerierung/#marktcheck' ),
-					'description' => 'Diagnostischer Einstieg ausschließlich für Solar-, Wärmepumpen- und Speicher-Intent.',
+					'description' => 'Bezahlter diagnostischer Einstieg für Solar-, Wärmepumpen- und Speicher-Intent; 99 € netto, bei Aufbau vollständig anrechenbar.',
 				],
 			],
 		],
