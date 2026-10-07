@@ -299,11 +299,11 @@ foreach ( nav_test_contexts() as $context => $definition ) {
 	} elseif ( 'fokus' === $mode ) {
 		$ladder = nav_links( $header_html, '//nav[@class="leiter"]//a' );
 		nav_check( [] === $row && [] === $sheet && 0 === $header_x->query( '//button[@data-leiste-klappe]' )->length, "{$context}: focus mode has no main menu, sheet or menu button" );
-		nav_check( [ 'marktcheck' ] === array_column( $ladder, 'door' ), "{$context}: focus ladder is Marktcheck, Analyse, Sofortkontakt" );
+		nav_check( [ 'marktcheck' ] === array_column( $ladder, 'door' ), "{$context}: focus ladder is the paid Marktcheck only" );
 		nav_check( [ '#marktcheck' ] === array_column( $ladder, 'href' ), "{$context}: focus ladder points at anchors of the page" );
-		nav_check( [ 'nav_header_door_marktcheck', 'nav_header_door_analyse', 'nav_header_door_sofortkontakt' ] === array_column( $ladder, 'track' ), "{$context}: focus ladder keeps the nav_header_door_* actions" );
+		nav_check( [ 'nav_header_door_marktcheck' ] === array_column( $ladder, 'track' ), "{$context}: focus ladder keeps the nav_header_door_* actions" );
 		nav_check(
-			[ 'Marktcheck ' . $door_spec['marktcheck'][2], 'Analyse ' . $door_spec['analyse'][2], 'Sofortkontakt ' . $door_spec['sofort'][2] ] === array_column( $ladder, 'text' ),
+			[ 'Marktcheck ' . $door_spec['marktcheck'][2] ] === array_column( $ladder, 'text' ),
 			"{$context}: focus ladder shows each step with its canon amount"
 		);
 	} else {
