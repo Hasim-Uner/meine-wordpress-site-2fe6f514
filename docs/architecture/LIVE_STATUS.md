@@ -392,10 +392,12 @@ Contract und Abnahme: `CHAT_ASSISTANT.md`.
   Rechtstext-Seiten sind Standard. Custom Code statt Pagebuilder, Gutenberg/ACF,
   GitHub, KI-Workflow mit Prüfung. Einmalpreis, kein Website-Abo/Pflichtwartung,
   keine Pflichtlizenzen im Grundprodukt; Hosting und externe Dienste separat.
-  Feste Erweiterungen aus dem Preiskanon: individuelles Screendesign je
-  unterschiedlichem Layout, projektweites Standard-Tracking und CRM (ein Formular
-  → bestehendes HubSpot/Bitrix24). Daten-Dashboard nach Angebot; bekannte Summe
-  und Zeit ausdrücklich ohne Dashboard. Produktionszeit wird aus Grundsystem,
+  Grundprodukt zusätzlich mit Basis-Daten-Cockpit aus Search Console, gespeicherten
+  Formularanfragen und Top-Landingpages, ohne GA4-Pflicht. Feste Erweiterungen aus dem
+  Preiskanon: individuelles Screendesign je unterschiedlichem Layout, projektweites
+  Standard-Tracking und CRM (ein Formular → bestehendes HubSpot/Bitrix24). Individuelles
+  Daten-Dashboard mit weiteren Quellen nach Angebot; bekannte Summe und Zeit ausdrücklich
+  ohne diesen Dashboard-Zusatz. Produktionszeit wird aus Grundsystem,
   Seitentypen, optionaler Texterstellung und Projektmodulen addiert; Teil-Tage
   erst nach der Gesamtsumme aufrunden. Planungswerte,
   Kundenfreigaben/Start/Livegang separat. Fertige Designs/CRM vor Auftrag prüfen.
