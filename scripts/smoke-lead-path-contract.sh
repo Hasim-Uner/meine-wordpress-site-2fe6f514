@@ -54,15 +54,20 @@ require_file "$CRM_CONTACT"
 require_file "$DIAGNOSE_CANON"
 require_file "$PRICING_CANON"
 
-# The solar money page names the free marketcheck as its entry offer. Ready
-# buyers therefore need a direct primary path from the document head to the
-# actual gate; buyers of portal leads get the Sofortkontakt route beside it.
+# The Solar money page is now a decision surface, not a form host: two main
+# products in the hero, one configurable system, and scoped contact handoffs.
 require_pattern 'data-track-action="cta_strecke_kopf_to_marktcheck"' "$SOLAR_PAGE"
-require_pattern '>(Kostenlosen[[:space:]]+)?Marktcheck starten[[:space:]]*<span' "$SOLAR_PAGE"
-require_pattern 'data-track-action="cta_strecke_kopf_to_sofortkontakt"' "$SOLAR_PAGE"
+require_pattern 'data-track-action="cta_strecke_kopf_to_system"' "$SOLAR_PAGE"
+require_pattern 'data-system-configurator' "$SOLAR_PAGE"
+require_pattern 'data-system-product' "$SOLAR_PAGE"
+require_pattern "focus.*audit_scope" "$SOLAR_PAGE"
+require_pattern "focus.*energy_system" "$SOLAR_PAGE"
+require_pattern "focus.*response_setup" "$SOLAR_PAGE"
+forbid_pattern 'data-order-form=' "$SOLAR_PAGE"
+forbid_pattern 'sol-quiz-mount' "$SOLAR_PAGE"
 
-# The stable WordPress handle is a bootstrap now. It must load the compact
-# two-view controller and its matching stylesheet using the actual repo paths.
+# The retired inline marketcheck controller stays in the repository for
+# contract/backward-compatibility tests, but is not rendered by the money page.
 require_pattern "solar-marketcheck-compact\.js" "$SOLAR_BOOTSTRAP"
 require_pattern "solar-marketcheck-compact\.css" "$SOLAR_BOOTSTRAP"
 forbid_pattern "solar-marktcheck-compact\.css" "$SOLAR_BOOTSTRAP"
@@ -118,9 +123,11 @@ done
 require_pattern "Schritt 1 von 2" "$SOLAR_JS"
 require_pattern "Schritt 2 von 2" "$SOLAR_JS"
 require_pattern "marketcheck_visible_steps" "$SOLAR_PAGE"
-require_pattern "Fit-Fragen plus Kontaktdaten" "$SOLAR_PAGE"
+require_pattern "kurze Fit-Signale" "$SOLAR_PAGE"
+require_pattern "marketcheck_price" "$SOLAR_PAGE"
+require_pattern "foundation_extra_product_price" "$PRICING_CANON"
+require_pattern "HU_MARKETCHECK_PRICE" "$PRICING_CANON"
 forbid_pattern '\$marketcheck_steps' "$SOLAR_PAGE"
-forbid_pattern "%d Fragen" "$SOLAR_PAGE"
 forbid_pattern "sol-quiz-progress" "$SOLAR_JS"
 
 # Funnel observability and post-submit trust are part of the public lead-path
