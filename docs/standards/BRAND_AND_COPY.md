@@ -339,10 +339,14 @@ Keine Gesamt-CPO-Rechnung aus dem erreichten Kampagnen-CPL und der CRM-Quote.
 Zielgruppe und persönliche Umsetzung zuerst; Kennzahlen in einem gemeinsamen
 Belegfeld, Projektphasen im Fallabschnitt. Der interaktive Rechner enthält
 Annahmen und darf nicht als Ergebnisprognose dargestellt werden. Stationen
-erklären die Umsetzung und den Nutzen für den Vertrieb. Der kostenlose
-Marktcheck bleibt der primäre Schritt: persönliche Prüfung, schriftlicher
-E-Mail-Befund gemäß Antwortzeit-Kanon, danach freie Entscheidung. Kein
-Pflichtgespräch und keine Buchung durch das Absenden.
+erklären die Umsetzung und den Nutzen für den Vertrieb. Seit Smartflow
+2026-10-07 gibt es im Energy-Funnel zwei Hauptprodukte: den bezahlten
+**Marktcheck** als kleinen diagnostischen Einstieg und das konfigurierbare
+**Anfragesystem** als Hauptprodukt. Preise und Erweiterungslogik kommen nur aus
+`inc/canon/pricing-canon.php`. Die Money Page selbst ist formularfrei;
+Marktcheck und System übergeben an gescopte Kontakt-Intakes. Sofortkontakt ist
+ein separater Spezialpfad für bereits vorhandene Leads, keine dritte
+Hauptentscheidung. Kein Pflichtgespräch durch den Marktcheck.
 
 ## Die Anfrage-Website — Freigaben 02.10. und 04.10.2026
 
