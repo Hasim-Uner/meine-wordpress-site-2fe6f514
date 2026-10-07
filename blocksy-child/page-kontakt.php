@@ -57,7 +57,7 @@ $public_focus_options = array_filter(
 // Bei Projektanfragen stehen die häufigsten Vorhaben oben; die Schlüssel
 // bleiben unverändert, nur die Reihenfolge der Auswahl ändert sich.
 if ( 'project' === $selected_type ) {
-	$project_focus_order  = [ 'website', 'relaunch', 'implementation_scope', 'conversion', 'tracking', 'seo', 'performance', 'website_strategy', 'followup_scope' ];
+	$project_focus_order  = [ 'energy_system', 'website', 'relaunch', 'implementation_scope', 'response_setup', 'conversion', 'tracking', 'seo', 'performance', 'website_strategy', 'followup_scope' ];
 	$public_focus_options = array_merge(
 		array_intersect_key( array_flip( $project_focus_order ), $public_focus_options ),
 		$public_focus_options
@@ -110,6 +110,45 @@ if ( 'website' === $selected_focus ) {
 	$form_intro = 'Beschreiben Sie kurz Ihr Angebot und den gewünschten Starttermin.';
 	$message_step_title = 'Was bieten Sie an, und bis wann soll die Website stehen?';
 	$submit_label = 'Website-Projekt anfragen';
+}
+
+$prefill_message = '';
+$energy_product_labels = [
+	'photovoltaik' => 'Photovoltaik',
+	'waermepumpe'  => 'Wärmepumpe',
+	'speicher'     => 'Speicher',
+];
+if ( 'energy_system' === $selected_focus ) {
+	$requested_products = isset( $_GET['produkte'] ) ? explode( ',', sanitize_text_field( wp_unslash( $_GET['produkte'] ) ) ) : [ 'photovoltaik' ];
+	$requested_products = array_values( array_unique( array_filter( array_map( 'sanitize_key', $requested_products ), static function ( $product ) use ( $energy_product_labels ) {
+		return isset( $energy_product_labels[ $product ] );
+	} ) ) );
+	if ( empty( $requested_products ) ) {
+		$requested_products = [ 'photovoltaik' ];
+	}
+	$product_names       = array_map( static function ( $product ) use ( $energy_product_labels ) { return $energy_product_labels[ $product ]; }, $requested_products );
+	$hero_title          = 'Welche Anfragestrecke soll für Ihren Betrieb entstehen?';
+	$form_title          = 'Ihre Konfiguration steht. Zwei kurze Schritte zur Projektanfrage.';
+	$form_intro          = 'Ausgewählt: ' . implode( ', ', $product_names ) . '. Ergänzen Sie nur noch Ausgangslage und Zielgebiet.';
+	$message_step_title  = 'Was muss die Strecke in Ihrem Betrieb leisten?';
+	$submit_label        = 'Anfragesystem anfragen';
+	$prefill_message     = 'Konfiguration: ' . implode( ', ', $product_names ) . '. Zielgebiet / Ausgangslage: ';
+}
+
+if ( 'response_setup' === $selected_focus ) {
+	$hero_title         = 'Wie schnell sollen vorhandene Anfragen beim Vertrieb ankommen?';
+	$form_title         = 'Sofortkontakt-Setup: zwei kurze Schritte zur Anfrage.';
+	$form_intro         = 'Für Betriebe, die bereits eigene oder gekaufte Leads erhalten und Reaktionszeit, Übergabe und Nachfassen sauber anschließen wollen.';
+	$message_step_title = 'Wie kommen Anfragen heute an, und wo liegt die Verzögerung?';
+	$submit_label       = 'Sofortkontakt-Setup anfragen';
+}
+
+if ( 'audit_scope' === $selected_focus && 'audit' === $selected_type ) {
+	$hero_title         = 'Marktcheck für Ihre Anfragegewinnung';
+	$form_title         = '99 € netto. Zwei kurze Schritte zur fachlichen Einordnung.';
+	$form_intro         = 'Betrieb, Zielgebiet, Vertriebsprozess und aktuelle Anfragequellen reichen für den ersten Check.';
+	$message_step_title = 'Wie gewinnen und bearbeiten Sie heute Anfragen?';
+	$submit_label       = 'Marktcheck für 99 € anfragen';
 }
 
 // Versuch Ersteinschätzung (/kontakt/?focus=ersteinschaetzung). Den Typ gibt
@@ -270,7 +309,7 @@ if ( function_exists( 'hu_first_assessment_enabled' ) && hu_first_assessment_ena
 						<div class="contact-field" data-contact-field="message">
 							<label for="contact-message" data-contact-message-label>Ausgangslage und Ziel</label>
 							<p id="contact-message-help" class="contact-field__help" data-contact-message-help>Nennen Sie Seite, Angebot und Engpass. Das reicht für eine erste fachliche Einordnung.</p>
-							<textarea id="contact-message" name="message" rows="6" required minlength="<?php echo esc_attr( (string) $message_minlength ); ?>" aria-describedby="contact-message-help contact-message-error" data-contact-message></textarea>
+							<textarea id="contact-message" name="message" rows="6" required minlength="<?php echo esc_attr( (string) $message_minlength ); ?>" aria-describedby="contact-message-help contact-message-error" data-contact-message><?php echo esc_textarea( $prefill_message ); ?></textarea>
 							<p class="contact-field__error is-hidden" id="contact-message-error" aria-live="polite"></p>
 						</div>
 
