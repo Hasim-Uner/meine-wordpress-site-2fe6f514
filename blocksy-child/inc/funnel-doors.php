@@ -56,15 +56,12 @@ function hu_funnel_solar_door_anchor( $own_anchor ) {
 }
 
 /**
- * Return the six funnel doors, keyed by door key.
+ * Return the funnel doors, keyed by door key.
  *
- * Schluessel: projekt, tracking, aufgabe (White-Label), marktcheck, analyse,
- * sofort (Sofortkontakt). `data-door` und `cta_footer_door_<schluessel>` tragen
- * diese Schluessel; `track` ist die Action im Kopf.
- *
- * Solange HU_FEATURE_SOLAR_DOORS aus ist, zeigen `analyse` und `sofort` auf
- * den Einstieg der Angebotsleiter (#einstieg). Die Anker #analyse und
- * #sofortkontakt entstehen erst mit der Solar-Strecke.
+ * `system` ist das konfigurierbare Energy-Hauptprodukt. `analyse` bleibt als
+ * Legacy-/Cross-Route-Tuer erhalten, wird aber weder im Solar-Fokusheader noch
+ * im Energy-Footerweg angeboten. `sofort` fuehrt direkt in den gescopten
+ * Kontakt-Intake statt in ein Formular auf der Money Page.
  *
  * `tier`: `scope` (Umfang offen, kein Betrag), `free` (kostenlos) oder `paid`.
  *
