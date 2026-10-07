@@ -304,7 +304,7 @@ get_header();
 			<div class="haupt">
 				<p class="mono stempelfarbe">Lokal erreichbar, nicht lokal begrenzt</p>
 				<h2 class="kopf">WordPress in Hannover: persönlich erreichbar, digital ohne Reibungsverlust.</h2>
-				<p class="vorspann">Mein Sitz ist in Pattensen bei Hannover. Persönliche Reviews und Workshops sind in der Region nach Vereinbarung möglich; Entwicklung, QA, Tracking und laufende Abstimmung funktionieren ebenso remote im gesamten DACH-Raum.</p>
+				<p class="vorspann">Mein Sitz ist in Pattensen bei Hannover. Persönliche Reviews und Workshops sind in der Region nach Vereinbarung möglich – auch in Hildesheim, Braunschweig, Wolfsburg und Celle. Entwicklung, QA, Tracking und laufende Abstimmung funktionieren ebenso remote im gesamten DACH-Raum.</p>
 
 				<dl class="lokal-zeile">
 					<div><dt>Sitz</dt><dd>Pattensen bei Hannover</dd></div>
