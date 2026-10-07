@@ -8,12 +8,8 @@
     if (new URL(config.endpoint, window.location.href).origin !== window.location.origin) return;
   } catch (error) { return; }
 
-  var doors = ['marktcheck', 'sofortkontakt', 'analyse'];
-  var opened = {};
-  var reached = false;
-  var errors = {};
+  var doors = ['marktcheck', 'system', 'sofortkontakt'];
   var sent = 0;
-  var names = ['form_opened', 'form_step_two', 'form_submitted', 'form_validation_error'];
 
   function send(event, door) {
     if (sent >= 100 || !/^[a-z0-9_]{1,64}$/.test(event)) return;
@@ -28,30 +24,29 @@
     }).catch(function () {});
   }
 
-  function formEvent(event, door) {
-    if (doors.indexOf(door) < 0 || names.indexOf(event) < 0) return;
-    if (!opened[door]) {
-      opened[door] = true;
-      send('form_opened', door);
-    }
-    if (event === 'form_opened') return;
-    if (event === 'form_step_two') {
-      if (door !== 'marktcheck' || reached) return;
-      reached = true;
-    }
-    send(event, door);
-  }
-
   function doorFor(element) {
     if (!element || typeof element.closest !== 'function') return '';
-    var form = element.closest('[data-order-form]');
-    if (form) return form.getAttribute('data-order-form');
-    if (element.closest('#sol-quiz-mount')) return 'marktcheck';
+
+    var explicit = element.closest('[data-door]');
+    if (explicit) {
+      var explicitDoor = explicit.getAttribute('data-door');
+      if (doors.indexOf(explicitDoor) >= 0) return explicitDoor;
+    }
+
+    if (element.closest('[data-system-configurator], #einstieg')) return 'system';
+    if (element.closest('#marktcheck')) return 'marktcheck';
+    if (element.closest('#sofortkontakt')) return 'sofortkontakt';
+
     var link = element.closest('a[href]');
     if (link) {
-      var hash = new URL(link.href, window.location.href).hash.slice(1);
-      if (doors.indexOf(hash) >= 0) return hash;
+      try {
+        var url = new URL(link.href, window.location.href);
+        if (url.searchParams.get('focus') === 'audit_scope') return 'marktcheck';
+        if (url.searchParams.get('focus') === 'energy_system') return 'system';
+        if (url.searchParams.get('focus') === 'response_setup') return 'sofortkontakt';
+      } catch (error) {}
     }
+
     return '';
   }
 
@@ -59,45 +54,17 @@
     var element = event.target;
     if (!element || typeof element.closest !== 'function') return;
     var action = element.closest('[data-track-action]');
-    var door = doorFor(element);
-    if (action) send(action.getAttribute('data-track-action'), door);
-    if (door) formEvent('form_opened', door);
-  });
-  // Der Kopf der Seite (Leiste im Modus fokus) steht ausserhalb von .strecke-doc.
-  // Seine Tueren tragen data-door; die Messung liest sie wie jede andere Tuer.
-  var headerDoors = { marktcheck: 'marktcheck', analyse: 'analyse', sofort: 'sofortkontakt' };
-  document.addEventListener('click', function (event) {
-    var link = event.target && typeof event.target.closest === 'function' ? event.target.closest('.leiste [data-door]') : null;
-    if (!link) return;
-    var door = headerDoors[link.getAttribute('data-door')] || '';
-    var action = link.getAttribute('data-track-action');
-    if (action) send(action, door);
-    // Ein Formular oeffnet nur, wenn der Anker der Tuer entspricht (wie doorFor): ohne die
-    // Tuer-Anker der Seite fuehrt die Leiter auf #einstieg, die Angebotsleiter, und das
-    // zaehlt nicht als geoeffnetes Formular.
-    var anchor = '';
-    try { anchor = new URL(link.href, window.location.href).hash.slice(1); } catch (error) { anchor = ''; }
-    if (doors.indexOf(anchor) >= 0) formEvent('form_opened', anchor);
-  });
-  root.addEventListener('focusin', function (event) {
-    if (!event.target.closest('[data-order-form], #sol-quiz-mount')) return;
-    var door = doorFor(event.target);
-    if (door) formEvent('form_opened', door);
-  });
-  root.addEventListener('invalid', function (event) {
-    var door = doorFor(event.target);
-    if (!door || errors[door]) return;
-    errors[door] = true;
-    window.setTimeout(function () {
-      errors[door] = false;
-      formEvent('form_validation_error', door);
-    }, 0);
-  }, true);
-  window.addEventListener('nexus:solar-form', function (event) {
-    var detail = event.detail || {};
-    formEvent(detail.event, detail.door);
+    if (action) send(action.getAttribute('data-track-action'), doorFor(element));
   });
 
-  var hash = window.location.hash.slice(1);
-  if (doors.indexOf(hash) >= 0) formEvent('form_opened', hash);
+  // Der Fokus-Header steht ausserhalb von .strecke-doc.
+  document.addEventListener('click', function (event) {
+    var link = event.target && typeof event.target.closest === 'function'
+      ? event.target.closest('.leiste [data-door]')
+      : null;
+    if (!link) return;
+    var action = link.getAttribute('data-track-action');
+    var door = link.getAttribute('data-door');
+    if (action && doors.indexOf(door) >= 0) send(action, door);
+  });
 }());
