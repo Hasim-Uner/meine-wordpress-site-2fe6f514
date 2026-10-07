@@ -877,7 +877,7 @@ function nexus_get_website_scope_summary( $payload ) {
 		$summary .= ' · CRM-Anbindung Standard (' . hu_format_eur( HU_WEBSITE_CRM_STANDARD ) . ' im Preis enthalten): ein Formular, bestehendes HubSpot oder Bitrix24, bis zehn Felder, ein Kontakt- oder Lead-Objekt; nach Systemprüfung bestätigen';
 	}
 	if ( ! empty( $payload['dashboard'] ) ) {
-		$summary .= ' · Zuzüglich Daten-Dashboard nach Angebot; Dashboard-Aufwand noch nicht in Preis und Zeit enthalten';
+		$summary .= ' · Zuzüglich individuelles Daten-Dashboard nach Angebot; Basis-Daten-Cockpit inklusive, zusätzlicher Dashboard-Aufwand noch nicht in Preis und Zeit enthalten';
 	}
 	$summary .= ' · Einmalpreis; verbindlicher Umfang, vollständiger Preis und Termin vor Beauftragung';
 	return $summary;
