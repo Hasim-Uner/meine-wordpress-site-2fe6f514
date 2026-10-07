@@ -392,10 +392,11 @@ Conversion-Tracking: GA4/GTM/Consent Mode und eine Google-Ads-Conversion für di
 Standard-Anfrage; Server-Side/Meta/Offline und weitere Ziele separat.
 Ein gegebenenfalls benötigter Consent-Dienst wird vorab mit Kosten benannt.
 
-Optionales Daten-Dashboard nach Angebot, keine pauschale Inklusivzusage:
-Website-, Klick-, Formular- und Marketingdaten je vereinbartem Umfang. Bei Auswahl
-stehen Preis und Zeit ausdrücklich **ohne Dashboard**, als bekannter Anteil.
-Die vollständige Kalkulation erfolgt vor Beauftragung. Kein neues Dashboard-
+Basis-Daten-Cockpit inklusive: Search Console, gespeicherte Formularanfragen und Top-Landingpages;
+keine GA4-Pflicht im Grundprodukt. Ein individuelles Daten-Dashboard für weitere Quellen wie
+GA4, Ads, Meta oder CRM bleibt optional nach Angebot. Bei Auswahl stehen Preis und Zeit ausdrücklich
+**ohne individuellen Dashboard-Zusatz**, als bekannter Anteil. Die vollständige Kalkulation erfolgt
+vor Beauftragung. Kein separates Analytics-
 Plugin und keine neue Messung auf Hasims Website durch diesen Konfigurator.
 Formularstrecke und gespeicherte Anfragen gehören zum Grundprodukt; ein
 funktionierendes Formular ist noch kein Conversion-Tracking.
