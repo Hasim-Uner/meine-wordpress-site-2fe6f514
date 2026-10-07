@@ -1106,11 +1106,11 @@ body.nx-custom-header-active {
 .leiste .pfad a:first-child { flex: none; }
 .leiste .pfad a:hover { color: var(--tinte); }
 
-/* ── Fokusmodus: die Leiter der Seite statt Hauptmenue ──────────
-   Solar-Seite. Wortmarke links, rechts drei Textlinks mit Betrag auf die
-   Anker der Seite. Nicht sticky (die Kapitel-Leiste der Seite ist es),
-   hoechstens 56 px, Haarlinie unten wie bei jeder Leiste. Unter 561 px nur
-   der letzte Eintrag. */
+/* ── Fokusmodus: die Produktpfade der Seite statt Hauptmenue ────
+   Solar-Seite. Wortmarke links, rechts Marktcheck und Anfragesystem mit
+   Betrag. Nicht sticky (die Kapitel-Leiste der Seite ist es), hoechstens
+   56 px, Haarlinie unten wie bei jeder Leiste. Unter 561 px bleibt nur der
+   Marktcheck als niedriger Einstieg sichtbar. */
 
 .leiste--fokus {
   position: static;
@@ -1192,8 +1192,8 @@ body.nx-custom-header-active {
 @media (max-width: 560px) {
   .leiste .leiter .opt,
   .leiste .leiter .trenn { display: none; }
-  /* Solar-Kopf: die einzige Aktion ist der Marktcheck als gefuellter Button,
-     44 px hoch. Der Sofortkontakt steht nur noch im Angebotsblock. */
+  /* Solar-Kopf: die einzige mobile Aktion ist der Marktcheck als gefuellter
+     Button, 44 px hoch. Das Anfragesystem bleibt im Produktabschnitt. */
   .leiste--fokus .leiter a {
     min-height: 44px;
     padding: 0 0.9rem;
