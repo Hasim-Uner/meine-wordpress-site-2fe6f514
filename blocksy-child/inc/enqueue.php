@@ -367,18 +367,10 @@ function hu_enqueue_assets() {
 	// 2026-09-22 geloescht.
 
 	// ── F1a) Solar-/Wärmepumpen-Leadgenerierung (Anfragestrecke) ──
-	// Die Seite steht im Gutachten-Standard und bringt ihr Designsystem
-	// vollstaendig selbst mit: eigene Tokens unter .strecke-doc, eigene
-	// Schriftfamilien, kein .hu-hp-Brand-Kit. homepage-redesign.css und
-	// solar-leadgenerierung-solara.css werden deshalb NICHT mehr geladen —
-	// sie brachten das Karten-/Creme-System der uebrigen Domain mit, gegen
-	// das dieses Blatt gerade gebaut ist.
-	//
-	// solar-leadgenerierung-solara.js bleibt: darin lebt der mehrstufige
-	// Marktcheck (REST → CRM) samt Ankerbehandlung. Es haengt an
-	// .solara-landing, das die Seite weiterhin als Wurzelklasse traegt.
-	// anfragestrecke.js kommt daneben und macht nur Rechner, die beiden
-	// Aufbau-Bewegungen und die Kapitelmarke.
+	// Die Money Page ist seit dem Smartflow-Umbau formularfrei. Marktcheck,
+	// Anfragesystem und Sofortkontakt uebergeben in klar getrennte, scoped
+	// Kontakt-Intakes. Auf der Seite selbst bleiben Rechner, Produktkonfigurator,
+	// Fallvisualisierung und anonyme CTA-/Kapitelzaehler.
 	if ( is_page( 'solar-waermepumpen-leadgenerierung' ) || is_page_template( 'page-solar-waermepumpen-leadgenerierung.php' ) ) {
 		hu_enqueue_css( 'nexus-anfragestrecke-css', 'anfragestrecke.css', [ 'nexus-design-system' ] );
 		hu_enqueue_js( 'nexus-anfragestrecke-js', 'anfragestrecke.js', [] );
@@ -386,33 +378,8 @@ function hu_enqueue_assets() {
 		hu_enqueue_js( 'nexus-solar-events-js', 'solar-events.js', [] );
 		wp_localize_script( 'nexus-solar-events-js', 'NexusSolarEventsConfig', [
 			'endpoint' => esc_url_raw( rest_url( 'nexus/v1/solar-events' ) ),
-			'page' => nexus_solar_event_page(),
+			'page'     => nexus_solar_event_page(),
 		] );
-		hu_enqueue_js( 'nexus-solar-leadgen-solara-js', 'solar-leadgenerierung-solara.js', [ 'nexus-core-js' ] );
-
-		$marktcheck_cfg = [
-			'restEndpoint' => esc_url_raw( rest_url( 'nexus/v1/audit-request' ) ),
-			'contractVersion' => function_exists( 'nexus_get_review_request_contract_version' )
-				? nexus_get_review_request_contract_version()
-				: '',
-			'calcomUrl'    => function_exists( 'hu_get_analysis_calcom_base_url' )
-				? hu_get_analysis_calcom_base_url()
-				: 'https://cal.com/hasim-uener/30min?overlayCalendar=true',
-			'diagnoseUrl'  => function_exists( 'hu_get_request_analysis_url' )
-				? hu_get_request_analysis_url()
-				: home_url( '/solar-waermepumpen-leadgenerierung/#marktcheck' ),
-			'caseUrl'      => home_url( '/case-study-solar-leadgenerierung/' ),
-			'privacyUrl'   => home_url( '/datenschutz/' ),
-			// Der Erfolgsdialog des Marktchecks hatte seine eigene Fassung der
-			// Zusage im Skript stehen und konnte sie damit ueberschreiben.
-			// Jetzt reicht der Canon sie durch.
-			'replyPromise' => hu_response_promise( 'window' ),
-			'pageUrl'      => function_exists( 'nexus_get_energy_systems_url' )
-				? nexus_get_energy_systems_url()
-				: home_url( '/solar-waermepumpen-leadgenerierung/' ),
-		];
-		wp_localize_script( 'nexus-solar-leadgen-solara-js', 'NexusMarktcheckConfig', $marktcheck_cfg );
-		hu_enqueue_js( 'nexus-solar-order-forms-js', 'solar-order-forms.js', [ 'nexus-solar-leadgen-solara-js' ] );
 	}
 
 	// ── F1a-int) SEO-Sub-Pages mit gemeinsamem .hu-intercept-System ──
