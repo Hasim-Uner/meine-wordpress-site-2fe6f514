@@ -1,5 +1,14 @@
 # CHANGELOG
 
+## 2026-10-07 — Solar Smartflow: zwei Produkte statt Angebotsleiter
+
+- **Angebot vereinfacht:** Die Solar-/Wärmepumpen-Money-Page führt nur noch zwei Hauptprodukte: den Marktcheck für 99 € netto und das konfigurierbare Anfragesystem ab 9.999 € netto. Eine Produktstrecke ist enthalten, jede weitere eigenständige Strecke kostet 1.000 € netto zusätzlich. Die frühere Solar-Analyse ist aus der sichtbaren Angebotsarchitektur entfernt.
+- **Konfigurator statt Paketkarte:** Photovoltaik, Wärmepumpe und Speicher lassen sich als Produktstrecken kombinieren; Preis, Systempfade und Projektlink reagieren auf die Auswahl. Server-Side-Tracking, CRM-Anbindung, technische SEO-Basis, Vorqualifizierung und Dokumentation sind im Systemumfang verankert.
+- **Money Page formularfrei:** Marktcheck, Systemanfrage und Sofortkontakt laufen über getrennte, gescopte Kontakt-Intakes. Sofortkontakt bleibt als leiser Spezialpfad für bestehende oder gekaufte Leads und konkurriert nicht mehr mit den zwei Hauptprodukten.
+- **SEO und Belege geschützt:** URL, Canonical, Query-Ownership, SEO-Title und E3-Fallwerte bleiben bestehen. Meta Description, Service-Angebote, FAQ, Navigation, llms.txt und Preisabhängigkeiten lesen die neue Logik aus den zentralen Canons.
+- **UI:** Der Gutachten-/Messprotokoll-Stil bleibt erhalten. Der Konfigurator ist das zentrale interaktive Instrument; Motion beschränkt sich auf Zustandswechsel via transform/opacity und respektiert reduced motion.
+
+
 ## 2026-10-07 — Solar-Money-Page Final Cut
 
 - **Premium-Prinzip statt Dekoration:** Hero auf Ergebnis + Eigentum verdichtet: eigene Anfragequelle auf der eigenen Domain, ein dominanter Marktcheck und ein leiser Sofortkontakt-Ausgang für bestehende Portal-Nutzer. Direkt darunter stehen drei belegte Kennzahlen aus dem dokumentierten Fall samt Einzelfall-Hinweis.
