@@ -369,6 +369,14 @@ function nexus_get_contact_focus_options( $include_inactive = false ) {
 			'label' => 'Landingpage oder Anfrageweg',
 			'types' => [ 'audit', 'analysis', 'project', 'implementation', 'ongoing', 'client' ],
 		],
+		'energy_system'    => [
+			'label' => 'Anfragesystem für Solar / Wärmepumpe',
+			'types' => [ 'project' ],
+		],
+		'response_setup'   => [
+			'label' => 'Sofortkontakt-Setup für vorhandene Leads',
+			'types' => [ 'implementation', 'project' ],
+		],
 		'website' => [
 			'label' => 'Die Anfrage-Website · Neubau oder Relaunch',
 			'types' => [ 'project' ],
