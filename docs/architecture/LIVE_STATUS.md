@@ -482,6 +482,8 @@ Contract und Abnahme: `CHAT_ASSISTANT.md`.
   der Leiste liest er über `data-door` (`sofort` zählt als `sofortkontakt`)
   unter den Ereignissen `nav_header_door_*`.
   Smartflow-Update 2026-10-07: Die frühere sichtbare Leiter aus kostenlosem Marktcheck, 690-€-Analyse, 790-€-Sofortkontakt und Aufbau ist auf zwei Hauptprodukte reduziert. Der Marktcheck kostet 99 € netto und ist bei Beauftragung anrechenbar. Das Anfragesystem startet bei 9.999 € netto für eine Produktstrecke; jede weitere eigenständige Produktstrecke kostet 1.000 € zusätzlich. Der Preisbereich ist ein interaktiver, progressiv verbesserter Konfigurator. Analyse- und Sofortkontakt-Formulare wurden von der Money Page entfernt; Sofortkontakt führt in die separate Kontaktstrecke. SEO-Title, Canonical und Query Ownership bleiben erhalten.
+  Flow-Copy-Update 2026-10-08: Der Einstieg benennt Solar-/SHK-Betriebe und die Übergabe von Projektangaben vor dem Rückruf. Portalvergleiche unterscheiden geteilte und exklusive Kontakte; Ergebnisse der Modellrechnung sind keine Prognose. Die interne Sofortkontakt-Planungscopy ist durch die konkrete Lieferung ersetzt. Der Produktkonfigurator übergibt ausschließlich Produktkennungen. Das Kontaktformular kennt `energy` und `sofortkontakt`; erlaubte Produktauswahlen werden serverseitig normalisiert und aus dem Pricing-Kanon berechnet. Auswahl und kalkulierter Preis erscheinen im Formular, beiden Mails, CRM-Metadaten und CRM-Aktivität. URL-/Browserpreise werden ignoriert. Ohne Konfiguration bleibt eine direkte Energieanfrage möglich.
+
 
 - **Energie-Cluster** (`.hu-intercept`, Pfade in
   `hu_get_solar_seo_subpage_paths()`): `/solar-leads-kaufen-alternative/`,

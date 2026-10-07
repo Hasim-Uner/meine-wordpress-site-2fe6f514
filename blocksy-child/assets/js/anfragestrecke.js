@@ -509,6 +509,7 @@
   function produktKonfigurator() {
     var root = wurzel.querySelector('[data-system-konfigurator]');
     if (!root) return;
+    var productGroup = root.querySelector('.system-produkte');
     var inputs = Array.prototype.slice.call(root.querySelectorAll('.system-produkt input[type="checkbox"]'));
     var priceNode = root.querySelector('[data-config-price]');
     var selectionNode = root.querySelector('[data-config-selection]');
@@ -546,7 +547,8 @@
         try {
           var url = new URL(requestLink.href, window.location.href);
           url.searchParams.set('products', selected.map(function (input) { return input.value; }).join(','));
-          url.searchParams.set('price', String(total));
+          // Only product identifiers travel; the intake calculates its own price.
+          url.searchParams.delete('price');
           requestLink.href = url.toString();
         } catch (e) {}
       }
@@ -556,6 +558,7 @@
       input.addEventListener('change', function () { update(input); });
     });
     update(inputs[0]);
+    if (productGroup) productGroup.hidden = false;
   }
 
   function start() {

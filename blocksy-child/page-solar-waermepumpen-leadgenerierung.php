@@ -122,7 +122,7 @@ $contact_email = function_exists( 'hu_get_contact_email' ) ? hu_get_contact_emai
 // Formular auf /kontakt/, kein mailto. Siehe Abschnitt 07.
 $contact_url        = function_exists( 'nexus_get_contact_url' ) ? nexus_get_contact_url() : home_url( '/kontakt/' );
 $sofortkontakt_url = add_query_arg( [ 'type' => 'project', 'focus' => 'sofortkontakt' ], $contact_url );
-$system_request_url = add_query_arg( [ 'type' => 'project', 'focus' => 'energy' ], $contact_url );
+$system_request_url = add_query_arg( [ 'type' => 'project', 'focus' => 'energy', 'products' => 'photovoltaik' ], $contact_url );
 $privacy_url        = home_url( '/datenschutz/' );
 $order_reply = hu_response_promise( 'window' );
 $order_sources = [ 'aroundhome' => 'Aroundhome', 'daa' => 'DAA', 'wattfox' => 'Wattfox', 'check24_checkfox' => 'Check24/Checkfox', 'eigene_website' => 'eigene Website', 'andere' => 'andere' ];
@@ -179,14 +179,14 @@ $module_counts = [
 	'b' => [ (int) round( $module_b_leads ), 30, 22, 12, (int) round( $module_b_orders ) ],
 ];
 $module_stations = [
-	[ 'name' => 'Anfrage entsteht', 'built' => 'Landingpages und Kampagnen auf Ihrer Domain, ausgerichtet auf Ihr Zielgebiet.', 'a' => 'Derselbe Kontakt geht an 3 bis 5 Betriebe. Wer als Vierter anruft, verkauft über den Preis oder gar nicht.', 'b' => 'Die Anfrage kommt über Ihre Seite und gehört nur Ihnen. Kein Mitbewerber hat dieselbe Telefonnummer.' ],
-	[ 'name' => 'Einordnung', 'built' => 'Formular mit Vorqualifizierung: Produkt, Objekt, Standort, Zeithorizont.', 'a' => 'Was der Kontakt eigentlich will, klärt Ihr Vertrieb am Telefon. Unpassende Anfragen kosten erst Geld, dann Zeit.', 'b' => 'Unpassende fallen im Formular heraus, bevor jemand anruft. Ihr Vertrieb sieht vor dem Gespräch, worum es geht.' ],
-	[ 'name' => 'Erster Anruf', 'built' => 'CRM-Übergabe mit Alarm unter 60 Sekunden und automatischer Eingangsbestätigung mit Terminlink.', 'a' => 'Der Anruf kommt, wenn jemand Zeit hat. Bis dahin hat der Interessent schon mit zwei anderen gesprochen.', 'b' => 'Die zuständige Person bekommt die Anfrage sofort. Der Interessent bekommt in derselben Minute eine Bestätigung.' ],
-	[ 'name' => 'Nachfassen', 'built' => 'Bearbeitungsstand im CRM und Rückmeldung an die Kampagnen über serverseitiges Tracking.', 'a' => 'Der Anbieter erfährt nie, welche Kontakte verkauft haben. Nächsten Monat kaufen Sie dieselbe Qualität.', 'b' => 'Abschlüsse fließen zurück. Budget wandert zu den Quellen, die Aufträge bringen, nicht nur Formulare.' ],
+	[ 'name' => 'Anfrage entsteht', 'built' => 'Landingpages und Kampagnen auf Ihrer Domain, ausgerichtet auf Ihr Zielgebiet.', 'a' => 'Bei geteilten Portal-Kontakten sprechen mehrere Betriebe denselben Interessenten an. Exklusivität hängt vom gebuchten Portalprodukt ab.', 'b' => 'Das Formular sendet die Anfrage direkt an Ihren Betrieb. Sie wird nicht durch mein System an Mitbewerber verkauft; der Interessent kann trotzdem andere Anbieter anfragen.' ],
+	[ 'name' => 'Einordnung', 'built' => 'Formular mit Vorqualifizierung: Produkt, Objekt, Standort, Zeithorizont.', 'a' => 'Welche Projektangaben vorliegen, hängt vom Portalprodukt ab. Fehlende Angaben klärt Ihr Vertrieb im Gespräch.', 'b' => 'Ihr Vertrieb sieht Produkt, Objekt, Standort und Zeithorizont vor dem Rückruf. Die Angaben helfen bei der Einordnung; sie ersetzen keine Prüfung im Gespräch.' ],
+	[ 'name' => 'Erster Anruf', 'built' => 'CRM-Übergabe mit Benachrichtigung und automatischer Eingangsbestätigung mit Terminlink.', 'a' => 'Wie schnell Ihr Team zurückruft, hängt auch bei gekauften Kontakten von Ihrem eigenen Ablauf ab.', 'b' => 'Die Anfrage landet bei der zuständigen Person. Eine Bestätigung mit Terminlink geht an den Interessenten; den persönlichen Rückruf übernimmt Ihr Team.' ],
+	[ 'name' => 'Nachfassen', 'built' => 'Bearbeitungsstand im CRM und Rückmeldung an die Kampagnen über serverseitiges Tracking.', 'a' => 'Auch gekaufte Kontakte lassen sich im CRM nachverfolgen. Ohne erfasste Abschlüsse bleibt unklar, welche Quelle Aufträge bringt.', 'b' => 'Ihr Team erfasst den Abschluss im CRM. Wo technisch möglich und zulässig, fließt dieser Status an die Kampagnen zurück — als Grundlage für die Budgetentscheidung.' ],
 	[ 'name' => 'Auftrag', 'built' => 'Dokumentation und Übergabe. Code, Konten und Daten liegen bei Ihnen.', 'a' => '', 'b' => '' ],
 ];
 $module_stations[4]['a'] = sprintf( 'Rund %s im Monat, %s je Auftrag. Nächsten Monat beginnt alles von vorn.', $format_orders( $module_a_orders ), $format_eur( $module_a_cpo ) );
-$module_stations[4]['b'] = sprintf( 'Rund %s im Monat, %s je Auftrag. Das System bleibt und wird mit jedem Monat genauer.', $format_orders( $module_b_orders ), $format_eur( $module_b_cpo ) );
+$module_stations[4]['b'] = sprintf( 'Im Rechenbeispiel: rund %s im Monat, %s je Auftrag. Die gebauten Seiten und Verbindungen bleiben bei Ihnen.', $format_orders( $module_b_orders ), $format_eur( $module_b_cpo ) );
 
 // ── 05 Was es braucht ──────────────────────────────────────────
 $conditions = [
@@ -219,18 +219,18 @@ $phases = [
 // Ein Systempreis, eine Produktstrecke inklusive. Jede weitere eigenstaendige
 // Produktstrecke erhoeht den Preis transparent um den kanonischen Zuschlag.
 $product_options = [
-	[ 'key' => 'photovoltaik', 'label' => 'Photovoltaik', 'hint' => 'PV-Anfragen mit eigener Landing- und Qualifizierungsstrecke' ],
-	[ 'key' => 'waermepumpe',  'label' => 'Wärmepumpe',   'hint' => 'eigene Suchintention, Landingpage und Vorqualifizierung' ],
-	[ 'key' => 'speicher',     'label' => 'Speicher',     'hint' => 'als eigenständige Produktstrecke, nicht als bloße Zusatzfrage' ],
+	[ 'key' => 'photovoltaik', 'label' => 'Photovoltaik', 'hint' => 'Seite und Formular für PV-Projekte in Ihrem Zielgebiet' ],
+	[ 'key' => 'waermepumpe',  'label' => 'Wärmepumpe',   'hint' => 'Seite und Formular für Heizungsprojekte in Ihrem Zielgebiet' ],
+	[ 'key' => 'speicher',     'label' => 'Speicher',     'hint' => 'Eigene Seite und Anfrageweg für Speicherprojekte' ],
 ];
 
 $system_includes = [
-	'Landing- und Anfragestrecke auf Ihrer Domain',
-	'Vorqualifizierung nach Produkt, Projekt und Region',
-	'CRM-Anbindung und Vertriebsübergabe',
-	'Server-Side-Tracking und Messarchitektur',
-	'Kampagnenstruktur und technische SEO-Basis',
-	'Dokumentation und Übergabe auf Ihren Konten',
+	'Landingpage und Formular auf Ihrer Domain',
+	'Produkt, Projekt und Region vor dem Rückruf erfassen',
+	'Anfragen in Ihr CRM und an die zuständige Person übergeben',
+	'Anfragequellen mit Server-Side-Tracking erfassen',
+	'Kampagnenstruktur und technische SEO-Basis aufbauen',
+	'Code, Konten und Bedienung dokumentiert übergeben',
 ];
 
 $exits = [
@@ -568,12 +568,12 @@ get_header();
 				<div class="haupt breit">
 					<p class="gegenstand">Eigenes Anfragesystem · Photovoltaik · Wärmepumpe · Speicher</p>
 
-					<h1>Anfragen, die nur bei Ihnen ankommen. <em>Auf einem System, das Ihnen gehört.</em></h1>
+					<h1>Eigene Anfragen für Solar und Wärmepumpe. <em>Von Ihrer Website direkt in Ihren Vertrieb.</em></h1>
 
 					<p class="aufriss">
-						<span class="erst">Statt denselben Portal-Kontakt mit mehreren Betrieben zu teilen, bauen Sie auf Ihrer Domain eine eigene Anfragequelle.</span>
-						Ich verbinde Landingpages, Vorqualifizierung, Tracking und CRM zu einer Strecke — von der Herkunft bis zum Abschluss.
-						Code, Werbekonten und Daten bleiben bei Ihrem Betrieb.
+						<span class="erst">Für Solar- und SHK-Betriebe mit eigenem Vertrieb: Ich baue Landingpages und Formulare, die Anfragen direkt an Ihr Team übergeben.</span>
+						Vor dem Rückruf sieht Ihr Vertrieb, welches Produkt gefragt ist, wo das Projekt liegt und wann es starten soll.
+						Tracking verbindet die Anfrage mit ihrer verfügbaren Herkunft. Code, Werbekonten und Daten bleiben bei Ihnen.
 					</p>
 
 					<div class="ausgang">
@@ -588,12 +588,12 @@ get_header();
 							data-track-section="dokumentkopf"
 						>Bestehende Leads schneller bearbeiten? Sofortkontakt →</a>
 					</div>
-					<p class="cta-sicherheit"><?php echo esc_html( sprintf( '%d Minuten · keine Buchung · persönlicher Befund %s', $marketcheck_mins, $marketcheck_reply ) ); ?></p>
+					<p class="cta-sicherheit"><?php echo esc_html( sprintf( 'Formular: etwa %d Minuten · Absenden ist noch keine Buchung · Befund %s', $marketcheck_mins, $marketcheck_reply ) ); ?></p>
 
 					<div class="hero-beleg" aria-label="Kennzahlen des dokumentierten Referenzfalls">
 						<div>
 							<span class="hero-beleg-wert zahl"><?php echo esc_html( $e3_cpl_before ); ?> → <?php echo esc_html( $e3_cpl_after ); ?></span>
-							<span class="hero-beleg-label">Kosten pro qualifizierter Anfrage</span>
+							<span class="hero-beleg-label">Anfragekosten · Ausgangswert → erreichter Wert</span>
 						</div>
 						<div>
 							<span class="hero-beleg-wert zahl"><?php echo esc_html( $e3_lead_count ); ?></span>
@@ -745,8 +745,8 @@ get_header();
 			<div class="blatt reihe">
 				<?php $render_chapter( $chapter_by_id['strecke'] ); ?>
 				<div class="voll">
-					<h2 class="kopf" id="strecke-titel">Fünf Stationen entscheiden, ob aus Nachfrage ein Auftrag wird.</h2>
-					<p class="vorspann">Der Hebel ist nicht nur mehr Traffic. Quelle, Vorqualifizierung, Reaktionszeit, Nachfassen und Abschlussdaten müssen als eine Strecke zusammenarbeiten. Das Modell darunter zeigt, wo sich Lead-Einkauf und eigene Anfragequelle strukturell unterscheiden.</p>
+					<h2 class="kopf" id="strecke-titel">Vom ersten Formular bis zum erfassten Auftrag.</h2>
+					<p class="vorspann">Eine Anfrage braucht Angaben zum Projekt, eine zuständige Person und einen dokumentierten nächsten Schritt. Ich verbinde diese Stationen. Ihr Vertrieb ruft zurück, fasst nach und erfasst, ob ein Auftrag entsteht. Das Modell zeigt den Ablauf mit beispielhaften Zahlen.</p>
 
 					<div class="streckenmodul tafel" id="modul" data-streckenmodul data-counts="<?php echo esc_attr( wp_json_encode( $module_counts ) ); ?>">
 						<div class="modul-kopf"><h3>Wo der Unterschied entsteht.</h3><span class="mono">Modellrechnung · ein Punkt = eine Anfrage</span></div>
@@ -831,7 +831,7 @@ get_header();
 			<div class="blatt reihe">
 				<?php $render_chapter( $chapter_by_id['rechnung'] ); ?>
 				<div class="voll">
-					<h2 class="kopf" id="rechnung-titel">Der CPL endet am Formular. Entscheidend ist der Auftrag.</h2>
+					<h2 class="kopf" id="rechnung-titel">Was kostet Sie ein gewonnener Auftrag?</h2>
 					<p class="vorspann">Rechnen Sie beide Wege mit denselben Bezugsgrößen. Anfragekosten, Abschlussquote und laufender Aufwand müssen zusammenpassen. Die vorbelegten Werte sind ein Rechenbeispiel, keine Prognose.</p>
 
 					<div class="rechenblatt"
@@ -873,7 +873,7 @@ get_header();
 									<span class="w" data-ausgabe="oA3">–</span>
 								</div>
 							</div>
-							<p class="quote-hinweis">Die Quote ist niedrig, weil derselbe Kontakt an 3 bis 5 Betriebe geht. Exklusive Portal-Anfragen kosten rund 150 € statt 80 €.</p>
+							<p class="quote-hinweis">Tragen Sie Ihre tatsächlich gemessene Abschlussquote ein. Geteilte und exklusive Portal-Kontakte können sich in Preis und Qualität unterscheiden.</p>
 						</div>
 
 						<div class="weg b">
@@ -975,7 +975,7 @@ get_header();
 				<?php $render_chapter( $chapter_by_id['einstieg'] ); ?>
 				<div class="voll">
 					<h2 class="kopf" id="leiter">Ihr Anfragesystem beginnt bei <?php echo esc_html( $foundation_price ); ?> netto.</h2>
-					<p class="vorspann">Eine eigenständige Produktstrecke ist enthalten. Jede weitere kostet <?php echo esc_html( $extra_product_price ); ?> zusätzlich. Tracking ist kein Extra: Vorqualifizierung, CRM-Anbindung und Server-Side-Messung gehören zum Grundsystem.</p>
+					<p class="vorspann">Enthalten ist der Anfrageweg für ein Produkt: eigene Landingpage, Formular, CRM-Übergabe und Tracking. Jede weitere Produktstrecke kostet <?php echo esc_html( $extra_product_price ); ?> netto zusätzlich. Wählen Sie, ob Sie Anfragen für Photovoltaik, Wärmepumpen oder Speicher gewinnen möchten.</p>
 
 					<div class="system-konfigurator tafel"
 						data-system-konfigurator
@@ -986,7 +986,8 @@ get_header();
 							<p class="mono">01 · Produktstrecken</p>
 							<h3>Was soll das System abdecken?</h3>
 							<p class="system-konfigurator-hinweis">Mindestens eine Strecke. Die erste ist im Grundpreis enthalten.</p>
-							<div class="system-produkte">
+							<fieldset class="system-produkte" hidden>
+								<legend class="nur-vorlesen">Produkte für Ihren Anfrageweg auswählen</legend>
 								<?php foreach ( $product_options as $product_index => $product ) : ?>
 									<label class="system-produkt<?php echo 0 === $product_index ? ' is-active' : ''; ?>">
 										<input type="checkbox" value="<?php echo esc_attr( $product['key'] ); ?>" <?php checked( 0 === $product_index ); ?>>
@@ -994,13 +995,14 @@ get_header();
 										<span class="system-produkt-preis" data-config-status><?php echo 0 === $product_index ? 'inklusive' : '+' . esc_html( $extra_product_price ); ?></span>
 									</label>
 								<?php endforeach; ?>
-							</div>
+							</fieldset>
+							<noscript><p class="system-konfigurator-hinweis">Ohne JavaScript sehen Sie das Grundangebot für Photovoltaik. Weitere Produkte können Sie in Ihrer Anfrage nennen.</p></noscript>
 						</div>
 
 						<div class="system-konfigurator-ergebnis">
 							<p class="mono">02 · Ihr System</p>
 							<div class="system-preis">
-								<strong data-config-price><?php echo esc_html( $foundation_price ); ?></strong>
+								<strong data-config-price aria-live="polite" aria-atomic="true"><?php echo esc_html( $foundation_price ); ?></strong>
 								<span>netto einmalig</span>
 							</div>
 							<p class="system-auswahl" data-config-selection aria-live="polite">Photovoltaik · 1 Produktstrecke</p>
@@ -1014,12 +1016,12 @@ get_header();
 								<a class="tun" href="<?php echo esc_url( $system_request_url ); ?>" data-system-request-link data-track-action="cta_strecke_configurator_project" data-track-category="lead_gen" data-track-section="einstieg">Anfragesystem anfragen <span class="pf" aria-hidden="true">→</span></a>
 								<a class="hero-nebenweg" href="#marktcheck" data-track-action="cta_strecke_configurator_marktcheck" data-track-category="lead_gen" data-track-section="einstieg">Erst Marktcheck · <?php echo esc_html( $marketcheck_price ); ?> →</a>
 							</div>
-							<p class="system-klarstellung">Festpreis für den standardisierten Umfang. Sonder-CRM, mehrere Marken oder zusätzliche Integrationen werden vor Beauftragung separat ausgewiesen.</p>
+							<p class="system-klarstellung">Absenden ist noch keine Beauftragung. Sie erhalten eine Rückmeldung zu Umfang und Start. Sonder-CRM, mehrere Marken, zusätzliche Integrationen und laufende Betreuung werden vor Beauftragung separat vereinbart.</p>
 						</div>
 					</div>
 
 					<div class="sofortkontakt-bruecke">
-						<div><span class="mono">Sonderfall · vorhandene Leads</span><h3>Sie kaufen bereits Anfragen?</h3><p>Das Sofortkontakt-Setup bleibt ein eigenes Produkt. Es bekommt eine separate Strecke und belastet diese Money Page nicht mehr mit einem zweiten Formular.</p></div>
+						<div><span class="mono">Für vorhandene Anfragen</span><h3>Die Leads sind da. Der Rückruf kommt zu spät?</h3><p>Das Sofortkontakt-Setup verbindet den Anfrageeingang mit einer Benachrichtigung für Ihr Team und einer Bestätigung mit Terminlink für den Interessenten. Beschreiben Sie auf der Kontaktseite, wo Ihre Anfragen heute ankommen.</p></div>
 						<a class="textlink" href="<?php echo esc_url( $sofortkontakt_url ); ?>" data-track-action="cta_strecke_sofortkontakt_external" data-track-category="lead_gen" data-track-section="einstieg">Sofortkontakt anfragen →</a>
 					</div>
 
@@ -1089,7 +1091,7 @@ get_header();
 				<?php $render_chapter( $chapter_by_id['marktcheck'] ); ?>
 				<div class="voll">
 					<h2 class="kopf" id="marktcheck-titel">Marktcheck für <?php echo esc_html( $marketcheck_price ); ?> netto.</h2>
-					<p class="vorspann">Ein kompakter, persönlich geprüfter Einstiegsbefund statt einer weiteren kostenlosen Lead-Abfrage: Angebotsfokus, Projekt-Fit, Vertriebsstruktur und Zielgebiet. Sie erhalten <?php echo esc_html( $marketcheck_reply ); ?> eine klare Empfehlung und drei priorisierte Hebel. Die <?php echo esc_html( $marketcheck_price ); ?> werden bei Beauftragung des Anfragesystems angerechnet.</p>
+					<p class="vorspann">Bevor Sie in den Aufbau investieren, prüfe ich Ihr Angebot, Ihre Projektgrößen, Ihr Zielgebiet und die Bearbeitung Ihrer Anfragen. Sie erhalten <?php echo esc_html( $marketcheck_reply ); ?> einen Befund per E-Mail: eine Empfehlung und drei priorisierte Ansatzpunkte. Die <?php echo esc_html( $marketcheck_price ); ?> werden bei Beauftragung des Anfragesystems angerechnet.</p>
 
 					<div class="gate">
 						<div>
@@ -1174,7 +1176,7 @@ get_header();
 				<?php $render_chapter( $chapter_by_id['fragen'] ); ?>
 				<div class="haupt">
 					<h2 class="kopf leise" id="fragen-titel">Was Sie vor einer Entscheidung wissen sollten.</h2>
-					<p class="vorspann">Kosten, Risiko, Tracking, bestehende Website und Eigentum müssen vor einem fünfstelligen Aufbau geklärt sein. Die wichtigsten Antworten stehen hier; den Rest klären wir schriftlich im Marktcheck.</p>
+					<p class="vorspann">Was ist enthalten? Was kommt hinzu? Können Ihre bestehenden Seiten bleiben? Hier stehen die Antworten für Ihre Entscheidung.</p>
 
 					<div class="fragen">
 						<?php foreach ( $faq_items as $faq_item ) : ?>

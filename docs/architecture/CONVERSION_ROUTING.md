@@ -725,3 +725,14 @@ Hub-Routen liefern 410; es gibt keine pauschale Umleitung auf Startseite oder
 Marktcheck. GA4- und Performance-Marketing-Routen bleiben eigenständig unter
 `inc/service-cluster-pages.php`. Vollständige Zuordnung:
 `docs/decisions/asset-system-retirement.md`.
+
+## Solar-Produktanfrage (08.10.2026)
+
+Der Marktcheck bleibt der primäre Energie-Einstieg. Der Konfigurator der
+Solar-Money-Page bietet zusätzlich `/kontakt/?type=project&focus=energy`
+mit `products=photovoltaik,waermepumpe,speicher` (eine beliebige nicht leere
+Teilmenge). Der Server validiert die Kennungen, entfernt Duplikate und
+berechnet den Preis aus dem Pricing-Kanon; Browserpreise sind keine Quelle.
+Die Auswahl bleibt in Formular, beiden Mails und CRM erhalten.
+Sofortkontakt führt mit `focus=sofortkontakt` auf eine thematisch vorbereitete
+Kontaktanfrage. Beide Wege sind Anfragen, keine kostenpflichtige Beauftragung.

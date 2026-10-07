@@ -599,6 +599,8 @@ function nexus_sync_contact_request_to_crm( $payload ) {
 			'_nexus_contact_website_implementation_days' => (int) ( $payload['website_implementation_days'] ?? 0 ),
 			'_nexus_contact_website_duration_open' => (int) ( $payload['website_duration_open'] ?? 0 ),
 			'_nexus_contact_website_calc_version' => sanitize_text_field( $payload['website_calc_version'] ?? '' ),
+			'_nexus_contact_energy_products'         => sanitize_text_field( (string) ( $payload['products'] ?? '' ) ),
+			'_nexus_contact_energy_price'            => (int) ( $payload['energy_price'] ?? 0 ),
 			'_nexus_contact_message'                 => sanitize_textarea_field( (string) ( $payload['message'] ?? '' ) ),
 			'_nexus_contact_consent_contact_request' => 1,
 			'_nexus_contact_last_inquiry_at'         => current_time( 'timestamp' ),
