@@ -262,7 +262,7 @@ foreach ( nav_test_contexts() as $context => $definition ) {
 	// On the page that owns the anchors, the doors point at the page itself.
 	if ( 'solar' === $context ) {
 		$energy_footer_hrefs = array_slice( array_column( $register, 'href' ), 3 );
-		nav_check( '#marktcheck' === ( $energy_footer_hrefs[0] ?? '' ) && '#einstieg' === ( $energy_footer_hrefs[1] ?? '' ) && str_contains( (string) ( $energy_footer_hrefs[2] ?? '' ), '/kontakt/?type=implementation&amp;focus=response_setup' ), 'solar: Marktcheck/System stay on-page; Sofortkontakt hands off to scoped contact' );
+		nav_check( '#marktcheck' === ( $energy_footer_hrefs[0] ?? '' ) && '#einstieg' === ( $energy_footer_hrefs[1] ?? '' ) && str_contains( (string) ( $energy_footer_hrefs[2] ?? '' ), '/kontakt/?type=implementation&focus=response_setup' ), 'solar: Marktcheck/System stay on-page; Sofortkontakt hands off to scoped contact' );
 	}
 
 	$header_html = nav_test_render( 'template-parts/site-header.php' );
