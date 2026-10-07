@@ -9,6 +9,8 @@ if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
 
+// Energy-Smartflow: eine Produktstrecke im Grundpreis, jede weitere als
+// definierte Erweiterung. Der Marktcheck ist der kleine bezahlte Einstieg.
 define( 'HU_FOUNDATION_PRICE_STANDARD', 9999 );
 define( 'HU_FOUNDATION_EXTRA_PRODUCT_PRICE', 1000 );
 define( 'HU_MARKETCHECK_PRICE', 99 );
@@ -167,7 +169,7 @@ function hu_portal_reference_leads_display( $months ) {
 	return '~ ' . number_format( (int) floor( $leads / 10 ) * 10, 0, ',', '.' );
 }
 
-// ── Sofortkontakt-Setup: Einstiegsangebot der Solar-Money-Page ───
+// ── Sofortkontakt-Setup: separater Spezialpfad fuer vorhandene Leads ─
 // Eigene Ebene unterhalb des Foundation-Modells: beschleunigt die Reaktion
 // auf vorhandene Anfragen, auch auf gekaufte Portal-Leads.
 define( 'HU_ENTRY_SETUP_PRICE', 790 );
@@ -188,10 +190,10 @@ function hu_entry_setup_price( $with_net = false ) {
 	return $with_net ? $price . ' netto' : $price;
 }
 
-// ── Anfragesystem-Analyse: zweite Stufe der Angebotsleiter ───────
+// ── Anfragesystem-Analyse: Cross-Route-/Legacy-Produkt ──────────
 // Schriftlicher Befund zu Anfragequellen, Tracking, Funnel und
-// Vertriebsanschluss. Steht vor dem Sofortkontakt-Setup (790 EUR) und
-// Foundation-Aufbau und wird bei Umsetzung auf den Aufbau angerechnet.
+// Vertriebsanschluss. Auf der Solar-Money-Page seit Smartflow nicht mehr
+// Bestandteil der Angebotsarchitektur; andere Routen nutzen den Canon weiter.
 //
 // Die Anrechenbarkeit gehoert zum Preis und wird deshalb hier mitgefuehrt:
 // ohne sie liest sich der Betrag als zusaetzliche Huerde vor dem Aufbau,
