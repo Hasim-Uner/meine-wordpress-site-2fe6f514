@@ -66,14 +66,15 @@ Contract und Abnahme: `CHAT_ASSISTANT.md`.
   Lesekopf (`article-reader-header.php`, `blog-header.css`) ist entfallen, die
   Klasse `nexus-article-reader-header` bleibt als Haken für die Artikel-
   Stylesheets. Modus `fokus` (Solar-Seite, `inc/header.php` rendert die Leiste
-  dort): Wortmarke und die Leiter Marktcheck · Analyse · Sofortkontakt mit
-  getrennten Feldern für Bezeichnung und Betrag (Abstand `--s1`) auf die
-  Anker der Seite, nicht sticky, höchstens 56 px, unter 561 px
-  nur der Marktcheck als gefüllter Button „Marktcheck · 0 €“ (44 px); der
-  Sofortkontakt steht dann nur im Angebotsblock. Die Tür ist kontextabhängig (Matrix in
+  dort): Wortmarke plus genau zwei Produktpfade — Marktcheck und
+  Anfragesystem — jeweils mit Betrag aus dem Preis-Kanon. Der Marktcheck ist
+  der niedrige Einstieg und bleibt mobil sichtbar; das Anfragesystem führt
+  auf den Konfigurator `#einstieg`. Sofortkontakt ist kein dritter
+  Fokus-Link mehr, sondern ein separater Spezialpfad für vorhandene Leads.
+  Die Tür ist kontextabhängig (Matrix in
   `docs/architecture/CONVERSION_ROUTING.md`): Projekt anfragen (ohne Betrag),
-  Tracking anfragen („ab“ Messung-Setup), Test-Sprint anfragen, Marktcheck
-  (kostenlos) oder Sofortkontakt; Beträge kommen aus dem Kanon. Quelle der
+  Tracking anfragen, Test-Sprint, bezahlter Marktcheck, Anfragesystem oder
+  Sofortkontakt. Quelle der
   Punkte ist `hu_get_site_header_navigation_contract()` in
   `inc/commercial-routing.php`; Klappblatt, 404-Seite, gespeichertes
   WordPress-Menü (`inc/menu-setup.php`, nur Backend-Zustand, nirgends
@@ -85,8 +86,8 @@ Contract und Abnahme: `CHAT_ASSISTANT.md`.
   340 px nur im Blatt); auf Seiten mit Sticky-CTA-Leiste übernimmt unter
   761 px die Leiste. Das Klappblatt scrollt selbst, wenn es höher als der
   Viewport ist (Handy quer). Auf `/kontakt/` entfällt die Tür.
-  `HU_FEATURE_SOLAR_DOORS` (Vorgabe `false`, `inc/feature-flags.php`) hält die
-  Türen Analyse und Sofortkontakt bis zur Solar-Strecke auf `#einstieg`.
+  `HU_FEATURE_SOLAR_DOORS` bleibt nur für den Legacy-Analyseanker relevant;
+  Sofortkontakt führt unabhängig davon in den gescopten Kontakt-Intake.
   `/whitelabel-retainer/` hat eine eigene Seitennavigation aus derselben
   `.leiste` (`template-parts/whitelabel-header.php`), ohne Klappblatt, mit der
   Tür „Test-Sprint anfragen“ aus `hu_funnel_doors()` (Action
@@ -440,47 +441,34 @@ Contract und Abnahme: `CHAT_ASSISTANT.md`.
   URL-Karte führt „Technisches SEO“, „Wartung“ und „Methode“ auf
   `#zusammenarbeit`.
 - **`/solar-waermepumpen-leadgenerierung/`**
-  (`page-solar-waermepumpen-leadgenerierung.php`, `anfragestrecke.css` unter
-  `.strecke-doc`): Energie-Money-Page mit Marktcheck am Mount `#sol-quiz-mount`,
-  Rechner (`anfragestrecke.js`) und Einstieg `#einstieg`. Seit dem Final-Cut-
-  Durchgang vom 2026-10-07 führt der erste Bildschirm in einer Hierarchie:
-  Ergebnis und Eigentum in der H1, Marktcheck als einzige laute Hauptaktion,
-  Sofortkontakt als leiser Portal-Ausgang, danach drei Kennzahlen des
-  dokumentierten E3-Falls mit Einzelfall-Hinweis. Aufbaupreis, Eigentum und
-  persönliche Verantwortung stehen als Dokument-Metadaten darunter; ein echtes
-  Porträt ersetzt abstrakte Vertrauensdekoration. Der große Messschrieb bleibt
-  der ausführliche Beleg. Die statische Modellgrafik und die zweite Vergleichstabelle
-  entfallen zugunsten des Rechners und der Projektphasen. CTA- und Abschnitts-IDs
-  bleiben erhalten. Der Marktcheck erklärt Prüfung, E-Mail-Befund und freie
-  Entscheidung über die weitere Zusammenarbeit. Geladen wird
-  `solar-leadgenerierung-solara.js`; es lädt `solar-marketcheck-compact.js`
-  nach, das die sichtbare Strecke rendert (vier Fit-Fragen plus Kontaktdaten in
-  `HU_MARKETCHECK_VISIBLE_STEPS` Schritten) und an `audit-request` sendet. Ohne
-  JavaScript verweist der Mount auf das Formular unter `/kontakt/`.
-  Die Angebotsleiter ist nach Marktcheck, Analyse, Sofortkontakt-Setup und
-  Aufbau in aufsteigender Preisfolge sortiert. Der Marktcheck akzeptiert
-  Freemail-Adressen und markiert sie im CRM als solche.
-  Die Analyse und das Sofortkontakt-Setup haben nun eigene kurze Formulare bei
-  `#analyse` und `#sofortkontakt`; beide senden über `audit-request` mit
-  getrennten `intake_variant`-Werten. Die vier Portal-Einordnungen Aroundhome,
-  Checkfox, Wattfox und DAA führen im ersten Kontext-CTA zum Sofortkontakt,
-  danach zum Marktcheck. Abschnitt 01 zeigt als interaktives Strecken-Modul
-  zwei Anfragewege mit Rechnerwerten und schematischen Zwischenstufen;
-  ohne JavaScript steht der Endzustand bereit. Danach folgen Rechnung, Fall,
-  Einstieg, der gemeinsame Abschnitt „Was es braucht“, Marktcheck, Fragen und
-  Verweise. `#anteil` und `#passung` führen beide zu „Was es braucht“.
-  Der Rechner zählt Änderungen in 300 ms und vergleicht die Auftragskosten
-  in Balken mit gemeinsamem Maßstab. Der Messschrieb zeigt ausschließlich
-  dokumentierte CPL-Bandbreiten nach Projektphase, ohne Monatsmesskurve;
-  Hover und Tastaturfokus auf den Fallphasen heben die passenden Stufen hervor.
-  Den Kopf trägt die Leiste im Modus `fokus` (Wortmarke und Leiter
-  Marktcheck · Analyse · Sofortkontakt auf die Anker der Seite); die Seite
-  selbst hat keine Kopfzeile mehr. Der
-  Marktcheck hat eine harte Papier-/Tafel-Kante ohne Verlauf. `solar-events.js`
-  zählt CTA-Klicks und Formularereignisse der drei Türen über anonyme UTC-
-  Tageszähler (`nexus/v1/solar-events`); Details in `PRIVACY.md`. Die Türen
-  der Leiste liest er über `data-door` (`sofort` zählt als `sofortkontakt`)
-  unter den Ereignissen `nav_header_door_*`.
+  (`page-solar-waermepumpen-leadgenerierung.php`, `anfragestrecke.css`,
+  `anfragestrecke.js`): Energie-Money-Page im Gutachten-/Messprotokoll-Stil.
+  Der Hero führt Ergebnis, Eigentum und den dokumentierten E3-Proof
+  (150 € → 22 €, Anfragezahl, Abschlussquote) früh. Die SEO-Owner-Struktur,
+  Canonical, Title, Fallwerte, Rechner und Abschnittsanker bleiben erhalten.
+  Seit Smartflow 2026-10-07 ist die Seite **formularfrei** und hat zwei
+  Hauptprodukte: **Marktcheck 99 € netto** sowie das **Anfragesystem ab
+  9.999 € netto**. Der Aufbau enthält eine eigenständige Produktstrecke;
+  jede weitere Produktstrecke kostet 1.000 € netto zusätzlich. Der
+  Konfigurator wählt Photovoltaik, Wärmepumpe und Speicher, aktualisiert Preis,
+  Systempfade und den gescopten Projektlink; Server-Side-Tracking ist als
+  Bestandteil des Systems ausgewiesen, nicht als Zusatzoption.
+  Marktcheck → `/kontakt/?type=audit&focus=audit_scope`; Konfiguration →
+  `/kontakt/?type=project&focus=energy_system&produkte=…`. Sofortkontakt
+  bleibt als leiser Spezialpfad für bestehende/gekaufte Leads und führt auf
+  `/kontakt/?type=implementation&focus=response_setup`; der Anker
+  `#sofortkontakt` bleibt als rückwärtskompatible Landestelle, `#analyse`
+  nur als unsichtbarer Legacy-Anker. Die frühere Solar-Analyse ist kein
+  sichtbares Energy-Produkt mehr, bleibt aber im globalen Preis-Kanon für
+  andere Routen erhalten.
+  Die Seite lädt keine `solar-leadgenerierung-solara.js`- oder
+  `solar-order-forms.js`-Runtime mehr. `solar-events.js` zählt nur noch
+  anonyme CTA-/Navigationsentscheidungen; keine Formularereignisse entstehen
+  auf der Money Page. Abschnitt 01 erklärt den Mechanismus, Abschnitt 02
+  rechnet Cost per Order, Abschnitt 03 dokumentiert den Fall, Abschnitt 04
+  enthält Produkte/Konfigurator, danach folgen Passung, Marktcheck,
+  Entscheidungsfragen und gezielte Vertiefungen.
+
 - **Energie-Cluster** (`.hu-intercept`, Pfade in
   `hu_get_solar_seo_subpage_paths()`): `/solar-leads-kaufen-alternative/`,
   `/waermepumpen-leads/`, `/b2b-solar-leads/`,
