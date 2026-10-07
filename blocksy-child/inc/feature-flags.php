@@ -16,10 +16,9 @@ defined( 'HU_FEATURE_READINESS_DIAGNOSIS_ROUTE' ) || define( 'HU_FEATURE_READINE
 // eingetragene Adresse. Wieder einschalten nur per wp-config.php.
 defined( 'HU_FEATURE_READINESS_SUBMIT' ) || define( 'HU_FEATURE_READINESS_SUBMIT', false );
 defined( 'HU_FEATURE_ENERGY_DEMO_ROUTE' ) || define( 'HU_FEATURE_ENERGY_DEMO_ROUTE', true );
-// Kopf und Fuss fuehren die Tueren "Analyse" und "Sofortkontakt" auf #analyse
-// und #sofortkontakt der Solar-Seite. Die Anker entstehen erst mit der
-// Solar-Strecke (PR 2). Bis dahin zeigen beide Tueren auf #einstieg, den
-// Einstieg der Angebotsleiter. Umschalten nur per wp-config.php, sobald die
+// Legacy-Schalter fuer den Analyse-Anker der Solar-Seite. Analyse ist seit
+// Smartflow kein sichtbares Energy-Produkt mehr; Sofortkontakt fuehrt immer
+// auf den gescopten Kontakt-Intake. Umschalten nur per wp-config.php, falls die
 // Anker live sind:
 //
 //   define( 'HU_FEATURE_SOLAR_DOORS', true );
