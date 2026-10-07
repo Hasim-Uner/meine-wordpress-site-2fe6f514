@@ -664,44 +664,36 @@ function nexus_get_primary_public_url( $key, $fallback = '' ) {
 function nexus_get_agentur_faq_items() {
 	return [
 		[
-			'question' => 'Welche WordPress Agentur in Hannover passt für anspruchsvolle B2B-Angebote?',
-			'answer'   => 'Eine, die WordPress-Entwicklung, technisches SEO, Tracking und Conversion-Führung als ein System behandelt — nicht als getrennte Einzelleistungen. Genau darauf ist diese Seite ausgerichtet: WordPress, technische Sichtbarkeit, Messung und Conversion als ein System, bevor ein Relaunch überhaupt zur Debatte steht.',
+			'question' => 'Welche WordPress Agentur in Hannover passt für B2B-Projekte?',
+			'answer'   => 'Das hängt weniger von der Größe des Anbieters als vom Arbeitsmodell ab. Brauchen Sie mehrere Teams parallel, feste Vertretung oder SLA-Strukturen, ist eine größere Agentur im Vorteil. Wenn WordPress, technisches SEO, Tracking und Conversion eng zusammengehören sollen, kann ein direkter Verantwortungsweg sinnvoller sein.',
+		],
+		[
+			'question' => 'Was ist der Unterschied zwischen einer klassischen WordPress-Agentur und direkter Zusammenarbeit?',
+			'answer'   => 'In einer klassischen Agentur laufen Beratung, Projektleitung und Umsetzung häufig über mehrere Rollen. Bei der direkten Zusammenarbeit bleiben Entscheidung, technische Umsetzung und spätere Auswertung bei derselben Person. Das reduziert Übergaben, ersetzt aber kein großes Team, wenn mehrere Disziplinen gleichzeitig volle Kapazität brauchen.',
+		],
+		[
+			'question' => 'Bieten Sie WordPress SEO in Hannover an?',
+			'answer'   => 'Ja, mit technischem Schwerpunkt: Suchintention und Seitenrollen, interne Verlinkung, Title und Canonical, strukturierte Daten, Performance sowie Weiterleitungen bei Relaunches. Content-Produktion oder Linkkauf sind kein pauschales Zusatzpaket; zuerst wird geprüft, welcher technische oder strukturelle Hebel tatsächlich fehlt.',
+		],
+		[
+			'question' => 'Erstellen Sie komplette WordPress-Websites oder optimieren Sie nur bestehende Seiten?',
+			'answer'   => 'Beides. Möglich sind neue WordPress-Websites, Relaunches, Landingpages und die technische Weiterentwicklung bestehender Systeme. Bei einem Neubau oder Relaunch werden Umfang, Preis und Zeitrahmen vor dem Start festgelegt; bei bestehenden Seiten beginnt die Arbeit mit dem konkreten Engpass.',
 		],
 		[
 			'question' => 'Arbeiten Sie nur mit Unternehmen aus Hannover?',
-			'answer'   => 'Nein. Der Standort ist Pattensen bei Hannover, persönliche Termine sind in der Region möglich. Die Umsetzung ist auf den DACH-Raum ausgelegt; Hannover ist Standortanker, keine Zielgruppen-Grenze.',
+			'answer'   => 'Nein. Der Sitz ist Pattensen bei Hannover, persönliche Termine sind in der Region nach Vereinbarung möglich. Entwicklung, Reviews, Tracking und Abstimmung funktionieren remote im gesamten DACH-Raum.',
 		],
 		[
-			'question' => 'Ist Solar oder Wärmepumpe Voraussetzung?',
-			'answer'   => 'Nein. Im Energiebereich ist die Methode bislang am deutlichsten belegt, weil dort Anfragequalität, Vertriebsanschluss und Datenlage besonders schnell entscheidend werden. Die Arbeitsweise passt genauso für andere erklärungsbedürftige B2B-Angebote — überall dort, wo ein Auftrag mit einem Gespräch beginnt und nicht mit einem Warenkorb.',
+			'question' => 'Wann ist eine klassische Agentur die bessere Wahl?',
+			'answer'   => 'Wenn Sie 24/7-Bereitschaft, feste Vertretung, große E-Commerce-Teams, viele parallel laufende Fachdisziplinen oder formale Beschaffungsprozesse mit mehreren Rollen brauchen. Diese Anforderungen löst ein größeres Team strukturell besser.',
 		],
 		[
-			'question' => 'Was passiert nach der Projektprüfung?',
-			'answer'   => 'Ich prüfe Angebot, Website-Rolle, Messbarkeit und naheliegende Priorität. Wenn der Fit passt, folgt daraus eine saubere Empfehlung: Korrektur, Umsetzung, Weiterentwicklung oder bewusst kein gemeinsamer nächster Schritt.',
-		],
-		[
-			'question' => 'Brauche ich dafür einen Relaunch?',
-			'answer'   => 'Nicht automatisch. Oft fehlt nicht der neue Look, sondern die richtige Reihenfolge zwischen Fundament, Daten, Sichtbarkeit und Conversion. Ein Relaunch ist nur sinnvoll, wenn die bestehende Struktur nicht mehr trägt.',
-		],
-		[
-			'question' => 'Was unterscheidet diese Methode von einem klassischen Agentur-Projekt?',
-			'answer'   => 'Die Methode ordnet Strategie, Fundament, Messbarkeit, Sichtbarkeit, Conversion und Weiterentwicklung als zusammenhängenden Anfragepfad. Entscheidend ist die Reihenfolge: Welche Seite trägt welche Anfrage, welcher Kanal liefert echte Projekte und welche Änderung erzeugt als Nächstes Wirkung.',
-		],
-		[
-			'question' => 'Für wen passt diese Seite nicht?',
-			'answer'   => 'Nicht passend sind kleine One-Page-Visitenkarten, reine Design-Relaunches ohne Lead-Logik und E-Commerce-Projekte mit Shopify- oder WooCommerce-Fokus.',
-		],
-		[
-			'question' => 'Warum rankt eine WordPress-Seite, liefert aber keine Anfragen?',
-			'answer'   => 'Ranking und Anfragequalität sind zwei verschiedene Probleme. Oft rankt eine Seite für Informationssuchen, während Proof, CTA-Führung und kaufnahe Argumentation fehlen. Genau dort verbindet diese Arbeit SEO, Struktur, Tracking und Conversion.',
+			'question' => 'Brauche ich für bessere Conversion automatisch einen Relaunch?',
+			'answer'   => 'Nein. Ein Relaunch ist nur sinnvoll, wenn die bestehende Struktur den nächsten Schritt technisch oder inhaltlich blockiert. Häufig reichen klarere Angebotsführung, bessere Messung, ein anderes Formular oder gezielte technische Korrekturen.',
 		],
 		[
 			'question' => 'Bieten Sie WordPress-Wartung in Hannover an?',
-			'answer'   => 'Ja, als planbare laufende Betreuung für Systeme, die ich gebaut oder vorab technisch geprüft habe. Dafür gibt es einen Weiterentwicklungs-Retainer mit vereinbartem Monatskontingent, aber keinen klassischen Wartungsvertrag mit zugesicherter Reaktionszeit oder permanenter Verfügbarkeit. Wer eine 24/7-Zusage und Vertretung bei Ausfall braucht, ist bei einem Anbieter mit Team besser aufgehoben. Bei einer bestehenden WordPress-Seite beginnt die Zusammenarbeit mit der technischen Prüfung; erst danach lässt sich der laufende Scope sinnvoll festlegen.',
-		],
-		[
-			'question' => 'Arbeiten Sie auch außerhalb von Hannover in Niedersachsen?',
-			'answer'   => 'Ja. Der Sitz ist Pattensen bei Hannover, persönliche Termine sind im weiteren Niedersachsen gut machbar — Hildesheim, Braunschweig und Celle liegen im Tagesradius. Für Unternehmen außerhalb der Region ändert sich am Ablauf nichts: Projektprüfung, Umsetzung und Reviews funktionieren remote genauso strukturiert.',
+			'answer'   => 'Ja, als planbare Weiterentwicklung für Systeme, die ich gebaut oder vorher technisch geprüft habe. Es gibt jedoch keine 24/7-Bereitschaft und kein austauschbares Vertretungsteam. Wenn genau das benötigt wird, ist ein Wartungsanbieter mit größerem Team die passendere Struktur.',
 		],
 	];
 }

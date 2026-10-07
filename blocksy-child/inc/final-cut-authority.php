@@ -96,7 +96,7 @@ function hu_get_final_cut_authority_edges() : array {
 		'server_side' => [ 'tracking', 'conversion', 'whitelabel' ],
 		'conversion'  => [ 'landingpage', 'tracking', 'website' ],
 		'whitelabel'  => [ 'outsourcing', 'server_side', 'website' ],
-		'agentur_local'=> [ 'website', 'tracking', 'whitelabel' ],
+		'agentur_local'=> [ 'website', 'tracking', 'conversion' ],
 	];
 }
 
@@ -205,6 +205,13 @@ add_action( 'wp_enqueue_scripts', 'hu_enqueue_final_cut_authority_assets', 35 );
 function hu_render_final_cut_authority_links() : void {
 	$current = hu_get_current_final_cut_authority_node();
 	if ( '' === $current ) {
+		return;
+	}
+
+	// Die lokale Agentur-Entscheidungsseite rendert ihre drei benachbarten
+	// Query-Owner bewusst im Abschnitt #zusammenarbeit. Ein zweiter identischer
+	// Block vor dem Footer waere Link-Dopplung ohne zusaetzlichen Kontext.
+	if ( 'agentur_local' === $current ) {
 		return;
 	}
 
