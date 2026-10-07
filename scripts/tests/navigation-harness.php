@@ -102,6 +102,11 @@ function selected( $selected, $current = true, $display = true ) {
 	if ( $display ) { echo $result; }
 	return $result;
 }
+function checked( $checked, $current = true, $display = true ) {
+	$result = (string) $checked === (string) $current ? " checked='checked'" : '';
+	if ( $display ) { echo $result; }
+	return $result;
+}
 function esc_url( $value, $protocols = null ) { return esc_html( $value ); }
 function esc_url_raw( $value ) { return (string) $value; }
 function wp_kses_post( $value ) { return $value; }
