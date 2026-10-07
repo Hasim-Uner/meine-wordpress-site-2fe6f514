@@ -442,9 +442,14 @@ Contract und Abnahme: `CHAT_ASSISTANT.md`.
 - **`/solar-waermepumpen-leadgenerierung/`**
   (`page-solar-waermepumpen-leadgenerierung.php`, `anfragestrecke.css` unter
   `.strecke-doc`): Energie-Money-Page mit Marktcheck am Mount `#sol-quiz-mount`,
-  Rechner (`anfragestrecke.js`) und Einstieg `#einstieg`. Der Einstieg nennt
-  Zielgruppe und persönliche Umsetzung; ein gemeinsames Belegfeld bündelt
-  die Referenzzahlen. Die statische Modellgrafik und die zweite Vergleichstabelle
+  Rechner (`anfragestrecke.js`) und Einstieg `#einstieg`. Seit dem Final-Cut-
+  Durchgang vom 2026-10-07 führt der erste Bildschirm in einer Hierarchie:
+  Ergebnis und Eigentum in der H1, Marktcheck als einzige laute Hauptaktion,
+  Sofortkontakt als leiser Portal-Ausgang, danach drei Kennzahlen des
+  dokumentierten E3-Falls mit Einzelfall-Hinweis. Aufbaupreis, Eigentum und
+  persönliche Verantwortung stehen als Dokument-Metadaten darunter; ein echtes
+  Porträt ersetzt abstrakte Vertrauensdekoration. Der große Messschrieb bleibt
+  der ausführliche Beleg. Die statische Modellgrafik und die zweite Vergleichstabelle
   entfallen zugunsten des Rechners und der Projektphasen. CTA- und Abschnitts-IDs
   bleiben erhalten. Der Marktcheck erklärt Prüfung, E-Mail-Befund und freie
   Entscheidung über die weitere Zusammenarbeit. Geladen wird
