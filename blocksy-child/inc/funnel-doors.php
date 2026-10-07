@@ -73,7 +73,8 @@ function hu_funnel_solar_door_anchor( $own_anchor ) {
 function hu_funnel_doors() {
 	$routes       = hu_get_commercial_route_map();
 	$analysis_url = hu_funnel_energy_anchor( hu_funnel_solar_door_anchor( 'analyse' ) );
-	$instant_url  = hu_funnel_energy_anchor( hu_funnel_solar_door_anchor( 'sofortkontakt' ) );
+	$contact_url  = function_exists( 'nexus_get_contact_url' ) ? nexus_get_contact_url() : home_url( '/kontakt/' );
+	$instant_url  = add_query_arg( [ 'type' => 'implementation', 'focus' => 'response_setup' ], $contact_url );
 
 	return [
 		'projekt'    => [
@@ -127,10 +128,20 @@ function hu_funnel_doors() {
 				__( '%s, regional', 'blocksy-child' ),
 				HU_REQUEST_ANALYSIS_LABEL
 			),
-			'amount'       => hu_format_eur( 0 ),
-			'tier'         => 'free',
+			'amount'       => hu_marketcheck_price(),
+			'tier'         => 'paid',
 			'url'          => (string) $routes['marketcheck'],
 			'track'        => 'nav_header_door_marktcheck',
+		],
+		'system'      => [
+			'key'          => 'system',
+			'label'        => __( 'Anfragesystem konfigurieren', 'blocksy-child' ),
+			'short'        => __( 'Anfragesystem', 'blocksy-child' ),
+			'footer_label' => __( 'Anfragesystem', 'blocksy-child' ),
+			'amount'       => 'ab ' . hu_foundation_price_display(),
+			'tier'         => 'paid',
+			'url'          => hu_funnel_energy_anchor( 'einstieg' ),
+			'track'        => 'nav_header_door_system',
 		],
 		'analyse'    => [
 			'key'          => 'analyse',
