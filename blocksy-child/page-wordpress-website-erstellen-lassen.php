@@ -36,10 +36,10 @@ get_header();
     <div class="wrap">
       <div>
         <div class="produkt"><span class="marke-produkt">Die Anfrage-Website</span><span class="mono">WordPress · Neubau oder Relaunch</span></div>
-        <h1 id="h-hero">WordPress-Website erstellen lassen.<br><span class="hero-akzent">Ihr Angebot klar.<br>Der nächste Schritt sichtbar.</span></h1>
+        <h1 id="h-hero">WordPress-Website erstellen lassen.<br><span class="hero-akzent">Gefunden werden. Anfragen erhalten.<br>Verstehen, was funktioniert.</span></h1>
         <p class="aw-einstieg"><?php echo esc_html( $eur( HU_FREELANCER_WEBSITE_MIN ) ); ?> netto inkl. Grundsystem &amp; erster Hauptseite · weitere Seiten ab <?php echo esc_html( $eur( HU_WEBSITE_PAGE_UTILITY ) ); ?></p>
-        <p class="lead">Für Unternehmen und Selbstständige, die ihre Leistungen erklären und passende Anfragen erhalten möchten. Ich entwickle Struktur, Gestaltung und Anfrageweg zusammen. Ihre fertigen Texte pflege ich ein; Texterstellung können Sie dazunehmen.</p>
-        <ul class="aw-hero-checks" aria-label="Im Grundprodukt enthalten"><li>Responsive Gestaltung</li><li>Technisches SEO</li><li>Formular mit Bestätigung</li></ul>
+        <p class="lead">Für Unternehmen und Selbstständige, die ihre Leistungen erklären und passende Anfragen erhalten möchten. Ich entwickle Website, technische SEO-Basis, Anfrage-Strecke und Daten-Cockpit als ein System. Ihre fertigen Texte pflege ich ein; Texterstellung können Sie dazunehmen.</p>
+        <ul class="aw-hero-checks" aria-label="Im Grundprodukt enthalten"><li>Technisches SEO</li><li>Geprüfte Anfrage-Strecke</li><li>Basis-Daten-Cockpit</li></ul>
         <div class="aktion">
           <a class="btn" href="#angebot" data-track-action="website_offer_hero_configure" data-track-category="navigation" data-track-section="website_offer_hero">Website zusammenstellen <span aria-hidden="true">→</span></a>
           <a class="btn btn--sekundaer" href="#beleg" data-track-action="website_offer_to_beleg" data-track-category="navigation">Projekte ansehen <span aria-hidden="true">↓</span></a>
@@ -53,7 +53,7 @@ get_header();
           <p class="betrag"><?php echo esc_html( $eur( HU_FREELANCER_WEBSITE_MIN ) ); ?><small>netto</small></p>
           <p class="aw-produktkern">Grundsystem + erste Hauptseite</p>
         </div>
-        <div class="aw-modulband" aria-label="Modular erweiterbar um Seiten, Texte, Design und Tracking"><span>Seiten</span><span>Texte</span><span>Design</span><span>Tracking</span></div>
+        <div class="aw-modulband" aria-label="Das Grundsystem verbindet SEO, Anfrage, Daten und Eigentum"><span>SEO</span><span>Anfrage</span><span>Daten</span><span>Eigentum</span></div>
         <div class="aw-produktmeta" aria-label="Preis- und Zeitrahmen">
           <div><span class="mono">Weitere Seiten</span><strong>ab <?php echo esc_html( $eur( HU_WEBSITE_PAGE_UTILITY ) ); ?></strong></div>
           <div><span class="mono">Basis-Umsetzung</span><strong><?php echo esc_html( $days( hu_website_quote( 1 )['components']['implementation'] ) ); ?>*</strong></div>
@@ -67,15 +67,67 @@ get_header();
 
   <nav class="wrap aw-kapitel" aria-label="Auf dieser Seite">
     <span class="mono">Direkt zu</span>
+    <a href="#unterschied" data-track-action="website_offer_chapter_system" data-track-category="navigation">Das System</a>
     <a href="#angebot" data-track-action="website_offer_chapter_scope" data-track-category="navigation">Preis &amp; Umfang</a>
-    <a href="#beleg" data-track-action="website_offer_chapter_proof" data-track-category="navigation">Projekte</a>
-    <a href="#fragen" data-track-action="website_offer_chapter_faq" data-track-category="navigation">Fragen</a>
+    <a href="#beleg" data-track-action="website_offer_chapter_proof" data-track-category="navigation">Projektbeleg</a>
   </nav>
+
+  <section class="abschnitt aw-unterschied" id="unterschied" aria-labelledby="h-unterschied">
+    <div class="wrap raster">
+      <p class="nr"><b>01</b><span>System</span></p>
+      <div class="haupt breit">
+        <h2 id="h-unterschied">Eine Website muss mehr können als gut aussehen.</h2>
+        <p class="lead">Sie wird als zusammenhängende Strecke gebaut: gefunden werden, eine Anfrage ermöglichen und danach erkennen, was funktioniert.</p>
+
+        <div class="aw-system-flow" aria-label="Vom Suchergebnis bis zur Auswertung">
+          <span>Google</span><i aria-hidden="true">→</i><span>Website</span><i aria-hidden="true">→</i><span>Anfrage</span><i aria-hidden="true">→</i><span>Daten</span>
+        </div>
+
+        <div class="aw-prinzipien" data-principles>
+          <article style="--aw-i:0">
+            <div class="aw-prinzip-kopf"><span class="mono">01 · Gefunden werden</span><span class="aw-prinzip-phase">vor dem Besuch</span></div>
+            <h3>Technisches SEO ist Teil des Produkts.</h3>
+            <p>Saubere Struktur, schnelle Auslieferung, strukturierte Daten und Search Console werden nicht nachträglich angeklebt.</p>
+            <div class="aw-prinzip-signal" aria-hidden="true"><span>Google</span><i></i><span>Suchergebnis</span><i></i><span>Landingpage</span></div>
+            <ul class="aw-prinzip-output"><li>technische SEO-Basis</li><li>Search Console</li></ul>
+          </article>
+          <article style="--aw-i:1">
+            <div class="aw-prinzip-kopf"><span class="mono">02 · Anfrage auslösen</span><span class="aw-prinzip-phase">im Besuch</span></div>
+            <h3>Der Anfrageweg wird als Strecke gebaut.</h3>
+            <p>Formular, Speicherung, Bestätigung, Versand und Danke-Seite werden zusammen entwickelt und vor der Abnahme getestet.</p>
+            <div class="aw-prinzip-signal" aria-hidden="true"><span>CTA</span><i></i><span>Formular</span><i></i><span>Bestätigung</span></div>
+            <ul class="aw-prinzip-output"><li>geprüfte Zustände</li><li>gespeicherte Anfragen</li></ul>
+          </article>
+          <article style="--aw-i:2">
+            <div class="aw-prinzip-kopf"><span class="mono">03 · Verstehen</span><span class="aw-prinzip-phase">nach dem Besuch</span></div>
+            <h3>Sie sehen, was aus Sichtbarkeit wird.</h3>
+            <p>Das Basis-Daten-Cockpit führt Search-Console-Signale und gespeicherte Website-Anfragen zusammen — ohne GA4-Pflicht im Grundprodukt.</p>
+            <div class="aw-prinzip-signal" aria-hidden="true"><span>Sichtbarkeit</span><i></i><span>Anfragen</span><i></i><span>Seiten</span></div>
+            <ul class="aw-prinzip-output"><li>Klicks &amp; Impressionen</li><li>Anfragen &amp; Top-Seiten</li></ul>
+          </article>
+        </div>
+
+        <div class="aw-cockpit" aria-label="Leistungsumfang des Basis-Daten-Cockpits">
+          <div class="aw-cockpit-kopf"><div><span class="mono">Basis-Daten-Cockpit</span><strong>Die Website erklärt nicht nur. Sie liefert Rückmeldung.</strong></div><span class="aw-status"><i aria-hidden="true"></i>Inklusive</span></div>
+          <div class="aw-cockpit-grid">
+            <div><span class="mono">Search Console</span><b>Klicks · Impressionen</b><small>Welche Seiten und Suchanfragen Sichtbarkeit aufbauen.</small></div>
+            <div><span class="mono">WordPress</span><b>Anfragen · Verlauf</b><small>Welche Anfragen über die Website eingegangen und gespeichert wurden.</small></div>
+            <div><span class="mono">Seiten</span><b>Top-Landingpages</b><small>Wo Sichtbarkeit und Nachfrage auf der Website zusammenkommen.</small></div>
+          </div>
+          <p class="aw-cockpit-note">Grundprodukt: Search Console + gespeicherte Formularanfragen. GA4, Google Ads, Meta, CRM-Daten und individuelle Attribution bleiben optionale Tracking- bzw. Dashboard-Erweiterungen.</p>
+        </div>
+
+        <div class="aw-ergebnisband tafel"><span class="mono">Das System</span><strong><span>01</span>Google → Website</strong><strong><span>02</span>Website → Anfrage</strong><strong><span>03</span>Anfrage → Daten</strong></div>
+        <div class="aw-besitz-note"><strong>Und es bleibt Ihr System.</strong><span>Domain, Hosting, Code, Zugänge und Daten werden auf Ihren Namen eingerichtet und dokumentiert übergeben.</span></div>
+        <div class="aw-pruefung"><p><strong>Vor der Abnahme:</strong> Mobile Darstellung, technische SEO-Basis, Anfrage-Strecke, Daten-Cockpit und Übergabe werden gemeinsam geprüft.</p><a class="btn btn--sekundaer" href="#lieferumfang" data-track-action="website_offer_quality_checklist" data-track-category="navigation">Lieferumfang ansehen <span aria-hidden="true">→</span></a></div>
+      </div>
+    </div>
+  </section>
 
   <section class="abschnitt aw-referenzen" id="beleg" aria-labelledby="h-beleg">
     <div class="wrap">
       <div class="aw-referenzen-kopf">
-        <p class="mono">01 · Ein reales Projekt</p>
+        <p class="mono">02 · Ein reales Projekt</p>
         <h2 id="h-beleg">Nicht nur Website.<br>Der Anfrageweg dahinter.</h2>
         <p class="lead">E3 New Energy zeigt die Arbeit, die über Gestaltung hinausgeht: Landingpages, technisches SEO, Tracking und die Strecke bis ins CRM.</p>
       </div>
@@ -112,7 +164,7 @@ get_header();
 
   <section class="abschnitt aw-konfigurator" id="angebot" aria-labelledby="h-angebot">
     <div class="wrap">
-      <div class="aw-config-heading"><div><p class="mono">02 · Preis &amp; Umfang</p><h2 id="h-angebot" tabindex="-1">Wie viel Website brauchen Sie?</h2></div><p>Basisgestaltung ist enthalten.<br><strong>Seitentypen, Texte und Extras werden getrennt kalkuliert.</strong></p></div>
+      <div class="aw-config-heading"><div><p class="mono">03 · Preis &amp; Umfang</p><h2 id="h-angebot" tabindex="-1">Wie viel Website brauchen Sie?</h2></div><p>Basisgestaltung ist enthalten.<br><strong>Seitentypen, Texte und Extras werden getrennt kalkuliert.</strong></p></div>
       <noscript><p class="mikro">Beispiel: drei Seiten, Neubau, fertige Texte, ohne Extras. Nennen Sie Seitentypen und gewünschten Umfang in der Anfrage.</p></noscript>
       <div class="aw-config-grid">
         <div class="aw-config-controls">
@@ -160,17 +212,17 @@ get_header();
               <p class="aw-hinweis" id="design-hinweis">Basisdesign inklusive.</p>
             </fieldset>
             <details class="aw-extras-panel" data-website-controls hidden>
-              <summary><span><span class="aw-schritt">04</span> Optionale Erweiterungen<small>Tracking · CRM · Daten-Dashboard</small></span><span class="aw-extras-count" id="extras-count">Keine gewählt</span></summary>
+              <summary><span><span class="aw-schritt">04</span> Optionale Erweiterungen<small>Tracking · CRM · individuelles Dashboard</small></span><span class="aw-extras-count" id="extras-count">Keine gewählt</span></summary>
               <fieldset class="aw-feld aw-erweiterungen">
               <legend class="aw-live-status">Optionale Erweiterungen</legend>
               <div class="aw-extras" data-website-controls hidden>
                 <label class="aw-option"><input type="checkbox" id="tracking"><span class="aw-option-inhalt"><strong>Conversion-Tracking</strong><small>Anfragen in GA4 &amp; Google Ads messen. +<?php echo esc_html( $days( $rules['days']['tracking'] ) ); ?></small></span><span class="aw-option-preis">+<?php echo esc_html( $eur( $rules['prices']['tracking'] ) ); ?></span></label>
                 <label class="aw-option"><input type="checkbox" id="crm"><span class="aw-option-inhalt"><strong>CRM-Anbindung</strong><small>HubSpot oder Bitrix24: ein Formular. +<?php echo esc_html( $days( $rules['days']['crm'] ) ); ?></small></span><span class="aw-option-preis">+<?php echo esc_html( $eur( HU_WEBSITE_CRM_STANDARD ) ); ?></span></label>
-                <label class="aw-option"><input type="checkbox" id="dashboard"><span class="aw-option-inhalt"><strong>Daten-Dashboard</strong><small>Ihre Daten an einem Ort. Umfang nach Abstimmung.</small></span><span class="aw-option-preis">Nach Angebot</span></label>
+                <label class="aw-option"><input type="checkbox" id="dashboard"><span class="aw-option-inhalt"><strong>Individuelles Daten-Dashboard</strong><small>Zusätzliche Quellen wie GA4, Ads oder CRM über das Basis-Cockpit hinaus. Umfang nach Abstimmung.</small></span><span class="aw-option-preis">Nach Angebot</span></label>
               </div>
               </fieldset>
             </details>
-            <div class="aw-standard-kurz"><span class="mono">Immer inklusive</span><ul><li>Technisches SEO &amp; mobile Darstellung</li><li>Formular, Bestätigungsmail &amp; Danke-Seite</li><li>Impressum- &amp; Datenschutz-Seite</li></ul><a href="#lieferumfang" data-track-action="website_offer_included_details" data-track-category="navigation">Gesamten Lieferumfang ansehen ↓</a></div>
+            <div class="aw-standard-kurz"><span class="mono">Immer inklusive</span><ul><li>Technisches SEO &amp; Search Console</li><li>Geprüfte Anfrage-Strecke</li><li>Basis-Daten-Cockpit</li></ul><a href="#lieferumfang" data-track-action="website_offer_included_details" data-track-category="navigation">Gesamten Lieferumfang ansehen ↓</a></div>
           </div>
         </div>
         <aside class="aw-zusammenfassung" aria-labelledby="h-auswahl">
@@ -197,7 +249,7 @@ get_header();
             <div id="summary-tracking" hidden><dt>Conversion-Tracking</dt><dd><?php echo esc_html( $eur( $rules['prices']['tracking'] ) ); ?></dd></div>
             <div id="summary-screendesign" hidden><dt>Screendesign</dt><dd id="betrag-design"></dd></div>
             <div id="summary-crm" hidden><dt>CRM-Anbindung</dt><dd><?php echo esc_html( $eur( HU_WEBSITE_CRM_STANDARD ) ); ?></dd></div>
-            <div id="summary-dashboard" hidden><dt>Daten-Dashboard</dt><dd>Nach Angebot</dd></div>
+            <div id="summary-dashboard" hidden><dt>Individuelles Daten-Dashboard</dt><dd>Nach Angebot</dd></div>
           </dl>
           </details>
           <p class="aw-eigentum"><strong>Unverbindlich anfragen.</strong>Festpreis und Starttermin vor Auftrag bestätigt. Freigabezeiten sowie Domain, Hosting und externe Dienste separat.</p>
@@ -208,7 +260,7 @@ get_header();
       <details class="inklusive aw-lieferumfang-kompakt" id="lieferumfang">
         <summary><span><span class="mono">Standardausstattung</span><strong>Vollständigen Lieferumfang ansehen</strong></span><span class="aw-status">Inklusive</span></summary>
         <div class="aw-lieferumfang-inhalt">
-          <p class="mikro">Technisches SEO, responsive Umsetzung, Anfrageweg, Rechtstext-Seiten, QA und Übergabe sind im Grundprodukt enthalten.</p>
+          <p class="mikro">Technisches SEO, Search Console, responsive Umsetzung, geprüfte Anfrage-Strecke, Basis-Daten-Cockpit, Rechtstext-Seiten, QA und Übergabe sind im Grundprodukt enthalten.</p>
           <div class="gruppen"><details class="gruppe"><summary><span>Inhalte</span><span class="aw-inkl-label">Inklusive</span></summary><ul>
                 <li>Gliederung jeder Seite: Angebot, Preis, Beleg</li>
                 <li>Texterstellung optional je Seitentyp kalkulierbar, auf Basis Ihrer Angaben</li>
@@ -244,7 +296,8 @@ get_header();
                 <li>E-Mail-Bestätigung an die anfragende Person</li>
                 <li>Spam-Schutz ohne Captcha</li>
                 <li>Danke-Seite mit nächstem Schritt</li>
-                <li>Formularanfragen in WordPress gespeichert; kein Analyse-Dashboard im Grundprodukt</li>
+                <li>Formularanfragen in WordPress gespeichert und im Basis-Daten-Cockpit auswertbar</li>
+                <li>Basis-Daten-Cockpit: Search-Console-Sichtbarkeit, Anfragen und Top-Landingpages</li>
                 <li>404-Seite, die zurück zum Angebot führt</li>
               </ul></details>
 <details class="gruppe"><summary><span>Recht</span><span class="aw-inkl-label">Inklusive</span></summary><ul>
@@ -270,49 +323,14 @@ get_header();
       </details>
       <div class="aw-erweiterungsumfang" id="erweiterungen">
         <details class="aw-erweiterungen-kompakt">
-          <summary><span><span class="mono">Erweiterungen</span><strong>Was Design, Tracking, CRM und Dashboard genau enthalten</strong></span><span>Details</span></summary>
+          <summary><span><span class="mono">Erweiterungen</span><strong>Was Design, Tracking, CRM und das individuelle Dashboard enthalten</strong></span><span>Details</span></summary>
           <div class="aw-erweiterungen-grid">
             <div><h3>Individuelles Screendesign</h3><p>Gestaltungsrichtung in Figma, Desktop und Mobil je gebuchtem Layout, zwei gebündelte Korrekturrunden.</p></div>
             <div><h3>Conversion-Tracking</h3><p>GA4, Google Tag Manager, Consent Mode und eine Google-Ads-Conversion für erfolgreich abgesendete Standard-Anfragen.</p></div>
             <div><h3>CRM-Anbindung Standard</h3><p>Ein Formular an ein bestehendes HubSpot oder Bitrix24, bis zu zehn Felder und ein Kontakt- oder Lead-Objekt.</p></div>
-            <div><h3>Daten-Dashboard</h3><p>Umfang, Datenquellen, Preis und zusätzliche Produktionszeit werden vor Auftrag separat festgelegt.</p></div>
+            <div><h3>Individuelles Daten-Dashboard</h3><p>Für zusätzliche Quellen wie GA4, Google Ads, Meta oder CRM. Umfang, Datenquellen, Preis und zusätzliche Produktionszeit werden vor Auftrag separat festgelegt; das Basis-Daten-Cockpit bleibt inklusive.</p></div>
           </div>
         </details>
-      </div>
-    </div>
-  </section>
-
-  <section class="abschnitt aw-unterschied" id="unterschied" aria-labelledby="h-unterschied">
-    <div class="wrap raster">
-      <p class="nr"><b>03</b><span>Unterschied</span></p>
-      <div class="haupt breit">
-        <h2 id="h-unterschied">Drei Dinge müssen funktionieren.</h2>
-        <p class="lead">Eine Website ist nicht fertig, wenn sie gut aussieht. Erst wenn Angebot, Anfrageweg und technische Verantwortung klar sind.</p>
-        <div class="aw-prinzipien" data-principles>
-          <article style="--aw-i:0">
-            <div class="aw-prinzip-kopf"><span class="mono">01 · Klarheit</span><span class="aw-prinzip-phase">vor dem Klick</span></div>
-            <h3>Bevor jemand klickt, muss er verstehen.</h3>
-            <p>Angebot, Zielgruppe und nächster Schritt sind im ersten Bildschirm erkennbar.</p>
-            <div class="aw-prinzip-signal" aria-hidden="true"><span>Angebot</span><i></i><span>Beweis</span><i></i><span>Nächster Schritt</span></div>
-            <ul class="aw-prinzip-output"><li>klare Leistungslogik</li><li>eindeutiger nächster Schritt</li></ul>
-          </article>
-          <article style="--aw-i:1">
-            <div class="aw-prinzip-kopf"><span class="mono">02 · Anfrageweg</span><span class="aw-prinzip-phase">bis zur Übergabe</span></div>
-            <h3>Eine Anfrage endet nicht im Formular.</h3>
-            <p>Formular, Bestätigung, Versand und Übergabe werden als ein zusammenhängender Weg getestet.</p>
-            <div class="aw-prinzip-signal" aria-hidden="true"><span>Formular</span><i></i><span>Bestätigung</span><i></i><span>Übergabe</span></div>
-            <ul class="aw-prinzip-output"><li>getestete Zustände</li><li>saubere Übergabe</li></ul>
-          </article>
-          <article style="--aw-i:2">
-            <div class="aw-prinzip-kopf"><span class="mono">03 · Eigentum</span><span class="aw-prinzip-phase">nach dem Livegang</span></div>
-            <h3>Die Website gehört Ihnen — nicht dem System.</h3>
-            <p>Domain, Code, Zugänge und Dokumentation bleiben nachvollziehbar in Ihrer Hand.</p>
-            <div class="aw-prinzip-signal aw-prinzip-signal--besitz" aria-hidden="true"><span>Domain</span><span>Code</span><span>Zugänge</span></div>
-            <ul class="aw-prinzip-output"><li>kein technischer Lock-in</li><li>dokumentiert übergeben</li></ul>
-          </article>
-        </div>
-        <div class="aw-ergebnisband tafel"><span class="mono">Sie bekommen</span><strong><span>01</span>Klarheit vor dem Klick.</strong><strong><span>02</span>Einen geprüften Anfrageweg.</strong><strong><span>03</span>Eine Website, die Ihnen gehört.</strong></div>
-        <div class="aw-pruefung"><p><strong>Vor der Abnahme:</strong> Mobile Darstellung, Anfrageweg, technische Basis und Übergabe werden gemeinsam geprüft.</p><a class="btn btn--sekundaer" href="#lieferumfang" data-track-action="website_offer_quality_checklist" data-track-category="navigation">Lieferumfang ansehen <span aria-hidden="true">→</span></a></div>
       </div>
     </div>
   </section>
@@ -339,7 +357,7 @@ get_header();
               <div id="zeit-tracking" hidden><dt>Tracking</dt><dd id="tage-tracking"></dd></div>
               <div id="zeit-relaunch" hidden><dt>Relaunch</dt><dd id="tage-relaunch"></dd></div>
               <div id="zeit-crm" hidden><dt>CRM</dt><dd id="tage-crm"></dd></div>
-              <div id="zeit-dashboard" hidden><dt>Daten-Dashboard</dt><dd>Zusätzlich nach Angebot</dd></div>
+              <div id="zeit-dashboard" hidden><dt>Individuelles Daten-Dashboard</dt><dd>Zusätzlich nach Angebot</dd></div>
             </dl><p class="aw-hinweis" id="zeit-hinweis">Planung bis zum geprüften Abnahmestand. Ihre Freigabezeiten und der Starttermin kommen separat dazu.</p></div>
           </details>
         </div>

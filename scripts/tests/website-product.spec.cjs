@@ -51,10 +51,10 @@ for (const width of [320, 360, 768, 1440]) {
     await open(page, width);
 
     await expect(page).toHaveTitle('WordPress-Website erstellen lassen ab ' + euro(1900) + ' | Haşim Üner');
-    await expect(page.locator('meta[name="description"]')).toHaveAttribute('content', /Grundsystem, technisches SEO, Formular und Übergabe/);
+    await expect(page.locator('meta[name="description"]')).toHaveAttribute('content', /technisches SEO, geprüfte Anfrage-Strecke und Basis-Daten-Cockpit inklusive/);
     await expect(page.locator('h1')).toHaveCount(1);
     expect(await page.locator('.anfrage-website > section').evaluateAll(els => els.map(el => el.id)))
-      .toEqual(['hero','beleg','angebot','unterschied','zeit','fragen','anfrage']);
+      .toEqual(['hero','unterschied','beleg','angebot','zeit','fragen','anfrage']);
 
     expect(await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth)).toBe(true);
     const overflow = await page.locator('.anfrage-website *').evaluateAll(els => els.filter(el => {
@@ -71,7 +71,9 @@ for (const width of [320, 360, 768, 1440]) {
     await expect(page.locator('.aw-produktkarte')).toBeVisible();
     await expect(page.locator('.aw-modulband span')).toHaveCount(4);
     await expect(page.locator('#unterschied .aw-prinzipien article')).toHaveCount(3);
-    await expect(page.locator('#unterschied .aw-ergebnisband')).toContainText('Eine Website, die Ihnen gehört.');
+    await expect(page.locator('#unterschied .aw-ergebnisband')).toContainText('Website → Anfrage');
+    await expect(page.locator('#unterschied .aw-cockpit')).toContainText('Basis-Daten-Cockpit');
+    await expect(page.locator('#unterschied .aw-besitz-note')).toContainText('Und es bleibt Ihr System.');
 
     const premiumUi = await page.evaluate(() => {
       const card = document.querySelector('.aw-produktkarte');
@@ -313,7 +315,7 @@ test('product -> contact -> REST -> CRM keeps typed scope and recalculates serve
     expect(mail.body).toContain('7.000');
     expect(mail.body).toContain('Freigegebene Texte vorhanden');
     expect(mail.body).toContain('CRM-Anbindung Standard');
-    expect(mail.body).toContain('Daten-Dashboard nach Angebot');
+    expect(mail.body).toContain('Zusätzlich: individuelles Daten-Dashboard nach Angebot');
   }
 });
 

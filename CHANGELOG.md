@@ -1,5 +1,11 @@
 # CHANGELOG
 
+## 2026-10-07 — Anfrage-Website als messbares System
+
+- **USP:** `/wordpress-website-erstellen-lassen/` positioniert das Grundprodukt jetzt als geschlossene Strecke **technisches SEO → geprüfte Anfrage-Strecke → Basis-Daten-Cockpit**. Das Cockpit bündelt Search Console, gespeicherte Formularanfragen und Top-Landingpages und benötigt im Grundprodukt kein GA4.
+- **Funnel:** Systemversprechen direkt hinter dem Hero, danach Projektbeleg und erst dann Preis-/Umfangskonfigurator. Eigentum bleibt Vertrauensbeweis statt dritter USP-Säule.
+- **Scope:** Das bisherige offene Dashboard-Modul heißt **individuelles Daten-Dashboard** und bleibt für zusätzliche Quellen wie GA4, Ads, Meta oder CRM nach Angebot. Schema, SEO-Meta, FAQ, Intake, LLM-Beschreibungen und Architekturdoku wurden auf denselben Vertrag gezogen.
+
 ## 2026-10
 
 ### Anfrage-Website: Produktinszenierung nach CRO-Kürzung

@@ -1525,6 +1525,128 @@
   background:var(--papier);
 }
 
+
+/* System USP: visibility -> request -> data. */
+.anfrage-website .aw-system-flow {
+  display:flex;
+  flex-wrap:wrap;
+  align-items:center;
+  gap:8px;
+  margin-top:var(--s4);
+  color:var(--tinte);
+  font:var(--mono-m) var(--mono);
+  letter-spacing:.045em;
+  text-transform:uppercase;
+}
+.anfrage-website .aw-system-flow span {
+  padding:8px 10px;
+  border:1px solid var(--haar);
+  background:var(--papier);
+}
+.anfrage-website .aw-system-flow i {
+  color:var(--stempel);
+  font-style:normal;
+}
+.anfrage-website .aw-cockpit {
+  margin-top:var(--s4);
+  border:1px solid color-mix(in srgb,var(--stempel) 28%,var(--haar));
+  background:
+    linear-gradient(135deg,color-mix(in srgb,var(--stempel) 7%,transparent),transparent 45%),
+    var(--papier);
+}
+.anfrage-website .aw-cockpit-kopf {
+  display:flex;
+  align-items:flex-start;
+  justify-content:space-between;
+  gap:var(--s3);
+  padding:var(--s3);
+  border-bottom:1px solid var(--haar);
+}
+.anfrage-website .aw-cockpit-kopf > div {
+  display:grid;
+  gap:6px;
+  min-width:0;
+}
+.anfrage-website .aw-cockpit-kopf strong {
+  max-width:34ch;
+  font-size:clamp(1.15rem,1.03rem + .4vw,1.45rem);
+  line-height:1.2;
+  letter-spacing:-.025em;
+}
+.anfrage-website .aw-cockpit-kopf .aw-status {
+  flex:0 0 auto;
+  background:var(--tinte);
+  color:var(--papier);
+}
+.anfrage-website .aw-cockpit-grid {
+  display:grid;
+  grid-template-columns:repeat(3,minmax(0,1fr));
+}
+.anfrage-website .aw-cockpit-grid > div {
+  display:grid;
+  gap:7px;
+  min-width:0;
+  padding:var(--s3);
+  border-right:1px solid var(--haar);
+}
+.anfrage-website .aw-cockpit-grid > div:last-child {
+  border-right:0;
+}
+.anfrage-website .aw-cockpit-grid b {
+  color:var(--tinte);
+  font-size:var(--grad-text);
+  font-weight:600;
+}
+.anfrage-website .aw-cockpit-grid small,
+.anfrage-website .aw-cockpit-note {
+  color:var(--grau);
+  font-size:var(--grad-klein);
+  line-height:1.55;
+}
+.anfrage-website .aw-cockpit-note {
+  margin:0;
+  padding:var(--s2) var(--s3);
+  border-top:1px solid var(--haar);
+}
+.anfrage-website .aw-besitz-note {
+  display:flex;
+  flex-wrap:wrap;
+  justify-content:space-between;
+  gap:8px var(--s3);
+  margin-top:var(--s2);
+  padding:var(--s2) 0;
+  border-bottom:1px solid var(--haar);
+  color:var(--grau);
+  font-size:var(--grad-klein);
+}
+.anfrage-website .aw-besitz-note strong {
+  color:var(--tinte);
+}
+@media (max-width:759.98px) {
+  .anfrage-website .aw-system-flow {
+    gap:6px;
+  }
+  .anfrage-website .aw-system-flow span {
+    padding:7px 8px;
+  }
+  .anfrage-website .aw-cockpit-kopf {
+    display:grid;
+  }
+  .anfrage-website .aw-cockpit-kopf .aw-status {
+    justify-self:start;
+  }
+  .anfrage-website .aw-cockpit-grid {
+    grid-template-columns:minmax(0,1fr);
+  }
+  .anfrage-website .aw-cockpit-grid > div {
+    border-right:0;
+    border-bottom:1px solid var(--haar);
+  }
+  .anfrage-website .aw-cockpit-grid > div:last-child {
+    border-bottom:0;
+  }
+}
+
 .anfrage-website .aw-lieferumfang-kompakt {
   margin-top:var(--s4);
   padding:0 var(--s3);

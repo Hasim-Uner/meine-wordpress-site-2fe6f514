@@ -135,7 +135,7 @@
         $('#auswahl-art').textContent = scope;
         $('#abschluss-umfang').textContent = scope;
         $('#abschluss-preis').textContent = eur(total);
-        $('#abschluss-preiszusatz').textContent = 'netto · zzgl. USt.' + (state.dashboard ? ' · Zuzüglich Daten-Dashboard nach Angebot' : '');
+        $('#abschluss-preiszusatz').textContent = 'netto · zzgl. USt.' + (state.dashboard ? ' · Zusätzlich: individuelles Daten-Dashboard nach Angebot' : '');
 
         $('#text-option-preis').textContent = '+' + eur(prospectiveTextPrice());
         $('#auswahl-texte').textContent = state.texte ? 'Texte erstellen lassen' : 'Eigene Texte';
@@ -156,7 +156,7 @@
         $('#summary-screendesign dt').textContent = 'Screendesign · ' + state.designLayouts + (state.designLayouts === 1 ? ' Layout' : ' Layouts');
         $('#preis-label').textContent = state.dashboard ? 'Einmalpreis ohne Dashboard' : 'Ihr Einmalpreis';
         var notes = [];
-        if (state.dashboard) notes.push('Zuzüglich Daten-Dashboard nach Angebot: Preis und Zeit separat.');
+        if (state.dashboard) notes.push('Zusätzlich: individuelles Daten-Dashboard nach Angebot: Preis und Zeit separat.');
         if (state.crm) notes.push('CRM: Standardumfang vorab prüfen.');
         if (state.design === 'vorhanden') notes.push('Vorlage: Umsetzungsumfang vorab prüfen.');
         $('#angebot-hinweis').hidden = !notes.length; $('#angebot-hinweis').textContent = notes.join(' ');
