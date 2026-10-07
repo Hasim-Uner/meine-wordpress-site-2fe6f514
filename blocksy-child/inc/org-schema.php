@@ -1480,9 +1480,9 @@ function hu_output_schema()
         // sichtbarer Preis auf /wordpress-website-erstellen-lassen/ lesen dieselbe Zahl.
         'wordpress-website-erstellen-lassen' => [
             'name' => 'Die Anfrage-Website: WordPress-Website erstellen lassen',
-            'description' => 'Gebaut für Anfragen, Festpreis vorab ausrechnen, alles auf Ihren Namen.',
+            'description' => 'WordPress-Website mit technischer SEO-Basis, geprüfter Anfrage-Strecke und Basis-Daten-Cockpit; Festpreis vorab ausrechnen, alles auf Ihren Namen.',
             'serviceType' => 'WordPress-Website',
-            'serviceOutput' => 'Eine abgenommene WordPress-Website mit Kontaktformular, technisches SEO und Übergabe auf Ihren Namen',
+            'serviceOutput' => 'Eine abgenommene WordPress-Website mit technischem SEO, geprüfter Anfrage-Strecke, Basis-Daten-Cockpit und Übergabe auf Ihren Namen',
             'offers' => [
                 [
                     '@type' => 'Offer',
