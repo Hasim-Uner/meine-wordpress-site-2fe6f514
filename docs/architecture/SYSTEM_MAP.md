@@ -266,12 +266,12 @@ als gemeinsame Browser-Konfiguration. `design=basis|vorhanden|neu` und
 `design_layouts` (nur neue Gestaltung, höchstens Seitenzahl) ergänzen den Vertrag.
 Altes `screendesign=1` bleibt kompatibel. `contact-page.php` berechnet Werktage,
 Vorbereitungs-/Umsetzungstage und Regelversion selbst; Browserwerte werden ignoriert.
-CRM persistiert diese Planung, Gesamt-/Designpreis und Dashboard-Auswahl.
-Screendesign und Standard-CRM sind vollständig eingerechnete feste Extras.
-Nur das Daten-Dashboard hat offenen Zusatzpreis und zusätzliche Zeit; fertige
-Designs und CRM benötigen Preflight. Seitentyp- und Teil-Tagesbeiträge stehen im
-Kanon; Rundung erst nach Addition aller Phasen. Es wird kein Dashboard-Plugin
-oder Analytics-System mit dieser Angebotsoption installiert.
+CRM persistiert diese Planung, Gesamt-/Designpreis und die Auswahl des individuellen Dashboard-Zusatzes.
+Das Basis-Daten-Cockpit aus Search Console, gespeicherten Formularanfragen und Top-Landingpages
+gehört zum Grundprodukt und benötigt kein GA4. Screendesign und Standard-CRM sind vollständig
+eingerechnete feste Extras. Nur das individuelle Daten-Dashboard mit zusätzlichen Quellen hat
+offenen Zusatzpreis und zusätzliche Zeit; fertige Designs und CRM benötigen Preflight.
+Seitentyp- und Teil-Tagesbeiträge stehen im Kanon; Rundung erst nach Addition aller Phasen.
 Die Skripte der Seite senden keine Browser-Ereignisse mehr; gezählt wird
 serverseitig über `inc/inquiry-events.php` (Formular `kontakt`).
 `helpers.php` besitzt FAQ-Copy, `org-schema.php` und Template lesen denselben Satz.
