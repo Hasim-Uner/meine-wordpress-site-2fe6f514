@@ -295,7 +295,7 @@ test('contact: no door, the page is the target', async ({ page }) => {
 });
 
 // Reader mode: wordmark, article path, door. No main menu, so no menu button either.
-for (const [context, door, name] of [['portal', 'sofort', /^Sofortkontakt \d[\d.]* €$/], ['article_lead', 'marktcheck', /^Marktcheck 0 €$/], ['article_track', 'tracking', /^Tracking anfragen ab \d[\d.]* €$/], ['article_cro', 'projekt', 'Projekt anfragen']]) {
+for (const [context, door, name] of [['portal', 'sofort', /^Sofortkontakt \d[\d.]* €$/], ['article_lead', 'marktcheck', /^Marktcheck \\d[\\d.]* €$/], ['article_track', 'tracking', /^Tracking anfragen ab \d[\d.]* €$/], ['article_cro', 'projekt', 'Projekt anfragen']]) {
   test(`reader ${context}: path and door "${door}", no menu`, async ({ page }) => {
     await open(page, context, { width: 1280, height: 800 });
     await expect(leiste(page)).toHaveAttribute('data-leiste-modus', 'leser');
@@ -408,8 +408,8 @@ test('footer register: the Solar page points its doors at its own anchors, in th
   await open(page, 'solar', { width: 1280, height: 900 });
   const energy = register(page).locator('.weg.ist-hier');
   await expect(energy.getByRole('link')).toHaveCount(3);
-  expect(await energy.getByRole('link').evaluateAll(els => els.map(el => el.getAttribute('href')))).toEqual(['#marktcheck', '#einstieg', '#einstieg']);
-  expect(await energy.getByRole('link').evaluateAll(els => els.map(el => el.dataset.door))).toEqual(['marktcheck', 'analyse', 'sofort']);
+  expect(await energy.getByRole('link').evaluateAll(els => els.map(el => el.getAttribute('href')))).toEqual(['#marktcheck']);
+  expect(await energy.getByRole('link').evaluateAll(els => els.map(el => el.dataset.door))).toEqual(['marktcheck']);
 });
 
 test('footer register: contact has none, the page is the target of every door', async ({ page }) => {
@@ -430,7 +430,7 @@ test('footer register: hover turns label and arrow to --stempel and moves the ar
   expect(after.arrow - before.arrow).toBeCloseTo(3, 0);
 });
 
-test('footer register: keyboard reaches the six doors in header order after the page content', async ({ page }) => {
+test('footer register: keyboard reaches the active doors in header order after the page content', async ({ page }) => {
   await open(page, 'imprint', { width: 1280, height: 900 });
   await register(page).getByRole('link').first().focus();
   const doors = [];
@@ -438,7 +438,7 @@ test('footer register: keyboard reaches the six doors in header order after the 
     doors.push(await page.evaluate(() => [document.activeElement.dataset.door, getComputedStyle(document.activeElement).outlineStyle]));
     await page.keyboard.press('Tab');
   }
-  expect(doors.map(([door]) => door)).toEqual(['projekt', 'tracking', 'aufgabe', 'marktcheck', 'analyse', 'sofort']);
+  expect(doors.map(([door]) => door)).toEqual(['projekt', 'tracking', 'aufgabe', 'marktcheck']);
   for (const [, outline] of doors) expect(outline).not.toBe('none');
 });
 
@@ -469,8 +469,8 @@ for (const width of [561, 640, 768, 1024, 1080, 1280, 1440]) {
     await expect(leiste(page)).toHaveAttribute('data-leiste-modus', 'fokus');
     await expect(klappe(page)).toHaveCount(0);
     await expect(rowNav(page)).toHaveCount(0);
-    await expect(ladder(page).getByRole('link')).toHaveText([/^Marktcheck 0 €$/, /^Analyse \d[\d.]* €$/, /^Sofortkontakt \d[\d.]* €$/]);
-    expect(await ladder(page).getByRole('link').evaluateAll(els => els.map(el => el.getAttribute('href')))).toEqual(['#marktcheck', '#einstieg', '#einstieg']);
+    await expect(ladder(page).getByRole('link')).toHaveText([/^Marktcheck \\d[\\d.]* €$/, /^Analyse \d[\d.]* €$/, /^Sofortkontakt \d[\d.]* €$/]);
+    expect(await ladder(page).getByRole('link').evaluateAll(els => els.map(el => el.getAttribute('href')))).toEqual(['#marktcheck']);
     const tops = await ladder(page).getByRole('link').evaluateAll(els => els.map(el => Math.round(el.getBoundingClientRect().top)));
     expect(new Set(tops).size).toBe(1);
     expect(await rowHeight(page)).toBeLessThanOrEqual(56);
