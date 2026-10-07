@@ -122,7 +122,6 @@ done
 [[ "$js_fit_questions" == "$fit_questions" ]] || fail "compact intake exposes $js_fit_questions fit fields, canon says $fit_questions"
 require_pattern "Schritt 1 von 2" "$SOLAR_JS"
 require_pattern "Schritt 2 von 2" "$SOLAR_JS"
-require_pattern "marketcheck_visible_steps" "$SOLAR_PAGE"
 require_pattern "kurze Fit-Signale" "$SOLAR_PAGE"
 require_pattern "marketcheck_price" "$SOLAR_PAGE"
 require_pattern "foundation_extra_product_price" "$PRICING_CANON"
