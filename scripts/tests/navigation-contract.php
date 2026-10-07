@@ -220,7 +220,7 @@ $expect_current = [
 ];
 
 // Mark per context which way the footer register flags as "Ihr Weg" and where its doors point.
-$footer_door_order = [ 'projekt', 'tracking', 'aufgabe', 'marktcheck', 'analyse', 'sofort' ];
+$footer_door_order = [ 'projekt', 'tracking', 'aufgabe', 'marktcheck', 'system', 'sofort' ];
 
 foreach ( nav_test_contexts() as $context => $definition ) {
 	nav_test_use_context( $context );
@@ -261,7 +261,8 @@ foreach ( nav_test_contexts() as $context => $definition ) {
 
 	// On the page that owns the anchors, the doors point at the page itself.
 	if ( 'solar' === $context ) {
-		nav_check( [ '#marktcheck', '#einstieg', '#einstieg' ] === array_slice( array_column( $register, 'href' ), 3 ), 'solar: Energy doors point at anchors of the page' );
+		$energy_footer_hrefs = array_slice( array_column( $register, 'href' ), 3 );
+		nav_check( '#marktcheck' === ( $energy_footer_hrefs[0] ?? '' ) && '#einstieg' === ( $energy_footer_hrefs[1] ?? '' ) && str_contains( (string) ( $energy_footer_hrefs[2] ?? '' ), '/kontakt/?type=implementation&amp;focus=response_setup' ), 'solar: Marktcheck/System stay on-page; Sofortkontakt hands off to scoped contact' );
 	}
 
 	$header_html = nav_test_render( 'template-parts/site-header.php' );
@@ -302,11 +303,11 @@ foreach ( nav_test_contexts() as $context => $definition ) {
 	} elseif ( 'fokus' === $mode ) {
 		$ladder = nav_links( $header_html, '//nav[@class="leiter"]//a' );
 		nav_check( [] === $row && [] === $sheet && 0 === $header_x->query( '//button[@data-leiste-klappe]' )->length, "{$context}: focus mode has no main menu, sheet or menu button" );
-		nav_check( [ 'marktcheck', 'analyse', 'sofort' ] === array_column( $ladder, 'door' ), "{$context}: focus ladder is Marktcheck, Analyse, Sofortkontakt" );
+		nav_check( [ 'marktcheck', 'system' ] === array_column( $ladder, 'door' ), "{$context}: focus header is Marktcheck and Anfragesystem" );
 		nav_check( [ '#marktcheck', '#einstieg', '#einstieg' ] === array_column( $ladder, 'href' ), "{$context}: focus ladder points at anchors of the page" );
 		nav_check( [ 'nav_header_door_marktcheck', 'nav_header_door_analyse', 'nav_header_door_sofortkontakt' ] === array_column( $ladder, 'track' ), "{$context}: focus ladder keeps the nav_header_door_* actions" );
 		nav_check(
-			[ 'Marktcheck ' . $door_spec['marktcheck'][2], 'Analyse ' . $door_spec['analyse'][2], 'Sofortkontakt ' . $door_spec['sofort'][2] ] === array_column( $ladder, 'text' ),
+			[ 'Marktcheck ' . $door_spec['marktcheck'][2], 'Anfragesystem ' . $door_spec['system'][2] ] === array_column( $ladder, 'text' ),
 			"{$context}: focus ladder shows each step with its canon amount"
 		);
 	} else {
