@@ -20,10 +20,10 @@
  *          `nexus-article-reader-header` bleibt als Haken fuer die
  *          Geschwister-Selektoren der Artikel-Stylesheets und die Reader-
  *          Skripte; sie traegt keine eigene Regel mehr.
- * - fokus: Solar-Seite. Wortmarke links, rechts die Leiter der Seite als
- *          Textlinks (Marktcheck, Analyse, Sofortkontakt mit Betrag) auf die
- *          Anker der Seite. Kein Hauptmenue, nicht sticky, hoechstens 56 px,
- *          Haarlinie unten. Unter 561 px nur Sofortkontakt.
+ * - fokus: Solar-Seite. Wortmarke links, rechts die zwei Hauptprodukte der
+ *          Seite als Textlinks: Marktcheck und konfigurierbares Anfragesystem.
+ *          Sofortkontakt bleibt ein separater Spezialpfad. Kein Hauptmenue,
+ *          nicht sticky, hoechstens 56 px, Haarlinie unten.
  *
  * Auf der Kontaktseite zeigt die Leiste keine Tuer: sie zeigt auf die Seite,
  * auf der man schon steht. Der Contract behaelt den CTA unveraendert — er speist
@@ -126,7 +126,7 @@ $render_door = static function ( array $door ) {
 $fokus_links = [];
 
 if ( 'fokus' === $leiste_modus ) {
-	foreach ( [ 'marktcheck', 'analyse', 'sofort' ] as $fokus_key ) {
+	foreach ( [ 'marktcheck', 'system' ] as $fokus_key ) {
 		if ( ! isset( $funnel_doors[ $fokus_key ] ) ) {
 			continue;
 		}
@@ -185,7 +185,7 @@ if ( 'leser' === $leiste_modus && function_exists( 'hu_funnel_reader_dossier' ) 
 			<?php if ( 'fokus' === $leiste_modus && ! empty( $fokus_links ) ) : ?>
 				<nav class="leiter" aria-label="<?php esc_attr_e( 'Einstiege auf dieser Seite', 'blocksy-child' ); ?>">
 					<?php foreach ( $fokus_links as $fokus_index => $fokus_link ) : ?>
-						<?php $fokus_main = 'marktcheck' === $fokus_link['door']['key']; // Die eine Aktion unter 561 px. ?>
+						<?php $fokus_main = 'marktcheck' === $fokus_link['door']['key']; // Der niedrige Einstieg bleibt mobil sichtbar. ?>
 						<?php if ( $fokus_index > 0 ) : ?>
 							<span class="trenn opt" aria-hidden="true"></span>
 						<?php endif; ?>
