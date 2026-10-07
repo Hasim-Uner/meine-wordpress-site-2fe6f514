@@ -124,7 +124,7 @@ function nexus_get_llms_txt_sections() {
 				[
 					'label'       => 'WordPress-Website erstellen lassen',
 					'url'         => $urls['website'] ?? home_url( '/wordpress-website-erstellen-lassen/' ),
-					'description' => 'Die Anfrage-Website für Unternehmen und Selbstständige: Custom Code ohne Pagebuilder, technisches SEO und Anfrageweg als Grundsystem. Der Konfigurator unterscheidet kurze Seiten, Standardseiten und Leistungs-/Verkaufsseiten; Texterstellung ist optional je Seitentyp. Neubau oder Relaunch, optionale Screendesign-, Conversion-Tracking- und Standard-CRM-Erweiterungen; Daten-Dashboard nach Angebot. Einmalpreis und Produktionszeit im Konfigurator, Übergabe auf Ihren Namen.',
+					'description' => 'Die Anfrage-Website für Unternehmen und Selbstständige: Custom Code ohne Pagebuilder, technisches SEO, geprüfte Anfrage-Strecke und Basis-Daten-Cockpit mit Search Console und gespeicherten Formularanfragen als Grundsystem. Der Konfigurator unterscheidet kurze Seiten, Standardseiten und Leistungs-/Verkaufsseiten; Texterstellung ist optional je Seitentyp. Neubau oder Relaunch, optionale Screendesign-, Conversion-Tracking- und Standard-CRM-Erweiterungen; individuelles Daten-Dashboard mit zusätzlichen Quellen nach Angebot. Einmalpreis und Produktionszeit im Konfigurator, Übergabe auf Ihren Namen.',
 				],
 				[
 					'label'       => 'Conversion-Optimierung für B2B',
