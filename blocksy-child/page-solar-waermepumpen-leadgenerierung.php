@@ -72,7 +72,7 @@ $e3_cpl_after_val  = (int) ( $e3_metrics['cpl_after']['value'] ?? 22 );
 
 // ── Preise (Pricing-Canon) ─────────────────────────────────────
 // Erst die Rohwerte, dann die Anzeigeform daraus. Ein Fallback-Literal
-// wie '14.900 €' waere eine zweite Preisquelle im Template — genau das,
+// wie ein ausgeschriebener Betrag waere eine zweite Preisquelle im Template — genau das,
 // was scripts/lint-canon-drift.sh verhindert.
 $pricing_canon = function_exists( 'hu_pricing_canon' ) ? hu_pricing_canon() : [];
 
@@ -107,8 +107,6 @@ $foundation_price    = $format_eur( $calc_build );
 $extra_product_price = $format_eur( $calc_extra_product );
 $marketcheck_price   = $format_eur( $marketcheck_price_value );
 $hosting_price       = $format_eur( $calc_hosting );
-$sofortkontakt_url   = add_query_arg( [ 'type' => 'project', 'focus' => 'sofortkontakt' ], $contact_url );
-$system_request_url  = add_query_arg( [ 'type' => 'project', 'focus' => 'energy' ], $contact_url );
 
 // ── Marktcheck (Diagnose-Canon) ────────────────────────────────
 $diagnose_canon    = function_exists( 'hu_diagnose_canon' ) ? hu_diagnose_canon() : [];
@@ -122,8 +120,10 @@ $marketcheck_mins         = (int) ( $diagnose_canon['marketcheck_minutes'] ?? 2 
 $contact_email = function_exists( 'hu_get_contact_email' ) ? hu_get_contact_email() : 'kontakt@hasimuener.de';
 // Ausweichweg fuer den Marktcheck-Mount ohne JavaScript: ein echtes
 // Formular auf /kontakt/, kein mailto. Siehe Abschnitt 07.
-$contact_url = function_exists( 'nexus_get_contact_url' ) ? nexus_get_contact_url() : home_url( '/kontakt/' );
-$privacy_url = home_url( '/datenschutz/' );
+$contact_url        = function_exists( 'nexus_get_contact_url' ) ? nexus_get_contact_url() : home_url( '/kontakt/' );
+$sofortkontakt_url = add_query_arg( [ 'type' => 'project', 'focus' => 'sofortkontakt' ], $contact_url );
+$system_request_url = add_query_arg( [ 'type' => 'project', 'focus' => 'energy' ], $contact_url );
+$privacy_url        = home_url( '/datenschutz/' );
 $order_reply = hu_response_promise( 'window' );
 $order_sources = [ 'aroundhome' => 'Aroundhome', 'daa' => 'DAA', 'wattfox' => 'Wattfox', 'check24_checkfox' => 'Check24/Checkfox', 'eigene_website' => 'eigene Website', 'andere' => 'andere' ];
 
@@ -236,7 +236,7 @@ $system_includes = [
 $exits = [
 	[
 		'titel' => 'Nach dem Marktcheck.',
-		'text'  => 'Sie erhalten den schriftlichen Befund unabhängig davon, ob anschließend ein Aufbau sinnvoll ist. Die 99 € werden bei Beauftragung des Anfragesystems angerechnet.',
+		'text'  => sprintf( 'Sie erhalten den schriftlichen Befund unabhängig davon, ob anschließend ein Aufbau sinnvoll ist. Die %s werden bei Beauftragung des Anfragesystems angerechnet.', $marketcheck_price ),
 	],
 	[
 		'titel' => 'Während des Aufbaus.',
