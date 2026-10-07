@@ -1,5 +1,5 @@
 <?php
-/** Anonymous daily counters for the three Solar doors. No visitor identifiers. */
+/** Anonymous daily counters for Solar Smartflow decisions. No visitor identifiers. */
 if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
@@ -9,15 +9,17 @@ function nexus_solar_event_names() {
 	return [
 		'form_opened', 'form_step_two', 'form_submitted', 'form_validation_error',
 		'chapter_jump', 'link_strecke_vertiefung',
-		'nav_header_door_marktcheck', 'nav_header_door_analyse', 'nav_header_door_sofortkontakt',
+		'nav_header_door_marktcheck', 'nav_header_door_system', 'nav_header_door_analyse', 'nav_header_door_sofortkontakt',
 		// Die frühere Kopfzeile der Seite; gecachtes HTML sendet den Namen bis zum Cache-Purge noch.
 		'cta_strecke_header_to_marktcheck',
 		'cta_strecke_kopf_to_marktcheck',
-		'cta_strecke_kopf_to_sofortkontakt', 'cta_strecke_fall_to_case',
+		'cta_strecke_kopf_to_sofortkontakt', 'cta_strecke_kopf_to_system', 'cta_strecke_fall_to_case',
 		'cta_strecke_leiter_to_marktcheck', 'cta_strecke_leiter_to_analyse',
 		'cta_strecke_leiter_to_sofortkontakt', 'cta_strecke_sofortkontakt_submit',
 		'cta_strecke_analyse_submit', 'cta_strecke_marktcheck_fallback_kontakt',
-		'cta_strecke_marktcheck_to_about', 'cta_strecke_abschluss_to_marktcheck',
+		'cta_strecke_marktcheck_to_about', 'cta_strecke_marktcheck_to_contact',
+		'cta_strecke_config_to_contact', 'cta_strecke_sofort_to_contact',
+		'cta_strecke_abschluss_to_marktcheck', 'cta_strecke_abschluss_to_system',
 		'cta_strecke_abschluss_to_sofortkontakt',
 	];
 }
@@ -102,7 +104,7 @@ function nexus_record_solar_event( WP_REST_Request $request ) {
 		}
 	}
 	if ( ! in_array( $payload['event'], nexus_solar_event_names(), true )
-		|| ! in_array( $payload['door'], [ '', 'marktcheck', 'analyse', 'sofortkontakt' ], true )
+		|| ! in_array( $payload['door'], [ '', 'marktcheck', 'system', 'analyse', 'sofortkontakt' ], true )
 		|| $payload['page'] !== nexus_solar_event_page()
 		|| ! in_array( $payload['day'], [ gmdate( 'Y-m-d' ), gmdate( 'Y-m-d', time() - DAY_IN_SECONDS ) ], true )
 		|| ( 0 === strpos( $payload['event'], 'form_' ) && '' === $payload['door'] )
