@@ -78,7 +78,9 @@ $pricing_canon = function_exists( 'hu_pricing_canon' ) ? hu_pricing_canon() : []
 
 // Rohwerte gehen zusaetzlich als data-Attribute ins Markup, damit das
 // JavaScript den Aufbaupreis nicht ein zweites Mal kennen muss.
-$calc_build   = (int) ( $pricing_canon['foundation_price_standard'] ?? 14900 );
+$calc_build   = (int) ( $pricing_canon['foundation_price_standard'] ?? 9999 );
+$calc_extra_product = (int) ( $pricing_canon['foundation_extra_product_price'] ?? 1000 );
+$marketcheck_price_value = (int) ( $pricing_canon['marketcheck_price'] ?? 99 );
 $calc_hosting = (int) ( $pricing_canon['foundation_hosting_monthly'] ?? 50 );
 $calc_months  = 24;
 $module_a_orders = $calc_defaults['a1'] * $calc_defaults['a3'] / 100;
@@ -101,11 +103,12 @@ $format_numeric_orders = static function ( float $orders ): string {
 	return $formatted . ( '1,0' === $formatted ? ' Auftrag' : ' Aufträge' );
 };
 
-$foundation_price = $format_eur( $calc_build );
-$hosting_price    = $format_eur( $calc_hosting );
-$setup_price      = $format_eur( (int) ( $pricing_canon['entry_setup_price'] ?? 790 ) );
-$analysis_price   = $format_eur( (int) ( $pricing_canon['analysis_price'] ?? 690 ) );
-$entry_price      = $analysis_price;
+$foundation_price    = $format_eur( $calc_build );
+$extra_product_price = $format_eur( $calc_extra_product );
+$marketcheck_price   = $format_eur( $marketcheck_price_value );
+$hosting_price       = $format_eur( $calc_hosting );
+$sofortkontakt_url   = add_query_arg( [ 'type' => 'project', 'focus' => 'sofortkontakt' ], $contact_url );
+$system_request_url  = add_query_arg( [ 'type' => 'project', 'focus' => 'energy' ], $contact_url );
 
 // ── Marktcheck (Diagnose-Canon) ────────────────────────────────
 $diagnose_canon    = function_exists( 'hu_diagnose_canon' ) ? hu_diagnose_canon() : [];
@@ -212,60 +215,36 @@ $phases = [
 ];
 
 
-// ── 04 Die Leiter ──────────────────────────────────────────────
-// Vier Stufen, jede einzeln buchbar. Der Preis steht an der Stufe,
-// nicht in einer Preisliste am Seitenende.
-$ladder = [
-	[
-		'id'    => 'stufe-marktcheck',
-		'titel' => 'Marktcheck',
-		'takt'  => sprintf( '%d Minuten · Befund %s', $marketcheck_mins, $marketcheck_reply ),
-		'text'  => sprintf( '%d Fit-Fragen plus Kontaktdaten in %d Schritten. Danach lese ich Ihre Antworten selbst und schreibe zurück, ob ein eigener Anfrageweg bei Ihnen wirtschaftlich trägt. Auch wenn die Antwort nein ist — dann mit drei Hebeln, die ohne mich funktionieren.', $marketcheck_fit_q, $marketcheck_visible_steps ),
-		'preis' => '0 €',
-		'note'  => 'kostenlos',
-	],
-	[
-		'id'    => 'stufe-analyse',
-		'titel' => 'Anfragesystem-Analyse',
-		'takt'  => sprintf( '%d Werktage · wird angerechnet', $analysis_days ),
-		'text'  => 'Anfragequellen, Tracking, Funnel und Vertriebsanschluss als schriftlicher Befund mit drei priorisierten Hebeln und einer Wirtschaftlichkeits-Einordnung. Bei Umsetzung zahlen Sie sie nicht doppelt.',
-		'preis' => $analysis_price,
-		'note'  => 'netto · anrechenbar',
-	],
-	[
-		'id'    => 'stufe-sofortkontakt',
-		'titel' => 'Sofortkontakt-Setup',
-		'takt'  => sprintf( '%d Werktage · keine Mindestlaufzeit · auch einzeln buchbar', (int) ( $pricing_canon['entry_setup_business_days'] ?? 5 ) ),
-		'text'  => 'Wirkt auf die Anfragen, die Sie heute schon haben — auch auf gekaufte Leads von Aroundhome, DAA oder Wattfox. Alarm unter 60 Sekunden, automatische Eingangsbestätigung mit Terminlink, alle Quellen in einer Übersicht. Sobald ausreichend Abschlüsse erfasst sind, lassen sich die Anfragequellen wirtschaftlich vergleichen.',
-		'preis' => $setup_price,
-		'note'  => 'netto · einmalig',
-	],
-	[
-		'id'    => 'stufe-aufbau',
-		'titel' => 'Aufbau der Anfragestrecke',
-		'takt'  => 'nach Befund · Übergabe dokumentiert',
-		'text'  => 'Die fünf Stationen aus Abschnitt 01, gebaut auf Ihren Zugängen. Danach optional laufende Weiterentwicklung mit wöchentlichem Reporting — monatlich kündbar, keine Rufbereitschaft.',
-		'preis' => $foundation_price,
-		'note'  => sprintf( 'netto + ~%s/Mon. Hosting', $hosting_price ),
-	],
+// ── 04 Produktlogik ────────────────────────────────────────────
+// Ein Systempreis, eine Produktstrecke inklusive. Jede weitere eigenstaendige
+// Produktstrecke erhoeht den Preis transparent um den kanonischen Zuschlag.
+$product_options = [
+	[ 'key' => 'photovoltaik', 'label' => 'Photovoltaik', 'hint' => 'PV-Anfragen mit eigener Landing- und Qualifizierungsstrecke' ],
+	[ 'key' => 'waermepumpe',  'label' => 'Wärmepumpe',   'hint' => 'eigene Suchintention, Landingpage und Vorqualifizierung' ],
+	[ 'key' => 'speicher',     'label' => 'Speicher',     'hint' => 'als eigenständige Produktstrecke, nicht als bloße Zusatzfrage' ],
+];
+
+$system_includes = [
+	'Landing- und Anfragestrecke auf Ihrer Domain',
+	'Vorqualifizierung nach Produkt, Projekt und Region',
+	'CRM-Anbindung und Vertriebsübergabe',
+	'Server-Side-Tracking und Messarchitektur',
+	'Kampagnenstruktur und technische SEO-Basis',
+	'Dokumentation und Übergabe auf Ihren Konten',
 ];
 
 $exits = [
 	[
 		'titel' => 'Nach dem Marktcheck.',
-		'text'  => 'Wenn ich absage, kostet Sie das nichts und Sie behalten die drei Hebel. Eine Absage begründe ich anhand Ihrer Ausgangslage.',
-	],
-	[
-		'titel' => 'Nach der Analyse.',
-		'text'  => 'Der Befund gehört Ihnen, auch wenn Sie nicht weiterarbeiten. Er ist so geschrieben, dass ein anderer Dienstleister damit arbeiten kann.',
+		'text'  => 'Sie erhalten den schriftlichen Befund unabhängig davon, ob anschließend ein Aufbau sinnvoll ist. Die 99 € werden bei Beauftragung des Anfragesystems angerechnet.',
 	],
 	[
 		'titel' => 'Während des Aufbaus.',
-		'text'  => 'Jede fertige Komponente läuft auf Ihren Konten und ist dokumentiert. Ein Abbruch hinterlässt kein totes System, sondern die Teile, die bis dahin stehen — bedienbar ohne mich.',
+		'text'  => 'Jede fertige Komponente läuft auf Ihren Konten und ist dokumentiert. Ein Abbruch hinterlässt kein totes System, sondern die Teile, die bis dahin stehen.',
 	],
 	[
 		'titel' => 'Danach.',
-		'text'  => 'Die Weiterentwicklung ist monatlich kündbar. Was ich nicht zusage: Rufbereitschaft, eine Reaktionszeit im Störfall oder ein garantiertes Ergebnis. Dafür wäre eine gesonderte Betreuung nötig.',
+		'text'  => 'Die Weiterentwicklung ist optional. Was ich nicht zusage: ein bestimmtes Anfragevolumen oder garantierte Abschlüsse.',
 	],
 ];
 
@@ -297,7 +276,7 @@ $receipt_rows = [
 	// um, ohne etwas hinzuzufuegen: der Name daneben sagt das "von" schon.
 	[ 'k' => 'Geprüft',       'v' => 'Haşim Üner, persönlich' ],
 	[ 'k' => 'Auch bei Nein', 'v' => 'drei priorisierte Hebel' ],
-	[ 'k' => 'Kosten',        'v' => 'keine' ],
+	[ 'k' => 'Preis',         'v' => $marketcheck_price . ' netto' ],
 ];
 
 // ── 07 Fragen ──────────────────────────────────────────────────
@@ -316,8 +295,8 @@ $faq_items = [
 	[
 		'id'   => 'faq-kosten',
 		'q'    => 'Was kostet es, eigene Photovoltaik-Anfragen zu generieren statt zu kaufen?',
-		'lead' => sprintf( 'Der Aufbau einer eigenen Anfragestrecke liegt bei %s netto einmalig plus rund %s Hosting im Monat; das Werbebudget kommt separat hinzu und bleibt auf dem Konto des Betriebs.', $foundation_price, $hosting_price ),
-		'rest' => sprintf( 'Zwei kleinere Stufen davor: die Anfragesystem-Analyse für %s netto, die bei Umsetzung angerechnet wird, und das Sofortkontakt-Setup für %s netto, das auf bereits vorhandene Anfragen wirkt.', $analysis_price, $setup_price ),
+		'lead' => sprintf( 'Das standardisierte Anfragesystem startet bei %s netto für eine Produktstrecke. Jede weitere eigenständige Produktstrecke kostet %s zusätzlich.', $foundation_price, $extra_product_price ),
+		'rest' => sprintf( 'Vorqualifizierung, CRM-Anbindung, Server-Side-Tracking, Messarchitektur und Übergabe sind im Grundsystem enthalten. Der Marktcheck kostet %s netto und wird bei Beauftragung angerechnet; Werbebudget und rund %s Hosting pro Monat kommen separat hinzu.', $marketcheck_price, $hosting_price ),
 	],
 	[
 		'id'   => 'faq-cpo',
@@ -335,7 +314,7 @@ $faq_items = [
 		'id'   => 'faq-agentur',
 		'q'    => 'Kann meine bestehende Website bleiben?',
 		'lead' => 'Das wird vor dem Angebot geprüft. Bestehende Seiten, Formulare und Konten können Teil der Lösung bleiben, wenn sie technisch und inhaltlich geeignet sind.',
-		'rest' => 'Die Analyse klärt, welche Bausteine fehlen oder überarbeitet werden müssen. Ein vollständiger Neuaufbau ist keine automatische Voraussetzung.',
+		'rest' => 'Der Marktcheck klärt zunächst, ob bestehende Seiten und Konten sinnvoll weiterverwendet werden können. Ein vollständiger Neuaufbau ist keine automatische Voraussetzung.',
 	],
 ];
 
@@ -433,34 +412,18 @@ $schema_blocks[] = [
 	'offers'           => [
 		[
 			'@type'         => 'Offer',
-			'name'          => 'Marktcheck',
-			'price'         => '0',
+			'name'          => 'Marktcheck für Solar- und SHK-Betriebe',
+			'price'         => (string) $marketcheck_price_value,
 			'priceCurrency' => 'EUR',
-			'description'   => sprintf( '%d Fit-Fragen plus Kontaktdaten in %d Schritten, etwa %d Minuten. Danach ein händisch geprüfter schriftlicher Befund zu Betrieb und Region per E-Mail — %s.', $marketcheck_fit_q, $marketcheck_visible_steps, $marketcheck_mins, $marketcheck_reply ),
+			'description'   => sprintf( '%d Fit-Fragen plus Kontaktdaten in %d Schritten. Persönlicher schriftlicher Befund mit drei priorisierten Hebeln und klarer Empfehlung — %s. Netto; bei Aufbau anrechenbar.', $marketcheck_fit_q, $marketcheck_visible_steps, $marketcheck_reply ),
 			'availability'  => 'https://schema.org/InStock',
 		],
 		[
 			'@type'         => 'Offer',
-			'name'          => 'Anfragesystem-Analyse',
-			'price'         => (string) ( $pricing_canon['analysis_price'] ?? 690 ),
-			'priceCurrency' => 'EUR',
-			'description'   => sprintf( 'Schriftlicher Befund zu Anfragequellen, Tracking, Funnel und Vertriebsanschluss in %d Werktagen, mit drei priorisierten Hebeln. Wird bei Umsetzung auf den Aufbau angerechnet. Netto.', $analysis_days ),
-			'availability'  => 'https://schema.org/InStock',
-		],
-		[
-			'@type'         => 'Offer',
-			'name'          => 'Sofortkontakt-Setup',
-			'price'         => (string) ( $pricing_canon['entry_setup_price'] ?? 790 ),
-			'priceCurrency' => 'EUR',
-			'description'   => 'Alarm unter 60 Sekunden, automatische Eingangsbestätigung mit Terminlink und eine Übersicht aller Anfragen nach Quelle. Wirkt auch auf gekaufte Portal-Leads. Netto, einmalig.',
-			'availability'  => 'https://schema.org/InStock',
-		],
-		[
-			'@type'         => 'Offer',
-			'name'          => 'Aufbau der Anfragestrecke',
+			'name'          => 'Eigenes Anfragesystem für Photovoltaik, Wärmepumpe oder Speicher',
 			'price'         => (string) $calc_build,
 			'priceCurrency' => 'EUR',
-			'description'   => sprintf( 'Aufbau der fünf Stationen auf den Zugängen des Betriebs. Netto, einmalig, zuzüglich rund %s Hosting im Monat.', $hosting_price ),
+			'description'   => sprintf( 'Eine Produktstrecke inklusive; jede weitere eigenständige Produktstrecke %s zusätzlich. Vorqualifizierung, CRM-Anbindung, Server-Side-Tracking, Messarchitektur und Übergabe inklusive. Netto, einmalig, zuzüglich rund %s Hosting im Monat.', $extra_product_price, $hosting_price ),
 			'availability'  => 'https://schema.org/InStock',
 		],
 	],
@@ -618,12 +581,12 @@ get_header();
 							data-track-action="cta_strecke_kopf_to_marktcheck"
 							data-track-category="lead_gen"
 							data-track-section="dokumentkopf"
-						>Kostenlosen Marktcheck starten <span class="pf" aria-hidden="true">→</span></a>
-						<a class="hero-nebenweg" href="#sofortkontakt"
+						>Marktcheck starten · <?php echo esc_html( $marketcheck_price ); ?> <span class="pf" aria-hidden="true">→</span></a>
+						<a class="hero-nebenweg" href="<?php echo esc_url( $sofortkontakt_url ); ?>"
 							data-track-action="cta_strecke_kopf_to_sofortkontakt"
 							data-track-category="lead_gen"
 							data-track-section="dokumentkopf"
-						>Sie kaufen bereits Portal-Leads? Sofortkontakt-Setup →</a>
+						>Bestehende Leads schneller bearbeiten? Sofortkontakt →</a>
 					</div>
 					<p class="cta-sicherheit"><?php echo esc_html( sprintf( '%d Minuten · keine Buchung · persönlicher Befund %s', $marketcheck_mins, $marketcheck_reply ) ); ?></p>
 
@@ -1006,90 +969,65 @@ get_header();
 			</div>
 		</section>
 
-		<!-- ════════ 04 Die Leiter ════════ -->
+		<!-- ════════ 04 Produkt & Preis ════════ -->
 		<section id="einstieg">
 			<div class="blatt reihe">
 				<?php $render_chapter( $chapter_by_id['einstieg'] ); ?>
 				<div class="voll">
-					<h2 class="kopf" id="leiter">Der Aufbau kostet <?php echo esc_html( $foundation_price ); ?> netto. Prüfen Sie zuerst, ob er sich trägt.</h2>
-					<p class="vorspann">Der Marktcheck ist der Standard-Einstieg. Analyse und Sofortkontakt sind Abkürzungen für Betriebe mit einem konkreten Diagnose- oder Portal-Problem. Sie buchen keine künstliche Paketleiter und müssen keine Vorstufe kaufen.</p>
+					<h2 class="kopf" id="leiter">Ihr Anfragesystem beginnt bei <?php echo esc_html( $foundation_price ); ?> netto.</h2>
+					<p class="vorspann">Eine eigenständige Produktstrecke ist enthalten. Jede weitere kostet <?php echo esc_html( $extra_product_price ); ?> zusätzlich. Tracking ist kein Extra: Vorqualifizierung, CRM-Anbindung und Server-Side-Messung gehören zum Grundsystem.</p>
 
-					<div class="leiter">
-						<?php foreach ( $ladder as $rung_index => $rung ) : ?>
-							<article class="stufe<?php echo 'stufe-aufbau' === $rung['id'] ? ' ist-hauptangebot' : ''; ?>">
-								<span class="i" aria-hidden="true"><?php echo esc_html( sprintf( '%02d', $rung_index + 1 ) ); ?></span>
-								<div>
-									<h3 id="<?php echo esc_attr( $rung['id'] ); ?>"><?php echo esc_html( $rung['titel'] ); ?></h3>
-									<span class="takt"><?php echo esc_html( $rung['takt'] ); ?></span>
-								</div>
-								<p><?php echo esc_html( $rung['text'] ); ?></p>
-								<div class="preis">
-									<span class="p zahl"><?php echo esc_html( $rung['preis'] ); ?></span>
-									<span class="n"><?php echo esc_html( $rung['note'] ); ?></span>
-								</div>
-								<?php if ( 'stufe-marktcheck' === $rung['id'] ) : ?>
-									<a class="textlink stufe-aktion" href="#marktcheck" data-track-action="cta_strecke_leiter_to_marktcheck" data-track-category="lead_gen" data-track-section="einstieg">Marktcheck starten →</a>
-								<?php elseif ( 'stufe-analyse' === $rung['id'] ) : ?>
-									<a class="textlink stufe-aktion" href="#analyse" data-track-action="cta_strecke_leiter_to_analyse" data-track-category="lead_gen" data-track-section="einstieg">Analyse anfragen →</a>
-								<?php elseif ( 'stufe-sofortkontakt' === $rung['id'] ) : ?>
-									<a class="textlink stufe-aktion" href="#sofortkontakt" data-track-action="cta_strecke_leiter_to_sofortkontakt" data-track-category="lead_gen" data-track-section="einstieg">Sofortkontakt anfragen →</a>
-								<?php else : ?>
-									<p class="stufe-aktion">Nach der Analyse. Der Preis der Analyse wird angerechnet.</p>
-								<?php endif; ?>
-							</article>
-						<?php endforeach; ?>
+					<div class="system-konfigurator tafel"
+						data-system-konfigurator
+						data-base-price="<?php echo esc_attr( (string) $calc_build ); ?>"
+						data-extra-price="<?php echo esc_attr( (string) $calc_extra_product ); ?>"
+					>
+						<div class="system-konfigurator-wahl">
+							<p class="mono">01 · Produktstrecken</p>
+							<h3>Was soll das System abdecken?</h3>
+							<p class="system-konfigurator-hinweis">Mindestens eine Strecke. Die erste ist im Grundpreis enthalten.</p>
+							<div class="system-produkte">
+								<?php foreach ( $product_options as $product_index => $product ) : ?>
+									<label class="system-produkt<?php echo 0 === $product_index ? ' is-active' : ''; ?>">
+										<input type="checkbox" value="<?php echo esc_attr( $product['key'] ); ?>" <?php checked( 0 === $product_index ); ?>>
+										<span class="system-produkt-text"><b><?php echo esc_html( $product['label'] ); ?></b><small><?php echo esc_html( $product['hint'] ); ?></small></span>
+										<span class="system-produkt-preis" data-config-status><?php echo 0 === $product_index ? 'inklusive' : '+' . esc_html( $extra_product_price ); ?></span>
+									</label>
+								<?php endforeach; ?>
+							</div>
+						</div>
+
+						<div class="system-konfigurator-ergebnis">
+							<p class="mono">02 · Ihr System</p>
+							<div class="system-preis">
+								<strong data-config-price><?php echo esc_html( $foundation_price ); ?></strong>
+								<span>netto einmalig</span>
+							</div>
+							<p class="system-auswahl" data-config-selection aria-live="polite">Photovoltaik · 1 Produktstrecke</p>
+							<ul class="system-inklusive">
+								<?php foreach ( $system_includes as $included_item ) : ?>
+									<li><?php echo esc_html( $included_item ); ?></li>
+								<?php endforeach; ?>
+							</ul>
+							<p class="system-nebenkosten">zzgl. rund <?php echo esc_html( $hosting_price ); ?>/Mon. Hosting und Ihrem Werbebudget</p>
+							<div class="ausgang">
+								<a class="tun" href="<?php echo esc_url( $system_request_url ); ?>" data-system-request-link data-track-action="cta_strecke_configurator_project" data-track-category="lead_gen" data-track-section="einstieg">Anfragesystem anfragen <span class="pf" aria-hidden="true">→</span></a>
+								<a class="hero-nebenweg" href="#marktcheck" data-track-action="cta_strecke_configurator_marktcheck" data-track-category="lead_gen" data-track-section="einstieg">Erst Marktcheck · <?php echo esc_html( $marketcheck_price ); ?> →</a>
+							</div>
+							<p class="system-klarstellung">Festpreis für den standardisierten Umfang. Sonder-CRM, mehrere Marken oder zusätzliche Integrationen werden vor Beauftragung separat ausgewiesen.</p>
+						</div>
 					</div>
 
-					<div class="auftragsformulare">
-						<?php foreach ( [ 'analyse', 'sofortkontakt' ] as $order_variant ) : ?>
-							<?php $is_setup = 'sofortkontakt' === $order_variant; ?>
-							<section class="auftragsformular tafel" id="<?php echo esc_attr( $order_variant ); ?>" aria-labelledby="<?php echo esc_attr( $order_variant ); ?>-titel">
-								<p class="mono">Direkte Anfrage · <?php echo esc_html( $is_setup ? $setup_price : $analysis_price ); ?> netto</p>
-								<h3 id="<?php echo esc_attr( $order_variant ); ?>-titel"><?php echo esc_html( $is_setup ? 'Sofortkontakt-Setup anfragen' : 'Anfragesystem-Analyse anfragen' ); ?></h3>
-								<form data-order-form="<?php echo esc_attr( $order_variant ); ?>" novalidate>
-									<?php if ( ! $is_setup ) : ?>
-										<label>Website-Adresse <input name="page_url" type="url" inputmode="url" autocomplete="url" placeholder="https://beispiel.de" required></label>
-									<?php endif; ?>
-									<fieldset><legend>Woher kommen Ihre Anfragen?</legend><div class="auftragsformular-auswahl">
-										<?php foreach ( $order_sources as $source_value => $source_label ) : ?>
-											<label><input type="checkbox" name="request_sources[]" value="<?php echo esc_attr( $source_value ); ?>"> <?php echo esc_html( $source_label ); ?></label>
-										<?php endforeach; ?>
-									</div></fieldset>
-									<?php if ( $is_setup ) : ?>
-										<label>Wie viele Anfragen im Monat? <select name="lead_volume" required><option value="">Bitte wählen</option><option value="bis_20">bis 20</option><option value="20_50">20–50</option><option value="50_100">50–100</option><option value="ueber_100">über 100</option></select></label>
-										<label>Wo landen sie heute? <select name="lead_destination" required><option value="">Bitte wählen</option><option value="email">E-Mail-Postfach</option><option value="portal">Portal-Oberfläche</option><option value="crm">CRM</option><option value="tabelle">Tabelle</option></select></label>
-										<label data-crm-only hidden>Welches CRM? <input name="crm_name" type="text" maxlength="100"></label>
-										<label>Wer ruft zurück? <input name="callback_name" type="text" autocomplete="name" maxlength="120" required></label>
-										<label>Mobilnummer für den Alarm <input name="callback_mobile" type="tel" autocomplete="tel" maxlength="80" required></label>
-									<?php else : ?>
-										<label>Welches CRM? <span>(optional)</span><input name="crm_name" type="text" maxlength="100"></label>
-										<label>Was soll die Analyse klären? <span>(optional)</span><textarea name="analysis_question" maxlength="500" rows="3"></textarea></label>
-									<?php endif; ?>
-									<label>Firma <input name="company" type="text" autocomplete="organization" maxlength="150" required></label>
-									<label>E-Mail <input name="email" type="email" autocomplete="email" required></label>
-									<label>Telefon <?php if ( ! $is_setup ) : ?><span>(optional)</span><?php endif; ?><input name="phone" type="tel" autocomplete="tel" maxlength="80" <?php echo $is_setup ? 'required' : ''; ?>></label>
-									<?php if ( $is_setup ) : ?>
-										<label>Wunschstart <select name="desired_start" required><option value="">Bitte wählen</option><option value="diese_woche">diese Woche</option><option value="naechste_woche">nächste Woche</option><option value="spaeter">später</option></select></label>
-									<?php endif; ?>
-									<div class="auftragsformular-honig" aria-hidden="true"><label>Website <input name="company_website" type="text" tabindex="-1" autocomplete="off"></label></div>
-									<label class="auftragsformular-datenschutz"><input name="consent_privacy" type="checkbox" required> <span>Ich akzeptiere die <a href="<?php echo esc_url( $privacy_url ); ?>" target="_blank" rel="noopener">Datenschutzhinweise</a> und möchte zu meiner Anfrage kontaktiert werden.</span></label>
-									<p class="auftragsformular-status" role="status" aria-live="polite" hidden></p>
-									<button class="tun" type="submit" data-track-action="<?php echo esc_attr( $is_setup ? 'cta_strecke_sofortkontakt_submit' : 'cta_strecke_analyse_submit' ); ?>" data-track-category="lead_gen" data-track-section="<?php echo esc_attr( $order_variant ); ?>"><?php echo esc_html( $is_setup ? 'Sofortkontakt-Setup anfragen' : 'Analyse anfragen' ); ?> <span class="pf" aria-hidden="true">→</span></button>
-									<p class="auftragsformular-hinweis">Absenden ist noch keine Buchung. Sie bekommen <?php echo esc_html( $order_reply ); ?> einen Starttermin und die Liste der Zugänge, die ich brauche.</p>
-								</form>
-								<noscript><p>Für eine Anfrage ohne JavaScript nutzen Sie bitte das <a href="<?php echo esc_url( $contact_url ); ?>">Kontaktformular</a>.</p></noscript>
-							</section>
-						<?php endforeach; ?>
+					<div class="sofortkontakt-bruecke">
+						<div><span class="mono">Sonderfall · vorhandene Leads</span><h3>Sie kaufen bereits Anfragen?</h3><p>Das Sofortkontakt-Setup bleibt ein eigenes Produkt. Es bekommt eine separate Strecke und belastet diese Money Page nicht mehr mit einem zweiten Formular.</p></div>
+						<a class="textlink" href="<?php echo esc_url( $sofortkontakt_url ); ?>" data-track-action="cta_strecke_sofortkontakt_external" data-track-category="lead_gen" data-track-section="einstieg">Sofortkontakt anfragen →</a>
 					</div>
 
 					<div class="ausstieg">
-						<span class="mono">Und wenn es nicht funktioniert?</span>
+						<span class="mono">Risiko & Eigentum</span>
 						<div class="ag">
 							<?php foreach ( $exits as $exit ) : ?>
-								<p>
-									<b><?php echo esc_html( $exit['titel'] ); ?></b>
-									<?php echo esc_html( $exit['text'] ); ?>
-								</p>
+								<p><b><?php echo esc_html( $exit['titel'] ); ?></b> <?php echo esc_html( $exit['text'] ); ?></p>
 							<?php endforeach; ?>
 						</div>
 					</div>
@@ -1150,8 +1088,8 @@ get_header();
 			<div class="blatt reihe">
 				<?php $render_chapter( $chapter_by_id['marktcheck'] ); ?>
 				<div class="voll">
-					<h2 class="kopf" id="marktcheck-titel">Vier Angaben. Danach bekommen Sie eine klare Empfehlung.</h2>
-					<p class="vorspann">Ich prüfe Betrieb, Projekt-Fit, Vertriebsstruktur und Zeithorizont persönlich. Den schriftlichen Befund erhalten Sie <?php echo esc_html( $marketcheck_reply ); ?> per E-Mail: jetzt aufbauen, später vorbereiten oder nicht investieren. Kein Pflichtgespräch, keine Buchung durch das Absenden.</p>
+					<h2 class="kopf" id="marktcheck-titel">Marktcheck für <?php echo esc_html( $marketcheck_price ); ?> netto.</h2>
+					<p class="vorspann">Ein kompakter, persönlich geprüfter Einstiegsbefund statt einer weiteren kostenlosen Lead-Abfrage: Angebotsfokus, Projekt-Fit, Vertriebsstruktur und Zielgebiet. Sie erhalten <?php echo esc_html( $marketcheck_reply ); ?> eine klare Empfehlung und drei priorisierte Hebel. Die <?php echo esc_html( $marketcheck_price ); ?> werden bei Beauftragung des Anfragesystems angerechnet.</p>
 
 					<div class="gate">
 						<div>
@@ -1206,7 +1144,7 @@ get_header();
 									data-track-funnel-stage="intake_open"
 								>Über das Kontaktformular anfragen <span class="pf" aria-hidden="true">→</span></a>
 								<p class="klein">
-									Keine Zahlungsdaten · kein Pflicht-Call<br>
+									Anfrage ist noch keine Buchung · kein Pflicht-Call<br>
 									<?php echo esc_html( $contact_email ); ?>
 								</p>
 							</div>
@@ -1304,12 +1242,12 @@ get_header();
 								data-track-action="cta_strecke_abschluss_to_marktcheck"
 								data-track-category="lead_gen"
 								data-track-section="abschluss"
-							>Kostenlosen Marktcheck starten <span class="pf" aria-hidden="true">→</span></a>
-							<a class="hero-nebenweg" href="#sofortkontakt"
+							>Marktcheck starten · <?php echo esc_html( $marketcheck_price ); ?> <span class="pf" aria-hidden="true">→</span></a>
+							<a class="hero-nebenweg" href="<?php echo esc_url( $sofortkontakt_url ); ?>"
 								data-track-action="cta_strecke_abschluss_to_sofortkontakt"
 								data-track-category="lead_gen"
 								data-track-section="abschluss"
-							>Portal-Leads bereits im Einsatz? Sofortkontakt-Setup →</a>
+							>Bestehende Leads schneller bearbeiten? Sofortkontakt →</a>
 						</div>
 					</div>
 					<div class="marg">
