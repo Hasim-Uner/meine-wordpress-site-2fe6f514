@@ -259,6 +259,6 @@ run_case( 'priced extensions and unpriced dashboard persist through intake', sta
 	check( 5560 === $v['website_price'] && 10 === $v['website_days'] && 3.25 === (float) $v['website_preparation_days'] && 940 === $v['website_design_price'] && 1 === $v['website_duration_open'], 'Server recalculates every factor and only dashboard is open' );
 	check( 1 === get_post_meta( 1, '_nexus_contact_website_dashboard' ) && 5560 === get_post_meta( 1, '_nexus_contact_website_price' ) && 440 === get_post_meta( 1, '_nexus_contact_website_text_price' ) && 940 === get_post_meta( 1, '_nexus_contact_website_design_price' ), 'Calculated prices and dashboard selection reach CRM' );
 	foreach ( $GLOBALS['intake_test']['mails'] as $mail ) {
-		check( str_contains( $mail['body'], '5.560' ) && str_contains( $mail['body'], 'Texterstellung 440' ) && str_contains( $mail['body'], 'CRM-Anbindung Standard' ) && str_contains( $mail['body'], 'individuelles Daten-Dashboard nach Angebot' ), 'Both mails distinguish copy, fixed extras and dashboard' );
+		check( str_contains( $mail['body'], '5.560' ) && str_contains( $mail['body'], 'Texterstellung 440' ) && str_contains( $mail['body'], 'CRM-Anbindung Standard' ) && str_contains( $mail['body'], 'Zusätzlich: individuelles Daten-Dashboard nach Angebot' ), 'Both mails distinguish copy, fixed extras and dashboard' );
 	}
 } );
