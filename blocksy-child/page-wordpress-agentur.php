@@ -22,7 +22,7 @@ add_filter( 'hu_forced_singular_seo_map', function ( $map ) {
 
 	$map['wordpress-agentur-hannover'] = [
 		'title'       => 'WordPress Agentur Hannover: direkte Umsetzung | Haşim Üner',
-		'description' => 'WordPress Agentur Hannover gesucht? Direkte B2B-Umsetzung für WordPress, technisches SEO, Tracking und Conversion – ohne Übergaben zwischen Account und Entwicklung.',
+		'description' => 'WordPress Agentur Hannover gesucht? Direkte B2B-Umsetzung für WordPress, technisches SEO, Tracking und Conversion – ohne unnötige Übergaben.',
 	];
 
 	return $map;
