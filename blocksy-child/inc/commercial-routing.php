@@ -429,7 +429,7 @@ function hu_get_site_footer_navigation_contract() {
 				'pre'    => 'Ich bin ',
 				'strong' => 'Solar- oder Wärmepumpenbetrieb',
 				'post'   => ' und kaufe heute Portal-Anfragen.',
-				'doors'  => [ 'marktcheck', 'analyse', 'sofort' ],
+				'doors'  => [ 'marktcheck', 'system', 'sofort' ],
 			],
 		],
 		'directory' => [
