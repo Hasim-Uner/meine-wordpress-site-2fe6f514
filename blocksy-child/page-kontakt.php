@@ -144,11 +144,12 @@ if ( 'response_setup' === $selected_focus ) {
 }
 
 if ( 'audit_scope' === $selected_focus && 'audit' === $selected_type ) {
+	$marketcheck_price  = function_exists( 'hu_marketcheck_price' ) ? hu_marketcheck_price() : hu_format_eur( HU_MARKETCHECK_PRICE );
 	$hero_title         = 'Marktcheck für Ihre Anfragegewinnung';
-	$form_title         = '99 € netto. Zwei kurze Schritte zur fachlichen Einordnung.';
+	$form_title         = sprintf( '%s netto. Zwei kurze Schritte zur fachlichen Einordnung.', $marketcheck_price );
 	$form_intro         = 'Betrieb, Zielgebiet, Vertriebsprozess und aktuelle Anfragequellen reichen für den ersten Check.';
 	$message_step_title = 'Wie gewinnen und bearbeiten Sie heute Anfragen?';
-	$submit_label       = 'Marktcheck für 99 € anfragen';
+	$submit_label       = sprintf( 'Marktcheck für %s anfragen', $marketcheck_price );
 }
 
 // Versuch Ersteinschätzung (/kontakt/?focus=ersteinschaetzung). Den Typ gibt
