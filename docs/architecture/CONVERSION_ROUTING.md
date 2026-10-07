@@ -523,7 +523,7 @@ Landingpage. Kopfzeile des Registers: links „Welcher Weg passt?“, rechts
 | Ich habe **eine Website** … | Projekt anfragen (`projekt`, „nach Umfang“) | `cta_footer_door_projekt` |
 | Ich brauche **belastbare Messung** … | Tracking-Projekt anfragen (`tracking`, „ab“ Server-Side-Setup) | `cta_footer_door_tracking` |
 | Ich bin **Agentur** … | Test-Sprint anfragen (`aufgabe`) | `cta_footer_door_aufgabe` |
-| Ich bin **Solar- oder Wärmepumpenbetrieb** und kaufe heute Portal-Anfragen. | Marktcheck, regional (`marktcheck`, kostenlos) · Anfragesystem-Analyse (`analyse`) · Sofortkontakt-Setup (`sofort`) | `cta_footer_door_marktcheck`, `cta_footer_door_analyse`, `cta_footer_door_sofort` |
+| Ich bin **Solar- oder Wärmepumpenbetrieb** und kaufe heute Portal-Anfragen. | Marktcheck, regional (`marktcheck`, 99 €) · Anfragesystem (`system`, ab Grundpreis) · Sofortkontakt-Setup (`sofort`) | `cta_footer_door_marktcheck`, `cta_footer_door_system`, `cta_footer_door_sofort` |
 
 Jede Tür ist eine Zeile mit Bezeichnung, Betrag (Mono, tabellarische Ziffern)
 und Pfeil; die Beträge kommen aus dem Kanon (`hu_funnel_doors()`), kein
@@ -543,7 +543,7 @@ Die eigene Route wird nicht mehr ausgeblendet, sondern markiert (3-px-Kante in
 Tracking-Seiten zählen als Tracking; Fallstudie, Portal-Einordnungen und das
 Dossier „Leadgenerierung“ als Energie; Dossier „Tracking“ als Tracking). Auf
 der Seite, die den Anker besitzt, zeigt die Tür auf den Anker der Seite
-(Energie-Seite: `#marktcheck`, `#einstieg`). Das Register erscheint auf der Energie-Seite. Auf der Startseite bleibt es
+(Energie-Seite: Marktcheck → `#marktcheck`, Anfragesystem → `#einstieg`; Sofortkontakt → gescopter Kontakt-Intake). Das Register erscheint auf der Energie-Seite. Auf der Startseite bleibt es
 wegen der eigenen Nebenwege und des Abschlusses weg; auf `/kontakt/` ebenso, die
 Seite ist das Ziel jeder Tür. `/whitelabel-retainer/` rendert einen eigenen
 Fuß und zeigt das Register nicht.
@@ -558,8 +558,8 @@ unverändert, Direktzeile, Verzeichnis und Absender erscheinen weiter. Eine weit
 Money Page ohne Register trägt man mit ihrer Template-Datei in diese Liste ein;
 `scripts/tests/navigation-contract.php` prüft die Kontexte `home` und `conversion`.
 
-Die Energie-Zeile führt den Marktcheck damit auf jeder Seite (außer Kontakt
-und White-Label) als eine von drei Türen der Energie-Betriebe. Das ist die
+Die Energie-Zeile führt Marktcheck, Anfragesystem und Sofortkontakt als drei
+klar getrennte Entscheidungen; Analyse ist dort nicht mehr sichtbar. Das ist die
 Vorgabe des Auftrags; `AGENTS.md` nennt sitewide Marktcheck-Routing als nicht
 wieder einzuführen. Offen, ob die Energie-Zeile davon ausgenommen sein soll
 (Entscheidung bei Haşim). Der Kopf zeigt den Marktcheck weiter nur im
