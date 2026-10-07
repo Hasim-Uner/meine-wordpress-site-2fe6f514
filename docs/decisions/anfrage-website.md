@@ -15,8 +15,9 @@ kurzer Seite, 150 € je Standardseite und 290 € je Leistungs-/Verkaufsseite.
 Die Festpreise leiten sich intern aus produktivem Aufwand ab; der reguläre
 Direktkunden-Stundensatz von 95 € netto und der Agenturfaktor von 70 € netto
 werden auf der Produktseite nicht als Vergleichs- oder Rückrechnungsanker gezeigt.
-Responsive Basisgestaltung, technisches SEO, Formular mit gespeicherten
-Anfragen, Bestätigungsmail, Danke-Seite und Rechtstext-Seiten sind enthalten.
+Responsive Basisgestaltung, technisches SEO, Search Console, Formular mit gespeicherten
+Anfragen, Bestätigungsmail, Danke-Seite, Basis-Daten-Cockpit und Rechtstext-Seiten sind enthalten.
+Das Basis-Cockpit bündelt Search-Console-Sichtbarkeit, gespeicherte Anfragen und Top-Landingpages.
 Impressum/Datenschutz/Danke/404 zählen nicht als bezahlte Inhaltsseiten.
 Rechtstexte werden geliefert, keine Rechtsberatung. Custom Code, Gutenberg/ACF,
 GitHub und KI-Workflow mit Qualitätsprüfung; kein Pagebuilder, kein Website-Abo,
@@ -30,7 +31,7 @@ keine Pflichtwartung oder Pflichtlizenzen im Grundprodukt. Externe Kosten transp
 | Weiteres unterschiedliches Layout | 250 € | 0,5 Werktage |
 | Conversion-Tracking Standard | 890 € | 1 Werktag |
 | CRM Standard | 990 € | 3 Werktage |
-| Daten-Dashboard | Nach Angebot | Zusätzlich nach Angebot |
+| Individuelles Daten-Dashboard | Nach Angebot | Zusätzlich nach Angebot |
 
 Screendesign: eine Richtung in Figma, Desktop und Mobil je Layout, zwei
 gebündelte Korrekturrunden. Wiederverwendung zählt einmal. Vier Seiten mit
@@ -48,8 +49,9 @@ Objekte/Formulare separat. Externe CRM-Kosten nicht im Entwicklungspreis.
 Tracking umfasst GA4/GTM/Consent Mode und eine Google-Ads-Conversion für die
 Standard-Anfrage. Server-Side, Meta CAPI, Offline-Conversions und weitere Ziele
 separat. Ein erforderlicher Consent-Dienst wird mit Kosten vorab benannt.
-Dashboard ist nur eine auswählbare Angebotsleistung; kein Dashboard-Plugin oder
-Analytics-Setup auf der eigenen Website wird in diesem Auftrag gebaut.
+Das Basis-Daten-Cockpit ist Teil des Grundprodukts und benötigt kein GA4. Ein individuelles
+Daten-Dashboard für zusätzliche Quellen wie GA4, Ads, Meta oder CRM bleibt eine auswählbare
+Angebotsleistung nach Abstimmung; dessen Zusatzaufwand ist nicht im Grundpreis enthalten.
 
 ## Produktionszeit
 
