@@ -300,7 +300,7 @@ function hu_get_forced_singular_seo_map() {
 			// "website relaunch" gehoert dem Beitrag /website-relaunch/.
 			'wordpress-website-erstellen-lassen' => [
 				'title'       => sprintf( 'WordPress-Website erstellen lassen ab %s | Haşim Üner', hu_freelancer_website_price() ),
-				'description' => sprintf( 'WordPress-Website ab %s: Grundsystem, technisches SEO, Formular und Übergabe. Seitentypen, Texte & Extras konfigurieren, Einmalpreis und Produktionszeit sofort sehen.', hu_freelancer_website_price( true ) ),
+				'description' => sprintf( 'WordPress-Website ab %s: technisches SEO, geprüfte Anfrage-Strecke und Basis-Daten-Cockpit inklusive. Umfang, Texte & Extras konfigurieren, Preis und Produktionszeit sofort sehen.', hu_freelancer_website_price( true ) ),
 			],
 			// Query-Owner "conversion optimierung b2b" (docs/seo/query-ownership.csv).
 			// Die Dauer der Analyse kommt aus dem Kanon, damit Snippet und Seite
