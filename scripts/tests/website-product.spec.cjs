@@ -315,7 +315,7 @@ test('product -> contact -> REST -> CRM keeps typed scope and recalculates serve
     expect(mail.body).toContain('7.000');
     expect(mail.body).toContain('Freigegebene Texte vorhanden');
     expect(mail.body).toContain('CRM-Anbindung Standard');
-    expect(mail.body).toContain('individuelles Daten-Dashboard nach Angebot');
+    expect(mail.body).toContain('Zusätzlich: individuelles Daten-Dashboard nach Angebot');
   }
 });
 
