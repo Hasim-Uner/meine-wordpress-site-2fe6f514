@@ -21,7 +21,7 @@ A page can remain the canonical SEO destination for its query while its CTA rout
 | `/` | Brand and direct WordPress/Freelancer intent | Homepage and direct WordPress money page | `Projekt anfragen` in the hero; offer-specific project requests in price rows. With the Ersteinschätzung experiment on, header, case, the assessment card after offers and page close retain `/kontakt/?focus=ersteinschaetzung` | Scope/prices, proof / White-Label / Solar / tracking specialist |
 | `/wordpress-freelancer-hannover/` | Retired direct-client route | 301 to `/`; excluded from sitemap | Homepage takes over content and query ownership | Legacy content anchors remain on `/` |
 | `/whitelabel-retainer/` | Agencies seeking delivery capacity | Agency money page | White-Label request form (`?case=aufgabe` / `?case=angebotsphase` / `?case=vormerken`) or scoped first project | 30-minute call / proof |
-| `/solar-waermepumpen-leadgenerierung/` | Solar, heat-pump and storage businesses | Energy vertical money page | Marktcheck for cold intent; `#analyse` and `#sofortkontakt` for direct purchase intent | Solar proof / case study |
+| `/solar-waermepumpen-leadgenerierung/` | Solar, heat-pump and storage businesses | Energy vertical money page | Marktcheck 99 € for diagnostic intent; configurable Anfragesystem from 9.999 € for build intent | Sofortkontakt → scoped contact intake for existing leads; Solar proof / case study |
 | `/server-side-tracking-b2b/` | Server-Side Tracking commercial intent | Specialist tracking money page (route `tracking_b2b`); linked as „Server-Side Tracking“, never as plain „Tracking“ | Tracking project request / scope clarification | White-Label bridge for agencies |
 | `/ga4-tracking-setup/` | Tracking purchase intent: GA4/GTM setup, consent, ads conversions | Tracking offer page; target of the header item „Tracking“ and the footer way (route `tracking_setup`) | `Tracking-Projekt anfragen` → `/kontakt/?type=project&focus=tracking` | Tracking specialist / project evidence |
 | `/performance-marketing/` | B2B companies running Google Ads or Meta | Paid-demand money page (measurement → landing page → budget) | `Ausgangslage prüfen lassen` → `/kontakt/?type=project` | Tracking setup, landing page offer (`/landingpage-erstellen-lassen/`, `perf_to_landingpage_offer`; the former `perf_to_landingpages` → `/#angebot-funnel` is retired), case study; performance agencies → White-Label task (`?type=whitelabel&case=aufgabe`) |
@@ -435,13 +435,13 @@ Menüs, `fokus` die Leiter der Solar-Seite):
 | Startseite bei eingeschaltetem Versuch | voll | Ersteinschätzung (`hu_first_assessment_text( 'label' )`) | kostenlos (`hu_format_eur( 0 )`) | `/kontakt/?focus=ersteinschaetzung` | `nav_header_ersteinschaetzung` |
 | `/ga4-tracking-setup/`, `/server-side-tracking-b2b/` | voll | Tracking anfragen | „ab“ Messung-Setup | `/kontakt/?type=project&focus=tracking` | `nav_header_door_tracking` |
 | White-Label | voll | Test-Sprint anfragen | Test-Sprint | `/whitelabel-retainer/#aufgabe` | `nav_header_door_whitelabel` |
-| Portal-Einordnungen (Checkfox, Aroundhome, Wattfox, DAA) | leser | Sofortkontakt | Sofortkontakt-Setup | `/solar-waermepumpen-leadgenerierung/#sofortkontakt` | `nav_header_door_sofortkontakt` |
-| Übrige Beiträge, Dossier „Leadgenerierung“ | leser | Marktcheck | kostenlos | `…/#marktcheck` | `nav_header_door_marktcheck` |
+| Portal-Einordnungen (Checkfox, Aroundhome, Wattfox, DAA) | leser | Sofortkontakt | Sofortkontakt-Setup | `/kontakt/?type=implementation&focus=response_setup` | `nav_header_door_sofortkontakt` |
+| Übrige Beiträge, Dossier „Leadgenerierung“ | leser | Marktcheck | 99 € | `…/#marktcheck` | `nav_header_door_marktcheck` |
 | Übrige Beiträge, Dossier „Tracking“ | leser | Tracking anfragen | „ab“ Messung-Setup | wie oben | `nav_header_door_tracking` |
 | Übrige Beiträge, sonst | leser | Projekt anfragen | kein Betrag | wie oben | `nav_header_project` |
-| Fallstudie | voll | Marktcheck | kostenlos | `…/#marktcheck` | `nav_header_door_marktcheck` |
-| Solar-Cluster (Slugs aus `hu_get_solar_cluster_link_map()`) | voll | Marktcheck | kostenlos | `…/#marktcheck` | `nav_header_door_marktcheck` |
-| Solar-Seite | fokus | Leiter der Seite: Marktcheck · Analyse · Sofortkontakt | kostenlos · Analyse · Sofortkontakt-Setup (je aus dem Kanon) | Anker der Seite (`#marktcheck`; `#analyse` und `#sofortkontakt`, bis `HU_FEATURE_SOLAR_DOORS` an ist `#einstieg`) | `nav_header_door_marktcheck`, `nav_header_door_analyse`, `nav_header_door_sofortkontakt` |
+| Fallstudie | voll | Marktcheck | 99 € | `…/#marktcheck` | `nav_header_door_marktcheck` |
+| Solar-Cluster (Slugs aus `hu_get_solar_cluster_link_map()`) | voll | Marktcheck | 99 € | `…/#marktcheck` | `nav_header_door_marktcheck` |
+| Solar-Seite | fokus | Marktcheck · Anfragesystem | 99 € · ab 9.999 € (je aus dem Kanon) | `#marktcheck` · `#einstieg` | `nav_header_door_marktcheck`, `nav_header_door_system` |
 | Kontakt | voll | keine Tür | | | |
 
 Die Zeile „White-Label“ gilt für `site-header.php` und für den eigenen Kopf der
@@ -456,11 +456,11 @@ ohne Dossier-Kategorie bekommt „Projekt anfragen“: der Rückfall auf das Dos
 „Leadgenerierung“ beschriftet nur den Artikelpfad.
 
 Jede Tür trägt zusätzlich `data-door="<schlüssel>"` (`projekt`, `tracking`,
-`aufgabe`, `marktcheck`, `analyse`, `sofort`), `data-track-category="lead_gen"`
+`aufgabe`, `marktcheck`, `system`, `analyse`, `sofort`), `data-track-category="lead_gen"`
 und `data-track-section="header"`. Die Beträge kommen ausschließlich aus
 `inc/canon/pricing-canon.php` (`hu_tracking_price( 'measurement', 'setup' )`,
-`HU_WHITELABEL_TEST_SPRINT_PRICE`, `hu_analysis_price()`,
-`hu_entry_setup_price()`); die Navigationsprüfung verbietet Preisliterale in
+`HU_WHITELABEL_TEST_SPRINT_PRICE`, `hu_marketcheck_price()`,
+`hu_foundation_price_display()`, `hu_analysis_price()`, `hu_entry_setup_price()`); die Navigationsprüfung verbietet Preisliterale in
 `inc/funnel-doors.php` und im Template. Ein „ab“-Betrag ist die echte
 Untergrenze dessen, was hinter der Tür liegt: Tracking beginnt bei der
 Messung (Stufe 1 der Tracking-Leiste), nicht beim Basis-Paket. Die Tür „Projekt anfragen“ bündelt
@@ -468,18 +468,17 @@ Website, Landingpage, Relaunch und Optimierung und trägt keinen Betrag.
 Der Marktcheck erscheint als Tür nur im Energie-Kontext (Fallstudie, Dossier
 „Leadgenerierung“, Portal-Einordnungen).
 
-Der Modus `fokus` (Solar-Seite) zeigt Wortmarke links und rechts die Leiter als
-drei Textlinks mit Betrag, Mono, Betrag in `--tinte`. Bezeichnung und Betrag
-sind getrennte Felder mit Abstand `--s1`; die Abstände zwischen den Einstiegen
-passen sich zwischen `--s1` und `--s2` an. Die globale Accessibility-Schicht
-hält die Klickflächen mindestens 44 px hoch. Kein Hauptmenü, nicht
-sticky, höchstens 56 px, Haarlinie unten, unter 561 px nur „Marktcheck · 0 €“ als
-gefüllter Button (der Sofortkontakt steht dann nur im Angebotsblock). Die
-sticky Kapitel-Leiste der Seite bleibt im Seiteninhalt.
+Der Modus `fokus` (Solar-Seite) zeigt Wortmarke links und rechts genau zwei
+Produktpfade: **Marktcheck** und **Anfragesystem**. Beträge stehen separat,
+kommen aus dem Kanon und dienen als Qualifikation. Kein Hauptmenü, nicht
+sticky, höchstens 56 px; unter 561 px bleibt der Marktcheck als niedriger
+Einstieg sichtbar. Sofortkontakt steht nicht mehr als dritte Hauptentscheidung
+im Fokusheader, sondern als Spezialpfad im Produktabschnitt und führt auf den
+gescopten Kontakt-Intake. Die Kapitel-Leiste der Seite bleibt im Seiteninhalt.
 
-Solange `HU_FEATURE_SOLAR_DOORS` aus ist, zeigen die Türen Analyse und
-Sofortkontakt (Kopf, Leiter und Fuß)
-auf `/solar-waermepumpen-leadgenerierung/#einstieg`; `HU_FEATURE_SOLAR_DOORS`
+`HU_FEATURE_SOLAR_DOORS` steuert nur noch den Legacy-Analyseanker. Die Analyse
+ist kein sichtbares Produkt der Solar-Seite mehr. Sofortkontakt führt immer
+auf `/kontakt/?type=implementation&focus=response_setup`; `HU_FEATURE_SOLAR_DOORS`
 (`inc/feature-flags.php`, Vorgabe `false`) schaltet sie auf `#analyse` und
 `#sofortkontakt`. Haşim schaltet ihn per `wp-config.php` um, sobald diese
 Anker live sind.
