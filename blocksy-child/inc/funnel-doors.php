@@ -62,18 +62,19 @@ function hu_funnel_solar_door_anchor( $own_anchor ) {
  * sofort (Sofortkontakt). `data-door` und `cta_footer_door_<schluessel>` tragen
  * diese Schluessel; `track` ist die Action im Kopf.
  *
- * Solange HU_FEATURE_SOLAR_DOORS aus ist, zeigen `analyse` und `sofort` auf
- * den Einstieg der Angebotsleiter (#einstieg). Die Anker #analyse und
- * #sofortkontakt entstehen erst mit der Solar-Strecke.
+ * Die historische Analyse-Tuer bleibt fuer Legacy-Kontexte erhalten. Sofortkontakt
+ * fuehrt unabhaengig vom Solar-Door-Flag in die separate Kontaktstrecke.
  *
- * `tier`: `scope` (Umfang offen, kein Betrag), `free` (kostenlos) oder `paid`.
+ * `tier`: `scope` (Umfang offen, kein Betrag), `free` oder `paid`.
  *
  * @return array<string, array<string, string>>
  */
 function hu_funnel_doors() {
 	$routes       = hu_get_commercial_route_map();
 	$analysis_url = hu_funnel_energy_anchor( hu_funnel_solar_door_anchor( 'analyse' ) );
-	$instant_url  = hu_funnel_energy_anchor( hu_funnel_solar_door_anchor( 'sofortkontakt' ) );
+	$instant_url  = function_exists( 'hu_get_contact_intake_url' )
+		? hu_get_contact_intake_url( 'project', 'sofortkontakt' )
+		: add_query_arg( [ 'type' => 'project', 'focus' => 'sofortkontakt' ], home_url( '/kontakt/' ) );
 
 	return [
 		'projekt'    => [
@@ -127,8 +128,8 @@ function hu_funnel_doors() {
 				__( '%s, regional', 'blocksy-child' ),
 				HU_REQUEST_ANALYSIS_LABEL
 			),
-			'amount'       => hu_format_eur( 0 ),
-			'tier'         => 'free',
+			'amount'       => function_exists( 'hu_marketcheck_price' ) ? hu_marketcheck_price() : hu_format_eur( 99 ),
+			'tier'         => 'paid',
 			'url'          => (string) $routes['marketcheck'],
 			'track'        => 'nav_header_door_marktcheck',
 		],

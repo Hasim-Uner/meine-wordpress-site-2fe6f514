@@ -130,7 +130,7 @@
       selectHtml('sales_team_size','Wer verkauft?','Vertriebsverantwortung',fitFields.sales_team_size) +
       selectHtml('project_timing','Wann soll sich etwas ändern?','Priorität',fitFields.project_timing) +
       '</div><div class="mc2-actions"><button class="mc2-primary" type="submit">Weiter zu Kontaktdaten <span aria-hidden="true">→</span></button></div>' +
-      '<p class="mc2-footnote">Dauert meist unter einer Minute · keine Zahlungsdaten</p></form></div>';
+      '<p class="mc2-footnote">Dauert meist unter einer Minute · ' + esc(CFG.marketcheckPrice || '99 € netto') + ' · bei Aufbau anrechenbar</p></form></div>';
 
     Object.keys(fitFields).forEach(function (name) {
       var control = mount.querySelector('[name="' + name + '"]');
@@ -176,7 +176,7 @@
       contactInput('postal_code','Firmen-PLZ','text','30159',false,'Für die regionale Wettbewerbsprüfung') +
       '</div><div class="mc2-consent" data-field="consent_privacy"><label><input type="checkbox" name="consent_privacy"> <span>Ich akzeptiere die <a href="' + esc(CFG.privacyUrl || '/datenschutz/') + '" target="_blank" rel="noopener">Datenschutzhinweise</a> und möchte zu meiner Anfrage kontaktiert werden.</span></label><p class="mc2-error" hidden></p></div>' +
       '<div class="mc2-submit-error" hidden></div>' +
-      '<div class="mc2-actions"><button class="mc2-back" type="button">← Zurück</button><button class="mc2-primary" type="submit">Marktcheck anfordern <span aria-hidden="true">→</span></button></div>' +
+      '<div class="mc2-actions"><button class="mc2-back" type="button">← Zurück</button><button class="mc2-primary" type="submit">Marktcheck anfragen · ' + esc(CFG.marketcheckPrice || '99 € netto') + ' <span aria-hidden="true">→</span></button></div>' +
       '<p class="mc2-footnote">Kein Pflichttermin · kein Newsletter · DSGVO</p></form></div>';
 
     if (answers.position) mount.querySelector('[name="position"]').value = answers.position;
@@ -293,7 +293,7 @@
       unlockForm();
       isSubmitting = false;
       button.removeAttribute('aria-busy');
-      button.innerHTML = 'Marktcheck anfordern <span aria-hidden="true">→</span>';
+      button.innerHTML = 'Marktcheck anfragen · ' + esc(CFG.marketcheckPrice || '99 € netto') + ' <span aria-hidden="true">→</span>';
       var invalidField = form.querySelector('[aria-invalid="true"]');
       if (invalidField) invalidField.focus();
     });

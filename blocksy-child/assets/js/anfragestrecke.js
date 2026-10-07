@@ -506,9 +506,62 @@
     markiere();
   }
 
+  function produktKonfigurator() {
+    var root = wurzel.querySelector('[data-system-konfigurator]');
+    if (!root) return;
+    var inputs = Array.prototype.slice.call(root.querySelectorAll('.system-produkt input[type="checkbox"]'));
+    var priceNode = root.querySelector('[data-config-price]');
+    var selectionNode = root.querySelector('[data-config-selection]');
+    var requestLink = root.querySelector('[data-system-request-link]');
+    var base = Number(root.getAttribute('data-base-price')) || 9999;
+    var extra = Number(root.getAttribute('data-extra-price')) || 1000;
+    var formatter = new Intl.NumberFormat('de-DE', { style: 'currency', currency: 'EUR', maximumFractionDigits: 0 });
+
+    function update(changed) {
+      var selected = inputs.filter(function (input) { return input.checked; });
+      if (!selected.length && changed) {
+        changed.checked = true;
+        selected = [changed];
+      }
+      var total = base + Math.max(0, selected.length - 1) * extra;
+      inputs.forEach(function (input) {
+        var row = input.closest('.system-produkt');
+        var status = row ? row.querySelector('[data-config-status]') : null;
+        if (row) row.classList.toggle('is-active', input.checked);
+        if (status) {
+          if (!input.checked) status.textContent = '+' + formatter.format(extra).replace(/\s/g, ' ');
+          else status.textContent = selected[0] === input ? 'inklusive' : '+' + formatter.format(extra).replace(/\s/g, ' ');
+        }
+      });
+      if (priceNode) priceNode.textContent = formatter.format(total).replace(/\s/g, ' ');
+      if (selectionNode) {
+        var names = selected.map(function (input) {
+          var label = input.closest('.system-produkt');
+          var bold = label ? label.querySelector('b') : null;
+          return bold ? bold.textContent.trim() : input.value;
+        });
+        selectionNode.textContent = names.join(' + ') + ' · ' + selected.length + (selected.length === 1 ? ' Produktstrecke' : ' Produktstrecken');
+      }
+      if (requestLink) {
+        try {
+          var url = new URL(requestLink.href, window.location.href);
+          url.searchParams.set('products', selected.map(function (input) { return input.value; }).join(','));
+          url.searchParams.set('price', String(total));
+          requestLink.href = url.toString();
+        } catch (e) {}
+      }
+    }
+
+    inputs.forEach(function (input) {
+      input.addEventListener('change', function () { update(input); });
+    });
+    update(inputs[0]);
+  }
+
   function start() {
     kopfUndRegister();
     rechner();
+    produktKonfigurator();
     einmalig(wurzel.querySelector('.buehne'), 0.25, 1400);
     bandtreppe();
     marktcheckBewegung();

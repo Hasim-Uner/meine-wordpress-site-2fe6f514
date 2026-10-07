@@ -11,6 +11,7 @@ const types = { '.css': 'text/css', '.js': 'text/javascript', '.woff2': 'font/wo
 const rendered = {};
 const html = context => (rendered[context] ??= execFileSync('php', [path.join(__dirname, 'render-navigation.php'), context], { encoding: 'utf8' }));
 const freeAmount = execFileSync('php', ['-r', `require '${path.join(__dirname, 'navigation-harness.php')}'; echo hu_format_eur(0);`], { encoding: 'utf8' });
+const marketcheckAmount = execFileSync('php', ['-r', `require '${path.join(__dirname, 'navigation-harness.php')}'; echo hu_marketcheck_price();`], { encoding: 'utf8' });
 
 async function open(page, context, viewport) {
   await page.setViewportSize(viewport);
@@ -279,7 +280,7 @@ test('wordmark and About keep separate tracking actions', async ({ page }) => {
 test('solar cluster: Marktcheck in the header and Ihr Weg on the Energy footer row', async ({ page }) => {
   await open(page, 'solar_cluster', { width: 1440, height: 900 });
   await expect(rowDoor(page)).toHaveAttribute('data-door', 'marktcheck');
-  await expect(rowDoor(page)).toHaveAccessibleName(`Marktcheck ${freeAmount}`);
+  await expect(rowDoor(page)).toHaveAccessibleName(`Marktcheck ${marketcheckAmount}`);
   const energy = page.locator('.register .weg.ist-hier');
   await expect(energy).toHaveCount(1);
   await expect(energy).toHaveAttribute('aria-labelledby', 'fuss-weg-energy');
@@ -295,7 +296,7 @@ test('contact: no door, the page is the target', async ({ page }) => {
 });
 
 // Reader mode: wordmark, article path, door. No main menu, so no menu button either.
-for (const [context, door, name] of [['portal', 'sofort', /^Sofortkontakt \d[\d.]* €$/], ['article_lead', 'marktcheck', /^Marktcheck 0 €$/], ['article_track', 'tracking', /^Tracking anfragen ab \d[\d.]* €$/], ['article_cro', 'projekt', 'Projekt anfragen']]) {
+for (const [context, door, name] of [['portal', 'sofort', /^Sofortkontakt \d[\d.]* €$/], ['article_lead', 'marktcheck', `Marktcheck ${marketcheckAmount}`], ['article_track', 'tracking', /^Tracking anfragen ab \d[\d.]* €$/], ['article_cro', 'projekt', 'Projekt anfragen']]) {
   test(`reader ${context}: path and door "${door}", no menu`, async ({ page }) => {
     await open(page, context, { width: 1280, height: 800 });
     await expect(leiste(page)).toHaveAttribute('data-leiste-modus', 'leser');
@@ -344,14 +345,14 @@ for (const [width, columns] of [[390, 2], [1280, 4]]) {
   });
 }
 
-// Door register in the footer: six doors on every page except /kontakt/, own way marked, one column on a phone.
+// Door register in the footer: four active doors on every page except /kontakt/, own way marked, one column on a phone.
 const register = page => page.getByRole('navigation', { name: 'Welcher Weg passt?' });
 
 for (const [width, tracks] of [[390, 1], [768, 2], [1280, 2]]) {
   test(`footer register ${width}: ${tracks} column(s) per way, no overflow, every door one click away`, async ({ page }) => {
     await open(page, 'imprint', { width, height: 900 });
     await expect(register(page).locator('.weg')).toHaveCount(4);
-    await expect(register(page).getByRole('link')).toHaveCount(6);
+    await expect(register(page).getByRole('link')).toHaveCount(4);
     const columns = await register(page).locator('.weg').first().evaluate(el => getComputedStyle(el).gridTemplateColumns.split(' ').length);
     expect(columns).toBe(tracks);
     const rows = await register(page).getByRole('link').evaluateAll(els => els.map(el => Math.round(el.getBoundingClientRect().height)));
@@ -363,20 +364,19 @@ for (const [width, tracks] of [[390, 1], [768, 2], [1280, 2]]) {
   });
 }
 
-test('footer register: amounts in mono with tabular figures, "nach Umfang" and free door in --matt', async ({ page }) => {
+test('footer register: active amounts use mono/tabular figures and paid doors are not --matt', async ({ page }) => {
   await open(page, 'imprint', { width: 1280, height: 900 });
   const info = await register(page).locator('.betrag').evaluateAll(els => els.map(el => {
     const cs = getComputedStyle(el);
     return { text: el.textContent.trim(), family: cs.fontFamily, tabular: cs.fontVariantNumeric, color: cs.color };
   }));
-  expect(info.map(i => i.text)).toEqual(['nach Umfang', expect.stringMatching(/^ab \d[\d.]* €$/), expect.stringMatching(/^\d[\d.]* €$/), '0 €', expect.stringMatching(/^\d[\d.]* €$/), expect.stringMatching(/^\d[\d.]* €$/)]);
+  expect(info.map(i => i.text)).toEqual(['nach Umfang', expect.stringMatching(/^ab \d[\d.]* €$/), expect.stringMatching(/^\d[\d.]* €$/), expect.stringMatching(/^\d[\d.]* €$/)]);
   for (const entry of info) {
     expect(entry.family).toContain('IBM Plex Mono');
     expect(entry.tabular).toContain('tabular-nums');
   }
   const muted = info[0].color;
-  expect(info[3].color).toBe(muted);
-  expect(info[1].color).not.toBe(muted);
+  for (const entry of info.slice(1)) expect(entry.color).not.toBe(muted);
 });
 
 test('footer register: the own way is marked with a 3 px edge and "Ihr Weg", not hidden', async ({ page }) => {
@@ -407,9 +407,9 @@ test('footer register: no way is marked on a page of no way', async ({ page }) =
 test('footer register: the Solar page points its doors at its own anchors, in the same order', async ({ page }) => {
   await open(page, 'solar', { width: 1280, height: 900 });
   const energy = register(page).locator('.weg.ist-hier');
-  await expect(energy.getByRole('link')).toHaveCount(3);
-  expect(await energy.getByRole('link').evaluateAll(els => els.map(el => el.getAttribute('href')))).toEqual(['#marktcheck', '#einstieg', '#einstieg']);
-  expect(await energy.getByRole('link').evaluateAll(els => els.map(el => el.dataset.door))).toEqual(['marktcheck', 'analyse', 'sofort']);
+  await expect(energy.getByRole('link')).toHaveCount(1);
+  expect(await energy.getByRole('link').evaluateAll(els => els.map(el => el.getAttribute('href')))).toEqual(['#marktcheck']);
+  expect(await energy.getByRole('link').evaluateAll(els => els.map(el => el.dataset.door))).toEqual(['marktcheck']);
 });
 
 test('footer register: contact has none, the page is the target of every door', async ({ page }) => {
@@ -430,15 +430,15 @@ test('footer register: hover turns label and arrow to --stempel and moves the ar
   expect(after.arrow - before.arrow).toBeCloseTo(3, 0);
 });
 
-test('footer register: keyboard reaches the six doors in header order after the page content', async ({ page }) => {
+test('footer register: keyboard reaches the active doors in header order after the page content', async ({ page }) => {
   await open(page, 'imprint', { width: 1280, height: 900 });
   await register(page).getByRole('link').first().focus();
   const doors = [];
-  for (let i = 0; i < 6; i++) {
+  for (let i = 0; i < 4; i++) {
     doors.push(await page.evaluate(() => [document.activeElement.dataset.door, getComputedStyle(document.activeElement).outlineStyle]));
     await page.keyboard.press('Tab');
   }
-  expect(doors.map(([door]) => door)).toEqual(['projekt', 'tracking', 'aufgabe', 'marktcheck', 'analyse', 'sofort']);
+  expect(doors.map(([door]) => door)).toEqual(['projekt', 'tracking', 'aufgabe', 'marktcheck']);
   for (const [, outline] of doors) expect(outline).not.toBe('none');
 });
 
@@ -464,13 +464,13 @@ async function expectLadderFields(page) {
 }
 
 for (const width of [561, 640, 768, 1024, 1080, 1280, 1440]) {
-  test(`solar focus ${width}: three steps with amounts, no menu, one row, not sticky`, async ({ page }) => {
+  test(`solar focus ${width}: paid Marktcheck only, no menu, one row, not sticky`, async ({ page }) => {
     await open(page, 'solar', { width, height: 800 });
     await expect(leiste(page)).toHaveAttribute('data-leiste-modus', 'fokus');
     await expect(klappe(page)).toHaveCount(0);
     await expect(rowNav(page)).toHaveCount(0);
-    await expect(ladder(page).getByRole('link')).toHaveText([/^Marktcheck 0 €$/, /^Analyse \d[\d.]* €$/, /^Sofortkontakt \d[\d.]* €$/]);
-    expect(await ladder(page).getByRole('link').evaluateAll(els => els.map(el => el.getAttribute('href')))).toEqual(['#marktcheck', '#einstieg', '#einstieg']);
+    await expect(ladder(page).getByRole('link')).toHaveText([`Marktcheck ${marketcheckAmount}`]);
+    expect(await ladder(page).getByRole('link').evaluateAll(els => els.map(el => el.getAttribute('href')))).toEqual(['#marktcheck']);
     const tops = await ladder(page).getByRole('link').evaluateAll(els => els.map(el => Math.round(el.getBoundingClientRect().top)));
     expect(new Set(tops).size).toBe(1);
     expect(await rowHeight(page)).toBeLessThanOrEqual(56);
@@ -488,7 +488,7 @@ for (const width of [561, 640, 768, 1024, 1080, 1280, 1440]) {
 for (const width of [320, 360, 370, 390, 414, 560]) {
   test(`solar focus ${width}: only the filled Marktcheck button stays, 44 px, in one row with the wordmark`, async ({ page }) => {
     await open(page, 'solar', { width, height: 800 });
-    const main = ladder(page).getByRole('link', { name: /^Marktcheck · 0 €$/ });
+    const main = ladder(page).getByRole('link', { name: `Marktcheck · ${marketcheckAmount}` });
     await expect(main).toBeVisible();
     await expect(ladder(page).getByRole('link', { name: /^Analyse/ })).toBeHidden();
     await expect(ladder(page).getByRole('link', { name: /^Sofortkontakt/ })).toBeHidden();

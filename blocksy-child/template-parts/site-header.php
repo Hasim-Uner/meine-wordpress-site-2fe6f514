@@ -126,7 +126,7 @@ $render_door = static function ( array $door ) {
 $fokus_links = [];
 
 if ( 'fokus' === $leiste_modus ) {
-	foreach ( [ 'marktcheck', 'analyse', 'sofort' ] as $fokus_key ) {
+	foreach ( [ 'marktcheck' ] as $fokus_key ) {
 		if ( ! isset( $funnel_doors[ $fokus_key ] ) ) {
 			continue;
 		}

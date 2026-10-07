@@ -54,11 +54,14 @@ require_file "$CRM_CONTACT"
 require_file "$DIAGNOSE_CANON"
 require_file "$PRICING_CANON"
 
-# The solar money page names the free marketcheck as its entry offer. Ready
-# buyers therefore need a direct primary path from the document head to the
-# actual gate; buyers of portal leads get the Sofortkontakt route beside it.
+# The solar money page names the paid marketcheck as its low-friction entry.
+# Ready buyers can configure the full system; portal-lead buyers leave the page
+# through the separate Sofortkontakt contact route.
 require_pattern 'data-track-action="cta_strecke_kopf_to_marktcheck"' "$SOLAR_PAGE"
-require_pattern '>(Kostenlosen[[:space:]]+)?Marktcheck starten[[:space:]]*<span' "$SOLAR_PAGE"
+require_pattern 'Marktcheck starten' "$SOLAR_PAGE"
+require_pattern 'data-system-konfigurator' "$SOLAR_PAGE"
+require_pattern 'HU_MARKETCHECK_PRICE' "$PRICING_CANON"
+require_pattern 'HU_FOUNDATION_EXTRA_PRODUCT_PRICE' "$PRICING_CANON"
 require_pattern 'data-track-action="cta_strecke_kopf_to_sofortkontakt"' "$SOLAR_PAGE"
 
 # The stable WordPress handle is a bootstrap now. It must load the compact

@@ -92,7 +92,7 @@ nav_check( '/server-side-tracking-b2b/' === nav_path( $routes['tracking_b2b'] ),
 nav_check( 'Tracking' === $tracking['label'] && $routes['tracking_setup'] === $tracking['url'], 'header "Tracking" links the Tracking offer' );
 nav_check( 'https://hasimuener.de/kontakt/?type=project' === $header['cta']['url'], 'header CTA is the open project request' );
 nav_check( [ 'freelancer', 'tracking', 'whitelabel', 'energy' ] === array_column( $footer['routes'], 'route' ), 'footer ways follow the header order' );
-nav_check( [ [ 'projekt' ], [ 'tracking' ], [ 'aufgabe' ], [ 'marktcheck', 'analyse', 'sofort' ] ] === array_column( $footer['routes'], 'doors' ), 'footer ways carry their door keys; the Energy way ends in the paid ladder' );
+nav_check( [ [ 'projekt' ], [ 'tracking' ], [ 'aufgabe' ], [ 'marktcheck' ] ] === array_column( $footer['routes'], 'doors' ), 'footer ways carry their door keys; the Energy way ends in the paid ladder' );
 nav_check( ! array_key_exists( 'picks', $footer ), 'footer contract no longer carries landing-page picks' );
 nav_check( 'Ich bin Solar- oder Wärmepumpenbetrieb und kaufe heute Portal-Anfragen.' === implode( '', array_map( static function ( $part ) use ( $footer ) { return $footer['routes'][3][ $part ]; }, [ 'pre', 'strong', 'post' ] ) ), 'footer Energy sentence names today\'s portal buyers' );
 nav_check( count( hu_get_site_footer_door_urls() ) === count( array_unique( hu_get_site_footer_door_urls() ) ) && 0 < count( hu_get_site_footer_door_urls() ), 'footer door URLs are listed once for the SEO cockpit' );
@@ -112,9 +112,9 @@ $door_spec = [
 	'ersteinschaetzung' => [ hu_first_assessment_text( 'label' ), hu_first_assessment_text( 'label' ), hu_format_eur( 0 ), '/kontakt/?focus=ersteinschaetzung', 'nav_header_ersteinschaetzung' ],
 	'tracking'   => [ 'Tracking anfragen', 'Tracking', 'ab ' . hu_tracking_price( 'measurement', 'setup' ), '/kontakt/?type=project&focus=tracking', 'nav_header_door_tracking' ],
 	'aufgabe'    => [ 'Test-Sprint anfragen', 'Test-Sprint', hu_format_eur( HU_WHITELABEL_TEST_SPRINT_PRICE ), '/whitelabel-retainer/#aufgabe', 'nav_header_door_whitelabel' ],
-	'marktcheck' => [ 'Marktcheck', 'Marktcheck', hu_format_eur( 0 ), '/solar-waermepumpen-leadgenerierung/#marktcheck', 'nav_header_door_marktcheck' ],
+	'marktcheck' => [ 'Marktcheck', 'Marktcheck', hu_marketcheck_price(), '/solar-waermepumpen-leadgenerierung/#marktcheck', 'nav_header_door_marktcheck' ],
 	'analyse'    => [ 'Analyse anfragen', 'Analyse', hu_analysis_price(), '/solar-waermepumpen-leadgenerierung/#einstieg', 'nav_header_door_analyse' ],
-	'sofort'     => [ 'Sofortkontakt', 'Sofortkontakt', hu_entry_setup_price(), '/solar-waermepumpen-leadgenerierung/#einstieg', 'nav_header_door_sofortkontakt' ],
+	'sofort'     => [ 'Sofortkontakt', 'Sofortkontakt', hu_entry_setup_price(), '/kontakt/?type=project&focus=sofortkontakt', 'nav_header_door_sofortkontakt' ],
 ];
 
 nav_check( array_keys( $door_spec ) === array_keys( $doors ), 'doors include the homepage assessment and the six footer doors' );
@@ -149,8 +149,8 @@ foreach ( [ 'inc/funnel-doors.php', 'template-parts/site-header.php', 'template-
 // sich nicht umdefinieren, deshalb ein zweiter Prozess.
 $flag_run = shell_exec( escapeshellarg( PHP_BINARY ) . ' -r ' . escapeshellarg( 'define("HU_FEATURE_SOLAR_DOORS", true); require ' . var_export( __DIR__ . '/navigation-harness.php', true ) . '; nav_test_use_context("imprint"); echo json_encode(array_column(hu_funnel_doors(), "url", "key"));' ) );
 $flag_on  = json_decode( (string) $flag_run, true );
-nav_check( 'https://hasimuener.de/solar-waermepumpen-leadgenerierung/#einstieg' === $doors['analyse']['url'] && $doors['analyse']['url'] === $doors['sofort']['url'], 'flag off: analysis and Sofortkontakt doors point at #einstieg' );
-nav_check( is_array( $flag_on ) && str_ends_with( (string) $flag_on['analyse'], '/#analyse' ) && str_ends_with( (string) $flag_on['sofort'], '/#sofortkontakt' ) && str_ends_with( (string) $flag_on['marktcheck'], '/#marktcheck' ), 'flag on: analysis and Sofortkontakt doors point at their own anchors' );
+nav_check( 'https://hasimuener.de/solar-waermepumpen-leadgenerierung/#einstieg' === $doors['analyse']['url'] && str_contains( $doors['sofort']['url'], '/kontakt/' ), 'flag off: analysis keeps its legacy anchor while Sofortkontakt uses the separate contact path' );
+nav_check( is_array( $flag_on ) && str_ends_with( (string) $flag_on['analyse'], '/#analyse' ) && str_contains( (string) $flag_on['sofort'], '/kontakt/' ) && str_ends_with( (string) $flag_on['marktcheck'], '/#marktcheck' ), 'flag on: legacy analysis anchor remains, Sofortkontakt stays external, Marktcheck stays on-page' );
 
 // --- 1c. Decision per context ---------------------------------------------------
 
@@ -217,7 +217,7 @@ $expect_current = [
 ];
 
 // Mark per context which way the footer register flags as "Ihr Weg" and where its doors point.
-$footer_door_order = [ 'projekt', 'tracking', 'aufgabe', 'marktcheck', 'analyse', 'sofort' ];
+$footer_door_order = [ 'projekt', 'tracking', 'aufgabe', 'marktcheck' ];
 
 foreach ( nav_test_contexts() as $context => $definition ) {
 	nav_test_use_context( $context );
@@ -258,7 +258,7 @@ foreach ( nav_test_contexts() as $context => $definition ) {
 
 	// On the page that owns the anchors, the doors point at the page itself.
 	if ( 'solar' === $context ) {
-		nav_check( [ '#marktcheck', '#einstieg', '#einstieg' ] === array_slice( array_column( $register, 'href' ), 3 ), 'solar: Energy doors point at anchors of the page' );
+		nav_check( [ '#marktcheck' ] === array_slice( array_column( $register, 'href' ), 3 ), 'solar: Energy doors point at anchors of the page' );
 	}
 
 	$header_html = nav_test_render( 'template-parts/site-header.php' );
@@ -299,11 +299,11 @@ foreach ( nav_test_contexts() as $context => $definition ) {
 	} elseif ( 'fokus' === $mode ) {
 		$ladder = nav_links( $header_html, '//nav[@class="leiter"]//a' );
 		nav_check( [] === $row && [] === $sheet && 0 === $header_x->query( '//button[@data-leiste-klappe]' )->length, "{$context}: focus mode has no main menu, sheet or menu button" );
-		nav_check( [ 'marktcheck', 'analyse', 'sofort' ] === array_column( $ladder, 'door' ), "{$context}: focus ladder is Marktcheck, Analyse, Sofortkontakt" );
-		nav_check( [ '#marktcheck', '#einstieg', '#einstieg' ] === array_column( $ladder, 'href' ), "{$context}: focus ladder points at anchors of the page" );
-		nav_check( [ 'nav_header_door_marktcheck', 'nav_header_door_analyse', 'nav_header_door_sofortkontakt' ] === array_column( $ladder, 'track' ), "{$context}: focus ladder keeps the nav_header_door_* actions" );
+		nav_check( [ 'marktcheck' ] === array_column( $ladder, 'door' ), "{$context}: focus ladder is the paid Marktcheck only" );
+		nav_check( [ '#marktcheck' ] === array_column( $ladder, 'href' ), "{$context}: focus ladder points at anchors of the page" );
+		nav_check( [ 'nav_header_door_marktcheck' ] === array_column( $ladder, 'track' ), "{$context}: focus ladder keeps the nav_header_door_* actions" );
 		nav_check(
-			[ 'Marktcheck ' . $door_spec['marktcheck'][2], 'Analyse ' . $door_spec['analyse'][2], 'Sofortkontakt ' . $door_spec['sofort'][2] ] === array_column( $ladder, 'text' ),
+			[ 'Marktcheck ' . $door_spec['marktcheck'][2] ] === array_column( $ladder, 'text' ),
 			"{$context}: focus ladder shows each step with its canon amount"
 		);
 	} else {

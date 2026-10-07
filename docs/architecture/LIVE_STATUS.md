@@ -481,6 +481,8 @@ Contract und Abnahme: `CHAT_ASSISTANT.md`.
   Tageszähler (`nexus/v1/solar-events`); Details in `PRIVACY.md`. Die Türen
   der Leiste liest er über `data-door` (`sofort` zählt als `sofortkontakt`)
   unter den Ereignissen `nav_header_door_*`.
+  Smartflow-Update 2026-10-07: Die frühere sichtbare Leiter aus kostenlosem Marktcheck, 690-€-Analyse, 790-€-Sofortkontakt und Aufbau ist auf zwei Hauptprodukte reduziert. Der Marktcheck kostet 99 € netto und ist bei Beauftragung anrechenbar. Das Anfragesystem startet bei 9.999 € netto für eine Produktstrecke; jede weitere eigenständige Produktstrecke kostet 1.000 € zusätzlich. Der Preisbereich ist ein interaktiver, progressiv verbesserter Konfigurator. Analyse- und Sofortkontakt-Formulare wurden von der Money Page entfernt; Sofortkontakt führt in die separate Kontaktstrecke. SEO-Title, Canonical und Query Ownership bleiben erhalten.
+
 - **Energie-Cluster** (`.hu-intercept`, Pfade in
   `hu_get_solar_seo_subpage_paths()`): `/solar-leads-kaufen-alternative/`,
   `/waermepumpen-leads/`, `/b2b-solar-leads/`,

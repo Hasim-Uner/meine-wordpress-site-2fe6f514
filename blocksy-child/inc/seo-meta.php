@@ -266,14 +266,14 @@ function hu_get_forced_singular_seo_map() {
 			// Title und Description sprechen die Kaufentscheidung an, nicht die
 			// Kategorie: "selbst generieren statt kaufen" ist die Frage, mit der
 			// ein Betrieb sucht. Die beiden Preise stehen in der Description,
-			// weil sie vorqualifizieren — wer 14.900 € nicht ausgeben will,
+			// weil sie vorqualifizieren — wer den fünfstelligen Aufbau nicht plant,
 			// klickt erst gar nicht, und das ist erwuenscht.
 			'solar-waermepumpen-leadgenerierung' => [
 				'title'       => 'Photovoltaik-Anfragen selbst generieren statt Leads kaufen',
 				'description' => sprintf(
-					'Anfragesystem für Photovoltaik und Wärmepumpe: Anfragen auf Ihrer Domain, vorqualifiziert, serverseitig gemessen. Aufbau %s, Einstieg ab %s.',
-					hu_seo_price_display( 'foundation_price_standard', 14900 ),
-					hu_seo_price_display( 'analysis_price', 690 )
+					'Anfragesystem für Photovoltaik und Wärmepumpe: eigene Anfragen, Vorqualifizierung, CRM und Server-Side-Tracking. Aufbau ab %s, Marktcheck %s.',
+					hu_seo_price_display( 'foundation_price_standard', 9999 ),
+					hu_seo_price_display( 'marketcheck_price', 99 )
 				),
 			],
 			'website-fuer-solar-und-waermepumpen-anbieter' => [
