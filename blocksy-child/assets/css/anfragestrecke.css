@@ -2724,3 +2724,193 @@
   color: var(--matt);
   line-height: 1.7;
 }
+
+
+/* ══ FINAL CUT 2026-10-07 — Premium durch Entscheidung, nicht Dekoration ══
+   Der Hero macht Ergebnis, Eigentum, Beleg und naechsten Schritt in einer
+   Blickfolge lesbar. Keine neue Komponentenfamilie, keine dekorative Motion. */
+.strecke-doc .kopfteil {
+  padding-top: clamp(2.25rem, 5vw, 4.5rem);
+}
+
+.strecke-doc .kopfteil h1 {
+  max-width: 19ch;
+}
+
+.strecke-doc .kopfteil .aufriss {
+  max-width: 57ch;
+}
+
+.strecke-doc .hero-nebenweg {
+  display: inline-flex;
+  align-items: center;
+  min-height: 44px;
+  color: var(--grau);
+  font-family: var(--mono);
+  font-size: 0.72rem;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  text-decoration: underline;
+  text-decoration-color: var(--haar);
+  text-underline-offset: 0.3rem;
+  transition: color var(--t-norm) var(--ease-weich), text-decoration-color var(--t-norm) var(--ease-weich);
+}
+
+.strecke-doc .hero-nebenweg:hover,
+.strecke-doc .hero-nebenweg:focus-visible {
+  color: var(--stempel);
+  text-decoration-color: currentColor;
+}
+
+.strecke-doc .cta-sicherheit {
+  margin-top: 0.75rem;
+  max-width: 62ch;
+  color: var(--matt);
+  font-family: var(--mono);
+  font-size: var(--mono-s);
+  letter-spacing: 0.05em;
+  line-height: 1.55;
+}
+
+.strecke-doc .hero-beleg {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  margin-top: var(--s4);
+  border-top: 1px solid var(--strich);
+  border-bottom: 1px solid var(--haar);
+}
+
+.strecke-doc .hero-beleg > div {
+  min-width: 0;
+  padding: 1.25rem clamp(1rem, 2vw, 1.5rem) 1.15rem 0;
+  border-right: 1px solid var(--haar);
+}
+
+.strecke-doc .hero-beleg > div + div {
+  padding-left: clamp(1rem, 2vw, 1.5rem);
+}
+
+.strecke-doc .hero-beleg > div:nth-child(3) {
+  border-right: 0;
+}
+
+.strecke-doc .hero-beleg-wert {
+  display: block;
+  color: var(--stempel);
+  font-size: clamp(1.35rem, 1rem + 1.35vw, 2rem);
+  font-weight: 500;
+  line-height: 1.08;
+  letter-spacing: -0.04em;
+}
+
+.strecke-doc .hero-beleg-label {
+  display: block;
+  margin-top: 0.45rem;
+  max-width: 24ch;
+  color: var(--grau);
+  font-size: 0.82rem;
+  line-height: 1.4;
+}
+
+.strecke-doc .hero-beleg > p {
+  grid-column: 1 / -1;
+  padding: 0.7rem 0;
+  border-top: 1px solid var(--haar);
+  color: var(--matt);
+  font-family: var(--mono);
+  font-size: var(--mono-s);
+  letter-spacing: 0.03em;
+}
+
+.strecke-doc .meta {
+  margin-top: var(--s3);
+}
+
+.strecke-doc .meta dl {
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+}
+
+.strecke-doc .hero-person {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+}
+
+.strecke-doc .hero-person img {
+  width: 44px;
+  height: 44px;
+  flex: 0 0 44px;
+  object-fit: cover;
+  border-radius: 50%;
+  filter: grayscale(0.15);
+}
+
+.strecke-doc .stufe.ist-hauptangebot {
+  border-top: 2px solid var(--stempel);
+}
+
+.strecke-doc .stufe.ist-hauptangebot .preis .p {
+  color: var(--stempel);
+  font-size: clamp(1.45rem, 1.1rem + 1vw, 1.9rem);
+}
+
+.strecke-doc .bedingungen .i {
+  display: none;
+}
+
+.strecke-doc .bedingungen > div {
+  grid-template-columns: minmax(0, 14rem) minmax(0, 1fr);
+}
+
+.strecke-doc .abschluss .hero-nebenweg {
+  color: var(--grau);
+}
+
+.strecke-doc .abschluss .hero-nebenweg:hover,
+.strecke-doc .abschluss .hero-nebenweg:focus-visible {
+  color: var(--stempel);
+}
+
+@media (max-width: 760px) {
+  .strecke-doc .hero-beleg {
+    grid-template-columns: 1fr;
+  }
+
+  .strecke-doc .hero-beleg > div,
+  .strecke-doc .hero-beleg > div + div {
+    padding: 1rem 0;
+    border-right: 0;
+    border-bottom: 1px solid var(--haar);
+  }
+
+  .strecke-doc .hero-beleg > div:nth-child(3) {
+    border-bottom: 0;
+  }
+
+  .strecke-doc .hero-beleg-label {
+    max-width: none;
+  }
+
+  .strecke-doc .meta dl {
+    grid-template-columns: 1fr;
+  }
+
+  .strecke-doc .meta div,
+  .strecke-doc .meta div:nth-child(2n),
+  .strecke-doc .meta div:nth-last-child(-n + 2) {
+    border-right: 0;
+    border-bottom: 1px solid var(--haar);
+  }
+
+  .strecke-doc .meta div:last-child {
+    border-bottom: 0;
+  }
+
+  .strecke-doc .bedingungen > div {
+    grid-template-columns: 1fr;
+  }
+
+  .strecke-doc .bedingungen p {
+    grid-column: 1;
+  }
+}
