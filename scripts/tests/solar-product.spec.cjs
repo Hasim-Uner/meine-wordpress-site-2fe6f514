@@ -61,7 +61,9 @@ test('solar no JS keeps the true PV offer and a usable request', async ({ browse
   await open(page, 320);
   const root = page.locator('[data-system-konfigurator]');
   await expect(root.locator('fieldset')).toBeHidden();
-  await expect(root).toContainText('Grundangebot für Photovoltaik');
+  // Playwright excludes noscript descendants from parent text matching.
+  await expect(root.locator('noscript p')).toBeVisible();
+  await expect(root.locator('noscript p')).toContainText('Grundangebot für Photovoltaik');
   const target = new URL(await root.locator('[data-system-request-link]').getAttribute('href'));
   expect(target.searchParams.get('products')).toBe('photovoltaik');
   expect(target.searchParams.has('price')).toBe(false);
