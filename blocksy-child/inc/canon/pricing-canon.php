@@ -9,7 +9,9 @@ if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
 
-define( 'HU_FOUNDATION_PRICE_STANDARD', 14900 );
+define( 'HU_FOUNDATION_PRICE_STANDARD', 9999 );
+define( 'HU_FOUNDATION_EXTRA_PRODUCT_PRICE', 1000 );
+define( 'HU_MARKETCHECK_PRICE', 99 );
 define( 'HU_FOUNDATION_HOSTING_MONTHLY', 50 );
 define( 'HU_FOUNDATION_DURATION_WEEKS_MIN', 8 );
 define( 'HU_FOUNDATION_DURATION_WEEKS_MAX', 10 );
@@ -22,6 +24,8 @@ define( 'HU_FOUNDATION_DURATION_WEEKS_MAX', 10 );
 function hu_pricing_canon() {
 	return [
 		'foundation_price_standard'       => HU_FOUNDATION_PRICE_STANDARD,
+		'foundation_extra_product_price'  => HU_FOUNDATION_EXTRA_PRODUCT_PRICE,
+		'marketcheck_price'               => HU_MARKETCHECK_PRICE,
 		'foundation_hosting_monthly'      => HU_FOUNDATION_HOSTING_MONTHLY,
 		'foundation_duration_weeks_min'   => HU_FOUNDATION_DURATION_WEEKS_MIN,
 		'foundation_duration_weeks_max'   => HU_FOUNDATION_DURATION_WEEKS_MAX,
@@ -60,6 +64,26 @@ function hu_format_eur( $value ) {
  */
 function hu_foundation_price_display() {
 	return hu_format_eur( HU_FOUNDATION_PRICE_STANDARD );
+}
+
+/**
+ * Display the surcharge for each additional independent product route.
+ *
+ * @return string
+ */
+function hu_foundation_extra_product_price_display() {
+	return hu_format_eur( HU_FOUNDATION_EXTRA_PRODUCT_PRICE );
+}
+
+/**
+ * Display the paid Solar/SHK marketcheck price.
+ *
+ * @param bool $with_net Append the net qualifier.
+ * @return string
+ */
+function hu_marketcheck_price( $with_net = false ) {
+	$price = hu_format_eur( HU_MARKETCHECK_PRICE );
+	return $with_net ? $price . ' netto' : $price;
 }
 
 /**
