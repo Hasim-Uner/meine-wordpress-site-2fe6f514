@@ -73,7 +73,9 @@ function hu_funnel_solar_door_anchor( $own_anchor ) {
 function hu_funnel_doors() {
 	$routes       = hu_get_commercial_route_map();
 	$analysis_url = hu_funnel_energy_anchor( hu_funnel_solar_door_anchor( 'analyse' ) );
-	$instant_url  = hu_funnel_energy_anchor( hu_funnel_solar_door_anchor( 'sofortkontakt' ) );
+	$instant_url  = function_exists( 'hu_get_contact_intake_url' )
+		? hu_get_contact_intake_url( 'project', 'sofortkontakt' )
+		: add_query_arg( [ 'type' => 'project', 'focus' => 'sofortkontakt' ], home_url( '/kontakt/' ) );
 
 	return [
 		'projekt'    => [
