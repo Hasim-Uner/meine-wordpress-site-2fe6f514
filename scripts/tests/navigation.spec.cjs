@@ -488,7 +488,7 @@ for (const width of [561, 640, 768, 1024, 1080, 1280, 1440]) {
 for (const width of [320, 360, 370, 390, 414, 560]) {
   test(`solar focus ${width}: only the filled Marktcheck button stays, 44 px, in one row with the wordmark`, async ({ page }) => {
     await open(page, 'solar', { width, height: 800 });
-    const main = ladder(page).getByRole('link', { name: `Marktcheck ${marketcheckAmount}` });
+    const main = ladder(page).getByRole('link', { name: `Marktcheck · ${marketcheckAmount}` });
     await expect(main).toBeVisible();
     await expect(ladder(page).getByRole('link', { name: /^Analyse/ })).toBeHidden();
     await expect(ladder(page).getByRole('link', { name: /^Sofortkontakt/ })).toBeHidden();
