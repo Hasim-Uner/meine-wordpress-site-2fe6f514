@@ -317,16 +317,9 @@
   margin: var(--s0) 0 0;
 }
 
-/* Die Seite funktioniert nicht über Hover. Interaktive Zustände bleiben
-   nur für Tastaturfokus sichtbar; Maus-Hover verändert weder Fläche noch Lage. */
-.agentur-decision .tun,
-.agentur-decision .tun .pf,
-.agentur-decision .textlink,
-.agentur-decision .beleg-link,
-.agentur-decision .route-grid a {
-  transition: none;
-}
-
+/* Die Seite funktioniert nicht über Hover. Die globalen Button-Hover-
+   Zustände werden hier auf den jeweiligen Grundzustand zurückgesetzt; dadurch
+   gibt es weder Farbwechsel noch Pfeilbewegung. Tastaturfokus bleibt sichtbar. */
 .agentur-decision .tun:hover {
   background: var(--stempel);
   color: var(--papier);
@@ -344,6 +337,14 @@
 .agentur-decision a:focus-visible {
   outline: 2px solid var(--stempel);
   outline-offset: 4px;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .agentur-decision .tun,
+  .agentur-decision .tun .pf,
+  .agentur-decision .textlink {
+    transition: none;
+  }
 }
 
 
