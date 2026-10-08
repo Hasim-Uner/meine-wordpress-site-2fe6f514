@@ -454,3 +454,14 @@ Kennzahlen bleiben unsichtbar. hasimuener.org und Civaka Azad werden auf dieser
 Produktseite nicht mehr als eigene Referenzkarten wiederholt. Nach dem Rechner
 folgen nur drei Differenzierungsprinzipien (Klarheit, geprüfter Anfrageweg,
 Eigentum), ein kompakter Drei-Stufen-Ablauf und sechs Kauf-Fragen.
+
+## Energie-Einstieg: konkrete Lieferung (08.10.2026)
+
+Die Solar-Money-Page benennt Solar-/SHK-Betriebe mit eigenem Vertrieb.
+Die konkrete Lieferung wird als Landingpage, Formular mit Projektangaben,
+CRM-Übergabe und Tracking beschrieben. Eigentum am System bedeutet keine
+Exklusivität des Interessenten. Vorqualifizierung ersetzt keine Prüfung
+im Vertrieb. Geteilte und exklusiv gekaufte Portal-Kontakte unterscheiden;
+keine pauschale Unfähigkeit der Portal-Anbieter oder automatischen
+Ergebnisverbesserungen behaupten. Modellrechnung und dokumentierten Einzelfall
+weiter ausdrücklich voneinander trennen.

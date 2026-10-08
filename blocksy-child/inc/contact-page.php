@@ -373,6 +373,14 @@ function nexus_get_contact_focus_options( $include_inactive = false ) {
 			'label' => 'Die Anfrage-Website · Neubau oder Relaunch',
 			'types' => [ 'project' ],
 		],
+		'energy' => [
+			'label' => 'Anfragesystem für Solar und Wärmepumpe',
+			'types' => [ 'project' ],
+		],
+		'sofortkontakt' => [
+			'label' => 'Sofortkontakt für vorhandene Anfragen',
+			'types' => [ 'project' ],
+		],
 		'relaunch'         => [
 			'label' => 'Relaunch oder neue Website',
 			'types' => [ 'analysis', 'project', 'implementation' ],
@@ -748,6 +756,38 @@ function nexus_handle_contact_request_submission( WP_REST_Request $request ) {
 	);
 }
 
+/** Normalize energy products and calculate exclusively from canonical prices. */
+function nexus_get_energy_request_scope( $payload ) {
+	if ( 'energy' !== ( $payload['focus'] ?? '' ) || 'project' !== ( $payload['request_type'] ?? '' ) || ! isset( $payload['products'] ) ) {
+		return [];
+	}
+	if ( ! is_string( $payload['products'] ) || strlen( $payload['products'] ) > 100 ) {
+		return new WP_Error( 'invalid_energy_scope', 'Bitte gültige Produkte für das Anfragesystem wählen.' );
+	}
+	$labels = [ 'photovoltaik' => 'Photovoltaik', 'waermepumpe' => 'Wärmepumpe', 'speicher' => 'Speicher' ];
+	$products = array_unique( explode( ',', $payload['products'] ) );
+	if ( empty( $products ) || array_diff( $products, array_keys( $labels ) ) ) {
+		return new WP_Error( 'invalid_energy_scope', 'Bitte gültige Produkte für das Anfragesystem wählen.' );
+	}
+	// Stable canonical ordering also removes duplicate price contributions.
+	$products = array_keys( array_intersect_key( $labels, array_flip( $products ) ) );
+	$pricing = hu_pricing_canon();
+	return [
+		'products' => implode( ',', $products ),
+		'energy_products_label' => implode( ' + ', array_intersect_key( $labels, array_flip( $products ) ) ),
+		'energy_price' => (int) $pricing['foundation_price_standard'] + ( count( $products ) - 1 ) * (int) $pricing['foundation_extra_product_price'],
+	];
+}
+
+/** Human-readable normalized energy scope, shared by the form, CRM and mails. */
+function nexus_get_energy_scope_summary( $payload ) {
+	if ( empty( $payload['energy_products_label'] ) || ! isset( $payload['energy_price'] ) ) {
+		return '';
+	}
+	$pricing = hu_pricing_canon();
+	return sprintf( 'Anfragesystem: %s · %s netto einmalig · zzgl. rund %s/Mon. Hosting, Werbebudget und ggf. separat vereinbarter Betreuung. Anfrage, keine Beauftragung.', $payload['energy_products_label'], hu_format_eur( $payload['energy_price'] ), hu_format_eur( $pricing['foundation_hosting_monthly'] ) );
+}
+
 /** Validate the product configuration independently of URL or browser prices. */
 function nexus_get_website_request_scope( $payload ) {
 	if ( 'website' !== ( $payload['focus'] ?? '' ) || 'project' !== ( $payload['request_type'] ?? '' ) || ! isset( $payload['seiten'] ) ) {
@@ -1012,6 +1052,8 @@ function nexus_validate_contact_request_payload( $payload ) {
 
 	$website_scope = nexus_get_website_request_scope( $payload );
 	if ( is_wp_error( $website_scope ) ) { return $website_scope; }
+	$energy_scope = nexus_get_energy_request_scope( $payload );
+	if ( is_wp_error( $energy_scope ) ) { return $energy_scope; }
 
 	// Herkunft (Einstiegsseite, Referrer, Kampagne, Selbstauskunft) nach denselben
 	// Regeln wie beim Marktcheck. Alle Felder sind optional.
@@ -1019,7 +1061,7 @@ function nexus_validate_contact_request_payload( $payload ) {
 	$gclid       = isset( $payload['gclid'] ) ? sanitize_text_field( (string) $payload['gclid'] ) : '';
 	$matchtype   = isset( $payload['matchtype'] ) ? sanitize_text_field( (string) $payload['matchtype'] ) : '';
 
-	return $website_scope + $attribution + [
+	return $energy_scope + $website_scope + $attribution + [
 		'name'               => $name,
 		'name_provided'      => $name_provided,
 		'email'              => $email,
@@ -1132,6 +1174,7 @@ function nexus_get_contact_request_activity_summary( $payload ) {
 		'Budget'      => $payload['budget_label'] ?? '',
 		'Website'     => $payload['website_url'] ?? '',
 		'Website-Umfang' => nexus_get_website_scope_summary( $payload ),
+		'Anfragesystem' => nexus_get_energy_scope_summary( $payload ),
 	];
 
 	foreach ( $optional as $label => $value ) {
@@ -1207,6 +1250,11 @@ function nexus_send_contact_request_admin_notification( $payload, $contact_id = 
 			'<br><strong style="color:#f7f3ee;">Unternehmen:</strong> %s',
 			esc_html( (string) $payload['company'] )
 		);
+	}
+
+	$energy_summary = nexus_get_energy_scope_summary( $payload );
+	if ( '' !== $energy_summary ) {
+		$meta_rows .= '<br><strong>Anfragesystem:</strong> ' . esc_html( $energy_summary );
 	}
 
 	$scope_summary = nexus_get_website_scope_summary( $payload );
@@ -1369,6 +1417,11 @@ function nexus_send_contact_request_confirmation( $payload ) {
 		esc_html( $payload['request_type_label'] ),
 		esc_html( $payload['focus_label'] )
 	);
+
+	$energy_summary = nexus_get_energy_scope_summary( $payload );
+	if ( '' !== $energy_summary ) {
+		$meta_rows .= '<br><strong>Anfragesystem:</strong> ' . esc_html( $energy_summary );
+	}
 
 	$scope_summary = nexus_get_website_scope_summary( $payload );
 	if ( '' !== $scope_summary ) {

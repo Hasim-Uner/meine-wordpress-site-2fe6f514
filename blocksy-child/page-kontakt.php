@@ -104,6 +104,21 @@ $website_scope = nexus_get_website_request_scope( [
 	'focus' => $selected_focus, 'request_type' => $selected_type,
 ] + wp_unslash( $_GET ) );
 if ( is_wp_error( $website_scope ) ) { $website_scope = []; }
+$energy_scope = nexus_get_energy_request_scope( [
+	'focus' => $selected_focus, 'request_type' => $selected_type,
+] + wp_unslash( $_GET ) );
+if ( is_wp_error( $energy_scope ) ) { $energy_scope = []; }
+if ( 'energy' === $selected_focus ) {
+	$hero_title = 'Ihr Anfragesystem für Solar und Wärmepumpe.';
+	$form_intro = 'Beschreiben Sie Ihr Zielgebiet, Ihre bisherigen Anfragequellen und den gewünschten Start.';
+	$message_step_title = 'Welche Anfragen möchten Sie gewinnen?';
+	$submit_label = 'Anfragesystem anfragen';
+} elseif ( 'sofortkontakt' === $selected_focus ) {
+	$hero_title = 'Vorhandene Anfragen schneller bearbeiten.';
+	$form_intro = 'Beschreiben Sie, wo Ihre Anfragen eingehen, welches CRM Sie nutzen und wer zurückruft.';
+	$message_step_title = 'Wo kommen Ihre Anfragen heute an?';
+	$submit_label = 'Sofortkontakt anfragen';
+}
 if ( 'website' === $selected_focus ) {
 	$hero_title = 'Was soll Ihre Anfrage-Website können?';
 	$form_title = empty( $website_scope ) ? 'Zwei kurze Schritte zu Ihrer Website-Anfrage.' : 'Ihr Umfang steht. Zwei kurze Schritte zur Anfrage.';
@@ -186,6 +201,10 @@ if ( function_exists( 'hu_first_assessment_enabled' ) && hu_first_assessment_ena
 			</div>
 
 			<form class="contact-form contact-form--superflow" data-contact-form action="<?php echo esc_url( $rest_endpoint ); ?>" method="post" novalidate>
+				<?php if ( ! empty( $energy_scope ) ) : ?>
+				<p class="contact-website-scope" data-energy-scope><?php echo esc_html( nexus_get_energy_scope_summary( $energy_scope ) ); ?></p>
+				<input type="hidden" name="products" value="<?php echo esc_attr( $energy_scope['products'] ); ?>">
+				<?php endif; ?>
 				<?php if ( ! empty( $website_scope ) ) : ?>
 				<p class="contact-website-scope" data-website-scope><?php echo esc_html( nexus_get_website_scope_summary( $website_scope ) ); ?></p>
 				<input type="hidden" name="seiten" value="<?php echo esc_attr( $website_scope['seiten'] ); ?>">

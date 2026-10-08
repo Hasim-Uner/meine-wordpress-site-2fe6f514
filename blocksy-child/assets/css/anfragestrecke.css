@@ -2931,7 +2931,7 @@
 .strecke-doc .system-konfigurator-hinweis,
 .strecke-doc .system-klarstellung,
 .strecke-doc .system-nebenkosten { color: var(--matt); line-height: 1.55; }
-.strecke-doc .system-produkte { margin-top: 1.4rem; border-top: 1px solid var(--haar); }
+.strecke-doc .system-produkte { min-width: 0; margin: 1.4rem 0 0; padding: 0; border: 0; border-top: 1px solid var(--haar); }
 .strecke-doc .system-produkt {
   display: grid;
   grid-template-columns: 1.25rem minmax(0,1fr) auto;

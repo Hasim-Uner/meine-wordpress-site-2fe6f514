@@ -198,6 +198,38 @@ foreach ( [ false, true ] as $confirmation_mail ) {
 }
 echo "Endpoint behavior passed; WP persistence and actual mail delivery are not exercised.\n";
 
+run_case( 'energy configuration survives endpoint, CRM and both mails', static function () use ( $contact ) {
+	$p = array_merge( $contact, [ 'focus' => 'energy', 'products' => 'waermepumpe,photovoltaik,photovoltaik', 'price' => '1', 'energy_price' => 1 ] );
+	$v = nexus_validate_contact_request_payload( $p );
+	$pricing = hu_pricing_canon();
+	$expected = $pricing['foundation_price_standard'] + $pricing['foundation_extra_product_price'];
+	check( ! is_wp_error( $v ) && $expected === $v['energy_price'] && 'photovoltaik,waermepumpe' === $v['products'], 'Products deduplicated; browser price ignored' );
+	$r = call_intake( 'contact', $p );
+	check( 201 === $r->status && true === $r->data['ok'], 'Energy enquiry accepted' );
+	check( $expected === get_post_meta( 1, '_nexus_contact_energy_price' ) && 'photovoltaik,waermepumpe' === get_post_meta( 1, '_nexus_contact_energy_products' ), 'Canonical energy scope persisted in CRM' );
+	check( str_contains( nexus_get_contact_request_activity_summary( $v ), 'Photovoltaik + Wärmepumpe' ), 'CRM activity contains product selection' );
+	foreach ( $GLOBALS['intake_test']['mails'] as $mail ) {
+		check( str_contains( $mail['body'], 'Photovoltaik + Wärmepumpe' ) && str_contains( $mail['body'], hu_format_eur( $expected ) ), 'Both mails carry selection and canonical price' );
+	}
+} );
+
+run_case( 'energy configuration validates all combinations and invalid inputs', static function () use ( $contact ) {
+	$keys = [ 'photovoltaik', 'waermepumpe', 'speicher' ];
+	$pricing = hu_pricing_canon();
+	for ( $mask = 1; $mask < 8; $mask++ ) {
+		$selected = [];
+		foreach ( $keys as $index => $key ) { if ( $mask & ( 1 << $index ) ) { $selected[] = $key; } }
+		$v = nexus_validate_contact_request_payload( array_merge( $contact, [ 'focus' => 'energy', 'products' => implode( ',', $selected ) ] ) );
+		check( ! is_wp_error( $v ) && $v['energy_price'] === $pricing['foundation_price_standard'] + ( count( $selected ) - 1 ) * $pricing['foundation_extra_product_price'], 'Each product combination recalculated' );
+	}
+	foreach ( [ '', 'unknown', 'photovoltaik,', '<script>', [ 'photovoltaik' ] ] as $bad ) {
+		$r = call_intake( 'contact', array_merge( $contact, [ 'focus' => 'energy', 'products' => $bad ] ) );
+		check( 400 === $r->status && 'invalid_energy_scope' === $r->data['error_code'] && ! $GLOBALS['intake_test']['events'], 'Invalid scope rejected before persistence' );
+	}
+	check( ! is_wp_error( nexus_validate_contact_request_payload( array_merge( $contact, [ 'focus' => 'energy' ] ) ) ), 'Direct energy enquiry without configuration remains valid' );
+	check( ! is_wp_error( nexus_validate_contact_request_payload( array_merge( $contact, [ 'focus' => 'sofortkontakt' ] ) ) ), 'Sofortkontakt route is accepted' );
+} );
+
 run_case( 'website scope reaches actual endpoint, both mails and CRM', static function () use ( $contact ) {
 	// Legacy links without page-type counters remain valid: extras become standard pages.
 	$p = array_merge( $contact, [ 'focus' => 'website', 'seiten' => '5', 'art' => 'relaunch', 'tracking' => '1', 'website_price' => 1, 'website_weeks' => 1, 'website_days' => 1, 'website_calc_version' => 'forged' ] );
