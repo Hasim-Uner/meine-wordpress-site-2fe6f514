@@ -12,6 +12,7 @@ const rendered = {};
 const html = context => (rendered[context] ??= execFileSync('php', [path.join(__dirname, 'render-navigation.php'), context], { encoding: 'utf8' }));
 const freeAmount = execFileSync('php', ['-r', `require '${path.join(__dirname, 'navigation-harness.php')}'; echo hu_format_eur(0);`], { encoding: 'utf8' });
 const marketcheckAmount = execFileSync('php', ['-r', `require '${path.join(__dirname, 'navigation-harness.php')}'; echo hu_marketcheck_price();`], { encoding: 'utf8' });
+const trackingAmount = execFileSync('php', ['-r', `require '${path.join(__dirname, 'navigation-harness.php')}'; echo 'ab ' . hu_tracking_price('measurement', 'setup');`], { encoding: 'utf8' });
 
 async function open(page, context, viewport) {
   await page.setViewportSize(viewport);
@@ -63,8 +64,8 @@ for (const width of [1081, 1280, 1440]) {
 test('desktop: the door is one bordered field per value, the hairline sits before Ergebnisse', async ({ page }) => {
   await open(page, 'tracking', { width: 1280, height: 800 });
   const door = rowDoor(page);
-  await expect(door).toHaveAccessibleName(/^Tracking anfragen ab \d[\d.]* €$/);
-  await expect(door.locator('.preis')).toHaveText(/^ab \d[\d.]* €$/);
+  await expect(door).toHaveAccessibleName(`Tracking anfragen ${trackingAmount}`);
+  await expect(door.locator('.preis')).toHaveText(trackingAmount);
   const style = await door.evaluate(el => {
     const cs = getComputedStyle(el);
     const preis = getComputedStyle(el.querySelector('.preis'));
@@ -370,7 +371,7 @@ test('footer register: active amounts use mono/tabular figures and paid doors ar
     const cs = getComputedStyle(el);
     return { text: el.textContent.trim(), family: cs.fontFamily, tabular: cs.fontVariantNumeric, color: cs.color };
   }));
-  expect(info.map(i => i.text)).toEqual(['nach Umfang', expect.stringMatching(/^ab \d[\d.]* €$/), expect.stringMatching(/^\d[\d.]* €$/), expect.stringMatching(/^\d[\d.]* €$/)]);
+  expect(info.map(i => i.text)).toEqual(['nach Umfang', trackingAmount, expect.stringMatching(/^\d[\d.]* €$/), expect.stringMatching(/^\d[\d.]* €$/)]);
   for (const entry of info) {
     expect(entry.family).toContain('IBM Plex Mono');
     expect(entry.tabular).toContain('tabular-nums');

@@ -1,8 +1,10 @@
 # Live Status
 
-Verhalten laut Repository, nach Bereichen. Stand: Änderungen vom 2026-10-09,
-vorbereitet auf `codex/funnel-schichten-2026-10-09` (gilt nach Merge und Deploy).
-Für diesen Stand liegt keine Live-Verifikation vor.
+Verhalten laut Repository, nach Bereichen. Stand: 2026-10-09.
+Der grundlegende Funnel-Umbau aus PR #565 ist gemerged und deployed.
+Startseite, GA4, Landingpage, Solar, Kontakt und Server-Side wurden im
+Live-Browser geprüft. Die ergänzenden Footer- und Legacy-JS-Korrekturen
+dieser Fassung gelten mit ihrem Deploy; dessen Nachweis gehört zum PR.
 
 Diese Datei beschreibt den Ist-Zustand, keinen Verlauf. Die frühere,
 chronologische Fassung mit Begründungen und Prüfprotokollen bis 2026-09-22
@@ -17,6 +19,11 @@ Abschnitt anzuhängen; der Verlauf gehört in Commit-Nachrichten.
 - Nicht aus dem Repo verifizierbar: WordPress-Admin (Menüs, Editor-Inhalte,
   Plugins), Brevo-, Cal.com- und Koko-Setups, Server-Cron und die tatsächliche
   Mailzustellung.
+- Live-Abnahme am 2026-10-09 auf den normalen URLs: neue Angebotsreihenfolge,
+  fünf Tracking-/Landingpage-Bausteine, native Vertiefungen, Solar-Produktwahl
+  samt Preis und Anfrageparameter sowie Landingpage-Fokus im Kontaktformular.
+  Theme-Asset-Version `de8047b61176`. Keine Produktionsanfrage versendet;
+  CRM und Mail sind durch isolierte Tests, nicht durch Live-Zustellung belegt.
 - Deploy: `.github/workflows/ci.yml` prüft; `.github/workflows/deploy.yml`
   deployt bei Runtime-/Tooling-Änderungen nach grünem CI-Lauf auf `main` oder
   manuell. Reine Dokumentations- und Skill-Änderungen lösen keinen automatischen
@@ -103,8 +110,9 @@ Contract und Abnahme: `CHAT_ASSISTANT.md`.
   2026-10-01 ein Türregister: vier Wege in Kopf-Reihenfolge (Website,
   Tracking, Agentur, Energie), je Tür eine Zeile mit Bezeichnung, Betrag
   (aus dem Kanon) und Pfeil, Tracking `cta_footer_door_<schlüssel>`. Die
-  Tracking-Tür im Fuß liest den Server-Side-Setup-Anker über `footer_amount`
-  (`standard/setup`); andere Tracking-Türen behalten den Messung-Einstieg.
+  Tracking-Tür im Fuß und die anderen allgemeinen Tracking-Türen lesen
+  denselben Messung-Einstieg (`measurement/setup`); der Server-Side-Gesamtpreis
+  steht beim ausdrücklich serverseitigen Umfang auf der Fachseite.
   eigene Route ist markiert („Ihr Weg“), nicht ausgeblendet; das Register
   erscheint auf der Energie-Seite; Startseite, `/kontakt/` und die
   Seiten aus `hu_footer_register_suppressed_templates()` (`inc/funnel-doors.php`,
@@ -203,7 +211,7 @@ Contract und Abnahme: `CHAT_ASSISTANT.md`.
 ## Routen
 
 - **`/`** (`front-page.php`): Money Page für direkte WordPress-Projekte.
-  Schichtenfolge im Repo am 2026-10-09 vorbereitet; Merge und Live-Abnahme offen.
+  Schichtenfolge am 2026-10-09 umgesetzt und auf der normalen Live-URL geprüft.
   Title „WordPress Freelancer: Website, Tracking, Anfragen · Haşim Üner“,
   Query-Owner für `wordpress freelancer` und `wordpress freelancer hannover`.
   Die bestehende Strecke (`assets/css/startseite-strecke.css/.js`) hat acht
@@ -459,6 +467,9 @@ Contract und Abnahme: `CHAT_ASSISTANT.md`.
   Technik, Ablauf, laufende Betreuung und Zugangsgrenzen stehen in nativen
   `details`. `cta_package_standard` führt zum Formular; der Grundprodukt-Verweis
   `cta_package_to_measurement` bleibt auf `/ga4-tracking-setup/#stufe-1`.
+  Der Marker `sst-product-page` hält den älteren JS-Template-Umbau fern:
+  keine zweite Belegsektion, keine Paketvorauswahl oder Formularüberschreibung.
+  Die gemeinsame Sticky-Anfrageleiste bleibt aktiv.
   Seitenweit verlinkt
   im Fuß als „Server-Side Tracking“ (Route `tracking_b2b`). Beide
   Tracking-Seiten gelten als ein Kontext (`hu_is_tracking_route_context()`).
