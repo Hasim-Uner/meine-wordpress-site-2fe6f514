@@ -99,6 +99,7 @@ $message_step_title  = $is_scoped_focus ? 'Wo liegt der Engpass?' : 'Was soll me
 $message_label       = 'Ausgangslage und Ziel';
 $message_help        = 'Nennen Sie Seite, Angebot und Engpass. Das reicht für eine erste fachliche Einordnung.';
 $message_placeholder = '';
+$project_focus_copy  = nexus_get_contact_project_focus_copy();
 $form_eyebrow        = 'Projektbriefing';
 $page_classes        = 'site-main doku contact-page' . ( $is_scoped_focus ? ' contact-page--scoped' : '' );
 $website_placeholder = 'https://example.de';
@@ -133,10 +134,14 @@ if ( 'website' === $selected_focus ) {
 	$form_title = 'Zwei kurze Schritte zu Ihrer Landingpage-Anfrage.';
 	$form_intro = 'Beschreiben Sie Ihr Angebot, die geplante Besucherquelle und den gewünschten Termin.';
 	$message_step_title = 'Welches Angebot soll die Landingpage verkaufen?';
-	$message_label = 'Angebot, Besucherquelle und Termin';
-	$message_help = 'Was bieten Sie an, woher kommen die Besucher und wann soll die Seite live gehen?';
-	$message_placeholder = 'Angebot: … · Besucherquelle: … · Gewünschter Termin: …';
-	$submit_label = 'Landingpage anfragen';
+}
+
+if ( 'project' === $selected_type && isset( $project_focus_copy[ $selected_focus ] ) ) {
+	$focus_copy          = $project_focus_copy[ $selected_focus ];
+	$message_label       = $focus_copy['messageLabel'];
+	$message_help        = $focus_copy['messageHelp'];
+	$message_placeholder = $focus_copy['messagePlaceholder'];
+	$submit_label        = $focus_copy['submitLabel'];
 }
 
 // Versuch Ersteinschätzung (/kontakt/?focus=ersteinschaetzung). Den Typ gibt
@@ -217,7 +222,9 @@ if ( function_exists( 'hu_first_assessment_enabled' ) && hu_first_assessment_ena
 				<ul class="contact-error-summary__list" data-contact-error-list></ul>
 			</div>
 
-			<form class="contact-form contact-form--superflow" data-contact-form action="<?php echo esc_url( $rest_endpoint ); ?>" method="post" novalidate>
+			<form class="contact-form contact-form--superflow" data-contact-form
+				<?php if ( 'project' === $selected_type ) : ?>data-contact-focus-copy="<?php echo esc_attr( wp_json_encode( $project_focus_copy ) ); ?>"<?php endif; ?>
+				action="<?php echo esc_url( $rest_endpoint ); ?>" method="post" novalidate>
 				<?php if ( ! empty( $energy_scope ) ) : ?>
 				<p class="contact-website-scope" data-energy-scope><?php echo esc_html( nexus_get_energy_scope_summary( $energy_scope ) ); ?></p>
 				<input type="hidden" name="products" value="<?php echo esc_attr( $energy_scope['products'] ); ?>">

@@ -99,6 +99,17 @@ ein Angebot“ als eigenes Thema; die bisherigen Action-Namen bleiben erhalten.
 Eine Analyse einer bestehenden Strecke bleibt
 `type=analysis&focus=conversion`.
 
+### Produktkontext im Kontaktbriefing
+
+Der zentrale Kontaktablauf fragt passend zum Projektfokus: Website nach
+Angebot und Starttermin, Landingpage nach Angebot, Besucherquelle und Termin,
+Energie-Anfragesystem nach Zielgebiet, Anfragequellen und Start, Sofortkontakt
+nach Anfragequellen, CRM und Rückruf, Tracking nach Website, Messziel und
+aktuellem Setup. `nexus_get_contact_project_focus_copy()` liefert dieselben
+Texte für PHP und den Themenwechsel in `contact.js`; der Absenden-Button
+folgt dem aktuellen Fokus. Das native SST-Formular behält seine eigene Copy.
+Endpunkt, Anfragefelder, Typ-/Fokuswerte und Tracking-Actions bleiben erhalten.
+
 ## Homepage: direkter Freelancer-Einstieg
 
 Seit der Betreiberentscheidung vom 2026-09-13 übernimmt `/` die Inhalte und

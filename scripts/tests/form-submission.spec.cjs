@@ -451,7 +451,41 @@ test('landingpage can also be chosen in the unscoped project intake', async ({ p
   await page.locator('[name="message"]').fill('Eine Landingpage für unsere Beratung, Besucher aus Google Ads.');
   await page.locator('[data-contact-next]').click();
   await expect(page.locator('[data-contact-submit]')).toHaveText('Landingpage anfragen');
+  // Returning to the topic must replace the original product's copy and label.
+  for (const [focus, label, submitLabel] of [
+    ['tracking', 'Website, Messziel und aktuelles Setup', 'Tracking anfragen'],
+    ['website', 'Ihr Angebot und gewünschter Starttermin', 'Website-Projekt anfragen'],
+    ['conversion', 'Kurzbeschreibung', 'Projekt anfragen'],
+  ]) {
+    await page.locator('[data-contact-prev]').click();
+    await page.locator('[data-contact-prev]').click();
+    await page.selectOption('[name="focus"]', focus);
+    await expect(page.locator('[name="message"]')).toBeVisible();
+    await expect(page.locator('[data-contact-message-label]')).toHaveText(label);
+    await expect(page.locator('[name="message"]')).toHaveValue('Eine Landingpage für unsere Beratung, Besucher aus Google Ads.');
+    await page.locator('[data-contact-next]').click();
+    await expect(page.locator('[data-contact-submit]')).toHaveText(submitLabel);
+  }
 });
+
+for (const [focus, label, help, placeholder] of [
+  ['energy', 'Zielgebiet, Anfragequellen und Start', 'In welcher Region', 'Zielgebiet:'],
+  ['sofortkontakt', 'Anfragequellen, CRM und Rückruf', 'wer übernimmt den Rückruf', 'Unser CRM:'],
+]) {
+  test(`${focus} keeps its product briefing after the contact controller initializes`, async ({ page }) => {
+    await page.route('**/*', route => route.fulfill({ contentType: 'text/html; charset=utf-8', body: contactHtml(focus) }));
+    await page.goto(`https://example.test/kontakt/?type=project&focus=${focus}`);
+    await expect(page.locator('[data-contact-message-label]')).toHaveText(label);
+    await expect(page.locator('[data-contact-message-help]')).toContainText(help);
+    await page.evaluate(() => { window.NexusContactConfig = { restEndpoint: '/wp-json/nexus/v1/contact-request' }; });
+    for (const file of ['nexus-core.js', 'contact.js']) await page.addScriptTag({ path: js(file) });
+    await expect(page.locator('[data-contact-message-label]')).toHaveText(label);
+    await expect(page.locator('[data-contact-message-help]')).toContainText(help);
+    await expect(page.locator('[name="message"]')).toHaveAttribute('placeholder', new RegExp(placeholder));
+    await expect(page.locator('[name="focus"]')).toHaveValue(focus);
+    await expect(page.locator('[data-contact-step="focus"]')).toBeHidden();
+  });
+}
 
 test('whitelabel case link swaps form texts, validation and payload case', async ({ page }) => {
   const texts = {

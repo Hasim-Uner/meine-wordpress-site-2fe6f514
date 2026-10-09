@@ -436,6 +436,47 @@ function nexus_get_contact_focus_labels( $include_inactive = false ) {
 }
 
 /**
+ * Product briefing copy shared by the rendered intake and its topic switch.
+ * The keys remain the existing request_type=project focus values.
+ *
+ * @return array<string, array<string, string>>
+ */
+function nexus_get_contact_project_focus_copy() {
+	return [
+		'website' => [
+			'messageLabel'       => 'Ihr Angebot und gewünschter Starttermin',
+			'messageHelp'        => 'Welche Leistungen zeigen Sie, und bis wann soll die Website stehen?',
+			'messagePlaceholder' => 'Wir bieten … an. Die Website soll … live gehen.',
+			'submitLabel'        => 'Website-Projekt anfragen',
+		],
+		'landingpage' => [
+			'messageLabel'       => 'Angebot, Besucherquelle und Termin',
+			'messageHelp'        => 'Was bieten Sie an, woher kommen die Besucher und wann soll die Seite live gehen?',
+			'messagePlaceholder' => 'Angebot: … · Besucherquelle: … · Gewünschter Termin: …',
+			'submitLabel'        => 'Landingpage anfragen',
+		],
+		'energy' => [
+			'messageLabel'       => 'Zielgebiet, Anfragequellen und Start',
+			'messageHelp'        => 'In welcher Region möchten Sie Anfragen gewinnen, woher kommen sie heute und wann möchten Sie starten?',
+			'messagePlaceholder' => 'Zielgebiet: … · Bisherige Anfragequellen: … · Gewünschter Start: …',
+			'submitLabel'        => 'Anfragesystem anfragen',
+		],
+		'sofortkontakt' => [
+			'messageLabel'       => 'Anfragequellen, CRM und Rückruf',
+			'messageHelp'        => 'Wo gehen Ihre Anfragen ein, welches CRM nutzen Sie und wer übernimmt den Rückruf?',
+			'messagePlaceholder' => 'Anfragen kommen über … · Unser CRM: … · Den Rückruf übernimmt …',
+			'submitLabel'        => 'Sofortkontakt anfragen',
+		],
+		'tracking' => [
+			'messageLabel'       => 'Website, Messziel und aktuelles Setup',
+			'messageHelp'        => 'Welche Website und welche Anfragen oder Buchungen sollen gemessen werden? Was läuft bereits, etwa GA4 oder Google Ads?',
+			'messagePlaceholder' => 'Website: … · Wir möchten … messen. · Bisher läuft …',
+			'submitLabel'        => 'Tracking anfragen',
+		],
+	];
+}
+
+/**
  * Return the available budget options for implementation and ongoing requests.
  *
  * @return array<string, string>
@@ -744,14 +785,20 @@ function nexus_handle_contact_request_submission( WP_REST_Request $request ) {
 		hu_record_inquiry_event( hu_inquiry_event_form_for_contact( $validated, $payload ), $payload );
 	}
 
-	nexus_send_contact_request_confirmation( $validated );
+	$confirmation_sent = nexus_send_contact_request_confirmation( $validated );
+	if ( ! $confirmation_sent && function_exists( 'nexus_record_lead_notification_failure' ) ) {
+		nexus_record_lead_notification_failure( $contact_id, 'contact_request', 'confirmation' );
+	}
 
 	return new WP_REST_Response(
 		[
 			'ok'      => true,
 			'contactId' => $contact_id,
+			'confirmationSent' => $confirmation_sent,
 			'message' => sprintf(
-				'Danke. Ihre %1$s ist eingegangen. Sie erhalten %2$s eine händisch geprüfte Rückmeldung.',
+				$confirmation_sent
+					? 'Danke. Ihre %1$s ist eingegangen. Sie erhalten %2$s eine händisch geprüfte Rückmeldung.'
+					: 'Danke. Ihre %1$s ist eingegangen. Die Bestätigungs-E-Mail konnte gerade nicht gesendet werden. Ich melde mich %2$s persönlich zurück.',
 				nexus_get_contact_request_response_label( $validated['request_type'] ),
 				hu_response_promise( 'window' )
 			),
@@ -1177,6 +1224,11 @@ function nexus_get_contact_request_activity_summary( $payload ) {
 		'Zeitfenster' => $payload['timeline_label'] ?? '',
 		'Budget'      => $payload['budget_label'] ?? '',
 		'Website'     => $payload['website_url'] ?? '',
+		'LinkedIn'    => $payload['linkedin_url'] ?? '',
+		'Werbeplattformen' => $payload['ad_platforms'] ?? '',
+		'Werbebudget' => $payload['ad_budget_label'] ?? '',
+		'Tracking-Setup' => $payload['tracking_setup'] ?? '',
+		'Consent-Tool' => $payload['consent_tool'] ?? '',
 		'Website-Umfang' => nexus_get_website_scope_summary( $payload ),
 		'Anfragesystem' => nexus_get_energy_scope_summary( $payload ),
 	];
@@ -1404,11 +1456,11 @@ function nexus_send_contact_request_admin_notification( $payload, $contact_id = 
  * Send a short confirmation email to the requester.
  *
  * @param array $payload Validated payload.
- * @return void
+ * @return bool Whether the mail transport accepted the confirmation.
  */
 function nexus_send_contact_request_confirmation( $payload ) {
 	if ( empty( $payload['email'] ) || ! is_email( $payload['email'] ) ) {
-		return;
+		return false;
 	}
 
 	$reply_to  = nexus_get_contact_notification_email();
@@ -1516,5 +1568,5 @@ function nexus_send_contact_request_confirmation( $payload ) {
 		);
 	}
 
-	nexus_send_contact_html_mail( $payload['email'], $subject, $html, $headers );
+	return nexus_send_contact_html_mail( $payload['email'], $subject, $html, $headers );
 }

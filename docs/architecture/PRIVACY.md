@@ -139,9 +139,11 @@ der Unterseiten merkt ihr Wegklicken nur für den Seitenaufruf.
 - Transaktionsmails laufen über `wp_mail` und die Brevo-API
   (Auftragsverarbeitung). Pro Anfrage: interne Benachrichtigung und Bestätigung
   an die angegebene Adresse.
-- Scheitert die interne Benachrichtigung, schreibt das Theme ins PHP-Log nur
-  Quelle und Kontakt-ID, keine Adressen oder Inhalte
-  (`nexus_record_lead_notification_failure()`). Der Antwortfrist-Wächter
+- Scheitert die interne Benachrichtigung oder bei `contact-request` die
+  Bestätigung, schreibt das Theme ins PHP-Log nur Fehlertyp, Quelle und
+  Kontakt-ID, keine Adressen oder Inhalte
+  (`nexus_record_lead_notification_failure()`). Die private CRM-Notiz
+  unterscheidet interne Benachrichtigung und Bestätigung. Der Antwortfrist-Wächter
   protokolliert nur Anzahlen.
 - `/wp-json/nexus/v1/mail-diagnostics-public` gibt nur redigierte Werte aus,
   keinen Fehlertext des Providers.

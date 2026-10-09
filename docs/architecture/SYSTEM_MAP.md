@@ -127,6 +127,16 @@ Architektur:
 - `nexus_review_request` bleibt der spezialisierte Datensatz fuer Audit-Intake
 - `nexus_contact` ist der gemeinsame Kontakt-Datensatz fuer kontaktnahe Folgeanliegen und Blog-Abos
 - `contact.js` erlaubt gescopten Landingpages opt-in-spezifische Formularcopy und DOM-nahe Fehlerreihenfolge ueber `data-contact-submit-label`, `data-contact-message-placeholder` und `data-contact-dom-error-order`; Payload-Felder und REST-Endpunkt bleiben unveraendert
+- Der zentrale Kontaktablauf rendert die Produktbriefings aus
+  `nexus_get_contact_project_focus_copy()` in `data-contact-focus-copy`.
+  PHP und `contact.js` verwenden so dieselben Fragen und Submitlabels;
+  native Spezialformulare ohne diesen Marker behalten ihre eigenen Texte.
+- Kontakt-Aktivitäten enthalten auch die optionalen Tracking-/Werbeangaben
+  und LinkedIn-URL. Ein späterer Upsert ändert den aktuellen Kontakt, bewahrt
+  aber den Kontext jeder Anfrage im Verlauf.
+- `contact-request` prüft zusätzlich die Annahme der Bestätigungsmail.
+  `confirmationSent` ergänzt die Erfolgsantwort kompatibel; ein Mailfehler
+  macht einen angenommenen Lead nicht zum Fehler und wird privat protokolliert.
 - das Admin-Menue heisst jetzt `Nexus CRM`
 - Audit-, Kontakt- und White-Label-Anfragen speichern Formular-Landingpage, ersten internen Einstieg, vorherige interne Seite, Referrer und Kampagnenangaben; Kontakt und White-Label zusätzlich die optionale Angabe, wie jemand aufmerksam wurde
 - Blog-Abos arbeiten mit eigenem DOI- und Abmelde-Flow ueber `/neue-artikel-per-email/`
