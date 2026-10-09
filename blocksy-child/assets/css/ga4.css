@@ -1,419 +1,176 @@
-/* =========================================
-   GA4 & Tracking Setup – Landing Page
-   Scoped: .ga4-page
-   Design-Tokens: design-system.css (--nx-*)
-   ========================================= */
-
-/* ---------- Hero ---------- */
-.ga4-page .ga4-hero {
-    padding: 6rem 0;
-    display: flex;
-    align-items: center;
-    min-height: 90vh;
+/* Conversion-Tracking: product deltas on the shared Gutachten system. */
+.ga4-page .ga4-product-hero {
+  display: grid;
+  grid-template-columns: minmax(0, 1.6fr) minmax(0, 1fr);
+  gap: var(--s5);
+  align-items: start;
 }
 
-.ga4-page .ga4-hero-grid {
-    display: grid;
-    grid-template-columns: 1fr;
-    gap: var(--nx-space-2xl);
-    align-items: center;
-    width: 100%;
+.ga4-page .ga4-product-hero h1 {
+  max-width: 22ch;
+  font-size: var(--grad-h2);
 }
 
-@media (min-width: 992px) {
-    .ga4-page .ga4-hero-grid {
-        grid-template-columns: minmax(0, 1.2fr) minmax(0, 1fr);
-    }
+.ga4-page .ga4-product-brief {
+  min-width: 0;
+  padding: var(--s3);
+  background: var(--zone);
+  border-top: 2px solid var(--tinte);
 }
 
-.ga4-page .ga4-hero-content {
-    text-align: center;
+.ga4-page .ga4-product-brief__name {
+  margin-top: var(--s2);
+  font-size: var(--grad-text);
+  font-weight: 600;
 }
 
-@media (min-width: 992px) {
-    .ga4-page .ga4-hero-content {
-        text-align: left;
-    }
+.ga4-page .ga4-product-brief__price {
+  margin-block: var(--s1) var(--s2);
+  font-family: var(--serif-display);
+  font-size: var(--grad-h2);
+  font-variant-numeric: tabular-nums;
+  line-height: 1.1;
 }
 
-.ga4-page .ga4-hero-img {
-    width: 100%;
-    height: auto;
-    border-radius: var(--nx-radius-lg);
-    box-shadow: 0 25px 60px rgba(0, 0, 0, 0.5);
+.ga4-page .ga4-product-brief__price small {
+  display: block;
+  margin-top: var(--s1);
+  font-family: var(--mono);
+  font-size: var(--mono-s);
+  color: var(--grau);
 }
 
-.ga4-page .ga4-service-badge {
-    display: inline-block;
-    padding: var(--nx-space-sm) 1.2rem;
-    border-radius: var(--nx-radius-pill);
-    background: var(--nx-info-subtle);
-    color: var(--nx-info);
-    font-weight: 700;
-    font-size: var(--nx-text-base);
-    margin-bottom: var(--nx-space-xl);
-    letter-spacing: 0.05em;
-    border: 1px solid rgba(14, 165, 233, 0.2);
+.ga4-page .ga4-product-brief dl {
+  margin-block: var(--s2);
 }
 
-.ga4-page .ga4-headline {
-    font-size: clamp(2.8rem, 6vw, 4.2rem);
-    line-height: 1.1;
-    margin: 0 0 var(--nx-space-xl);
-    font-weight: 800;
-    color: var(--nx-text);
+.ga4-page .ga4-product-brief dl > div {
+  display: grid;
+  grid-template-columns: 1fr 1.5fr;
+  gap: var(--s2);
+  padding-block: var(--s1);
+  border-bottom: 1px solid var(--haar);
 }
 
-.ga4-page .ga4-headline .highlight {
-    background: linear-gradient(135deg, var(--nx-gold) 0%, var(--nx-gold-hover) 100%);
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
-    background-clip: text;
+.ga4-page .ga4-product-brief dt {
+  color: var(--grau);
 }
 
-.ga4-page .ga4-subheadline {
-    font-size: 1.2rem;
-    line-height: 1.8;
-    color: var(--nx-text-muted);
-    max-width: 50ch;
-    margin: 0 auto 2.5rem;
+.ga4-page .ga4-product-brief dd {
+  min-width: 0;
+  margin: 0;
 }
 
-@media (min-width: 992px) {
-    .ga4-page .ga4-subheadline {
-        margin: 0 0 2.5rem;
-    }
+.ga4-page .ga4-product-brief__terms,
+.ga4-page .ga4-product-evidence span {
+  font-size: var(--grad-klein);
+  line-height: 1.6;
+  color: var(--grau);
 }
 
-/* ---------- Sections ---------- */
-.ga4-page .ga4-section {
-    padding: 80px 0;
+.ga4-page .ga4-product-features {
+  margin-block: var(--s3) 0;
+  padding: 0;
+  list-style: none;
+  border-top: 1px solid var(--haar);
 }
 
-.ga4-page .ga4-section-header {
-    text-align: center;
-    margin-bottom: var(--nx-space-3xl);
-    max-width: var(--nx-content-width);
-    margin-left: auto;
-    margin-right: auto;
+.ga4-page .ga4-product-features li {
+  display: grid;
+  grid-template-columns: auto minmax(0, 1fr);
+  gap: var(--s3);
+  padding-block: var(--s3);
+  border-bottom: 1px solid var(--haar);
 }
 
-.ga4-page .ga4-section-badge {
-    display: inline-block;
-    padding: 0.4rem 1rem;
-    border-radius: var(--nx-radius-pill);
-    background: var(--nx-info-subtle);
-    color: var(--nx-info);
-    font-weight: 700;
-    font-size: var(--nx-text-sm);
-    margin-bottom: var(--nx-space-md);
-    text-transform: uppercase;
-    letter-spacing: 0.1em;
+.ga4-page .ga4-product-features__nr {
+  font-family: var(--mono);
+  font-size: var(--mono-m);
+  color: var(--stempel);
 }
 
-.ga4-page .ga4-section-title {
-    font-size: clamp(2rem, 4vw, 3rem);
-    font-weight: 800;
-    margin: 0 0 var(--nx-space-lg);
-    background: linear-gradient(135deg, var(--nx-text), #cfcfcf);
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
-    background-clip: text;
+.ga4-page .ga4-product-features h3 {
+  font-size: var(--grad-text);
+  line-height: 1.35;
 }
 
-.ga4-page .ga4-section-subtitle {
-    color: var(--nx-text-muted);
-    font-size: 1.15rem;
-    line-height: 1.7;
+.ga4-page .ga4-product-features p {
+  margin-top: var(--s1);
+  color: var(--grau);
 }
 
-/* ---------- Problem ---------- */
-.ga4-page .ga4-problem {
-    background: linear-gradient(180deg, transparent, rgba(255, 176, 32, 0.02), transparent);
+.ga4-page .ga4-product-evidence {
+  margin-top: var(--s3);
 }
 
-.ga4-page .ga4-problem-grid {
-    display: grid;
-    grid-template-columns: 1fr;
-    gap: var(--nx-space-2xl);
-    align-items: center;
-    max-width: 1000px;
-    margin: 0 auto;
+.ga4-page .ga4-product-evidence span {
+  display: block;
+  margin-top: var(--s1);
 }
 
-@media (min-width: 768px) {
-    .ga4-page .ga4-problem-grid {
-        grid-template-columns: 1fr 1.2fr;
-    }
+.ga4-page .ga4-product-contract {
+  display: grid;
+  grid-template-columns: minmax(0, 1.5fr) minmax(0, 1fr);
+  gap: var(--s4);
+  padding: var(--s4);
 }
 
-.ga4-page .ga4-problem-visual {
-    text-align: center;
-    opacity: 0.5;
+.ga4-page .ga4-product-contract__extension {
+  min-width: 0;
+  border-top: 1px solid var(--haar);
+  padding-top: var(--s2);
 }
 
-.ga4-page .ga4-problem-visual svg {
-    width: 10rem;
-    height: 10rem;
-    color: var(--nx-text-muted);
+.ga4-page .ga4-product-contract__extension h3 {
+  font-size: var(--grad-text);
 }
 
-.ga4-page .ga4-problem-intro {
-    font-size: 1.2rem;
-    margin-bottom: var(--nx-space-lg);
-    color: var(--nx-text);
+.ga4-page .ga4-product-contract__extension p,
+.ga4-page .ga4-product-contract__extension a {
+  display: block;
+  margin-top: var(--s2);
 }
 
-.ga4-page .ga4-problem-list {
-    list-style: none;
-    padding: 0;
-    margin: 0;
+.ga4-page .ga4-product-details .huelle > div {
+  padding-block: var(--s1) var(--s3);
 }
 
-.ga4-page .ga4-problem-list li {
-    background: var(--nx-bg-glass);
-    border: 1px solid var(--nx-border);
-    padding: var(--nx-space-lg);
-    border-radius: var(--nx-radius-md);
-    margin-bottom: var(--nx-space-md);
-    font-size: 1.1rem;
-    font-weight: 500;
-    display: flex;
-    align-items: center;
-    gap: var(--nx-space-md);
-    transition: border-color var(--nx-duration) var(--nx-ease),
-                transform var(--nx-duration) var(--nx-ease);
+.ga4-page .ga4-product-details .huelle p + p {
+  margin-top: var(--s2);
 }
 
-.ga4-page .ga4-problem-list li::before {
-    content: "❓";
-    font-size: 1.5rem;
-    flex-shrink: 0;
+.ga4-page .fragen summary {
+  min-height: 48px;
 }
 
-.ga4-page .ga4-problem-list li:hover {
-    border-color: var(--nx-gold);
-    transform: translateX(5px);
+.ga4-page .fragen summary:focus-visible {
+  outline: 2px solid var(--stempel);
+  outline-offset: 2px;
 }
 
-/* ---------- Blueprint / Lösung ---------- */
-.ga4-page .ga4-blueprint {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-    gap: var(--nx-space-xl);
-    max-width: 1100px;
-    margin: var(--nx-space-3xl) auto 0;
+@media (max-width: 960px) {
+  .ga4-page .ga4-product-hero,
+  .ga4-page .ga4-product-contract {
+    grid-template-columns: minmax(0, 1fr);
+    gap: var(--s3);
+  }
 }
 
-.ga4-page .ga4-step {
-    background: var(--nx-bg-glass);
-    backdrop-filter: blur(10px);
-    border: 1px solid var(--nx-border);
-    border-radius: var(--nx-radius-lg);
-    padding: 2.5rem var(--nx-space-xl);
-    text-align: center;
-    transition: transform var(--nx-duration) var(--nx-ease),
-                box-shadow var(--nx-duration) var(--nx-ease),
-                border-color var(--nx-duration) var(--nx-ease);
-    position: relative;
-    overflow: hidden;
+@media (max-width: 480px) {
+  .ga4-page .ga4-product-contract,
+  .ga4-page .ga4-product-brief {
+    padding: var(--s2);
+  }
+
+  .ga4-page .ga4-product-features li {
+    gap: var(--s2);
+  }
 }
 
-.ga4-page .ga4-step:hover {
-    transform: translateY(-8px);
-    box-shadow: 0 12px 40px rgba(14, 165, 233, 0.12);
-    border-color: rgba(14, 165, 233, 0.3);
-}
-
-.ga4-page .ga4-step-icon {
-    font-size: 3rem;
-    margin-bottom: var(--nx-space-lg);
-    display: block;
-    line-height: 1;
-}
-
-.ga4-page .ga4-step-title {
-    font-size: 1.4rem;
-    font-weight: 700;
-    margin-bottom: var(--nx-space-md);
-    color: var(--nx-text);
-}
-
-.ga4-page .ga4-step-desc {
-    color: var(--nx-text-muted);
-    font-size: 0.95rem;
-    line-height: 1.6;
-}
-
-/* ---------- Ergebnis-Karten (ohne Icon) ---------- */
-.ga4-page .ga4-result-bg {
-    background: linear-gradient(180deg, transparent, rgba(16, 185, 129, 0.02), transparent);
-}
-
-/* ---------- FAQ ---------- */
-.ga4-page .ga4-faq-wrap {
-    max-width: var(--nx-content-width);
-    margin: 0 auto;
-}
-
-.ga4-page .ga4-faq-wrap details {
-    background: var(--nx-bg-glass);
-    border: 1px solid var(--nx-border);
-    border-radius: var(--nx-radius-lg);
-    margin-bottom: var(--nx-space-md);
-    overflow: hidden;
-}
-
-.ga4-page .ga4-faq-wrap summary {
-    padding: var(--nx-space-lg);
-    font-size: 1.2rem;
-    font-weight: 600;
-    cursor: pointer;
-    list-style: none;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    transition: background-color var(--nx-duration) var(--nx-ease);
-    color: var(--nx-text);
-}
-
-.ga4-page .ga4-faq-wrap summary:hover {
-    background: rgba(255, 255, 255, 0.05);
-}
-
-.ga4-page .ga4-faq-wrap summary::-webkit-details-marker {
-    display: none;
-}
-
-.ga4-page .ga4-faq-wrap summary::after {
-    content: "+";
-    font-size: 2rem;
-    font-weight: 300;
-    transition: transform var(--nx-duration) var(--nx-ease);
-    flex-shrink: 0;
-    margin-left: var(--nx-space-md);
-}
-
-.ga4-page .ga4-faq-wrap details[open] summary::after {
-    transform: rotate(45deg);
-}
-
-.ga4-page .ga4-faq-answer {
-    padding: 0 var(--nx-space-lg) var(--nx-space-lg);
-    color: var(--nx-text-muted);
-    line-height: 1.8;
-    font-size: var(--nx-text-base);
-}
-
-/* ---------- CTA ---------- */
-.ga4-page .ga4-cta-section {
-    padding: 100px 0;
-}
-
-.ga4-page .ga4-cta-box {
-    max-width: var(--nx-content-width);
-    margin: 0 auto;
-    padding: var(--nx-space-3xl) var(--nx-space-xl);
-    background: linear-gradient(135deg, rgba(14, 165, 233, 0.05), rgba(255, 176, 32, 0.03));
-    border: 1px solid var(--nx-border);
-    border-radius: var(--nx-radius-lg);
-    position: relative;
-    overflow: hidden;
-    text-align: center;
-}
-
-.ga4-page .ga4-cta-box::before {
-    content: "";
-    position: absolute;
-    top: 0;
-    left: 0;
-    right: 0;
-    height: 3px;
-    background: linear-gradient(90deg, var(--nx-gold), var(--nx-info));
-}
-
-.ga4-page .ga4-cta-headline {
-    font-size: clamp(1.75rem, 4vw, 2.5rem);
-    font-weight: 800;
-    margin-bottom: var(--nx-space-lg);
-    background: linear-gradient(90deg, var(--nx-gold), var(--nx-gold-hover));
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
-    background-clip: text;
-}
-
-.ga4-page .ga4-cta-text {
-    font-size: 1.15rem;
-    color: var(--nx-text-muted);
-    line-height: 1.8;
-    margin-bottom: var(--nx-space-xl);
-}
-
-/* ---------- Buttons ---------- */
-.ga4-page .ga4-btn {
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    gap: 0.6rem;
-    padding: 1rem 2rem;
-    border-radius: 14px;
-    font-weight: 700;
-    text-decoration: none;
-    border: 0;
-    cursor: pointer;
-    transition: transform var(--nx-duration) var(--nx-ease),
-                box-shadow var(--nx-duration) var(--nx-ease);
-    font-size: 1.05rem;
-}
-
-.ga4-page .ga4-btn-primary {
-    background: linear-gradient(90deg, var(--nx-gold), var(--nx-gold-hover));
-    color: #111;
-    box-shadow: var(--nx-shadow-gold);
-}
-
-.ga4-page .ga4-btn-primary:hover {
-    transform: translateY(-4px);
-    box-shadow: 0 18px 45px rgba(255, 176, 32, 0.25);
-}
-
-.ga4-page .ga4-btn-group {
-    display: flex;
-    gap: var(--nx-space-md);
-    justify-content: center;
-    flex-wrap: wrap;
-    margin-top: var(--nx-space-xl);
-}
-
-@media (min-width: 992px) {
-    .ga4-page .ga4-hero-content .ga4-btn-group {
-        justify-content: flex-start;
-    }
-}
-
-/* ---------- Responsive ---------- */
-@media (max-width: 768px) {
-    .ga4-page .ga4-hero {
-        padding: 4rem 0;
-        min-height: auto;
-    }
-
-    .ga4-page .ga4-btn-group {
-        flex-direction: column;
-        align-items: center;
-    }
-
-    .ga4-page .ga4-btn {
-        width: 100%;
-        max-width: 300px;
-    }
-}
-
-/* ---------- Reduced Motion ---------- */
 @media (prefers-reduced-motion: reduce) {
-    .ga4-page .ga4-step,
-    .ga4-page .ga4-problem-list li,
-    .ga4-page .ga4-btn-primary {
-        transition: none;
-    }
+  .ga4-page .fragen summary,
+  .ga4-page .fragen summary::after,
+  .ga4-page .fragen .huelle {
+    transition: none;
+  }
 }

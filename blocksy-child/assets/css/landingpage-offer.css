@@ -1,23 +1,43 @@
-/* ══════════════════════════════════════════════════════════════
-   LANDINGPAGE ERSTELLEN LASSEN — Angebotsblatt
+/* Landingpage-Angebot: Delta auf system.css.
+   Preisvergleich und fünf Liefergruppen bleiben sichtbar. Native Details
+   enthalten Leistungsgrenzen, Ablauf und technische Vertiefungen.
+   Farben, Schriften und Abstände kommen aus dem Gutachten-System. */
 
-   Delta auf system.css für den Abschnitt „Umfang“ von
-   /landingpage-erstellen-lassen/. Der Abschnitt ist das Produkt der
-   Seite und liest sich deshalb wie ein Angebotsblatt: links Titel und
-   Vorspann, rechts die Preiskarte mit dem Betrag und dem Weg zur
-   Anfrage, darunter ein Raster aus sieben Leistungen und der Grenze
-   „Nicht dazu“ als achtem, abgesetztem Feld.
+.lp-offer-page .lp-produktvergleich {
+  display: grid;
+  gap: var(--s2);
+  max-inline-size: calc(var(--satz) + var(--marg));
+  margin-block-start: var(--s3);
+  padding-block: var(--s2);
+  border-block: 1px solid var(--haar);
+}
 
-   Kein eigener Farbwert, keine eigene Abstandsskala, keine --nx-*
-   Tokens. Die Tafel definiert die Farb-Tokens lokal um; alles hier liest
-   nur daraus. Orange (--stempel) bleibt bei Haken, der Kante der
-   Preiskarte und dem primären Button.
+.lp-offer-page .lp-produktvergleich p {
+  margin: 0;
+  font-size: 0.95rem;
+  line-height: 1.6;
+  color: var(--grau);
+}
 
-   Das Layout folgt der Breite der Tafel, nicht des Fensters
-   (Container Query). Ohne Unterstützung steht alles einspaltig
-   untereinander, vollständig und lesbar. Keine Bewegung außer dem Hover
-   des Buttons aus system.css.
-   ══════════════════════════════════════════════════════════════ */
+.lp-offer-page .lp-produktvergleich b { color: var(--tinte); }
+
+@media (min-width: 640px) {
+  .lp-offer-page .lp-produktvergleich { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+}
+
+.lp-offer-page .lp-kurzinfo {
+  max-inline-size: var(--satz);
+  margin-block-start: var(--s2);
+  font-size: 0.95rem;
+  line-height: 1.6;
+  color: var(--grau);
+}
+
+.lp-offer-page .lp-nebenweg {
+  margin-block-start: var(--s1);
+  font-size: 0.9rem;
+  color: var(--grau);
+}
 
 .lp-offer-page .angebot {
   container: angebot / inline-size;
@@ -66,7 +86,7 @@
   background: var(--zone);
   border: 1px solid var(--haar);
   border-top: 2px solid var(--stempel);
-  border-radius: 3px;
+  border-radius: var(--r1);
 }
 
 .lp-offer-page .angebot-preis .betrag {
@@ -140,7 +160,7 @@
   color: var(--matt);
 }
 
-/* ══ Raster: sieben Leistungen und die Grenze ═════════════════
+/* ══ Raster: fünf Liefergruppen ══════════════════════════════
    Die obere Linie ist die kräftige des Systems (--strich), die Zeilen
    darunter tragen Haarlinien. Spalten trennt ein Zwischenraum, keine
    Linie; dadurch bleibt das Raster auch bei ungerader Zahl ruhig.
@@ -204,50 +224,65 @@
   }
 }
 
-/* ── Grenze: das achte Feld ────────────────────────────────────
-   Gefüllt statt gelinet, damit klar ist, dass es nicht zur Lieferung
-   gehört. Die Marke ist ein Malzeichen statt einer Nummer. */
-
-.lp-offer-page .angebot-posten > .grenze {
-  padding-inline: var(--s3);
-  background: var(--zone);
-  border-bottom-color: var(--zone);
+/* Die letzte Liefergruppe schließt das Produkt über die ganze Breite ab. */
+@container angebot (min-width: 46rem) {
+  .lp-offer-page .angebot-posten > li:last-child { grid-column: 1 / -1; }
 }
 
-.lp-offer-page .angebot-posten > .grenze .nr {
-  padding-top: 0;
-  font-size: 1.35rem;
-  line-height: 1;
+/* Native Details brauchen weder JavaScript noch eine eigene Motion-Schicht. */
+.lp-offer-page .lp-details {
+  border-block-start: 1px solid var(--haar);
 }
 
-.lp-offer-page .angebot-posten > .grenze ul {
-  grid-column: 1 / -1;
-  display: grid;
-  gap: var(--s0);
-  margin: var(--s1) 0 0;
-  padding: 0;
-  list-style: none;
-}
-
-@container angebot (min-width: 30rem) {
-  .lp-offer-page .angebot-posten > .grenze ul { grid-column: 2; }
-}
-
-.lp-offer-page .angebot-posten > .grenze ul li {
-  position: relative;
-  margin: 0;
-  padding: 0 0 0 var(--s2);
+.lp-offer-page .lp-details > summary {
+  min-block-size: var(--s4);
+  padding-block: var(--s1);
+  cursor: pointer;
+  list-style-position: inside;
   font-size: 0.95rem;
+  font-weight: 600;
   line-height: 1.5;
+  color: var(--tinte);
+}
+
+.lp-offer-page .lp-details > summary:focus-visible {
+  outline: 2px solid var(--stempel);
+  outline-offset: var(--s0);
+}
+
+@media (hover: hover) and (pointer: fine) {
+  .lp-offer-page .lp-details > summary:hover { color: var(--stempel); }
+}
+
+.lp-offer-page .lp-details > p {
+  max-inline-size: var(--satz);
+  margin-block-end: var(--s2);
+  font-size: 0.95rem;
+  line-height: 1.6;
   color: var(--grau);
 }
 
-.lp-offer-page .angebot-posten > .grenze ul li::before {
-  content: "";
-  position: absolute;
-  top: 0.78em;
-  left: 0;
-  width: 0.5rem;
-  height: 1px;
-  background: var(--matt);
+.lp-offer-page .lp-lieferdetail {
+  grid-column: 1 / -1;
+  margin-block-start: var(--s2);
 }
+
+@container angebot (min-width: 30rem) {
+  .lp-offer-page .lp-lieferdetail { grid-column: 2; }
+}
+
+.lp-offer-page .lp-weitere-belege,
+.lp-offer-page .lp-vertiefungen { margin-block-start: var(--s3); }
+
+.lp-offer-page .lp-weitere-belege > .protokoll,
+.lp-offer-page .lp-details > .protokoll { margin-block-end: var(--s3); }
+
+.lp-offer-page .lp-grenzen {
+  margin: 0 0 var(--s2);
+  padding-inline-start: var(--s3);
+  font-size: 0.95rem;
+  line-height: 1.6;
+  color: var(--grau);
+}
+
+.lp-offer-page .lp-grenzen li { margin-block: var(--s0); }

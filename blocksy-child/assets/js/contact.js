@@ -818,9 +818,12 @@
         function syncFormExperience() {
             var requestType = getSelectedType();
             var content = typeContent[requestType] || typeContent.audit;
+            var landingpageFocus = requestType === 'project' && focusSelect && focusSelect.value === 'landingpage';
 
             if (requestType === 'project' && focusSelect && focusSelect.value === 'website') {
                 content = Object.assign({}, content, { messageLabel: 'Ihr Angebot und gewünschter Starttermin', messageHelp: 'Welche Leistungen zeigen Sie, und bis wann soll die Website stehen?', messagePlaceholder: 'Wir bieten … an. Die Website soll … live gehen.' });
+            } else if (landingpageFocus) {
+                content = Object.assign({}, content, { messageLabel: 'Angebot, Besucherquelle und Termin', messageHelp: 'Was bieten Sie an, woher kommen die Besucher und wann soll die Seite live gehen?', messagePlaceholder: 'Angebot: … · Besucherquelle: … · Gewünschter Termin: …', submitLabel: 'Landingpage anfragen' });
             }
 
             syncFocusOptions(requestType);
@@ -851,11 +854,11 @@
             }
 
             if (messageField && !messageOptional) {
-                messageField.placeholder = scopedMessagePlaceholder !== null ? scopedMessagePlaceholder : content.messagePlaceholder;
+                messageField.placeholder = landingpageFocus ? content.messagePlaceholder : (scopedMessagePlaceholder !== null ? scopedMessagePlaceholder : content.messagePlaceholder);
                 messageField.minLength = content.messageMinlength;
             }
 
-            currentSubmitLabel = scopedSubmitLabel || content.submitLabel;
+            currentSubmitLabel = landingpageFocus ? content.submitLabel : (scopedSubmitLabel || content.submitLabel);
 
             if (submitButton && !submitButton.disabled) {
                 submitButton.textContent = currentSubmitLabel;
@@ -892,6 +895,7 @@
 
         if (focusSelect) {
             focusSelect.addEventListener('change', function () {
+                syncFormExperience();
                 clearFieldErrors();
                 if (focusSelect.value) {
                     scheduleContactAutoAdvance('focus');

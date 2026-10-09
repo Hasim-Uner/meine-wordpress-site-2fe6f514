@@ -1,7 +1,8 @@
 # Live Status
 
-Aktuelles Verhalten der Website, nach Bereichen. Stand: Repository `main`
-einschließlich der Änderungen vom 2026-09-26 (gilt nach Merge und Deploy).
+Verhalten laut Repository, nach Bereichen. Stand: Änderungen vom 2026-10-09,
+vorbereitet auf `codex/funnel-schichten-2026-10-09` (gilt nach Merge und Deploy).
+Für diesen Stand liegt keine Live-Verifikation vor.
 
 Diese Datei beschreibt den Ist-Zustand, keinen Verlauf. Die frühere,
 chronologische Fassung mit Begründungen und Prüfprotokollen bis 2026-09-22
@@ -66,14 +67,13 @@ Contract und Abnahme: `CHAT_ASSISTANT.md`.
   Lesekopf (`article-reader-header.php`, `blog-header.css`) ist entfallen, die
   Klasse `nexus-article-reader-header` bleibt als Haken für die Artikel-
   Stylesheets. Modus `fokus` (Solar-Seite, `inc/header.php` rendert die Leiste
-  dort): Wortmarke und die Leiter Marktcheck · Analyse · Sofortkontakt mit
-  getrennten Feldern für Bezeichnung und Betrag (Abstand `--s1`) auf die
-  Anker der Seite, nicht sticky, höchstens 56 px, unter 561 px
-  nur der Marktcheck als gefüllter Button „Marktcheck · 0 €“ (44 px); der
-  Sofortkontakt steht dann nur im Angebotsblock. Die Tür ist kontextabhängig (Matrix in
+  dort): Wortmarke und nur der Marktcheck mit getrennten Feldern für
+  Bezeichnung und Kanonpreis (Abstand `--s1`) auf `#marktcheck`, nicht sticky,
+  höchstens 56 px; unter 561 px als gefüllter Button (44 px).
+  Sofortkontakt steht im Seiteninhalt. Die Tür ist kontextabhängig (Matrix in
   `docs/architecture/CONVERSION_ROUTING.md`): Projekt anfragen (ohne Betrag),
   Tracking anfragen („ab“ Messung-Setup), Test-Sprint anfragen, Marktcheck
-  (kostenlos) oder Sofortkontakt; Beträge kommen aus dem Kanon. Quelle der
+  (bezahlt) oder Sofortkontakt; Beträge kommen aus dem Kanon. Quelle der
   Punkte ist `hu_get_site_header_navigation_contract()` in
   `inc/commercial-routing.php`; Klappblatt, 404-Seite, gespeichertes
   WordPress-Menü (`inc/menu-setup.php`, nur Backend-Zustand, nirgends
@@ -85,8 +85,10 @@ Contract und Abnahme: `CHAT_ASSISTANT.md`.
   340 px nur im Blatt); auf Seiten mit Sticky-CTA-Leiste übernimmt unter
   761 px die Leiste. Das Klappblatt scrollt selbst, wenn es höher als der
   Viewport ist (Handy quer). Auf `/kontakt/` entfällt die Tür.
-  `HU_FEATURE_SOLAR_DOORS` (Vorgabe `false`, `inc/feature-flags.php`) hält die
-  Türen Analyse und Sofortkontakt bis zur Solar-Strecke auf `#einstieg`.
+  `HU_FEATURE_SOLAR_DOORS` (Vorgabe `false`, `inc/feature-flags.php`) steuert
+  den Anker der historischen Analyse-Tür, die im Solar-Kopf und Energie-
+  Fußregister nicht erscheint. Sofortkontakt führt unabhängig vom Flag auf
+  `/kontakt/?type=project&focus=sofortkontakt`.
   `/whitelabel-retainer/` hat eine eigene Seitennavigation aus derselben
   `.leiste` (`template-parts/whitelabel-header.php`), ohne Klappblatt, mit der
   Tür „Test-Sprint anfragen“ aus `hu_funnel_doors()` (Action
@@ -201,11 +203,12 @@ Contract und Abnahme: `CHAT_ASSISTANT.md`.
 ## Routen
 
 - **`/`** (`front-page.php`): Money Page für direkte WordPress-Projekte.
-  Finale Fassung im Repo am 2026-10-02 umgesetzt; der Livegang ist noch offen.
+  Schichtenfolge im Repo am 2026-10-09 vorbereitet; Merge und Live-Abnahme offen.
   Title „WordPress Freelancer: Website, Tracking, Anfragen · Haşim Üner“,
   Query-Owner für `wordpress freelancer` und `wordpress freelancer hannover`.
   Die bestehende Strecke (`assets/css/startseite-strecke.css/.js`) hat acht
-  Abschnitte: Klick, Strecke, Fall, Prüfstand, Preise, Übergabe, Fragen, Anfrage.
+  Abschnitte: Klick, Angebote (`#angebote`, mit Preisen), Strecke, Fall,
+  Prüfstand, Übergabe, Fragen, Anfrage.
   Hero und Startseiten-Kopf sind seit dem Umbau zur Messfläche dunkel; die
   gemeinsamen Flächen-, Raster- und Maskenregeln mit White-Label liegen einmal
   in `startseite-strecke.css`. Vier H1-Zeilen zeigen dieselbe Aussage; die Quelle
@@ -220,9 +223,10 @@ Contract und Abnahme: `CHAT_ASSISTANT.md`.
   gedämpften Stationen Messung, CRM und Anfrage. Das Signal hält bei Formular;
   Stationslinks (`home_hero_station`, Label = Slug) öffnen und fokussieren das
   passende native Akkordeon. Person und Belege folgen der Bahn im Hero.
-  Die frühere Hero-Seitennavigation entfällt. Alles ab Abschnitt 02 ist erhalten.
+  Die frühere Hero-Seitennavigation entfällt. Bestehende Angebots-, Stations-,
+  Beleg- und Anfrageanker bleiben trotz der neuen Reihenfolge erhalten.
   Sechs Stationen sind native exklusive Akkordeons, die erste ist offen.
-  Der dokumentierte Fall (`#arbeiten`, `#systemprojekt`) steht vor den Preisen:
+  Der dokumentierte Fall (`#arbeiten`, `#systemprojekt`) folgt auf die Strecke:
   heller Hintergrund, Drei-Phasen-Verlauf aus dem E3-Kanon und eine dunkle
   Messtafel mit maßstäblichen CPL-Balken. Diese wachsen einmal beim Sichtkontakt
   ausschließlich per Transform. Der Prüfstand enthält Code, CI, PageSpeed mit
@@ -230,6 +234,10 @@ Contract und Abnahme: `CHAT_ASSISTANT.md`.
   Angeboten (`#angebote`, alle Schema-Anker erhalten) stehen Weiterentwicklung,
   Hosting-Hinweis und eine bedingte Ersteinschätzungs-Tafel: Website-URL/Ziel,
   schriftliche Befunde beziehungsweise Absage und Antwortzeit aus dem Kanon.
+  Landingpage-Anfragen tragen `focus=landingpage`. Tracking erscheint als
+  Grundprodukt; Server-Side, Meta und CRM sind bedarfsabhängige Erweiterungen.
+  Die H1 endet mit „was funktioniert“; Herkunft und CRM werden nur im
+  vereinbarten, technisch verfügbaren Umfang zugesagt.
   Übergabe enthält
   Eigentum, Ausfall-Einwand, Projektablauf und die Nebenwege zu White-Label und
   Solar/Wärmepumpe. Fünf sichtbare FAQ teilen ihr Array mit dem FAQPage-Schema.
@@ -259,6 +267,14 @@ Contract und Abnahme: `CHAT_ASSISTANT.md`.
   unverändert per 301 hierher. Beobachtung nach sechs Wochen ab Livegang:
   Fall-CTA gegen Hero-CTA und Qualität der Einsendungen, siehe Experiment-Doku.
 - **`/kontakt/`** (`page-kontakt.php`): Anfrage-Intake, siehe „Anfragewege“.
+  `type=project&focus=landingpage` übernimmt „WordPress-Landingpage für ein
+  Angebot“ als eigenständiges Thema und behält es für Formular, Mail und CRM
+  bei. Die Eingabehilfe fragt nach Angebot, geplanter Besucherquelle und
+  gewünschtem Termin. Die Themenwahl wird übersprungen; bestehende Nachrichten-
+  und Kontaktschritte bleiben, ohne neue Formularfelder oder CRM-Metakeys.
+  Termin- und E-Mail-Alternative sind bereits in der Einleitung erreichbar;
+  der Termin nutzt weiterhin den vorhandenen Link und Hook mit der Section
+  `contact_intro`, der Link am Formularabschluss bleibt erhalten.
   Bis 820 px folgt das Formular direkt auf Titel und Einleitung; Ablauf,
   andere Einstiege und E-Mail stehen darunter. Direkt unter der H1 steht auf
   jeder Variante „Was passiert danach?“ (Antwortzeit aus dem Kanon). In der
@@ -312,12 +328,19 @@ Contract und Abnahme: `CHAT_ASSISTANT.md`.
 - **`/landingpage-erstellen-lassen/`** (`page-landingpage-erstellen-lassen.php`,
   Gutachten-Layout wie `/performance-marketing/`, seit 2026-09-26): Festpreis-
   Angebot Landingpage für Direktkunden. Preis aus `hu_landingpage_price()`,
-  Umfang (Auftakt, Konzept und Text, Umsetzung, Anfrageformular, Herkunft jeder
-  Anfrage, SEO-Grundlagen, Abnahme mit zwei Korrekturschleifen) und die Grenze
-  „Nicht dazu“ im Template; Zusätze aus Tracking-Leiter und Freelancer-Preisliste.
+  unverändert. Fünf Liefergruppen: Text, WordPress-Umsetzung mit technischer
+  SEO-Basis, Formular mit Bestätigung, Herkunft/Conversion und Prüfung/Übergabe
+  mit zwei Korrekturschleifen. Einstiegsseite und verfügbare Kampagnenparameter
+  kommen mit der Anfrage an; die vereinbarte Seiten-Conversion wird in
+  vorhandenen GA4- oder Google-Ads-Konten eingerichtet. Ein vollständiges
+  Tracking-System, CRM, Anzeigenbetreuung und externe Dienste sind separat.
+  Arbeitsbeleg mit Projektgrenzen steht vor dem Lieferumfang; weitere Arbeiten,
+  Ablauf und Technik liegen in nativen `details`. Preis, Mitwirkung und
+  Kernabgrenzung bleiben sichtbar. Der Vergleich zur Website erklärt deren
+  Grundsystem und optionalen Text gegenüber dem Landingpage-Produkt mit Text.
   FAQ und FAQPage-Schema aus `nexus_get_landingpage_faq_items()`, Service mit
   Offer in `inc/org-schema.php`, Title/Description in `inc/seo-meta.php`.
-  CTAs auf `/kontakt/?type=project&focus=conversion`. Route `landingpage`,
+  CTAs auf `/kontakt/?type=project&focus=landingpage`. Route `landingpage`,
   Seitenanlage über `nexus_get_provisioned_pages()`. Query-Owner für
   `landingpage erstellen lassen`. Eingehende Links: Fuß (Gruppe Leistungen),
   `/performance-marketing/` (Vorgehen) und `/glossar/landingpage/`
@@ -327,8 +350,8 @@ Contract und Abnahme: `CHAT_ASSISTANT.md`.
   Gutachten-Layout wie `/landingpage-erstellen-lassen/`, seit 2026-09-30):
   Conversion-Optimierung für B2B-Websites mit wenig Traffic, Einstieg ist die
   Anfragesystem-Analyse (`hu_analysis_price()`, Dauer aus
-  `hu_diagnose_canon()['primary_days']`, dasselbe Produkt wie auf der
-  Solar-Seite), danach Umsetzung zu Festpreisen aus dem Kanon. Seit
+  `hu_diagnose_canon()['primary_days']`), danach Umsetzung zu Festpreisen aus
+  dem Kanon. Seit
   2026-10-01 verdichtet (rund 740 Wörter): Kopf, sechs Abschnitte (Anlass,
   Strecke, Analyse, Danach, Beleg, Fragen) und Abschluss. Die Kernaussage „Drei
   von sechs Stationen liegen hinter dem Formular“ ist eine HTML/CSS-Grafik
@@ -412,20 +435,31 @@ Contract und Abnahme: `CHAT_ASSISTANT.md`.
   bei vergrößerter Schrift. Auswertung nach acht Wochen oder 300 Aufrufen, siehe
   `docs/experimente/anfrage-website.md`.
 - **`/ga4-tracking-setup/`** (`page-ga4.php`, virtuelle Cluster-Route):
-  Das Tracking-Angebot. Zeigt alle vier Stufen der Tracking-Leiter aus
-  `hu_tracking_product_ladder()` als Karten `#stufe-1` bis `#stufe-4` (Raster
-  2 × 2) mit Umfang, Festpreis und Lieferzeit; Meta-Description, FAQ
-  (`hu_tracking_setup_faq_items()`) und Service-Offer lesen dieselbe Leiter,
-  das Offer meldet Stufe 1. CTAs auf `/kontakt/?type=project&focus=tracking`.
+  Ein Grundprodukt für eine Website: Messplan, GTM/GA4, Consent-Anbindung,
+  Google Ads mit bis zu drei Haupt-Conversions sowie Abnahme/Übergabe.
+  Ein Grundpreis und fünf Lieferbausteine ersetzen die vier Preiskarten.
+  Umfang, Preis und Lieferzeit bleiben aus
+  `hu_tracking_product_ladder()['measurement']`; `#stufe-1` bleibt als Anker.
+  Abnahmeprotokoll und Testzustände stehen sichtbar, Technik und Ablauf in
+  nativen `details`. Meta-Description, FAQ (`hu_tracking_setup_faq_items()`)
+  und Service-Offer folgen derselben Grundprodukt-Logik. Server-Side, Meta CAPI
+  und CRM-Rücksignale sind Erweiterungen nach Bestandsaufnahme; Gesamtpreis,
+  Tool-/Hostingkosten und optionale Betreuung werden vorab benannt.
+  CTAs auf `/kontakt/?type=project&focus=tracking`.
   Query-Owner für `conversion tracking einrichten lassen`. Ziel des Kopfpunkts „Tracking“, des
   Tracking-Wegs im Fuß und der Station „Messung“ der Startseite (Route
   `tracking_setup`).
 - **`/server-side-tracking-b2b/`** (`page-server-side-tracking-b2b.php`):
   Fachseite und Query-Owner für Server-Side Tracking mit eigenem Formular
-  (`contact-request`, `type=project`, `focus=tracking`). Pakete sind die
-  Stufen 2 bis 4 der Tracking-Leiter, Care-Stufen heißen nach der Stufe, die
-  sie betreuen; über den Paketen verweist ein Satz auf Stufe 1
-  (`cta_package_to_measurement`). Seitenweit verlinkt
+  (`contact-request`, `type=project`, `focus=tracking`). Ein Produkt mit fünf
+  Bausteinen und einem Gesamtpreis aus dem Kanon-Eintrag `standard` ersetzt
+  die Paketwahl. Browser-Messbasis, Server-GTM, eigene Subdomain, Enhanced
+  Conversions und Paralleltest sind abgegrenzt; Meta CAPI und CRM-Rücksignale
+  separat. Server-Hosting bleibt zusätzlich, Tracking Care optional.
+  Technik, Ablauf, laufende Betreuung und Zugangsgrenzen stehen in nativen
+  `details`. `cta_package_standard` führt zum Formular; der Grundprodukt-Verweis
+  `cta_package_to_measurement` bleibt auf `/ga4-tracking-setup/#stufe-1`.
+  Seitenweit verlinkt
   im Fuß als „Server-Side Tracking“ (Route `tracking_b2b`). Beide
   Tracking-Seiten gelten als ein Kontext (`hu_is_tracking_route_context()`).
   Seit 2026-10-01 steht die Route auf `system.css`: ein Stylesheet
@@ -441,48 +475,35 @@ Contract und Abnahme: `CHAT_ASSISTANT.md`.
   `#zusammenarbeit`.
 - **`/solar-waermepumpen-leadgenerierung/`**
   (`page-solar-waermepumpen-leadgenerierung.php`, `anfragestrecke.css` unter
-  `.strecke-doc`): Energie-Money-Page mit Marktcheck am Mount `#sol-quiz-mount`,
-  Rechner (`anfragestrecke.js`) und Einstieg `#einstieg`. Seit dem Final-Cut-
-  Durchgang vom 2026-10-07 führt der erste Bildschirm in einer Hierarchie:
-  Ergebnis und Eigentum in der H1, Marktcheck als einzige laute Hauptaktion,
-  Sofortkontakt als leiser Portal-Ausgang, danach drei Kennzahlen des
-  dokumentierten E3-Falls mit Einzelfall-Hinweis. Aufbaupreis, Eigentum und
-  persönliche Verantwortung stehen als Dokument-Metadaten darunter; ein echtes
-  Porträt ersetzt abstrakte Vertrauensdekoration. Der große Messschrieb bleibt
-  der ausführliche Beleg. Die statische Modellgrafik und die zweite Vergleichstabelle
-  entfallen zugunsten des Rechners und der Projektphasen. CTA- und Abschnitts-IDs
-  bleiben erhalten. Der Marktcheck erklärt Prüfung, E-Mail-Befund und freie
-  Entscheidung über die weitere Zusammenarbeit. Geladen wird
-  `solar-leadgenerierung-solara.js`; es lädt `solar-marketcheck-compact.js`
-  nach, das die sichtbare Strecke rendert (vier Fit-Fragen plus Kontaktdaten in
-  `HU_MARKETCHECK_VISIBLE_STEPS` Schritten) und an `audit-request` sendet. Ohne
-  JavaScript verweist der Mount auf das Formular unter `/kontakt/`.
-  Die Angebotsleiter ist nach Marktcheck, Analyse, Sofortkontakt-Setup und
-  Aufbau in aufsteigender Preisfolge sortiert. Der Marktcheck akzeptiert
-  Freemail-Adressen und markiert sie im CRM als solche.
-  Die Analyse und das Sofortkontakt-Setup haben nun eigene kurze Formulare bei
-  `#analyse` und `#sofortkontakt`; beide senden über `audit-request` mit
-  getrennten `intake_variant`-Werten. Die vier Portal-Einordnungen Aroundhome,
-  Checkfox, Wattfox und DAA führen im ersten Kontext-CTA zum Sofortkontakt,
-  danach zum Marktcheck. Abschnitt 01 zeigt als interaktives Strecken-Modul
-  zwei Anfragewege mit Rechnerwerten und schematischen Zwischenstufen;
-  ohne JavaScript steht der Endzustand bereit. Danach folgen Rechnung, Fall,
-  Einstieg, der gemeinsame Abschnitt „Was es braucht“, Marktcheck, Fragen und
-  Verweise. `#anteil` und `#passung` führen beide zu „Was es braucht“.
-  Der Rechner zählt Änderungen in 300 ms und vergleicht die Auftragskosten
-  in Balken mit gemeinsamem Maßstab. Der Messschrieb zeigt ausschließlich
-  dokumentierte CPL-Bandbreiten nach Projektphase, ohne Monatsmesskurve;
-  Hover und Tastaturfokus auf den Fallphasen heben die passenden Stufen hervor.
-  Den Kopf trägt die Leiste im Modus `fokus` (Wortmarke und Leiter
-  Marktcheck · Analyse · Sofortkontakt auf die Anker der Seite); die Seite
-  selbst hat keine Kopfzeile mehr. Der
-  Marktcheck hat eine harte Papier-/Tafel-Kante ohne Verlauf. `solar-events.js`
-  zählt CTA-Klicks und Formularereignisse der drei Türen über anonyme UTC-
-  Tageszähler (`nexus/v1/solar-events`); Details in `PRIVACY.md`. Die Türen
-  der Leiste liest er über `data-door` (`sofort` zählt als `sofortkontakt`)
-  unter den Ereignissen `nav_header_door_*`.
-  Smartflow-Update 2026-10-07: Die frühere sichtbare Leiter aus kostenlosem Marktcheck, 690-€-Analyse, 790-€-Sofortkontakt und Aufbau ist auf zwei Hauptprodukte reduziert. Der Marktcheck kostet 99 € netto und ist bei Beauftragung anrechenbar. Das Anfragesystem startet bei 9.999 € netto für eine Produktstrecke; jede weitere eigenständige Produktstrecke kostet 1.000 € zusätzlich. Der Preisbereich ist ein interaktiver, progressiv verbesserter Konfigurator. Analyse- und Sofortkontakt-Formulare wurden von der Money Page entfernt; Sofortkontakt führt in die separate Kontaktstrecke. SEO-Title, Canonical und Query Ownership bleiben erhalten.
-  Flow-Copy-Update 2026-10-08: Der Einstieg benennt Solar-/SHK-Betriebe und die Übergabe von Projektangaben vor dem Rückruf. Portalvergleiche unterscheiden geteilte und exklusive Kontakte; Ergebnisse der Modellrechnung sind keine Prognose. Die interne Sofortkontakt-Planungscopy ist durch die konkrete Lieferung ersetzt. Der Produktkonfigurator übergibt ausschließlich Produktkennungen. Das Kontaktformular kennt `energy` und `sofortkontakt`; erlaubte Produktauswahlen werden serverseitig normalisiert und aus dem Pricing-Kanon berechnet. Auswahl und kalkulierter Preis erscheinen im Formular, beiden Mails, CRM-Metadaten und CRM-Aktivität. URL-/Browserpreise werden ignoriert. Ohne Konfiguration bleibt eine direkte Energieanfrage möglich.
+  `.strecke-doc`): Energie-Money-Page mit kurzem Kaufpfad: Einstieg → ein
+  kompakter Fallbeleg → Produkt/Preis → Passung → Marktcheck → freiwillige
+  Vertiefung → Abschluss. Ergebnis, Zielgruppe, Systemlieferung, Eigentum und
+  Zusatzkosten stehen früh; der E3-Fall wird einmal mit drei Projektphasen und
+  Einzelfallgrenzen erklärt. `#messschrieb` bleibt als Anker im kompakten Beleg.
+  Marktcheck und konfigurierbares Anfragesystem bleiben die zwei Hauptprodukte;
+  Preis, Anrechnung und weitere Produktstrecken stammen unverändert aus dem
+  Pricing-Kanon. `#einstieg` enthält den Konfigurator und eine Sofortkontakt-
+  Brücke zur separaten Kontaktstrecke. Aufbauanfragen verwenden
+  `type=project&focus=energy` mit Produktkennungen; der Server validiert und
+  berechnet den Scope. Auswahl und kalkulierter Preis bleiben in Formular,
+  beiden Mails und CRM erhalten; URL-/Browserpreise werden ignoriert.
+  `#anteil` und `#passung` bleiben beim Passungsabschnitt.
+  Systemmechanismus (`#strecke`), Modellrechnung (`#rechnung`), technische
+  Fragen und Cluster-Verweise liegen in nativen `details` unter `#vertiefung`.
+  Rechnerwerte sind Annahmen, keine Prognose; das Modell zählt Änderungen und
+  vergleicht Auftragskosten einschließlich anteiligem Aufbau und Hosting.
+  Der Handler in `solar-streckenmodul.js` öffnet bei direkten Hash-Aufrufen,
+  Hash-Wechseln und lokalen Ankerlinks die zugehörigen Details vor dem Sprung.
+  Einwilligungsgrenzen, Setup und CRM-Rücksignale bleiben im Detailtext erklärt.
+  CTA-Hooks, SEO-Title, Canonical und Query Ownership bleiben erhalten.
+  Marktcheck am Mount `#sol-quiz-mount`: `solar-leadgenerierung-solara.js` lädt
+  `solar-marketcheck-compact.js` nach; vier Fit-Fragen plus Kontaktdaten in
+  `HU_MARKETCHECK_VISIBLE_STEPS` Schritten senden an `audit-request`. Ohne
+  JavaScript verweist der Mount auf `/kontakt/`. Freemail-Adressen bleiben
+  zulässig und werden im CRM markiert. Auf der Money Page stehen keine eigenen
+  Analyse- oder Sofortkontakt-Formulare. Der Kopf bleibt im Modus `fokus`;
+  `solar-events.js` zählt die vorhandenen CTA-/Formularereignisse über anonyme
+  UTC-Tageszähler (`nexus/v1/solar-events`, Details in `PRIVACY.md`).
 
 
 - **Energie-Cluster** (`.hu-intercept`, Pfade in
@@ -620,8 +641,10 @@ Contract und Abnahme: `CHAT_ASSISTANT.md`.
   hinter einem internen Proxy die rechteste öffentliche Adresse aus
   `X-Forwarded-For`.
   - `contact-request` (`inc/contact-page.php`): `/kontakt/` und das
-    Server-Side-Formular. Bei `type=project` erscheint zuerst die Themenwahl
-    (Vorhaben), der Agentur-Hinweis ist immer sichtbar, Budget ist optional.
+    Server-Side-Formular. Bei `type=project` ohne gültigen Fokus erscheint
+    zuerst die Themenwahl (Vorhaben); `landingpage` ist ein eigenes Thema,
+    ein gültiger Fokus übernimmt die Vorauswahl. Der Agentur-Hinweis ist
+    sichtbar, Budget ist optional.
     Anfragetyp `ersteinschaetzung` (Versuch): Website-URL Pflicht, Nachricht
     optional, Betreff-Präfix aus dem Kanon; der Endpoint nimmt ihn auch bei
     ausgeschaltetem Schalter an.
@@ -700,8 +723,10 @@ Contract und Abnahme: `CHAT_ASSISTANT.md`.
 - Vorher-Abschlussquote des Falls (Marktannahme, nicht gemessen): Oberflächen
   lesen nur `display_hedged` und nennen sie Annahme; ein Vorher-Nachher-Feld
   gibt es seit 2026-09-26 nicht mehr. Guard-Regel `e3-vorher-quote`.
-- Tracking-Leiter: Name, Umfang, Preis und Lieferzeit der vier Stufen nur in
-  `hu_tracking_product_ladder()`; `npm run test:pricing`
+- Tracking-Kanon: Name, Umfang, Preis und Lieferzeit der vier internen
+  Preisumfänge nur in `hu_tracking_product_ladder()`. Die öffentliche
+  Produktdarstellung auf GA4- und Server-Side-Seite hat jeweils fünf Bausteine
+  und einen Kernpreis, ohne Vier-Karten-Auswahl. `npm run test:pricing`
   (`scripts/tests/tracking-ladder.php`, CI) prüft Reihenfolge, steigende
   Preise, Server-Side-Preis als Stufe 2 und den Abstand zum White-Label-Preis.
 

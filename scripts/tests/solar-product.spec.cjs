@@ -8,9 +8,9 @@ const products = ['photovoltaik', 'waermepumpe', 'speicher'];
 const render = () => execFileSync('php', [path.join(__dirname, 'render-page.php'), 'solar',
   'page-solar-waermepumpen-leadgenerierung.php',
   'style.css,assets/css/design-system.css,assets/css/system.css,assets/css/anfragestrecke.css'], { encoding: 'utf8' })
-  .replace('</body>', `<script src="${prefix}assets/js/anfragestrecke.js"></script></body>`);
+  .replace('</body>', `<script src="${prefix}assets/js/anfragestrecke.js"></script><script src="${prefix}assets/js/solar-streckenmodul.js"></script></body>`);
 
-async function open(page, width) {
+async function open(page, width, hash = '') {
   await page.setViewportSize({ width, height: 900 });
   await page.route('**/*', route => {
     const url = new URL(route.request().url());
@@ -21,7 +21,7 @@ async function open(page, width) {
     }
     return route.fulfill({ contentType: 'text/html', body: render() });
   });
-  await page.goto('https://hasimuener.de/solar-waermepumpen-leadgenerierung/');
+  await page.goto('https://hasimuener.de/solar-waermepumpen-leadgenerierung/' + hash);
   await page.evaluate(() => document.fonts.ready);
 }
 
@@ -90,4 +90,31 @@ test('solar reduced motion preserves an immediate price update', async ({ page }
   await root.locator('input[value="speicher"]').check();
   await expect(root.locator('[data-config-selection]')).toContainText('Photovoltaik + Speicher');
   expect(await root.evaluate(el => el.getAnimations({ subtree: true }).length)).toBe(0);
+});
+
+test('solar calculator deep link opens its disclosure and handles zero orders', async ({ page }) => {
+  await page.emulateMedia({ reducedMotion: 'reduce' });
+  await open(page, 390, '#rechnung');
+  const calculator = page.locator('[data-strecke-rechner]');
+  await expect(calculator).toBeVisible();
+  await calculator.locator('[data-feld="a3"]').fill('0');
+  await calculator.locator('[data-feld="b3"]').fill('0');
+  await expect(calculator.locator('[data-ausgabe="oA3"]')).toHaveText('–');
+  await expect(calculator.locator('[data-ausgabe="oB3"]')).toHaveText('–');
+  await expect(calculator).not.toContainText(/Infinity|NaN/);
+  expect(await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth)).toBe(true);
+});
+
+test('solar optional model remains keyboard accessible and fragment navigation reopens it', async ({ page }) => {
+  await open(page, 390);
+  const disclosure = page.locator('[data-solar-disclosure]').first();
+  const summary = disclosure.locator(':scope > summary');
+  await expect(page.locator('[data-strecke-rechner]')).toBeHidden();
+  await summary.focus();
+  await page.keyboard.press('Enter');
+  await expect(page.locator('[data-strecke-rechner]')).toBeVisible();
+  await page.keyboard.press('Enter');
+  await expect(page.locator('[data-strecke-rechner]')).toBeHidden();
+  await page.goto('https://hasimuener.de/solar-waermepumpen-leadgenerierung/#rechnung');
+  await expect(page.locator('[data-strecke-rechner]')).toBeVisible();
 });

@@ -2974,3 +2974,58 @@
 @media (prefers-reduced-motion: reduce) {
   .strecke-doc .system-produkt { transition: none; }
 }
+
+/* Kaufweg zuerst, Modell und Technik auf Nachfrage. Native Details bleiben
+   ohne JavaScript bedienbar; ihre Inhalte und vorhandenen Sprungziele liegen
+   vollstaendig im Dokument. */
+.strecke-doc #ergebnisse { padding-top: var(--s4); }
+.strecke-doc .solar-fallbeleg { margin-top: var(--s3); }
+.strecke-doc .solar-passung-grenze p { margin-top: var(--s2); color: var(--grau); max-width: 52ch; }
+.strecke-doc .solar-vertiefungen { margin-top: var(--s3); border-top: 1px solid var(--strich); }
+.strecke-doc .solar-vertiefung { border-bottom: 1px solid var(--haar); }
+.strecke-doc .solar-vertiefung > summary {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--s2);
+  padding-block: var(--s3);
+  cursor: pointer;
+  list-style: none;
+  font-family: var(--serif-display);
+  font-size: clamp(1.1rem, 1rem + .45vw, 1.35rem);
+  font-weight: 500;
+  line-height: 1.35;
+}
+.strecke-doc .solar-vertiefung > summary::-webkit-details-marker { display: none; }
+.strecke-doc .solar-vertiefung > summary > span:first-child { min-width: 0; }
+.strecke-doc .solar-vertiefung > summary small {
+  display: block;
+  margin-top: var(--s0);
+  font-family: var(--serif);
+  font-size: .86rem;
+  font-weight: 400;
+  color: var(--grau);
+}
+.strecke-doc .solar-detail-plus {
+  flex: 0 0 auto;
+  color: var(--stempel);
+  font-family: var(--mono);
+  font-size: 1.65rem;
+  line-height: 1;
+  transition: transform var(--t-mikro) var(--ease-aus);
+}
+.strecke-doc .solar-vertiefung[open] > summary { color: var(--stempel); }
+.strecke-doc .solar-vertiefung[open] .solar-detail-plus { transform: rotate(45deg); }
+.strecke-doc .solar-vertiefung-inhalt { padding-bottom: var(--s3); }
+.strecke-doc .solar-vertiefung-inhalt section { padding-block: var(--s3); }
+.strecke-doc .solar-vertiefung-inhalt section:first-child { padding-top: var(--s1); }
+.strecke-doc .solar-detail-block > .voll { min-width: 0; }
+.strecke-doc .solar-detail-block h3.kopf { font-size: var(--grad-h2-leise); max-width: 30ch; }
+.strecke-doc .solar-fragen-liste { margin-top: var(--s3); }
+.strecke-doc .solar-fragen-liste article { padding-block: var(--s3); border-top: 1px solid var(--haar); }
+.strecke-doc .solar-fragen-liste h4 { font-size: 1.1rem; line-height: 1.4; max-width: 54ch; }
+.strecke-doc .solar-fragen-liste p { margin-top: var(--s1); color: var(--grau); max-width: 66ch; }
+.strecke-doc .solar-fragen-liste .erst { color: var(--tinte); }
+@media (prefers-reduced-motion: reduce) {
+  .strecke-doc .solar-detail-plus { transition: none; }
+}

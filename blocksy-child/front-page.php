@@ -29,7 +29,6 @@ $tracking_url   = $routes['tracking_setup'];
 $website_url    = $routes['website'];
 $landing_url    = $routes['landingpage'];
 $conversion_url = $routes['conversion'];
-$website_url    = $routes['website'];
 $about_url      = $routes['about'];
 $privacy_url    = home_url( '/datenschutz/#privacy-cookies' );
 $github_url     = 'https://github.com/Hasim-Uner/meine-wordpress-site-2fe6f514';
@@ -43,8 +42,8 @@ $fest           = static function ( $value ) {
 };
 $response_short = hu_response_promise_short();
 $website_price  = $fest( hu_freelancer_website_price() );
-// Tracking-Angebot = Stufe 1 der Tracking-Leiter; die Stufen darueber stehen
-// als ein Satz daneben (hu_tracking_ladder_display()), nie einzeln abgeschrieben.
+// Ein Tracking-Produkt: der Einstieg liest den abgegrenzten Kernumfang.
+// Technische Erweiterungen werden auf der Produktseite nach Bedarf erklaert.
 $tracking_offer = hu_tracking_product_ladder()['measurement'];
 $tracking_price = $fest( $tracking_offer['price'] );
 $takeover_price = $fest( hu_freelancer_takeover_check_price() );
@@ -104,8 +103,8 @@ $stations = [
 		'slug'   => 'klick',
 		'name'   => 'Klick',
 		'teaser' => 'Die Seite wird gefunden, nur für die falsche Suche.',
-		'bricht' => 'Die Website rankt für Begriffe, nach denen Ihre Kunden nicht suchen. Zwei Unterseiten konkurrieren um dieselbe Suchanfrage, und keine kommt nach vorn. Nach einem Relaunch ohne Weiterleitungen laufen alte Links und Suchergebnisse ins Leere.',
-		'baue'   => 'Eine Seite pro Suchanfrage, saubere Titel und Canonicals, strukturierte Daten und einen Weiterleitungsplan für jede alte URL.',
+		'bricht' => 'Die Website wird für Fragen gefunden, die nicht zu Ihrem Angebot passen. Mehrere Seiten erklären dieselbe Aufgabe, ohne einen klaren nächsten Schritt. Nach einem Relaunch ohne Weiterleitungen laufen alte Links und Suchergebnisse ins Leere.',
+		'baue'   => 'Eigenständige Seiten für unterschiedliche Suchintentionen und Käuferfragen, passende interne Links, saubere Titel und Canonicals sowie einen Weiterleitungsplan für alte URLs.',
 		'beleg'  => [ 'text' => 'Titel, Canonical und Schema dieser Seite prüft die CI bei jeder Änderung.', 'url' => '#pruefstand', 'label' => 'Zum Prüfstand', 'hook' => 'home_station_pruefstand' ],
 	],
 	[
@@ -128,7 +127,7 @@ $stations = [
 		'slug'   => 'messung',
 		'name'   => 'Messung',
 		'teaser' => 'Die Zahl in GA4 passt nicht zum Postfach.',
-		'bricht' => 'GA4 zählt jeden Aufruf der Danke-Seite als Conversion, auch das Neuladen. Ohne Einwilligung fehlen Daten, und niemand weiß, wie viele. Welche Kampagne eine Anfrage gebracht hat, lässt sich dann nicht mehr sagen.',
+		'bricht' => 'Eine Conversion auf jedem Aufruf der Danke-Seite kann Neuladen mehrfach zählen. Einwilligung, Zählweise und fehlende Herkunftsdaten erklären weitere Abweichungen. Ohne dokumentierte Messlogik ist unklar, was die Zahlen bedeuten.',
 		'baue'   => sprintf( 'Einen Messplan mit GA4, Google Tag Manager und Consent Mode. Jede Conversion wird mit einem Testfall abgenommen und protokolliert. %s ab %s netto.', $tracking_offer['name'], $tracking_price ),
 		'beleg'  => [ 'url' => $tracking_url, 'label' => 'Tracking-Setup im Detail', 'hook' => 'home_proof_tracking_page' ],
 	],
@@ -137,7 +136,7 @@ $stations = [
 		'name'   => 'CRM',
 		'teaser' => 'Die Anfrage kommt an, ihre Quelle nicht.',
 		'bricht' => 'Die Anfrage landet als E-Mail in einem Sammelpostfach. Die Quelle fehlt, der Vertrieb tippt sie ab, und ob jemand zurückgerufen hat, steht nirgends.',
-		'baue'   => 'Die Übergabe jeder Anfrage mit Quelle, Kampagne und Formularinhalt in Ihr CRM. Vor dem Livegang verfolge ich eine Testanfrage bis dorthin.',
+		'baue'   => 'Die Übergabe der Anfrage mit Formularinhalt und verfügbarer Quelle oder Kampagne in Ihr CRM, wenn vereinbart. Vor dem Livegang verfolge ich eine Testanfrage bis dorthin.',
 		'beleg'  => [ 'text' => 'Im dokumentierten B2B-Fall reicht die Strecke bis zur Übergabe an den Vertrieb.', 'url' => '#arbeiten', 'label' => 'Zum Fall', 'hook' => 'home_station_fall' ],
 	],
 	[
@@ -183,9 +182,9 @@ $offers = [
 		'price'   => $landing_price,
 		'situation' => 'Sie haben ein Angebot, aber keine Seite, die dafür anfragt.',
 		'price_note' => 'netto · Festpreis',
-		'text'    => 'Eine Seite für ein Angebot, mit Konzept, Text, Anfrageformular und Herkunft jeder Anfrage. Sie geben zweimal frei: den Text und die fertige Seite.',
-		'more'    => 'Tracking und Website sind eigene Zusätze mit eigenem Preis.',
-		'request' => $project_link( 'conversion' ),
+		'text'    => 'Eine Seite für ein Angebot, mit Konzept, Text, Anfrageformular und verfügbarem Herkunftskontext. Sie geben zweimal frei: den Text und die fertige Seite.',
+		'more'    => 'Seitenbezogene Conversion in bestehenden Konten nach vereinbartem Messumfang. Ein neues vollständiges Tracking-Setup ist separat.',
+		'request' => $project_link( 'landingpage' ),
 		'hook'    => 'home_offer_landingpage',
 		'cta'     => 'Landingpage anfragen',
 		'detail'  => [ 'url' => $landing_url, 'hook' => 'home_offer_landingpage_detail' ],
@@ -214,7 +213,7 @@ $offers = [
 		'situation' => 'Anfragen kommen an, aber niemand weiß, woher.',
 		'price_note' => 'netto · Festpreis · ' . $tracking_offer['weeks'],
 		'text'    => 'Messplan, GA4, Google Tag Manager, Consent Mode und Google Ads. Jede Conversion mit Testfall und Abnahmeprotokoll. Gemessen wird im Browser, ohne eigenen Server.',
-		'more'    => sprintf( 'Die Stufen darüber: %s.', $fest( hu_tracking_ladder_display( 2 ) ) ),
+		'more'    => 'Server-Side, Meta und CRM ergänzen wir bei begründetem Bedarf. Umfang, Zusatzkosten und laufender Aufwand stehen vor dem Start fest.',
 		'request' => $project_link( 'tracking' ),
 		'hook'    => 'home_offer_tracking',
 		'cta'     => 'Tracking-Projekt anfragen',
@@ -264,7 +263,7 @@ $faqs = [
 	],
 	[
 		'q' => 'Brauchen wir Website, Tracking und CRM zusammen?',
-		'a' => 'Nein. Der Umfang richtet sich nach Ihrem Ziel. Eine Landingpage oder ein Conversion-Tracking kann der erste Schritt sein. Server-Side Tracking und die Anbindung ans CRM sind eigene Ausbaustufen mit eigenem Preis.',
+		'a' => 'Der Umfang richtet sich nach Ihrem Ziel. Website, Landingpage und Conversion-Tracking sind eigenständig anfragbar. Server-Side, Meta und CRM werden bei passendem Bedarf vereinbart; zusätzliche Einrichtung und laufende Kosten stehen vor dem Start fest.',
 	],
 	[
 		'q' => 'Wie lange dauert ein Projekt, und was brauchen Sie von uns?',
@@ -309,7 +308,7 @@ get_header();
 				<p class="st-klein-label st-hero__preis">Websites ab <?php echo esc_html( $website_price ); ?> netto</p>
 			</div>
 			<div class="st-hero__titel" data-st-titel>
-				<h1 class="st-hero__h1" id="st-h1"><span class="st-messzeile"><span class="st-messwort">Mehr Anfragen</span></span> <span class="st-messzeile"><span class="st-messwort">über Ihre Website.</span></span> <span class="st-messzeile st-leise"><span class="st-messwort">Und Sie sehen,</span></span> <span class="st-messzeile st-leise"><span class="st-messwort st-wort--quelle" data-st-wort-quelle><span class="st-quelle__kontur">woher jede kommt.</span><span class="st-quelle__fuell" aria-hidden="true">woher jede kommt.</span></span></span></h1>
+				<h1 class="st-hero__h1" id="st-h1"><span class="st-messzeile"><span class="st-messwort">Mehr Anfragen</span></span> <span class="st-messzeile"><span class="st-messwort">über Ihre Website.</span></span> <span class="st-messzeile st-leise"><span class="st-messwort">Und Sie sehen,</span></span> <span class="st-messzeile st-leise"><span class="st-messwort st-wort--quelle" data-st-wort-quelle><span class="st-quelle__kontur">was funktioniert.</span><span class="st-quelle__fuell" aria-hidden="true">was funktioniert.</span></span></span></h1>
 				<div class="st-etikett" data-st-etikett aria-hidden="true" hidden>
 					<span class="st-etikett__kopf">Ihr Besuch kam über</span>
 					<span class="st-etikett__wert" data-st-etikett-wert>…</span>
@@ -346,7 +345,7 @@ get_header();
 							</li>
 						<?php endforeach; ?>
 					</ol>
-					<p class="st-spur__klammer">Ab hier baue ich für Ihre Website: Messung bis zur Quelle, Übergabe ins CRM, Antwort mit Termin.</p>
+					<p class="st-spur__klammer">Je nach Projekt ergänzen wir Messung, CRM-Übergabe und Terminbestätigung. Der vereinbarte Umfang steht vor dem Start fest.</p>
 				</div>
 				<dl class="st-spur__messung"><div><dt>Abschnitte erreicht</dt><dd data-st-wert="abschnitte">…</dd></div><div><dt>Scrolltiefe</dt><dd data-st-wert="tiefe">…</dd></div></dl>
 				<p class="st-protokoll__ohne-js">Ohne JavaScript misst diese Seite nichts. Das Protokoll bleibt leer.</p>
@@ -370,8 +369,38 @@ get_header();
 	</section>
 
 
-	<section class="st-abschnitt st-strecke" id="strecke" aria-labelledby="strecke-h" data-st-abschnitt="02" data-track-section="strecke">
-		<?php echo $marke( '02', 'Strecke' ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- escaped inside the helper. ?>
+	<section class="st-abschnitt st-leistungen st-wash" id="angebote" aria-labelledby="angebote-h" data-st-abschnitt="02" data-track-section="angebote">
+		<?php echo $marke( '02', 'Preise' ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- escaped inside the helper. ?>
+		<div class="st-inhalt">
+			<h2 class="st-h2" id="angebote-h">Was es kostet, steht hier. <span class="st-leise">Der Einstieg richtet sich nach Ihrer Ausgangslage.</span></h2>
+			<p class="st-vorspann">Alle Preise netto. Umfang und Endpreis stehen vor dem Start schriftlich fest. Was danach dazukommt, kommt nur mit Ihrer Zustimmung dazu.</p>
+			<div class="st-angebote">
+				<?php foreach ( $offers as $offer ) : ?>
+					<article class="st-angebot" id="<?php echo esc_attr( $offer['id'] ); ?>" aria-labelledby="<?php echo esc_attr( $offer['id'] ); ?>-h">
+						<span class="st-angebot__nr st-klein-label" aria-hidden="true"><?php echo esc_html( $offer['nr'] ); ?></span>
+						<div class="st-angebot__kopf"><h3 class="st-angebot__titel" id="<?php echo esc_attr( $offer['id'] ); ?>-h"><?php echo esc_html( $offer['title'] ); ?></h3><p class="st-angebot__lage"><?php echo esc_html( $offer['situation'] ); ?></p></div>
+						<div class="st-angebot__text"><p><?php echo esc_html( $offer['text'] ); ?></p><p class="st-angebot__mehr"><?php echo esc_html( $offer['more'] ); ?></p></div>
+						<div class="st-angebot__preise">
+							<p class="st-angebot__preis"><?php echo esc_html( $offer['price'] ); ?><small><?php echo esc_html( $offer['price_note'] ); ?></small></p>
+							<p class="st-angebot__wege"><a class="st-link st-link--stark" href="<?php echo esc_url( $offer['request'] ); ?>" data-track-action="<?php echo esc_attr( $offer['hook'] ); ?>" data-track-category="lead_gen" data-track-section="angebote"><?php echo esc_html( $offer['cta'] ); ?> <span aria-hidden="true">→</span></a>
+							<?php if ( ! empty( $offer['detail'] ) ) : ?><a class="st-link" href="<?php echo esc_url( $offer['detail']['url'] ); ?>" data-track-action="<?php echo esc_attr( $offer['detail']['hook'] ); ?>" data-track-category="navigation" data-track-section="angebote">Umfang im Detail <span aria-hidden="true">→</span><span class="nur-vorlesen"> zu <?php echo esc_html( $offer['title'] ); ?></span></a><?php endif; ?></p>
+						</div>
+					</article>
+				<?php endforeach; ?>
+			</div>
+			<div class="st-weiter"><p><strong>Weiterentwicklung nach dem Projekt.</strong> <?php echo esc_html( $retainer ); ?> im Monat, monatlich kündbar. Eine Voraussetzung ist das nicht.</p><a class="st-link" href="#uebergabe" data-track-action="home_offer_retainer_more" data-track-category="navigation" data-track-section="angebote">Was Sie ohnehin behalten <span aria-hidden="true">↓</span></a></div>
+			<p class="st-preisnotiz">Hosting, Lizenzen und externe Dienste stehen getrennt im Angebot und laufen auf Ihren Namen.</p>
+			<?php if ( $first_assessment_on ) : ?>
+			<aside class="st-erstcheck tafel" aria-labelledby="home-erstcheck-h">
+				<div><p class="st-klein-label">Noch unsicher? Kostenlose Ersteinschätzung</p><h3 class="st-h3" id="home-erstcheck-h"><?php echo esc_html( hu_first_assessment_text( 'card_title' ) ); ?></h3><p>Ich sehe mir Ladezeit, Messung und den Weg zur Anfrage an. Für die Prüfung: <?php echo esc_html( hu_first_assessment_text( 'card_send' ) ); ?>.</p></div>
+				<div><p><?php echo esc_html( hu_first_assessment_text( 'promise' ) ); ?> Antwort <?php echo esc_html( hu_response_promise( 'window' ) ); ?>.</p><a class="tun" href="<?php echo esc_url( $assessment_url ); ?>" data-track-action="home_offers_ersteinschaetzung" data-track-category="lead_gen" data-track-section="angebote"><?php echo esc_html( $assessment_label ); ?> <span class="pf" aria-hidden="true">→</span></a><p class="st-klein-label">Ohne Verpflichtung. Ein Projekt beginnt erst nach Ihrer Zusage.</p></div>
+			</aside>
+			<?php endif; ?>
+		</div>
+	</section>
+
+	<section class="st-abschnitt st-strecke" id="strecke" aria-labelledby="strecke-h" data-st-abschnitt="03" data-track-section="strecke">
+		<?php echo $marke( '03', 'Strecke' ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- escaped inside the helper. ?>
 		<div class="st-inhalt">
 			<h2 class="st-h2" id="strecke-h">Eine Anfrage passiert sechs Stationen. An jeder kann sie verloren gehen.</h2>
 			<p class="st-vorspann">Anfragen, die nie ankommen, stehen in keinem Bericht. Darum sieht eine Website oft gesund aus, während sie Interessenten verliert. Zu jeder Station steht hier, was dort bricht und was ich dagegen baue.</p>
@@ -398,8 +427,8 @@ get_header();
 		</div>
 	</section>
 
-	<section class="st-abschnitt st-arbeiten st-wash" id="arbeiten" aria-labelledby="arbeiten-h" data-st-abschnitt="03" data-track-section="beweis">
-		<?php echo $marke( '03', 'Fall' ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- escaped inside the helper. ?>
+	<section class="st-abschnitt st-arbeiten st-wash" id="arbeiten" aria-labelledby="arbeiten-h" data-st-abschnitt="04" data-track-section="beweis">
+		<?php echo $marke( '04', 'Fall' ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- escaped inside the helper. ?>
 		<div class="st-inhalt" id="fall">
 			<h2 class="st-h2" id="arbeiten-h">Von <?php echo esc_html( $fest( hu_e3_metric( 'cpl_before' ) ) ); ?> auf <?php echo esc_html( $fest( hu_e3_metric( 'cpl_after' ) ) ); ?> pro Anfrage.</h2>
 			<p class="st-vorspann">Was die ganze Strecke in einem Projekt verändert hat, dokumentiert für einen <?php echo esc_html( $e3['case_label_accusative'] ); ?>.</p>
@@ -431,8 +460,8 @@ get_header();
 		</div>
 	</section>
 
-	<section class="st-abschnitt st-pruefstand st-pruefstand--leise" id="pruefstand" aria-labelledby="pruefstand-h" data-st-abschnitt="04" data-track-section="pruefstand">
-		<?php echo $marke( '04', 'Prüfstand' ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- escaped inside the helper. ?>
+	<section class="st-abschnitt st-pruefstand st-pruefstand--leise" id="pruefstand" aria-labelledby="pruefstand-h" data-st-abschnitt="05" data-track-section="pruefstand">
+		<?php echo $marke( '05', 'Prüfstand' ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- escaped inside the helper. ?>
 		<div class="st-inhalt">
 			<div class="st-pruefstand__kopf">
 				<h2 class="st-h2" id="pruefstand-h">Prüfen Sie mich, <span class="st-leise">bevor Sie mir schreiben.</span></h2>
@@ -475,36 +504,6 @@ get_header();
 						<?php endforeach; ?>
 					</ul>
 				</div>
-			<?php endif; ?>
-		</div>
-	</section>
-
-	<section class="st-abschnitt st-leistungen st-wash" id="angebote" aria-labelledby="angebote-h" data-st-abschnitt="05" data-track-section="angebote">
-		<?php echo $marke( '05', 'Preise' ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- escaped inside the helper. ?>
-		<div class="st-inhalt">
-			<h2 class="st-h2" id="angebote-h">Was es kostet, steht hier. <span class="st-leise">Der Einstieg richtet sich nach Ihrer Ausgangslage.</span></h2>
-			<p class="st-vorspann">Alle Preise netto. Umfang und Endpreis stehen vor dem Start schriftlich fest. Was danach dazukommt, kommt nur mit Ihrer Zustimmung dazu.</p>
-			<div class="st-angebote">
-				<?php foreach ( $offers as $offer ) : ?>
-					<article class="st-angebot" id="<?php echo esc_attr( $offer['id'] ); ?>" aria-labelledby="<?php echo esc_attr( $offer['id'] ); ?>-h">
-						<span class="st-angebot__nr st-klein-label" aria-hidden="true"><?php echo esc_html( $offer['nr'] ); ?></span>
-						<div class="st-angebot__kopf"><h3 class="st-angebot__titel" id="<?php echo esc_attr( $offer['id'] ); ?>-h"><?php echo esc_html( $offer['title'] ); ?></h3><p class="st-angebot__lage"><?php echo esc_html( $offer['situation'] ); ?></p></div>
-						<div class="st-angebot__text"><p><?php echo esc_html( $offer['text'] ); ?></p><p class="st-angebot__mehr"><?php echo esc_html( $offer['more'] ); ?></p></div>
-						<div class="st-angebot__preise">
-							<p class="st-angebot__preis"><?php echo esc_html( $offer['price'] ); ?><small><?php echo esc_html( $offer['price_note'] ); ?></small></p>
-							<p class="st-angebot__wege"><a class="st-link st-link--stark" href="<?php echo esc_url( $offer['request'] ); ?>" data-track-action="<?php echo esc_attr( $offer['hook'] ); ?>" data-track-category="lead_gen" data-track-section="angebote">Projekt anfragen <span aria-hidden="true">→</span><span class="nur-vorlesen"> für <?php echo esc_html( $offer['title'] ); ?></span></a>
-							<?php if ( ! empty( $offer['detail'] ) ) : ?><a class="st-link" href="<?php echo esc_url( $offer['detail']['url'] ); ?>" data-track-action="<?php echo esc_attr( $offer['detail']['hook'] ); ?>" data-track-category="navigation" data-track-section="angebote">Umfang im Detail <span aria-hidden="true">→</span><span class="nur-vorlesen"> zu <?php echo esc_html( $offer['title'] ); ?></span></a><?php endif; ?></p>
-						</div>
-					</article>
-				<?php endforeach; ?>
-			</div>
-			<div class="st-weiter"><p><strong>Weiterentwicklung nach dem Projekt.</strong> <?php echo esc_html( $retainer ); ?> im Monat, monatlich kündbar. Eine Voraussetzung ist das nicht.</p><a class="st-link" href="#uebergabe" data-track-action="home_offer_retainer_more" data-track-category="navigation" data-track-section="angebote">Was Sie ohnehin behalten <span aria-hidden="true">↓</span></a></div>
-			<p class="st-preisnotiz">Hosting, Lizenzen und externe Dienste stehen getrennt im Angebot und laufen auf Ihren Namen.</p>
-			<?php if ( $first_assessment_on ) : ?>
-			<aside class="st-erstcheck tafel" aria-labelledby="home-erstcheck-h">
-				<div><p class="st-klein-label">Noch unsicher? Kostenlose Ersteinschätzung</p><h3 class="st-h3" id="home-erstcheck-h"><?php echo esc_html( hu_first_assessment_text( 'card_title' ) ); ?></h3><p>Ich sehe mir Ladezeit, Messung und den Weg zur Anfrage an. Für die Prüfung: <?php echo esc_html( hu_first_assessment_text( 'card_send' ) ); ?>.</p></div>
-				<div><p><?php echo esc_html( hu_first_assessment_text( 'promise' ) ); ?> Antwort <?php echo esc_html( hu_response_promise( 'window' ) ); ?>.</p><a class="tun" href="<?php echo esc_url( $assessment_url ); ?>" data-track-action="home_offers_ersteinschaetzung" data-track-category="lead_gen" data-track-section="angebote"><?php echo esc_html( $assessment_label ); ?> <span class="pf" aria-hidden="true">→</span></a><p class="st-klein-label">Ohne Verpflichtung. Ein Projekt beginnt erst nach Ihrer Zusage.</p></div>
-			</aside>
 			<?php endif; ?>
 		</div>
 	</section>

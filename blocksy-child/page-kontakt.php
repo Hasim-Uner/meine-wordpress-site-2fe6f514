@@ -57,7 +57,7 @@ $public_focus_options = array_filter(
 // Bei Projektanfragen stehen die häufigsten Vorhaben oben; die Schlüssel
 // bleiben unverändert, nur die Reihenfolge der Auswahl ändert sich.
 if ( 'project' === $selected_type ) {
-	$project_focus_order  = [ 'website', 'relaunch', 'implementation_scope', 'conversion', 'tracking', 'seo', 'performance', 'website_strategy', 'followup_scope' ];
+	$project_focus_order  = [ 'website', 'landingpage', 'relaunch', 'implementation_scope', 'conversion', 'tracking', 'seo', 'performance', 'website_strategy', 'followup_scope' ];
 	$public_focus_options = array_merge(
 		array_intersect_key( array_flip( $project_focus_order ), $public_focus_options ),
 		$public_focus_options
@@ -96,6 +96,9 @@ $visible_step_count  = 3 - ( $is_scoped_focus ? 1 : 0 );
 $form_title          = $is_scoped_focus ? 'Zwei kurze Schritte. Direkte fachliche Einordnung.' : 'Drei kurze Schritte. Klare Anfrage statt langem Briefing.';
 $form_intro          = $is_scoped_focus ? 'Seite, Engpass, Ziel – mehr brauche ich für den ersten fachlichen Check nicht.' : 'Nur die Angaben, die ich für eine erste fachliche Einordnung wirklich brauche.';
 $message_step_title  = $is_scoped_focus ? 'Wo liegt der Engpass?' : 'Was soll messbar besser werden?';
+$message_label       = 'Ausgangslage und Ziel';
+$message_help        = 'Nennen Sie Seite, Angebot und Engpass. Das reicht für eine erste fachliche Einordnung.';
+$message_placeholder = '';
 $form_eyebrow        = 'Projektbriefing';
 $page_classes        = 'site-main doku contact-page' . ( $is_scoped_focus ? ' contact-page--scoped' : '' );
 $website_placeholder = 'https://example.de';
@@ -125,6 +128,15 @@ if ( 'website' === $selected_focus ) {
 	$form_intro = 'Beschreiben Sie kurz Ihr Angebot und den gewünschten Starttermin.';
 	$message_step_title = 'Was bieten Sie an, und bis wann soll die Website stehen?';
 	$submit_label = 'Website-Projekt anfragen';
+} elseif ( 'landingpage' === $selected_focus ) {
+	$hero_title = 'Eine Landingpage für Ihr Angebot.';
+	$form_title = 'Zwei kurze Schritte zu Ihrer Landingpage-Anfrage.';
+	$form_intro = 'Beschreiben Sie Ihr Angebot, die geplante Besucherquelle und den gewünschten Termin.';
+	$message_step_title = 'Welches Angebot soll die Landingpage verkaufen?';
+	$message_label = 'Angebot, Besucherquelle und Termin';
+	$message_help = 'Was bieten Sie an, woher kommen die Besucher und wann soll die Seite live gehen?';
+	$message_placeholder = 'Angebot: … · Besucherquelle: … · Gewünschter Termin: …';
+	$submit_label = 'Landingpage anfragen';
 }
 
 // Versuch Ersteinschätzung (/kontakt/?focus=ersteinschaetzung). Den Typ gibt
@@ -159,6 +171,11 @@ if ( function_exists( 'hu_first_assessment_enabled' ) && hu_first_assessment_ena
 				<?php if ( ! $is_first_assessment ) : ?>
 				<p class="contact-lead">WordPress, Tracking, Conversion oder technisches SEO: kurz einordnen, Engpass benennen, direkt bei mir landen.</p>
 				<?php endif; ?>
+				<p class="contact-alternatives">
+					<a href="<?php echo esc_url( $calendar_url ); ?>" data-track-action="cta_click_contact_call_superflow" data-track-category="contact" data-track-section="contact_intro">Termin wählen</a>
+					<span>oder</span>
+					<a href="<?php echo esc_url( 'mailto:' . $contact_email ); ?>">E-Mail schreiben</a>
+				</p>
 			</div>
 
 			<div class="contact-intro__mehr">
@@ -287,9 +304,9 @@ if ( function_exists( 'hu_first_assessment_enabled' ) && hu_first_assessment_ena
 					<section class="contact-flow-step" data-contact-step="message" data-contact-step-label="Ausgangslage">
 						<div class="contact-step-head"><span><?php echo esc_html( $is_scoped_focus ? '01' : '02' ); ?></span><p><?php echo esc_html( $message_step_title ); ?></p></div>
 						<div class="contact-field" data-contact-field="message">
-							<label for="contact-message" data-contact-message-label>Ausgangslage und Ziel</label>
-							<p id="contact-message-help" class="contact-field__help" data-contact-message-help>Nennen Sie Seite, Angebot und Engpass. Das reicht für eine erste fachliche Einordnung.</p>
-							<textarea id="contact-message" name="message" rows="6" required minlength="<?php echo esc_attr( (string) $message_minlength ); ?>" aria-describedby="contact-message-help contact-message-error" data-contact-message></textarea>
+							<label for="contact-message" data-contact-message-label><?php echo esc_html( $message_label ); ?></label>
+							<p id="contact-message-help" class="contact-field__help" data-contact-message-help><?php echo esc_html( $message_help ); ?></p>
+							<textarea id="contact-message" name="message" rows="6" required minlength="<?php echo esc_attr( (string) $message_minlength ); ?>" placeholder="<?php echo esc_attr( $message_placeholder ); ?>" aria-describedby="contact-message-help contact-message-error" data-contact-message></textarea>
 							<p class="contact-field__error is-hidden" id="contact-message-error" aria-live="polite"></p>
 						</div>
 

@@ -119,7 +119,7 @@ function nexus_get_llms_txt_sections() {
 				[
 					'label'       => 'Landingpage erstellen lassen',
 					'url'         => $urls['landingpage'] ?? home_url( '/landingpage-erstellen-lassen/' ),
-					'description' => 'Festpreis-Angebot für Direktkunden: eine Seite für ein Angebot mit Konzept, Text, Anfrageformular, Herkunft jeder Anfrage und Abnahme. Tracking, Website und Weiterentwicklung als eigene Zusätze.',
+					'description' => 'Festpreis-Angebot für Direktkunden: eine WordPress-Seite für ein Angebot mit Konzept, Text, Anfrageformular und Abnahme. Einstiegsseite und verfügbare Kampagnenparameter werden mitgegeben; die vereinbarte Seiten-Conversion wird in vorhandenen Konten eingerichtet. Ein vollständiges Tracking-Setup ist ein separates Produkt.',
 				],
 				[
 					'label'       => 'WordPress-Website erstellen lassen',
@@ -139,7 +139,7 @@ function nexus_get_llms_txt_sections() {
 				[
 					'label'       => 'Server-Side Tracking einrichten lassen',
 					'url'         => $urls['solar_tracking'] ?? home_url( '/server-side-tracking-b2b/' ),
-					'description' => 'Money Page für Server-Side Tracking, Server-GTM, GA4, Google Ads und Meta CAPI; direkter Projektpfad statt Solar-Marktcheck.',
+					'description' => 'Fachseite für eine Server-Messstrecke mit Browser-Messbasis, Server-GTM, eigener Subdomain, Enhanced Conversions und Paralleltest. Meta CAPI und CRM-Rücksignale werden separat vereinbart; Hostingkosten und optionale Betreuung stehen vorab fest. Direkter Tracking-Projektpfad.',
 				],
 				[
 					'label'       => 'Performance Marketing für B2B',

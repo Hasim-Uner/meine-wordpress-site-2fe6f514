@@ -78,6 +78,29 @@ foreach ( $invalid_contact as $code => $changes ) {
 		check( $r->status === 400 && $r->data['error_code'] === $code && ! $GLOBALS['intake_test']['events'], 'Correct field error without side effects' );
 	} );
 }
+run_case( 'landingpage project reaches CRM, activity and both mails', static function () use ( $contact ) {
+	$p = array_merge( $contact, [
+		'focus' => 'landingpage',
+		'message' => 'Ein Beratungsangebot für Unternehmen, Besucher aus Google Ads, Start im November.',
+	] );
+	$v = nexus_validate_contact_request_payload( $p );
+	check( ! is_wp_error( $v ) && 'WordPress-Landingpage für ein Angebot' === $v['focus_label'], 'Landingpage receives its central backend label' );
+	$r = call_intake( 'contact', $p );
+	check( 201 === $r->status && true === $r->data['ok'], 'Landingpage project accepted by the existing endpoint' );
+	check( 'landingpage' === get_post_meta( 1, '_nexus_contact_focus' ) && $v['focus_label'] === get_post_meta( 1, '_nexus_contact_focus_label' ), 'Landingpage focus and label persisted in CRM' );
+	check( 'project_request' === get_post_meta( 1, '_nexus_contact_source' ) && 1 === get_post_meta( 1, '_nexus_contact_consent_contact_request' ), 'Existing source and consent retained' );
+	check( $p['message'] === get_post_meta( 1, '_nexus_contact_message' ) && str_contains( nexus_get_contact_request_activity_summary( $v ), $v['focus_label'] ), 'Briefing and focus retained for follow-up' );
+	check( 2 === count( $GLOBALS['intake_test']['mails'] ), 'Internal notification and confirmation built' );
+	foreach ( $GLOBALS['intake_test']['mails'] as $mail ) {
+		check( str_contains( $mail['body'], $v['focus_label'] ) && str_contains( $mail['body'], $p['message'] ), 'Both mails carry landingpage label and briefing' );
+	}
+} );
+foreach ( [ 'audit', 'analysis', 'implementation', 'ongoing', 'general', 'client' ] as $request_type ) {
+	run_case( "landingpage rejects request type $request_type", static function () use ( $contact, $request_type ) {
+		$r = call_intake( 'contact', array_merge( $contact, [ 'focus' => 'landingpage', 'request_type' => $request_type ] ) );
+		check( 400 === $r->status && 'invalid_focus_type' === $r->data['error_code'] && ! $GLOBALS['intake_test']['events'], 'Landingpage is only a project focus; invalid combinations have no side effects' );
+	} );
+}
 run_case( 'assessment URL required, optional goal, canonical mail prefix', static function () use ( $contact ) {
 	$p = array_merge( $contact, [ 'request_type' => 'ersteinschaetzung', 'focus' => 'ersteinschaetzung', 'message' => '' ] );
 	$r = call_intake( 'contact', $p );

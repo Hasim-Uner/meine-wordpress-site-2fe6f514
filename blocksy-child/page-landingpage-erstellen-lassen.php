@@ -8,17 +8,16 @@
  * klare Grenze dessen, was nicht dazugehört. Herleitung des Preises:
  * docs/decisions/preise-website-landingpage.md.
  *
- * Layout wie /performance-marketing/ (Gutachten-System aus system.css). Nur das
- * Angebotsblatt im Abschnitt „Umfang“ (Preiskarte, Leistungsraster) hat ein
- * Delta in assets/css/landingpage-offer.css. Fakten kommen aus dem Kanon: Preis aus
+ * Gutachten-System aus system.css; die Produktübersicht und nativen Details
+ * haben ein Delta in assets/css/landingpage-offer.css. Fakten kommen aus dem Kanon: Preis aus
  * hu_landingpage_price(), Zusätze aus der Tracking-Leiter und der
- * Freelancer-Preisliste, Antwortzeit aus hu_response_promise(), Fallzahlen aus
- * hu_e3_metric(). Fragen und FAQPage-Schema lesen nexus_get_landingpage_faq_items(),
+ * Freelancer-Preisliste, Antwortzeit aus hu_response_promise(), Arbeitsbeleg aus
+ * hu_e3_canon(). Fragen und FAQPage-Schema lesen nexus_get_landingpage_faq_items(),
  * das Service-Schema steht in inc/org-schema.php, Title und Description in
  * inc/seo-meta.php.
  *
- * Primärer CTA: Projektanfrage mit Thema „Landingpage oder Anfrageweg“
- * (/kontakt/?type=project&focus=conversion), damit die Anfrage ohne
+ * Primärer CTA: Projektanfrage mit Thema „Landingpage“
+ * (/kontakt/?type=project&focus=landingpage), damit die Anfrage ohne
  * Themenschritt ankommt und im CRM zuordenbar bleibt.
  *
  * @package Blocksy_Child
@@ -73,7 +72,7 @@ $fest = static function ( $value ) {
 };
 
 $routes          = hu_get_commercial_route_map();
-$contact_url     = hu_get_contact_intake_url( 'project', 'conversion' );
+$contact_url     = add_query_arg( [ 'type' => 'project', 'focus' => 'landingpage' ], home_url( '/kontakt/' ) );
 $tracking_url    = $routes['tracking_setup'];
 $whitelabel_url  = $routes['whitelabel'];
 $website_url     = $routes['website'];
@@ -86,28 +85,47 @@ $response_window = hu_response_promise( 'window' );
 $tracking_offer  = hu_tracking_product_ladder()['measurement'];
 $tracking_price  = $fest( $tracking_offer['price'] );
 $website_price   = $fest( hu_freelancer_website_price() );
-$website_scope   = $fest( hu_freelancer_website_scope_display() );
 $retainer        = $fest( hu_freelancer_retainer_display() );
 
 $e3_canon   = hu_e3_canon();
 $case_url   = $e3_canon['url'];
 $case_label = $e3_canon['case_label_accusative'] ?? HU_E3_CASE_LABEL_ACCUSATIVE;
-$cpl_before = hu_e3_metric( 'cpl_before' );
-$cpl_after  = hu_e3_metric( 'cpl_after' );
-$timeframe  = hu_e3_metric( 'timeframe', 'display_dative' );
 
 $references = hu_public_reference_projects();
 $faq_items  = nexus_get_landingpage_faq_items();
 
-// Was im Festpreis steckt. Reihenfolge = Reihenfolge der Arbeit.
+// Fünf Liefergruppen: Überblick sichtbar, technische Einzelheiten auf Wunsch.
 $scope = [
-	[ 'Auftakt', 'Ein Gespräch von einer Stunde und ein kurzer Fragebogen: Angebot, Zielgruppe, Preise, woher die Besucher kommen und welche Einwände Sie aus Gesprächen kennen.' ],
-	[ 'Konzept und Text', 'Aufbau der Seite, Botschaft und Handlungsaufforderung. Den Text schreibe ich, Sie geben ihn frei, bevor gebaut wird.' ],
-	[ 'Umsetzung', 'Die Seite in WordPress, schnell auf dem Handy, auf einer Testumgebung gebaut und erst nach Ihrer Abnahme live.' ],
-	[ 'Anfrageformular', 'Wenige Pflichtfelder und die Fragen, die Sie für die Einordnung brauchen. Eine Bestätigung geht an den Absender, die Anfrage per E-Mail an Sie.' ],
-	[ 'Herkunft jeder Anfrage', 'Das Formular übergibt die Seite und die Kampagnen-Parameter aus der Adresse, ohne Cookie. Nutzen Sie Google Ads oder GA4, trage ich die Anfrage dort als Conversion ein.' ],
-	[ 'SEO-Grundlagen', 'Titel, Beschreibung und strukturierte Daten. Ob die Seite in den Suchindex soll oder nur Anzeigen-Besucher bekommt, entscheiden wir vorher.' ],
-	[ 'Abnahme', 'Eine Testanfrage bis in Ihr Postfach, eine Ladezeitmessung und ein Übergabeprotokoll. Zwei Korrekturschleifen sind enthalten.' ],
+	[
+		'title' => 'Text für Ihr Angebot',
+		'summary' => 'Konzept und Text für eine klare Entscheidung: Angebot, Nutzen, Belege und der nächste Schritt.',
+		'label' => 'Wie der Text entsteht',
+		'detail' => 'Im Auftaktgespräch und kurzen Fragebogen klären wir Zielgruppe, Angebot, Preise und Einwände. Sie liefern die Fakten; ich entwickle Aufbau und Text. Sie geben den Text frei, bevor gebaut wird.',
+	],
+	[
+		'title' => 'Eine Seite in WordPress',
+		'summary' => 'Die Angebotsseite wird für Handy und Desktop umgesetzt, mit technischer SEO-Basis und auf einer Testumgebung.',
+		'label' => 'Technik und Suchindex',
+		'detail' => 'Titel, Beschreibung und strukturierte Daten gehören dazu. Ob die Seite in den Suchindex soll oder ausschließlich für Kampagnen genutzt wird, entscheiden wir vor dem Start. Die Einbindung in Ihre Website klären wir im Auftakt.',
+	],
+	[
+		'title' => 'Formular & Bestätigung',
+		'summary' => 'Ein Formular mit den nötigen Angaben, eine Bestätigung für den Interessenten und die Anfrage in Ihrem Postfach.',
+		'label' => 'So läuft die Anfrage',
+		'detail' => 'Die Pflichtangaben richten sich nach der ersten Einordnung, nicht nach einem vollständigen Verkaufsgespräch. Vor dem Livegang verfolgen wir eine Testanfrage bis in Ihr Postfach. Eine CRM-, Shop- oder Checkout-Anbindung ist separat.',
+	],
+	[
+		'title' => 'Herkunft & Conversion',
+		'summary' => 'Einstiegsseite und verfügbare Kampagnenparameter kommen mit der Anfrage an. Die vereinbarte Conversion dieser Seite wird in Ihren vorhandenen GA4- oder Google-Ads-Konten eingerichtet.',
+		'label' => 'Umfang und Messgrenzen',
+		'detail' => 'Welche Herkunft erfassbar ist und wie eine Conversion zählt, klären wir anhand von Linkparametern, Einwilligungszuständen und dem bestehenden Setup. Ein neues vollständiges GA4-/GTM-/Consent-Setup gehört zum separaten Tracking-Produkt.',
+	],
+	[
+		'title' => 'Prüfung & Übergabe',
+		'summary' => 'Testanfrage, Ladezeitprüfung und Übergabeprotokoll. Zwei Korrekturschleifen sind enthalten; live geht die Seite nach Ihrer Freigabe.',
+		'label' => 'Was Sie danach behalten',
+		'detail' => 'Domain, Hosting, Werbekonten und Zugänge bleiben bei Ihnen. Sie erhalten das Übergabeprotokoll und können die Seite danach selbst pflegen. Der Termin steht nach dem Auftakt schriftlich fest; Material und Freigaben beeinflussen ihn.',
+	],
 ];
 
 // Was bewusst nicht dazugehört; daraus entsteht der Festpreis.
@@ -126,27 +144,13 @@ $price_unit   = $price_parts[1] ?? '';
 
 // Kurzfassung in der Preiskarte; die Einzelheiten stehen im Raster darunter.
 $price_facts = [
-	'Text inklusive',
-	'Formular mit Herkunft jeder Anfrage',
+	'Konzept und Text inklusive',
+	'Formular und seitenbezogene Messung',
 	'Zwei Korrekturschleifen',
 	'Live erst nach Ihrer Abnahme',
 ];
 
-// Wann sich eine eigene Seite lohnt.
-$occasions = [
-	'Eine Google-Ads-Kampagne soll starten, aber die Anzeige würde auf der Startseite landen.',
-	'Ein neues Angebot hat noch keine eigene Seite, auf die Sie Interessenten schicken können.',
-	'Die Startseite erklärt alles gleichzeitig, und Besucher finden den nächsten Schritt nicht.',
-	'Anfragen kommen, aber Sie wissen nicht, über welche Anzeige oder Seite.',
-];
-
-// Anlass 04 gehört nicht mehr zur Landingpage, sondern zur bestehenden Website:
-// dort führt der Satz zur Conversion-Optimierung.
-$occasion_links = [
-	3 => $routes['conversion'],
-];
-
-// Ablauf in vier Stationen; der Termin wird vor dem Start schriftlich festgelegt.
+// Der Ablauf ergänzt die Lieferung, statt sie als zweiten Leistungsblock zu wiederholen.
 $process = [
 	[ '01 · Auftakt', 'Gespräch und Fragebogen. Danach stehen Umfang und Termin schriftlich fest.' ],
 	[ '02 · Text', 'Sie bekommen Aufbau und Text zur Freigabe, bevor die Seite gebaut wird.' ],
@@ -161,10 +165,10 @@ get_header();
 	<header class="kopfteil" data-track-section="lp_hero">
 		<div class="blatt">
 			<p class="gegenstand">Landingpage · WordPress · Festpreis</p>
-			<h1>Landingpage erstellen lassen: eine Seite, ein Angebot, eine Anfrage.</h1>
+			<h1>Landingpage erstellen lassen: eine Seite für Ihr Angebot.</h1>
 			<p class="aufriss">
-				<span class="erst">Zum Festpreis, mit Text und Messung.</span>
-				Ich schreibe und baue die Seite, auf die Sie Anzeigen oder Interessenten schicken. Sie führt zu genau einer Handlung, und jede Anfrage kommt mit der Seite und Kampagne an, über die sie kam.
+				<span class="erst">Konzept, Text und WordPress zum Festpreis.</span>
+				Ich baue die Seite für Ihr einzelnes Angebot: mit einem klaren Weg zum Formular, Bestätigung und seitenbezogener Messung. Für Unternehmen, die eine Kampagne starten oder ein konkretes Angebot präsentieren möchten.
 			</p>
 
 			<div class="ausgang">
@@ -173,37 +177,37 @@ get_header();
 			</div>
 			<p class="mono"><?php echo esc_html( $price ); ?> netto Festpreis · Text inklusive · <?php echo esc_html( $response ); ?></p>
 
-			<div class="meta" aria-label="Angebot im Überblick">
-				<dl>
-					<div><dt>Preis</dt><dd><?php echo esc_html( $price ); ?> netto, fest vereinbart vor dem Start</dd></div>
-					<div><dt>Umfang</dt><dd>Eine Seite mit Text, Formular und Herkunft jeder Anfrage</dd></div>
-					<div><dt>Abnahme</dt><dd>Live erst nach Testanfrage und Ihrer Freigabe</dd></div>
-					<div><dt>Für Agenturen</dt><dd><a class="satzlink" href="<?php echo esc_url( $whitelabel_url ); ?>" data-track-action="lp_offer_hero_whitelabel" data-track-category="navigation" data-track-section="lp_hero">Umsetzung unter Ihrem Namen</a></dd></div>
-				</dl>
+			<div class="lp-produktvergleich" aria-label="Website und Landingpage einordnen">
+				<p><b>Website ab <?php echo esc_html( $website_price ); ?> netto</b><br>Grundsystem und erste Hauptseite; Texterstellung optional.</p>
+				<p><b>Landingpage für <?php echo esc_html( $price ); ?> netto</b><br>Eine Angebotsseite; Konzept und Text sind enthalten.</p>
 			</div>
+			<p class="lp-kurzinfo">Sie liefern Fakten, Bilder und Freigaben. Anzeigenbetreuung, CRM-Anbindung und ein neues vollständiges Tracking-Setup sind separat.</p>
+			<p class="lp-nebenweg">Für Agenturen: <a class="satzlink" href="<?php echo esc_url( $whitelabel_url ); ?>" data-track-action="lp_offer_hero_whitelabel" data-track-category="navigation" data-track-section="lp_hero">Umsetzung unter Ihrem Namen</a></p>
 		</div>
 	</header>
 
-	<section id="anlass" data-track-section="lp_offer_occasion">
+	<section id="beleg" data-track-section="lp_offer_proof">
 		<div class="blatt reihe">
-			<div class="spalte-links"><div class="kapitel" aria-hidden="true"><span class="nr">01</span><span class="titel">Anlass</span><span class="strich"></span></div></div>
+			<div class="spalte-links"><div class="kapitel" aria-hidden="true"><span class="nr">01</span><span class="titel">Arbeitsbeleg</span><span class="strich"></span></div></div>
 			<div class="haupt">
-				<p class="mono stempelfarbe">Wann sich eine eigene Seite lohnt</p>
-				<h2 class="kopf">Eine Anzeige verspricht etwas. Die Seite dahinter muss es einlösen.</h2>
-				<p class="vorspann">Eine Startseite spricht alle Besucher gleichzeitig an. Wer auf eine Anzeige oder einen Link zu einem bestimmten Angebot klickt, sucht aber genau dieses Angebot und den nächsten Schritt dorthin.</p>
-				<div class="protokoll posten" aria-label="Typische Anlässe">
-					<?php foreach ( $occasions as $i => $occasion ) : ?>
-						<div class="z"><span><?php echo esc_html( sprintf( '%02d', $i + 1 ) ); ?></span><b>
-							<?php if ( isset( $occasion_links[ $i ] ) ) : ?>
-								<a class="satzlink" href="<?php echo esc_url( $occasion_links[ $i ] ); ?>" data-track-action="lp_offer_occasion_to_conversion" data-track-category="navigation" data-track-section="lp_offer_occasion"><?php echo esc_html( $occasion ); ?></a>
-							<?php else : ?>
-								<?php echo esc_html( $occasion ); ?>
-							<?php endif; ?>
-						</b></div>
-					<?php endforeach; ?>
+				<p class="mono stempelfarbe">Landingpages im realen Anfrageweg</p>
+				<h2 class="kopf">Die Seite ist ein Teil der Strecke. Der Fall zeigt die ganze.</h2>
+				<p class="vorspann">Für einen <?php echo esc_html( $case_label ); ?> habe ich Landingpages, Vorqualifizierung, Messung und die Übergabe an den Vertrieb verbunden. Die Fallstudie beschreibt meinen Beitrag und die Grenzen der Ergebnisse.</p>
+				<div class="ausgang">
+					<a class="textlink" href="<?php echo esc_url( $case_url ); ?>" data-track-action="lp_offer_proof_case" data-track-category="proof" data-track-section="lp_offer_proof">Arbeitsbeleg und Methodik ansehen</a>
+					<a class="textlink" href="<?php echo esc_url( $psi_url ); ?>" target="_blank" rel="noopener" data-track-action="lp_offer_proof_pagespeed" data-track-category="proof" data-track-section="lp_offer_proof">Ladezeit dieser Seite messen<span class="nur-vorlesen"> (öffnet in neuem Tab)</span></a>
 				</div>
+				<?php if ( ! empty( $references ) ) : ?>
+					<details class="lp-details lp-weitere-belege"><summary>Weitere öffentliche Arbeiten</summary>
+						<div class="protokoll posten" aria-label="Öffentliche Arbeiten">
+							<?php foreach ( $references as $reference ) : ?>
+								<div class="z"><span><?php echo esc_html( $reference['tag'] ); ?></span><b><a class="satzlink" href="<?php echo esc_url( $reference['url'] ); ?>" target="_blank" rel="noopener" data-track-action="lp_offer_reference_open" data-track-category="proof" data-track-section="lp_offer_proof"><?php echo esc_html( $reference['name'] ); ?><span class="nur-vorlesen"> (öffnet in neuem Tab)</span></a>: <?php echo esc_html( $reference['text'] ); ?></b></div>
+							<?php endforeach; ?>
+						</div>
+					</details>
+				<?php endif; ?>
 			</div>
-			<aside class="marg"><p class="note"><span class="label">Eine Handlung</span><b>Eine Seite, ein Ziel.</b> Jede weitere Auswahl auf der Seite ist eine Stelle, an der ein Besucher abspringt.</p></aside>
+			<aside class="marg"><p class="note"><span class="label">Einordnung</span>Die Ergebnisse stammen aus einem Gesamtprojekt mit Kampagnen, Tracking und CRM. Sie sind keine Prognose für eine einzelne Landingpage.</p></aside>
 		</div>
 	</section>
 
@@ -214,9 +218,9 @@ get_header();
 				<div class="tafel angebot">
 					<div class="angebot-kopf">
 						<div class="angebot-titel">
-							<p class="mono stempelfarbe">Angebot im Detail</p>
-							<h2 class="kopf">Das steckt im Festpreis.</h2>
-							<p class="vorspann">Der Preis steht, bevor ich anfange. Er gilt für eine Seite zu einem Angebot, mit allem, was sie braucht, um Anfragen anzunehmen und ihre Herkunft zu zeigen.</p>
+							<p class="mono stempelfarbe">Ein Produkt · fünf Liefergruppen</p>
+							<h2 class="kopf">Vom Angebot zur fertigen Landingpage.</h2>
+							<p class="vorspann">Konzept, Text, Umsetzung und Anfrageweg gehören zusammen. Der Festpreis gilt für eine Seite zu einem Angebot. Den vereinbarten Umfang bestätigen wir schriftlich vor dem Start.</p>
 						</div>
 						<div class="angebot-preis" role="group" aria-label="Festpreis">
 							<p class="mono">Festpreis</p>
@@ -235,101 +239,65 @@ get_header();
 						<?php foreach ( $scope as $i => $item ) : ?>
 							<li>
 								<span class="nr" aria-hidden="true"><?php echo esc_html( sprintf( '%02d', $i + 1 ) ); ?></span>
-								<h3><?php echo esc_html( $item[0] ); ?></h3>
-								<p><?php echo esc_html( $item[1] ); ?></p>
+								<h3><?php echo esc_html( $item['title'] ); ?></h3>
+								<p><?php echo esc_html( $item['summary'] ); ?></p>
+								<details class="lp-details lp-lieferdetail"><summary><?php echo esc_html( $item['label'] ); ?></summary><p><?php echo esc_html( $item['detail'] ); ?></p></details>
 							</li>
 						<?php endforeach; ?>
-						<li class="grenze">
-							<span class="nr" aria-hidden="true">×</span>
-							<h3>Nicht dazu</h3>
-							<ul role="list">
-								<?php foreach ( $not_included as $excluded ) : ?>
-									<li><?php echo esc_html( $excluded ); ?></li>
-								<?php endforeach; ?>
-							</ul>
-						</li>
 					</ul>
 				</div>
 			</div>
 		</div>
 	</section>
 
-	<section id="ablauf" data-track-section="lp_offer_process">
-		<div class="blatt reihe">
-			<div class="spalte-links"><div class="kapitel" aria-hidden="true"><span class="nr">03</span><span class="titel">Ablauf</span><span class="strich"></span></div></div>
-			<div class="haupt">
-				<p class="mono stempelfarbe">Vier Schritte</p>
-				<h2 class="kopf">Sie geben zweimal frei: den Text und die fertige Seite.</h2>
-				<p class="vorspann">Dazwischen arbeite ich auf einer <?php echo nexus_glossary_link( 'staging', 'Testumgebung' ); ?>. Den Termin lege ich nach dem Auftakt schriftlich fest; er hängt vor allem daran, wie schnell Fakten, Bilder und Freigaben kommen.</p>
-				<div class="protokoll posten" aria-label="Ablauf">
-					<?php foreach ( $process as $step ) : ?>
-						<div class="z"><span><?php echo esc_html( $step[0] ); ?></span><b><?php echo esc_html( $step[1] ); ?></b></div>
-					<?php endforeach; ?>
-				</div>
-			</div>
-			<aside class="marg"><p class="note"><span class="label">Ihre Konten</span>Domain, Hosting, Werbekonten und Zugänge bleiben bei Ihnen. Sie bekommen das Übergabeprotokoll und können die Seite danach selbst pflegen.</p></aside>
-		</div>
-	</section>
-
 	<section id="zusaetze" data-track-section="lp_offer_addons">
 		<div class="blatt reihe">
-			<div class="spalte-links"><div class="kapitel" aria-hidden="true"><span class="nr">04</span><span class="titel">Zusätze</span><span class="strich"></span></div></div>
+			<div class="spalte-links"><div class="kapitel" aria-hidden="true"><span class="nr">03</span><span class="titel">Einordnung</span><span class="strich"></span></div></div>
 			<div class="haupt">
-				<p class="mono stempelfarbe">Wenn mehr gebraucht wird</p>
-				<h2 class="kopf">Was darüber hinausgeht, hat einen eigenen Preis.</h2>
-				<p class="vorspann">So bleibt die Landingpage ein fester Betrag, und Sie buchen nur, was Ihr Vorhaben tatsächlich braucht.</p>
-				<div class="protokoll posten" aria-label="Buchbare Zusätze">
-					<div class="z"><span><?php echo esc_html( $tracking_offer['name'] ); ?></span><b><?php echo esc_html( sprintf( 'Festpreis %s netto: Messplan, GA4, Tag Manager, Consent Mode und Google Ads für die ganze Website, mit Abnahmeprotokoll.', $tracking_price ) ); ?></b></div>
-					<div class="z"><span>Website</span><b><?php echo esc_html( sprintf( 'Ab %1$s netto. %2$s.', $website_price, $website_scope ) ); ?></b></div>
-					<div class="z"><span>Weiterentwicklung</span><b><?php echo esc_html( sprintf( 'Monatskontingent: %s, monatlich kündbar.', $retainer ) ); ?></b></div>
-				</div>
+				<p class="mono stempelfarbe">Vor dem Start klären</p>
+				<h2 class="kopf">Die Seite ergänzt Ihre Website. Den Rest buchen Sie bei Bedarf.</h2>
+				<p class="vorspann">Die seitenbezogene Conversion in vorhandenen Konten ist enthalten. Müssen GA4, Tag Manager und Consent erst als vollständiges System eingerichtet werden, ist das ein eigenes Tracking-Produkt für <?php echo esc_html( $tracking_price ); ?> netto.</p>
 				<div class="ausgang">
-					<a class="textlink" href="<?php echo esc_url( $tracking_url ); ?>" data-track-action="lp_offer_to_tracking_setup" data-track-category="navigation" data-track-section="lp_offer_addons">Tracking-Setup im Detail</a>
+					<a class="textlink" href="<?php echo esc_url( $tracking_url ); ?>" data-track-action="lp_offer_to_tracking_setup" data-track-category="navigation" data-track-section="lp_offer_addons">Vollständiges Tracking-Setup ansehen</a>
 					<a class="textlink" href="<?php echo esc_url( $website_url ); ?>" data-track-action="lp_offer_to_website_offer" data-track-category="navigation" data-track-section="lp_offer_addons">Website-Angebot ansehen</a>
 				</div>
-			</div>
-		</div>
-	</section>
-
-	<section id="beleg" data-track-section="lp_offer_proof">
-		<div class="blatt reihe">
-			<div class="spalte-links"><div class="kapitel" aria-hidden="true"><span class="nr">05</span><span class="titel">Beleg</span><span class="strich"></span></div></div>
-			<div class="haupt">
-				<p class="mono stempelfarbe">Dokumentierter Fall</p>
-				<h2 class="kopf">Eigene Anfragen statt gekaufter: ein Fall mit offener Herleitung.</h2>
-				<p class="vorspann">
-					<?php
-					echo esc_html(
-						sprintf(
-							'Für einen %1$s sanken die Kosten pro Anfrage in %2$s von %3$s auf %4$s. Aufgebaut wurde dafür eine eigene Anfragestrecke mit Vorqualifizierung und Messung, statt weiter Anfragen bei Portalen zu kaufen.',
-							$case_label,
-							$timeframe,
-							$cpl_before,
-							$cpl_after
-						)
-					);
-					?>
-				</p>
-				<div class="ausgang">
-					<a class="textlink" href="<?php echo esc_url( $case_url ); ?>" data-track-action="lp_offer_proof_case" data-track-category="proof" data-track-section="lp_offer_proof">Fallstudie und Herleitung ansehen</a>
-					<a class="textlink" href="<?php echo esc_url( $psi_url ); ?>" target="_blank" rel="noopener" data-track-action="lp_offer_proof_pagespeed" data-track-category="proof" data-track-section="lp_offer_proof">Ladezeit dieser Seite messen<span class="nur-vorlesen"> (öffnet in neuem Tab)</span></a>
+				<div class="lp-vertiefungen">
+					<details id="anlass" class="lp-details" data-track-section="lp_offer_occasion">
+						<summary>Wann ist eine Landingpage der passende Einstieg?</summary>
+						<p>Für ein konkretes Angebot, eine geplante Kampagne oder einen gezielten Link, der bisher auf Ihre allgemeine Startseite führt. Die Seite hält das Versprechen dieses Einstiegs und erklärt den nächsten Schritt.</p>
+						<p>Hat Ihre bestehende Website bereits Besucher, aber zu wenig passende Anfragen? Die <a class="satzlink" href="<?php echo esc_url( $routes['conversion'] ); ?>" data-track-action="lp_offer_occasion_to_conversion" data-track-category="navigation" data-track-section="lp_offer_occasion">Conversion-Analyse</a> klärt zuerst, wo die Strecke hakt.</p>
+					</details>
+					<details id="ablauf" class="lp-details" data-track-section="lp_offer_process">
+						<summary>Ablauf, Termin und Ihr Beitrag</summary>
+						<p>Sie liefern die Fakten zum Angebot, passende Bilder und die Freigaben. Nach dem Auftakt vereinbaren wir den Termin schriftlich. Wie schnell Material und Entscheidungen kommen, beeinflusst den Livegang.</p>
+						<div class="protokoll posten" aria-label="Ablauf">
+							<?php foreach ( $process as $step ) : ?>
+								<div class="z"><span><?php echo esc_html( $step[0] ); ?></span><b><?php echo esc_html( $step[1] ); ?></b></div>
+							<?php endforeach; ?>
+						</div>
+					</details>
+					<details class="lp-details">
+						<summary>Was separat vereinbart wird</summary>
+						<ul class="lp-grenzen" role="list">
+							<?php foreach ( $not_included as $excluded ) : ?>
+								<li><?php echo esc_html( $excluded ); ?></li>
+							<?php endforeach; ?>
+						</ul>
+						<p>Domain, Hosting und externe Dienste sind eigene Kosten. Zusätzlicher Umfang wird vor der Beauftragung schriftlich vereinbart.</p>
+					</details>
+					<details class="lp-details">
+						<summary>Nach dem Livegang weiterentwickeln</summary>
+						<p><?php echo esc_html( sprintf( 'Optionales Monatskontingent: %s netto, monatlich kündbar.', $retainer ) ); ?> Eine Voraussetzung für die Landingpage ist es nicht.</p>
+					</details>
 				</div>
-				<?php if ( ! empty( $references ) ) : ?>
-					<div class="protokoll posten" aria-label="Öffentliche Arbeiten">
-						<?php foreach ( $references as $reference ) : ?>
-							<div class="z"><span><?php echo esc_html( $reference['tag'] ); ?></span><b><a class="satzlink" href="<?php echo esc_url( $reference['url'] ); ?>" target="_blank" rel="noopener" data-track-action="lp_offer_reference_open" data-track-category="proof" data-track-section="lp_offer_proof"><?php echo esc_html( $reference['name'] ); ?><span class="nur-vorlesen"> (öffnet in neuem Tab)</span></a>: <?php echo esc_html( $reference['text'] ); ?></b></div>
-						<?php endforeach; ?>
-					</div>
-				<?php endif; ?>
 			</div>
-			<aside class="marg"><p class="note"><span class="label">Übertragbar?</span>Das hängt an Markt, Angebot und Wettbewerb. Die Fallstudie legt die Herleitung offen, statt die Zahl allein zu zeigen.</p></aside>
 		</div>
 	</section>
 
 	<?php if ( ! empty( $faq_items ) ) : ?>
 		<section id="fragen" data-track-section="lp_offer_faq">
 			<div class="blatt reihe">
-				<div class="spalte-links"><div class="kapitel" aria-hidden="true"><span class="nr">06</span><span class="titel">Fragen</span><span class="strich"></span></div></div>
+				<div class="spalte-links"><div class="kapitel" aria-hidden="true"><span class="nr">04</span><span class="titel">Fragen</span><span class="strich"></span></div></div>
 				<div class="haupt">
 					<p class="mono stempelfarbe">Vor der Beauftragung</p>
 					<h2 class="kopf leise">Häufige Fragen zur Landingpage.</h2>
@@ -349,7 +317,8 @@ get_header();
 			<div class="haupt">
 				<p class="mono stempelfarbe">Nächster Schritt</p>
 				<h2>Für welches Angebot brauchen Sie die Seite?</h2>
-				<p class="aufriss">Schreiben Sie kurz, was Sie anbieten, woher die Besucher kommen sollen und bis wann die Seite stehen muss. Sie bekommen Rückfragen oder den Termin für das Auftaktgespräch.</p>
+				<p class="aufriss">Nennen Sie Angebot, geplanten Besucherweg und gewünschten Termin. Das Thema Landingpage ist im Formular bereits gewählt. Ich prüfe Ihre Angaben und antworte mit Rückfragen oder einem Terminvorschlag.</p>
+				<p class="lp-kurzinfo">Umfang, Festpreis und Termin stehen vor dem Auftrag schriftlich fest. Ihre Anfrage ist noch keine Beauftragung.</p>
 				<div class="ausgang"><a class="tun" href="<?php echo esc_url( $contact_url ); ?>" data-track-action="cta_lp_offer_close_project" data-track-category="lead_gen" data-track-section="lp_offer_close">Landingpage anfragen <span class="pf" aria-hidden="true">→</span></a></div>
 			</div>
 			<aside class="marg"><p class="note"><span class="label">Antwort</span>Persönlich <?php echo esc_html( $response_window ); ?>, mit Rückfragen oder einem Terminvorschlag.</p></aside>

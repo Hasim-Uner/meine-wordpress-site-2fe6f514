@@ -269,8 +269,8 @@ get_header();
 				<table class="preise">
 					<caption class="nur-vorlesen">Umsetzung nach dem Befund: Leistung und Preis, netto</caption>
 					<tbody>
-						<tr><th scope="row"><a href="<?php echo esc_url( $landing_url ); ?>" data-track-action="cro_offer_to_landingpage" data-track-category="navigation" data-track-section="cro_offer_implementation">Landingpage</a> für ein Angebot, mit Formular und Herkunft jeder Anfrage</th><td><?php echo esc_html( $landing_price ); ?></td></tr>
-						<tr><th scope="row"><a href="<?php echo esc_url( $tracking_url ); ?>" data-track-action="cro_offer_to_tracking" data-track-category="navigation" data-track-section="cro_offer_implementation">Messung</a>: Herkunft jeder Anfrage in GA4 und Google Ads</th><td><?php echo esc_html( $tracking_price ); ?></td></tr>
+						<tr><th scope="row"><a href="<?php echo esc_url( $landing_url ); ?>" data-track-action="cro_offer_to_landingpage" data-track-category="navigation" data-track-section="cro_offer_implementation">Landingpage</a> für ein Angebot, mit Text, Formular und verfügbarem Herkunftskontext</th><td><?php echo esc_html( $landing_price ); ?></td></tr>
+						<tr><th scope="row"><a href="<?php echo esc_url( $tracking_url ); ?>" data-track-action="cro_offer_to_tracking" data-track-category="navigation" data-track-section="cro_offer_implementation">Conversion-Tracking</a>: GA4, Tag Manager, Consent und Ads mit geprüftem Messumfang</th><td><?php echo esc_html( $tracking_price ); ?></td></tr>
 						<tr><th scope="row">Einordnung und Übergabe ins CRM</th><td>Festpreis nach Befund</td></tr>
 						<tr><th scope="row">Weiterentwicklung, monatlich kündbar</th><td><?php
 							foreach ( $retainer_tiers as $tier_index => $tier_label ) :

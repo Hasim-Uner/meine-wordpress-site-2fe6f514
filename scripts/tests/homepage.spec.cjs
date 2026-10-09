@@ -24,7 +24,7 @@ async function open(page, { width = 1440, height = 900, off = false, search = ''
   // Native assertions wait for their DOM and actual stylesheet instead.
   if (awaitFonts) await page.evaluate(() => document.fonts.ready);
 }
-const sections = ['klick', 'strecke', 'arbeiten', 'pruefstand', 'angebote', 'uebergabe', 'fragen', 'anfrage'];
+const sections = ['klick', 'angebote', 'strecke', 'arbeiten', 'pruefstand', 'uebergabe', 'fragen', 'anfrage'];
 
 for (const width of [360, 768, 1024, 1440]) {
   test(`homepage ${width}: complete route, gutter, keyboard and proportional proof`, async ({ page }) => {
@@ -87,7 +87,7 @@ for (const width of [360, 768, 1024, 1440]) {
     const page = await context.newPage();
     await open(page, { width, awaitFonts: false });
     await expect(page.locator('[data-st-titel]')).toHaveCSS('container-type', 'inline-size');
-    await expect(page.getByRole('heading', { level: 1 })).toHaveAccessibleName('Mehr Anfragen über Ihre Website. Und Sie sehen, woher jede kommt.');
+    await expect(page.getByRole('heading', { level: 1 })).toHaveAccessibleName('Mehr Anfragen über Ihre Website. Und Sie sehen, was funktioniert.');
     await expect(page.locator('[data-st-etikett]')).toBeHidden();
     await expect(page.locator('[data-st-signal]')).toBeHidden();
     expect(await page.locator('.st-quelle__kontur').evaluate(el => getComputedStyle(el).color)).not.toBe('rgba(0, 0, 0, 0)');

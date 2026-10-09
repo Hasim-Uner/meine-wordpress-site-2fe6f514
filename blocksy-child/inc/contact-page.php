@@ -366,8 +366,12 @@ function nexus_get_contact_focus_options( $include_inactive = false ) {
 			'types' => [ 'audit', 'analysis', 'project', 'implementation', 'ongoing', 'client' ],
 		],
 		'conversion'       => [
-			'label' => 'Landingpage oder Anfrageweg',
+			'label' => 'Anfrageweg / Conversion-Optimierung',
 			'types' => [ 'audit', 'analysis', 'project', 'implementation', 'ongoing', 'client' ],
+		],
+		'landingpage' => [
+			'label' => 'WordPress-Landingpage für ein Angebot',
+			'types' => [ 'project' ],
 		],
 		'website' => [
 			'label' => 'Die Anfrage-Website · Neubau oder Relaunch',
