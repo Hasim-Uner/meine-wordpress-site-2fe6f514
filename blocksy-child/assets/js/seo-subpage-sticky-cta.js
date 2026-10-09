@@ -491,7 +491,9 @@
 
 	function init() {
 		var root = document.querySelector( ROOT );
-		if ( ! root || root.getAttribute( 'data-sst-funnel-ready' ) === 'true' ) return;
+		// The product template already renders its scope, proof and form.
+		// Keep the shared sticky CTA, but skip legacy content rewrites.
+		if ( ! root || root.classList.contains( 'sst-product-page' ) || root.getAttribute( 'data-sst-funnel-ready' ) === 'true' ) return;
 		root.setAttribute( 'data-sst-funnel-ready', 'true' );
 		root.setAttribute( 'data-sst-design', 'protocol' );
 		hero( root );

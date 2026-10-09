@@ -1,7 +1,7 @@
 # Conversion Routing Architecture
 
-Status: Code-Vertrag, aktualisiert 2026-10-09; Änderungen vorbereitet,
-wirksam nach Merge und Deploy. Kein Live-Nachweis für diesen Stand.
+Status: Code-Vertrag, aktualisiert 2026-10-09.
+Live-Abnahme und Prüfgrenzen: `docs/architecture/LIVE_STATUS.md`.
 
 This document separates **SEO ownership** from **conversion routing**. It exists to prevent a recurring failure mode: sending every page to the same funnel or moving a ranking query owner merely because another page has the preferred CTA.
 
@@ -59,7 +59,7 @@ Template.
 Seit 2026-09-26 (`docs/decisions/tracking-preisleiter.md`): Name, Umfang,
 Preis und Lieferzeit der technischen Umfänge stehen einmal in
 `hu_tracking_product_ladder()` (`inc/canon/pricing-canon.php`). Die vier
-Kanon-Einträge bleiben als Preis- und Umfangsquelle erhalten. Die vorbereitete
+Kanon-Einträge bleiben als Preis- und Umfangsquelle erhalten. Die
 Darstellung vom 2026-10-09 verkauft auf der allgemeinen Tracking-Seite ein
 Grundprodukt mit fünf Lieferbausteinen: Messplan, GTM/GA4, Consent-Anbindung,
 Google Ads mit bis zu drei Haupt-Conversions sowie Abnahme und Übergabe.
@@ -102,7 +102,7 @@ Eine Analyse einer bestehenden Strecke bleibt
 ## Homepage: direkter Freelancer-Einstieg
 
 Seit der Betreiberentscheidung vom 2026-09-13 übernimmt `/` die Inhalte und
-Suchintention der früheren Freelancer-Route. Die vorbereitete Template-Fassung
+Suchintention der früheren Freelancer-Route. Die Template-Fassung
 vom 2026-10-09 ordnet die vorhandene Strecke neu: Klick → Angebote → Strecke →
 Fall → Prüfstand mit Referenzen → Übergabe → Fragen → Anfrage. Die fünf
 Angebotszeilen mit Preisen stehen direkt nach dem Hero; Hero samt Kopf und
@@ -548,18 +548,18 @@ Landingpage. Kopfzeile des Registers: links „Welcher Weg passt?“, rechts
 | Satz | Türen (Schlüssel) | Event je Tür |
 |---|---|---|
 | Ich habe **eine Website** … | Projekt anfragen (`projekt`, „nach Umfang“) | `cta_footer_door_projekt` |
-| Ich brauche **belastbare Messung** … | Tracking-Projekt anfragen (`tracking`, „ab“ Server-Side-Setup) | `cta_footer_door_tracking` |
+| Ich brauche **belastbare Messung** … | Tracking-Projekt anfragen (`tracking`, „ab“ Grundprodukt) | `cta_footer_door_tracking` |
 | Ich bin **Agentur** … | Test-Sprint anfragen (`aufgabe`) | `cta_footer_door_aufgabe` |
 | Ich bin **Solar- oder Wärmepumpenbetrieb** und kaufe heute Portal-Anfragen. | Marktcheck, regional (`marktcheck`, Kanonpreis) | `cta_footer_door_marktcheck` |
 
 Jede Tür ist eine Zeile mit Bezeichnung, Betrag (Mono, tabellarische Ziffern)
 und Pfeil; die Beträge kommen aus dem Kanon (`hu_funnel_doors()`), kein
 Preisliteral steht im Template. Die Tür ohne Betrag zeigt „nach Umfang“.
-Der Tracking-Footer liest dafür `footer_amount` aus
-`hu_tracking_price( 'standard', 'setup' )`; Kopf und andere
-Tracking-Türen behalten den clientseitigen Messung-Einstieg. Die
-Navigationsprüfung rendert den Fuß in allen Kontexten und prüft diesen
-eigenen Preisanker; die Literal-Sperre allein erkennt keinen falschen
+Kopf und Footer lesen für den allgemeinen Tracking-Einstieg denselben
+Betrag aus `hu_tracking_price( 'measurement', 'setup' )`. Der Server-Side-
+Gesamtpreis gehört zum ausdrücklich bezeichneten Umfang auf der Fachseite.
+Die Navigationsprüfung rendert den Fuß in allen Kontexten und prüft den
+gemeinsamen Preisanker; die Literal-Sperre allein erkennt keinen falschen
 Paketschlüssel.
 Alle tragen `data-door="<schlüssel>"`, `data-track-category="lead_gen"` und
 `data-track-section="footer"`. Die früheren `cta_footer_pick_project|tracking|
