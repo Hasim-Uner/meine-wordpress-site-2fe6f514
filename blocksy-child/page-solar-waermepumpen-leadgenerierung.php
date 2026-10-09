@@ -3,12 +3,12 @@
  * Template Name: Solar & Wärmepumpen Leadgenerierung (Anfragestrecke)
  * Description: Gutachten-Standard. Weisser Grund, Hausschrift im Fliesstext,
  *              Randspalte mit laufender Nummer, dunkle Tafeln fuer
- *              Beweis und Handlung. Der Marktcheck ist das Gate und steht
- *              bewusst nach der Argumentation, nicht davor.
+ *              Beweis und Handlung. Umfang und Preis stehen vor der
+ *              Vertiefung; der Marktcheck bleibt der primaere Einstieg.
  *
- *              Aufbau: Dokumentkopf mit Definition und Messschrieb ·
- *              01 Strecke · 02 Rechnung · 03 Fall · 04 Einstieg ·
- *              05 Was es braucht · 06 Marktcheck · 07 Fragen · 08 Verweise.
+ *              Aufbau: Einstieg · 01 kompakter Fall · 02 Produkt ·
+ *              03 Passung · 04 Marktcheck · 05 freiwillige Vertiefung ·
+ *              Abschluss. Modell und Rechner bleiben im Dokument.
  *
  * Waehrungs-Doktrin: ausnahmslos EUR. Niemals $ oder generische Symbole.
  *
@@ -127,10 +127,6 @@ $privacy_url        = home_url( '/datenschutz/' );
 $order_reply = hu_response_promise( 'window' );
 $order_sources = [ 'aroundhome' => 'Aroundhome', 'daa' => 'DAA', 'wattfox' => 'Wattfox', 'check24_checkfox' => 'Check24/Checkfox', 'eigene_website' => 'eigene Website', 'andere' => 'andere' ];
 
-// ── Fremde Marktzahlen (Market-Canon) ──────────────────────────
-$market_figures    = function_exists( 'hu_market_figures' ) ? hu_market_figures() : [];
-$market_disclaimer = function_exists( 'hu_market_figures_disclaimer' ) ? hu_market_figures_disclaimer() : '';
-
 // ── Kapitel ────────────────────────────────────────────────────
 // Nummer, Titel und Anker an einer Stelle. Die Leiste oben, die
 // Randspalten-Marken und die Sprungziele lesen alle hieraus.
@@ -140,14 +136,11 @@ $market_disclaimer = function_exists( 'hu_market_figures_disclaimer' ) ? hu_mark
 // die Abschnitts-IDs. Die neuen Namen (fall, leiter) haengen zusaetzlich
 // an der jeweiligen H2.
 $chapters = [
-	[ 'nr' => '01', 'id' => 'strecke',    'titel' => 'Der Mechanismus',      'kurz' => 'Mechanismus' ],
-	[ 'nr' => '02', 'id' => 'rechnung',   'titel' => 'Wirtschaftlichkeit',   'kurz' => 'Rechnung' ],
-	[ 'nr' => '03', 'id' => 'ergebnisse', 'titel' => 'Der Fall',             'kurz' => 'Fall' ],
-	[ 'nr' => '04', 'id' => 'einstieg',   'titel' => 'Preis & Einstieg',     'kurz' => 'Einstieg' ],
-	[ 'nr' => '05', 'id' => 'anteil',     'titel' => 'Passung',              'kurz' => 'Passung' ],
-	[ 'nr' => '06', 'id' => 'marktcheck', 'titel' => 'Marktcheck',           'kurz' => 'Marktcheck' ],
-	[ 'nr' => '07', 'id' => 'fragen',     'titel' => 'Entscheidungsfragen',  'kurz' => 'Fragen' ],
-	[ 'nr' => '08', 'id' => 'verweise',   'titel' => 'Vertiefung',           'kurz' => 'Vertiefung' ],
+	[ 'nr' => '01', 'id' => 'ergebnisse', 'titel' => 'Der Fall',          'kurz' => 'Fall' ],
+	[ 'nr' => '02', 'id' => 'einstieg',   'titel' => 'Produkt & Preis',    'kurz' => 'Produkt' ],
+	[ 'nr' => '03', 'id' => 'anteil',     'titel' => 'Passung',            'kurz' => 'Passung' ],
+	[ 'nr' => '04', 'id' => 'marktcheck', 'titel' => 'Marktcheck',          'kurz' => 'Marktcheck' ],
+	[ 'nr' => '05', 'id' => 'vertiefung', 'titel' => 'Details nach Bedarf', 'kurz' => 'Details' ],
 ];
 
 $chapter_by_id = [];
@@ -207,14 +200,6 @@ $conditions = [
 	],
 ];
 
-// ── 03 Der Fall: Projektmonate inklusive Vorbereitung ──────────
-$phases = [
-	[ 'id' => 'vorbereitung', 'label' => $e3_timeline['preparation_label'], 'text' => $e3_timeline['preparation'] ],
-	[ 'id' => 'kampagne', 'label' => $e3_timeline['campaign_label'], 'text' => $e3_timeline['campaign'] ],
-	[ 'id' => 'optimierung', 'label' => $e3_timeline['optimization_label'], 'text' => $e3_timeline['optimization'] . ' ' . $e3_timeline['followup'] ],
-];
-
-
 // ── 04 Produktlogik ────────────────────────────────────────────
 // Ein Systempreis, eine Produktstrecke inklusive. Jede weitere eigenstaendige
 // Produktstrecke erhoeht den Preis transparent um den kanonischen Zuschlag.
@@ -254,13 +239,6 @@ $fit_yes = [
 	[ 't' => 'Definiertes Zielgebiet', 's' => 'Region oder Bundesland. Nicht „bundesweit, alles“.' ],
 	[ 't' => 'Horizont 12 bis 24 Monate', 's' => 'Bereit, Anfragegewinnung über mehrere Monate aufzubauen und zu verbessern.' ],
 ];
-$fit_no = [
-	[ 't' => '„Nächste Woche brauchen wir Leads.“', 's' => 'Ein Neuaufbau ist keine Sofortversorgung mit Kontakten.' ],
-	[ 't' => 'Reines Vermittlungsgeschäft', 's' => 'Dieses Angebot ist auf ausführende Installationsbetriebe ausgerichtet.' ],
-	[ 't' => 'Kein Vertriebsprozess', 's' => 'Anfragen sterben, wenn niemand konsequent qualifiziert und nachfasst.' ],
-	[ 't' => 'Sichtbarkeit nicht gewollt', 's' => 'Der eigene Anfrageweg lebt davon, dass Ihr Betrieb unterscheidbar wird.' ],
-];
-
 // ── 06 Marktcheck: was im Befund steht ─────────────────────────
 $report_items = [
 	'Erste Einordnung Ihres Betriebs und Zielgebiets',
@@ -290,7 +268,6 @@ $faq_items = [
 		'q'    => 'Was ist ein eigenes Anfragesystem für Photovoltaik und Wärmepumpe?',
 		'lead' => 'Eine eigene Website gewinnt Anfragen aus Anzeigen und organischer Suche. Formulare erfassen die wichtigsten Projektangaben und übergeben sie an den Vertrieb.',
 		'rest' => 'Code, Werbekonten, Tracking-Container und Daten liegen beim Betrieb. Die Kosten hängen von Angebot, Region, Wettbewerb und Optimierung ab.',
-		'open' => true,
 	],
 	[
 		'id'   => 'faq-kosten',
@@ -568,12 +545,11 @@ get_header();
 				<div class="haupt breit">
 					<p class="gegenstand">Eigenes Anfragesystem · Photovoltaik · Wärmepumpe · Speicher</p>
 
-					<h1>Eigene Anfragen für Solar und Wärmepumpe. <em>Von Ihrer Website direkt in Ihren Vertrieb.</em></h1>
+					<h1>Eigene Anfragen für Photovoltaik und Wärmepumpe. <em>Direkt in Ihren Vertrieb.</em></h1>
 
 					<p class="aufriss">
-						<span class="erst">Für Solar- und SHK-Betriebe mit eigenem Vertrieb: Ich baue Landingpages und Formulare, die Anfragen direkt an Ihr Team übergeben.</span>
-						Vor dem Rückruf sieht Ihr Vertrieb, welches Produkt gefragt ist, wo das Projekt liegt und wann es starten soll.
-						Tracking verbindet die Anfrage mit ihrer verfügbaren Herkunft. Code, Werbekonten und Daten bleiben bei Ihnen.
+						<span class="erst">Für ausführende Solar- und SHK-Betriebe mit eigenem Vertrieb: Landingpage, Vorqualifizierung, Tracking und CRM-Übergabe als ein System.</span>
+						Ihr Team sieht Produkt, Region und Projekt vor dem Rückruf. Code, Konten und Daten bleiben bei Ihnen.
 					</p>
 
 					<div class="ausgang">
@@ -581,7 +557,7 @@ get_header();
 							data-track-action="cta_strecke_kopf_to_marktcheck"
 							data-track-category="lead_gen"
 							data-track-section="dokumentkopf"
-						>Marktcheck starten · <?php echo esc_html( $marketcheck_price ); ?> <span class="pf" aria-hidden="true">→</span></a>
+						>Marktcheck anfragen · <?php echo esc_html( $marketcheck_price ); ?> <span class="pf" aria-hidden="true">→</span></a>
 						<a class="hero-nebenweg" href="<?php echo esc_url( $sofortkontakt_url ); ?>"
 							data-track-action="cta_strecke_kopf_to_sofortkontakt"
 							data-track-category="lead_gen"
@@ -590,27 +566,12 @@ get_header();
 					</div>
 					<p class="cta-sicherheit"><?php echo esc_html( sprintf( 'Formular: etwa %d Minuten · Absenden ist noch keine Buchung · Befund %s', $marketcheck_mins, $marketcheck_reply ) ); ?></p>
 
-					<div class="hero-beleg" aria-label="Kennzahlen des dokumentierten Referenzfalls">
-						<div>
-							<span class="hero-beleg-wert zahl"><?php echo esc_html( $e3_cpl_before ); ?> → <?php echo esc_html( $e3_cpl_after ); ?></span>
-							<span class="hero-beleg-label">Anfragekosten · Ausgangswert → erreichter Wert</span>
-						</div>
-						<div>
-							<span class="hero-beleg-wert zahl"><?php echo esc_html( $e3_lead_count ); ?></span>
-							<span class="hero-beleg-label">Anfragen · Zeitraum: <?php echo esc_html( $e3_timeframe ); ?></span>
-						</div>
-						<div>
-							<span class="hero-beleg-wert zahl"><?php echo esc_html( $e3_sales_conv ); ?></span>
-							<span class="hero-beleg-label">Abschlussquote vorqualifizierter CRM-Leads</span>
-						</div>
-						<p>Dokumentierter Fall · <?php echo esc_html( ucfirst( $e3_case_label ) ); ?> in DACH. Keine Prognose für Ihren Betrieb.</p>
-					</div>
 
 					<div class="meta">
 						<dl>
 							<div>
 								<dt>Aufbau</dt>
-								<dd><span class="zahl"><?php echo esc_html( $foundation_price ); ?></span> netto · plus rund <span class="zahl"><?php echo esc_html( $hosting_price ); ?></span>/Mon. Hosting</dd>
+								<dd><span class="zahl"><?php echo esc_html( $foundation_price ); ?></span> netto für eine Produktstrecke · zzgl. rund <span class="zahl"><?php echo esc_html( $hosting_price ); ?></span>/Mon. Hosting und Werbebudget</dd>
 							</div>
 							<div>
 								<dt>Eigentum</dt>
@@ -629,123 +590,247 @@ get_header();
 				</div>
 			</div>
 
-			<!-- Messschrieb: der eigene, gemessene Fall -->
-			<div class="reihe schrieb">
-				<div class="haupt breit tafel">
-					<div class="kopfzeile">
-						<h2 id="messschrieb">Dokumentierter Fall: <?php echo esc_html( $e3_cpl_before ); ?> → <?php echo esc_html( $e3_cpl_after ); ?></h2>
-						<span class="mono">Kosten pro qualifizierter Anfrage · <?php echo esc_html( $e3_timeframe ); ?> · Einzelfall</span>
-					</div>
-
-					<figure class="bandtreppe" aria-labelledby="messschrieb treppe-hinweis">
-						<svg viewBox="0 0 1000 230" preserveAspectRatio="none" aria-hidden="true">
-							<line x1="16" y1="210" x2="970" y2="210" stroke="var(--strich)" vector-effect="non-scaling-stroke" />
-							<?php
-							// Gemeinsamer Maßstab: 150 € entsprechen 180 SVG-Einheiten.
-							// Nur Bandbreiten aus der dokumentierten Fallbeschreibung.
-							$bands = [
-								[ 'phase' => 'portal', 'label' => 'Vorher', 'title' => 'Vor dem Projekt · Portale', 'value' => '150 €', 'low' => 150, 'high' => 150 ],
-								[ 'phase' => 'vorbereitung', 'label' => '1', 'title' => 'Projektmonat 1 · Vorbereitung', 'value' => 'Keine eigenen Kampagnen', 'low' => null, 'high' => null ],
-								[ 'phase' => 'kampagne', 'label' => '2', 'title' => 'Projektmonat 2 · Kampagnenstart', 'value' => '70–100 €', 'low' => 70, 'high' => 100 ],
-								[ 'phase' => 'optimierung', 'label' => '3', 'title' => 'Projektmonat 3 · Optimierung', 'value' => '30–50 €, dann rund 22 €', 'low' => 30, 'high' => 50 ],
-								[ 'phase' => 'optimierung', 'label' => '4–6', 'title' => 'Projektmonate 4–6', 'value' => 'Überwiegend 22–30 €', 'low' => 22, 'high' => 30 ],
-							];
-							foreach ( $bands as $band_index => $band ) :
-								$band_x = 16 + $band_index * 196;
-								?>
-								<g data-treppenphase="<?php echo esc_attr( $band['phase'] ); ?>">
-									<g class="treppe-form" style="--versatz: <?php echo esc_attr( (string) ( $band_index * 60 ) ); ?>ms">
-										<line x1="<?php echo esc_attr( (string) $band_x ); ?>" y1="30" x2="<?php echo esc_attr( (string) ( $band_x + 170 ) ); ?>" y2="30" stroke="var(--haar)" vector-effect="non-scaling-stroke" />
-										<?php if ( null !== $band['low'] ) : ?>
-											<?php $band_y = 210 - $band['high'] * 180 / $e3_cpl_before_val; ?>
-											<?php if ( $band['low'] === $band['high'] ) : ?>
-												<line class="treppe-marke" x1="<?php echo esc_attr( (string) $band_x ); ?>" y1="<?php echo esc_attr( (string) $band_y ); ?>" x2="<?php echo esc_attr( (string) ( $band_x + 170 ) ); ?>" y2="<?php echo esc_attr( (string) $band_y ); ?>" vector-effect="non-scaling-stroke" />
-											<?php else : ?>
-												<rect class="treppe-band" x="<?php echo esc_attr( (string) $band_x ); ?>" y="<?php echo esc_attr( (string) $band_y ); ?>" width="170" height="<?php echo esc_attr( (string) ( ( $band['high'] - $band['low'] ) * 180 / $e3_cpl_before_val ) ); ?>" />
-											<?php endif; ?>
-											<?php if ( 3 === $band_index ) : ?>
-												<line class="treppe-marke" x1="<?php echo esc_attr( (string) $band_x ); ?>" y1="183.6" x2="<?php echo esc_attr( (string) ( $band_x + 170 ) ); ?>" y2="183.6" vector-effect="non-scaling-stroke" />
-											<?php endif; ?>
-										<?php endif; ?>
-									</g>
-								</g>
-							<?php endforeach; ?>
-						</svg>
-						<div class="treppe-monate mono" aria-hidden="true">
-							<?php foreach ( $bands as $band ) : ?>
-								<span><?php echo esc_html( $band['label'] ); ?></span>
-							<?php endforeach; ?>
-						</div>
-						<dl class="treppe-daten">
-							<?php foreach ( $bands as $band ) : ?>
-								<div data-treppenphase="<?php echo esc_attr( $band['phase'] ); ?>">
-									<dt><?php echo esc_html( $band['title'] ); ?></dt>
-									<dd><?php echo esc_html( $band['value'] ); ?></dd>
-								</div>
-							<?php endforeach; ?>
-						</dl>
-						<figcaption id="treppe-hinweis">Bandbreiten laut Fallbeschreibung, keine Monatsmesskurve.</figcaption>
-					</figure>
-
-					<table class="werte">
-						<caption class="nur-vorlesen">Kennzahlen des dokumentierten Falls</caption>
-						<tbody>
-							<tr>
-								<th scope="row"><?php echo esc_html( $e3_timeline['result_label'] ); ?></th>
-								<td class="gross"><?php echo esc_html( $e3_cpl_after ); ?></td>
-							</tr>
-							<tr>
-								<th scope="row">Ausgangswert über Portale vor dem Projekt</th>
-								<td><?php echo esc_html( $e3_cpl_before ); ?></td>
-							</tr>
-							<tr>
-								<th scope="row">Anfragen insgesamt im Zeitraum</th>
-								<td><?php echo esc_html( $e3_lead_count ); ?></td>
-							</tr>
-							<tr>
-								<th scope="row">Abschlussquote vorqualifizierter CRM-Leads</th>
-								<td class="gross"><?php echo esc_html( $e3_sales_conv ); ?></td>
-							</tr>
-							<tr class="quelle">
-								<th scope="row" colspan="2">
-									<?php echo esc_html( ucfirst( $e3_case_label ) ); ?> in DACH.
-									<?php echo esc_html( $e3_timeline['compact'] ); ?>
-										Reduktion <?php echo esc_html( $e3_cpl_reduction ); ?>.
-									Dokumentierte Werte eines einzelnen Betriebs, keine Prognose für Ihren.
-								</th>
-							</tr>
-						</tbody>
-					</table>
-					<p class="belegzeile"><?php echo esc_html( hu_e3_summary( 'definitions' ) ); ?></p>
-				</div>
-			</div>
-
-			<!-- Marktzeile: fremde, ueberpruefbare Zahlen -->
-			<?php if ( ! empty( $market_figures ) ) : ?>
-				<div class="reihe markt">
-					<div class="haupt breit">
-						<span class="mono ueberschrift">Zum Vergleich · was der Markt aufruft</span>
-						<div class="marktzeile">
-							<?php foreach ( $market_figures as $figure ) : ?>
-								<div>
-									<span class="w zahl"><?php echo esc_html( $figure['value'] ); ?></span>
-									<p><?php echo esc_html( $figure['body'] ); ?></p>
-								</div>
-							<?php endforeach; ?>
-						</div>
-						<p class="belegzeile"><?php echo esc_html( $market_disclaimer ); ?></p>
-					</div>
-				</div>
-			<?php endif; ?>
-
 		</div>
 
+		<!-- ════════ 01 Ein kompakter Fallbeleg ════════ -->
+		<section id="ergebnisse">
+			<div class="blatt reihe">
+				<?php $render_chapter( $chapter_by_id['ergebnisse'] ); ?>
+				<div class="voll">
+					<span id="messschrieb" aria-hidden="true"></span>
+					<h2 class="kopf" id="fall">Eigene Anfragen statt Lead-Kauf.</h2>
+					<p class="vorspann klein">Dokumentierter Fall · <?php echo esc_html( ucfirst( $e3_case_label ) ); ?> in DACH · <?php echo esc_html( $e3_timeframe ); ?>. Landingpages, Kampagnen, Tracking und CRM-Übergabe wurden gemeinsam aufgebaut.</p>
+					<div class="hero-beleg solar-fallbeleg" aria-label="Kennzahlen des dokumentierten Referenzfalls">
+						<div>
+							<span class="hero-beleg-wert zahl"><?php echo esc_html( $e3_cpl_before ); ?> → <?php echo esc_html( $e3_cpl_after ); ?></span>
+							<span class="hero-beleg-label">Anfragekosten: Portalwert vorher → <?php echo esc_html( $e3_timeline['result_label'] ); ?></span>
+						</div>
+						<div>
+							<span class="hero-beleg-wert zahl"><?php echo esc_html( $e3_lead_count ); ?></span>
+							<span class="hero-beleg-label">Anfragen insgesamt in <?php echo esc_html( $e3_timeframe ); ?></span>
+						</div>
+						<div>
+							<span class="hero-beleg-wert zahl"><?php echo esc_html( $e3_sales_conv ); ?></span>
+							<span class="hero-beleg-label">Abschlussquote vorqualifizierter CRM-Leads</span>
+						</div>
+					</div>
+					<p class="belegzeile" id="treppe-hinweis">Einzelfall, keine Prognose. Der erreichte Anfragepreis ist kein Durchschnitt über den gesamten Zeitraum. Der Beitrag einzelner Maßnahmen wurde nicht isoliert gemessen.</p>
+					<div class="ausgang">
+						<a class="textlink" href="<?php echo esc_url( $e3_url ); ?>" data-track-action="cta_strecke_fall_to_case" data-track-category="proof" data-track-section="fall">Herleitung und Methodik in der Fallstudie →</a>
+					</div>
+				</div>
+			</div>
+		</section>
+
+		<!-- ════════ 02 Produkt & Preis ════════ -->
+		<section id="einstieg">
+			<div class="blatt reihe">
+				<?php $render_chapter( $chapter_by_id['einstieg'] ); ?>
+				<div class="voll">
+					<h2 class="kopf" id="leiter">Ihr Anfragesystem beginnt bei <?php echo esc_html( $foundation_price ); ?> netto.</h2>
+					<p class="vorspann">Enthalten ist der Anfrageweg für ein Produkt: eigene Landingpage, Formular, CRM-Übergabe und Tracking. Jede weitere Produktstrecke kostet <?php echo esc_html( $extra_product_price ); ?> netto zusätzlich. Wählen Sie, ob Sie Anfragen für Photovoltaik, Wärmepumpen oder Speicher gewinnen möchten.</p>
+
+					<div class="system-konfigurator tafel"
+						data-system-konfigurator
+						data-base-price="<?php echo esc_attr( (string) $calc_build ); ?>"
+						data-extra-price="<?php echo esc_attr( (string) $calc_extra_product ); ?>"
+					>
+						<div class="system-konfigurator-wahl">
+							<p class="mono">01 · Produktstrecken</p>
+							<h3>Was soll das System abdecken?</h3>
+							<p class="system-konfigurator-hinweis">Mindestens eine Strecke. Die erste ist im Grundpreis enthalten.</p>
+							<fieldset class="system-produkte" hidden>
+								<legend class="nur-vorlesen">Produkte für Ihren Anfrageweg auswählen</legend>
+								<?php foreach ( $product_options as $product_index => $product ) : ?>
+									<label class="system-produkt<?php echo 0 === $product_index ? ' is-active' : ''; ?>">
+										<input type="checkbox" value="<?php echo esc_attr( $product['key'] ); ?>" <?php checked( 0 === $product_index ); ?>>
+										<span class="system-produkt-text"><b><?php echo esc_html( $product['label'] ); ?></b><small><?php echo esc_html( $product['hint'] ); ?></small></span>
+										<span class="system-produkt-preis" data-config-status><?php echo 0 === $product_index ? 'inklusive' : '+' . esc_html( $extra_product_price ); ?></span>
+									</label>
+								<?php endforeach; ?>
+							</fieldset>
+							<noscript><p class="system-konfigurator-hinweis">Ohne JavaScript sehen Sie das Grundangebot für Photovoltaik. Weitere Produkte können Sie in Ihrer Anfrage nennen.</p></noscript>
+						</div>
+
+						<div class="system-konfigurator-ergebnis">
+							<p class="mono">02 · Ihr System</p>
+							<div class="system-preis">
+								<strong data-config-price aria-live="polite" aria-atomic="true"><?php echo esc_html( $foundation_price ); ?></strong>
+								<span>netto einmalig</span>
+							</div>
+							<p class="system-auswahl" data-config-selection aria-live="polite">Photovoltaik · 1 Produktstrecke</p>
+							<ul class="system-inklusive">
+								<?php foreach ( $system_includes as $included_item ) : ?>
+									<li><?php echo esc_html( $included_item ); ?></li>
+								<?php endforeach; ?>
+							</ul>
+							<p class="system-nebenkosten">zzgl. rund <?php echo esc_html( $hosting_price ); ?>/Mon. Hosting und Ihrem Werbebudget</p>
+							<div class="ausgang">
+								<a class="tun" href="<?php echo esc_url( $system_request_url ); ?>" data-system-request-link data-track-action="cta_strecke_configurator_project" data-track-category="lead_gen" data-track-section="einstieg">Anfragesystem anfragen <span class="pf" aria-hidden="true">→</span></a>
+								<a class="hero-nebenweg" href="#marktcheck" data-track-action="cta_strecke_configurator_marktcheck" data-track-category="lead_gen" data-track-section="einstieg">Erst Marktcheck · <?php echo esc_html( $marketcheck_price ); ?> →</a>
+							</div>
+							<p class="system-klarstellung">Absenden ist noch keine Beauftragung. Sie erhalten eine Rückmeldung zu Umfang und Start. Sonder-CRM, mehrere Marken, zusätzliche Integrationen und laufende Betreuung werden vor Beauftragung separat vereinbart.</p>
+						</div>
+					</div>
+
+					<div class="sofortkontakt-bruecke" id="sofortkontakt">
+						<div><span class="mono">Für vorhandene Anfragen</span><h3>Die Leads sind da. Der Rückruf kommt zu spät?</h3><p>Das Sofortkontakt-Setup verbindet den Anfrageeingang mit einer Benachrichtigung für Ihr Team und einer Bestätigung mit Terminlink für den Interessenten. Beschreiben Sie auf der Kontaktseite, wo Ihre Anfragen heute ankommen.</p></div>
+						<a class="textlink" href="<?php echo esc_url( $sofortkontakt_url ); ?>" data-track-action="cta_strecke_sofortkontakt_external" data-track-category="lead_gen" data-track-section="einstieg">Sofortkontakt anfragen →</a>
+					</div>
+
+					<div class="ausstieg">
+						<span class="mono">Risiko & Eigentum</span>
+						<div class="ag">
+							<?php foreach ( $exits as $exit ) : ?>
+								<p><b><?php echo esc_html( $exit['titel'] ); ?></b> <?php echo esc_html( $exit['text'] ); ?></p>
+							<?php endforeach; ?>
+						</div>
+					</div>
+				</div>
+			</div>
+		</section>
+
+		<!-- ════════ 03 Was es braucht ════════ -->
+		<section id="anteil">
+			<div class="blatt reihe">
+				<?php $render_chapter( $chapter_by_id['anteil'] ); ?>
+				<div class="voll">
+					<span id="passung" aria-hidden="true"></span>
+					<h2 class="kopf leise" id="anteil-titel">Passt ein eigener Anfrageweg zu Ihrem Betrieb?</h2>
+					<p class="vorspann">Das System ist für ausführende Solar-, Wärmepumpen- und Speicherbetriebe mit eigenem Vertrieb gebaut. Drei Dinge müssen vorhanden sein: Zugriff auf die eigenen Konten, eine entscheidungsfähige Person und ein Vertrieb, der konsequent nachfasst.</p>
+					<div class="bedingungen">
+						<?php foreach ( $conditions as $condition_index => $condition ) : ?>
+							<div>
+								<span class="i" aria-hidden="true"><?php echo esc_html( sprintf( '%02d', $condition_index + 1 ) ); ?></span>
+								<h3 id="<?php echo esc_attr( $condition['id'] ); ?>"><?php echo esc_html( $condition['titel'] ); ?></h3>
+								<p><?php echo 'anteil-zugaenge' === $condition['id'] ? nexus_glossary_explain_text( $condition['text'], 'crm', 'CRM' ) : esc_html( $condition['text'] ); ?></p>
+							</div>
+						<?php endforeach; ?>
+					</div>
+					<h3 class="passung-untertitel" id="passung-titel">Diese Richtwerte klären wir im Marktcheck.</h3>
+
+					<div class="passung">
+						<div class="ja">
+							<span class="mono">Passt</span>
+							<ul>
+								<?php foreach ( $fit_yes as $item ) : ?>
+									<li>
+										<b><?php echo esc_html( $item['t'] ); ?></b>
+										<span><?php echo esc_html( $item['s'] ); ?></span>
+									</li>
+								<?php endforeach; ?>
+							</ul>
+						</div>
+						<div class="solar-passung-grenze">
+							<span class="mono">Wichtig vor dem Start</span>
+							<p>Der Neuaufbau liefert keine Kontakte für nächste Woche. Er passt zu ausführenden Betrieben, die eine eigene Präsenz aufbauen und Anfragen konsequent bearbeiten; reines Vermittlungsgeschäft ist nicht der vorgesehene Einsatz.</p>
+						</div>
+					</div>
+				</div>
+			</div>
+		</section>
+
+		<!-- ════════ 04 Marktcheck ════════ -->
+		<section id="marktcheck">
+			<div class="blatt reihe">
+				<?php $render_chapter( $chapter_by_id['marktcheck'] ); ?>
+				<div class="voll">
+					<h2 class="kopf" id="marktcheck-titel">Marktcheck für <?php echo esc_html( $marketcheck_price ); ?> netto.</h2>
+					<p class="vorspann">Bevor Sie in den Aufbau investieren, prüfe ich Ihr Angebot, Ihre Projektgrößen, Ihr Zielgebiet und die Bearbeitung Ihrer Anfragen. Sie erhalten <?php echo esc_html( $marketcheck_reply ); ?> einen Befund per E-Mail: eine Empfehlung und drei priorisierte Ansatzpunkte. Die <?php echo esc_html( $marketcheck_price ); ?> werden bei Beauftragung des Anfragesystems angerechnet.</p>
+
+					<div class="gate">
+						<div>
+							<span class="mono">Was im Befund steht</span>
+							<ol>
+								<?php foreach ( $report_items as $report_item ) : ?>
+									<li><?php echo esc_html( $report_item ); ?></li>
+								<?php endforeach; ?>
+							</ol>
+							<p class="hinweis">
+								Gefragt wird nach Leistungsfokus, Projekt-Fit, Vertriebsverantwortung,
+								Umsetzungshorizont und geschäftlichen Eckdaten.
+								<?php echo esc_html( sprintf( '%d Fit-Fragen · %d sichtbare Schritte · etwa %d Minuten.', $marketcheck_fit_q, $marketcheck_visible_steps, $marketcheck_mins ) ); ?>
+							</p>
+						</div>
+
+						<div class="schein tafel">
+							<?php
+							// Der Beleg steht ausserhalb des Mounts. Was Sie bekommen,
+							// aendert sich nicht dadurch, dass das Formular laedt — und
+							// solar-leadgenerierung-solara.js raeumt beim Mounten alles
+							// weg, was im Mount steht.
+							?>
+							<span class="mono">Was Sie bekommen</span>
+							<?php foreach ( $receipt_rows as $receipt_row ) : ?>
+								<div class="z">
+									<span><?php echo esc_html( $receipt_row['k'] ); ?></span>
+									<b><?php echo esc_html( $receipt_row['v'] ); ?></b>
+								</div>
+							<?php endforeach; ?>
+
+							<?php
+							// Marktcheck-Mount. Das Skript ersetzt den Inhalt dieses
+							// Knotens durch die mehrstufige Sequenz. Was hier steht,
+							// ist der Zustand ohne JavaScript und muss fuer sich allein
+							// einen gangbaren Kontaktweg anbieten.
+							//
+							// Kein mailto: der Ausweichweg fuehrt auf das
+							// serverseitig gerenderte Formular auf /kontakt/. Die
+							// Adresse bleibt als Text lesbar, aber nicht als Ziel
+							// eines CTA, der "Marktcheck starten" verspricht.
+							?>
+							<div data-sol-quiz id="sol-quiz-mount">
+								<h3 id="sol-quiz-title" class="nur-vorlesen">Marktcheck für Ihren Vertrieb starten</h3>
+								<p class="klein">
+									Der Marktcheck läuft über ein mehrstufiges Formular und braucht JavaScript.
+								</p>
+								<a class="tun" href="<?php echo esc_url( $contact_url ); ?>"
+									data-track-action="cta_strecke_marktcheck_fallback_kontakt"
+									data-track-category="lead_gen"
+									data-track-section="marktcheck"
+									data-track-funnel-stage="intake_open"
+								>Über das Kontaktformular anfragen <span class="pf" aria-hidden="true">→</span></a>
+								<p class="klein">
+									Anfrage ist noch keine Buchung · kein Pflicht-Call<br>
+									<?php echo esc_html( $contact_email ); ?>
+								</p>
+							</div>
+
+							<?php
+							// Person-Signal bleibt ausserhalb des Mounts, damit es beim
+							// Mounten nicht mit dem Ausgangszustand weggeraeumt wird.
+							?>
+							<p class="person">
+								Ihre Angaben liest
+								<a class="textlink" href="<?php echo esc_url( $about_url ); ?>"
+									data-track-action="cta_strecke_marktcheck_to_about"
+									data-track-category="trust"
+									data-track-section="marktcheck"
+								>Haşim Üner</a>
+								persönlich — kein automatischer Standardbericht.
+							</p>
+						</div>
+					</div>
+				</div>
+			</div>
+		</section>
+
+		<!-- ════════ 05 Freiwillige Vertiefung ════════ -->
+		<section id="vertiefung">
+			<div class="blatt reihe">
+				<?php $render_chapter( $chapter_by_id['vertiefung'] ); ?>
+				<div class="voll">
+					<h2 class="kopf leise" id="vertiefung-titel">Ablauf, Zahlen und Technik.</h2>
+					<p class="vorspann klein">Öffnen Sie die Details, die Sie für Ihre Entscheidung brauchen.</p>
+					<div class="solar-vertiefungen">
+						<details class="solar-vertiefung" data-solar-disclosure>
+							<summary><span>Wie arbeitet das System – und rechnet es sich?<small>Ablaufmodell und Vergleich mit Ihren Zahlen</small></span><span class="solar-detail-plus" aria-hidden="true">+</span></summary>
+							<div class="solar-vertiefung-inhalt">
 		<!-- ════════ 01 Die Strecke ════════ -->
 		<section id="strecke">
-			<div class="blatt reihe">
-				<?php $render_chapter( $chapter_by_id['strecke'] ); ?>
+			<div class="solar-detail-block">
 				<div class="voll">
-					<h2 class="kopf" id="strecke-titel">Vom ersten Formular bis zum erfassten Auftrag.</h2>
+					<h3 class="kopf" id="strecke-titel">Vom Formular bis zum erfassten Auftrag.</h3>
 					<p class="vorspann">Eine Anfrage braucht Angaben zum Projekt, eine zuständige Person und einen dokumentierten nächsten Schritt. Ich verbinde diese Stationen. Ihr Vertrieb ruft zurück, fasst nach und erfasst, ob ein Auftrag entsteht. Das Modell zeigt den Ablauf mit beispielhaften Zahlen.</p>
 
 					<div class="streckenmodul tafel" id="modul" data-streckenmodul data-counts="<?php echo esc_attr( wp_json_encode( $module_counts ) ); ?>">
@@ -818,7 +903,7 @@ get_header();
 							<div><span class="mono">Weg B · Eigene Strecke</span><p data-module-copy="b"><?php echo esc_html( $module_stations[0]['b'] ); ?></p></div>
 						</div>
 						<div class="modul-leiste">
-							<p>Anfang und Ende gerechnet wie im Rechner (Abschnitt 02). Die Zwischenstufen sind schematisch und zeigen, wo verloren wird, nicht wie viel.</p>
+							<p>Anfang und Ende gerechnet wie im Rechner unten. Die Zwischenstufen sind schematisch und zeigen, wo verloren wird, nicht wie viel.</p>
 							<button class="modul-replay" type="button">Noch einmal abspielen</button>
 						</div>
 					</div>
@@ -828,10 +913,9 @@ get_header();
 
 		<!-- ════════ 02 Die Rechnung ════════ -->
 		<section id="rechnung">
-			<div class="blatt reihe">
-				<?php $render_chapter( $chapter_by_id['rechnung'] ); ?>
+			<div class="solar-detail-block">
 				<div class="voll">
-					<h2 class="kopf" id="rechnung-titel">Was kostet Sie ein gewonnener Auftrag?</h2>
+					<h3 class="kopf" id="rechnung-titel">Was kostet Sie ein gewonnener Auftrag?</h3>
 					<p class="vorspann">Rechnen Sie beide Wege mit denselben Bezugsgrößen. Anfragekosten, Abschlussquote und laufender Aufwand müssen zusammenpassen. Die vorbelegten Werte sind ein Rechenbeispiel, keine Prognose.</p>
 
 					<div class="rechenblatt"
@@ -937,282 +1021,31 @@ get_header();
 			</div>
 		</section>
 
-		<!-- ════════ 03 Der Fall ════════ -->
-		<section id="ergebnisse">
-			<div class="blatt reihe">
-				<?php $render_chapter( $chapter_by_id['ergebnisse'] ); ?>
-				<div class="voll">
-					<h2 class="kopf" id="fall">Was sich im dokumentierten Fall tatsächlich verändert hat.</h2>
-					<p class="vorspann">
-						Zeitraum: <?php echo esc_html( $e3_timeframe ); ?>. Fall: <?php echo esc_html( ucfirst( $e3_case_label ) ); ?> in DACH. Erst Strategie und Landingpages, dann Kampagnen, anschließend Tracking und CRM-Rückführung.
-						Die Entwicklung beruht auf dem Zusammenspiel der Maßnahmen; der isolierte Beitrag einzelner Bausteine ist nicht gemessen.
-					</p>
-
-					<div class="phasen">
-						<?php foreach ( $phases as $phase ) : ?>
-							<div tabindex="0" data-fallphase="<?php echo esc_attr( $phase['id'] ); ?>">
-								<span class="ph"><?php echo esc_html( $phase['label'] ); ?></span>
-								<?php // Enthaelt nur <b> aus dem Inhaltsmodell oben, alle Werte sind dort escaped. ?>
-								<p><?php echo wp_kses( $phase['text'], [ 'b' => [] ] ); ?></p>
 							</div>
-						<?php endforeach; ?>
-					</div>
-
-					<div class="ausgang">
-						<a class="textlink" href="<?php echo esc_url( $e3_url ); ?>"
-							data-track-action="cta_strecke_fall_to_case"
-							data-track-category="proof"
-							data-track-section="fall"
-						>Vollständige Methodik in der Fallstudie →</a>
-					</div>
-				</div>
-			</div>
-		</section>
-
-		<!-- ════════ 04 Produkt & Preis ════════ -->
-		<section id="einstieg">
-			<div class="blatt reihe">
-				<?php $render_chapter( $chapter_by_id['einstieg'] ); ?>
-				<div class="voll">
-					<h2 class="kopf" id="leiter">Ihr Anfragesystem beginnt bei <?php echo esc_html( $foundation_price ); ?> netto.</h2>
-					<p class="vorspann">Enthalten ist der Anfrageweg für ein Produkt: eigene Landingpage, Formular, CRM-Übergabe und Tracking. Jede weitere Produktstrecke kostet <?php echo esc_html( $extra_product_price ); ?> netto zusätzlich. Wählen Sie, ob Sie Anfragen für Photovoltaik, Wärmepumpen oder Speicher gewinnen möchten.</p>
-
-					<div class="system-konfigurator tafel"
-						data-system-konfigurator
-						data-base-price="<?php echo esc_attr( (string) $calc_build ); ?>"
-						data-extra-price="<?php echo esc_attr( (string) $calc_extra_product ); ?>"
-					>
-						<div class="system-konfigurator-wahl">
-							<p class="mono">01 · Produktstrecken</p>
-							<h3>Was soll das System abdecken?</h3>
-							<p class="system-konfigurator-hinweis">Mindestens eine Strecke. Die erste ist im Grundpreis enthalten.</p>
-							<fieldset class="system-produkte" hidden>
-								<legend class="nur-vorlesen">Produkte für Ihren Anfrageweg auswählen</legend>
-								<?php foreach ( $product_options as $product_index => $product ) : ?>
-									<label class="system-produkt<?php echo 0 === $product_index ? ' is-active' : ''; ?>">
-										<input type="checkbox" value="<?php echo esc_attr( $product['key'] ); ?>" <?php checked( 0 === $product_index ); ?>>
-										<span class="system-produkt-text"><b><?php echo esc_html( $product['label'] ); ?></b><small><?php echo esc_html( $product['hint'] ); ?></small></span>
-										<span class="system-produkt-preis" data-config-status><?php echo 0 === $product_index ? 'inklusive' : '+' . esc_html( $extra_product_price ); ?></span>
-									</label>
-								<?php endforeach; ?>
-							</fieldset>
-							<noscript><p class="system-konfigurator-hinweis">Ohne JavaScript sehen Sie das Grundangebot für Photovoltaik. Weitere Produkte können Sie in Ihrer Anfrage nennen.</p></noscript>
-						</div>
-
-						<div class="system-konfigurator-ergebnis">
-							<p class="mono">02 · Ihr System</p>
-							<div class="system-preis">
-								<strong data-config-price aria-live="polite" aria-atomic="true"><?php echo esc_html( $foundation_price ); ?></strong>
-								<span>netto einmalig</span>
-							</div>
-							<p class="system-auswahl" data-config-selection aria-live="polite">Photovoltaik · 1 Produktstrecke</p>
-							<ul class="system-inklusive">
-								<?php foreach ( $system_includes as $included_item ) : ?>
-									<li><?php echo esc_html( $included_item ); ?></li>
-								<?php endforeach; ?>
-							</ul>
-							<p class="system-nebenkosten">zzgl. rund <?php echo esc_html( $hosting_price ); ?>/Mon. Hosting und Ihrem Werbebudget</p>
-							<div class="ausgang">
-								<a class="tun" href="<?php echo esc_url( $system_request_url ); ?>" data-system-request-link data-track-action="cta_strecke_configurator_project" data-track-category="lead_gen" data-track-section="einstieg">Anfragesystem anfragen <span class="pf" aria-hidden="true">→</span></a>
-								<a class="hero-nebenweg" href="#marktcheck" data-track-action="cta_strecke_configurator_marktcheck" data-track-category="lead_gen" data-track-section="einstieg">Erst Marktcheck · <?php echo esc_html( $marketcheck_price ); ?> →</a>
-							</div>
-							<p class="system-klarstellung">Absenden ist noch keine Beauftragung. Sie erhalten eine Rückmeldung zu Umfang und Start. Sonder-CRM, mehrere Marken, zusätzliche Integrationen und laufende Betreuung werden vor Beauftragung separat vereinbart.</p>
-						</div>
-					</div>
-
-					<div class="sofortkontakt-bruecke">
-						<div><span class="mono">Für vorhandene Anfragen</span><h3>Die Leads sind da. Der Rückruf kommt zu spät?</h3><p>Das Sofortkontakt-Setup verbindet den Anfrageeingang mit einer Benachrichtigung für Ihr Team und einer Bestätigung mit Terminlink für den Interessenten. Beschreiben Sie auf der Kontaktseite, wo Ihre Anfragen heute ankommen.</p></div>
-						<a class="textlink" href="<?php echo esc_url( $sofortkontakt_url ); ?>" data-track-action="cta_strecke_sofortkontakt_external" data-track-category="lead_gen" data-track-section="einstieg">Sofortkontakt anfragen →</a>
-					</div>
-
-					<div class="ausstieg">
-						<span class="mono">Risiko & Eigentum</span>
-						<div class="ag">
-							<?php foreach ( $exits as $exit ) : ?>
-								<p><b><?php echo esc_html( $exit['titel'] ); ?></b> <?php echo esc_html( $exit['text'] ); ?></p>
-							<?php endforeach; ?>
-						</div>
-					</div>
-				</div>
-			</div>
-		</section>
-
-		<!-- ════════ 05 Was es braucht ════════ -->
-		<section id="anteil">
-			<div class="blatt reihe">
-				<?php $render_chapter( $chapter_by_id['anteil'] ); ?>
-				<div class="voll">
-					<span id="passung" aria-hidden="true"></span>
-					<h2 class="kopf leise" id="anteil-titel">Passt ein eigener Anfrageweg zu Ihrem Betrieb?</h2>
-					<p class="vorspann">Das System ist für ausführende Solar-, Wärmepumpen- und Speicherbetriebe mit eigenem Vertrieb gebaut. Drei Dinge müssen vorhanden sein: Zugriff auf die eigenen Konten, eine entscheidungsfähige Person und ein Vertrieb, der konsequent nachfasst.</p>
-					<div class="bedingungen">
-						<?php foreach ( $conditions as $condition_index => $condition ) : ?>
-							<div>
-								<span class="i" aria-hidden="true"><?php echo esc_html( sprintf( '%02d', $condition_index + 1 ) ); ?></span>
-								<h3 id="<?php echo esc_attr( $condition['id'] ); ?>"><?php echo esc_html( $condition['titel'] ); ?></h3>
-								<p><?php echo 'anteil-zugaenge' === $condition['id'] ? nexus_glossary_explain_text( $condition['text'], 'crm', 'CRM' ) : esc_html( $condition['text'] ); ?></p>
-							</div>
-						<?php endforeach; ?>
-					</div>
-					<h3 class="passung-untertitel" id="passung-titel">Lieber jetzt klären, ob es passt.</h3>
-					<p class="vorspann">Unsicher bei einem Punkt? Beschreiben Sie Ihre Ausgangslage im Marktcheck.</p>
-
-					<div class="passung">
-						<div class="ja">
-							<span class="mono">Passt</span>
-							<ul>
-								<?php foreach ( $fit_yes as $item ) : ?>
-									<li>
-										<b><?php echo esc_html( $item['t'] ); ?></b>
-										<span><?php echo esc_html( $item['s'] ); ?></span>
-									</li>
-								<?php endforeach; ?>
-							</ul>
-						</div>
-						<div>
-							<span class="mono">Passt nicht</span>
-							<ul>
-								<?php foreach ( $fit_no as $item ) : ?>
-									<li>
-										<b><?php echo esc_html( $item['t'] ); ?></b>
-										<span><?php echo esc_html( $item['s'] ); ?></span>
-									</li>
-								<?php endforeach; ?>
-							</ul>
-						</div>
-					</div>
-				</div>
-			</div>
-		</section>
-
-		<!-- ════════ 06 Marktcheck ════════ -->
-		<section id="marktcheck">
-			<div class="blatt reihe">
-				<?php $render_chapter( $chapter_by_id['marktcheck'] ); ?>
-				<div class="voll">
-					<h2 class="kopf" id="marktcheck-titel">Marktcheck für <?php echo esc_html( $marketcheck_price ); ?> netto.</h2>
-					<p class="vorspann">Bevor Sie in den Aufbau investieren, prüfe ich Ihr Angebot, Ihre Projektgrößen, Ihr Zielgebiet und die Bearbeitung Ihrer Anfragen. Sie erhalten <?php echo esc_html( $marketcheck_reply ); ?> einen Befund per E-Mail: eine Empfehlung und drei priorisierte Ansatzpunkte. Die <?php echo esc_html( $marketcheck_price ); ?> werden bei Beauftragung des Anfragesystems angerechnet.</p>
-
-					<div class="gate">
-						<div>
-							<span class="mono">Was im Befund steht</span>
-							<ol>
-								<?php foreach ( $report_items as $report_item ) : ?>
-									<li><?php echo esc_html( $report_item ); ?></li>
-								<?php endforeach; ?>
-							</ol>
-							<p class="hinweis">
-								Gefragt wird nach Leistungsfokus, Projekt-Fit, Vertriebsverantwortung,
-								Umsetzungshorizont und geschäftlichen Eckdaten.
-								<?php echo esc_html( sprintf( '%d Fit-Fragen · %d sichtbare Schritte · etwa %d Minuten.', $marketcheck_fit_q, $marketcheck_visible_steps, $marketcheck_mins ) ); ?>
-							</p>
-						</div>
-
-						<div class="schein tafel">
-							<?php
-							// Der Beleg steht ausserhalb des Mounts. Was Sie bekommen,
-							// aendert sich nicht dadurch, dass das Formular laedt — und
-							// solar-leadgenerierung-solara.js raeumt beim Mounten alles
-							// weg, was im Mount steht.
-							?>
-							<span class="mono">Was Sie bekommen</span>
-							<?php foreach ( $receipt_rows as $receipt_row ) : ?>
-								<div class="z">
-									<span><?php echo esc_html( $receipt_row['k'] ); ?></span>
-									<b><?php echo esc_html( $receipt_row['v'] ); ?></b>
-								</div>
-							<?php endforeach; ?>
-
-							<?php
-							// Marktcheck-Mount. Das Skript ersetzt den Inhalt dieses
-							// Knotens durch die mehrstufige Sequenz. Was hier steht,
-							// ist der Zustand ohne JavaScript und muss fuer sich allein
-							// einen gangbaren Kontaktweg anbieten.
-							//
-							// Kein mailto: der Ausweichweg fuehrt auf das
-							// serverseitig gerenderte Formular auf /kontakt/. Die
-							// Adresse bleibt als Text lesbar, aber nicht als Ziel
-							// eines CTA, der "Marktcheck starten" verspricht.
-							?>
-							<div data-sol-quiz id="sol-quiz-mount">
-								<h3 id="sol-quiz-title" class="nur-vorlesen">Marktcheck für Ihren Vertrieb starten</h3>
-								<p class="klein">
-									Der Marktcheck läuft über ein mehrstufiges Formular und braucht JavaScript.
-								</p>
-								<a class="tun" href="<?php echo esc_url( $contact_url ); ?>"
-									data-track-action="cta_strecke_marktcheck_fallback_kontakt"
-									data-track-category="lead_gen"
-									data-track-section="marktcheck"
-									data-track-funnel-stage="intake_open"
-								>Über das Kontaktformular anfragen <span class="pf" aria-hidden="true">→</span></a>
-								<p class="klein">
-									Anfrage ist noch keine Buchung · kein Pflicht-Call<br>
-									<?php echo esc_html( $contact_email ); ?>
-								</p>
-							</div>
-
-							<?php
-							// Person-Signal bleibt ausserhalb des Mounts, damit es beim
-							// Mounten nicht mit dem Ausgangszustand weggeraeumt wird.
-							?>
-							<p class="person">
-								Ihre Angaben liest
-								<a class="textlink" href="<?php echo esc_url( $about_url ); ?>"
-									data-track-action="cta_strecke_marktcheck_to_about"
-									data-track-category="trust"
-									data-track-section="marktcheck"
-								>Haşim Üner</a>
-								persönlich — kein automatischer Standardbericht.
-							</p>
-						</div>
-					</div>
-				</div>
-			</div>
-		</section>
-
-		<!-- ════════ 07 Fragen ════════ -->
+						</details>
+						<details class="solar-vertiefung" data-solar-disclosure>
+							<summary><span>Technische Fragen und passende Vertiefungen<small>Website, Tracking, Kosten und bestehende Fachseiten</small></span><span class="solar-detail-plus" aria-hidden="true">+</span></summary>
+							<div class="solar-vertiefung-inhalt">
 		<section id="fragen">
-			<div class="blatt reihe">
-				<?php $render_chapter( $chapter_by_id['fragen'] ); ?>
-				<div class="haupt">
-					<h2 class="kopf leise" id="fragen-titel">Was Sie vor einer Entscheidung wissen sollten.</h2>
-					<p class="vorspann">Was ist enthalten? Was kommt hinzu? Können Ihre bestehenden Seiten bleiben? Hier stehen die Antworten für Ihre Entscheidung.</p>
-
-					<div class="fragen">
-						<?php foreach ( $faq_items as $faq_item ) : ?>
-							<details<?php echo ! empty( $faq_item['open'] ) ? ' open' : ''; ?>>
-								<summary id="<?php echo esc_attr( $faq_item['id'] ); ?>"><?php echo esc_html( $faq_item['q'] ); ?></summary>
-								<div class="huelle">
-									<div>
-										<div class="antwort">
-											<span class="erst"><?php echo esc_html( $faq_item['lead'] ); ?></span>
-											<?php echo esc_html( $faq_item['rest'] ); ?>
-										</div>
-									</div>
-								</div>
-							</details>
-						<?php endforeach; ?>
-					</div>
-				</div>
-
-				<div class="marg">
-					<div class="note">
-						<span class="label">Anmerkung</span>
-						<b>Cost per Order</b> heißt: was ein gewonnener Auftrag kostet, nicht was ein Kontakt
-						kostet. Beziehen Sie zusätzlich Marge und Vertriebsaufwand ein. Den Vergleich finden Sie in
-						<a class="satzlink" href="#rechnung">Abschnitt 02</a>.
-					</div>
+			<div class="solar-detail-block">
+				<h3 class="kopf" id="fragen-titel">Fragen zur bestehenden Website und zur Messung.</h3>
+				<div class="solar-fragen-liste">
+					<?php foreach ( $faq_items as $faq_item ) : ?>
+						<article>
+							<h4 id="<?php echo esc_attr( $faq_item['id'] ); ?>"><?php echo esc_html( $faq_item['q'] ); ?></h4>
+							<p><span class="erst"><?php echo esc_html( $faq_item['lead'] ); ?></span> <?php echo esc_html( $faq_item['rest'] ); ?></p>
+						</article>
+					<?php endforeach; ?>
 				</div>
 			</div>
 		</section>
 
 		<!-- ════════ 08 Verweise ════════ -->
 		<section id="verweise">
-			<div class="blatt reihe">
-				<?php $render_chapter( $chapter_by_id['verweise'] ); ?>
+			<div class="solar-detail-block">
 				<div class="voll">
-					<h2 class="kopf leise" id="verweise-titel">Nur die Vertiefungen, die eine Entscheidung verändern.</h2>
-					<p class="vorspann"><?php echo esc_html( (string) count( $references ) ); ?> Fachseiten für Kosten, Lead-Kauf, Wärmepumpe, Gewerbe-PV und Messung. Kein vollständiges Inhaltsverzeichnis — nur die nächsten sinnvollen Wege.</p>
+					<h3 class="kopf" id="verweise-titel">Die passende Fachseite für Ihre nächste Frage.</h3>
+
 
 					<div class="verweise">
 						<?php foreach ( $references as $reference_index => $reference ) : ?>
@@ -1232,6 +1065,13 @@ get_header();
 			</div>
 		</section>
 
+							</div>
+						</details>
+					</div>
+				</div>
+			</div>
+		</section>
+
 		<!-- ════════ Abschluss ════════ -->
 		<div class="abschluss">
 			<div class="blatt">
@@ -1244,7 +1084,7 @@ get_header();
 								data-track-action="cta_strecke_abschluss_to_marktcheck"
 								data-track-category="lead_gen"
 								data-track-section="abschluss"
-							>Marktcheck starten · <?php echo esc_html( $marketcheck_price ); ?> <span class="pf" aria-hidden="true">→</span></a>
+							>Marktcheck anfragen · <?php echo esc_html( $marketcheck_price ); ?> <span class="pf" aria-hidden="true">→</span></a>
 							<a class="hero-nebenweg" href="<?php echo esc_url( $sofortkontakt_url ); ?>"
 								data-track-action="cta_strecke_abschluss_to_sofortkontakt"
 								data-track-category="lead_gen"

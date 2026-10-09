@@ -3,6 +3,35 @@
 (function () {
   'use strict';
 
+  var page = document.querySelector('.strecke-doc');
+  if (!page) return;
+
+  // Existing links to the calculator and technical questions must also work
+  // while their optional disclosure is closed. Open before the native jump.
+  function openHashTarget(hash, scroll) {
+    if (!hash || hash.length < 2) return;
+    var id;
+    try { id = decodeURIComponent(hash.slice(1)); } catch (error) { return; }
+    var target = document.getElementById(id);
+    if (!target || !page.contains(target)) return;
+    var disclosure = target.closest('[data-solar-disclosure]');
+    if (!disclosure) return;
+    while (disclosure) {
+      disclosure.open = true;
+      disclosure = disclosure.parentElement.closest('[data-solar-disclosure]');
+    }
+    if (scroll) {
+      window.requestAnimationFrame(function () { target.scrollIntoView({ block: 'start', behavior: 'auto' }); });
+    }
+  }
+
+  page.addEventListener('click', function (event) {
+    var link = event.target.closest && event.target.closest('a[href^="#"]');
+    if (link) openHashTarget(link.getAttribute('href'), false);
+  }, true);
+  window.addEventListener('hashchange', function () { openHashTarget(window.location.hash, true); });
+  openHashTarget(window.location.hash, true);
+
   var root = document.querySelector('[data-streckenmodul]');
   if (!root) return;
 
@@ -16,7 +45,8 @@
   var replay = root.querySelector('.modul-replay');
   if (tabs.length !== 5 || !panel || !stage || !replay) return;
 
-  var reduced = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  var motionPreference = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)');
+  var reduced = motionPreference && motionPreference.matches;
   var layouts = {
     wide: { w: 1000, xs: [100, 280, 460, 640, 820], x0: 20, end: 940, a: 110, b: 296, spread: 26, fall: 40 },
     narrow: { w: 520, xs: [40, 135, 230, 325, 420], x0: 8, end: 500, a: 95, b: 330, spread: 30, fall: 46 }
@@ -160,6 +190,27 @@
     frame = window.requestAnimationFrame(tick);
   }
   replay.addEventListener('click', play);
+  var disclosure = root.closest('[data-solar-disclosure]');
+  if (disclosure) {
+    disclosure.addEventListener('toggle', function () {
+      if (!disclosure.open) {
+        window.cancelAnimationFrame(frame);
+        finish();
+      }
+    });
+  }
+  function motionChanged(event) {
+    reduced = event.matches;
+    if (reduced) {
+      window.cancelAnimationFrame(frame);
+      finish();
+      if (observer) observer.disconnect();
+    }
+  }
+  if (motionPreference) {
+    if (typeof motionPreference.addEventListener === 'function') motionPreference.addEventListener('change', motionChanged);
+    else if (typeof motionPreference.addListener === 'function') motionPreference.addListener(motionChanged);
+  }
   if ('IntersectionObserver' in window && !reduced) {
     var observer = new IntersectionObserver(function (entries) {
       if (entries[0].isIntersecting && !played) {

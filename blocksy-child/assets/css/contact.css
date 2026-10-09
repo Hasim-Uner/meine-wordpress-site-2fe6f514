@@ -115,6 +115,24 @@
     max-width: 36ch;
 }
 
+.contact-page .contact-alternatives {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 0.25rem 0.8rem;
+    margin: 1rem 0 0;
+    color: var(--grau);
+    font-size: 0.875rem;
+}
+
+.contact-page .contact-alternatives a {
+    display: inline-flex;
+    align-items: center;
+    min-height: 44px;
+    color: var(--tinte);
+    text-underline-offset: 0.22em;
+}
+
 .contact-page .contact-intro__facts {
     display: grid;
     margin-top: 1.8rem;

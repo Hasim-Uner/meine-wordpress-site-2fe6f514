@@ -385,25 +385,21 @@ function hu_tracking_setup_faq_items() {
 		[
 			'question' => 'Was kostet ein Conversion Tracking Setup?',
 			'answer'   => sprintf(
-				'%1$s kostet %2$s netto als Festpreis und ist in der Regel in %3$s umgesetzt. Vor dem Start steht schriftlich fest, welche Systeme, Formulare und Conversions enthalten sind. Die Stufen darüber: %4$s.',
+				'%1$s kostet %2$s netto als Festpreis für den Grundumfang und ist in der Regel in %3$s umgesetzt. Vor dem Start steht schriftlich fest, welche Website, Formulare und bis zu drei Haupt-Conversions enthalten sind. Server-Side, Meta CAPI und CRM-Rücksignale kommen nur nach technischem Bedarf dazu und werden vorab angeboten.',
 				$entry['name'],
 				$entry['price'],
-				$entry['weeks'],
-				hu_tracking_ladder_display( 2 )
+				$entry['weeks']
 			),
 		],
 		[
 			'question' => sprintf( 'Was ist im %1$s für %2$s enthalten?', $entry['name'], $entry['price'] ),
-			'answer'   => implode( ', ', $entry['items'] ) . '. Gemessen wird im Browser; ein eigener Server und laufende Hostingkosten entfallen.',
+			'answer'   => implode( '; ', $entry['items'] ) . '. Der Umfang gilt für eine Website und wird im Browser gemessen. Consent Mode wird an Ihr vorhandenes Consent-Tool angebunden; externe Tool- oder Lizenzkosten werden vorab benannt.',
 		],
 		[
-			'question' => 'Ist Server-Side Tracking im Einstiegspreis enthalten?',
+			'question' => 'Was kosten Server-Side Tracking und Meta CAPI?',
 			'answer'   => sprintf(
-				'Nein. %1$s ist die nächste Stufe für %2$s netto: Server-GTM auf eigener Subdomain, Enhanced Conversions und ein Paralleltest. Meta CAPI mit Deduplizierung kommt in Stufe %3$d, %4$s, für %5$s dazu. Wenn ein sauberes clientseitiges Setup das Problem löst, wird keine Server-Infrastruktur verkauft.',
-				$ladder['standard']['name'],
+				'Der Gesamtfestpreis mit Server-Side Tracking beträgt %1$s netto, einschließlich des Grundumfangs. Mit Meta CAPI und Deduplizierung beträgt der Gesamtfestpreis %2$s netto. Server-Hosting kostet zusätzlich; laufende Betreuung ist optional. Welcher Umfang sinnvoll ist, klären wir anhand Ihres bestehenden Setups vor dem Start.',
 				$ladder['standard']['price'],
-				$ladder['pro']['stage'],
-				$ladder['pro']['name'],
 				$ladder['pro']['price']
 			),
 		],
@@ -414,9 +410,7 @@ function hu_tracking_setup_faq_items() {
 		[
 			'question' => 'Kann das Tracking bis ins CRM und zu Offline Conversions erweitert werden?',
 			'answer'   => sprintf(
-				'Ja, das ist Stufe %1$d: %2$s, %3$s netto. CRM-Status, eindeutige Lead-Zuordnung, Offline Conversions und qualifizierte Rücksignale werden nach einer technischen Aufnahme abgegrenzt; der Festpreis steht vor dem Start.',
-				$ladder['individual']['stage'],
-				$ladder['individual']['name'],
+				'Ja. Für eine individuelle Datenstrecke bis ins CRM gilt ein Gesamtpreis %1$s netto. CRM-Status, Lead-Zuordnung, Offline Conversions und qualifizierte Rücksignale werden nach einer technischen Aufnahme abgegrenzt; der konkrete Festpreis steht vor dem Start. Dieser Umfang ist eine separate Erweiterung des Grundprodukts.',
 				$ladder['individual']['price']
 			),
 		],

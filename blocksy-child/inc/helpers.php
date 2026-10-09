@@ -715,7 +715,7 @@ function nexus_get_landingpage_faq_items() {
 		[
 			'key'      => 'kosten',
 			'question' => 'Was kostet es, eine Landingpage erstellen zu lassen?',
-			'answer'   => sprintf( '%s als Festpreis. Darin stecken Konzept, Text, die Umsetzung in WordPress, das Anfrageformular, die Herkunft jeder Anfrage und die Abnahme. Anzeigenbetreuung, Foto- und Videoproduktion und mehrere Varianten der Seite gehören nicht dazu.', $price ),
+			'answer'   => sprintf( '%s als Festpreis für eine WordPress-Seite und ein Angebot: Konzept, Text, Anfrageformular mit Bestätigung, seitenbezogene Herkunfts- und Conversion-Erfassung sowie Prüfung und Übergabe mit zwei Korrekturschleifen. Anzeigenbetreuung, Foto- und Videoproduktion und mehrere Seitenvarianten werden gesondert vereinbart.', $price ),
 		],
 		[
 			'key'      => 'text',
@@ -735,7 +735,12 @@ function nexus_get_landingpage_faq_items() {
 		[
 			'key'      => 'cookies',
 			'question' => 'Braucht die Landingpage einen Cookie-Banner?',
-			'answer'   => 'Seite und Formular setzen keine Cookies. Die Herkunft einer Anfrage übergibt das Formular aus der Adresse der Seite. Nutzen Sie Google Ads oder GA4, gilt für diese Dienste Ihr bestehendes Consent-Setup, und die Conversion richte ich darauf abgestimmt ein.',
+			'answer'   => 'Seite und Formular setzen keine eigenen Tracking-Cookies. Für GA4 oder Google Ads berücksichtige ich Ihr bestehendes Consent-Setup und die jeweiligen Einwilligungszustände. Ein neues vollständiges GA4-, GTM- oder Consent-Setup wird als separates Tracking-Projekt vereinbart.',
+		],
+		[
+			'key'      => 'messung',
+			'question' => 'Welche Herkunft und Conversion werden erfasst?',
+			'answer'   => 'Einstiegsseite und verfügbare Kampagnenparameter werden mit der Anfrage übergeben. Die vereinbarte Conversion dieser Seite richte ich in Ihren vorhandenen GA4- oder Google-Ads-Konten ein. Welche Herkunft erfassbar ist und wie eine Conversion zählt, klären wir anhand von Linkparametern, Einwilligungszuständen und dem bestehenden Setup.',
 		],
 		[
 			'key'      => 'website',
@@ -1459,7 +1464,7 @@ function nexus_get_provisioned_pages() {
 		[
 			'slug'     => 'landingpage-erstellen-lassen',
 			'title'    => 'Landingpage erstellen lassen',
-			'excerpt'  => 'Landingpage zum Festpreis: eine Seite, ein Angebot, ein Ziel. Text, Anfrageformular, Herkunft jeder Anfrage und Abnahme inklusive.',
+			'excerpt'  => 'Landingpage zum Festpreis: eine WordPress-Seite für ein Angebot mit Konzept, Text, Anfrageformular, seitenbezogener Herkunfts- und Conversion-Erfassung und Abnahme.',
 			'template' => 'page-landingpage-erstellen-lassen.php',
 		],
 		[

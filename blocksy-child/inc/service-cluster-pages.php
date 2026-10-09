@@ -30,31 +30,10 @@ function nexus_get_service_cluster_page_data() {
 		// Auszug, FAQ (sichtbar und als FAQPage-Schema) und Meta-Vorgaben.
 		'ga4-tracking-setup' => [
 			'title'            => 'GA4 Tracking Setup für B2B-WordPress-Websites',
-			'lead'             => 'GA4 Tracking Setup heißt hier: Event-Logik, Consent, GTM und serverseitige Signale so bauen, dass Sie Anfragen, Einstiegsseiten und Leadqualität belastbar sehen.',
-			'faq_items'        => [
-				[
-					'question' => 'Wie richtet man ein sauberes GA4 Tracking Setup für eine B2B-Website ein?',
-					'answer'   => 'Mit klaren Conversion-Zielen, einem Event-Blueprint, sauberem Consent-Verhalten, GTM-Struktur und einer Management-Sicht auf die relevanten Schritte. Ohne diese Reihenfolge bleibt GA4 schnell ein Datenarchiv statt einer Entscheidungsgrundlage.',
-				],
-				[
-					'question' => 'Wann lohnt sich Server Side Tracking mit Google Tag Manager?',
-					'answer'   => 'Wenn Browser-Signale wegbrechen, Consent das Bild verzieht oder Kampagnen und Leadquellen sauberer gemessen werden müssen. Server Side Tracking ist vor allem dann sinnvoll, wenn Datenqualität für operative Entscheidungen relevant wird.',
-				],
-				[
-					'question' => 'Brauche ich nur GA4 oder zuerst ein Tracking Audit?',
-					'answer'   => 'Wenn bereits Tags, Formulare oder mehrere Kanäle im Spiel sind, ist ein Tracking Audit meist der bessere Start. Es klärt, wo Daten fehlen, doppelt feuern oder falsch interpretiert werden, bevor neue Logik aufgebaut wird.',
-				],
-				[
-					'question' => 'Ist das auch für Google Ads und Leadgenerierung relevant?',
-					'answer'   => 'Ja. Ohne belastbare Messung bleiben Einstiegsseiten, Kampagnenqualität und Leadpfade unscharf. Gerade für B2B-Leadgenerierung ist ein sauberes GA4- und Tracking-Setup die Grundlage für sinnvolle Optimierung.',
-				],
-				[
-					'question' => 'Brauche ich eine Agentur für das Google Analytics 4 Setup oder kann ich das selbst einrichten?',
-					'answer'   => 'Einfache GA4-Installationen sind selbst machbar. Sobald Consent Mode, serverseitige Signalverarbeitung, Event-Blueprint und die Verknüpfung mit Formularen, Leadpfaden und Kampagnen ins Spiel kommen, lohnt sich eine erfahrene Begleitung. Fehler im Setup zeigen sich oft erst dann, wenn Entscheidungen auf falschen Daten aufbauen.',
-				],
-			],
+			'lead'             => 'Conversion-Tracking für eine B2B-WordPress-Website: Messplan, GA4, GTM, Consent-Anbindung und Google Ads mit bis zu drei Haupt-Conversions, geprüft und dokumentiert.',
+			'faq_items'        => hu_tracking_setup_faq_items(),
 			'meta_title'       => 'GA4 Tracking Setup für B2B | Haşim Üner',
-			'meta_description' => 'GA4 Tracking Setup für B2B-WordPress: Google Analytics 4 einrichten, Consent Mode, GTM-Struktur und Server Side Tracking für belastbare Leadsignale.',
+			'meta_description' => 'GA4 Tracking Setup für B2B-WordPress: Messplan, GA4, GTM, Consent-Anbindung, Google Ads und geprüfte Haupt-Conversions. Server-Side, Meta und CRM bei Bedarf.',
 		],
 		// Seit 2026-09-22 rendert page-performance.php die Seite selbst im
 		// Gutachten-Layout. Das Register liefert nur noch Titel, Meta und FAQ,
@@ -77,7 +56,7 @@ function nexus_get_service_cluster_page_data() {
 				[
 					'question' => 'Was kostet das?',
 					'answer'   => sprintf(
-						'Die Messung beginnt mit %1$s für %2$s netto; Server-Side Tracking und Meta CAPI sind eigene Stufen darüber. Zielseite und Kampagnenbetreuung richten sich nach dem Umfang; Scope und Preis stehen vor dem Start schriftlich fest. Beschreiben Sie kurz die Ausgangslage, dann kommt eine konkrete Einschätzung zurück.',
+						'Die Messung beginnt mit %1$s für %2$s netto. Server-Side Tracking und Meta CAPI erweitern den Umfang bei Bedarf und werden vorab angeboten. Zielseite und Kampagnenbetreuung richten sich nach dem Umfang; Scope und Preis stehen vor dem Start schriftlich fest. Beschreiben Sie kurz die Ausgangslage, dann kommt eine konkrete Einschätzung zurück.',
 						hu_tracking_product_ladder()['measurement']['name'],
 						hu_tracking_price( 'measurement', 'setup' )
 					),

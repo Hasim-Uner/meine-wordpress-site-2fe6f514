@@ -5,7 +5,6 @@ blocksy-child/assets/css/cro.css
 blocksy-child/assets/css/cwv.css
 blocksy-child/assets/css/deep-dive.css
 blocksy-child/assets/css/footer-cta.css
-blocksy-child/assets/css/ga4.css
 blocksy-child/assets/css/homepage-redesign.css
 blocksy-child/assets/css/homepage.css
 blocksy-child/assets/css/related-content.css

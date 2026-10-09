@@ -17,6 +17,7 @@
  */
 
 require __DIR__ . '/glossary-links-harness.php';
+require_once get_stylesheet_directory() . '/inc/canon/reference-canon.php';
 
 $context  = $argv[1] ?? 'imprint';
 $template = $argv[2] ?? '';

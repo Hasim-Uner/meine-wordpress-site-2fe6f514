@@ -292,7 +292,7 @@ function hu_get_forced_singular_seo_map() {
 			// Preis aus dem Kanon, damit Snippet und Seite denselben Betrag nennen.
 			'landingpage-erstellen-lassen' => [
 				'title'       => 'Landingpage erstellen lassen: Festpreis mit Text & Messung',
-				'description' => sprintf( 'Landingpage erstellen lassen zum Festpreis von %s: Konzept, Text, WordPress, Anfrageformular und Herkunft jeder Anfrage. Live nach Ihrer Abnahme.', hu_landingpage_price( true ) ),
+				'description' => sprintf( 'Landingpage erstellen lassen für %s: Konzept, Text, WordPress und Formular. Seiten-Conversion, Einstiegsseite und verfügbare Kampagnenparameter.', hu_landingpage_price( true ) ),
 			],
 			// Query-Owner "wordpress website erstellen lassen" (docs/seo/query-ownership.csv).
 			// Preis und Seitenzahl aus dem Kanon, damit Snippet und Seite denselben
@@ -314,7 +314,7 @@ function hu_get_forced_singular_seo_map() {
 			// besitzt. CAPI steht dafuer in der Description.
 			'server-side-tracking-b2b' => [
 				'title'       => 'Server-Side Tracking einrichten lassen | GA4, Ads & Consent',
-				'description' => sprintf( 'Server-Side Tracking für GA4, Google Ads und Meta CAPI: geprüft, eingerichtet, parallel getestet und dokumentiert. Setup ab %s netto.', $tracking_setup_price ),
+				'description' => sprintf( 'Server-Side Tracking für GA4 und Google Ads: Messbasis, Server-GTM, Consent und Paralleltest. Setup %s netto, Hosting extra. Meta CAPI separat.', $tracking_setup_price ),
 			],
 			// Informationaler Supporting-Artikel. Der Kaufintent und die Anbieter-
 			// Queries bleiben beim Owner /server-side-tracking-b2b/.

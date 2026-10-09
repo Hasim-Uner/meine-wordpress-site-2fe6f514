@@ -1447,18 +1447,18 @@ function hu_output_schema()
 
         'ga4-tracking-setup' => [
             'name'        => 'GA4 Tracking Setup für B2B-WordPress-Websites',
-            'description' => 'GA4 Tracking Setup: Event-Logik, GTM, Consent Mode und Server Side Tracking für belastbare Leadsignale in WordPress.',
-            'serviceType' => 'GA4 Tracking Setup & Server Side Tracking',
-            'serviceOutput' => 'Belastbare Lead- und Nachfrage-Signale mit GA4, GTM, Consent und serverseitiger Messung für B2B-Websites'
+            'description' => 'Conversion-Tracking für eine WordPress-Website mit Messplan, GA4, GTM, Consent-Anbindung, Google Ads und bis zu drei Haupt-Conversions. Server-Side, Meta CAPI und CRM-Rücksignale werden bei Bedarf gesondert vereinbart.',
+            'serviceType' => 'GA4 Tracking Setup & Conversion Tracking',
+            'serviceOutput' => 'Geprüfte Haupt-Conversions im Browser mit Messplan, Abnahmeprotokoll und Übergabe in den eigenen Konten'
         ],
 
         // Festpreis aus dem Kanon (HU_LANDINGPAGE_PRICE); Service und
         // sichtbarer Preis auf /landingpage-erstellen-lassen/ lesen dieselbe Zahl.
         'landingpage-erstellen-lassen' => [
             'name'        => 'Landingpage erstellen lassen',
-            'description' => 'Landingpage in WordPress zum Festpreis: eine Seite für ein Angebot, mit Konzept, Text, Anfrageformular, Herkunft jeder Anfrage und Abnahme.',
+            'description' => 'Landingpage in WordPress zum Festpreis: eine Seite für ein Angebot mit Konzept, Text, Anfrageformular, seitenbezogener Herkunfts- und Conversion-Erfassung sowie Abnahme. Die Messung nutzt verfügbare Kampagnenparameter und vorhandene Konten.',
             'serviceType' => 'Landingpage-Erstellung',
-            'serviceOutput' => 'Eine abgenommene Landingpage mit Anfrageformular, die jede Anfrage mit ihrer Herkunft übergibt',
+            'serviceOutput' => 'Eine abgenommene WordPress-Landingpage mit Anfrageformular, Einstiegsseite, verfügbaren Kampagnenparametern und der vereinbarten Seiten-Conversion im vorhandenen Setup',
             'offers'      => [
                 [
                     '@type'         => 'Offer',

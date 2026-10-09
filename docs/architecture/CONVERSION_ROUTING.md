@@ -1,6 +1,7 @@
 # Conversion Routing Architecture
 
-Status: active decision, updated 2026-09-26
+Status: Code-Vertrag, aktualisiert 2026-10-09; Änderungen vorbereitet,
+wirksam nach Merge und Deploy. Kein Live-Nachweis für diesen Stand.
 
 This document separates **SEO ownership** from **conversion routing**. It exists to prevent a recurring failure mode: sending every page to the same funnel or moving a ranking query owner merely because another page has the preferred CTA.
 
@@ -25,7 +26,7 @@ A page can remain the canonical SEO destination for its query while its CTA rout
 | `/server-side-tracking-b2b/` | Server-Side Tracking commercial intent | Specialist tracking money page (route `tracking_b2b`); linked as „Server-Side Tracking“, never as plain „Tracking“ | Tracking project request / scope clarification | White-Label bridge for agencies |
 | `/ga4-tracking-setup/` | Tracking purchase intent: GA4/GTM setup, consent, ads conversions | Tracking offer page; target of the header item „Tracking“ and the footer way (route `tracking_setup`) | `Tracking-Projekt anfragen` → `/kontakt/?type=project&focus=tracking` | Tracking specialist / project evidence |
 | `/performance-marketing/` | B2B companies running Google Ads or Meta | Paid-demand money page (measurement → landing page → budget) | `Ausgangslage prüfen lassen` → `/kontakt/?type=project` | Tracking setup, landing page offer (`/landingpage-erstellen-lassen/`, `perf_to_landingpage_offer`; the former `perf_to_landingpages` → `/#angebot-funnel` is retired), case study; performance agencies → White-Label task (`?type=whitelabel&case=aufgabe`) |
-| `/landingpage-erstellen-lassen/` | Direct clients who need one page for one offer (`landingpage erstellen lassen`) | Fixed-price product page (route `landingpage`, since 2026-09-26) | `Landingpage anfragen` → `/kontakt/?type=project&focus=conversion` (`cta_lp_offer_hero_project`, `cta_lp_offer_scope_project`, `cta_lp_offer_close_project`) | Tracking setup and website offer as add-ons, case study; agencies → White-Label (`lp_offer_hero_whitelabel`) |
+| `/landingpage-erstellen-lassen/` | Direct clients who need one page for one offer (`landingpage erstellen lassen`) | Fixed-price product page (route `landingpage`, since 2026-09-26) | `Landingpage anfragen` → `/kontakt/?type=project&focus=landingpage` (`cta_lp_offer_hero_project`, `cta_lp_offer_scope_project`, `cta_lp_offer_close_project`) | Full tracking setup and website offer as separate products, early case evidence; agencies → White-Label (`lp_offer_hero_whitelabel`) |
 | `/conversion-optimierung/` | B2B websites with visitors but too few matching inquiries (`conversion optimierung b2b`) | Written finding of the inquiry path (Anfragesystem-Analyse), then fixed-price implementation (route `conversion`, since 2026-09-30) | `Analyse anfragen` → `/kontakt/?type=analysis&focus=conversion` (`cro_offer_cta_hero_analysis`, `cro_offer_cta_analysis_scope`, `cro_offer_cta_close_analysis`) | Landingpage and tracking setup as price rows (`cro_offer_to_landingpage`, `cro_offer_to_tracking`), case study (`cro_offer_proof_case`); no footer door register on this page; no Marktcheck CTA. New direct-contact links in the close: `cro_offer_close_mail`, `cro_offer_close_tel`. Since 2026-10-01 the former `cro_offer_hero_whitelabel`, `cro_offer_to_website` and `cro_offer_reference_open` are retired (hero meta boxes, website row and reference list are gone) |
 | `/wordpress-website-erstellen-lassen/` | Direktkunden, WordPress-Website erstellen lassen | Die Anfrage-Website: Produkt, Umfangsrechner, Festpreis und Bauzeit | `/kontakt/?type=project&focus=website&seiten=N&art=neubau\|relaunch` plus `tracking=1` bei Auswahl; Positionen hero/angebot/beleg/leiste/abschluss | Vergleich, Belege und Bauzeit; Kontextlink von der lokalen Agenturseite |
 | `/wordpress-agentur-hannover/` | Local `wordpress agentur hannover` search intent | Local SEO acquisition + decision hub: Agenturmodell vs. direkte Verantwortung | Project request without preset focus (`hu_get_navigation_project_request_url()`, since 2026-09-26) | Context owners: Website, Conversion Tracking, Conversion-Optimierung; proof: public references `/#referenzen` and case study |
@@ -53,38 +54,65 @@ Vorauswahl. Die früheren Actions `cta_cluster_audit`,
 `cta_cluster_proof_audit` und `cta_cluster_footer_audit` stehen nicht mehr im
 Template.
 
-## Tracking-Leiter: ein Produkt, vier Stufen
+## Tracking: ein Grundprodukt, Erweiterungen nach Bedarf
 
 Seit 2026-09-26 (`docs/decisions/tracking-preisleiter.md`): Name, Umfang,
-Preis und Lieferzeit jeder Stufe stehen einmal in
-`hu_tracking_product_ladder()` (`inc/canon/pricing-canon.php`). Die Seiten
-zeigen Ausschnitte, keine eigenen Fassungen:
+Preis und Lieferzeit der technischen Umfänge stehen einmal in
+`hu_tracking_product_ladder()` (`inc/canon/pricing-canon.php`). Die vier
+Kanon-Einträge bleiben als Preis- und Umfangsquelle erhalten. Die vorbereitete
+Darstellung vom 2026-10-09 verkauft auf der allgemeinen Tracking-Seite ein
+Grundprodukt mit fünf Lieferbausteinen: Messplan, GTM/GA4, Consent-Anbindung,
+Google Ads mit bis zu drei Haupt-Conversions sowie Abnahme und Übergabe.
+Server-Side, Meta CAPI und CRM-Rücksignale werden nur bei begründetem Bedarf
+angeboten. Es gibt keine öffentliche Auswahl aus vier Preiskarten.
 
 | Oberfläche | Zeigt | Ziel des CTA |
 |---|---|---|
-| Startseite, Angebot 02 und Station 04 | Stufe 1 als Angebot, Stufen 2 bis 4 als Satz | `/kontakt/?type=project&focus=tracking` (`home_offer_tracking`) |
-| `/ga4-tracking-setup/` | alle vier Stufen (Karten `#stufe-1` bis `#stufe-4`) | `/kontakt/?type=project&focus=tracking` (`cta_tracking_project`) |
-| `/server-side-tracking-b2b/` | Stufen 2 bis 4, Stufe 1 als Verweis (`cta_package_to_measurement` → `/ga4-tracking-setup/#stufe-1`) | eigenes Formular `#anfrage` (`cta_package_standard`, `cta_package_pro`, `cta_package_individual`) |
+| Startseite, Angebot 04 und Station „Messung“ | Grundprodukt, technische Erweiterungen als bedarfsabhängiger Hinweis | `/kontakt/?type=project&focus=tracking` (`home_offer_tracking`) |
+| `/ga4-tracking-setup/` | fünf Lieferbausteine, Abnahmeprotokoll und ein Grundpreis; `#stufe-1` bleibt als Anker | `/kontakt/?type=project&focus=tracking` (`cta_tracking_project`) |
+| `/server-side-tracking-b2b/` | eine Server-Messstrecke mit fünf Bausteinen und einem Gesamtpreis einschließlich Browser-Messbasis; Meta/CRM und Hosting separat | eigenes Formular `#anfrage` (`cta_package_standard`); Verweis auf das Grundprodukt (`cta_package_to_measurement` → `/ga4-tracking-setup/#stufe-1`) |
 | `/performance-marketing/` | Einstiegspreis der Messung | `/kontakt/?type=project` |
 | `/whitelabel-retainer/`, Margenblock | Endkundenpreis von Stufe 2 neben dem Agenturpreis | Formular `#aufgabe` |
 
-Tracking Care hängt nur an den Stufen 2 bis 4. Die Guard-Regel
+Optionale Tracking Care hängt nur an den serverseitigen Umfängen (intern
+Stufen 2 bis 4). Umfang, Gesamtpreis und laufende Kosten werden vor einer
+Beauftragung benannt. Die Guard-Regel
 `preis-tracking-leiter` und `npm run test:pricing` halten die Leiter
-zusammen.
+als interne Kanon-Struktur zusammen; die Preise bleiben unverändert.
+
+## Landingpage: Festpreisprodukt und eigenes Anfragethema
+
+Das Produkt bleibt eine WordPress-Seite für ein Angebot. Fünf Liefergruppen
+gliedern den Umfang: Text, WordPress-Umsetzung, Formular mit Bestätigung,
+Herkunft/Conversion sowie Prüfung/Übergabe. Einstiegsseite und verfügbare
+Kampagnenparameter werden mit der Anfrage übergeben; die vereinbarte
+Seiten-Conversion wird in bestehenden GA4- oder Google-Ads-Konten eingerichtet.
+Ein vollständiges GA4-/GTM-/Consent-Setup und CRM-Anbindungen sind separat.
+Arbeitsbeleg und Einzelfallgrenzen stehen früh; Technik, Ablauf und weitere
+Referenzen sind freiwillige Vertiefungen. Preis und wesentliche Grenzen
+bleiben sichtbar.
+
+Alle direkten Landingpage-Anfragen, einschließlich der Angebotszeilen auf
+Homepage, Website- und Conversion-Seite, verwenden `type=project` und
+`focus=landingpage`. Der Kontaktablauf übernimmt „WordPress-Landingpage für
+ein Angebot“ als eigenes Thema; die bisherigen Action-Namen bleiben erhalten.
+Eine Analyse einer bestehenden Strecke bleibt
+`type=analysis&focus=conversion`.
 
 ## Homepage: direkter Freelancer-Einstieg
 
 Seit der Betreiberentscheidung vom 2026-09-13 übernimmt `/` die Inhalte und
-Suchintention der früheren Freelancer-Route. Die finale Template-Fassung vom
-2026-10-02 ordnet die vorhandene Strecke neu: Klick → Strecke → Fall →
-Prüfstand mit Referenzen → Preise → Übergabe → Fragen → Anfrage. Der Fall steht
-vor den Preisen; Hero samt Kopf und Messtafel sind die dunklen Messinstrumente.
+Suchintention der früheren Freelancer-Route. Die vorbereitete Template-Fassung
+vom 2026-10-09 ordnet die vorhandene Strecke neu: Klick → Angebote → Strecke →
+Fall → Prüfstand mit Referenzen → Übergabe → Fragen → Anfrage. Die fünf
+Angebotszeilen mit Preisen stehen direkt nach dem Hero; Hero samt Kopf und
+Messtafel sind die dunklen Messinstrumente.
 White-Label und Solar/Wärmepumpe stehen unter „Wann ein anderer Weg besser
 passt“ in der Übergabe (`home_door_whitelabel`, `home_door_energy`).
 
 Hero und Abschluss nutzen die Projektanfrage `/kontakt/?type=project` ohne
 Themenvorbelegung, wenn die Ersteinschätzung aus ist. Die fünf Leistungen
-nutzen ihre passenden Fokusziele: Website `website`, Landingpage `conversion`,
+nutzen ihre passenden Fokusziele: Website `website`, Landingpage `landingpage`,
 Analyse `type=analysis&focus=conversion`, Tracking `tracking`, Übernahme
 `implementation_scope`. Produktseiten vertiefen den Umfang. Die Website-Zeile
 verlinkt seit 2026-10-01 `/wordpress-website-erstellen-lassen/`
@@ -95,7 +123,7 @@ verlinkt seit 2026-10-01 `/wordpress-website-erstellen-lassen/`
 | Zeile | Anfrage-Hook (`lead_gen`) | Ziel | Sub-CTA „Was drinsteckt“ (`navigation`) |
 | --- | --- | --- | --- |
 | 01 Website und Relaunch | `home_offer_relaunch` | `/kontakt/?type=project&focus=website` | `home_offer_website_detail` → `/wordpress-website-erstellen-lassen/` |
-| 02 Landingpage | `home_offer_landingpage` | `/kontakt/?type=project&focus=conversion` | `home_offer_landingpage_detail` → `/landingpage-erstellen-lassen/` |
+| 02 Landingpage | `home_offer_landingpage` | `/kontakt/?type=project&focus=landingpage` | `home_offer_landingpage_detail` → `/landingpage-erstellen-lassen/` |
 | 03 Conversion-Analyse | `home_offer_analysis` | `/kontakt/?type=analysis&focus=conversion` | `home_offer_analysis_detail` → `/conversion-optimierung/` |
 | 04 Tracking | `home_offer_tracking` | `/kontakt/?type=project&focus=tracking` | `home_offer_tracking_detail` → `/ga4-tracking-setup/` |
 | 05 Übernahme-Check | `home_offer_takeover` | `/kontakt/?type=project&focus=implementation_scope` | keiner (keine Produktseite) |
@@ -232,7 +260,7 @@ Use the Marktcheck as primary next action when the page is clearly about:
 - Solar-specific funnel architecture and qualification
 
 On the four provider decision articles for Aroundhome, Checkfox, Wattfox and DAA, the primary context CTA goes to `/solar-waermepumpen-leadgenerierung/#sofortkontakt` for businesses already buying leads. The secondary CTA remains the Marktcheck. Other Energy-cluster routes retain the Marktcheck as their primary destination.
-On the Solar money page itself, the primary hero CTA stays on `#marktcheck`; the secondary hero CTA addresses existing lead buyers and goes to `#sofortkontakt`. Editorial links from the ten related guides open the page without a form anchor; explicit „Marktcheck starten“ CTAs keep `#marktcheck`.
+On the Solar money page itself, the primary hero CTA stays on `#marktcheck`; the secondary hero CTA addresses existing lead buyers and goes to `/kontakt/?type=project&focus=sofortkontakt`. The `#sofortkontakt` bridge remains on the page. Editorial links from the ten related guides open the page without a form anchor; explicit „Marktcheck starten“ CTAs keep `#marktcheck`.
 
 Examples:
 
@@ -427,7 +455,7 @@ Im Klappblatt bleibt der Betrag sichtbar. Für alle übrigen Türen bleibt
 die Grenze unter 371 px unverändert.
 
 Türmatrix (Modus `voll` zeigt das Hauptmenü, `leser` den Artikelpfad statt des
-Menüs, `fokus` die Leiter der Solar-Seite):
+Menüs, `fokus` den Marktcheck-Einstieg der Solar-Seite):
 
 | Route | Modus | Tür | Betrag (Kanon) | Ziel | `data-track-action` |
 |---|---|---|---|---|---|
@@ -435,13 +463,13 @@ Menüs, `fokus` die Leiter der Solar-Seite):
 | Startseite bei eingeschaltetem Versuch | voll | Ersteinschätzung (`hu_first_assessment_text( 'label' )`) | kostenlos (`hu_format_eur( 0 )`) | `/kontakt/?focus=ersteinschaetzung` | `nav_header_ersteinschaetzung` |
 | `/ga4-tracking-setup/`, `/server-side-tracking-b2b/` | voll | Tracking anfragen | „ab“ Messung-Setup | `/kontakt/?type=project&focus=tracking` | `nav_header_door_tracking` |
 | White-Label | voll | Test-Sprint anfragen | Test-Sprint | `/whitelabel-retainer/#aufgabe` | `nav_header_door_whitelabel` |
-| Portal-Einordnungen (Checkfox, Aroundhome, Wattfox, DAA) | leser | Sofortkontakt | Sofortkontakt-Setup | `/solar-waermepumpen-leadgenerierung/#sofortkontakt` | `nav_header_door_sofortkontakt` |
-| Übrige Beiträge, Dossier „Leadgenerierung“ | leser | Marktcheck | kostenlos | `…/#marktcheck` | `nav_header_door_marktcheck` |
+| Portal-Einordnungen (Checkfox, Aroundhome, Wattfox, DAA) | leser | Sofortkontakt | Sofortkontakt-Setup | `/kontakt/?type=project&focus=sofortkontakt` | `nav_header_door_sofortkontakt` |
+| Übrige Beiträge, Dossier „Leadgenerierung“ | leser | Marktcheck | Marktcheck-Preis | `…/#marktcheck` | `nav_header_door_marktcheck` |
 | Übrige Beiträge, Dossier „Tracking“ | leser | Tracking anfragen | „ab“ Messung-Setup | wie oben | `nav_header_door_tracking` |
 | Übrige Beiträge, sonst | leser | Projekt anfragen | kein Betrag | wie oben | `nav_header_project` |
-| Fallstudie | voll | Marktcheck | kostenlos | `…/#marktcheck` | `nav_header_door_marktcheck` |
-| Solar-Cluster (Slugs aus `hu_get_solar_cluster_link_map()`) | voll | Marktcheck | kostenlos | `…/#marktcheck` | `nav_header_door_marktcheck` |
-| Solar-Seite | fokus | Leiter der Seite: Marktcheck · Analyse · Sofortkontakt | kostenlos · Analyse · Sofortkontakt-Setup (je aus dem Kanon) | Anker der Seite (`#marktcheck`; `#analyse` und `#sofortkontakt`, bis `HU_FEATURE_SOLAR_DOORS` an ist `#einstieg`) | `nav_header_door_marktcheck`, `nav_header_door_analyse`, `nav_header_door_sofortkontakt` |
+| Fallstudie | voll | Marktcheck | Marktcheck-Preis | `…/#marktcheck` | `nav_header_door_marktcheck` |
+| Solar-Cluster (Slugs aus `hu_get_solar_cluster_link_map()`) | voll | Marktcheck | Marktcheck-Preis | `…/#marktcheck` | `nav_header_door_marktcheck` |
+| Solar-Seite | fokus | Marktcheck | Marktcheck-Preis | `#marktcheck` | `nav_header_door_marktcheck` |
 | Kontakt | voll | keine Tür | | | |
 
 Die Zeile „White-Label“ gilt für `site-header.php` und für den eigenen Kopf der
@@ -459,30 +487,28 @@ Jede Tür trägt zusätzlich `data-door="<schlüssel>"` (`projekt`, `tracking`,
 `aufgabe`, `marktcheck`, `analyse`, `sofort`), `data-track-category="lead_gen"`
 und `data-track-section="header"`. Die Beträge kommen ausschließlich aus
 `inc/canon/pricing-canon.php` (`hu_tracking_price( 'measurement', 'setup' )`,
-`HU_WHITELABEL_TEST_SPRINT_PRICE`, `hu_analysis_price()`,
+`HU_WHITELABEL_TEST_SPRINT_PRICE`, `hu_marketcheck_price()`, `hu_analysis_price()`,
 `hu_entry_setup_price()`); die Navigationsprüfung verbietet Preisliterale in
 `inc/funnel-doors.php` und im Template. Ein „ab“-Betrag ist die echte
-Untergrenze dessen, was hinter der Tür liegt: Tracking beginnt bei der
-Messung (Stufe 1 der Tracking-Leiste), nicht beim Basis-Paket. Die Tür „Projekt anfragen“ bündelt
+Untergrenze dessen, was hinter der Tür liegt: Tracking beginnt beim
+browserseitigen Grundprodukt. Die Tür „Projekt anfragen“ bündelt
 Website, Landingpage, Relaunch und Optimierung und trägt keinen Betrag.
 Der Marktcheck erscheint als Tür nur im Energie-Kontext (Fallstudie, Dossier
 „Leadgenerierung“, Portal-Einordnungen).
 
-Der Modus `fokus` (Solar-Seite) zeigt Wortmarke links und rechts die Leiter als
-drei Textlinks mit Betrag, Mono, Betrag in `--tinte`. Bezeichnung und Betrag
+Der Modus `fokus` (Solar-Seite) zeigt Wortmarke links und rechts nur den
+Marktcheck mit Kanonpreis, Mono, Betrag in `--tinte`. Bezeichnung und Betrag
 sind getrennte Felder mit Abstand `--s1`; die Abstände zwischen den Einstiegen
 passen sich zwischen `--s1` und `--s2` an. Die globale Accessibility-Schicht
 hält die Klickflächen mindestens 44 px hoch. Kein Hauptmenü, nicht
-sticky, höchstens 56 px, Haarlinie unten, unter 561 px nur „Marktcheck · 0 €“ als
-gefüllter Button (der Sofortkontakt steht dann nur im Angebotsblock). Die
+sticky, höchstens 56 px, Haarlinie unten, unter 561 px der Marktcheck als
+gefüllter Button. Der Sofortkontakt steht im Seiteninhalt. Die
 sticky Kapitel-Leiste der Seite bleibt im Seiteninhalt.
 
-Solange `HU_FEATURE_SOLAR_DOORS` aus ist, zeigen die Türen Analyse und
-Sofortkontakt (Kopf, Leiter und Fuß)
-auf `/solar-waermepumpen-leadgenerierung/#einstieg`; `HU_FEATURE_SOLAR_DOORS`
-(`inc/feature-flags.php`, Vorgabe `false`) schaltet sie auf `#analyse` und
-`#sofortkontakt`. Haşim schaltet ihn per `wp-config.php` um, sobald diese
-Anker live sind.
+Die historische Analyse-Tür bleibt in `hu_funnel_doors()` für Legacy-Kontexte;
+`HU_FEATURE_SOLAR_DOORS` steuert nur deren Anker (`#einstieg` oder `#analyse`).
+Sie ist weder im Solar-Kopf noch im Energie-Fußregister sichtbar.
+Sofortkontakt führt unabhängig vom Flag auf die eigene Kontaktstrecke.
 
 Der Lesemodus übernimmt den Artikelpfad des früheren Lesekopfs:
 „Wissen“ → Blog (`article_reader_back_blog`), Dossier →
@@ -491,8 +517,8 @@ Dossier-Archiv (`article_reader_open_dossier`). Die Metazeile
 
 Reihenfolge: erst was angeboten wird (Projekte, Tracking), dann die Wege für
 bestimmte Absender (Agenturen, Energiebetriebe), dann Belege. Der
-Punkt „Tracking“ führt auf das Tracking-Angebot, dieselbe Leiter, deren erste
-Stufe die Startseite als „Conversion-Tracking“ mit Preis verkauft. Die Server-Side-Seite
+Punkt „Tracking“ führt auf das Grundprodukt „Conversion-Tracking“, das auch
+die Startseite mit demselben Kanonpreis anbietet. Die Server-Side-Seite
 bleibt Query-Owner für Server-Side-Tracking-Suchen und wird mit genau diesem
 Namen verlinkt (Fuß, GA4-Seite, White-Label-Margenblock), nie als bloßes
 „Tracking“. `aria-current="page"` steht nur auf dem Link, der die aufgerufene
@@ -524,7 +550,7 @@ Landingpage. Kopfzeile des Registers: links „Welcher Weg passt?“, rechts
 | Ich habe **eine Website** … | Projekt anfragen (`projekt`, „nach Umfang“) | `cta_footer_door_projekt` |
 | Ich brauche **belastbare Messung** … | Tracking-Projekt anfragen (`tracking`, „ab“ Server-Side-Setup) | `cta_footer_door_tracking` |
 | Ich bin **Agentur** … | Test-Sprint anfragen (`aufgabe`) | `cta_footer_door_aufgabe` |
-| Ich bin **Solar- oder Wärmepumpenbetrieb** und kaufe heute Portal-Anfragen. | Marktcheck, regional (`marktcheck`, kostenlos) · Anfragesystem-Analyse (`analyse`) · Sofortkontakt-Setup (`sofort`) | `cta_footer_door_marktcheck`, `cta_footer_door_analyse`, `cta_footer_door_sofort` |
+| Ich bin **Solar- oder Wärmepumpenbetrieb** und kaufe heute Portal-Anfragen. | Marktcheck, regional (`marktcheck`, Kanonpreis) | `cta_footer_door_marktcheck` |
 
 Jede Tür ist eine Zeile mit Bezeichnung, Betrag (Mono, tabellarische Ziffern)
 und Pfeil; die Beträge kommen aus dem Kanon (`hu_funnel_doors()`), kein

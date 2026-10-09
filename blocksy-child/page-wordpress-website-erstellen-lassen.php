@@ -269,7 +269,7 @@ get_header();
                 <li>Bilder zugeschnitten und als <?php echo nexus_glossary_link( 'webp', 'WebP' ); ?> verkleinert</li>
               </ul></details>
 <details class="gruppe"><summary><span>Technisches SEO und On-Page</span><span class="aw-inkl-label">Inklusive</span></summary><ul>
-                <li>Pro Seite ein Suchbegriff, auf den Title, Überschrift und Gliederung ausgerichtet sind</li>
+                <li>Title, Überschrift und Gliederung passend zur Suchintention und Aufgabe jeder Seite</li>
                 <li>Title und Meta-Beschreibung je Seite</li>
                 <li>Saubere URLs und eine logische Überschriften-Struktur</li>
                 <li>Interne Links zwischen den Seiten</li>

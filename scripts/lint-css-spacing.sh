@@ -26,7 +26,6 @@ fi
 # Reduced-Motion-Baseline in lint-css-motion.sh.
 BASELINE_COLLAPSED_PADDING=(
   "checkfox-decision.css"
-  "ga4.css"
   "seo-cockpit-admin.css"
   "single-editorial.css"
   "single.css"

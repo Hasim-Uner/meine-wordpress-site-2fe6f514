@@ -119,6 +119,28 @@ Die Startseite ist zugleich Marke und direkte Freelancer-Money-Page. Sie überni
 
 Details und konkrete Zuordnung: `docs/architecture/CONVERSION_ROUTING.md`.
 
+## Informationsschichten auf Angebotsseiten
+
+- Orientierung bleibt sichtbar: Zielgruppe, Ergebnis, Produkt, Preisrahmen und
+  nächster Schritt.
+- Die Kaufentscheidung braucht sichtbaren Kernumfang, belastbaren Arbeitsbeleg,
+  Voraussetzungen, wesentliche Ausschlüsse und zusätzliche laufende Kosten.
+- Technik, ausführlicher Ablauf, Methodik, Rechner und weitere Referenzen
+  können als native `details` vertieft werden. Wichtige Preis- oder
+  Leistungsgrenzen werden dadurch nicht verborgen.
+- Ein Preisvergleich zwischen Website und Landingpage erklärt den
+  unterschiedlichen Text- und Grundsystemumfang. Das Landingpage-Produkt
+  umfasst eine Angebotsseite mit Text, Formular, verfügbarer Herkunft und
+  vereinbarter Seiten-Conversion in vorhandenen Konten; ein vollständiges
+  Tracking-Setup ist separat.
+- Tracking wird als Grundprodukt mit fünf Lieferbausteinen erklärt.
+  Server-Side, Meta CAPI und CRM-Rücksignale sind begründete Erweiterungen;
+  der vorhandene Preiskanon bleibt erhalten. Die Server-Side-Fachseite
+  benennt ihren eigenen Gesamtumfang und zusätzliche Hostingkosten.
+- Arbeitsbelege zeigen den tatsächlichen Projektanteil und seine Grenzen.
+  Ein Ergebnis aus einem Gesamtprojekt ist keine Prognose für ein einzelnes
+  Produkt. Herkunft wird nur im technisch verfügbaren Umfang zugesagt.
+
 ## Zusagen mit Zeitangabe
 
 Eine Antwortzeit, sitewide: **innerhalb von 24 Stunden werktags**. Sie steht im
@@ -264,7 +286,7 @@ Regeln:
 - Targetet nicht `wordpress agentur hannover`
 - Targetet keine White-Label-Queries
 - SEO-Title der finalen Fassung (2026-10-02): `WordPress Freelancer: Website, Tracking, Anfragen · Haşim Üner`. Hannover und Pattensen stehen in Kicker, Person, FAQ und Schema, nicht in der H1
-- Die H1 benennt das Ergebnis oder das Problem des Lesers (mehr Anfragen, deren Herkunft sichtbar ist), nicht die Leistung, und trägt keinen Ortsnamen
+- Die H1 benennt das Ergebnis oder das Problem des Lesers (mehr Anfragen und erkennen, was funktioniert), nicht die Leistung, und trägt keinen Ortsnamen
 - `WordPress Freelancer` darf auf dieser Route in SEO-Title, Metazeile und Rollenbeschreibung stehen
 - GitHub, versionierter Code, Staging, Review und kontrollierte Deployments dürfen als Workflow-/Qualitätsbeleg sichtbar erklärt werden
 - Lighthouse-Werte nur als Labtest bezeichnen; kein Ersatz für CrUX-/Felddaten
@@ -336,12 +358,15 @@ Keine Gesamt-CPO-Rechnung aus dem erreichten Kampagnen-CPL und der CRM-Quote.
 
 ### Solar-Leistungsseite: Informationsfolge
 
-Zielgruppe und persönliche Umsetzung zuerst; Kennzahlen in einem gemeinsamen
-Belegfeld, Projektphasen im Fallabschnitt. Der interaktive Rechner enthält
-Annahmen und darf nicht als Ergebnisprognose dargestellt werden. Stationen
-erklären die Umsetzung und den Nutzen für den Vertrieb. Der kostenlose
-Marktcheck bleibt der primäre Schritt: persönliche Prüfung, schriftlicher
-E-Mail-Befund gemäß Antwortzeit-Kanon, danach freie Entscheidung. Kein
+Zielgruppe und persönliche Umsetzung zuerst; ein kompakter Fallbeleg enthält
+die Projektphasen und Einzelfallgrenzen. Danach folgen Produktumfang mit
+Konfigurator, Passung und bezahlter Marktcheck; Preise und Anrechnung stammen
+aus dem Kanon. Rechner, Mechanismus, technische Fragen und Cluster-Verweise
+sind freiwillige Vertiefung. Der interaktive Rechner enthält Annahmen und
+darf nicht als Ergebnisprognose dargestellt werden. Der Marktcheck bleibt
+der primäre Schritt: persönliche Prüfung, schriftlicher E-Mail-Befund gemäß
+Antwortzeit-Kanon, danach freie Entscheidung. Das Anfragesystem ist das zweite
+Hauptprodukt; Sofortkontakt führt auf die eigene Kontaktstrecke. Kein
 Pflichtgespräch und keine Buchung durch das Absenden.
 
 ## Die Anfrage-Website — Freigaben 02.10. und 04.10.2026
