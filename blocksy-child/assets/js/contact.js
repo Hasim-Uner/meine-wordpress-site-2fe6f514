@@ -38,6 +38,15 @@
         var scopedSubmitLabel = submitButton && submitButton.hasAttribute('data-contact-submit-label')
             ? submitButton.getAttribute('data-contact-submit-label').trim()
             : '';
+        var projectFocusCopy = null;
+        try {
+            if (form.hasAttribute('data-contact-focus-copy')) {
+                projectFocusCopy = JSON.parse(form.getAttribute('data-contact-focus-copy'));
+            }
+        } catch (error) {
+            // Older or incomplete cached markup keeps its original form copy.
+            projectFocusCopy = null;
+        }
         var flowSteps = Array.prototype.slice.call(form.querySelectorAll('[data-contact-step]'));
         var flowNextButton = form.querySelector('[data-contact-next]');
         var flowPrevButton = form.querySelector('[data-contact-prev]');
@@ -817,16 +826,12 @@
 
         function syncFormExperience() {
             var requestType = getSelectedType();
+            syncFocusOptions(requestType);
             var content = typeContent[requestType] || typeContent.audit;
-            var landingpageFocus = requestType === 'project' && focusSelect && focusSelect.value === 'landingpage';
-
-            if (requestType === 'project' && focusSelect && focusSelect.value === 'website') {
-                content = Object.assign({}, content, { messageLabel: 'Ihr Angebot und gewünschter Starttermin', messageHelp: 'Welche Leistungen zeigen Sie, und bis wann soll die Website stehen?', messagePlaceholder: 'Wir bieten … an. Die Website soll … live gehen.' });
-            } else if (landingpageFocus) {
-                content = Object.assign({}, content, { messageLabel: 'Angebot, Besucherquelle und Termin', messageHelp: 'Was bieten Sie an, woher kommen die Besucher und wann soll die Seite live gehen?', messagePlaceholder: 'Angebot: … · Besucherquelle: … · Gewünschter Termin: …', submitLabel: 'Landingpage anfragen' });
+            if (requestType === 'project' && focusSelect && projectFocusCopy && Object.prototype.hasOwnProperty.call(projectFocusCopy, focusSelect.value)) {
+                content = Object.assign({}, content, projectFocusCopy[focusSelect.value]);
             }
 
-            syncFocusOptions(requestType);
             toggleContextField(timelineField, content.showTimeline);
             toggleContextField(budgetField, content.showBudget);
 
@@ -854,11 +859,11 @@
             }
 
             if (messageField && !messageOptional) {
-                messageField.placeholder = landingpageFocus ? content.messagePlaceholder : (scopedMessagePlaceholder !== null ? scopedMessagePlaceholder : content.messagePlaceholder);
+                messageField.placeholder = projectFocusCopy ? content.messagePlaceholder : (scopedMessagePlaceholder !== null ? scopedMessagePlaceholder : content.messagePlaceholder);
                 messageField.minLength = content.messageMinlength;
             }
 
-            currentSubmitLabel = landingpageFocus ? content.submitLabel : (scopedSubmitLabel || content.submitLabel);
+            currentSubmitLabel = projectFocusCopy ? content.submitLabel : (scopedSubmitLabel || content.submitLabel);
 
             if (submitButton && !submitButton.disabled) {
                 submitButton.textContent = currentSubmitLabel;

@@ -1,10 +1,11 @@
 # Live Status
 
 Verhalten laut Repository, nach Bereichen. Stand: 2026-10-09.
-Der grundlegende Funnel-Umbau aus PR #565 ist gemerged und deployed.
+Der grundlegende Funnel-Umbau aus PR #565 und die Tracking-Korrekturen aus
+PR #566 sind gemerged und deployed.
 Startseite, GA4, Landingpage, Solar, Kontakt und Server-Side wurden im
-Live-Browser geprüft. Die ergänzenden Footer- und Legacy-JS-Korrekturen
-dieser Fassung gelten mit ihrem Deploy; dessen Nachweis gehört zum PR.
+Live-Browser geprüft. Die Kontaktübergabe dieser Fassung gilt mit ihrem
+Deploy; dessen Nachweis gehört zum PR.
 
 Diese Datei beschreibt den Ist-Zustand, keinen Verlauf. Die frühere,
 chronologische Fassung mit Begründungen und Prüfprotokollen bis 2026-09-22
@@ -22,7 +23,7 @@ Abschnitt anzuhängen; der Verlauf gehört in Commit-Nachrichten.
 - Live-Abnahme am 2026-10-09 auf den normalen URLs: neue Angebotsreihenfolge,
   fünf Tracking-/Landingpage-Bausteine, native Vertiefungen, Solar-Produktwahl
   samt Preis und Anfrageparameter sowie Landingpage-Fokus im Kontaktformular.
-  Theme-Asset-Version `de8047b61176`. Keine Produktionsanfrage versendet;
+  Theme-Asset-Version `9674a6afa06e`. Keine Produktionsanfrage versendet;
   CRM und Mail sind durch isolierte Tests, nicht durch Live-Zustellung belegt.
 - Deploy: `.github/workflows/ci.yml` prüft; `.github/workflows/deploy.yml`
   deployt bei Runtime-/Tooling-Änderungen nach grünem CI-Lauf auf `main` oder
@@ -656,6 +657,8 @@ Contract und Abnahme: `CHAT_ASSISTANT.md`.
     zuerst die Themenwahl (Vorhaben); `landingpage` ist ein eigenes Thema,
     ein gültiger Fokus übernimmt die Vorauswahl. Der Agentur-Hinweis ist
     sichtbar, Budget ist optional.
+    Produktbezogene Briefingtexte und Submitlabels kommen aus einer gemeinsamen
+    PHP-Registry; der Themenwechsel übernimmt sie auch im Browser.
     Anfragetyp `ersteinschaetzung` (Versuch): Website-URL Pflicht, Nachricht
     optional, Betreff-Präfix aus dem Kanon; der Endpoint nimmt ihn auch bei
     ausgeschaltetem Schalter an.
@@ -673,12 +676,17 @@ Contract und Abnahme: `CHAT_ASSISTANT.md`.
   Scheitert nur die Mail, erscheint ein Hinweis im Dashboard und in den
   CRM-Ansichten (Option `nexus_lead_notification_failures`, 7 Tage) und eine
   Aktivität im Verlauf.
+  Bei Kontakt/SST wird auch eine fehlgeschlagene Bestätigung unterschieden
+  protokolliert. Ein angenommener Lead behält HTTP 201; `confirmationSent`
+  meldet die Transportannahme, keine nachgewiesene Postfachzustellung.
 - CRM: `nexus_contact` (Upsert pro E-Mail), `nexus_opportunity` mit den Stufen
   aus `nexus_get_crm_sales_stages()`, `nexus_crm_activity` als Verlauf. Jede
   Kontakt- und White-Label-Anfrage schreibt eine Aktivität `inbound_inquiry`
   mit Anfragetext und Herkunft, auch bei wiederholten Anfragen. Admin: Nexus
   CRM mit Vertrieb, Kommunikation, Projektanfragen, White-Label-Anfragen und
   Blog-Abos.
+  Kontakt-Aktivitäten bewahren zusätzlich LinkedIn, Werbeplattformen,
+  Werbebudget, Tracking-Setup und Consent-Tool, wenn angegeben.
 - Herkunft: cookiefrei aus der Browser-Session (`NexusCore`): Landing-, Einstiegs-,
   vorherige und Referrer-URL, Kampagnenquelle, Suchbegriff, `utm_medium`,
   `utm_campaign` und die optionale Frage, wie jemand aufmerksam wurde. Die

@@ -325,6 +325,15 @@ Regeln:
 - Ein Hauptweg im Hero; die Angebotsphase bekommt ihren CTA nach den Preisen
 - Margenvergleich nur bei gleichem Umfang; Landingpages werden derzeit nicht verglichen
 
+## Kontaktbriefings
+
+Die Fragen folgen dem gewählten Produkt, auch nach einem Themenwechsel.
+Website: Angebot und Starttermin. Landingpage: Angebot, Besucherquelle und
+Termin. Energie-Anfragesystem: Zielgebiet, Anfragequellen und Start.
+Sofortkontakt: Anfragequellen, CRM und Rückruf. Tracking: Website, Messziel
+und aktuelles Setup. Die Anfrage bleibt unverbindlich; fehlende Kenntnisse
+über Tracking-Tools oder ein CRM sind kein Ausschlusskriterium.
+
 ## Brand Colors (Project Override)
 
 - Primary brand accent: `#b46a3c` (copper)

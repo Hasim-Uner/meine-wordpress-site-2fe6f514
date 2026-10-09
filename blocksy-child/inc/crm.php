@@ -701,7 +701,7 @@ function nexus_record_inbound_inquiry_activity( $contact_id, $subject, $body, $s
 }
 
 /**
- * Remember an internal lead notification that wp_mail() did not accept.
+ * Remember a lead notification or confirmation that wp_mail() did not accept.
  *
  * The request itself is stored in the CRM; the failure is logged without
  * personal data, written to the contact timeline and surfaced as an admin
@@ -709,18 +709,23 @@ function nexus_record_inbound_inquiry_activity( $contact_id, $subject, $body, $s
  *
  * @param int    $contact_id Contact post ID, 0 when the CRM write failed too.
  * @param string $source     CRM source key of the form.
+ * @param string $kind       internal (default) or confirmation.
  * @return void
  */
-function nexus_record_lead_notification_failure( $contact_id, $source ) {
+function nexus_record_lead_notification_failure( $contact_id, $source, $kind = 'internal' ) {
 	$contact_id = (int) $contact_id;
 	$source     = sanitize_key( (string) $source );
+	$kind       = 'confirmation' === $kind ? 'confirmation' : 'internal';
+	$is_confirmation = 'confirmation' === $kind;
+	$subject    = $is_confirmation ? 'Bestätigungs-E-Mail nicht versendet' : 'Interne Benachrichtigung nicht zugestellt';
 
-	error_log( '[Nexus Lead] Interne Benachrichtigung nicht zugestellt: ' . wp_json_encode( [ 'source' => $source, 'contact_id' => $contact_id ] ) );
+	error_log( '[Nexus Lead] ' . $subject . ': ' . wp_json_encode( [ 'source' => $source, 'contact_id' => $contact_id ] ) );
 
 	$failures   = nexus_get_recent_lead_notification_failures();
 	$failures[] = [
 		'contact_id' => $contact_id,
 		'source'     => $source,
+		'kind'       => $kind,
 		'failed_at'  => time(),
 	];
 	update_option( 'nexus_lead_notification_failures', array_slice( $failures, -10 ), false );
@@ -729,18 +734,20 @@ function nexus_record_lead_notification_failure( $contact_id, $source ) {
 		return;
 	}
 
-	update_post_meta( $contact_id, '_nexus_contact_notification_failed_at', current_time( 'timestamp' ) );
+	update_post_meta( $contact_id, $is_confirmation ? '_nexus_contact_confirmation_failed_at' : '_nexus_contact_notification_failed_at', current_time( 'timestamp' ) );
 
 	if ( function_exists( 'nexus_record_crm_activity' ) ) {
 		nexus_record_crm_activity(
 			[
 				'contact_id'     => $contact_id,
 				'opportunity_id' => function_exists( 'nexus_find_open_crm_opportunity_for_contact' ) ? nexus_find_open_crm_opportunity_for_contact( $contact_id ) : 0,
-				'type'           => 'internal_notification',
+				'type'           => $is_confirmation ? 'request_confirmation' : 'internal_notification',
 				'channel'        => 'email',
-				'direction'      => 'internal',
-				'subject'        => 'Interne Benachrichtigung nicht zugestellt',
-				'body'           => 'Die Anfrage ist gespeichert. Die Benachrichtigungs-Mail an das Postfach wurde nicht angenommen; Details in der Mail-Diagnose.',
+				'direction'      => $is_confirmation ? 'outbound' : 'internal',
+				'subject'        => $subject,
+				'body'           => $is_confirmation
+					? 'Die Anfrage ist angenommen. Die Bestätigungs-E-Mail wurde vom Mailtransport nicht angenommen; die persönliche Rückmeldung bleibt erforderlich.'
+					: 'Die Anfrage ist gespeichert. Die Benachrichtigungs-Mail an das Postfach wurde nicht angenommen; Details in der Mail-Diagnose.',
 				'status'         => 'failed',
 			]
 		);
@@ -750,7 +757,7 @@ function nexus_record_lead_notification_failure( $contact_id, $source ) {
 /**
  * Return notification failures of the last seven days.
  *
- * @return array<int, array{contact_id:int, source:string, failed_at:int}>
+ * @return array<int, array{contact_id:int, source:string, kind:string, failed_at:int}>
  */
 function nexus_get_recent_lead_notification_failures() {
 	$failures = get_option( 'nexus_lead_notification_failures', [] );
@@ -765,6 +772,7 @@ function nexus_get_recent_lead_notification_failures() {
 		$recent[] = [
 			'contact_id' => (int) ( $failure['contact_id'] ?? 0 ),
 			'source'     => sanitize_key( (string) ( $failure['source'] ?? '' ) ),
+			'kind'       => 'confirmation' === ( $failure['kind'] ?? '' ) ? 'confirmation' : 'internal',
 			'failed_at'  => (int) $failure['failed_at'],
 		];
 	}
@@ -800,9 +808,14 @@ function nexus_render_lead_notification_failure_notice() {
 
 	$source_labels = nexus_get_crm_contact_source_labels();
 	$items         = [];
+	$has_confirmation_failure = false;
 
 	foreach ( array_reverse( $failures ) as $failure ) {
 		$label = $source_labels[ $failure['source'] ] ?? ( 'contact_request' === $failure['source'] ? 'Kontaktanfrage' : 'Anfrage' );
+		if ( 'confirmation' === $failure['kind'] ) {
+			$label .= ' · Bestätigungs-E-Mail';
+			$has_confirmation_failure = true;
+		}
 		$when  = wp_date( 'd.m.Y H:i', $failure['failed_at'] );
 		$items[] = $failure['contact_id'] > 0
 			? sprintf( '<a href="%1$s">%2$s vom %3$s</a>', esc_url( admin_url( 'post.php?post=' . $failure['contact_id'] . '&action=edit' ) ), esc_html( $label ), esc_html( $when ) )
@@ -811,7 +824,9 @@ function nexus_render_lead_notification_failure_notice() {
 
 	printf(
 		'<div class="notice notice-warning"><p><strong>%1$s</strong> %2$s</p></div>',
-		esc_html__( 'Anfrage-Benachrichtigung nicht zugestellt.', 'blocksy-child' ),
+		$has_confirmation_failure
+			? esc_html__( 'Anfrage-E-Mail konnte nicht versendet werden.', 'blocksy-child' )
+			: esc_html__( 'Anfrage-Benachrichtigung nicht zugestellt.', 'blocksy-child' ),
 		wp_kses( implode( ' · ', $items ), [ 'a' => [ 'href' => true ] ] )
 	);
 }

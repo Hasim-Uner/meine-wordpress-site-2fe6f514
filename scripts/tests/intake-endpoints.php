@@ -28,8 +28,23 @@ foreach ( [ 'contact' => $contact, 'whitelabel' => $whitelabel ] as $kind => $pa
 					check( count( $GLOBALS['intake_test']['mails'] ) === ( $success ? 2 : 1 ), 'Confirmation only after acceptance' );
 					check( $GLOBALS['intake_test']['events'][0] === 'insert:nexus_contact', 'Storage precedes mail' );
 					if ( $success && ! $internal_mail ) {
-						check( count( nexus_get_recent_lead_notification_failures() ) === 1, 'Existing notification failure notice retained' );
+						$internal_failures = array_filter( nexus_get_recent_lead_notification_failures(), static fn( $failure ) => 'internal' === $failure['kind'] );
+						check( count( $internal_failures ) === 1, 'Existing internal notification failure notice retained' );
 						check( get_post_meta( 1, '_nexus_contact_notification_failed_at' ) > 0, 'Failure recorded on contact' );
+					}
+					if ( 'contact' === $kind ) {
+						$confirmation_failures = array_filter( nexus_get_recent_lead_notification_failures(), static fn( $failure ) => 'confirmation' === $failure['kind'] );
+						check( count( $confirmation_failures ) === ( $success && ! $confirmation_mail ? 1 : 0 ), 'Confirmation failure is recorded only after an accepted contact request' );
+						if ( $success ) {
+							check( $confirmation_mail === $r->data['confirmationSent'], 'Response reports transport acceptance of the confirmation' );
+							check( str_contains( $r->data['message'], 'Bestätigungs-E-Mail konnte gerade nicht gesendet werden' ) === ! $confirmation_mail, 'Accepted lead receives appropriate copy when confirmation mail fails' );
+							check( ! str_contains( $r->data['message'], 'erneut' ), 'Confirmation failure does not ask for a duplicate enquiry' );
+							if ( ! $storage_fail ) {
+								check( ( get_post_meta( 1, '_nexus_contact_confirmation_failed_at' ) > 0 ) === ! $confirmation_mail, 'Confirmation marker on contact remains distinct from internal-mail failures' );
+								$failed_confirmations = array_filter( $GLOBALS['intake_test']['activities'], static fn( $activity ) => 'request_confirmation' === $activity['type'] && 'failed' === $activity['status'] );
+								check( count( $failed_confirmations ) === ( $confirmation_mail ? 0 : 1 ), 'Failed confirmation remains visible in the contact timeline' );
+							}
+						}
 					}
 					if ( $kind === 'contact' && $storage_fail && $internal_mail ) check( $r->data['contactId'] === 0, 'Mail fallback has no CRM id' );
 				} );
@@ -197,6 +212,35 @@ run_case( 'contact consent, attribution, source and repeated activity', static f
 	check( in_array( 'project_request', nexus_get_contact_segments( 1 ), true ), 'Segment retained' );
 	check( get_post_meta( 1, '_nexus_contact_ads_source' ) === 'fixture', 'Attribution retained' );
 	check( get_post_meta( 1, '_nexus_contact_referrer_url' ) === 'https://referrer.test/path', 'Referrer query removed' );
+} );
+run_case( 'SST details survive a later landingpage enquiry in the inquiry history', static function () use ( $contact ) {
+	$sst = $contact + [
+		'form_origin' => 'sst',
+		'ad_platform_google_ads' => '1', 'ad_platform_meta' => '1',
+		'ad_budget' => '1000_5000',
+		'tracking_setup' => 'GA4 und GTM vorhanden; Formulardaten fehlen.',
+		'consent_tool' => 'Fixture CMP',
+		'linkedin_url' => 'https://www.linkedin.com/company/fixture/',
+	];
+	$first = call_intake( 'contact', $sst );
+	$history_before = $GLOBALS['intake_test']['activities'][0]['body'];
+	$second = call_intake( 'contact', array_merge( $contact, [ 'focus' => 'landingpage', 'message' => 'Eine Beratungs-Landingpage für Google Ads im November.' ] ) );
+	check( 201 === $first->status && 201 === $second->status && 1 === count( $GLOBALS['intake_test']['posts'] ), 'Both enquiries are accepted and reuse the contact' );
+	check( 2 === count( $GLOBALS['intake_test']['activities'] ) && $history_before === $GLOBALS['intake_test']['activities'][0]['body'], 'The first inquiry history is independent of the current contact snapshot' );
+	foreach ( [ 'Google Ads, Meta (Facebook/Instagram)', nexus_get_contact_ad_budget_options()['1000_5000'], $sst['tracking_setup'], $sst['consent_tool'], $sst['linkedin_url'] ] as $value ) {
+		check( str_contains( $history_before, $value ), 'The original activity retains each collected tracking and profile detail' );
+	}
+	check( 'landingpage' === get_post_meta( 1, '_nexus_contact_focus' ) && '' === get_post_meta( 1, '_nexus_contact_tracking_setup' ), 'Existing latest-inquiry snapshot behavior remains unchanged' );
+} );
+run_case( 'legacy notification failures remain internal and confirmation diagnosis contains no PII', static function () use ( $contact ) {
+	update_option( 'nexus_lead_notification_failures', [ [ 'contact_id' => 1, 'source' => 'contact_request', 'failed_at' => time() ] ] );
+	check( 'internal' === nexus_get_recent_lead_notification_failures()[0]['kind'], 'Old notification entries without a kind remain internal' );
+	intake_reset( [ 'confirmation_mail' => false ] );
+	$r = call_intake( 'contact', $contact );
+	$failure = nexus_get_recent_lead_notification_failures()[0];
+	check( 201 === $r->status && 'confirmation' === $failure['kind'] && 1 === $failure['contact_id'], 'Confirmation diagnostic points to the accepted lead' );
+	$diagnostic = wp_json_encode( $failure );
+	check( ! str_contains( $diagnostic, $contact['name'] ) && ! str_contains( $diagnostic, $contact['email'] ) && ! str_contains( $diagnostic, $contact['message'] ), 'Private failure index stores identifiers and time without inquiry PII' );
 } );
 foreach ( [ false, true ] as $storage_fail ) {
 	run_case( "marketcheck mail failure, storage_fail=$storage_fail", static function () use ( $marketcheck, $storage_fail ) {

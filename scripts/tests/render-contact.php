@@ -14,6 +14,7 @@ $_GET = ( $argv[1] ?? '' ) === 'assessment' ? [ 'focus' => 'ersteinschaetzung' ]
 if ( ( $argv[1] ?? '' ) === 'project' ) unset( $_GET['focus'] );
 if ( ( $argv[1] ?? '' ) === 'landingpage' ) $_GET['focus'] = 'landingpage';
 if ( in_array( $argv[1] ?? '', [ 'website', 'energy', 'sofortkontakt' ], true ) ) {
-    parse_str( $argv[2] ?? 'type=project&focus=website&seiten=5&art=relaunch&tracking=1', $_GET );
+    $default_query = 'website' === $argv[1] ? 'type=project&focus=website&seiten=5&art=relaunch&tracking=1' : 'type=project&focus=' . $argv[1];
+    parse_str( $argv[2] ?? $default_query, $_GET );
 }
 require __DIR__ . '/../../blocksy-child/page-kontakt.php';
