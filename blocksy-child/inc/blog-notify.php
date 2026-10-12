@@ -491,7 +491,7 @@ function nexus_handle_blog_subscribe_submission( WP_REST_Request $request ) {
 	}
 
 	$honeypot = isset( $payload['website'] ) ? trim( (string) $payload['website'] ) : '';
-	if ( '' !== $honeypot ) {
+	if ( '' !== $honeypot || ( function_exists( 'nexus_intake_is_spam' ) && nexus_intake_is_spam( $payload, 'blog' ) ) ) {
 		return new WP_REST_Response(
 			[
 				'ok'      => true,

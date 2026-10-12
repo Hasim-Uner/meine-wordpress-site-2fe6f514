@@ -1191,7 +1191,7 @@ function nexus_process_review_request_submission( $payload, $trace_id = '' ) {
 	$trace_id = '' !== $trace_id ? sanitize_key( $trace_id ) : nexus_generate_review_request_trace_id();
 
 	$honeypot = isset( $payload['company_website'] ) ? trim( (string) $payload['company_website'] ) : '';
-	if ( '' !== $honeypot ) {
+	if ( '' !== $honeypot || ( function_exists( 'nexus_intake_is_spam' ) && nexus_intake_is_spam( $payload, 'audit' ) ) ) {
 		return [
 			'ok'              => true,
 			'ignored'         => true,

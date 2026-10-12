@@ -1,7 +1,7 @@
 <?php
 /** Execute real endpoint, validation, CRM and mail-building code with isolated WP boundaries. */
 require __DIR__ . '/intake-wordpress-doubles.php';
-foreach ( [ 'canon/messaging-canon', 'canon/pricing-canon', 'canon/e3-proof-canon', 'crm', 'contact-page', 'whitelabel-request', 'review-crm', 'blog-notify' ] as $module ) {
+foreach ( [ 'canon/messaging-canon', 'canon/pricing-canon', 'canon/e3-proof-canon', 'crm', 'intake-spam-guard', 'contact-page', 'whitelabel-request', 'review-crm', 'blog-notify' ] as $module ) {
 	require __DIR__ . '/../../blocksy-child/inc/' . $module . '.php';
 }
 function check( $condition, $message ) { if ( ! $condition ) throw new RuntimeException( $message ); }
@@ -59,6 +59,42 @@ foreach ( [ 'contact' => $contact, 'whitelabel' => $whitelabel ] as $kind => $pa
 		} );
 	}
 }
+
+foreach ( [ 'contact' => $contact, 'whitelabel' => $whitelabel, 'marketcheck' => $marketcheck, 'blog' => $blog ] as $kind => $payload ) {
+	run_case( "$kind spam too fast", static function () use ( $kind, $payload ) {
+		$payload['form_elapsed_ms'] = 900;
+		$r = call_intake( $kind, $payload );
+		check( $r->status === 200 && $r->data['ok'] === true, 'Fast bot is acknowledged silently' );
+		check( ! $GLOBALS['intake_test']['events'], 'Fast bot has no storage or mail' );
+		check( 1 === array_sum( end( $GLOBALS['intake_test']['options'][ NEXUS_SPAM_STATS_OPTION ] ) ), 'Fast bot is counted' );
+	} );
+	run_case( "$kind spam keyword in email", static function () use ( $kind, $payload ) {
+		$payload['email'] = 'best-casino-bonus@example.test';
+		$r = call_intake( $kind, $payload );
+		check( $r->status === 200 && $r->data['ok'] === true && ! $GLOBALS['intake_test']['events'], 'Keyword spam is dropped silently' );
+	} );
+}
+foreach ( [ 'contact' => [ $contact, 'message' ], 'whitelabel' => [ $whitelabel, 'task' ] ] as $kind => list( $payload, $field ) ) {
+	foreach ( [ 'cyrillic' => 'Привет, хороший сайт', 'links' => 'see https://a.example and https://b.example', 'markup' => '[url=https://a.example]x[/url]', 'keyword' => 'Best online Casino bonus' ] as $label => $text ) {
+		run_case( "$kind spam $label", static function () use ( $kind, $payload, $field, $text ) {
+			$payload[ $field ] = $text;
+			$payload['form_elapsed_ms'] = 45000;
+			$r = call_intake( $kind, $payload );
+			check( $r->status === 200 && $r->data['ok'] === true && ! $GLOBALS['intake_test']['events'], 'Content spam is dropped silently' );
+		} );
+	}
+	run_case( "$kind real enquiry with one link and umlauts passes", static function () use ( $kind, $payload, $field ) {
+		$payload[ $field ] = 'Unsere Seite https://firma.example lädt langsam, Anfragen über das Formular gehen verloren. Können Sie das prüfen?';
+		$payload['form_elapsed_ms'] = 64000;
+		$r = call_intake( $kind, $payload );
+		check( 201 === $r->status && true === $r->data['ok'], 'Legitimate enquiry still accepted' );
+	} );
+}
+run_case( 'missing timing passes while timing is not required', static function () use ( $contact ) {
+	$r = call_intake( 'contact', $contact );
+	check( 201 === $r->status, 'Old cached pages without timing still submit' );
+	check( 1 === ( end( $GLOBALS['intake_test']['options'][ NEXUS_SPAM_STATS_OPTION ] )['contact:no_timing_passed'] ?? 0 ), 'Missing timing is observed' );
+} );
 
 foreach ( [ 'contact' => $contact, 'whitelabel' => $whitelabel, 'marketcheck' => $marketcheck, 'blog' => $blog ] as $kind => $payload ) {
 	run_case( "$kind honeypot", static function () use ( $kind, $payload ) {

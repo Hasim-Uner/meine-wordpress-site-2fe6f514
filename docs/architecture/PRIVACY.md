@@ -154,6 +154,16 @@ Rate-Limits zählen pro IP und Stunde in Transients mit gehashtem Schlüssel
 (`md5( IP . Stunde )`), Laufzeit eine Stunde. Die IP liefert
 `nexus_get_review_request_ip()`.
 
+Vor jedem CRM-Schreibvorgang prüft `inc/intake-spam-guard.php` jede Absendung:
+Zeitsperre (`form_elapsed_ms` aus `nexus-core.js`, Millisekunden seit
+Seitenaufruf, unter 3 Sekunden = verworfen) und Inhaltsfilter auf den
+Freitextfeldern (kyrillische/ostasiatische Schrift, mehr als ein Link,
+Link-Markup, Spam-Begriffe). Verworfen wird still mit Erfolgsantwort. Gezählt
+wird in der Option `nexus_intake_spam_stats` nur Tag, Formular und Grund,
+30 Tage lang – keine IP, keine Personendaten, kein Text. Übersicht im CRM-Menü
+unter „Formular-Spam“. Fehlendes Zeitfeld blockt erst, wenn
+`NEXUS_SPAM_REQUIRE_TIMING` auf `true` steht.
+
 ## Offen
 
 - Rechtlich bestätigen lassen (Anwalt oder Datenschutzbeauftragter): Koko

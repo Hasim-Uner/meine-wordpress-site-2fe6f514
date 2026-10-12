@@ -121,7 +121,7 @@ function hu_handle_analysis_submit( WP_REST_Request $request ) {
 	}
 
 	$honeypot = isset( $payload['company_website'] ) ? trim( (string) $payload['company_website'] ) : '';
-	if ( '' !== $honeypot ) {
+	if ( '' !== $honeypot || ( function_exists( 'nexus_intake_is_spam' ) && nexus_intake_is_spam( $payload, 'analysis' ) ) ) {
 		return new WP_REST_Response(
 			[
 				'ok'        => true,
