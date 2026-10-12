@@ -35,6 +35,16 @@ if ( ! defined( 'NEXUS_SPAM_REQUIRE_TIMING' ) ) {
 	define( 'NEXUS_SPAM_REQUIRE_TIMING', false );
 }
 
+/**
+ * Ob ein fehlendes Zeitfeld blockt. Laeuft ueber constant(), damit die
+ * Konstante in wp-config.php ueberschrieben werden kann.
+ *
+ * @return bool
+ */
+function nexus_intake_spam_timing_required() {
+	return (bool) apply_filters( 'nexus_intake_spam_require_timing', (bool) constant( 'NEXUS_SPAM_REQUIRE_TIMING' ) );
+}
+
 /** Option mit den Tageszaehlern. */
 const NEXUS_SPAM_STATS_OPTION = 'nexus_intake_spam_stats';
 
@@ -112,7 +122,7 @@ function nexus_intake_spam_reason( $payload ) {
 	}
 
 	if ( null === $elapsed || '' === $elapsed ) {
-		return NEXUS_SPAM_REQUIRE_TIMING ? 'no_timing' : '';
+		return nexus_intake_spam_timing_required() ? 'no_timing' : '';
 	}
 
 	return '';
@@ -220,7 +230,7 @@ function nexus_render_intake_spam_admin_page() {
 
 	echo '<div class="wrap"><h1>Formular-Spam</h1>';
 	echo '<p>' . esc_html( sprintf( 'Verworfene Absendungen der letzten %d Tage. Honeypot-Treffer laufen vorher ab und sind hier nicht enthalten. Gespeichert werden nur Tag, Formular und Grund.', NEXUS_SPAM_STATS_DAYS ) ) . '</p>';
-	echo '<p>' . esc_html( 'Zeitfeld-Pflicht: ' . ( NEXUS_SPAM_REQUIRE_TIMING ? 'an' : 'aus (nur Beobachtung)' ) ) . '</p>';
+	echo '<p>' . esc_html( 'Zeitfeld-Pflicht: ' . ( nexus_intake_spam_timing_required() ? 'an' : 'aus (nur Beobachtung)' ) ) . '</p>';
 
 	if ( empty( $totals ) ) {
 		echo '<p><strong>Noch keine Einträge im Zeitraum.</strong></p></div>';
