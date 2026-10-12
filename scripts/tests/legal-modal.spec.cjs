@@ -46,14 +46,17 @@ async function openImprint(page) {
 }
 
 async function nearPanelTop(page, selector) {
+  // Native smooth scrolling may settle between the default poll intervals.
+  // Sample through the unchanged deadline, keeping the same position bounds.
+  const poll = { intervals: [50, 100] };
   await expect.poll(() => page.locator(selector).evaluate(el => {
     const root = el.closest('.legal-modal__panel');
     return Math.round(el.getBoundingClientRect().top - root.getBoundingClientRect().top);
-  })).toBeGreaterThan(0);
+  }), poll).toBeGreaterThan(0);
   await expect.poll(() => page.locator(selector).evaluate(el => {
     const root = el.closest('.legal-modal__panel');
     return Math.round(el.getBoundingClientRect().top - root.getBoundingClientRect().top);
-  })).toBeLessThan(160);
+  }), poll).toBeLessThan(160);
 }
 
 for (const width of [390, 1280]) {

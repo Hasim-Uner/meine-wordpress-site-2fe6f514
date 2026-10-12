@@ -878,6 +878,7 @@
 
     .contact-page .contact-intro__kopf {
         order: 1;
+        min-width: 0;
     }
 
     .contact-page .contact-form-panel {
@@ -1006,10 +1007,14 @@
 }
 
 .contact-page--scoped .contact-title {
-    max-width: 12ch;
-    font-size: clamp(2.35rem, 1.7rem + 1.8vw, 3.5rem);
-    line-height: 1.01;
+    /* Der Titel passt bei Normalgroesse mit ganzen Woertern in die schmale
+     * Spalte. Der Notumbruch bleibt fuer vergroesserten Text erhalten. */
+    max-width: 100%;
+    font-size: clamp(2rem, 0.4rem + 2.3vw, 2.4rem);
+    line-height: 1.08;
     letter-spacing: -0.04em;
+    overflow-wrap: break-word;
+    word-break: normal;
 }
 
 .contact-page--scoped .contact-lead {
@@ -1049,7 +1054,7 @@ body:has(.contact-page--scoped) .fuss > .blatt {
     }
 
     .contact-page--scoped .contact-title {
-        font-size: clamp(2.3rem, 4.2vw, 3.15rem);
+        font-size: 2rem;
     }
 }
 
@@ -1062,5 +1067,9 @@ body:has(.contact-page--scoped) .fuss > .blatt {
     .contact-page--scoped .contact-page__shell {
         grid-template-columns: 1fr;
         gap: 2.25rem;
+    }
+
+    .contact-page--scoped .contact-title {
+        font-size: clamp(2.35rem, 1.7rem + 1.8vw, 3.5rem);
     }
 }

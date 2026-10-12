@@ -1,11 +1,11 @@
 # Live Status
 
-Verhalten laut Repository, nach Bereichen. Stand: 2026-10-09.
+Verhalten laut Repository, nach Bereichen. Stand: 2026-10-12.
 Der grundlegende Funnel-Umbau aus PR #565 und die Tracking-Korrekturen aus
-PR #566 sind gemerged und deployed.
+PR #566 sowie die Kontaktübergabe aus PR #567 sind gemerged und deployed.
 Startseite, GA4, Landingpage, Solar, Kontakt und Server-Side wurden im
-Live-Browser geprüft. Die Kontaktübergabe dieser Fassung gilt mit ihrem
-Deploy; dessen Nachweis gehört zum PR.
+Live-Browser geprüft. Die Titelkorrektur der Kontaktseite in dieser Fassung
+gilt mit ihrem Deploy; dessen Nachweis gehört zum PR.
 
 Diese Datei beschreibt den Ist-Zustand, keinen Verlauf. Die frühere,
 chronologische Fassung mit Begründungen und Prüfprotokollen bis 2026-09-22
@@ -276,6 +276,11 @@ Contract und Abnahme: `CHAT_ASSISTANT.md`.
   unverändert per 301 hierher. Beobachtung nach sechs Wochen ab Livegang:
   Fall-CTA gegen Hero-CTA und Qualität der Einsendungen, siehe Experiment-Doku.
 - **`/kontakt/`** (`page-kontakt.php`): Anfrage-Intake, siehe „Anfragewege“.
+  Vorausgewählte Kontaktvarianten skalieren ihre H1 in der schmalen
+  Einleitungsspalte kleiner und nutzen die verfügbare Breite. Der Titel
+  passt bei normaler Schriftgröße mit ganzen Wörtern in die Spalte.
+  Mobile Schriftgrößen und der Notumbruch für stark vergrößerten Text bleiben
+  erhalten.
   `type=project&focus=landingpage` übernimmt „WordPress-Landingpage für ein
   Angebot“ als eigenständiges Thema und behält es für Formular, Mail und CRM
   bei. Die Eingabehilfe fragt nach Angebot, geplanter Besucherquelle und
