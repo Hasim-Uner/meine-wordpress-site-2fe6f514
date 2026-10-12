@@ -40,6 +40,7 @@ $modules = [
 	'canon/market-canon.php', // Fremde Marktzahlen mit Quelle — streng getrennt von eigenen Ergebnissen
 	'mail.php',           // Zentraler Brevo-Mail-Router für Transaktionsmails
 	'crm.php',            // Gemeinsame CRM-Grundlage für Kontakte, Blog-Abos und Projektanfragen
+	'intake-spam-guard.php', // Zeitsperre und Inhaltsfilter vor jedem Formular-Endpunkt
 	'glossary/glossary.php',       // Glossar-Hub + CPT für definitorische Begriffe
 	'glossary/glossary-registry.php', // Versionierte Glossar-Registry + Sync
 	'legacy-system-retirement.php', // Einmalige Entfernung stillgelegter Inhalte nach Glossar-Sync

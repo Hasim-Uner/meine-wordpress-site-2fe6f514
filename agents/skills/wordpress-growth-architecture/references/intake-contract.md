@@ -23,7 +23,7 @@ The JSON/FormData payload accepted by the WordPress backend is a hard contract. 
 
 Current hard anchors:
 
-- REST routes under `/wp-json/nexus/v1/`, public, each with honeypot and IP rate limit: `contact-request`, `whitelabel-request`, `audit-request` (contract `2026-05-26.audit-request.v1`). `analysis-submit` is off by default behind `HU_FEATURE_READINESS_SUBMIT`; its spec is `docs/specs/anfrage-system-analyse-form-v1.md`.
+- REST routes under `/wp-json/nexus/v1/`, public, each with honeypot, IP rate limit and the shared spam guard (`inc/intake-spam-guard.php`: timing via `form_elapsed_ms` from `NexusCore.submitJson`, free-text content filter, silent 200 drop): `contact-request`, `whitelabel-request`, `audit-request` (contract `2026-05-26.audit-request.v1`). `analysis-submit` is off by default behind `HU_FEATURE_READINESS_SUBMIT`; its spec is `docs/specs/anfrage-system-analyse-form-v1.md`.
 - CRM post types: `nexus_contact`, `nexus_review_request`, `nexus_opportunity`, `nexus_crm_activity`.
 - CRM sources and segments: `project_request`, `general_inquiry`, `whitelabel_request`, `request_analysis` / `analysis_lead` (Marktcheck), `blog_subscriber`.
 - Intake order for contact and White-Label: CRM write, internal mail, confirmation. A failed internal mail is recorded with `nexus_record_lead_notification_failure()`; the request only fails when CRM and mail both fail.

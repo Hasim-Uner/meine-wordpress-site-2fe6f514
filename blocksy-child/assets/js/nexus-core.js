@@ -49,6 +49,20 @@
             var requestOptions = Object.assign({}, options);
             if (controller) requestOptions.signal = controller.signal;
 
+            // Zeitsperre gegen Bots: Millisekunden seit Seitenaufruf mitschicken.
+            // Der Server verwirft Absendungen unter 3 Sekunden (inc/intake-spam-guard.php).
+            if (typeof requestOptions.body === 'string' && window.performance && typeof window.performance.now === 'function') {
+                try {
+                    var parsedBody = JSON.parse(requestOptions.body);
+                    if (parsedBody && typeof parsedBody === 'object' && !Array.isArray(parsedBody)) {
+                        parsedBody.form_elapsed_ms = Math.round(window.performance.now());
+                        requestOptions.body = JSON.stringify(parsedBody);
+                    }
+                } catch (error) {
+                    // Kein JSON-Objekt: Body unverändert senden.
+                }
+            }
+
             return new Promise(function (resolve, reject) {
                 var settled = false;
                 var deadline = Date.now() + 30000;
