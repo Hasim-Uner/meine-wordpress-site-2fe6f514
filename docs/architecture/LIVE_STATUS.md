@@ -1,11 +1,12 @@
 # Live Status
 
-Verhalten laut Repository, nach Bereichen. Stand: 2026-10-12.
+Verhalten laut Repository, nach Bereichen. Stand: 2026-10-14.
 Der grundlegende Funnel-Umbau aus PR #565 und die Tracking-Korrekturen aus
 PR #566 sowie die Kontaktübergabe aus PR #567 sind gemerged und deployed.
 Startseite, GA4, Landingpage, Solar, Kontakt und Server-Side wurden im
-Live-Browser geprüft. Die Titelkorrektur der Kontaktseite in dieser Fassung
-gilt mit ihrem Deploy; dessen Nachweis gehört zum PR.
+Live-Browser geprüft. Die Kontakt-Titelkorrektur aus PR #569 ist mit Merge
+`a033bfb612fc` und dem erfolgreichen Produktions-Deploy `38305055229`
+veröffentlicht.
 
 Diese Datei beschreibt den Ist-Zustand, keinen Verlauf. Die frühere,
 chronologische Fassung mit Begründungen und Prüfprotokollen bis 2026-09-22
@@ -25,6 +26,21 @@ Abschnitt anzuhängen; der Verlauf gehört in Commit-Nachrichten.
   samt Preis und Anfrageparameter sowie Landingpage-Fokus im Kontaktformular.
   Theme-Asset-Version `9674a6afa06e`. Keine Produktionsanfrage versendet;
   CRM und Mail sind durch isolierte Tests, nicht durch Live-Zustellung belegt.
+- Abschlussprüfung am 2026-10-14: normale Live-Adressen für Tracking,
+  Landingpage und Solar sowie das allgemeine Kontaktformular geprüft.
+  Tracking zeigt fünf Bausteine und denselben kanonischen Einstiegspreis im
+  Produkt, Header und Footer. Landingpage bleibt ein Festpreisprodukt mit
+  eigenem Anfragefokus.
+  Der allgemeine Themenwechsel behält das Landingpage-Briefing bis zum letzten
+  Formularschritt. Solar übergibt Photovoltaik + Wärmepumpe mit kanonisch
+  berechnetem Gesamtpreis und produktspezifischem Briefing. Kontakt-Titel und Layout sind im geprüften
+  Desktop-Viewport ohne horizontalen Seitenüberlauf.
+  Die öffentliche Maildiagnose bestätigt aktiven Brevo-API-Transport und einen
+  letzten erfolgreichen Versandversuch am 2026-10-13 um 06:00:38 UTC
+  (HTTP 201). Das ist keine zugeordnete Formularabnahme oder Postfachprüfung.
+  Es wurde keine Produktionsanfrage abgesendet; der CRM-/Postfachnachweis bleibt
+  als eigener Abnahmeschritt offen. Der 60-Sekunden-Check bleibt eine
+  Entwurfsprüfung, kein durchgeführter Nutzertest.
 - Deploy: `.github/workflows/ci.yml` prüft; `.github/workflows/deploy.yml`
   deployt bei Runtime-/Tooling-Änderungen nach grünem CI-Lauf auf `main` oder
   manuell. Reine Dokumentations- und Skill-Änderungen lösen keinen automatischen
