@@ -607,7 +607,7 @@ get_header();
 						</div>
 						<div>
 							<span class="hero-beleg-wert zahl"><?php echo esc_html( $e3_lead_count ); ?></span>
-							<span class="hero-beleg-label">Anfragen insgesamt in <?php echo esc_html( $e3_timeframe ); ?></span>
+							<span class="hero-beleg-label">Anfragen insgesamt · Zeitraum: <?php echo esc_html( $e3_timeframe ); ?></span>
 						</div>
 						<div>
 							<span class="hero-beleg-wert zahl"><?php echo esc_html( $e3_sales_conv ); ?></span>
