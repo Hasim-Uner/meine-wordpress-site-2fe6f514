@@ -46,15 +46,17 @@ $funnel_doors    = function_exists( 'hu_funnel_doors' ) ? hu_funnel_doors() : []
 
 /*
  * Das Register steht auf jeder Seite, nur nicht auf der Kontaktseite und nicht
- * auf Money Pages mit eigenem Abschluss. Die Entscheidung liegt zentral in
+ * auf Money Pages mit eigenem Abschluss. Die Energie-Zeile nur im Energie-Kontext. Die Entscheidung liegt zentral in
  * hu_footer_shows_register() (inc/funnel-doors.php); dieses Template liest sie
  * nur.
  */
 $shows_register = function_exists( 'hu_footer_shows_register' )
 	? hu_footer_shows_register()
 	: ! ( function_exists( 'nexus_is_contact_page' ) && nexus_is_contact_page() );
-$register       = (array) ( $footer_contract['routes'] ?? [] );
 $current_route  = (string) $funnel_context['route'];
+$register       = function_exists( 'hu_footer_register_routes' )
+	? hu_footer_register_routes( $footer_contract['routes'] ?? [], $current_route )
+	: (array) ( $footer_contract['routes'] ?? [] );
 
 $contact_url = $routes['contact'] ?? ( $primary_urls['contact'] ?? nexus_get_contact_url() );
 $form_url    = $contact_url;

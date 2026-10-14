@@ -596,12 +596,16 @@ unverändert, Direktzeile, Verzeichnis und Absender erscheinen weiter. Eine weit
 Money Page ohne Register trägt man mit ihrer Template-Datei in diese Liste ein;
 `scripts/tests/navigation-contract.php` prüft die Kontexte `home` und `conversion`.
 
-Die Energie-Zeile führt den Marktcheck damit auf jeder Seite (außer Kontakt
-und White-Label) als eine von drei Türen der Energie-Betriebe. Das ist die
-Vorgabe des Auftrags; `AGENTS.md` nennt sitewide Marktcheck-Routing als nicht
-wieder einzuführen. Offen, ob die Energie-Zeile davon ausgenommen sein soll
-(Entscheidung bei Haşim). Der Kopf zeigt den Marktcheck weiter nur im
-Energie-Kontext.
+Die Energie-Zeile (Marktcheck) erscheint seit 2026-10-14 nur im
+Energie-Kontext, also wenn `hu_funnel_context()` die Route `energy` liefert
+(Energie-Seite, Solar-Cluster, Fallstudie, Portal-Einordnungen, Dossier
+„Leadgenerierung“). Auf allen übrigen Seiten zeigt das Register drei Wege.
+Grund: `AGENTS.md` schließt seitenweites Marktcheck-Routing aus (Entscheidung
+Haşim). Der Filter sitzt in `hu_footer_register_routes()`
+(`blocksy-child/inc/funnel-doors.php`); `hu_get_site_footer_door_urls()` zählt
+für das SEO Cockpit nur die seitenweiten Türen. Der Kopfpunkt
+„Solar & Wärmepumpe“ bleibt unverändert. Der Kopf zeigt den Marktcheck weiter
+nur im Energie-Kontext.
 
 Darunter die Direktzeile, ebenfalls `lead_gen`:
 

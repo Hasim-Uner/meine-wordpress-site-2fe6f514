@@ -348,6 +348,23 @@ function hu_footer_shows_register() {
 }
 
 /**
+ * Register rows the footer renders for a funnel way.
+ *
+ * Die Energie-Zeile (Marktcheck) steht nur im Energie-Kontext: AGENTS.md
+ * schliesst seitenweites Marktcheck-Routing aus (Entscheidung Haşim,
+ * 2026-10-14). Kopf und Fallstudie fuehren weiter zum Solar-Cluster.
+ *
+ * @param array<int, array<string, mixed>> $routes Rows from hu_get_site_footer_navigation_contract().
+ * @param string $current_route Way from hu_funnel_context().
+ * @return array<int, array<string, mixed>>
+ */
+function hu_footer_register_routes( $routes, $current_route ) {
+	return array_values( array_filter( (array) $routes, static function ( $way ) use ( $current_route ) {
+		return 'energy' !== ( $way['route'] ?? '' ) || 'energy' === $current_route;
+	} ) );
+}
+
+/**
  * Decide mode, door and way for the current request.
  *
  * `mode`  voll (Hauptmenue plus Tuer), leser (Artikelpfad plus Tuer) oder

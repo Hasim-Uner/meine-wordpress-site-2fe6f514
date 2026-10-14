@@ -536,15 +536,20 @@ function hu_get_site_footer_navigation_contract() {
 /**
  * Return every door URL of the footer register, in rendered order.
  *
- * Das SEO Cockpit zaehlt diese Ziele als seitenweite Linkquelle des Fusses.
+ * Das SEO Cockpit zaehlt diese Ziele als seitenweite Linkquelle des Fusses;
+ * die Energie-Zeile steht nur im Energie-Kontext und zaehlt daher nicht.
  *
  * @return array<int, string>
  */
 function hu_get_site_footer_door_urls() {
-	$doors = hu_funnel_doors();
-	$urls  = [];
+	$doors  = hu_funnel_doors();
+	$urls   = [];
+	$routes = hu_get_site_footer_navigation_contract()['routes'];
+	if ( function_exists( 'hu_footer_register_routes' ) ) {
+		$routes = hu_footer_register_routes( $routes, '' );
+	}
 
-	foreach ( hu_get_site_footer_navigation_contract()['routes'] as $route ) {
+	foreach ( $routes as $route ) {
 		foreach ( (array) ( $route['doors'] ?? [] ) as $key ) {
 			if ( isset( $doors[ $key ] ) ) {
 				$urls[] = (string) $doors[ $key ]['url'];

@@ -235,15 +235,17 @@ foreach ( nav_test_contexts() as $context => $definition ) {
 		nav_check( 1 === $footer_x->query( '//footer[@id="footer"]' )->length && 1 === $footer_x->query( '//nav[@aria-label="Weitere Seiten"]' )->length, "{$context}: footer keeps direct line, directory and sender" );
 	} else {
 		nav_check( 1 === $footer_x->query( '//nav[@class="register"]' )->length, "{$context}: footer shows the door register" );
-		nav_check( $footer_door_order === array_column( $register, 'door' ), "{$context}: every door is one click from the footer, in header order" );
-		nav_check( array_map( static function ( $key ) { return 'cta_footer_door_' . $key; }, $footer_door_order ) === array_column( $register, 'track' ), "{$context}: footer doors carry cta_footer_door_<key>" );
+		// The Energy way (Marktcheck) only appears in the Energy context; AGENTS.md rules out site-wide Marktcheck routing.
+		$expected_doors = 'energy' === $route_now ? $footer_door_order : array_values( array_diff( $footer_door_order, [ 'marktcheck' ] ) );
+		nav_check( $expected_doors === array_column( $register, 'door' ), "{$context}: every door is one click from the footer, in header order" );
+		nav_check( array_map( static function ( $key ) { return 'cta_footer_door_' . $key; }, $expected_doors ) === array_column( $register, 'track' ), "{$context}: footer doors carry cta_footer_door_<key>" );
 
 		$marked = $footer_x->query( '//div[contains(concat(" ", @class, " "), " ist-hier ")]' );
 		nav_check( '' === $route_now ? 0 === $marked->length : ( 1 === $marked->length && 'fuss-weg-' . $route_now . '' === ( $marked->item( 0 )->getAttribute( 'aria-labelledby' ) ) ), "{$context}: own way " . ( '' === $route_now ? 'none marked' : "{$route_now} marked, not hidden" ) );
 		if ( 'solar_cluster' === $context ) {
 			nav_check( 1 === $footer_x->query( '//div[@aria-labelledby="fuss-weg-energy"]//span[@class="hier" and text()="Ihr Weg"]' )->length, 'solar_cluster: Energy way carries Ihr Weg' );
 		}
-		nav_check( 4 === $footer_x->query( '//nav[@class="register"]//div[@class="tueren" or contains(@class,"weg")]/p[@class="satz"]' )->length, "{$context}: all four ways stay in the register" );
+		nav_check( ( 'energy' === $route_now ? 4 : 3 ) === $footer_x->query( '//nav[@class="register"]//div[@class="tueren" or contains(@class,"weg")]/p[@class="satz"]' )->length, "{$context}: " . ( 'energy' === $route_now ? 'all four ways' : 'three ways without Energy' ) . ' in the register' );
 
 		foreach ( $register as $index => $door_link ) {
 			$spec_row = $door_spec[ $door_link['door'] ];
