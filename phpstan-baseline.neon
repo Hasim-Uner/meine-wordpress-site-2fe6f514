@@ -96,11 +96,6 @@ parameters:
 			path: blocksy-child/inc/seo-cockpit/seo-cockpit-ui.php
 
 		-
-			message: "#^Call to sprintf contains 0 placeholders, 1 value given\\.$#"
-			count: 1
-			path: blocksy-child/page-qualifizierte-pv-anfragen.php
-
-		-
 			message: "#^Negated boolean expression is always true\\.$#"
 			count: 1
 			path: blocksy-child/template-parts/breadcrumb.php
