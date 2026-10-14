@@ -1,5 +1,10 @@
 # CHANGELOG
 
+## 2026-10-14 — Neue Seite /webdesigner-hannover/
+
+- **`/webdesigner-hannover/`:** lokaler Einstieg für Website-Projekte in Hannover und der Region, Query-Owner für `webdesigner hannover` und `webdesign hannover`. Abgrenzung aus der Wettbewerbsanalyse: Sitz in der Region, Festpreis vor dem Gespräch (Einstiegspreis aus dem Kanon), keine Monatsbindung, Übergabe auf den Namen des Kunden, getesteter Anfrageweg. CTAs auf `/kontakt/?type=project&focus=website`, Rechner bleibt auf `/wordpress-website-erstellen-lassen/`.
+- **Verdrahtung:** Seitenanlage in `nexus_get_provisioned_pages()`, Route `webdesigner_local`, Title/Description in `seo-meta.php`, Service mit `areaServed` und FAQPage in `org-schema.php`, `llms.txt`, Query-Ownership, Fuß-Gruppe Leistungen (`cta_footer_nav_webdesigner_local`). Entscheidung in `docs/decisions/webdesigner-hannover.md`.
+
 ## 2026-10-07 — Solar-Money-Page Final Cut
 
 - **Premium-Prinzip statt Dekoration:** Hero auf Ergebnis + Eigentum verdichtet: eigene Anfragequelle auf der eigenen Domain, ein dominanter Marktcheck und ein leiser Sofortkontakt-Ausgang für bestehende Portal-Nutzer. Direkt darunter stehen drei belegte Kennzahlen aus dem dokumentierten Fall samt Einzelfall-Hinweis.

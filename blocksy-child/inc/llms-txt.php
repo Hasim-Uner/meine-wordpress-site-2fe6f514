@@ -152,6 +152,11 @@ function nexus_get_llms_txt_sections() {
 					'description' => 'Lokale Entscheidungsseite für den Agentur-Intent: klassische Agentur oder direkte Verantwortung; führt passend zu Website, Tracking und Conversion weiter.',
 				],
 				[
+					'label'       => 'Webdesigner Hannover',
+					'url'         => $urls['webdesigner_hannover'] ?? home_url( '/webdesigner-hannover/' ),
+					'description' => 'Lokaler Einstieg für Website-Projekte in Hannover und der Region: WordPress-Website zum Festpreis, Termine vor Ort, ohne Monatsbindung und alles auf den Namen des Kunden. Preise und Rechner besitzt die Seite WordPress-Website erstellen lassen.',
+				],
+				[
 					'label'       => 'White-Label für Agenturen',
 					'url'         => $whitelabel_url,
 					'description' => 'Agentur-/Partner-Intent: Aufgabe beschreiben, Erstprojekt mit fixem Scope, Retainer erst danach.',

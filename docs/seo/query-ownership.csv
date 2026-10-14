@@ -33,6 +33,7 @@
 #   Agentur-Intent (`wordpress agentur ...`)      -> /wordpress-agentur-hannover/
 #   Freelancer-Intent (`wordpress freelancer ...`)-> / (Konsolidierung 2026-09-13)
 #   White-Label-/Partner-Intent                   -> /whitelabel-retainer/
+#   Webdesign-/Webdesigner-Intent (lokal)         -> /webdesigner-hannover/ (2026-10-14)
 #   Server-Side-Tracking-Terme                    -> /server-side-tracking-b2b/
 #   Conversion-Tracking-/GA4-Setup-Kaufintent    -> /ga4-tracking-setup/ (2026-09-26)
 #
@@ -198,3 +199,7 @@ utm parameter bedeutung;/glossar/utm-parameter/;informational;owned;docs/seo/glo
 webp bedeutung;/glossar/webp/;informational;owned;docs/seo/glossar-indexierung.md;
 wordpress child theme bedeutung;/glossar/wordpress-child-theme/;informational;owned;docs/seo/glossar-indexierung.md;
 xml sitemap bedeutung;/glossar/xml-sitemap/;informational;owned;docs/seo/glossar-indexierung.md;
+webdesigner hannover;/webdesigner-hannover/;local;owned;seo-research/2026-09/data/keywords-master.csv (DataForSEO DE 880/Monat, KD 15; SERP-Abgleich 2026-10-14: 9 von 10 Treffern identisch mit "webdesign hannover");wordpress agentur hannover|wordpress freelancer hannover
+webdesign hannover;/webdesigner-hannover/;local;owned;seo-research/2026-09/data/keywords-master.csv (DataForSEO DE 880/Monat, KD 15) — gleiche SERP wie "webdesigner hannover";wordpress agentur hannover
+homepage erstellen lassen hannover;/webdesigner-hannover/;local;owned;intent-gate 2026-10-14 frei — lokaler Website-Intent, Preisformel bleibt bei /wordpress-website-erstellen-lassen/;wordpress website erstellen lassen
+website erstellen lassen hannover;/webdesigner-hannover/;local;owned;intent-gate 2026-10-14: 60 % Überlappung mit "wordpress website erstellen lassen", getrennt durch den Ortsbezug — die Produktseite bleibt Owner des überregionalen Kaufintents;wordpress website erstellen lassen

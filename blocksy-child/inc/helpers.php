@@ -573,6 +573,10 @@ function nexus_get_primary_public_url_map() {
 			[ 'landingpage-erstellen-lassen' ],
 			home_url( '/landingpage-erstellen-lassen/' )
 		),
+		'webdesigner_hannover' => nexus_get_page_url(
+			[ 'webdesigner-hannover' ],
+			home_url( '/webdesigner-hannover/' )
+		),
 		'conversion'           => nexus_get_page_url(
 			[ 'conversion-optimierung' ],
 			home_url( '/conversion-optimierung/' )
@@ -795,6 +799,58 @@ function nexus_get_conversion_faq_items() {
 			'key'      => 'ki',
 			'question' => 'Arbeitet eine KI mit meinen Anfragen?',
 			'answer'   => 'Nur wenn Sie die Einordnung beauftragen, und nur für Freitext. Entscheidungen treffen feste Regeln. Verarbeitet wird auf Wunsch in Deutschland oder der EU.',
+		],
+	];
+}
+
+/**
+ * Return the FAQ set for the local entry /webdesigner-hannover/.
+ *
+ * Shared between the page template and the FAQPage node in inc/org-schema.php.
+ * Preise kommen aus dem Kanon; Vor-Ort-Termine wie im Google-Unternehmensprofil
+ * (Termine beim Kunden, Arbeit remote). Keine Rechtsberatung zum BFSG.
+ *
+ * @return array<int, array{key: string, question: string, answer: string}>
+ */
+function nexus_get_webdesigner_hannover_faq_items() {
+	$price      = hu_freelancer_website_price( true );
+	$page_price = hu_format_eur( HU_WEBSITE_PAGE_UTILITY ) . ' netto';
+
+	return [
+		[
+			'key'      => 'kosten',
+			'question' => 'Was kostet eine Website beim Webdesigner in Hannover?',
+			'answer'   => sprintf( 'Bei mir ab %1$s für Grundsystem und erste Hauptseite. Weitere Seiten kosten je nach Aufgabe ab %2$s. Den Festpreis rechnen Sie vorab selbst aus, und er steht vor dem Auftrag schriftlich fest. Laufende Pflichtgebühren an mich gibt es nicht; Hosting und Domain zahlen Sie direkt bei Ihrem Anbieter.', $price, $page_price ),
+		],
+		[
+			'key'      => 'vor_ort',
+			'question' => 'Kommen Sie für Termine zu mir nach Hannover?',
+			'answer'   => 'Ja. Mein Sitz ist Pattensen in der Region Hannover. Erstgespräch und Abnahme können bei Ihnen im Unternehmen stattfinden. Dazwischen läuft die Arbeit per Video und E-Mail, damit Sie keine Wege haben.',
+		],
+		[
+			'key'      => 'dauer',
+			'question' => 'Wie lange dauert es bis zur fertigen Website?',
+			'answer'   => 'Den Termin lege ich nach dem Erstgespräch schriftlich fest. Er hängt von der Zahl der Seiten ab und davon, wie schnell Texte, Bilder und Freigaben bei mir sind. Live geht die Website erst nach Ihrer Abnahme.',
+		],
+		[
+			'key'      => 'texte',
+			'question' => 'Muss ich die Texte selbst schreiben?',
+			'answer'   => 'Nein. Fertige, freigegebene Texte pflege ich ohne Aufpreis ein. Wenn ich die Texte auf Basis Ihrer Angaben schreibe, weist der Rechner den Zusatz je Seitentyp aus.',
+		],
+		[
+			'key'      => 'bindung',
+			'question' => 'Bin ich nach dem Projekt an Sie gebunden?',
+			'answer'   => 'Nein. Die Website läuft auf Ihrem Hosting, Domain und Zugänge bleiben bei Ihnen, und Sie erhalten den Projektcode. Texte und Bilder pflegen Sie selbst im WordPress-Editor. Weiterentwicklung gibt es auf Wunsch als Monatskontingent, monatlich kündbar.',
+		],
+		[
+			'key'      => 'relaunch',
+			'question' => 'Überarbeiten Sie auch eine bestehende Website?',
+			'answer'   => 'Ja. Vor einem Relaunch prüfe ich Bestand, Adressen und technische Voraussetzungen und lege einen Weiterleitungsplan an, damit vorhandene Sichtbarkeit bei Google nicht verloren geht.',
+		],
+		[
+			'key'      => 'barrierefreiheit',
+			'question' => 'Ist die Website barrierefrei?',
+			'answer'   => 'Grundlagen der Barrierefreiheit gehören zum Standard: ausreichende Kontraste, Bedienung per Tastatur und Alternativtexte für Bilder. Ob Ihr Angebot unter das Barrierefreiheitsstärkungsgesetz fällt, ist eine rechtliche Frage. Eine weitergehende Umsetzung nach WCAG 2.1 AA vereinbaren wir bei Bedarf gesondert.',
 		],
 	];
 }
@@ -1460,6 +1516,12 @@ function nexus_get_provisioned_pages() {
 			'title'    => 'Cost per Lead Photovoltaik – Was Solar-Anfragen wirklich kosten',
 			'excerpt'  => 'CPL-Rechnung und drei Szenarien für Solar-, Wärmepumpen- und Speicher-Anbieter im Vergleich.',
 			'template' => 'page-cost-per-lead-photovoltaik.php',
+		],
+		[
+			'slug'     => 'webdesigner-hannover',
+			'title'    => 'Webdesigner Hannover',
+			'excerpt'  => 'Webdesigner für Hannover und die Region: WordPress-Website zum Festpreis, Termine vor Ort, ohne Monatsbindung und alles auf Ihren Namen.',
+			'template' => 'page-webdesigner-hannover.php',
 		],
 		[
 			'slug'     => 'landingpage-erstellen-lassen',

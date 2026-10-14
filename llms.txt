@@ -19,6 +19,7 @@ Standort: Pattensen bei Hannover, Niedersachsen (DE). Persönliche Termine, Work
 - [Server-Side Tracking einrichten lassen](/server-side-tracking-b2b/) - Fachseite für eine Server-Messstrecke mit Browser-Messbasis, Server-GTM, eigener Subdomain, Enhanced Conversions und Paralleltest. Meta CAPI und CRM-Rücksignale werden separat vereinbart; Hostingkosten und optionale Betreuung stehen vorab fest. Direkter Tracking-Projektpfad.
 - [Performance Marketing für B2B](/performance-marketing/) - Bezahlte Nachfrage über Google Ads und Meta in fester Reihenfolge: erst Conversion-Messung, dann Zielseite, dann Budget. Performance-Agenturen werden zu White-Label weitergeführt.
 - [WordPress Agentur Hannover](/wordpress-agentur-hannover/) - Lokale Entscheidungsseite für den Agentur-Intent: klassische Agentur oder direkte Verantwortung; führt passend zu Website, Tracking und Conversion weiter.
+- [Webdesigner Hannover](/webdesigner-hannover/) - Lokaler Einstieg für Website-Projekte in Hannover und der Region: WordPress-Website zum Festpreis, Termine vor Ort, ohne Monatsbindung und alles auf den Namen des Kunden. Preise und Rechner besitzt die Seite WordPress-Website erstellen lassen.
 - [White-Label für Agenturen](/whitelabel-retainer/) - Agentur-/Partner-Intent: Aufgabe beschreiben, Erstprojekt mit fixem Scope, Retainer erst danach.
 
 ## Proof und zitierfähige Quellen

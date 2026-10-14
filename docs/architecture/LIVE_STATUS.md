@@ -355,6 +355,19 @@ Contract und Abnahme: `CHAT_ASSISTANT.md`.
   Beschreibung und FAQ kommen aus `nexus_get_service_cluster_page_data()`,
   Service-Schema aus `inc/org-schema.php`. Query-Owner für
   `performance marketing b2b`.
+- **`/webdesigner-hannover/`** (`page-webdesigner-hannover.php`, Gutachten-Layout
+  mit dem Delta aus `landingpage-offer.css`, seit 2026-10-14, Livegang offen):
+  lokaler Einstieg für Website-Projekte in Hannover und der Region. Query-Owner
+  für `webdesigner hannover`, `webdesign hannover`, `homepage erstellen lassen
+  hannover` und `website erstellen lassen hannover`. Preis ab
+  `hu_freelancer_website_price()`; Rechner und Seitentyp-Preise bleiben auf
+  `/wordpress-website-erstellen-lassen/`. Abgrenzung: Sitz in der Region,
+  Festpreis vor dem Gespräch, keine Monatsbindung, Übergabe auf den Namen des
+  Kunden, getesteter Anfrageweg. FAQ aus
+  `nexus_get_webdesigner_hannover_faq_items()` (FAQPage), Service mit
+  `areaServed` Hannover in `inc/org-schema.php`, Seitenanlage über
+  `nexus_get_provisioned_pages()`, Footer-Link `cta_footer_nav_webdesigner_local`.
+  Entscheidung: `docs/decisions/webdesigner-hannover.md`.
 - **`/landingpage-erstellen-lassen/`** (`page-landingpage-erstellen-lassen.php`,
   Gutachten-Layout wie `/performance-marketing/`, seit 2026-09-26): Festpreis-
   Angebot Landingpage für Direktkunden. Preis aus `hu_landingpage_price()`,

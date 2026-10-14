@@ -1476,6 +1476,37 @@ function hu_output_schema()
             ],
         ],
 
+        // Lokaler Einstieg; Einstiegspreis aus dem Kanon wie auf
+        // /wordpress-website-erstellen-lassen/. Kein eigener LocalBusiness-Node:
+        // #organization traegt Adresse und areaServed bereits.
+        'webdesigner-hannover' => [
+            'name'        => 'Webdesigner Hannover: WordPress-Website zum Festpreis',
+            'description' => 'Webdesign für Unternehmen in Hannover und der Region: WordPress-Website mit Basisdesign, technischem SEO, geprüftem Anfrageweg und Übergabe auf den Namen des Kunden. Termine vor Ort, Umsetzung ohne Monatsbindung.',
+            'serviceType' => 'Webdesign',
+            'serviceOutput' => 'Eine abgenommene WordPress-Website mit Basisdesign, technischem SEO, geprüftem Kontaktformular und Übergabe auf Ihren Namen',
+            'areaServed'  => [
+                '@type'  => 'City',
+                'name'   => 'Hannover',
+                'sameAs' => [ 'https://www.wikidata.org/wiki/Q1715', 'https://de.wikipedia.org/wiki/Hannover' ],
+            ],
+            'offers'      => [
+                [
+                    '@type'         => 'Offer',
+                    'name'          => 'WordPress-Website ab Festpreis',
+                    'price'         => HU_FREELANCER_WEBSITE_MIN,
+                    'priceCurrency' => 'EUR',
+                    'priceSpecification' => [
+                        '@type'                 => 'UnitPriceSpecification',
+                        'price'                 => HU_FREELANCER_WEBSITE_MIN,
+                        'priceCurrency'         => 'EUR',
+                        'valueAddedTaxIncluded' => false,
+                        'description'           => 'Grundsystem und erste Hauptseite',
+                    ],
+                    'url'           => home_url('/webdesigner-hannover/'),
+                ],
+            ],
+        ],
+
         // Einstiegspreis aus dem Kanon (HU_FREELANCER_WEBSITE_MIN); Service und
         // sichtbarer Preis auf /wordpress-website-erstellen-lassen/ lesen dieselbe Zahl.
         'wordpress-website-erstellen-lassen' => [
@@ -1612,6 +1643,10 @@ function hu_output_schema()
                 $service['hasOfferCatalog'] = $def['hasOfferCatalog'];
             }
 
+            if (isset($def['areaServed'])) {
+                $service['areaServed'] = $def['areaServed'];
+            }
+
             $schemas[] = $service;
 
             if ('wordpress-agentur-hannover' === $slug) {
@@ -1735,6 +1770,35 @@ function hu_output_schema()
                     'inLanguage' => 'de',
                     'publisher'  => ['@id' => home_url('/#organization')],
                     'mainEntity' => $faq_entities,
+                ];
+            }
+        }
+
+        if ('webdesigner-hannover' === $slug && function_exists('nexus_get_webdesigner_hannover_faq_items')) {
+            // Dieselbe Quelle wie die sichtbaren Fragen im Template.
+            $webdesigner_faq_entities = array_map(
+                static function ($item) {
+                    return [
+                        '@type'          => 'Question',
+                        'name'           => (string) $item['question'],
+                        'acceptedAnswer' => [
+                            '@type' => 'Answer',
+                            'text'  => (string) $item['answer'],
+                        ],
+                    ];
+                },
+                nexus_get_webdesigner_hannover_faq_items()
+            );
+
+            if (!empty($webdesigner_faq_entities)) {
+                $schemas[] = [
+                    '@context'   => 'https://schema.org',
+                    '@type'      => 'FAQPage',
+                    '@id'        => home_url('/webdesigner-hannover/#faq'),
+                    'url'        => home_url('/webdesigner-hannover/'),
+                    'inLanguage' => 'de',
+                    'publisher'  => ['@id' => home_url('/#organization')],
+                    'mainEntity' => $webdesigner_faq_entities,
                 ];
             }
         }
@@ -2049,7 +2113,7 @@ function hu_output_schema()
         global $post;
         if ( isset( $post ) && $post instanceof WP_Post ) {
             $template_owns_faq_schema = (
-                in_array( $slug, [ 'ergebnisse', 'case-studies-e-commerce', 'case-studies', 'hasim-uener', 'wordpress-agentur-hannover', 'wordpress-freelancer-hannover', 'server-side-tracking-b2b', 'aroundhome-solar-einordnung', 'whitelabel-retainer', 'whitelabel-retainer-proof', 'whitelabel', 'landingpage-erstellen-lassen', 'wordpress-website-erstellen-lassen' ], true )
+                in_array( $slug, [ 'ergebnisse', 'case-studies-e-commerce', 'case-studies', 'hasim-uener', 'wordpress-agentur-hannover', 'wordpress-freelancer-hannover', 'server-side-tracking-b2b', 'aroundhome-solar-einordnung', 'whitelabel-retainer', 'whitelabel-retainer-proof', 'whitelabel', 'landingpage-erstellen-lassen', 'wordpress-website-erstellen-lassen', 'webdesigner-hannover' ], true )
                 // Template-owned pages must not emit FAQs from invisible editor caches.
                 || is_page_template( 'page-ergebnisse.php' )
                 || is_page_template( 'page-case-studies-e-commerce.php' )

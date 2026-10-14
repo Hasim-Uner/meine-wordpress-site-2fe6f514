@@ -106,6 +106,10 @@ function hu_get_commercial_route_map() {
 		'website'         => function_exists( 'nexus_get_page_url' )
 			? nexus_get_page_url( [ 'wordpress-website-erstellen-lassen' ], home_url( '/wordpress-website-erstellen-lassen/' ) )
 			: home_url( '/wordpress-website-erstellen-lassen/' ),
+		// Lokaler Einstieg fuer Website-Projekte (seit 2026-10-14).
+		'webdesigner_local' => function_exists( 'nexus_get_page_url' )
+			? nexus_get_page_url( [ 'webdesigner-hannover' ], home_url( '/webdesigner-hannover/' ) )
+			: home_url( '/webdesigner-hannover/' ),
 		'agentur_local'   => function_exists( 'nexus_get_page_url' )
 			? nexus_get_page_url( [ 'wordpress-agentur-hannover', 'wordpress-agentur' ], home_url( '/wordpress-agentur-hannover/' ) )
 			: home_url( '/wordpress-agentur-hannover/' ),
@@ -453,6 +457,12 @@ function hu_get_site_footer_navigation_contract() {
 						'label'    => __( 'WordPress Agentur Hannover', 'blocksy-child' ),
 						'url'      => $routes['agentur_local'],
 						'track'    => 'cta_footer_nav_agentur_local',
+						'category' => 'navigation',
+					],
+					[
+						'label'    => __( 'Webdesigner Hannover', 'blocksy-child' ),
+						'url'      => $routes['webdesigner_local'],
+						'track'    => 'cta_footer_nav_webdesigner_local',
 						'category' => 'navigation',
 					],
 					[

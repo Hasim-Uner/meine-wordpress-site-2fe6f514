@@ -288,6 +288,12 @@ function hu_get_forced_singular_seo_map() {
 				'title'       => 'Wärmepumpen Leads kaufen? Alternative ohne Portale',
 				'description' => sprintf( 'Wärmepumpen-Leads kaufen oder eigene Anfragen aufbauen? Portal-Leads gehen an mehrere Betriebe und schließen selten ab. Case Study: %s weniger CPL.', $e3_cpl_reduction ),
 			],
+			// Query-Owner "webdesigner hannover" / "webdesign hannover"
+			// (docs/seo/query-ownership.csv). Preis aus dem Kanon.
+			'webdesigner-hannover' => [
+				'title'       => 'Webdesigner Hannover: Website zum Festpreis | Haşim Üner',
+				'description' => sprintf( 'Webdesigner für Hannover und die Region: WordPress-Website ab %s, Termine vor Ort, ohne Monatsbindung. Domain, Hosting und Code auf Ihren Namen.', hu_freelancer_website_price( true ) ),
+			],
 			// Query-Owner "landingpage erstellen lassen" (docs/seo/query-ownership.csv).
 			// Preis aus dem Kanon, damit Snippet und Seite denselben Betrag nennen.
 			'landingpage-erstellen-lassen' => [

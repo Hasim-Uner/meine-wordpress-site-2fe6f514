@@ -277,6 +277,22 @@ Regeln:
 - Benachbarte Kategoriebegriffe nicht wahllos ergänzen. Der Versuch mit `Webdesign-Agentur`, `Internetagentur` und `Webagentur` verschlechterte 2026 die Money-Query ohne belegten Zusatznutzen.
 - Regressionen auf dieser Route prüft `agents/skills/seo-drift/scripts/drift-report.sh`.
 
+## Route: Webdesigner Hannover
+
+`/webdesigner-hannover/` ist seit 2026-10-14 der lokale Einstieg für den
+Webdesign-Intent (`webdesigner hannover`, `webdesign hannover`; Entscheidung
+Haşim, `docs/decisions/webdesigner-hannover.md`).
+
+- „Webdesigner“ steht dort als Suchbegriff des Einstiegs, nicht als globale
+  Rolle. Die Regel „Nicht: reine Webdesign-Agentur“ gilt weiter: Die Seite
+  verkauft die Anfrage-Website mit Technik, Sichtbarkeit und Anfrageweg, nicht
+  Gestaltung allein.
+- Webdesign-Begriffe bleiben von `/wordpress-agentur-hannover/` fern (siehe
+  oben); beide Seiten verlinken sich nur über das Fuß-Verzeichnis und einen
+  Einordnungssatz.
+- Preise, Seitentypen und Rechner besitzt `/wordpress-website-erstellen-lassen/`;
+  die lokale Seite nennt nur den Einstiegspreis aus dem Kanon.
+
 ## Route: WordPress Freelancer Hannover
 
 `/` ist der zentrale direkte WordPress-Einstieg.
