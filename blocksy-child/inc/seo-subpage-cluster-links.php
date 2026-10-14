@@ -27,15 +27,10 @@ if ( ! defined( 'ABSPATH' ) ) {
  */
 function hu_get_solar_cluster_link_map() {
 	return [
-		'solar-leads-kaufen-alternative'    => [ 'label' => 'Photovoltaik & Solar Leads kaufen – die Alternative', 'path' => '/solar-leads-kaufen-alternative/' ],
-		'waermepumpen-leads'                => [ 'label' => 'Wärmepumpen Leads kaufen – die Alternative', 'path' => '/waermepumpen-leads/' ],
-		'b2b-solar-leads'                   => [ 'label' => 'PV-Termine B2B für Gewerbe-PV', 'path' => '/b2b-solar-leads/' ],
-		'eigene-leadgenerierung-vs-portale' => [ 'label' => 'Portal-Leads vs. eigenes System (TCO)', 'path' => '/eigene-leadgenerierung-vs-portale/' ],
-		'lead-funnel-solar'                 => [ 'label' => 'Lead-Funnel für Solar & Wärmepumpe', 'path' => '/lead-funnel-solar/' ],
-		'kunden-gewinnen-solarteure'        => [ 'label' => 'Kunden gewinnen für Solarteure', 'path' => '/kunden-gewinnen-solarteure/' ],
-		'cost-per-lead-photovoltaik'        => [ 'label' => 'Cost per Lead Photovoltaik', 'path' => '/cost-per-lead-photovoltaik/' ],
-		'qualifizierte-pv-anfragen'         => [ 'label' => 'Qualifizierte PV-Anfragen erkennen', 'path' => '/qualifizierte-pv-anfragen/' ],
-		'solar-leads-kosten-studie'         => [ 'label' => 'Solar-Leads-Kosten: Marktstudie DACH', 'path' => '/solar-leads-kosten-studie/' ],
+		'solar-leads-kaufen-alternative' => [ 'label' => 'Solar-Leads kaufen oder eigene Anfragen gewinnen?', 'path' => '/solar-leads-kaufen-alternative/' ],
+		'waermepumpen-leads' => [ 'label' => 'Wärmepumpen-Leads: Beschaffung und Vorqualifizierung', 'path' => '/waermepumpen-leads/' ],
+		'b2b-solar-leads' => [ 'label' => 'PV-Termine B2B für Gewerbe-PV', 'path' => '/b2b-solar-leads/' ],
+		'solar-leads-kosten-studie' => [ 'label' => 'Solar-Leads-Kosten: CPL, Vertrieb und Auftrag', 'path' => '/solar-leads-kosten-studie/' ],
 	];
 }
 
@@ -47,18 +42,12 @@ function hu_get_solar_cluster_link_map() {
  */
 function hu_get_solar_cluster_related_slugs( $slug ) {
 	$relations = [
-		'solar-leads-kaufen-alternative'    => [ 'waermepumpen-leads', 'solar-leads-kosten-studie', 'eigene-leadgenerierung-vs-portale' ],
-		'waermepumpen-leads'                => [ 'solar-leads-kaufen-alternative', 'cost-per-lead-photovoltaik', 'eigene-leadgenerierung-vs-portale' ],
-		'b2b-solar-leads'                   => [ 'qualifizierte-pv-anfragen', 'solar-leads-kaufen-alternative', 'kunden-gewinnen-solarteure' ],
-		'eigene-leadgenerierung-vs-portale' => [ 'solar-leads-kosten-studie', 'cost-per-lead-photovoltaik', 'solar-leads-kaufen-alternative' ],
-		'lead-funnel-solar'                 => [ 'qualifizierte-pv-anfragen', 'b2b-solar-leads', 'kunden-gewinnen-solarteure' ],
-		'kunden-gewinnen-solarteure'        => [ 'solar-leads-kaufen-alternative', 'lead-funnel-solar', 'eigene-leadgenerierung-vs-portale' ],
-		'cost-per-lead-photovoltaik'        => [ 'solar-leads-kosten-studie', 'eigene-leadgenerierung-vs-portale', 'solar-leads-kaufen-alternative' ],
-		'qualifizierte-pv-anfragen'         => [ 'cost-per-lead-photovoltaik', 'lead-funnel-solar', 'b2b-solar-leads' ],
-		'solar-leads-kosten-studie'         => [ 'cost-per-lead-photovoltaik', 'eigene-leadgenerierung-vs-portale', 'solar-leads-kaufen-alternative' ],
+		'solar-leads-kaufen-alternative' => [ 'solar-leads-kosten-studie', 'waermepumpen-leads', 'b2b-solar-leads' ],
+		'waermepumpen-leads' => [ 'solar-leads-kosten-studie', 'solar-leads-kaufen-alternative' ],
+		'b2b-solar-leads' => [ 'solar-leads-kaufen-alternative', 'solar-leads-kosten-studie' ],
+		'solar-leads-kosten-studie' => [ 'solar-leads-kaufen-alternative', 'waermepumpen-leads', 'b2b-solar-leads' ],
 	];
-
-	return isset( $relations[ $slug ] ) ? (array) $relations[ $slug ] : [];
+	return isset( $relations[ $slug ] ) ? $relations[ $slug ] : [];
 }
 
 /**
@@ -238,12 +227,14 @@ function hu_get_internal_redirect_target( $url ) {
 		return '';
 	}
 
-	$target = (string) $map[ $path ];
-	if ( ! empty( $parts['query'] ) && false === strpos( $target, '?' ) ) {
-		$target .= '?' . (string) $parts['query'];
+	$target_parts = explode( '#', (string) $map[ $path ], 2 );
+	$target = $target_parts[0];
+	$fragment = $target_parts[1] ?? (string) ( $parts['fragment'] ?? '' );
+	if ( ! empty( $parts['query'] ) ) {
+		$target .= ( false === strpos( $target, '?' ) ? '?' : '&' ) . (string) $parts['query'];
 	}
-	if ( ! empty( $parts['fragment'] ) && false === strpos( $target, '#' ) ) {
-		$target .= '#' . rawurlencode( rawurldecode( (string) $parts['fragment'] ) );
+	if ( '' !== $fragment ) {
+		$target .= '#' . rawurlencode( rawurldecode( $fragment ) );
 	}
 
 	return esc_url_raw( $target );
@@ -313,7 +304,7 @@ function hu_maybe_migrate_internal_redirect_links() {
 		return;
 	}
 
-	$version    = '2026-09-09-1';
+	$version    = '2026-10-14-solar';
 	$option_key = 'hu_internal_redirect_link_hygiene_version';
 	if ( (string) get_option( $option_key, '' ) === $version ) {
 		return;

@@ -58,13 +58,13 @@ if ( 'post' === $related_type && is_singular( 'post' ) && ! empty( $category_ids
 			'text'  => __( 'Passender System-Einstieg:', 'blocksy-child' ),
 		],
 		'markteinordnung' => [
-			'label' => __( 'TCO-Vergleich Portal vs. eigenes System', 'blocksy-child' ),
-			'url'   => home_url( '/eigene-leadgenerierung-vs-portale/' ),
+			'label' => __( 'Portal-Zukauf und eigenen Anfrageweg vergleichen', 'blocksy-child' ),
+			'url'   => home_url( '/solar-leads-kaufen-alternative/#vergleich' ),
 			'text'  => __( 'Für die wirtschaftliche Einordnung:', 'blocksy-child' ),
 		],
 		'owned-leads' => [
-			'label' => __( 'Asset-Eigentum: TCO über 24 Monate', 'blocksy-child' ),
-			'url'   => home_url( '/eigene-leadgenerierung-vs-portale/' ),
+			'label' => __( 'Zukauf und eigenen Anfrageweg vergleichen', 'blocksy-child' ),
+			'url'   => home_url( '/solar-leads-kaufen-alternative/#vergleich' ),
 			'text'  => __( 'Wenn es um Eigentum an Nachfrage geht:', 'blocksy-child' ),
 		],
 		'sichtbarkeit-daten-conversion' => [

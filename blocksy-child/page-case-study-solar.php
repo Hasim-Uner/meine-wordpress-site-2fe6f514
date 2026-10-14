@@ -143,14 +143,14 @@ $work_blocks = [
 
 $deeper_links = [
 	[
-		'title' => 'Cost per Lead Photovoltaik',
+		'title' => 'Anfrage- und Auftragskosten berechnen',
 		'body'  => 'Wie CPL und tatsächliche Kosten pro Auftrag auseinanderliegen können.',
-		'url'   => home_url( '/cost-per-lead-photovoltaik/' ),
+		'url'   => home_url( '/solar-leads-kosten-studie/#cpo' ),
 	],
 	[
-		'title' => 'Lead-Funnel Solar',
-		'body'  => 'Die Architektur vom ersten Suchsignal bis zur qualifizierten Anfrage.',
-		'url'   => home_url( '/lead-funnel-solar/' ),
+		'title' => 'Der eigene Anfrageweg im Betrieb',
+		'body'  => 'Vom Zielgebiet über die Projektangaben bis zur Übergabe an den Vertrieb.',
+		'url'   => home_url( '/solar-waermepumpen-leadgenerierung/#strecke' ),
 	],
 	[
 		'title' => 'Server-Side-Tracking B2B',
@@ -159,8 +159,8 @@ $deeper_links = [
 	],
 	[
 		'title' => 'Portal-Leads vs. eigenes System',
-		'body'  => 'TCO-Logik und Kostenvergleich über einen längeren Zeitraum.',
-		'url'   => home_url( '/eigene-leadgenerierung-vs-portale/' ),
+		'body'  => 'Beschaffungsmodelle, Eigentum und Qualität gemeinsam einordnen.',
+		'url'   => home_url( '/solar-leads-kaufen-alternative/#vergleich' ),
 	],
 ];
 
@@ -370,8 +370,8 @@ get_header();
 				</div>
 				<div class="e3v2-cta-copy">
 					<p>Im Marktcheck prüfe ich Anfragequellen, Qualifizierung, Tracking und Übergabe an den Vertrieb. Keine pauschale CPL-Prognose — sondern eine Einordnung, wo im bestehenden System der größte Hebel liegt und ob ein eigener Anfrageweg wirtschaftlich sinnvoll ist.</p>
-					<a class="e3v2-button" href="<?php echo esc_url( $diagnostic_url ); ?>" data-track-action="cta_case_study_to_diagnostic_request" data-track-category="lead_gen" data-track-section="case_solar_methodology">Marktcheck starten <span aria-hidden="true">→</span></a>
-					<p class="e3v2-cta-micro">Händisch geprüft · Befund <?php echo esc_html( hu_marketcheck_reply_label() ); ?> · kein Pflicht-Termin · keine Zahlungsdaten</p>
+					<a class="e3v2-button" href="<?php echo esc_url( $diagnostic_url ); ?>" data-track-action="cta_case_study_to_diagnostic_request" data-track-category="lead_gen" data-track-section="case_solar_methodology">Marktcheck anfragen · <?php echo esc_html( hu_marketcheck_price() ); ?> <span aria-hidden="true">→</span></a>
+					<p class="e3v2-cta-micro">Netto · bei Aufbau anrechenbar · Befund <?php echo esc_html( hu_marketcheck_reply_label() ); ?> · kein Pflicht-Termin · keine Zahlungsdaten</p>
 					<p class="e3v2-cta-alt">Kein Solar- oder Wärmepumpenbetrieb? Website, Tracking und die Übergabe an den Vertrieb baue ich auch für andere B2B-Unternehmen. <a href="<?php echo esc_url( $project_url ); ?>" data-track-action="cta_case_study_to_project" data-track-category="lead_gen" data-track-section="case_solar_methodology">Projekt anfragen&nbsp;<span aria-hidden="true">→</span></a></p>
 				</div>
 			</div>

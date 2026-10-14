@@ -341,12 +341,14 @@ function is_page( $slug = '' ) { return $slug === ( $GLOBALS['hu_migration_slug'
 function is_page_template( $template = '' ) { return $template === ( $GLOBALS['hu_migration_template'] ?? '' ); }
 function wp_safe_redirect( $url, $status = 302 ) { throw new RuntimeException( $url, $status ); }
 function remove_query_arg( $keys, $url ) {
-	$parts = explode( '?', $url, 2 );
-	if ( count( $parts ) < 2 ) { return $url; }
+	$fragment_parts = explode( '#', $url, 2 );
+	$fragment = isset( $fragment_parts[1] ) ? '#' . $fragment_parts[1] : '';
+	$parts = explode( '?', $fragment_parts[0], 2 );
+	if ( count( $parts ) < 2 ) { return $parts[0] . $fragment; }
 	$kept = array_filter( explode( '&', $parts[1] ), static function ( $part ) use ( $keys ) {
 		return ! in_array( rawurldecode( explode( '=', $part, 2 )[0] ), $keys, true );
 	} );
-	return $parts[0] . ( $kept ? '?' . implode( '&', $kept ) : '' );
+	return $parts[0] . ( $kept ? '?' . implode( '&', $kept ) : '' ) . $fragment;
 }
 
 // The homepage description reads its price anchor from the pricing canon,
@@ -366,6 +368,15 @@ $scenarios = [
 	[ '/wordpress-agentur-hannover/', '', 'wordpress-agentur-hannover', '', false, null ],
 	[ '/whitelabel-retainer/', '', 'whitelabel-retainer', '', false, null ],
 	[ '/solar-waermepumpen-leadgenerierung/', '', 'solar-waermepumpen-leadgenerierung', '', false, null ],
+	[ '/kunden-gewinnen-solarteure/', '', '', '', false, home_url( '/solar-waermepumpen-leadgenerierung/' ) ],
+	[ '/lead-funnel-solar', 'utm_source=linkedin', '', '', false, home_url( '/solar-waermepumpen-leadgenerierung/?utm_source=linkedin#strecke' ) ],
+	[ '/eigene-leadgenerierung-vs-portale/', '', '', '', false, home_url( '/solar-leads-kaufen-alternative/#vergleich' ) ],
+	[ '/cost-per-lead-photovoltaik/', '', '', '', false, home_url( '/solar-leads-kosten-studie/#cpo' ) ],
+	[ '/qualifizierte-pv-anfragen/', '', '', '', false, home_url( '/solar-leads-kaufen-alternative/#qualitaet' ) ],
+	[ '/', 'page_id=42&utm_source=mail', 'lead-funnel-solar', '', false, home_url( '/solar-waermepumpen-leadgenerierung/?utm_source=mail#strecke' ) ],
+	[ '/old-solar-template/', 'pagename=old&gclid=abc', '', 'page-cost-per-lead-photovoltaik.php', false, home_url( '/solar-leads-kosten-studie/?gclid=abc#cpo' ) ],
+	[ '/solar-leads-kaufen-alternative/', '', 'solar-leads-kaufen-alternative', 'page-eigene-leadgenerierung-vs-portale.php', false, null ],
+	[ '/solar-leads-kosten-studie/', '', 'solar-leads-kosten-studie', '', false, null ],
 ];
 foreach ( $scenarios as $i => [ $path, $query, $slug, $template, $front, $expected ] ) {
 	$_SERVER['REQUEST_URI'] = $path . ( $query ? '?' . $query : '' );

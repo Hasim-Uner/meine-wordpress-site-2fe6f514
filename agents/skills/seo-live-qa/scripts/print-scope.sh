@@ -38,6 +38,7 @@ print_reindex() {
 print_redirects() {
   echo '[REDIRECTS]'
   extract map "$INC/helpers.php" nexus_get_legacy_offer_redirect_map
+  extract map "$INC/helpers.php" nexus_get_consolidated_solar_redirect_map
   extract paths "$INC/helpers.php" nexus_redirect_legacy_results_path
   extract paths "$INC/helpers.php" nexus_redirect_legacy_energy_systems_path
   extract paths "$INC/system-diagnose-page.php" hu_get_request_analysis_legacy_paths

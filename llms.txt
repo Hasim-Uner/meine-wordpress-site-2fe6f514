@@ -23,20 +23,15 @@ Standort: Pattensen bei Hannover, Niedersachsen (DE). Persönliche Termine, Work
 
 ## Proof und zitierfähige Quellen
 - [Solar Case Study](/case-study-solar-leadgenerierung/) - Proof-Case für Nachfrageaufbau, Vorqualifizierung, Tracking und Conversion.
-- [Was kosten Solar-Leads? (Marktstudie)](/solar-leads-kosten-studie/) - Marktstudie zu Lead-Kosten im DACH-Raum: Preisspannen je Modell, Cost-per-Order, Methodik und Case-Study-Benchmark.
+- [Solar-Leads-Kosten: CPL und Kosten pro Auftrag](/solar-leads-kosten-studie/) - Kostenleitfaden für Photovoltaik- und Wärmepumpen-Anfragen: CPL, Vertriebszeit, Abschlussquote und Berechnung mit eigenen Zahlen. Keine pauschalen Anbieterpreise oder Amortisationszusage.
 - [Haşim Üner](/hasim-uener/) - Personenprofil des Betreibers: Arbeitsweise und fachliche Kompetenz.
 
 ## Solar- und Wärmepumpen-Cluster
 - [Photovoltaik & Solar Leads kaufen – Alternative](/solar-leads-kaufen-alternative/) - Intercept-Page für Kauf-Suchintent: Lead-Anbieter einordnen und eigene Anfragesysteme als Alternative bewerten.
 - [Aroundhome Kosten für Handwerker](/aroundhome-solar-einordnung/) - Kosten-, Vertrags- und Portal-Fit-Entscheid mit CPO-Rechner auf Basis eigener Betriebswerte.
-- [Checkfox für Solar- und Wärmepumpen-Betriebe](/checkfox-solar-waermepumpe-einordnung/) - Portal-Mechanik, Seriositätsfrage und Kosten-Logik für Solar- und Wärmepumpen-Betriebe, mit CPO-Rechner auf Basis eigener Betriebswerte.
+- [Checkfox für Solar- und Wärmepumpen-Betriebe](/checkfox-solar-waermepumpe-einordnung/) - Portal-Mechanik, Vertragsprüfung und Kosten-Logik für Solar- und Wärmepumpen-Betriebe, mit CPO-Rechner auf Basis eigener Betriebswerte.
 - [Wärmepumpen Leads kaufen – Alternative](/waermepumpen-leads/) - Intercept-Page für Wärmepumpen-Lead-Kauf und eigenes Anfragesystem als Alternative.
-- [Eigene Leadgenerierung vs. Portale](/eigene-leadgenerierung-vs-portale/) - Vergleich von Portal-Leads und eigenem Anfragesystem: Mieten vs. Besitzen, TCO und Datenbesitz.
-- [Cost per Lead Photovoltaik](/cost-per-lead-photovoltaik/) - CPL-Analyse mit Szenarienvergleich und versteckten Kostentreibern.
-- [Qualifizierte PV-Anfragen](/qualifizierte-pv-anfragen/) - Merkmale hochwertiger Solar-Anfragen, Warnsignale und Messmethoden.
-- [Lead-Funnel Solar](/lead-funnel-solar/) - Funnel-Architektur von Erstkontakt bis Sales-Anschluss für Photovoltaik- und Wärmepumpen-Anbieter.
 - [B2B Solar Leads für Gewerbe](/b2b-solar-leads/) - Anfragesysteme für gewerbliche Photovoltaik-Projekte mit Buying-Center-Funnel und langen Sales-Zyklen.
-- [Kunden gewinnen für Solarteure](/kunden-gewinnen-solarteure/) - Pillar-Page mit systematischen Hebeln für Solar-Betriebe im DACH-Mittelstand.
 
 ## Wissen
 - [Blog](/blog/) - Artikel zu WordPress, technischem SEO, Tracking, Conversion und Leadökonomie.

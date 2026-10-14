@@ -1,4 +1,4 @@
-﻿# Query-Ownership-Registry — maschinenlesbare Fassung der Regel
+# Query-Ownership-Registry — maschinenlesbare Fassung der Regel
 # "Money-Page besitzt die Query" (docs/standards/BRAND_AND_COPY.md)
 # und "keine zwei Seiten mit gleichem Keyword-Ziel" (docs/seo/seo-content-system.md §8).
 #
@@ -56,11 +56,11 @@ pv leads kaufen;/solar-leads-kaufen-alternative/;commercial;owned;seo-meta.php f
 leads kaufen photovoltaik;/solar-leads-kaufen-alternative/;commercial;owned;gsc-export-28d-2026-07-30.csv (Pos. 40,5);photovoltaik leads
 leadgenerator solar;/solar-leads-kaufen-alternative/;commercial;owned;gsc-export-28d-2026-07-30.csv (Pos. 59,0);
 solar leads kosten;/solar-leads-kosten-studie/;informational;owned;seo-meta.php forced-map;
-cost per lead photovoltaik;/cost-per-lead-photovoltaik/;informational;owned;seo-meta.php forced-map;
-portal leads vergleich;/eigene-leadgenerierung-vs-portale/;informational;owned;seo-meta.php forced-map;
-kunden gewinnen solarteure;/kunden-gewinnen-solarteure/;commercial;owned;seo-meta.php forced-map;
-qualifizierte pv anfragen;/qualifizierte-pv-anfragen/;informational;owned;seo-meta.php forced-map;
-lead funnel solar;/lead-funnel-solar/;informational;owned;seo-meta.php forced-map;
+cost per lead photovoltaik;/solar-leads-kosten-studie/;informational;owned;Solar-Konsolidierung 2026-10-14, SEO-Cockpit 90d 2026-07-14..2026-10-11 + Inhaltsabgleich;
+portal leads vergleich;/solar-leads-kaufen-alternative/;informational;owned;Solar-Konsolidierung 2026-10-14, SEO-Cockpit 90d 2026-07-14..2026-10-11 + Inhaltsabgleich;
+kunden gewinnen solarteure;/solar-waermepumpen-leadgenerierung/;commercial;owned;Solar-Konsolidierung 2026-10-14, SEO-Cockpit 90d 2026-07-14..2026-10-11 + Inhaltsabgleich;
+qualifizierte pv anfragen;/solar-leads-kaufen-alternative/;informational;owned;Solar-Konsolidierung 2026-10-14, SEO-Cockpit 90d 2026-07-14..2026-10-11 + Inhaltsabgleich;
+lead funnel solar;/solar-waermepumpen-leadgenerierung/;informational;owned;Solar-Konsolidierung 2026-10-14, SEO-Cockpit 90d 2026-07-14..2026-10-11 + Inhaltsabgleich;
 server side tracking;/server-side-tracking-b2b/;commercial;owned;gsc-verlauf-2026-07-20.md#kannibalisierungs-karte;
 server side tracking mit gtm;/server-side-tracking-gtm/;informational;support;GSC 28d 2026-07-03: 8 Impr. auf altem Beitrag; Final-Cut 2026-10-06 trennt Technik-Leitfaden vom Kaufintent;server side tracking|server side tracking agentur
 server side tracking agentur;/server-side-tracking-b2b/;commercial;owned;gsc-verlauf-2026-07-20.md#verlauf;

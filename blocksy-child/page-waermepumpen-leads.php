@@ -24,26 +24,9 @@ $marktcheck_url  = trailingslashit( $solar_money_url ) . '#marktcheck';
 $e3_url          = home_url( '/case-study-solar-leadgenerierung/' );
 
 $linked_assets = [
-	[
-		't'   => 'Photovoltaik & Solar Leads kaufen – die Alternative',
-		's'   => 'Die gleiche Rechnung für PV-Anfragen: Markteinordnung der Lead-Anbieter und CPL-Vergleich pro Anfrage.',
-		'url' => home_url( '/solar-leads-kaufen-alternative/' ),
-	],
-	[
-		't'   => 'Strategischer TCO-Vergleich über 24 Monate',
-		's'   => 'Portal-Leads gegen eigenes Anfragesystem mit CAPEX-vs-OPEX-Logik und Asset-Eigentum.',
-		'url' => home_url( '/eigene-leadgenerierung-vs-portale/' ),
-	],
-	[
-		't'   => 'Cost per Lead Photovoltaik',
-		's'   => 'Drei CPL-Szenarien im Vergleich und welche versteckten Kostentreiber den CPL hochtreiben.',
-		'url' => home_url( '/cost-per-lead-photovoltaik/' ),
-	],
-	[
-		't'   => 'Qualifizierte Anfragen erkennen',
-		's'   => 'Vier Merkmale, an denen sich eine wirtschaftliche Anfrage erkennen lässt – vor dem ersten Anruf.',
-		'url' => home_url( '/qualifizierte-pv-anfragen/' ),
-	],
+	[ 't' => 'Kosten pro Anfrage und Auftrag', 's' => 'Anfragegebühren, Vertriebszeit und Abschlussquote mit Ihren Zahlen rechnen.', 'url' => home_url( '/solar-leads-kosten-studie/' ) ],
+	[ 't' => 'Beschaffungsmodelle vergleichen', 's' => 'Zukauf, Übergang und eigenen Anfragekanal nach denselben Kriterien prüfen.', 'url' => home_url( '/solar-leads-kaufen-alternative/#vergleich' ) ],
+	[ 't' => 'Umfang des eigenen Anfragesystems', 's' => 'Leistungsumfang, Produktstrecken, Preis und Voraussetzungen vor dem Auftrag.', 'url' => $solar_money_url . '#einstieg' ],
 ];
 
 // ── Proof-Scope ────────────────────────────────────────────────
@@ -54,22 +37,10 @@ $linked_assets = [
 
 // ── Inhalt: Portal vs. eigenes System (Problem → Lösung) ──────
 $portal_facts = [
-	[
-		'k' => '60 – 120 €',
-		'l' => 'Marktbandbreite für Wärmepumpen-Leads je nach Anbieter und Modell',
-	],
-	[
-		'k' => 'bis zu 5×',
-		'l' => 'möglicher Mehrfachverkauf eines Datensatzes je nach Portalmodell',
-	],
-	[
-		'k' => 'anbieterabhängig',
-		'l' => 'Qualität und Abschlussquote hängen von Quelle, Alter, Exklusivität und Vorqualifizierung ab',
-	],
-	[
-		'k' => 'kein eigenes Asset',
-		'l' => 'der Anfragekanal bleibt beim Anbieter statt im eigenen Betrieb',
-	],
+	[ 'k' => 'Preis laut Angebot', 'l' => 'Region, Menge und Qualifizierung gehören in die schriftlichen Konditionen' ],
+	[ 'k' => 'Verteilung klären', 'l' => 'wer denselben Kontakt erhält und wie Exklusivität definiert ist' ],
+	[ 'k' => 'Projekt prüfen', 'l' => 'welche Angaben zu Gebäude, Heizung und Zeithorizont vorliegen' ],
+	[ 'k' => 'Quelle bleibt extern', 'l' => 'der Betrieb kann eigene Kundendaten pflegen; der Zufluss neuer Kontakte bleibt beim Anbieter' ],
 ];
 
 $own_facts = [
@@ -113,11 +84,11 @@ $why_portals_fail = [
 $market_models = [
 	[
 		't' => 'Geteilte Datensätze',
-		's' => 'Eine Endkundenanfrage wird parallel an mehrere SHK-Betriebe verkauft. Marktbreit etablierte Mengenmodelle (z. B. Aroundhome, DAA, Wattfox oder Checkfox in Teilen). Preis pro Datensatz niedriger, Wettbewerb höher.',
+		's' => 'Ein Kontakt wird mehreren Fachbetrieben angeboten. Empfängerzahl, Projektkriterien und Erfassungszeitpunkt sind Teil der Einkaufsprüfung.',
 	],
 	[
 		't' => 'Exklusive Datensätze',
-		's' => 'Anfrage wird nur an einen Anbieter weitergegeben. Selteneres Modell, höherer Preis pro Datensatz (oft 80 – 150 €). Abschlussquote tendenziell höher, Qualität bleibt anbieterabhängig.',
+		's' => 'Der Anbieter sagt eine exklusive Übermittlung zu. Prüfen Sie die genaue Definition und den Umgang mit Reklamationen; Exklusivität allein belegt noch keine Projektpassung.',
 	],
 	[
 		't' => 'Regional erzeugte Leads',
@@ -132,7 +103,7 @@ $market_models = [
 $wp_prequal_criteria = [
 	[
 		'k' => 'Bestandsheizung & Energieträger',
-		'l' => 'Öl, Gas, Nachtspeicher oder bereits Hybrid? Der Ausgangspunkt bestimmt Aufwand, Förderfähigkeit und Projektwert – und gehört vor den ersten Anruf, nicht ins dritte Telefonat.',
+		'l' => 'Öl, Gas, Nachtspeicher oder bereits Hybrid? Der Ausgangspunkt bestimmt Aufwand, die technische Vorprüfung und den Projektumfang. Die Angaben gehören vor den ersten Rückruf.',
 	],
 	[
 		'k' => 'Gebäude & Sanierungsstand',
@@ -154,8 +125,8 @@ $own_system_layers = [
 		's' => 'Bestandsheizung, Gebäude, Fördersituation und Zeithorizont – strukturiert abgefragt, bevor der Vertrieb anruft.',
 	],
 	[
-		't' => 'Server-Side-Tracking (CAPI)',
-		's' => 'Eigener Server-Container in Frankfurt. Die serverseitige Messstrecke kann Browserverluste reduzieren und Signale kontrollierter an die vereinbarten Plattformen weitergeben; Consent und rechtliche Anforderungen bleiben davon unberührt.',
+		't' => 'Messung nach vereinbartem Bedarf',
+		's' => 'Anfragequelle und vereinbarte Formularsignale werden technisch verbunden. Server-Side Tracking ergänzt die Browsermessung; welche Plattformen und Rücksignale dazugehören, wird vor dem Auftrag geklärt.',
 	],
 	[
 		't' => 'CRM-Anschluss & Lead-Scoring',
@@ -187,6 +158,10 @@ $objections = [
 	[
 		'question' => 'Wie schnell liefert ein eigenes System Wärmepumpen-Anfragen?',
 		'answer'   => 'Lead-Portale können Datensätze unmittelbar liefern. Ein eigener Anfrageweg braucht dagegen Aufbau, Kampagnen- oder SEO-Anlauf und eine ausreichende Datenbasis zur Optimierung. Wie schnell Volumen, Cost per Lead und Cost per Order tragfähig werden, muss für Region, Angebot und Vertrieb separat gemessen werden.',
+	],
+	[
+		'question' => 'Was kosten Marktcheck und eigener Anfrageweg?',
+		'answer'   => sprintf( 'Der Marktcheck kostet %s netto und wird bei Beauftragung des Anfragesystems angerechnet. Der Aufbau beginnt bei %s netto für eine Produktstrecke; jede weitere kostet %s zusätzlich. Rund %s Hosting pro Monat, Werbebudget und der vereinbarte Betreuungsumfang kommen hinzu. Umfang und Start werden vor der Beauftragung geklärt.', hu_marketcheck_price(), hu_foundation_price_display(), hu_foundation_extra_product_price_display(), hu_foundation_hosting_display() ),
 	],
 	[
 		'question' => 'Verkaufen Sie selbst Wärmepumpen-Leads?',
@@ -257,7 +232,7 @@ get_header();
 				   data-track-action="cta_marktcheck"
 				   data-track-category="intercept_waermepumpen_leads"
 				   data-track-section="hero">
-					Marktcheck starten
+					Marktcheck anfragen · <?php echo esc_html( hu_marketcheck_price() ); ?>
 				</a>
 				<a class="hu-intercept__cta-secondary"
 				   href="<?php echo esc_url( $e3_url ); ?>"
@@ -423,7 +398,7 @@ get_header();
 				   data-track-action="cta_marktcheck"
 				   data-track-category="intercept_waermepumpen_leads"
 				   data-track-section="final">
-					Marktcheck starten
+					Marktcheck anfragen · <?php echo esc_html( hu_marketcheck_price() ); ?>
 				</a>
 				<a class="hu-intercept__cta-secondary"
 				   href="<?php echo esc_url( $solar_money_url ); ?>"

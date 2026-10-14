@@ -25,8 +25,8 @@ $agentur_url        = $primary_urls['agentur'] ?? home_url( '/wordpress-agentur-
 $seo_url            = $primary_urls['seo'] ?? trailingslashit( $agentur_url ) . '#zusammenarbeit';
 $cro_url            = $primary_urls['cro'] ?? home_url( '/#angebot-funnel' );
 $tracking_url       = home_url( '/server-side-tracking-b2b/' );
-$portal_url         = home_url( '/eigene-leadgenerierung-vs-portale/' );
-$cpl_url            = home_url( '/cost-per-lead-photovoltaik/' );
+$portal_url         = home_url( '/solar-leads-kaufen-alternative/#vergleich' );
+$cpl_url            = home_url( '/solar-leads-kosten-studie/#cpo' );
 $project_url        = function_exists( 'hu_get_navigation_project_request_url' )
 	? hu_get_navigation_project_request_url()
 	: add_query_arg( [ 'type' => 'project', 'focus' => 'followup_scope' ], home_url( '/kontakt/' ) );
@@ -60,8 +60,8 @@ $categories = get_categories(
 $category_deep_link_map = [
 	'leadgenerierung' => [
 		[ 'label' => 'Regionaler Marktcheck', 'url' => $audit_url ],
-		[ 'label' => 'Portal vs. eigenes System (TCO)', 'url' => $portal_url ],
-		[ 'label' => 'CPL/CPO-Rechnung', 'url' => $cpl_url ],
+		[ 'label' => 'Zukauf oder eigener Anfrageweg?', 'url' => $portal_url ],
+		[ 'label' => 'Kosten pro Anfrage und Auftrag', 'url' => $cpl_url ],
 	],
 	'wordpress-performance' => [
 		[ 'label' => 'Core Web Vitals', 'url' => $primary_urls['cwv'] ?? home_url( '/wordpress-agentur-hannover/#zusammenarbeit' ) ],

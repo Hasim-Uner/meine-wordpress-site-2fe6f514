@@ -169,9 +169,9 @@ function nexus_get_llms_txt_sections() {
 					'description' => 'Proof-Case für Nachfrageaufbau, Vorqualifizierung, Tracking und Conversion.',
 				],
 				[
-					'label'       => 'Was kosten Solar-Leads? (Marktstudie)',
+					'label'       => 'Solar-Leads-Kosten: CPL und Kosten pro Auftrag',
 					'url'         => $urls['solar_leads_cost_study'] ?? home_url( '/solar-leads-kosten-studie/' ),
-					'description' => 'Marktstudie zu Lead-Kosten im DACH-Raum: Preisspannen je Modell, Cost-per-Order, Methodik und Case-Study-Benchmark.',
+					'description' => 'Kostenleitfaden für Photovoltaik- und Wärmepumpen-Anfragen: CPL, Vertriebszeit, Abschlussquote und Berechnung mit eigenen Zahlen. Keine pauschalen Anbieterpreise oder Amortisationszusage.',
 				],
 				[
 					'label'       => 'Haşim Üner',
@@ -204,7 +204,7 @@ function nexus_get_llms_txt_sections() {
 				[
 					'label'       => 'Checkfox für Solar- und Wärmepumpen-Betriebe',
 					'url'         => home_url( '/checkfox-solar-waermepumpe-einordnung/' ),
-					'description' => 'Portal-Mechanik, Seriositätsfrage und Kosten-Logik für Solar- und Wärmepumpen-Betriebe, mit CPO-Rechner auf Basis eigener Betriebswerte.',
+					'description' => 'Portal-Mechanik, Vertragsprüfung und Kosten-Logik für Solar- und Wärmepumpen-Betriebe, mit CPO-Rechner auf Basis eigener Betriebswerte.',
 				],
 				[
 					'label'       => 'Wärmepumpen Leads kaufen – Alternative',
@@ -212,34 +212,9 @@ function nexus_get_llms_txt_sections() {
 					'description' => 'Intercept-Page für Wärmepumpen-Lead-Kauf und eigenes Anfragesystem als Alternative.',
 				],
 				[
-					'label'       => 'Eigene Leadgenerierung vs. Portale',
-					'url'         => $urls['solar_leads_tco'] ?? home_url( '/eigene-leadgenerierung-vs-portale/' ),
-					'description' => 'Vergleich von Portal-Leads und eigenem Anfragesystem: Mieten vs. Besitzen, TCO und Datenbesitz.',
-				],
-				[
-					'label'       => 'Cost per Lead Photovoltaik',
-					'url'         => $urls['solar_cpl'] ?? home_url( '/cost-per-lead-photovoltaik/' ),
-					'description' => 'CPL-Analyse mit Szenarienvergleich und versteckten Kostentreibern.',
-				],
-				[
-					'label'       => 'Qualifizierte PV-Anfragen',
-					'url'         => home_url( '/qualifizierte-pv-anfragen/' ),
-					'description' => 'Merkmale hochwertiger Solar-Anfragen, Warnsignale und Messmethoden.',
-				],
-				[
-					'label'       => 'Lead-Funnel Solar',
-					'url'         => $urls['solar_funnel'] ?? home_url( '/lead-funnel-solar/' ),
-					'description' => 'Funnel-Architektur von Erstkontakt bis Sales-Anschluss für Photovoltaik- und Wärmepumpen-Anbieter.',
-				],
-				[
 					'label'       => 'B2B Solar Leads für Gewerbe',
 					'url'         => home_url( '/b2b-solar-leads/' ),
 					'description' => 'Anfragesysteme für gewerbliche Photovoltaik-Projekte mit Buying-Center-Funnel und langen Sales-Zyklen.',
-				],
-				[
-					'label'       => 'Kunden gewinnen für Solarteure',
-					'url'         => home_url( '/kunden-gewinnen-solarteure/' ),
-					'description' => 'Pillar-Page mit systematischen Hebeln für Solar-Betriebe im DACH-Mittelstand.',
 				],
 			],
 		],

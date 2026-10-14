@@ -1176,3 +1176,18 @@
 		display: none !important;
 	}
 }
+
+/* Three decisions/resources on the consolidated solar routes. */
+.hu-buy .solar-model-choice,
+.hu-buy .hu-buy__resource-grid {
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+}
+.hu-buy .solar-model-choice {
+  margin-top: var(--buy-gutter);
+}
+@media (max-width: 48rem) {
+  .hu-buy .solar-model-choice,
+  .hu-buy .hu-buy__resource-grid {
+    grid-template-columns: 1fr;
+  }
+}

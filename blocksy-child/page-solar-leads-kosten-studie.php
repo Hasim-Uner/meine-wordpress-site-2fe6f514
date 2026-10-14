@@ -1,409 +1,137 @@
 <?php
 /**
- * Template Name: Solar-Leads-Kosten – Marktstudie (Pillar)
- * Description: Zitierfähige Marktstudie zu den tatsächlichen Kosten von Solar-,
- *              Wärmepumpen- und Speicher-Leads im DACH-Raum. Kernthese:
- *              Cost-per-Order statt Cost-per-Lead. Methodik transparent,
- *              eigene Fallzahl (Case Study) als Referenz-Benchmark.
- *              Primärer Pfad: Marktcheck auf /solar-waermepumpen-leadgenerierung/#marktcheck.
- *
+ * Template Name: Solar-Leads-Kosten – CPL und Kosten pro Auftrag
+ * Description: Kosten- und Rechenleitfaden für Photovoltaik- und Wärmepumpen-Anfragen.
+ * Übernimmt die CPL-Vertiefung; Preisannahmen und Fallwerte bleiben getrennt.
  * @package Blocksy_Child
  */
+if ( ! defined( 'ABSPATH' ) ) { exit; }
 
-if ( ! defined( 'ABSPATH' ) ) {
-	exit;
-}
+$page_url = home_url( '/solar-leads-kosten-studie/' );
+$solar_money_url = nexus_get_energy_systems_url();
+$marktcheck_url = trailingslashit( $solar_money_url ) . '#marktcheck';
+$compare_url = home_url( '/solar-leads-kaufen-alternative/' );
+$e3_url = home_url( '/case-study-solar-leadgenerierung/' );
+$marketcheck_price = hu_marketcheck_price();
+$foundation_price = hu_foundation_price_display();
+$hosting_price = hu_foundation_hosting_display();
+$e3_cpl = hu_e3_metric( 'cpl_after' );
+$e3_conversion = hu_e3_metric( 'sales_conversion' );
 
-// ── URLs ───────────────────────────────────────────────────────
-$page_url        = home_url( '/solar-leads-kosten-studie/' );
-$solar_money_url = function_exists( 'nexus_get_energy_systems_url' )
-	? nexus_get_energy_systems_url()
-	: home_url( '/solar-waermepumpen-leadgenerierung/' );
-$marktcheck_url  = trailingslashit( $solar_money_url ) . '#marktcheck';
-$e3_url          = home_url( '/case-study-solar-leadgenerierung/' );
-
-// ── E3-Proof-Canon (Referenz-Benchmark) ───────────────────────
-$e3_canon         = function_exists( 'hu_e3_canon' ) ? hu_e3_canon() : [];
-$e3_metrics       = isset( $e3_canon['metrics'] ) && is_array( $e3_canon['metrics'] ) ? $e3_canon['metrics'] : [];
-$e3_case_label    = isset( $e3_canon['case_label'] ) ? (string) $e3_canon['case_label'] : 'mittelständischer PV-Installationsbetrieb';
-$e3_cpl_after     = $e3_metrics['cpl_after']['display'] ?? '22 €';
-$e3_conv_after    = $e3_metrics['sales_conversion']['display'] ?? '15 %';
-$e3_timeframe     = $e3_metrics['timeframe']['display'] ?? '6 Monate';
-
-$study_year    = '2026';
-$study_updated = '2026-05-30';
-
-// ── Key Findings (zitierfähige Kernaussagen) ──────────────────
-$key_findings = [
-	[
-		'k' => '40 – 150 €',
-		'l' => 'Spanne pro gekauftem Photovoltaik-/Wärmepumpen-Lead im DACH-Portalmarkt — je nach Exklusivität und Produkt.',
-	],
-	[
-		'k' => '3 – 5×',
-		'l' => 'übliche Mehrfach-Vergabe desselben geteilten Datensatzes an konkurrierende Fachbetriebe.',
-	],
-	[
-		'k' => 'bis 18×',
-		'l' => 'Unterschied im Cost-per-Order zwischen gekauftem Portal-Lead und eigener Anfrage (Modellrechnung, s. u.).',
-	],
-	[
-		'k' => 'CPO ≠ CPL',
-		'l' => 'Der Cost-per-Lead verschleiert die wahren Kosten. Entscheidend sind die Kosten pro Abschluss (Cost-per-Order).',
-	],
+$cost_factors = [
+	[ 't' => 'Was wird abgerechnet?', 's' => 'Kontakt, qualifizierte Anfrage oder vereinbarter Termin: Preis und Leistung sind erst vergleichbar, wenn das abrechenbare Ereignis feststeht.' ],
+	[ 't' => 'Welche Arbeit bleibt im Vertrieb?', 's' => 'Rückrufversuche, fehlende Projektangaben, Angebote und Nachfassen gehören in dieselbe Kostenrechnung wie der Einkauf.' ],
+	[ 't' => 'Welche Aufträge sind daraus entstanden?', 's' => 'Ordnen Sie abgeschlossene Projekte der ursprünglichen Anfragequelle zu. Offene Angebote sind noch keine gewonnenen Aufträge.' ],
+	[ 't' => 'Welcher Zeitraum ist vergleichbar?', 's' => 'Verwenden Sie eine ausreichend nachverfolgte Anfragegruppe. Neue Kontakte und Abschlüsse aus älteren Anfragen dürfen nicht in einer Quote vermischt werden.' ],
 ];
-
-// ── Lead-Kosten nach Markt-Modell ─────────────────────────────
-$cost_models = [
-	[
-		't'    => 'Geteilte Datensätze',
-		'cpl'  => '40 – 90 €',
-		'excl' => '3 – 5 Abnehmer',
-		's'    => 'Eine Endkundenanfrage wird parallel an mehrere Fachbetriebe verkauft. Niedriger Stückpreis, hoher Wettbewerb, Geschwindigkeit entscheidet.',
-	],
-	[
-		't'    => 'Exklusive Datensätze',
-		'cpl'  => '80 – 150 €',
-		'excl' => '1 Abnehmer',
-		's'    => 'Anfrage geht nur an einen Betrieb. Höherer Stückpreis, tendenziell bessere Abschlussquote, aber weiterhin kein Asset-Eigentum.',
-	],
-	[
-		't'    => 'Wärmepumpen-Leads',
-		'cpl'  => '60 – 160 €',
-		'excl' => 'gemischt',
-		's'    => 'Durch Förderdynamik und höhere Projektwerte oft teurer als reine PV-Leads. Qualität schwankt stark mit der Vorqualifizierung.',
-	],
-	[
-		't'    => 'Eigenes Anfragesystem',
-		'cpl'  => $e3_cpl_after . ' *',
-		'excl' => '100 % exklusiv',
-		's'    => 'Money Page + Vorqualifizierung + Tracking im eigenen Eigentum. * Referenzwert ' . $e3_case_label . ' nach Einschwingen, nicht garantiert reproduzierbar.',
-	],
-];
-
-// ── CPO-Modellrechnung: der eigentliche Kostenvergleich ───────
-// Formel: CPO = CPL / Abschlussquote. Transparent, nachrechenbar.
-$cpo_rows = [
-	[
-		'modell' => 'Geteilter Portal-Lead',
-		'cpl'    => '70 €',
-		'conv'   => '2 %',
-		'cpo'    => '3.500 €',
-	],
-	[
-		'modell' => 'Exklusiver Portal-Lead',
-		'cpl'    => '120 €',
-		'conv'   => '4 %',
-		'cpo'    => '3.000 €',
-	],
-	[
-		'modell' => 'Eigenes Anfragesystem (Case-Study-Referenz)',
-		'cpl'    => $e3_cpl_after,
-		'conv'   => $e3_conv_after . ' der vorqualifizierten CRM-Leads',
-		'cpo'    => 'nicht separat belegt',
-	],
-];
-
-// ── Versteckte Kosten ─────────────────────────────────────────
-$hidden_costs = [
-	[
-		't' => 'Vertriebszeit auf tote Leads',
-		's' => 'Mehrfach verkaufte Datensätze sind oft schon „abtelefoniert", bevor Sie anrufen. Jede Minute auf einen nicht erreichbaren oder bereits versorgten Kontakt ist verbrannte Vertriebskapazität.',
-	],
-	[
-		't' => 'Nachqualifizierung',
-		's' => 'Ohne Region, Dachfläche, Heizart und Budget qualifizieren Sie nach dem Kauf selbst — ein versteckter Personalkostenblock, der im CPL nicht auftaucht.',
-	],
-	[
-		't' => 'Kein Asset-Aufbau',
-		's' => 'Gemietete Leads hinterlassen nichts. Nach 24 Monaten Portalbindung steht kein eigenes System, keine Datenhistorie, kein Tracking — der CPL fällt nie.',
-	],
-	[
-		't' => 'Steigende Marktpreise',
-		's' => 'Je mehr Anbieter um dieselbe Endkundenzahl konkurrieren, desto teurer der Datensatz — ohne Qualitätsgewinn. Der CPL kennt im Portalmodell nur eine Richtung.',
-	],
-];
-
-// ── FAQ ───────────────────────────────────────────────────────
 $faqs = [
-	[
-		'question' => 'Was kostet ein Solar-Lead im DACH-Raum 2026?',
-		'answer'   => 'Gekaufte Photovoltaik- und Wärmepumpen-Leads liegen je nach Exklusivität und Produkt zwischen rund 40 € (geteilte Datensätze) und 150 € (exklusive Datensätze). Wärmepumpen-Leads liegen tendenziell höher. Diese Preise beziehen sich auf den reinen Datensatz — die Kosten pro Abschluss liegen ein Vielfaches darüber.',
-	],
-	[
-		'question' => 'Warum ist der Cost-per-Lead die falsche Kennzahl?',
-		'answer'   => 'Der CPL misst nur den Einkaufspreis eines Datensatzes, nicht dessen Wert. Entscheidend ist der Cost-per-Order (CPO) — die Kosten pro tatsächlichem Abschluss. Bei niedrigen Abschlussquoten auf mehrfach verkaufte Portal-Leads kann ein 70-€-Lead pro Abschluss mehrere tausend Euro kosten.',
-	],
-	[
-		'question' => 'Wie wird der Cost-per-Order berechnet?',
-		'answer'   => 'CPO = Cost-per-Lead geteilt durch die Abschlussquote. Beispiel: 70 € Lead-Preis bei 2 % Abschlussquote ergibt 3.500 € pro Abschluss. CPL und Abschlussquote müssen dieselbe Leadmenge und denselben Zeitraum betreffen. Beim Referenzfall sind der erreichte Kampagnen-CPL und die Quote der vorqualifizierten CRM-Leads deshalb nicht direkt zu einem gemessenen CPO verrechenbar.',
-	],
-	[
-		'question' => 'Sind die Zahlen dieser Studie repräsentativ?',
-		'answer'   => 'Die Preisspannen basieren auf öffentlich beobachtbaren Marktpreispunkten und Brancheneinordnung. Die Abschluss- und CPO-Werte des eigenen Systems sind ein dokumentierter Einzelfall (mittelständischer PV-Installationsbetrieb) und ausdrücklich als Referenz, nicht als Garantie zu lesen. Die CPO-Tabelle ist eine transparente Modellrechnung, keine Erhebung.',
-	],
-	[
-		'question' => 'Lohnt sich ein eigenes Anfragesystem gegenüber Lead-Kauf?',
-		'answer'   => 'Das hängt von Marktregion, Projektwert und Vertriebskapazität ab. Faustregel: Wer dauerhaft skaliert und exklusive, vorqualifizierte Anfragen braucht, fährt mit einem eigenen System pro Abschluss meist deutlich günstiger — bei gleichzeitigem Asset-Aufbau. Der Marktcheck mit Fit-Entscheid prüft das für Ihre Region.',
-	],
+	[ 'question' => 'Was kosten Solar- und Photovoltaik-Leads?', 'answer' => 'Es gibt keinen einheitlichen Preis für einen Solar-Lead. Region, Exklusivität, Qualifizierung, Menge und Reklamationsregeln gehören in das schriftliche Angebot. Rechnen Sie anschließend mit Ihren gewonnenen Aufträgen und Ihrer Vertriebszeit; eine allgemeine Preisspanne ersetzt diese Prüfung nicht.' ],
+	[ 'question' => 'Wie berechnet man den Cost per Lead für Photovoltaik?', 'answer' => 'Teilen Sie die berücksichtigten Anfragekosten durch die Anzahl der gewonnenen Anfragen. Benennen Sie, ob nur Einkauf oder Werbebudget enthalten ist oder auch Aufbau, Betreuung und Vertrieb. Der CPL beschreibt Kosten pro Kontakt; über dessen wirtschaftlichen Wert entscheidet erst die weitere Bearbeitung.' ],
+	[ 'question' => 'Wie werden die Kosten pro Auftrag berechnet?', 'answer' => 'Die reinen Anfragekosten pro Auftrag ergeben sich aus CPL geteilt durch Abschlussquote. Anfragekosten und Quote müssen sich auf dieselbe Anfragegruppe beziehen. Für eine vollständigere Rechnung addieren Sie Vertriebszeit, Betreuung und gegebenenfalls den anteiligen Aufbau, bevor Sie durch die gewonnenen Aufträge teilen.' ],
+	[ 'question' => 'Sind exklusive Leads automatisch wirtschaftlicher?', 'answer' => 'Exklusivität verringert die direkte Parallelverteilung, belegt aber weder Projektpassung noch Erreichbarkeit oder einen Abschluss. Ein höherer Preis kann sich tragen, wenn Ihre tatsächlich gemessene Abschlussquote und Ihr Vertriebseinsatz dazu passen.' ],
+	[ 'question' => 'Kann man aus dem PV-Referenzfall einen Preis pro Auftrag ableiten?', 'answer' => sprintf( 'Nein. Die erreichten %s Kampagnen-CPL und die %s Abschlussquote der vorqualifizierten CRM-Leads haben unterschiedliche Bezugsgrößen. Daraus lässt sich kein gemessener CPO berechnen. Der Fall dokumentiert den Aufbau und die beobachteten Ergebnisse dieses Betriebs.', $e3_cpl, $e3_conversion ) ],
+	[ 'question' => 'Was kommt beim eigenen Anfragesystem zum Aufbaupreis hinzu?', 'answer' => sprintf( 'Der Aufbau beginnt bei %s netto für eine Produktstrecke. Rund %s Hosting im Monat und das Werbebudget kommen hinzu. Betreuung, zusätzliche Integrationen und der interne Vertrieb müssen nach dem vereinbarten Umfang separat berücksichtigt werden. Der Vergleich braucht auf beiden Seiten denselben Zeitraum und vollständige Kosten.', $foundation_price, $hosting_price ) ],
 ];
-
-// ── Schema.org: Article + Dataset + FAQPage + Breadcrumb ──────
-$author_person     = function_exists( 'hu_get_canonical_author_person' ) ? hu_get_canonical_author_person() : [ '@type' => 'Person', 'name' => 'Haşim Üner', 'url' => home_url( '/' ) ];
-$breadcrumb_schema = function_exists( 'hu_get_solar_subpage_breadcrumb_schema' )
-	? hu_get_solar_subpage_breadcrumb_schema( $page_url, 'Solar-Leads-Kosten: Marktstudie' )
-	: [];
-
+$resources = [
+	[ 't' => 'Zukauf oder eigener Anfrageweg?', 's' => 'Beschaffungsmodelle, Eigentum und Anfragequalität zusammen prüfen.', 'url' => $compare_url . '#vergleich' ],
+	[ 't' => 'Wärmepumpen-Anfragen einordnen', 's' => 'Welche Projektangaben der SHK-Vertrieb vor dem Rückruf braucht.', 'url' => home_url( '/waermepumpen-leads/#vorqualifizierung' ) ],
+	[ 't' => 'PV-Termine für Gewerbeprojekte', 's' => 'Projektwert, Technik und Entscheidungsrollen vor der Terminvergabe.', 'url' => home_url( '/b2b-solar-leads/' ) ],
+];
+$faq_schema = [ '@context' => 'https://schema.org', '@type' => 'FAQPage', '@id' => $page_url . '#faq', 'url' => $page_url . '#faq', 'mainEntity' => [] ];
+foreach ( $faqs as $item ) {
+	$faq_schema['mainEntity'][] = [ '@type' => 'Question', 'name' => $item['question'], 'acceptedAnswer' => [ '@type' => 'Answer', 'text' => $item['answer'] ] ];
+}
 $article_schema = [
-	'@context'         => 'https://schema.org',
-	'@type'            => 'Article',
-	'@id'              => trailingslashit( $page_url ) . '#article',
-	'headline'         => 'Was kosten Solar- und Wärmepumpen-Leads? Marktstudie DACH ' . $study_year,
-	'url'              => $page_url,
-	'datePublished'    => $study_updated,
-	'dateModified'     => $study_updated,
-	'inLanguage'       => 'de-DE',
-	'author'           => $author_person,
-	'publisher'        => [ '@id' => home_url( '/#organization' ) ],
-	'about'            => [ 'Lead-Kosten', 'Cost per Lead', 'Cost per Order', 'Photovoltaik', 'Wärmepumpe' ],
-	'description'      => 'Marktstudie zu den tatsächlichen Kosten von Solar-, Wärmepumpen- und Speicher-Leads im DACH-Raum: Preisspannen je Modell, Cost-per-Order statt Cost-per-Lead, versteckte Kosten und Benchmark eines eigenen Anfragesystems.',
+	'@context' => 'https://schema.org', '@type' => 'Article', '@id' => $page_url . '#article',
+	'headline' => 'Solar-Leads-Kosten: CPL und Kosten pro gewonnenem Auftrag', 'url' => $page_url,
+	'description' => 'Kostenleitfaden für Photovoltaik- und Wärmepumpen-Anfragen: CPL, Vertriebseinsatz, Abschlussquote und eigener Anfrageweg mit transparenten Bezugsgrößen.',
+	'author' => hu_get_canonical_author_person(), 'publisher' => [ '@id' => home_url( '/#organization' ) ],
+	'mainEntityOfPage' => [ '@type' => 'WebPage', '@id' => $page_url ],
 ];
-
-if ( function_exists( 'hu_get_post_schema_image_object' ) ) {
-	$kosten_studie_article_image = hu_get_post_schema_image_object( get_the_ID() );
-	if ( is_array( $kosten_studie_article_image ) ) {
-		$article_schema['image'] = $kosten_studie_article_image;
-	}
-}
-
-$dataset_schema = [
-	'@context'      => 'https://schema.org',
-	'@type'         => 'Dataset',
-	'@id'           => trailingslashit( $page_url ) . '#dataset',
-	'name'          => 'Solar- & Wärmepumpen-Lead-Kosten DACH ' . $study_year,
-	'description'   => 'Preisspannen für gekaufte Photovoltaik- und Wärmepumpen-Leads nach Markt-Modell sowie Cost-per-Order-Modellrechnung im DACH-Raum.',
-	'url'           => $page_url,
-	'dateModified'  => $study_updated,
-	'inLanguage'    => 'de-DE',
-	'creator'       => $author_person,
-	'license'       => home_url( '/impressum/' ),
-	'isAccessibleForFree' => true,
-	'variableMeasured' => [ 'Cost per Lead', 'Abschlussquote', 'Cost per Order', 'Exklusivität' ],
-];
-
-$faq_schema = [
-	'@context'   => 'https://schema.org',
-	'@type'      => 'FAQPage',
-	'@id'        => trailingslashit( $page_url ) . '#faq',
-	'url'        => trailingslashit( $page_url ) . '#faq',
-	'mainEntity' => [],
-];
-foreach ( $faqs as $faq_item ) {
-	$faq_schema['mainEntity'][] = [
-		'@type'          => 'Question',
-		'name'           => $faq_item['question'],
-		'acceptedAnswer' => [
-			'@type' => 'Answer',
-			'text'  => $faq_item['answer'],
-		],
-	];
-}
-
+$breadcrumb_schema = hu_get_solar_subpage_breadcrumb_schema( $page_url, 'Solar-Leads-Kosten' );
 get_header();
 ?>
-
-<div id="primary" class="hu-intercept" data-track-page="solar-leads-kosten-studie">
-
-	<section class="hu-intercept__hero" id="hero" aria-labelledby="hu-study-hero-title">
-		<div class="hu-intercept__container">
-			<p class="hu-intercept__eyebrow">Marktstudie · DACH-Raum · Stand <?php echo esc_html( $study_year ); ?></p>
-			<h1 class="hu-intercept__title" id="hu-study-hero-title">
-				Was kosten Solar- und Wärmepumpen-Leads wirklich?
-			</h1>
-			<p class="hu-intercept__lead">
-				Gekaufte Photovoltaik- und Wärmepumpen-Leads kosten im DACH-Markt <strong>40 – 150 €</strong> pro Datensatz. Doch der Lead-Preis ist die falsche Kennzahl: Wer mehrfach verkaufte Datensätze einkalkuliert, zahlt <strong>pro Abschluss</strong> schnell mehrere tausend Euro. Diese Studie rechnet vom <strong>Cost-per-Lead</strong> zum <strong>Cost-per-Order</strong> — und zeigt, wo die wahren Kosten liegen.
-			</p>
-			<?php get_template_part( 'template-parts/seo-subpage-byline', null, [ 'template_path' => __FILE__ ] ); ?>
-			<div class="hu-intercept__cta">
-				<a class="hu-intercept__cta-primary"
-				   href="<?php echo esc_url( $marktcheck_url ); ?>"
-				   data-track-action="cta_marktcheck"
-				   data-track-category="study_solar_leads_kosten"
-				   data-track-section="hero">
-					Marktcheck starten
-				</a>
-				<a class="hu-intercept__cta-secondary"
-				   href="#cpo"
-				   data-track-action="cta_to_cpo"
-				   data-track-category="study_solar_leads_kosten"
-				   data-track-section="hero">
-					Direkt zur Cost-per-Order-Rechnung
-				</a>
+<div id="primary" class="hu-intercept hu-buy hu-cost" data-track-page="solar-leads-kosten-studie">
+	<section class="hu-buy__band hu-buy__band--dark hu-buy__band--hero" data-nx-theme="dark" aria-labelledby="hu-study-title" data-track-section="hero">
+		<div class="hu-buy__container">
+			<p class="hu-buy__eyebrow">Für Photovoltaik- und Wärmepumpen-Betriebe</p>
+			<h1 class="hu-buy__h1" id="hu-study-title">Solar-Leads-Kosten.<br><em>Rechnen Sie bis zum Auftrag.</em></h1>
+			<p class="hu-buy__lead">Der Preis pro Anfrage ist der Einstieg in die Rechnung. Für Ihre Kanalentscheidung zählen zusätzlich Vertriebszeit, Abschlussquote und die Kosten des gesamten Anfragewegs.</p>
+			<div class="hu-buy__actions">
+				<a class="hu-buy__button hu-buy__button--primary" href="#cpo" data-track-action="cta_cost_calculator" data-track-category="engagement" data-track-section="hero">Mit eigenen Zahlen rechnen <span aria-hidden="true">→</span></a>
+				<a class="hu-buy__button hu-buy__button--secondary" href="<?php echo esc_url( $compare_url ); ?>" data-track-action="cta_solar_buy_comparison" data-track-category="internal_link" data-track-section="hero">Zukauf und eigenen Kanal vergleichen</a>
 			</div>
+			<p class="hu-buy__microcopy">CPL = Kosten pro Anfrage · CPO = Kosten pro gewonnenem Auftrag · keine pauschale Amortisationszusage</p>
+			<nav class="hu-buy__jump" aria-label="Auf dieser Seite"><a href="#cpo">Berechnen</a><a href="#kostenfaktoren">Kosten vollständig erfassen</a><a href="#methodik">Fallwerte einordnen</a></nav>
 		</div>
 	</section>
-
-	<section class="hu-intercept__compare" id="key-findings" aria-labelledby="hu-study-findings-title">
-		<div class="hu-intercept__container">
-			<h2 class="hu-intercept__h2" id="hu-study-findings-title">Die wichtigsten Ergebnisse auf einen Blick</h2>
-			<div class="hu-intercept__panel hu-intercept__panel--positive">
-				<ul class="hu-intercept__facts">
-					<?php foreach ( $key_findings as $fact ) : ?>
-						<li>
-							<span class="hu-intercept__fact-key"><?php echo esc_html( $fact['k'] ); ?></span>
-							<span class="hu-intercept__fact-label"><?php echo esc_html( $fact['l'] ); ?></span>
-						</li>
-					<?php endforeach; ?>
-				</ul>
-			</div>
-		</div>
-	</section>
-
-	<section class="hu-intercept__why" id="methodik" aria-labelledby="hu-study-method-title">
-		<div class="hu-intercept__container">
-			<h2 class="hu-intercept__h2" id="hu-study-method-title">Methodik &amp; Datenbasis — transparent</h2>
-			<p class="hu-intercept__section-lead">
-				Damit diese Studie nachvollziehbar bleibt, hier offen, woher die Zahlen stammen und was sie aussagen — und was nicht.
-			</p>
-			<div class="hu-intercept__grid hu-intercept__grid--two">
-				<div class="hu-intercept__panel">
-					<h3 class="hu-intercept__panel-title">Woher die Preisspannen kommen</h3>
-					<p class="hu-intercept__card-text">
-						Die Lead-Preise (40 – 150 €) basieren auf öffentlich beobachtbaren Marktpreispunkten gängiger Lead-Anbieter sowie auf Brancheneinordnung im DACH-Raum. Es handelt sich um typische Spannen, nicht um Einzelangebote eines bestimmten Anbieters.
-					</p>
-				</div>
-				<div class="hu-intercept__panel">
-					<h3 class="hu-intercept__panel-title">Woher die Abschluss- und CPO-Werte kommen</h3>
-					<p class="hu-intercept__card-text">
-						Die Werte des eigenen Systems (<?php echo esc_html( $e3_cpl_after ); ?> pro Anfrage, <?php echo esc_html( $e3_conv_after ); ?> Abschlussquote der vorqualifizierten CRM-Leads) stammen aus einem dokumentierten Einzelfall (<a href="<?php echo esc_url( $e3_url ); ?>"><?php echo esc_html( $e3_case_label ); ?></a>, <?php echo esc_html( $e3_timeframe ); ?>). Sie sind Referenz, keine Garantie. Die Cost-per-Order-Tabelle ist eine transparente Modellrechnung mit offengelegter Formel.
-					</p>
-				</div>
-			</div>
-		</div>
-	</section>
-
-	<section class="hu-intercept__why" id="modelle" aria-labelledby="hu-study-models-title">
-		<div class="hu-intercept__container">
-			<h2 class="hu-intercept__h2" id="hu-study-models-title">Lead-Kosten nach Markt-Modell</h2>
-			<div class="hu-intercept__grid hu-intercept__grid--four">
-				<?php foreach ( $cost_models as $model_index => $model ) : ?>
-					<article class="hu-intercept__card">
-						<h3 class="hu-intercept__card-title"><?php echo esc_html( $model['t'] ); ?></h3>
-						<p class="hu-intercept__fact-key" style="font-size:1.4rem;"><?php echo esc_html( $model['cpl'] ); ?></p>
-						<p class="hu-intercept__card-text" style="margin:.2rem 0 .6rem;opacity:.7;"><strong><?php echo esc_html( $model['excl'] ); ?></strong></p>
-						<p class="hu-intercept__card-text"><?php echo 2 === $model_index ? nexus_glossary_explain_text( $model['s'], 'lead-qualifizierung', 'Vorqualifizierung' ) : esc_html( $model['s'] ); ?></p>
-					</article>
+	<section class="hu-buy__band hu-buy__band--light hu-buy__band--white" id="kostenfaktoren" aria-labelledby="hu-study-costs-title" data-track-section="kostenfaktoren">
+		<div class="hu-buy__container">
+			<header class="hu-buy__section-head"><p class="hu-buy__eyebrow">Vor dem Preisvergleich</p><h2 class="hu-buy__h2" id="hu-study-costs-title">Ein Kontaktpreis beantwortet noch keine Kostenfrage.</h2><p class="hu-buy__section-lead">Legen Sie für jeden Anbieter und Ihren eigenen Kanal dieselben Maßstäbe an. So werden aus unterschiedlich verpackten Leistungen vergleichbare Kosten.</p></header>
+			<div class="hu-buy__model-grid">
+				<?php foreach ( $cost_factors as $item ) : ?>
+				<article class="hu-buy__model-card"><h3><?php echo esc_html( $item['t'] ); ?></h3><p><?php echo esc_html( $item['s'] ); ?></p></article>
 				<?php endforeach; ?>
 			</div>
 		</div>
 	</section>
-
-	<section class="hu-intercept__compare" id="cpo" aria-labelledby="hu-study-cpo-title">
-		<div class="hu-intercept__container">
-			<h2 class="hu-intercept__h2" id="hu-study-cpo-title">Der teure Denkfehler: Cost-per-Lead vs. Cost-per-Order</h2>
-			<p class="hu-intercept__section-lead">
-				Ein Lead ist kein Abschluss. Erst die Abschlussquote zeigt, was eine Anfrage <em>pro gewonnenem Kunden</em> kostet. Formel: <strong>Cost-per-Order = Cost-per-Lead ÷ Abschlussquote</strong>. Modellrechnung mit typischen Werten:
-			</p>
-			<div class="hu-study-table-wrap" style="overflow-x:auto;">
-				<table class="hu-study-table" style="width:100%;border-collapse:collapse;text-align:left;">
-					<thead>
-						<tr>
-							<th style="padding:.7rem 1rem;border-bottom:2px solid currentColor;">Modell</th>
-							<th style="padding:.7rem 1rem;border-bottom:2px solid currentColor;">Cost-per-Lead</th>
-							<th style="padding:.7rem 1rem;border-bottom:2px solid currentColor;">Abschlussquote</th>
-							<th style="padding:.7rem 1rem;border-bottom:2px solid currentColor;">Cost-per-Order</th>
-						</tr>
-					</thead>
-					<tbody>
-						<?php foreach ( $cpo_rows as $row ) : ?>
-							<tr>
-								<td style="padding:.7rem 1rem;border-bottom:1px solid rgba(128,128,128,.25);"><?php echo esc_html( $row['modell'] ); ?></td>
-								<td style="padding:.7rem 1rem;border-bottom:1px solid rgba(128,128,128,.25);"><?php echo esc_html( $row['cpl'] ); ?></td>
-								<td style="padding:.7rem 1rem;border-bottom:1px solid rgba(128,128,128,.25);"><?php echo esc_html( $row['conv'] ); ?></td>
-								<td style="padding:.7rem 1rem;border-bottom:1px solid rgba(128,128,128,.25);"><strong><?php echo esc_html( $row['cpo'] ); ?></strong></td>
-							</tr>
-						<?php endforeach; ?>
-					</tbody>
-				</table>
-			</div>
-			<p class="hu-intercept__compare-note">
-				Lesart: Ein 70-€-Lead bei 2 % Abschlussquote kostet <strong>3.500 € pro gewonnenem Kunden</strong>. Für den Referenzfall lässt sich aus erreichtem Kampagnen-CPL und Abschlussquote der CRM-Leads kein gemessener Preis pro Auftrag ableiten: Die Bezugsgrößen unterscheiden sich. Eigene Werte je Region selbst durchrechnen: <a href="<?php echo esc_url( home_url( '/cost-per-lead-photovoltaik/' ) ); ?>">Cost per Lead Photovoltaik — Szenarien &amp; Rechner</a>.
-			</p>
+	<section class="hu-buy__band hu-buy__band--light hu-buy__band--cream" id="cpo" aria-labelledby="hu-study-cpo-title" data-track-section="cpo">
+		<div class="hu-buy__container">
+			<header class="hu-buy__section-head"><p class="hu-buy__eyebrow">Ihr Preis und Ihr Vertrieb</p><h2 class="hu-buy__h2" id="hu-study-cpo-title">Was kostet Ihr Anfragekanal pro gewonnenem Auftrag?</h2><p class="hu-buy__section-lead">Anfragekosten und Abschlussquote müssen zur gleichen Anfragegruppe gehören. Setzen Sie für offene Vertriebszyklen bewusst eine Annahme an und prüfen Sie sie später gegen die tatsächlichen Abschlüsse.</p></header>
+			<aside class="hu-buy__equation" aria-label="Formel für die Anfragekosten pro Auftrag"><span>CPL</span><b aria-hidden="true">÷</b><span>Abschlussquote</span><b aria-hidden="true">=</b><strong>reine Anfragekosten je Auftrag</strong></aside>
+			<?php
+			echo hu_render_portal_cpo_calculator( [ // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- Shared renderer escapes every value.
+				'provider_label' => 'Ihren Anfragekanal', 'tracking_prefix' => 'solar_costs', 'tracking_section' => 'cpo',
+				'defaults' => [ 'cpl' => '', 'leads' => '', 'close_rate' => '', 'sales_minutes' => '', 'hourly_rate' => '' ],
+				'require_complete' => true,
+				'heading' => 'Anfrage- und Vertriebskosten zusammen rechnen',
+				'description' => 'Tragen Sie Preis und Menge aus Ihrem Vertrag oder Ihrer Auswertung ein. Abschlussquote, Bearbeitungszeit und interner Stundensatz ergänzen die Rechnung.',
+				'example_text' => 'Keine Anbieterpreise oder Branchenquoten voreingestellt. Es werden keine Eingaben gespeichert oder übertragen.',
+				'cta_label' => 'Ausgangslage im Marktcheck einordnen',
+				'cta_note' => sprintf( 'Marktcheck: %s netto, Befund per E-Mail %s. Aufbau, Betreuung und weitere Kanal-Kosten sind in dieser Rechnung nicht enthalten.', $marketcheck_price, hu_marketcheck_reply_label() ),
+			] );
+			?>
+			<noscript><p class="hu-buy__section-lead">Der Rechner benötigt JavaScript. Sie können mit der Formel rechnen: Anfragegebühren plus interne Vertriebskosten, geteilt durch gewonnene Aufträge. Der Marktcheck bleibt über den Abschluss dieser Seite erreichbar.</p></noscript>
 		</div>
 	</section>
-
-	<section class="hu-intercept__why" id="versteckte-kosten" aria-labelledby="hu-study-hidden-title">
-		<div class="hu-intercept__container">
-			<h2 class="hu-intercept__h2" id="hu-study-hidden-title">Die versteckten Kosten, die kein Lead-Preis zeigt</h2>
-			<div class="hu-intercept__grid hu-intercept__grid--four">
-				<?php foreach ( $hidden_costs as $item ) : ?>
-					<article class="hu-intercept__card">
-						<h3 class="hu-intercept__card-title"><?php echo esc_html( $item['t'] ); ?></h3>
-						<p class="hu-intercept__card-text"><?php echo esc_html( $item['s'] ); ?></p>
-					</article>
-				<?php endforeach; ?>
+	<section class="hu-buy__band hu-buy__band--light hu-buy__band--white" id="gesamtkosten" aria-labelledby="hu-study-total-title" data-track-section="gesamtkosten">
+		<div class="hu-buy__container">
+			<header class="hu-buy__section-head"><p class="hu-buy__eyebrow">Derselbe Zeitraum für beide Wege</p><h2 class="hu-buy__h2" id="hu-study-total-title">Aufbaupreis und Lead-Einkauf sind verschiedene Kostenbestandteile.</h2><p class="hu-buy__section-lead">Ein eigener Anfrageweg beginnt bei <?php echo esc_html( $foundation_price ); ?> netto für eine Produktstrecke. Rund <?php echo esc_html( $hosting_price ); ?> monatlich für Hosting, Werbebudget, Betreuung und interner Vertrieb gehören zusätzlich in die Planung.</p></header>
+			<div class="hu-buy__compare-grid">
+				<article class="hu-buy__compare-card hu-buy__compare-card--rent"><h3>Portal- oder Kampagnen-Zukauf</h3><p>Anfragegebühren, eventuelle Grund- und Servicegebühren, Reklamationen sowie Bearbeitungszeit und Angebote berücksichtigen. Ein CRM kann auch bei gekauften Kontakten eigene Kundendaten erhalten.</p></article>
+				<article class="hu-buy__compare-card hu-buy__compare-card--own"><h3>Eigener Anfrageweg</h3><p>Aufbau auf denselben Betrachtungszeitraum verteilen. Hosting, Werbung, Optimierung und Vertrieb ergänzen. Der Wert übergebener Seiten und Konten ist ein eigener Entscheidungsgrund, kein garantierter Kostenvorteil.</p></article>
 			</div>
-			<p class="hu-intercept__compare-note">
-				Tiefer in die Gesamtkostenrechnung: <a href="<?php echo esc_url( home_url( '/eigene-leadgenerierung-vs-portale/' ) ); ?>">Portal-Leads vs. eigenes System — TCO-Vergleich über 24 Monate</a>.
-			</p>
+			<a class="hu-buy__text-link" href="<?php echo esc_url( $compare_url . '#vergleich' ); ?>" data-track-action="related_solar_comparison" data-track-category="internal_link" data-track-section="gesamtkosten">Eigentum, Vertragsregeln und Qualität vergleichen →</a>
 		</div>
 	</section>
-
-	<section class="hu-intercept__faq" id="faq" aria-labelledby="hu-study-faq-title">
-		<div class="hu-intercept__container">
-			<h2 class="hu-intercept__h2" id="hu-study-faq-title">Häufige Fragen zu Solar-Lead-Kosten</h2>
-			<div class="hu-intercept__faq-list">
-				<?php foreach ( $faqs as $item ) : ?>
-					<details class="hu-intercept__faq-item" name="hu-faq-kosten-studie">
-						<summary class="hu-intercept__faq-q"><?php echo esc_html( $item['question'] ); ?></summary>
-						<p class="hu-intercept__faq-a"><?php echo esc_html( $item['answer'] ); ?></p>
-					</details>
-				<?php endforeach; ?>
-			</div>
+	<section class="hu-buy__band hu-buy__band--dark hu-buy__band--deep" id="methodik" aria-labelledby="hu-study-method-title" data-track-section="methodik">
+		<div class="hu-buy__container">
+			<header class="hu-buy__section-head"><p class="hu-buy__eyebrow">Ein dokumentierter PV-Fall</p><h2 class="hu-buy__h2" id="hu-study-method-title">Fallwerte sind ein Beleg. Keine Preisliste für Ihren Betrieb.</h2><p class="hu-buy__section-lead">Im Referenzfall wurden <?php echo esc_html( $e3_cpl ); ?> Kampagnen-CPL erreicht. Unter den vorqualifizierten CRM-Leads lag die Abschlussquote bei <?php echo esc_html( $e3_conversion ); ?>. Die Bezugsgrößen unterscheiden sich; ein gemessener Preis pro Auftrag lässt sich daraus nicht berechnen.</p></header>
+			<p class="hu-buy__section-lead">Für Gewerbe-PV und Wärmepumpen ist daraus ebenfalls keine Ergebnisprognose ableitbar. Verwenden Sie im Rechner ausschließlich Ihre Daten oder klar gekennzeichnete Planungsannahmen.</p>
+			<a class="hu-buy__button hu-buy__button--secondary" href="<?php echo esc_url( $e3_url ); ?>" data-track-action="cta_case_study" data-track-category="proof" data-track-section="methodik">Herleitung und Grenzen des Falls lesen</a>
 		</div>
 	</section>
-
-	<section class="hu-intercept__final" id="final-cta" aria-labelledby="hu-study-final-title">
-		<div class="hu-intercept__container hu-intercept__container--centered">
-			<h2 class="hu-intercept__h2" id="hu-study-final-title">Was kostet ein Abschluss in Ihrer Region?</h2>
-			<p class="hu-intercept__final-text">
-				<?php echo esc_html( nexus_get_marketcheck_final_lead_in() ); ?> — mit klarer Aussage, ob ein eigenes Anfragesystem pro Abschluss wirtschaftlicher ist als der Weiterkauf von Portal-Leads. Ohne Pflicht-Call, ohne Newsletter.
-			</p>
-			<div class="hu-intercept__cta">
-				<a class="hu-intercept__cta-primary"
-				   href="<?php echo esc_url( $marktcheck_url ); ?>"
-				   data-track-action="cta_marktcheck"
-				   data-track-category="study_solar_leads_kosten"
-				   data-track-section="final">
-					Marktcheck starten
-				</a>
-				<a class="hu-intercept__cta-secondary"
-				   href="<?php echo esc_url( home_url( '/solar-leads-kaufen-alternative/' ) ); ?>"
-				   data-track-action="cta_to_alternative"
-				   data-track-category="study_solar_leads_kosten"
-				   data-track-section="final">
-					Alternative zum Lead-Kauf ansehen
-				</a>
-			</div>
-		</div>
+	<section class="hu-buy__band hu-buy__band--light hu-buy__band--white" id="vertiefung" aria-labelledby="hu-study-resources-title" data-track-section="vertiefung">
+		<div class="hu-buy__container"><h2 class="hu-buy__h2" id="hu-study-resources-title">Die nächste Frage gezielt vertiefen.</h2><div class="hu-buy__resource-grid">
+			<?php foreach ( $resources as $item ) : ?>
+			<article class="hu-buy__resource-card"><h3><a href="<?php echo esc_url( $item['url'] ); ?>" data-track-action="related_content" data-track-category="internal_link" data-track-section="vertiefung"><?php echo esc_html( $item['t'] ); ?></a></h3><p><?php echo esc_html( $item['s'] ); ?></p></article>
+			<?php endforeach; ?>
+		</div></div>
 	</section>
-
+	<section class="hu-buy__band hu-buy__band--dark hu-buy__band--warm" id="faq" aria-labelledby="hu-study-faq-title" data-track-section="faq">
+		<div class="hu-buy__container hu-buy__container--narrow"><h2 class="hu-buy__h2" id="hu-study-faq-title">Fragen zu Solar-Leads, CPL und Abschlusskosten.</h2><div class="hu-buy__faq-list">
+			<?php foreach ( $faqs as $item ) : ?>
+			<details class="hu-buy__faq-item" name="hu-faq-kosten-studie"><summary><?php echo esc_html( $item['question'] ); ?></summary><p><?php echo esc_html( $item['answer'] ); ?></p></details>
+			<?php endforeach; ?>
+		</div></div>
+	</section>
+	<section class="hu-buy__band hu-buy__band--light hu-buy__band--final" id="final-cta" aria-labelledby="hu-study-final-title" data-track-section="final">
+		<div class="hu-buy__container hu-buy__container--narrow hu-buy__final-inner"><p class="hu-buy__eyebrow">Vor der Investition</p><h2 class="hu-buy__h2" id="hu-study-final-title">Klären Sie, welcher Anfrageweg zu Ihrem Betrieb passt.</h2><p class="hu-buy__final-text">Der Marktcheck ordnet Angebot, Zielgebiet, Projektwerte und Bearbeitung ein. Sie erhalten einen Befund per E-Mail <?php echo esc_html( hu_marketcheck_reply_label() ); ?> mit einer Empfehlung und priorisierten Ansatzpunkten.</p><a class="hu-buy__button hu-buy__button--primary" href="<?php echo esc_url( $marktcheck_url ); ?>" data-track-action="cta_marktcheck" data-track-category="study_solar_leads_kosten" data-track-section="final">Marktcheck anfragen · <?php echo esc_html( $marketcheck_price ); ?> <span aria-hidden="true">→</span></a><p class="hu-buy__final-note">Netto · Absenden ist noch keine Buchung · bei Beauftragung des Anfragesystems anrechenbar</p></div>
+	</section>
 	<script type="application/ld+json"><?php echo wp_json_encode( $article_schema, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE ); ?></script>
-	<script type="application/ld+json"><?php echo wp_json_encode( $dataset_schema, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE ); ?></script>
 	<script type="application/ld+json"><?php echo wp_json_encode( $faq_schema, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE ); ?></script>
-	<?php if ( ! empty( $breadcrumb_schema ) ) : ?>
 	<script type="application/ld+json"><?php echo wp_json_encode( $breadcrumb_schema, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE ); ?></script>
-	<?php endif; ?>
 </div>
-
 <?php
-get_template_part(
-	'template-parts/seo-subpage-sticky-cta',
-	null,
-	[
-		'marktcheck_url' => $marktcheck_url,
-		'track_category' => 'study_solar_leads_kosten',
-	]
-);
-
+get_template_part( 'template-parts/seo-subpage-sticky-cta', null, [ 'marktcheck_url' => $marktcheck_url, 'track_category' => 'study_solar_leads_kosten', 'label' => 'Marktcheck · ' . $marketcheck_price, 'hide_when_visible' => '#final-cta' ] );
 get_footer();
