@@ -96,6 +96,8 @@ $conversion_url = hu_get_commercial_route( 'conversion', home_url( '/conversion-
 $references_url = home_url( '/#referenzen' );
 $case_url       = nexus_get_results_url();
 $response       = hu_response_promise( 'compact' );
+// Fallzahl aus dem E3-Kanon, damit Startseite und Hannover-Seite denselben Wert zeigen.
+$cpl_reduction  = function_exists( 'hu_e3_metric' ) ? hu_e3_metric( 'cpl_reduction', 'counter_target', '85' ) : '85';
 $faqs         = function_exists( 'nexus_get_agentur_faq_items' ) ? nexus_get_agentur_faq_items() : [];
 
 get_header();
@@ -119,7 +121,7 @@ get_header();
 			</div>
 
 			<a class="agentur-proofline" href="<?php echo esc_url( $case_url ); ?>" data-track-action="agentur_hero_case" data-track-category="proof">
-				<strong>−80 %</strong>
+				<strong>−<?php echo esc_html( $cpl_reduction ); ?> %</strong>
 				<span>Kosten pro qualifizierter Anfrage · dokumentierter B2B-Fall, bewusst gerundet</span>
 			</a>
 
@@ -188,8 +190,8 @@ get_header();
 
 			<div class="voll">
 				<div class="proof-messung">
-					<div class="proof-messung__zahl" aria-label="80 Prozent weniger Kosten pro qualifizierter Anfrage">
-						<span>−80</span><small>%</small>
+					<div class="proof-messung__zahl" aria-label="<?php echo esc_attr( $cpl_reduction ); ?> Prozent weniger Kosten pro qualifizierter Anfrage">
+						<span>−<?php echo esc_html( $cpl_reduction ); ?></span><small>%</small>
 					</div>
 					<div class="proof-messung__text">
 						<p class="mono">Kosten pro qualifizierter Anfrage</p>
