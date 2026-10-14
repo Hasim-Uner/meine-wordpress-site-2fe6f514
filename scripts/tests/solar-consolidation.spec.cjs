@@ -11,7 +11,7 @@ const retired = /\/(?:eigene-leadgenerierung-vs-portale|lead-funnel-solar|kunden
 function render(template = 'page-solar-leads-kosten-studie.php', css = sheets, context = 'solar_cluster') {
   return execFileSync('php', [path.join(__dirname, 'render-page.php'), context,
     template, css], { encoding: 'utf8' })
-    .replace('</body>', `<script src="${prefix}assets/js/cpo-calculator.js"></script></body>`);
+    .replace('</body>', `<script src="${prefix}assets/js/leiste.js"></script><script src="${prefix}assets/js/cpo-calculator.js"></script></body>`);
 }
 async function open(page, width = 1440, route = {}) {
   const html = render(route.template, route.css, route.context);
@@ -67,6 +67,9 @@ for (const width of [360, 1440]) {
     expect(geometry.scroll).toBeLessThanOrEqual(geometry.viewport + 1);
     const links = await page.locator('main a[href]').evaluateAll(nodes => nodes.map(n => n.getAttribute('href')));
     expect(links.filter(href => retired.test(href))).toEqual([]);
+    const fields = await page.locator('[data-cpo-input]').evaluateAll(nodes =>
+      nodes.map(n => ({ width: n.getBoundingClientRect().width, height: n.getBoundingClientRect().height })));
+    expect(fields.every(field => field.width >= 100 && field.height >= 44)).toBe(true);
     const faq = await page.locator('script[type="application/ld+json"]').evaluateAll(nodes =>
       nodes.map(n => JSON.parse(n.textContent)).find(data => data['@type'] === 'FAQPage'));
     expect(faq.mainEntity).toHaveLength(await page.locator('#faq details').count());

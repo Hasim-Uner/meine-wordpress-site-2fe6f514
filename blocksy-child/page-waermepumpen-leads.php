@@ -242,12 +242,12 @@ get_header();
 					PV-Referenzfall zur Systemarchitektur
 				</a>
 			</div>
-			<p class="hu-intercept__hero-related" style="margin-top:18px;font-size:13.5px;opacity:.75;">
+			<p class="hu-intercept__hero-related">
 				Für Photovoltaik-Anfragen: <a
 					href="<?php echo esc_url( home_url( '/solar-leads-kaufen-alternative/' ) ); ?>"
 					data-track-action="related_to_solar_intercept"
 					data-track-category="internal_link_hierarchy"
-					data-track-section="hero">Photovoltaik & Solar Leads kaufen — die Alternative im CPL-Vergleich</a>
+					data-track-section="hero">Beschaffungsmodelle für Solar vergleichen</a>
 			</p>
 		</div>
 	</section>
