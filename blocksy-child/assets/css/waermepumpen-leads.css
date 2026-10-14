@@ -35,7 +35,7 @@
 .hu-intercept[data-track-page="waermepumpen-leads"] .hu-intercept__hero-related {
 	margin-top: var(--s2);
 	font-size: var(--grad-klein);
-	color: var(--nx-text);
+	color: var(--paper);
 }
 
 .hu-intercept[data-track-page="waermepumpen-leads"] .hu-intercept__hero-related a {
