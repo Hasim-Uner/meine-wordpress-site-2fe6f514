@@ -426,6 +426,10 @@
 	text-decoration-thickness: 1px;
 }
 
+.hu-buy .hu-buy__band--light .hu-buy__text-link {
+	color: var(--buy-accent-on-light);
+}
+
 .hu-buy .hu-buy__jump {
 	display: grid;
 	grid-template-columns: repeat(3, minmax(0, 1fr));
@@ -620,6 +624,77 @@
 .hu-buy .hu-buy__equation strong {
 	background: var(--buy-copper);
 	color: #171512;
+}
+
+.hu-cost .hu-buy__equation span {
+	color: var(--buy-ink);
+	background: var(--buy-white);
+}
+
+/* Der gemeinsame Rechner bleibt lokal; diese Route ordnet seine Felder und
+   Ergebnisse im bestehenden Leselayout statt im Anbieter-Artikel an. */
+.hu-cost .hu-cpo-calculator__portal-fields {
+	display: grid;
+	grid-template-columns: repeat(auto-fit, minmax(min(100%, 12rem), 1fr));
+	gap: var(--s2);
+}
+
+.hu-cost .hu-cpo-calculator input[type="number"] {
+	min-height: 44px;
+}
+
+.hu-cost .hu-cpo-calculator__example {
+	padding: var(--s1);
+	background: var(--zone);
+	color: var(--grau);
+}
+
+.hu-cost .hu-cpo-calculator__validation {
+	font-size: var(--grad-klein);
+	color: var(--grau);
+}
+
+.hu-cost .hu-cpo-calculator__portal-results {
+	display: grid;
+	grid-template-columns: repeat(auto-fit, minmax(min(100%, 12rem), 1fr));
+	gap: var(--s1);
+	margin-block: var(--s2);
+}
+
+.hu-cost .hu-cpo-calculator__portal-results > div {
+	display: grid;
+	gap: var(--s1);
+	padding: var(--s2);
+	border: 1px solid var(--haar);
+	background: var(--zone);
+}
+
+.hu-cost .hu-cpo-calculator__portal-results span {
+	font-size: var(--grad-klein);
+	color: var(--grau);
+}
+
+.hu-cost .hu-cpo-calculator__portal-results strong {
+	font-size: var(--grad-h2-leise);
+	line-height: 1.2;
+	color: var(--tinte);
+}
+
+.hu-cost .hu-cpo-calculator__portal-results .hu-cpo-calculator__portal-result-main {
+	border-color: var(--stempel);
+}
+
+.hu-cost .hu-cpo-calculator__portal-next {
+	display: grid;
+	justify-items: start;
+	gap: var(--s1);
+}
+
+.hu-cost .hu-cpo-calculator__portal-next p {
+	margin: 0;
+	font-size: var(--grad-klein);
+	line-height: 1.6;
+	color: var(--grau);
 }
 
 /* ── Modelle ─────────────────────────────────────────────────────── */

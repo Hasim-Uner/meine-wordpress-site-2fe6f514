@@ -32,6 +32,17 @@
 /* ── Helle Sektionen (alles zwischen Hero und Final) ──────────────────────
    Hero (.hu-intercept__hero) und Final (.hu-intercept__final) bleiben dunkel
    und werden hier bewusst NICHT angefasst. */
+.hu-intercept[data-track-page="waermepumpen-leads"] .hu-intercept__hero-related {
+	margin-top: var(--s2);
+	font-size: var(--grad-klein);
+	color: var(--paper);
+}
+
+.hu-intercept[data-track-page="waermepumpen-leads"] .hu-intercept__hero-related a {
+	color: inherit;
+	text-underline-offset: 0.2em;
+}
+
 .hu-intercept[data-track-page="waermepumpen-leads"] :is(
 	.hu-intercept__compare,
 	.hu-intercept__why,
