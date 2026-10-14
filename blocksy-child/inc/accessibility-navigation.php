@@ -121,14 +121,9 @@ add_action( 'wp_head', 'hu_output_homepage_stable_font_faces', 99 );
  */
 function hu_get_skip_link_target_id() {
 	$primary_templates = [
-		'page-lead-funnel-solar.php',
-		'page-qualifizierte-pv-anfragen.php',
-		'page-cost-per-lead-photovoltaik.php',
-		'page-kunden-gewinnen-solarteure.php',
 		'page-waermepumpen-leads.php',
 		'page-solar-leads-kosten-studie.php',
 		'page-b2b-solar-leads.php',
-		'page-eigene-leadgenerierung-vs-portale.php',
 		'page-solar-leads-kaufen-alternative.php',
 		'page-server-side-tracking-b2b.php',
 	];

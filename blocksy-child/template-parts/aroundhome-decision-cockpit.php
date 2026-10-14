@@ -15,9 +15,9 @@ if ( ! defined( 'ABSPATH' ) ) {
 
 $primary_urls        = function_exists( 'nexus_get_primary_public_url_map' ) ? nexus_get_primary_public_url_map() : [];
 $analysis_url        = function_exists( 'hu_get_request_analysis_url' ) ? hu_get_request_analysis_url() : home_url( '/' );
-$tco_url             = $primary_urls['solar_leads_tco'] ?? home_url( '/eigene-leadgenerierung-vs-portale/' );
+$tco_url             = $primary_urls['solar_leads_tco'] ?? home_url( '/solar-leads-kaufen-alternative/#vergleich' );
 $solar_url           = $primary_urls['solar_leads_alternative'] ?? home_url( '/solar-leads-kaufen-alternative/' );
-$cpl_url             = $primary_urls['solar_cpl'] ?? home_url( '/cost-per-lead-photovoltaik/' );
+$cpl_url             = $primary_urls['solar_cpl'] ?? home_url( '/solar-leads-kosten-studie/#cpo' );
 $case_url            = $primary_urls['e3'] ?? home_url( '/case-study-solar-leadgenerierung/' );
 $aroundhome_partner  = 'https://www.aroundhome.de/partner-werden/';
 $aroundhome_terms    = 'https://www.aroundhome.de/legal/';

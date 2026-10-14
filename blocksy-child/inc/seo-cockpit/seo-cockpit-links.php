@@ -204,13 +204,9 @@ function nexus_get_seo_cockpit_solar_cluster_urls() {
 
 	return [
 		home_url( '/solar-leads-kaufen-alternative/' ),
-		home_url( '/server-side-tracking-b2b/' ),
+		home_url( '/waermepumpen-leads/' ),
 		home_url( '/b2b-solar-leads/' ),
-		home_url( '/eigene-leadgenerierung-vs-portale/' ),
-		home_url( '/lead-funnel-solar/' ),
-		home_url( '/kunden-gewinnen-solarteure/' ),
-		home_url( '/cost-per-lead-photovoltaik/' ),
-		home_url( '/qualifizierte-pv-anfragen/' ),
+		home_url( '/solar-leads-kosten-studie/' ),
 	];
 }
 
@@ -326,10 +322,10 @@ function nexus_get_seo_cockpit_template_internal_links( $post_id, $post = null )
 			[
 				$primary_urls['audit'] ?? home_url( '/solar-waermepumpen-leadgenerierung/#marktcheck' ),
 				$primary_urls['agentur'] ?? home_url( '/wordpress-agentur-hannover/' ),
-				home_url( '/cost-per-lead-photovoltaik/' ),
+				home_url( '/solar-leads-kosten-studie/#cpo' ),
 				home_url( '/server-side-tracking-b2b/' ),
-				home_url( '/lead-funnel-solar/' ),
-				home_url( '/eigene-leadgenerierung-vs-portale/' ),
+				home_url( '/solar-waermepumpen-leadgenerierung/#strecke' ),
+				home_url( '/solar-leads-kaufen-alternative/#vergleich' ),
 			]
 		);
 	}

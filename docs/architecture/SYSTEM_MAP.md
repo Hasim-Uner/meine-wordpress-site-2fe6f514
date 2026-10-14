@@ -1,6 +1,6 @@
 # System Map
 
-Stand: 2026-10-03. Diese Karte beschreibt Systemgrenzen und Abhängigkeiten nach dem Repo-Inhalt; das Routen- und Laufzeitverhalten steht in `LIVE_STATUS.md`.
+Stand: 2026-10-14. Diese Karte beschreibt Systemgrenzen und Abhängigkeiten nach dem Repo-Inhalt; das Routen- und Laufzeitverhalten steht in `LIVE_STATUS.md`.
 
 ## Hauptsysteme
 
@@ -66,6 +66,22 @@ Kritische Dateien:
 - Herkunft und Besuchsprotokoll bleiben ausschließlich im Browser; E3-Zahlen
   und der erreichte Projektmonat kommen aus `inc/canon/e3-proof-canon.php`.
   Details: `CONVERSION_ROUTING.md` und `../decisions/homepage-freelancer-konsolidierung.md`.
+
+### Konsolidierter Solar-Bereich (2026-10-14, Repository)
+
+- Fünf wiederholende Fachseiten gehen in Hauptangebot, Kaufvergleich und
+  Kostenleitfaden auf. `inc/helpers.php` hält die direkten 301-Ziele,
+  einschließlich früherer Template- und Seiten-ID-Einstiege.
+- Die Kostenroute verwendet den bestehenden lokalen CPO-Rechner aus
+  `inc/cpo-calculator.php` und dessen CSS/JS mit leeren Eingaben. Der Rechner
+  überträgt oder speichert keine Werte; Fallmetriken bleiben getrennte Belege.
+- `inc/seo-subpage-cluster-links.php` liefert vier aktive Fachrouten und
+  repariert gespeicherte interne hrefs einmalig. `inc/blog-provider-posts.php`
+  repariert bekannte Markdown-Links und veraltete Fallbezüge gezielt, ohne
+  komplette Editor-Beiträge neu zu veröffentlichen.
+- Der Blog führt zuerst zu WordPress, Tracking und Conversion; Energie bleibt
+  als viertes Dossier erreichbar. Details und Datenbasis stehen in
+  `../decisions/solar-cluster-konsolidierung-2026-10-14.md`.
 
 ## Crawl- und KI-Signale
 

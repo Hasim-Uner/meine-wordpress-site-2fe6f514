@@ -32,16 +32,16 @@ $tracking_url = $primary_urls['tracking'] ?? home_url( '/ga4-tracking-setup/' );
 $about_url    = $primary_urls['about'] ?? home_url( '/hasim-uener/' );
 
 // ── Eigene, gemessene Werte (E3-Canon) ─────────────────────────
-$e3_canon      = function_exists( 'hu_e3_canon' ) ? hu_e3_canon() : [];
+$e3_canon      = hu_e3_canon();
 $e3_metrics    = isset( $e3_canon['metrics'] ) && is_array( $e3_canon['metrics'] ) ? $e3_canon['metrics'] : [];
 $e3_case_label = isset( $e3_canon['case_label'] ) ? (string) $e3_canon['case_label'] : 'mittelständischer PV-Installationsbetrieb';
 
-$e3_lead_count    = $e3_metrics['lead_count']['display'] ?? '1.750';
-$e3_sales_conv    = $e3_metrics['sales_conversion']['display'] ?? '15 %';
-$e3_cpl_reduction = $e3_metrics['cpl_reduction']['display'] ?? 'über 85 %';
-$e3_cpl_before    = $e3_metrics['cpl_before']['display'] ?? '150 €';
-$e3_cpl_after     = $e3_metrics['cpl_after']['display'] ?? '22 €';
-$e3_timeframe     = $e3_metrics['timeframe']['display'] ?? '6 Monate';
+$e3_lead_count = hu_e3_metric( 'lead_count' );
+$e3_sales_conv = hu_e3_metric( 'sales_conversion' );
+$e3_cpl_reduction = hu_e3_metric( 'cpl_reduction' );
+$e3_cpl_before = hu_e3_metric( 'cpl_before' );
+$e3_cpl_after = hu_e3_metric( 'cpl_after' );
+$e3_timeframe = hu_e3_metric( 'timeframe' );
 $e3_timeline      = $e3_canon['timeline'];
 
 // Voreinstellungen des Vergleichsrechners: Kosten pro Anfrage vorsichtiger als
@@ -225,7 +225,7 @@ $exits = [
 	],
 	[
 		'titel' => 'Während des Aufbaus.',
-		'text'  => 'Jede fertige Komponente läuft auf Ihren Konten und ist dokumentiert. Ein Abbruch hinterlässt kein totes System, sondern die Teile, die bis dahin stehen.',
+		'text'  => 'Jede fertige Komponente läuft auf Ihren Konten und ist dokumentiert. Wie Teilstände bezahlt und übergeben werden, vereinbaren wir vor dem Start.',
 	],
 	[
 		'titel' => 'Danach.',
@@ -305,16 +305,22 @@ $faq_answer_text = static function ( $item ) {
 	return trim( $item['lead'] . ' ' . $item['rest'] );
 };
 
+// Aufbauphasen ersetzen die eigenständige Funnel-/Kundengewinnungsseite.
+$implementation_steps = [
+	[ 't' => 'Ausgangslage und Zielgebiet prüfen', 's' => 'Angebot, Projektgrößen, heutige Quellen und Vertriebsbearbeitung werden eingeordnet. Der Marktcheck liefert die Entscheidung für den nächsten Schritt.' ],
+	[ 't' => 'Umfang und Verantwortlichkeiten festlegen', 's' => 'Produktstrecke, Konten, CRM-Felder, Freigaben und Start werden vor der Beauftragung vereinbart. Bestehende Seiten werden auf Weiterverwendung geprüft.' ],
+	[ 't' => 'Anfrageweg aufbauen und gemeinsam prüfen', 's' => 'Landingpage, Projektfragen, Messung und CRM-Übergabe werden verbunden. Testanfragen prüfen Bestätigung, Zuständigkeit und die erfassten Angaben.' ],
+	[ 't' => 'Abnehmen und dokumentiert übergeben', 's' => 'Code, Konten und Bedienung werden übergeben. Der Vertrieb pflegt die Ergebnisse; eine weitere Optimierung wird bei Bedarf separat vereinbart.' ],
+];
+
 // ── 08 Verweise ────────────────────────────────────────────────
 // Nach der Frage sortiert, die dahintersteckt — nicht nach Kategorie.
 // Wer sucht, sucht eine Antwort, keine Rubrik.
 $references = [
-	[ 'f' => 'Was kosten Solar-Leads am Markt?',               'z' => 'Marktstudie DACH, Preise je Modell',          'url' => home_url( '/solar-leads-kosten-studie/' ) ],
-	[ 'f' => 'Soll ich PV-Leads überhaupt kaufen?',            'z' => 'Portalmodell einordnen und Alternative prüfen', 'url' => home_url( '/solar-leads-kaufen-alternative/' ) ],
-	[ 'f' => 'Was ist ein realistischer CPL in Photovoltaik?', 'z' => 'Drei Szenarien und Kostentreiber',            'url' => home_url( '/cost-per-lead-photovoltaik/' ) ],
-	[ 'f' => 'Was gilt bei Wärmepumpen-Leads anders?',         'z' => 'Eigene Anfragequelle für SHK und Wärmepumpe', 'url' => home_url( '/waermepumpen-leads/' ) ],
-	[ 'f' => 'Wie läuft gewerbliche PV-Leadgenerierung?',      'z' => 'Buying-Center und Vorqualifizierung im B2B',  'url' => home_url( '/b2b-solar-leads/' ) ],
-	[ 'f' => 'Wie wird die Strecke belastbar gemessen?',       'z' => 'Tracking-Setup, Ads und Consent',             'url' => $tracking_url ],
+	[ 'f' => 'Was kostet eine Anfrage und ein gewonnener Auftrag?', 'z' => 'CPL, Vertriebszeit und Kosten mit Ihren Zahlen rechnen', 'url' => home_url( '/solar-leads-kosten-studie/' ) ],
+	[ 'f' => 'Zukaufen oder einen eigenen Anfrageweg aufbauen?', 'z' => 'Beschaffung, Eigentum und Qualitätskriterien vergleichen', 'url' => home_url( '/solar-leads-kaufen-alternative/' ) ],
+	[ 'f' => 'Was braucht der Wärmepumpen-Vertrieb vor dem Rückruf?', 'z' => 'Bestandsheizung, Gebäude und Projekthorizont', 'url' => home_url( '/waermepumpen-leads/' ) ],
+	[ 'f' => 'Wie werden Gewerbe-PV-Projekte vor einem Termin geprüft?', 'z' => 'Technische Substanz und Entscheidungsrollen im B2B', 'url' => home_url( '/b2b-solar-leads/' ) ],
 ];
 
 // ── Abschluss: Protokollzeile ──────────────────────────────────
@@ -548,7 +554,7 @@ get_header();
 					<h1>Eigene Anfragen für Photovoltaik und Wärmepumpe. <em>Direkt in Ihren Vertrieb.</em></h1>
 
 					<p class="aufriss">
-						<span class="erst">Für ausführende Solar- und SHK-Betriebe mit eigenem Vertrieb: Landingpage, Vorqualifizierung, Tracking und CRM-Übergabe als ein System.</span>
+						<span class="erst">Für ausführende Solar- und SHK-Betriebe mit eigenem Vertrieb: eine eigene Landingpage gewinnt Anfragen, das Formular erfasst Projektangaben und die Übergabe verbindet sie mit Ihrem CRM.</span>
 						Ihr Team sieht Produkt, Region und Projekt vor dem Rückruf. Code, Konten und Daten bleiben bei Ihnen.
 					</p>
 
@@ -831,7 +837,7 @@ get_header();
 			<div class="solar-detail-block">
 				<div class="voll">
 					<h3 class="kopf" id="strecke-titel">Vom Formular bis zum erfassten Auftrag.</h3>
-					<p class="vorspann">Eine Anfrage braucht Angaben zum Projekt, eine zuständige Person und einen dokumentierten nächsten Schritt. Ich verbinde diese Stationen. Ihr Vertrieb ruft zurück, fasst nach und erfasst, ob ein Auftrag entsteht. Das Modell zeigt den Ablauf mit beispielhaften Zahlen.</p>
+					<p class="vorspann">Kundengewinnung beginnt vor dem Formular: Suchseite und Kampagne richten sich an passende Projekte im Zielgebiet. Das Formular erfasst Produkt, Objekt, Standort und Zeithorizont. Ihr Vertrieb bekommt den Kontext, ruft zurück und dokumentiert den nächsten Schritt. Die Modellrechnung darunter zeigt den Ablauf mit frei veränderbaren Annahmen.</p>
 
 					<div class="streckenmodul tafel" id="modul" data-streckenmodul data-counts="<?php echo esc_attr( wp_json_encode( $module_counts ) ); ?>">
 						<div class="modul-kopf"><h3>Wo der Unterschied entsteht.</h3><span class="mono">Modellrechnung · ein Punkt = eine Anfrage</span></div>
@@ -1014,7 +1020,7 @@ get_header();
 						<?php echo esc_html( $hosting_price ); ?> Hosting monatlich und Ihr Werbebudget.
 						Vertriebszeit und laufende Betreuung sind nicht eingerechnet.
 						Voreingestellt sind <?php echo esc_html( $calc_cpl_display ); ?> pro Anfrage und
-						<?php echo esc_html( $calc_quote_display ); ?> Abschlussquote — der Wert aus dem dokumentierten Fall.
+						<?php echo esc_html( $calc_quote_display ); ?> Abschlussquote als Rechenannahme. Das ist kein gemessener Gesamtpreis pro Auftrag aus dem Referenzfall.
 						Kosten und Quote müssen sich auf dieselbe Leadmenge beziehen.
 					</p>
 				</div>
@@ -1022,6 +1028,14 @@ get_header();
 		</section>
 
 							</div>
+						</details>
+						<details class="solar-vertiefung" data-solar-disclosure id="aufbau">
+							<summary><span>Wie wird Ihr Anfrageweg aufgebaut?<small>Vom Marktcheck bis zur geprüften Übergabe</small></span><span class="solar-detail-plus" aria-hidden="true">+</span></summary>
+							<div class="solar-vertiefung-inhalt"><div class="solar-detail-block solar-fragen-liste">
+								<?php foreach ( $implementation_steps as $step ) : ?>
+								<article><h3><?php echo esc_html( $step['t'] ); ?></h3><p><?php echo esc_html( $step['s'] ); ?></p></article>
+								<?php endforeach; ?>
+							</div></div>
 						</details>
 						<details class="solar-vertiefung" data-solar-disclosure>
 							<summary><span>Technische Fragen und passende Vertiefungen<small>Website, Tracking, Kosten und bestehende Fachseiten</small></span><span class="solar-detail-plus" aria-hidden="true">+</span></summary>

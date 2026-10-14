@@ -14,7 +14,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 }
 
 $analysis_url = function_exists( 'hu_get_request_analysis_url' ) ? hu_get_request_analysis_url() : home_url( '/' );
-$tco_url      = home_url( '/eigene-leadgenerierung-vs-portale/' );
+$tco_url      = home_url( '/solar-leads-kaufen-alternative/#vergleich' );
 $solar_url    = home_url( '/solar-leads-kaufen-alternative/' );
 $heatpump_url = home_url( '/waermepumpen-leads/' );
 
@@ -221,7 +221,7 @@ $toc_items = [
 			<li><strong>Eigener Referenzwert:</strong> In dem von mir dokumentierten Solar-Projekt sanken die Kosten pro Anfrage um <?php echo esc_html( $cpl_reduction ); ?>, nachdem gekaufte Anfragen durch einen eigenen Anfrageweg ersetzt wurden. Das ist ein Betrieb, kein Marktmittelwert, und es ist keine Aussage über Checkfox — es zeigt nur, in welcher Größenordnung sich die Rechnung oben bewegen kann, wenn der Kanal wechselt. Ihre eigene Ausgangslage kann deutlich darunter oder darüber liegen<?php if ( '' !== $case_url ) : ?>. <a href="<?php echo esc_url( $case_url ); ?>" data-track-action="checkfox_deeper_case" data-track-category="internal_link" data-track-section="checkfox_methodology">Der dokumentierte Fall im Detail</a><?php endif; ?>.</li>
 			<?php endif; ?>
 			<li><strong>Grenzen:</strong> Diese Seite nennt keine Preise, Exklusivitätsregeln oder Qualitätsquoten eines Anbieters. Solche Angaben sind vertragsabhängig und ohne Einsicht in Ihren Vertrag nicht belegbar. Marktmechaniken ändern sich; maßgeblich ist immer Ihr aktueller Vertragsstand.</li>
-			<li><strong>Vertiefung:</strong> <a href="<?php echo esc_url( $tco_url ); ?>" data-track-action="checkfox_deeper_tco" data-track-category="internal_link" data-track-section="checkfox_methodology">TCO-Vergleich Portal vs. eigenes System</a>, <a href="<?php echo esc_url( $solar_url ); ?>" data-track-action="checkfox_deeper_solar" data-track-category="internal_link" data-track-section="checkfox_methodology">Photovoltaik-Anfragen</a>, <a href="<?php echo esc_url( $heatpump_url ); ?>" data-track-action="checkfox_deeper_heatpump" data-track-category="internal_link" data-track-section="checkfox_methodology">Wärmepumpen-Anfragen</a>.</li>
+			<li><strong>Vertiefung:</strong> <a href="<?php echo esc_url( $tco_url ); ?>" data-track-action="checkfox_deeper_tco" data-track-category="internal_link" data-track-section="checkfox_methodology">Portal-Zukauf und eigenen Anfrageweg vergleichen</a>, <a href="<?php echo esc_url( $solar_url ); ?>" data-track-action="checkfox_deeper_solar" data-track-category="internal_link" data-track-section="checkfox_methodology">Photovoltaik-Anfragen</a>, <a href="<?php echo esc_url( $heatpump_url ); ?>" data-track-action="checkfox_deeper_heatpump" data-track-category="internal_link" data-track-section="checkfox_methodology">Wärmepumpen-Anfragen</a>.</li>
 		</ul>
 	</section>
 

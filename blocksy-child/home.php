@@ -62,28 +62,28 @@ $resolve_dossier_category = static function ( $slugs ) use ( $blog_url ) {
 
 $dossiers = [
 	[
-		'number'      => '01',
-		'title'       => 'Leadökonomie & Energie',
-		'description' => 'Solar- und Wärmepumpen-Nachfrage, Portale, Leadkosten, Vorqualifizierung und die Wirtschaftlichkeit eigener Nachfrage.',
-		'category'    => $resolve_dossier_category( [ 'leadgenerierung', 'markteinordnung' ] ),
+		'number' => '01',
+		'title' => 'WordPress & technisches SEO',
+		'description' => 'Websites, Relaunches, Ladezeit und technische Suchsichtbarkeit: prüfen, umsetzen und das Ergebnis nachvollziehen.',
+		'category' => $resolve_dossier_category( [ 'wordpress-performance', 'wordpress', 'seo-sichtbarkeit' ] ),
 	],
 	[
-		'number'      => '02',
-		'title'       => 'WordPress & technisches SEO',
-		'description' => 'Relaunch, technische Architektur, Ladezeit und Messprotokolle — ohne Labwerte mit Felddaten zu verwechseln.',
-		'category'    => $resolve_dossier_category( [ 'wordpress-performance', 'performance-marketing', 'wordpress', 'seo-sichtbarkeit' ] ),
+		'number' => '02',
+		'title' => 'Tracking & Attribution',
+		'description' => 'Anfragen ihren Quellen zuordnen: GA4, Server-Side Tracking, Consent und die Verbindung zum Vertrieb.',
+		'category' => $resolve_dossier_category( [ 'tracking', 'analytics' ] ),
 	],
 	[
-		'number'      => '03',
-		'title'       => 'Tracking & Attribution',
-		'description' => 'Server-Side Tracking, Attribution, Consent und die Stellen, an denen Datenketten in echten Setups brechen.',
-		'category'    => $resolve_dossier_category( [ 'tracking', 'analytics' ] ),
+		'number' => '03',
+		'title' => 'Conversion & Landingpages',
+		'description' => 'Angebot, Belege, Formulare und Rückmeldung: den Weg vom Besuch zur passenden Projektanfrage verbessern.',
+		'category' => $resolve_dossier_category( [ 'cro', 'conversion', 'strategie' ] ),
 	],
 	[
-		'number'      => '04',
-		'title'       => 'Conversion & Landingpages',
-		'description' => 'Landingpages, Formulare, CRM-Übergaben und Entscheidungswege zwischen Klick und qualifizierter Anfrage.',
-		'category'    => $resolve_dossier_category( [ 'strategie', 'conversion', 'cro' ] ),
+		'number' => '04',
+		'title' => 'Leadökonomie & Energie',
+		'description' => 'Für Solar- und SHK-Betriebe: bestehende Lead-Anbieter, Anfragequalität und Kosten pro gewonnenem Auftrag einordnen.',
+		'category' => $resolve_dossier_category( [ 'leadgenerierung', 'markteinordnung' ] ),
 	],
 ];
 
@@ -101,13 +101,6 @@ $entry_paths = [
 		'copy'   => 'WordPress, Tracking, CRO und technisches SEO als Umsetzungskapazität im Hintergrund der Agentur.',
 		'url'    => $whitelabel_url,
 		'track'  => 'blog_start_whitelabel',
-	],
-	[
-		'kicker' => 'Solar & Wärmepumpe',
-		'title'  => 'Eigene Anfragesysteme',
-		'copy'   => 'Leadökonomie, Marktmodelle und Infrastruktur für Betriebe, die nicht von Portalleads abhängig bleiben wollen.',
-		'url'    => $energy_url,
-		'track'  => 'blog_start_energy',
 	],
 ];
 
@@ -183,8 +176,8 @@ get_header();
 					<dd>Analysen & Bauprotokolle</dd>
 				</div>
 				<div>
-					<dt>Vertikale</dt>
-					<dd>Solar / Wärmepumpe / Speicher</dd>
+					<dt>Für</dt>
+					<dd>Unternehmen und Agenturen</dd>
 				</div>
 				<div>
 					<dt>Prinzip</dt>
@@ -207,8 +200,8 @@ get_header();
 
 				<div class="voll">
 					<p class="mono stempelfarbe">Start hier</p>
-					<h2 class="kopf">Drei Wege. Ein technisches Fundament.</h2>
-					<p class="vorspann">Der Blog ist keine vierte Leistung. Er zeigt, wie die drei realen Arbeitskontexte technisch zusammenhängen.</p>
+					<h2 class="kopf">WordPress, Tracking und Conversion in der Praxis.</h2>
+					<p class="vorspann">Technische Anleitungen, Entscheidungsgrundlagen und dokumentierte Projektarbeit für Unternehmen und Agenturen.</p>
 
 					<div class="blog-index__entry-grid">
 						<?php foreach ( $entry_paths as $index => $entry ) : ?>
@@ -268,8 +261,8 @@ get_header();
 					<aside class="marg">
 						<div class="note">
 							<span class="label">Leselogik</span>
-							<b>Der neueste Beitrag steht nicht in einer Kartenwand.</b><br>
-							Er bekommt einmal Vorrang. Danach folgt die Chronik.
+							<b>Eine Frage auswählen, dann vertiefen.</b><br>
+							Die Themen führen zu den passenden Anleitungen. Alle Veröffentlichungen bleiben im Archiv erreichbar.
 						</div>
 					</aside>
 				</div>
@@ -286,8 +279,8 @@ get_header();
 					</div>
 
 					<div class="voll">
-						<h2 class="kopf">Vier Felder, die zusammengehören.</h2>
-						<p class="vorspann">Die Themen sind getrennt, die Systeme nicht. Hier wird sichtbar, wo Technik, Messung und wirtschaftliche Wirkung ineinandergreifen.</p>
+						<h2 class="kopf">Die passende Antwort für Ihr Website-Projekt.</h2>
+						<p class="vorspann">Beginnen Sie mit Ihrer Frage zu WordPress, Messung oder Anfragen. Die Einordnungen für Solar- und SHK-Betriebe stehen im Energie-Dossier.</p>
 
 						<div class="blog-index__dossier-list">
 							<?php foreach ( $dossiers as $dossier ) : ?>
@@ -324,8 +317,8 @@ get_header();
 
 				<div class="voll">
 					<p class="mono stempelfarbe"><?php echo esc_html( is_paged() ? 'Weitere Arbeiten' : 'Neue Arbeiten' ); ?></p>
-					<h2 class="kopf"><?php echo esc_html( is_paged() ? 'Weitere Arbeiten.' : 'Chronologisch. Ohne Algorithmus.' ); ?></h2>
-					<p class="vorspann">Was zuletzt veröffentlicht oder überarbeitet wurde, steht oben.</p>
+					<h2 class="kopf"><?php echo esc_html( is_paged() ? 'Weitere Arbeiten.' : 'Alle Beiträge nach Veröffentlichung.' ); ?></h2>
+					<p class="vorspann">Neue Veröffentlichungen stehen oben. Über die Themenauswahl finden Sie die Beiträge für Ihren Arbeitsbereich.</p>
 
 					<?php if ( ! empty( $blog_categories ) ) : ?>
 						<nav class="blog-index__filter" aria-label="<?php esc_attr_e( 'Artikel nach Kategorie filtern', 'blocksy-child' ); ?>">

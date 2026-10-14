@@ -87,9 +87,9 @@ function nexus_glossary_has_link_context() {
 		'wordpress-website-erstellen-lassen', 'landingpage-erstellen-lassen', 'whitelabel-retainer',
 		'conversion-optimierung', 'ga4-tracking-setup', 'server-side-tracking-b2b', 'wordpress-agentur-hannover',
 		'performance-marketing', 'technisches-seo-performance-fundament', 'case-study-solar-leadgenerierung', 'e3-new-energy',
-		'solar-waermepumpen-leadgenerierung', 'b2b-solar-leads', 'waermepumpen-leads', 'qualifizierte-pv-anfragen',
-		'lead-funnel-solar', 'cost-per-lead-photovoltaik', 'kunden-gewinnen-solarteure', 'solar-leads-kosten-studie',
-		'eigene-leadgenerierung-vs-portale', 'solar-leads-kaufen-alternative',
+		'solar-waermepumpen-leadgenerierung', 'b2b-solar-leads', 'waermepumpen-leads',
+		'solar-leads-kosten-studie',
+		'solar-leads-kaufen-alternative',
 	];
 	$templates = array_merge( [ 'page-ga4.php', 'page-performance.php', 'page-wordpress-agentur.php', 'page-case-study-solar.php', 'page-seo-cornerstone.php' ], array_map( static function ( $slug ) { return 'page-' . $slug . '.php'; }, $pages ) );
 	if ( is_front_page() || is_singular( 'post' ) || is_page( $pages ) || is_page_template( $templates ) ) {

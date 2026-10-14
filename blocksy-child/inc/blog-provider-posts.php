@@ -145,7 +145,7 @@ Die [Solar-Fallstudie](/case-study-solar-leadgenerierung/) zeigt den Aufbau eige
 - **Validierung** einer neuen Zielgruppe vor dem Aufbau eigener Funnels
 - kurzfristige Auslastung, wenn der Vertrieb sehr schnell reagieren kann
 
-Als alleinige Lead-Quelle ist das Modell im 2026er Markt für PV/Wärmepumpe jedoch riskant. Es macht Betriebe abhängig von externer Reichweite, fremder Datenbasis und schwankender Lead-Qualität. Eine ausführlichere System-Gegenüberstellung finden Sie im [TCO-Vergleich Portal-Leads vs. eigenes Anfragesystem über 24 Monate](/eigene-leadgenerierung-vs-portale/).
+Als alleinige Lead-Quelle ist das Modell im 2026er Markt für PV/Wärmepumpe jedoch riskant. Es macht Betriebe abhängig von externer Reichweite, fremder Datenbasis und schwankender Lead-Qualität. Eine ausführlichere System-Gegenüberstellung finden Sie im [Kosten und Eigentum: Portal-Leads vs. eigener Anfrageweg](/solar-leads-kaufen-alternative/#vergleich).
 
 Für Betriebe mit eigener Vertriebsverantwortung, hohen Projektwerten und klarem Zielgebiet ist der strategisch stärkere Weg meist: Portal-Leads nicht blind abschalten, sondern parallel eine eigene Anfrage-Infrastruktur aufbauen. So wird aus kurzfristigem Volumen schrittweise ein eigenes Akquise-Asset.
 
@@ -241,7 +241,7 @@ In drei Situationen können Portal-Leads übergangsweise sinnvoll sein:
 2. **Markteintritt ohne Marke**: neue Region, in der noch keine eigene Sichtbarkeit aufgebaut ist
 3. **Validierung**: Erprobung einer neuen Zielgruppe oder eines neuen Produkts vor dem Aufbau eigener Strecken
 
-Als alleinige Dauerstrategie ist Portal-Lead-Einkauf im 2026er Markt für PV/Wärmepumpe riskant. Eine ausführliche Gegenüberstellung finden Sie im [CAPEX-vs-OPEX-Vergleich: Portal-Leads gegen eigenes Anfragesystem](/eigene-leadgenerierung-vs-portale/).
+Als alleinige Dauerstrategie ist Portal-Lead-Einkauf im 2026er Markt für PV/Wärmepumpe riskant. Eine ausführliche Gegenüberstellung finden Sie im [CAPEX-vs-OPEX-Vergleich: Portal-Leads gegen eigenes Anfragesystem](/solar-leads-kaufen-alternative/#vergleich).
 
 ## Nächster Schritt: Solar-Marktcheck
 
@@ -330,7 +330,7 @@ Das ist kein allgemeines Versprechen, sondern ein Beleg für den Unterschied zwi
 - **Kurzfristige Auslastungslücke** beim Vertrieb
 - **Validierung** einer neuen Region oder eines neuen Produkts
 
-Als alleinige Lead-Quelle ist auch das Branchen-Portal-Modell riskant, wenn keine eigene Strecke parallel aufgebaut wird. Die ausführliche System-Gegenüberstellung finden Sie in der [Vergleichsmatrix Portal-Leads vs. eigenes Anfragesystem mit 8-Kriterien-Bewertung](/eigene-leadgenerierung-vs-portale/).
+Als alleinige Lead-Quelle ist auch das Branchen-Portal-Modell riskant, wenn keine eigene Strecke parallel aufgebaut wird. Die ausführliche System-Gegenüberstellung finden Sie in der [Qualität und Eigentum: Portal-Leads vs. eigener Anfrageweg](/solar-leads-kaufen-alternative/#vergleich).
 
 ## Nächster Schritt: Solar-Marktcheck
 
@@ -399,7 +399,7 @@ Wie diese Rechnung für Wärmepumpen-Anfragen im Detail aussieht, zeigt die Seit
 
 Die [Solar-Fallstudie](/case-study-solar-leadgenerierung/) zeigt den Aufbau eigener Landingpages, Vorqualifizierung, Tracking und CRM-Anbindung. Dort sind Gesamtleadzahl, Besucher-zu-Lead-Conversion und Abschlussquote der vorqualifizierten CRM-Leads mit ihren jeweiligen Bezugsgrößen dokumentiert.
 
-Die vollständige System-Gegenüberstellung über 24 Monate finden Sie im [TCO-Vergleich Portal-Leads vs. eigenes Anfragesystem](/eigene-leadgenerierung-vs-portale/).
+Die System-Gegenüberstellung finden Sie im [Vergleich Portal-Leads vs. eigener Anfrageweg](/solar-leads-kaufen-alternative/#vergleich).
 
 ## Wann das breite Portal-Modell trotzdem Sinn ergibt
 
@@ -489,7 +489,7 @@ Die [Solar-Fallstudie](/case-study-solar-leadgenerierung/) zeigt den Aufbau eige
 - **Übergangsphase** während des Aufbaus eigener Anfrage-Strecken
 - **Volumen-Booster** in definierten Regionen
 
-Strategisch lohnt es sich, parallel zum Videomarketing-Vertrag die eigene Infrastruktur aufzubauen, damit die Strecke langfristig im Eigentum des Betriebs liegt. Den Systemvergleich finden Sie in der [Asset-Eigentum-Analyse: Portal-Leads vs. eigene Anfrage-Strecke](/eigene-leadgenerierung-vs-portale/).
+Strategisch lohnt es sich, parallel zum Videomarketing-Vertrag die eigene Infrastruktur aufzubauen, damit die Strecke langfristig im Eigentum des Betriebs liegt. Den Systemvergleich finden Sie in der [Asset-Eigentum-Analyse: Portal-Leads vs. eigene Anfrage-Strecke](/solar-leads-kaufen-alternative/#vergleich).
 
 ## Nächster Schritt: Solar-Marktcheck
 
@@ -622,12 +622,13 @@ function hu_lead_provider_starts_with( $haystack, $needle ) {
 function hu_lead_provider_format_inline_markdown( $text ) {
 	$links = [];
 	$text  = preg_replace_callback(
-		'/\[([^\]]+)\]\((https?:\/\/[^)]+)\)/',
+		'/\[([^\]]+)\]\((https?:\/\/[^)]+|\/[^)]+)\)/',
 		static function( $matches ) use ( &$links ) {
 			$key           = '%%HU_PROVIDER_LINK_' . count( $links ) . '%%';
+			$url = 0 === strpos( $matches[2], '/' ) ? home_url( $matches[2] ) : $matches[2];
 			$links[ $key ] = sprintf(
 				'<a href="%s">%s</a>',
-				esc_url( $matches[2] ),
+				esc_url( $url ),
 				esc_html( $matches[1] )
 			);
 
@@ -806,3 +807,71 @@ function hu_maybe_seed_lead_provider_markteinordnung_posts() {
 	}
 }
 add_action( 'init', 'hu_maybe_seed_lead_provider_markteinordnung_posts', 31 );
+
+/**
+ * Repair only known link/proof defects, preserving the provider's editor copy.
+ *
+ * @param string $content Stored article HTML.
+ * @return string Repaired HTML.
+ */
+function hu_normalize_solar_provider_editor_content( $content ) {
+	$content = preg_replace_callback(
+		'/\[([^\]]+)\]\((\/(?:solar-|case-study-solar-|waermepumpen-|b2b-solar-|eigene-leadgenerierung-|cost-per-lead-|lead-funnel-|qualifizierte-pv-)[^)]+)\)/',
+		static function ( $match ) {
+			$url = home_url( $match[2] );
+			$target = hu_get_internal_redirect_target( $url );
+			return '<a href="' . esc_url( '' !== $target ? $target : $url ) . '">' . esc_html( $match[1] ) . '</a>';
+		},
+		(string) $content
+	);
+	$content = hu_rewrite_internal_redirect_hrefs( (string) $content );
+	$content = str_replace(
+		[ 'TCO-Vergleich Portal-Leads vs. eigenes Anfragesystem über 24 Monate', 'Vergleichsmatrix Portal-Leads vs. eigenes Anfragesystem mit 8-Kriterien-Bewertung', 'Die vollständige System-Gegenüberstellung über 24 Monate' ],
+		[ 'Kosten und Eigentum: Portal-Leads vs. eigener Anfrageweg', 'Qualität und Eigentum: Portal-Leads vs. eigener Anfrageweg', 'Die System-Gegenüberstellung' ],
+		$content
+	);
+	$repaired = preg_replace_callback(
+		'#<p>(.*?)</p>#s',
+		static function ( $match ) {
+			if ( false === strpos( $match[1], 'case-study-solar-leadgenerierung' )
+				|| ! preg_match( '/(?:12\s*%|1[.,]750(?:\+)?\s+qualifizierten)/u', $match[1] ) ) {
+				return $match[0];
+			}
+			return '<p>Der <a href="' . esc_url( home_url( '/case-study-solar-leadgenerierung/' ) ) . '">dokumentierte PV-Referenzfall</a> zeigt den Aufbau von Anfrageweg, Vorqualifizierung, Messung und CRM-Übergabe. Die Ergebnisse und ihre Bezugsgrößen stehen in der Fallstudie. Sie sind keine Prognose für diesen Anbieter oder Ihren Betrieb.</p>';
+		},
+		$content
+	);
+	return is_string( $repaired ) ? $repaired : $content;
+}
+
+/** Run once; do not republish or reseed complete editor-owned provider articles. */
+function hu_maybe_migrate_solar_provider_editor_content() {
+	if ( wp_installing() || wp_doing_ajax() || wp_doing_cron() ) {
+		return;
+	}
+	$version = '2026-10-14-solar';
+	$option = 'hu_solar_provider_content_migration';
+	if ( get_option( $option ) === $version ) {
+		return;
+	}
+	$failed = false;
+	foreach ( hu_get_lead_provider_posts_seed_data() as $provider ) {
+		$id = hu_lead_provider_find_post_id_by_slug( $provider['slug'] );
+		if ( ! $id || 'publish' !== get_post_status( $id ) ) {
+			continue;
+		}
+		$before = (string) get_post_field( 'post_content', $id, 'raw' );
+		$after = hu_normalize_solar_provider_editor_content( $before );
+		if ( $before === $after ) {
+			continue;
+		}
+		$result = wp_update_post( wp_slash( [ 'ID' => $id, 'post_content' => $after ] ), true );
+		if ( is_wp_error( $result ) || ! $result ) {
+			$failed = true;
+		}
+	}
+	if ( ! $failed ) {
+		update_option( $option, $version, false );
+	}
+}
+add_action( 'init', 'hu_maybe_migrate_solar_provider_editor_content', 44 );

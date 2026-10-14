@@ -773,3 +773,21 @@ berechnet den Preis aus dem Pricing-Kanon; Browserpreise sind keine Quelle.
 Die Auswahl bleibt in Formular, beiden Mails und CRM erhalten.
 Sofortkontakt führt mit `focus=sofortkontakt` auf eine thematisch vorbereitete
 Kontaktanfrage. Beide Wege sind Anfragen, keine kostenpflichtige Beauftragung.
+
+
+### Solar-Inhaltsrouten nach Konsolidierung (2026-10-14)
+
+Die drei zentralen Rollen sind Angebot (`/solar-waermepumpen-leadgenerierung/`),
+Beschaffungsentscheidung (`/solar-leads-kaufen-alternative/`) und Kostenrechnung
+(`/solar-leads-kosten-studie/`). Wärmepumpe und Gewerbe-PV behalten ihre
+produktspezifischen Fragen. Anbieterartikel führen kontextuell zum Vergleich,
+zu Kosten oder zum Marktcheck, ohne zusätzliche Angebote einzuführen.
+
+Marktcheck-Preis und Antwortzeit kommen aus dem Kanon; die Anfrage ist noch
+keine Buchung. Die weitere kostenpflichtige Analyse-Stufe ist nicht Teil
+dieses Funnels. Sofortkontakt bleibt ein separater Kontaktweg.
+
+Die Redirect-Ziele der fünf entfallenen Routen stehen in
+`nexus_get_consolidated_solar_redirect_map()`. Interne Links zeigen direkt auf
+die endgültige Route bzw. den passenden Abschnitt. Die Query-Registry nennt
+kanonische Pfade ohne Fragmente. Vorhandene CTA-Hooks und Endpunkte bleiben.

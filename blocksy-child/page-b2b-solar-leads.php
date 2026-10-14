@@ -30,8 +30,8 @@ $cluster_url  = static function ( $slug, $fallback ) use ( $cluster_map ) {
 		? home_url( (string) $cluster_map[ $slug ]['path'] )
 		: home_url( $fallback );
 };
-$qualified_url = $cluster_url( 'qualifizierte-pv-anfragen', '/qualifizierte-pv-anfragen/' );
-$cpl_url       = $cluster_url( 'cost-per-lead-photovoltaik', '/cost-per-lead-photovoltaik/' );
+$qualified_url = $cluster_url( 'solar-leads-kaufen-alternative', '/solar-leads-kaufen-alternative/' ) . '#qualitaet';
+$cpl_url       = $cluster_url( 'solar-leads-kosten-studie', '/solar-leads-kosten-studie/' ) . '#cpo';
 $tracking_url  = $cluster_url( 'server-side-tracking-b2b', '/server-side-tracking-b2b/' );
 // Intent-Trennung: wer den Portal-Vergleich sucht, gehoert auf die
 // Kauf-Alternative — nicht auf diese Gewerbe-/Termin-Seite.
@@ -109,22 +109,22 @@ $gewerbe_layers = [
 $pv_termine_rows = [
 	[
 		'criterion' => 'Erfolgssignal',
-		'bought'    => 'Der Termin wurde angenommen und in den Kalender gelegt.',
+		'bought'    => 'Ein Termin nach den vereinbarten Projekt- und Kontaktkriterien.',
 		'own'       => 'Projektwert, technische Eckdaten und Freigabepfad passen zu Ihren Kriterien.',
 	],
 	[
 		'criterion' => 'Qualifizierung',
-		'bought'    => 'Im oder nach dem Erstgespräch — durch Ihren Vertrieb.',
+		'bought'    => 'Vorabprüfung laut Vertrag; fehlende Projektangaben ergänzt Ihr Vertrieb.',
 		'own'       => 'Vor der Terminvergabe — durch die eigene Anfragestrecke.',
 	],
 	[
 		'criterion' => 'Kriterienhoheit',
-		'bought'    => 'Der Anbieter definiert, wann ein Kontakt als Termin zählt.',
+		'bought'    => 'Die vertraglich vereinbarte Definition eines gültigen Termins.',
 		'own'       => 'Ihr Betrieb definiert, wann eine Anfrage vertriebsreif ist.',
 	],
 	[
 		'criterion' => 'Messung',
-		'bought'    => 'Kosten und Anzahl der vereinbarten Termine.',
+		'bought'    => 'Terminpreis plus intern erfasster Vertriebsstatus und Auftrag.',
 		'own'       => 'Quelle, Fit, Vertriebsstatus und späterer Auftrag.',
 	],
 ];
@@ -151,13 +151,13 @@ $offer_steps = [
 	],
 	[
 		'n' => '02',
-		't' => 'Anfragesystem-Analyse',
-		's' => 'Nur bei grünem oder gelbem Fit werden Suchintention, Buying-Center, Vorqualifizierung, Tracking und CRM-Übergabe als priorisierter Bauplan konkretisiert.',
+		't' => 'Umfang und Angebot',
+		's' => 'Bei passendem Fit werden Zielgebiet, Projektkriterien, Messung und CRM-Anschluss konkretisiert. Sie erhalten einen vereinbarten Leistungsumfang und ein Angebot vor der Beauftragung.',
 	],
 	[
 		'n' => '03',
 		't' => 'Umsetzung',
-		's' => 'Money Page, Anfragestrecke, Messung und Übergabe werden gebaut. Umfang und Reihenfolge folgen der Analyse — nicht einem festen Leistungskatalog.',
+		's' => 'Nach Ihrer Beauftragung werden Seite, Vorqualifizierung, Messung und Übergabe nach dem vereinbarten Umfang gebaut, geprüft und übergeben.',
 	],
 ];
 
@@ -176,7 +176,7 @@ $faq = [
 	],
 	[
 		'question' => 'Was passiert nach dem Marktcheck?',
-		'answer'   => 'Sie erhalten zuerst eine Fit-Entscheidung zu Region, Projektwert, Vertriebskapazität und Anfragequalität. Nur wenn ein eigener Anfrageweg wirtschaftlich und operativ trägt, folgt die vertiefte Anfragesystem-Analyse. Erst danach wird ein Umsetzungsumfang festgelegt.',
+		'answer'   => sprintf( 'Sie erhalten eine schriftliche Einordnung zu Region, Projektwert, Vertriebskapazität und Anfragequalität. Bei passendem Fit werden Umfang und Angebot vereinbart. Der Aufbau beginnt bei %s netto für eine Produktstrecke; Werbung und rund %s Hosting pro Monat kommen hinzu. Eine Beauftragung erfolgt erst nach Ihrer Entscheidung.', hu_foundation_price_display(), hu_foundation_hosting_display() ),
 	],
 	[
 		'question' => 'Wie lange dauert die Umsetzung nach einer positiven Fit-Entscheidung?',
@@ -261,7 +261,7 @@ get_header();
 						<span>Ihr Vertrieb anreist.</span>
 					</h1>
 					<p class="hu-intercept__lead">
-						Ein Kalendereintrag ist noch keine Verkaufschance. Ein eigenes Anfragesystem prüft Projektwert, technische Substanz und Buying-Center, <strong>bevor Ihr Vertrieb Zeit blockiert</strong> — für Gewerbe-PV-Projekte ab <strong>50.000 €</strong>.
+						Ich baue den eigenen Anfrageweg für Gewerbe-PV. Gebuchte Termine oder Kontaktdatensätze werden nicht verkauft. Ein Kalendereintrag ist erst dann eine Verkaufschance, wenn das Projekt zu Ihrem Betrieb passt. Ein eigenes Anfragesystem prüft Projektwert, technische Substanz und Buying-Center, <strong>bevor Ihr Vertrieb Zeit blockiert</strong> — für Gewerbe-PV-Projekte ab <strong>50.000 €</strong>.
 					</p>
 					<?php get_template_part( 'template-parts/seo-subpage-byline', null, [ 'template_path' => __FILE__ ] ); ?>
 					<div class="hu-intercept__cta hu-b2b__actions">
@@ -270,7 +270,7 @@ get_header();
 						   data-track-action="cta_marktcheck"
 						   data-track-category="b2b_solar_leads"
 						   data-track-section="hero">
-							Marktcheck starten <span aria-hidden="true">→</span>
+							Marktcheck anfragen · <?php echo esc_html( hu_marketcheck_price() ); ?> <span aria-hidden="true">→</span>
 						</a>
 						<a class="hu-b2b__text-link"
 						   href="<?php echo esc_url( $e3_url ); ?>"
@@ -280,7 +280,7 @@ get_header();
 							PV-Referenzfall zur Systemarchitektur <span aria-hidden="true"><?php echo hu_arrow_up_right_svg(); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- static inline SVG ?></span>
 						</a>
 					</div>
-					<p class="hu-b2b__microcopy">Region · Projektschwelle · Vertriebskapazität · händische Fit-Einordnung</p>
+					<p class="hu-b2b__microcopy">Marktcheck: <?php echo esc_html( hu_marketcheck_price( true ) ); ?> · Aufbau ab <?php echo esc_html( hu_foundation_price_display() ); ?> netto · Absenden ist noch keine Buchung</p>
 				</div>
 
 				<aside class="hu-b2b__gate" aria-labelledby="hu-b2b-gate-title">
@@ -474,15 +474,15 @@ get_header();
 				<h2 class="hu-intercept__h2" id="hu-b2b-final-title">Prüfen Sie zuerst, ob ein eigener Gewerbe-PV-Anfrageweg wirtschaftlich trägt.</h2>
 			</div>
 			<div class="hu-b2b__final-action">
-				<p>Der Marktcheck ordnet Region, Projektschwelle, Vertriebskapazität und heutige Anfragequellen ein — mit klarer Empfehlung für oder gegen die nächste Analyse.</p>
+				<p>Der Marktcheck ordnet Region, Projektschwelle, Vertriebskapazität und heutige Anfragequellen ein. Sie erhalten eine schriftliche Empfehlung, ob und unter welchen Voraussetzungen ein eigener Anfrageweg sinnvoll ist.</p>
 				<a class="hu-intercept__cta-primary"
 				   href="<?php echo esc_url( $marktcheck_url ); ?>"
 				   data-track-action="cta_marktcheck"
 				   data-track-category="b2b_solar_leads"
 				   data-track-section="final">
-					Marktcheck starten <span aria-hidden="true">→</span>
+					Marktcheck anfragen · <?php echo esc_html( hu_marketcheck_price() ); ?> <span aria-hidden="true">→</span>
 				</a>
-				<p class="hu-b2b__microcopy">Keine Zahlungsdaten · kein Pflicht-Call · händische Einordnung</p>
+				<p class="hu-b2b__microcopy">Netto · Absenden ist noch keine Buchung · bei Beauftragung des Anfragesystems anrechenbar</p>
 				<a class="hu-b2b__text-link"
 				   href="<?php echo esc_url( $solar_money_url ); ?>"
 				   data-track-action="cta_money_page"

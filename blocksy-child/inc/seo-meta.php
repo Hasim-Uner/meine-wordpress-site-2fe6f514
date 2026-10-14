@@ -336,29 +336,9 @@ function hu_get_forced_singular_seo_map() {
 				'title'       => 'PV-Termine B2B: qualifizierte Gewerbe-PV-Anfragen',
 				'description' => 'PV-Termine B2B für Gewerbe-PV: Projektwert, Technik und Buying-Center vorqualifizieren. Eigener Anfrageweg statt Termine ohne Projektsubstanz.',
 			],
-			'eigene-leadgenerierung-vs-portale' => [
-				'title'       => 'Portal-Leads vs. eigenes System: TCO-Vergleich Solar/SHK',
-				'description' => sprintf( '24-Monats-TCO: Portal-Leads (DAA, Aroundhome, Check24) vs. eigenes Anfragesystem. Case Study: %s niedrigerer CPL in 6 Monaten.', $e3_cpl_reduction ),
-			],
-			'lead-funnel-solar' => [
-				'title'       => 'Lead-Funnel Solar & Wärmepumpe – Aufbau für B2B-Marketing',
-				'description' => 'Lead-Funnel-Architektur für Photovoltaik- und Wärmepumpen-Anbieter: vom Erstkontakt zur qualifizierten Anfrage. Vorqualifizierung, Lead-Scoring, CRM-Übergabe.',
-			],
-			'kunden-gewinnen-solarteure' => [
-				'title'       => 'Kunden gewinnen für Solarteure – ohne Portal-Leads',
-				'description' => sprintf( 'Wie Solarteure & Wärmepumpen-Anbieter systematisch Kunden gewinnen – ohne DAA, Aroundhome oder Check24. Case Study: %s niedrigerer CPL.', $e3_cpl_reduction ),
-			],
-			'cost-per-lead-photovoltaik' => [
-				'title'       => 'Cost per Lead Photovoltaik: Was Solar-Anfragen wirklich kosten',
-				'description' => sprintf( 'CPL-Rechnung für Photovoltaik- und Wärmepumpen-Anbieter: Portal-Leads vs. eigenes System. Case Study: %s weniger Kosten pro Anfrage in 6 Monaten.', $e3_cpl_reduction ),
-			],
-			'qualifizierte-pv-anfragen' => [
-				'title'       => 'Qualifizierte PV-Anfragen: 4 Merkmale guter Solar-Leads',
-				'description' => 'Vier Merkmale einer qualifizierten Photovoltaik-Anfrage: Intent, Exklusivität, Vorqualifizierung, Echtzeit — mit Praxisbezug aus einer Case Study.',
-			],
 			'solar-leads-kosten-studie' => [
-				'title'       => 'Solar-Leads Kosten 2026: CPL, CPO & Portal-Vergleich',
-				'description' => 'Was kosten Solar-Leads wirklich? Marktstudie mit Photovoltaik- und Wärmepumpen-CPL, Cost-per-Order, Portal-Modellen, Methodik und Case-Study-Benchmark.',
+				'title'       => 'Solar-Leads Kosten: CPL & Kosten pro Auftrag',
+				'description' => 'Solar-Leads-Kosten mit eigenen Zahlen berechnen: CPL, Abschlussquote, Vertriebszeit und Gesamtkosten für Photovoltaik- und Wärmepumpen-Anfragen.',
 			],
 			// Groesste ungenutzte Chance der Domain: 315 Impressionen auf Pos. 8,4
 			// (GSC 28d 2026-07-30) bei 1 Klick. Der alte Titel stellte die Query nur
@@ -765,13 +745,7 @@ function hu_get_solar_seo_subpage_paths() {
 		$cache = [
 			trailingslashit( '/solar-leads-kaufen-alternative' ),
 			trailingslashit( '/waermepumpen-leads' ),
-			trailingslashit( '/server-side-tracking-b2b' ),
 			trailingslashit( '/b2b-solar-leads' ),
-			trailingslashit( '/eigene-leadgenerierung-vs-portale' ),
-			trailingslashit( '/lead-funnel-solar' ),
-			trailingslashit( '/kunden-gewinnen-solarteure' ),
-			trailingslashit( '/cost-per-lead-photovoltaik' ),
-			trailingslashit( '/qualifizierte-pv-anfragen' ),
 			trailingslashit( '/solar-leads-kosten-studie' ),
 		];
 	}
@@ -831,6 +805,12 @@ function hu_get_noindex_nofollow_slugs() {
 function hu_get_noindex_follow_slugs() {
 	return [
 		'wordpress-freelancer-hannover', // Retired; 301 to the homepage, excluded from sitemaps.
+		// Five content routes consolidated on 2026-10-14; their destinations remain indexable.
+		'eigene-leadgenerierung-vs-portale',
+		'lead-funnel-solar',
+		'kunden-gewinnen-solarteure',
+		'cost-per-lead-photovoltaik',
+		'qualifizierte-pv-anfragen',
 		'alle-loesungen',
 		'alle-loesungen-im-detail',
 		'anfrage',

@@ -23,10 +23,24 @@ $context  = $argv[1] ?? 'imprint';
 $template = $argv[2] ?? '';
 $sheets   = array_filter( explode( ',', $argv[3] ?? '' ) );
 
+// The cost route shares real schema and calculator modules with WordPress.
+// Load them rather than replacing its evidence or calculations with fixtures.
+if ( 'page-solar-leads-kosten-studie.php' === $template ) {
+	require_once get_stylesheet_directory() . '/inc/org-schema.php';
+	require_once get_stylesheet_directory() . '/inc/seo-meta.php';
+	require_once get_stylesheet_directory() . '/inc/cpo-calculator.php';
+}
+
 nav_test_use_context( $context );
 
 if ( ! function_exists( 'rest_url' ) ) {
 	function rest_url( $path ) { return home_url( '/wp-json/' . $path ); }
+}
+if ( ! function_exists( 'wp_parse_args' ) ) {
+	function wp_parse_args( $args, $defaults = [] ) { return array_merge( $defaults, (array) $args ); }
+}
+if ( ! function_exists( 'sanitize_text_field' ) ) {
+	function sanitize_text_field( $value ) { return trim( strip_tags( (string) $value ) ); }
 }
 
 // Templates enqueue their own stylesheet and call get_header()/get_footer();

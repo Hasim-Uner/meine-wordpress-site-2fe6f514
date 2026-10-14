@@ -52,8 +52,8 @@ get_template_part( 'template-parts/blog-header' );
 		$seo_url      = $primary_urls['seo'] ?? trailingslashit( $agentur_url ) . '#zusammenarbeit';
 		$cro_url      = $primary_urls['cro'] ?? home_url( '/#angebot-funnel' );
 		$tracking_url = home_url( '/server-side-tracking-b2b/' );
-		$portal_url   = home_url( '/eigene-leadgenerierung-vs-portale/' );
-		$cpl_url      = home_url( '/cost-per-lead-photovoltaik/' );
+		$portal_url   = home_url( '/solar-leads-kaufen-alternative/#vergleich' );
+		$cpl_url      = home_url( '/solar-leads-kosten-studie/#cpo' );
 
 		$is_agency_outsourcing = function_exists( 'hu_is_agency_outsourcing_article' ) && hu_is_agency_outsourcing_article();
 		$is_website_relaunch   = function_exists( 'hu_is_website_relaunch_article' ) && hu_is_website_relaunch_article();
@@ -93,7 +93,7 @@ get_template_part( 'template-parts/blog-header' );
 				'eyebrow'         => __( 'Kurz beantwortet', 'blocksy-child' ),
 				'title'           => __( 'Seriosität und wirtschaftliche Eignung sind zwei verschiedene Fragen.', 'blocksy-child' ),
 				'text'            => __( 'Der Beitrag ordnet beides getrennt ein. Für Ihren Betrieb entscheidet am Ende der reale Preis pro gewonnenem Auftrag.', 'blocksy-child' ),
-				'primary_label'   => __( 'TCO-Vergleich Portal vs. eigenes System', 'blocksy-child' ),
+				'primary_label'   => __( 'Portal-Zukauf und eigenen Anfrageweg vergleichen', 'blocksy-child' ),
 				'primary_url'     => $portal_url,
 				'secondary_label' => __( 'Regionalen Marktcheck starten', 'blocksy-child' ),
 				'secondary_url'   => $audit_url,
@@ -116,7 +116,7 @@ get_template_part( 'template-parts/blog-header' );
 				'text'            => __( 'Dieser Artikel gehört in die Frage, ob Nachfrage dauerhaft gemietet oder als eigenes System aufgebaut werden sollte.', 'blocksy-child' ),
 				'primary_label'   => __( 'TCO-Vergleich ansehen', 'blocksy-child' ),
 				'primary_url'     => $portal_url,
-				'secondary_label' => __( 'CPL/CPO-Rechnung ansehen', 'blocksy-child' ),
+				'secondary_label' => __( 'Kosten pro Anfrage und Auftrag ansehen', 'blocksy-child' ),
 				'secondary_url'   => $cpl_url,
 			];
 		} elseif ( in_array( 'tracking', $post_cat_slugs, true ) ) {

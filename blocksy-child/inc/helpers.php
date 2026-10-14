@@ -610,17 +610,17 @@ function nexus_get_primary_public_url_map() {
 			home_url( '/solar-leads-kosten-studie/' )
 		),
 		'solar_leads_tco'      => nexus_get_page_url(
-			[ 'eigene-leadgenerierung-vs-portale' ],
-			home_url( '/eigene-leadgenerierung-vs-portale/' )
-		),
+			[ 'solar-leads-kaufen-alternative' ],
+			home_url( '/solar-leads-kaufen-alternative/' )
+		) . '#vergleich',
 		'solar_cpl'            => nexus_get_page_url(
-			[ 'cost-per-lead-photovoltaik' ],
-			home_url( '/cost-per-lead-photovoltaik/' )
-		),
+			[ 'solar-leads-kosten-studie' ],
+			home_url( '/solar-leads-kosten-studie/' )
+		) . '#cpo',
 		'solar_funnel'         => nexus_get_page_url(
-			[ 'lead-funnel-solar' ],
-			home_url( '/lead-funnel-solar/' )
-		),
+			[ 'solar-waermepumpen-leadgenerierung' ],
+			home_url( '/solar-waermepumpen-leadgenerierung/' )
+		) . '#strecke',
 		'solar_tracking'       => nexus_get_page_url(
 			[ 'server-side-tracking-b2b' ],
 			home_url( '/server-side-tracking-b2b/' )
@@ -1421,8 +1421,8 @@ function nexus_get_provisioned_pages() {
 		],
 		[
 			'slug'     => 'solar-leads-kosten-studie',
-			'title'    => 'Was kosten Solar-Leads? Marktstudie DACH',
-			'excerpt'  => 'Marktstudie zu den tatsächlichen Kosten von Solar- und Wärmepumpen-Leads im DACH-Raum: Cost-per-Order statt Cost-per-Lead.',
+			'title'    => 'Solar-Leads-Kosten: CPL und Kosten pro Auftrag',
+			'excerpt'  => 'Kosten pro Solar-Anfrage und Auftrag: CPL, Abschlussquote, Vertriebszeit und Berechnung mit eigenen Zahlen.',
 			'template' => 'page-solar-leads-kosten-studie.php',
 		],
 		[
@@ -1436,30 +1436,6 @@ function nexus_get_provisioned_pages() {
 			'title'    => 'B2B Solar Leads – gewerbliche Photovoltaik-Anfragesysteme',
 			'excerpt'  => 'Anfragesysteme für gewerbliche Photovoltaik, Speicher und PPA. Buying-Center-tauglicher Funnel statt B2C-Mengen-Leads.',
 			'template' => 'page-b2b-solar-leads.php',
-		],
-		[
-			'slug'     => 'eigene-leadgenerierung-vs-portale',
-			'title'    => 'Eigene Leadgenerierung vs. Portal-Leads – Vergleich',
-			'excerpt'  => 'Vergleich Mieten vs. Besitzen für Solar-, Wärmepumpen- und Speicher-Anbieter: TCO, Exklusivität, Datenhoheit.',
-			'template' => 'page-eigene-leadgenerierung-vs-portale.php',
-		],
-		[
-			'slug'     => 'lead-funnel-solar',
-			'title'    => 'Lead-Funnel Solar – Pillar-Page',
-			'excerpt'  => 'Pillar-Page für die Lead-Funnel-Architektur für Photovoltaik- und Wärmepumpen-Anbieter.',
-			'template' => 'page-lead-funnel-solar.php',
-		],
-		[
-			'slug'     => 'kunden-gewinnen-solarteure',
-			'title'    => 'Kunden gewinnen für Solarteure – ohne Portal-Leads',
-			'excerpt'  => 'Pillar-Page zur systematischen Kundengewinnung für Solarteure im DACH-Mittelstand.',
-			'template' => 'page-kunden-gewinnen-solarteure.php',
-		],
-		[
-			'slug'     => 'cost-per-lead-photovoltaik',
-			'title'    => 'Cost per Lead Photovoltaik – Was Solar-Anfragen wirklich kosten',
-			'excerpt'  => 'CPL-Rechnung und drei Szenarien für Solar-, Wärmepumpen- und Speicher-Anbieter im Vergleich.',
-			'template' => 'page-cost-per-lead-photovoltaik.php',
 		],
 		[
 			'slug'     => 'landingpage-erstellen-lassen',
@@ -1478,12 +1454,6 @@ function nexus_get_provisioned_pages() {
 			'title'    => 'WordPress-Website erstellen lassen',
 			'excerpt'  => 'WordPress-Website zum Festpreis: Neubau oder Relaunch auf einer Testumgebung, live nach Ihrer Abnahme. Jede alte URL bekommt eine Weiterleitung.',
 			'template' => 'page-wordpress-website-erstellen-lassen.php',
-		],
-		[
-			'slug'     => 'qualifizierte-pv-anfragen',
-			'title'    => 'Qualifizierte PV-Anfragen – Vier Merkmale für hochwertige Leads',
-			'excerpt'  => 'Vier Merkmale, an denen sich eine qualifizierte Photovoltaik-Anfrage erkennen lässt, plus Warnsignale.',
-			'template' => 'page-qualifizierte-pv-anfragen.php',
 		],
 	];
 }
@@ -1619,11 +1589,53 @@ add_action( 'init', 'nexus_maybe_ensure_case_study_page', 27 );
  *
  * @return array<string, string>
  */
+function nexus_get_consolidated_solar_redirect_map() {
+	$energy_url  = nexus_get_energy_systems_url();
+	$compare_url = home_url( '/solar-leads-kaufen-alternative/' );
+	$cost_url    = home_url( '/solar-leads-kosten-studie/' );
+
+	return [
+		'/kunden-gewinnen-solarteure/'        => $energy_url,
+		'/lead-funnel-solar/'                => $energy_url . '#strecke',
+		'/eigene-leadgenerierung-vs-portale/' => $compare_url . '#vergleich',
+		'/cost-per-lead-photovoltaik/'        => $cost_url . '#cpo',
+		'/qualifizierte-pv-anfragen/'         => $compare_url . '#qualitaet',
+	];
+}
+
+/**
+ * Resolve consolidated routes, including stored templates and page-ID URLs.
+ *
+ * @param string $request_path Normalized current request path.
+ * @return string Final URL, or an empty string for a retained route.
+ */
+function nexus_get_consolidated_solar_redirect_url( $request_path ) {
+	foreach ( nexus_get_consolidated_solar_redirect_map() as $source => $target ) {
+		$slug = trim( $source, '/' );
+		if ( $source !== $request_path && ! is_page( $slug ) && ! is_page_template( 'page-' . $slug . '.php' ) ) {
+			continue;
+		}
+		if ( trailingslashit( (string) wp_parse_url( $target, PHP_URL_PATH ) ) === $request_path ) {
+			return '';
+		}
+		return remove_query_arg(
+			[ 'page_id', 'p', 'name', 'pagename' ],
+			nexus_append_current_query_to_redirect_url( $target )
+		);
+	}
+	return '';
+}
+
+/**
+ * Return protected legacy entry paths and their final destinations.
+ *
+ * @return array<string, string>
+ */
 function nexus_get_legacy_offer_redirect_map() {
 	$agentur_url = nexus_get_primary_public_url( 'agentur', home_url( '/wordpress-agentur-hannover/' ) );
 	$request_url = nexus_get_primary_request_url();
 	$energy_url  = nexus_get_energy_systems_url();
-	$portal_url  = home_url( '/eigene-leadgenerierung-vs-portale/' );
+	$portal_url  = home_url( '/solar-leads-kaufen-alternative/' );
 	$case_study_url = nexus_get_primary_public_url( 'e3', home_url( '/case-study-solar-leadgenerierung/' ) );
 	// Aufgeloest statt hart verdrahtet: solange der Seeder die Seite noch nicht
 	// umbenannt hat, zeigt der Resolver auf /uber-mich/ — der Pfadvergleich in
@@ -1644,7 +1656,7 @@ function nexus_get_legacy_offer_redirect_map() {
 		}
 	}
 
-	return [
+	return array_merge( [
 		// High-probability external entry paths. Internal/historical tool,
 		// Content and query ownership moved to / by the homepage consolidation.
 		'/wordpress-freelancer-hannover/' => home_url( '/' ),
@@ -1693,7 +1705,7 @@ function nexus_get_legacy_offer_redirect_map() {
 		// Zahlen. 31 Impressionen, 0 Klicks in 90 Tagen (Export 2026-09-01),
 		// keine eigene Query in query-ownership.csv.
 		'/stack-solar/'                           => $energy_url,
-	];
+	], nexus_get_consolidated_solar_redirect_map() );
 }
 
 add_action( 'template_redirect', 'nexus_redirect_legacy_offer_paths', 2 );
@@ -1825,6 +1837,12 @@ function nexus_redirect_legacy_offer_paths() {
 		exit;
 	}
 
+	$solar_target = nexus_get_consolidated_solar_redirect_url( $current_path );
+	if ( '' !== $solar_target ) {
+		wp_safe_redirect( $solar_target, 301 );
+		exit;
+	}
+
 	$redirect_map = nexus_get_legacy_offer_redirect_map();
 
 	if ( empty( $redirect_map[ $current_path ] ) ) {
@@ -1933,11 +1951,6 @@ function nexus_should_hide_footer_primary_cta() {
 		'page-solar-leads-kaufen-alternative.php',
 		'page-server-side-tracking-b2b.php',
 		'page-b2b-solar-leads.php',
-		'page-eigene-leadgenerierung-vs-portale.php',
-		'page-lead-funnel-solar.php',
-		'page-kunden-gewinnen-solarteure.php',
-		'page-cost-per-lead-photovoltaik.php',
-		'page-qualifizierte-pv-anfragen.php',
 		'page-whitelabel-retainer.php',
 	];
 
@@ -1965,11 +1978,6 @@ function nexus_should_hide_footer_primary_cta() {
 			'solar-leads-kaufen-alternative',
 			'server-side-tracking-b2b',
 			'b2b-solar-leads',
-			'eigene-leadgenerierung-vs-portale',
-			'lead-funnel-solar',
-			'kunden-gewinnen-solarteure',
-			'cost-per-lead-photovoltaik',
-			'qualifizierte-pv-anfragen',
 			'loesungen',
 		]
 	);
@@ -2095,11 +2103,6 @@ function nexus_force_energy_systems_route_template( $template ) {
 		'solar-leads-kaufen-alternative'                 => get_stylesheet_directory() . '/page-solar-leads-kaufen-alternative.php',
 		'server-side-tracking-b2b'                       => get_stylesheet_directory() . '/page-server-side-tracking-b2b.php',
 		'b2b-solar-leads'                                => get_stylesheet_directory() . '/page-b2b-solar-leads.php',
-		'eigene-leadgenerierung-vs-portale'              => get_stylesheet_directory() . '/page-eigene-leadgenerierung-vs-portale.php',
-		'lead-funnel-solar'                              => get_stylesheet_directory() . '/page-lead-funnel-solar.php',
-		'kunden-gewinnen-solarteure'                     => get_stylesheet_directory() . '/page-kunden-gewinnen-solarteure.php',
-		'cost-per-lead-photovoltaik'                     => get_stylesheet_directory() . '/page-cost-per-lead-photovoltaik.php',
-		'qualifizierte-pv-anfragen'                      => get_stylesheet_directory() . '/page-qualifizierte-pv-anfragen.php',
 	];
 
 	foreach ( $route_templates as $slug => $forced_template ) {

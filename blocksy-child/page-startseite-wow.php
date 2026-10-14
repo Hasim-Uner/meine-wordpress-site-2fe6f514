@@ -66,7 +66,7 @@ $proof_metrics = [
 
 $deep_links = [
 	[ 'title' => 'Solar Leads kaufen Alternative', 'desc' => 'Portal-Kosten gegen eigenes System einordnen.', 'url' => home_url( '/solar-leads-kaufen-alternative/' ) ],
-	[ 'title' => 'Lead-Funnel Solar', 'desc' => 'Fünf Stufen vom Suchintent bis zum Auftrag.', 'url' => home_url( '/lead-funnel-solar/' ) ],
+	[ 'title' => 'Lead-Funnel Solar', 'desc' => 'Fünf Stufen vom Suchintent bis zum Auftrag.', 'url' => home_url( '/solar-waermepumpen-leadgenerierung/#strecke' ) ],
 	[ 'title' => 'Server-Side Tracking', 'desc' => 'GA4, Meta CAPI und CRM-Signal sauber verbinden.', 'url' => home_url( '/server-side-tracking-b2b/' ) ],
 ];
 

@@ -120,6 +120,7 @@ def checks(plan, base, head, skip_browser=False, skip_analysis=False):
             ('intake', ['npm', 'run', 'test:intake']),
             ('chat', ['npm', 'run', 'test:chat']),
             ('permalinks', ['npm', 'run', 'test:permalinks']),
+            ('solar-consolidation', ['npm', 'run', 'test:solar-consolidation']),
             ('provisioning', ['npm', 'run', 'test:provisioning']),
             ('pricing', ['npm', 'run', 'test:pricing']),
             ('navigation-ui', ['npm', 'run', 'test:navigation-ui']),

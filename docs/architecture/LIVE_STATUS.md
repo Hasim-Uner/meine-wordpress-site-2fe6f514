@@ -541,10 +541,9 @@ Contract und Abnahme: `CHAT_ASSISTANT.md`.
 
 - **Energie-Cluster** (`.hu-intercept`, Pfade in
   `hu_get_solar_seo_subpage_paths()`): `/solar-leads-kaufen-alternative/`,
-  `/waermepumpen-leads/`, `/b2b-solar-leads/`,
-  `/eigene-leadgenerierung-vs-portale/`, `/lead-funnel-solar/`,
-  `/kunden-gewinnen-solarteure/`, `/cost-per-lead-photovoltaik/`,
-  `/qualifizierte-pv-anfragen/`, `/solar-leads-kosten-studie/`. Primärziel ist
+  `/waermepumpen-leads/`, `/b2b-solar-leads/` und
+  `/solar-leads-kosten-studie/`. Fünf frühere Inhalte sind auf diese Owner
+  und die Hauptseite konzentriert (Entscheidung 2026-10-14). Primärziel ist
   der Marktcheck; Byline, Breadcrumb- und Service-Schema über Helper in
   `inc/seo-meta.php`.
 - **Nachweise:** `/case-study-solar-leadgenerierung/` ist die Fallstudie; sie
@@ -810,7 +809,7 @@ Contract und Abnahme: `CHAT_ASSISTANT.md`.
   `/case-studies-e-commerce/` → `/case-study-solar-leadgenerierung/` (ein
   Schritt, Query-String bleibt), `/wordpress-agentur/` →
   `/wordpress-agentur-hannover/`, `/category/owned-leads/` →
-  `/eigene-leadgenerierung-vs-portale/`.
+  `/solar-leads-kaufen-alternative/`.
 - 301 von `/<beitrag>/<autoren-slug>/` auf den Beitrag
   (`inc/post-permalink-author-redirect.php`, geprüft mit `npm run test:permalinks`).
   Greift nur, solange die Permalink-Struktur kein `%author%` enthält.
@@ -877,3 +876,40 @@ Contract und Abnahme: `CHAT_ASSISTANT.md`.
   unbelegten Leistungszahlen; `Retainer` als kaufnaher Standardbegriff.
 - Ein WordPress-Editor-Shell als Quelle für Funnel-Logik; lose Root-Ablagen für
   Playbooks und Entwürfe.
+
+
+## Solar-Konsolidierung 2026-10-14 (Repository)
+
+Fünf eigenständige Inhaltsrouten entfallen. Ihre Inhalte, Query-Owner und
+weiterführenden Links liegen auf drei bestehenden Zielseiten:
+
+| Alte Route | Permanente Zielroute |
+|---|---|
+| `/kunden-gewinnen-solarteure/` | `/solar-waermepumpen-leadgenerierung/` |
+| `/lead-funnel-solar/` | `/solar-waermepumpen-leadgenerierung/#strecke` |
+| `/eigene-leadgenerierung-vs-portale/` | `/solar-leads-kaufen-alternative/#vergleich` |
+| `/cost-per-lead-photovoltaik/` | `/solar-leads-kosten-studie/#cpo` |
+| `/qualifizierte-pv-anfragen/` | `/solar-leads-kaufen-alternative/#qualitaet` |
+
+`nexus_get_consolidated_solar_redirect_map()` ist die Routingquelle. Der
+Redirect greift vor `redirect_canonical`, auch bei alten Templates und
+`?page_id=`. Kampagnenparameter bleiben erhalten; WordPress-Routingparameter
+werden entfernt. Die Quellseiten werden nicht mehr provisioniert, ihre
+Templates sind entfernt und ihre Slugs aus der Sitemap ausgeschlossen.
+Die Zielseiten behalten Self-Canonicals und Indexierbarkeit.
+
+Die Hauptseite übernimmt den Aufbau und die Anfragearchitektur in nativen
+Vertiefungen. Der Kaufvergleich führt durch Modellwahl, Eigentum, Qualität,
+Kosten und Beleggrenzen. Der Kostenbeitrag nutzt den vorhandenen lokalen
+CPO-Rechner mit leeren Eingaben; Anbieterpreise und Branchenquoten werden
+nicht vorgegeben. Sichtbare FAQ und FAQ-Schema teilen ihre Texte.
+
+Wärmepumpen und Gewerbe-PV behalten eigene Fragen und Beleggrenzen.
+Aroundhome, Checkfox, Wattfox, DAA und Leadfluss bleiben erhalten. Eine
+gezielte Migration repariert bekannte interne Markdown-Links und den
+veralteten Case-Absatz, ohne vollständige Editor-Artikel neu zu seeden.
+Die Seed-Version bleibt unverändert. Der Blog stellt WordPress, Tracking
+und Conversion vor das Energie-Dossier; die Chronik bleibt chronologisch.
+
+Live-Verifikation und CI gehören zur Abnahme dieses Änderungspakets; dieser
+Abschnitt beschreibt bis dahin den Repository-Stand.

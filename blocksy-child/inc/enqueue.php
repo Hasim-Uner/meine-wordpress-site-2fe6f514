@@ -421,11 +421,6 @@ function hu_enqueue_assets() {
 		'waermepumpen-leads'                => 'page-waermepumpen-leads.php',
 		'server-side-tracking-b2b'          => 'page-server-side-tracking-b2b.php',
 		'b2b-solar-leads'                   => 'page-b2b-solar-leads.php',
-		'eigene-leadgenerierung-vs-portale' => 'page-eigene-leadgenerierung-vs-portale.php',
-		'lead-funnel-solar'                 => 'page-lead-funnel-solar.php',
-		'kunden-gewinnen-solarteure'        => 'page-kunden-gewinnen-solarteure.php',
-		'cost-per-lead-photovoltaik'        => 'page-cost-per-lead-photovoltaik.php',
-		'qualifizierte-pv-anfragen'         => 'page-qualifizierte-pv-anfragen.php',
 		'solar-leads-kosten-studie'         => 'page-solar-leads-kosten-studie.php',
 	];
 
@@ -440,6 +435,13 @@ function hu_enqueue_assets() {
 			hu_enqueue_js( 'nexus-seo-subpage-sticky-cta-js', 'seo-subpage-sticky-cta.js', [] );
 			break;
 		}
+	}
+
+	// Konsolidierte Kostenroute: gleiche Leselogik, bestehender lokaler Rechner.
+	if ( is_page( 'solar-leads-kosten-studie' ) || is_page_template( 'page-solar-leads-kosten-studie.php' ) ) {
+		hu_enqueue_css( 'nexus-solar-costs-page-css', 'solar-leads-kaufen-alternative-page.css', [ 'nexus-intercept-solar-leads-css' ] );
+		hu_enqueue_css( 'nexus-cpo-calculator-css', 'cpo-calculator.css', [ 'nexus-system-css' ] );
+		hu_enqueue_js( 'nexus-cpo-calculator-js', 'cpo-calculator.js', [ 'nexus-core-js' ] );
 	}
 
 	// ── F1a-int-buy) Kauf-Intent-Redesign NUR auf /solar-leads-kaufen-alternative/ ──
@@ -618,11 +620,6 @@ function hu_disable_core_block_styles_on_custom_templates() {
 		'page-waermepumpen-leads.php',
 		'page-server-side-tracking-b2b.php',
 		'page-b2b-solar-leads.php',
-		'page-eigene-leadgenerierung-vs-portale.php',
-		'page-lead-funnel-solar.php',
-		'page-kunden-gewinnen-solarteure.php',
-		'page-cost-per-lead-photovoltaik.php',
-		'page-qualifizierte-pv-anfragen.php',
 		'page-solar-leads-kosten-studie.php',
 		'page-case-study-solar.php',
 		'page-wordpress-agentur.php',
@@ -636,11 +633,6 @@ function hu_disable_core_block_styles_on_custom_templates() {
 		'waermepumpen-leads',
 		'server-side-tracking-b2b',
 		'b2b-solar-leads',
-		'eigene-leadgenerierung-vs-portale',
-		'lead-funnel-solar',
-		'kunden-gewinnen-solarteure',
-		'cost-per-lead-photovoltaik',
-		'qualifizierte-pv-anfragen',
 		'solar-leads-kosten-studie',
 		'case-study-solar-leadgenerierung',
 		'e3-new-energy',
