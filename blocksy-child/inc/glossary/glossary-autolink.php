@@ -12,6 +12,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 
 add_filter( 'the_content', 'nexus_glossary_autolink', 80 );
 add_shortcode( 'hu_begriff', 'nexus_glossary_term_shortcode' );
+add_action( 'wp_footer', 'nexus_glossary_print_definitions', 5 );
 
 /** @return array<string, string> Exact phrase => existing query-owner URL. */
 function nexus_get_solar_pillar_autolink_mappings() {
@@ -101,20 +102,55 @@ function nexus_glossary_has_link_context() {
 
 /**
  * One markup owner for template, shortcode and automatic links.
+ * The definition is queued for the footer: inside the sentence it reads as
+ * running text to crawlers and text extraction ("WebPWebP ist ...").
  *
  * @param string $label_html Escaped label, or unchanged HTML text token.
  * @param array<string, string> $config Destination, definition and stable key.
- * @return string Safe inline HTML; AT can read the definition without JS.
+ * @return string Safe inline HTML; AT reads the definition without JS.
  */
 function nexus_glossary_link_markup( $label_html, $config ) {
 	$tip = trim( (string) ( $config['tooltip'] ?? '' ) );
-	$id  = wp_unique_id( 'glossary-tip-' );
+	$id  = '' !== $tip ? nexus_glossary_queue_definition( $tip ) : '';
 	return sprintf(
-		'<span class="glossary-autolink-wrap" data-glossary-term="%1$s"><a href="%2$s" class="%3$s"%4$s>%5$s</a>%6$s</span>',
+		'<span class="glossary-autolink-wrap" data-glossary-term="%1$s"><a href="%2$s" class="%3$s"%4$s>%5$s</a></span>',
 		esc_attr( $config['linked_key'] ), esc_url( $config['url'] ), esc_attr( $config['class'] ),
-		'' !== $tip ? ' aria-describedby="' . esc_attr( $id ) . '"' : '', $label_html,
-		'' !== $tip ? '<span id="' . esc_attr( $id ) . '" class="glossary-autolink__popover" role="tooltip" hidden>' . esc_html( $tip ) . '</span>' : ''
+		'' !== $id ? ' aria-describedby="' . esc_attr( $id ) . '"' : '', $label_html
 	);
+}
+
+/**
+ * Collect a definition for nexus_glossary_print_definitions().
+ *
+ * @param string|null $tip Plain-text definition; null returns the queue.
+ * @return string|array<string, string> New element ID, or the queue.
+ */
+function nexus_glossary_queue_definition( $tip = null ) {
+	static $queue = [];
+	if ( null === $tip ) {
+		return $queue;
+	}
+	$id           = wp_unique_id( 'glossary-tip-' );
+	$queue[ $id ] = $tip;
+	return $id;
+}
+
+/**
+ * Hidden descriptions outside <main>, referenced by aria-describedby.
+ *
+ * @return string Safe HTML, empty without queued definitions.
+ */
+function nexus_glossary_definitions_markup() {
+	$html = '';
+	foreach ( nexus_glossary_queue_definition() as $id => $tip ) {
+		$html .= '<span id="' . esc_attr( $id ) . '" class="glossary-autolink__popover" role="tooltip" hidden>' . esc_html( $tip ) . '</span>';
+	}
+	return '' !== $html ? '<div class="glossary-autolink__definitions" data-nosnippet>' . $html . '</div>' : '';
+}
+
+/** Footer output for every queued definition of this request. */
+function nexus_glossary_print_definitions() {
+	echo nexus_glossary_definitions_markup(); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- escaped per element above.
 }
 
 /**

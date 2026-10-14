@@ -55,10 +55,11 @@ glossary_link_check( nexus_glossary_link_content( $input, 0 ) === $input, 'Disab
 $html = nexus_glossary_link( 'attribution', 'Attribution' );
 $term = nexus_get_glossary_definition( 'attribution' );
 glossary_link_check( strpos( $html, home_url( '/glossar/attribution/' ) ) !== false, 'Published definition destination.' );
-glossary_link_check( strpos( $html, esc_html( $term['short_definition'] ) ) !== false, 'Definition comes from the registry.' );
-glossary_link_check( strpos( $html, 'role="tooltip" hidden' ) !== false, 'Hidden AT description and normal link without JS.' );
+glossary_link_check( strpos( $html, esc_html( $term['short_definition'] ) ) === false && strpos( $html, 'role="tooltip"' ) === false, 'Definition stays out of the running sentence.' );
+$definitions = nexus_glossary_definitions_markup();
+glossary_link_check( strpos( $definitions, 'role="tooltip" hidden' ) !== false && strpos( $definitions, esc_html( $term['short_definition'] ) ) !== false, 'Hidden AT description and normal link without JS.' );
 preg_match( '~aria-describedby="([^"]+)"~', $html, $id );
-glossary_link_check( strpos( $html, 'id="' . $id[1] . '"' ) !== false, 'Description reference resolves.' );
+glossary_link_check( strpos( $definitions, 'id="' . $id[1] . '"' ) !== false, 'Description reference resolves.' );
 glossary_link_check( nexus_glossary_link( 'attribution' ) !== $html, 'Unique IDs across repeated explicit components.' );
 glossary_link_check( strpos( nexus_glossary_link( 'attribution', '<img onerror="alert(1)">' ), '<img' ) === false, 'Explicit labels are escaped.' );
 glossary_link_check( nexus_glossary_link( 'does-not-exist', '<b>Text</b>' ) === '&lt;b&gt;Text&lt;/b&gt;', 'Missing term keeps escaped wording.' );
