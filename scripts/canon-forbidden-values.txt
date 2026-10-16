@@ -54,6 +54,12 @@ rule	case-abschlussquote-12	(^|[^0-9,.])12[[:space:]]*(%|&nbsp;%|Prozent)	Abschl
 # "3× bis 15×") ist seit 2026-09-26 aus dem Kanon entfernt.
 rule	e3-vorher-quote	sales_conversion_uplift|sales_conversion_before'\]\['display'\]|sales_conversion_before',[[:space:]]*'display'[[:space:]]*[,)]	-	Vorher-Quote nur als hu_e3_metric( 'sales_conversion_before', 'display_hedged' ) und als Annahme gekennzeichnet.
 
+# Die Kostensenkung pro Anfrage steht kanonisch bei 85 % (HU_E3_CPL_REDUCTION_PERCENT).
+# Bis 2026-10-16 zeigte /wordpress-agentur-hannover/ eine zweite, "gerundete"
+# Fassung mit 80 %. Zwei Zahlen fuer denselben Fall auf einer Domain wirken
+# wie ein Widerspruch.
+rule	e3-cpl-80	(−|&minus;)80([^0-9,.]|$)|80[[:space:]]+Prozent[[:space:]]+weniger[[:space:]]+Kosten	-	Die Kostensenkung kommt aus HU_E3_CPL_REDUCTION_PERCENT (85).
+
 # ── Begruendung einer Anonymisierung ──────────────────────────────────────
 # Ein anonymisierter Fall wird nie begruendet. „Anonymisiert, weil ein
 # Verfahren laeuft“ stand bis 2026-09-21 in Abschnitt 04 der Solar-Money-Page
@@ -139,10 +145,13 @@ rule	wl-stundensatz	[Ss]tundensatz|pro[[:space:]]+Stunde|€[[:space:]]*/[[:spac
 # Keine Verfuegbarkeits- oder Knappheitsangaben.
 rule	wl-verfuegbarkeit	[Ff]reie[[:space:]]+(Slots?|Pl(ä|ae)tze|Kapazit(ä|ae)t)|[Ss]lots?[[:space:]]+frei|nur[[:space:]]+noch[[:space:]]+[0-9]+|verf(ü|ue)gbar[[:space:]]+ab	^blocksy-child/(page-whitelabel-retainer\.php|assets/(css|js)/whitelabel\.(css|js)):	Keine Verfuegbarkeitsangaben. Kapazitaet klaert das Angebot.
 # Der Agentur-Retainer kostete bis 2026-09-25 1.000 € fuer 12 Stunden im
-# Monat, seitdem fuehrt HU_WHITELABEL_RETAINER_MIN 780. Die Regel gilt
+# Monat, danach fuehrte HU_WHITELABEL_RETAINER_MIN 780. Die Regel gilt
 # repo-weit, aber nur mit Kontextwort: 1.000 € steht auch als Budgetstufe im
 # Kontaktformular und als Portal-Budget in zwei PV-Ratgebern.
-rule	wl-retainer-1000	(^|[^0-9.,])1\.?000[[:space:]]*(€|&nbsp;€| €|&euro;|Euro)	Stunden|Kontingent|[Rr]etainer|[Ww]hite-?[Ll]abel	Der Agentur-Retainer kommt aus hu_whitelabel_price( 'retainer' ) und steht bei 780 €.
+rule	wl-retainer-1000	(^|[^0-9.,])1\.?000[[:space:]]*(€|&nbsp;€| €|&euro;|Euro)	Stunden|Kontingent|[Rr]etainer|[Ww]hite-?[Ll]abel	Der Agentur-Retainer kommt aus hu_whitelabel_price( 'retainer' ) und steht bei 840 €.
+# Von 2026-09-25 bis 2026-10-16 kostete das Kontingent 780 € (12 Stunden).
+# Seit dem Agentursatz von 70 € netto fuehrt HU_WHITELABEL_RETAINER_MIN 840.
+rule	wl-retainer-780	(^|[^0-9.,])780[[:space:]]*(€|&nbsp;€| €|&euro;|Euro)	Stunden|Kontingent|[Rr]etainer|[Ww]hite-?[Ll]abel	Der Agentur-Retainer kommt aus hu_whitelabel_price( 'retainer' ) und steht bei 840 €.
 # Die Agentur-Landingpage kostete bis 2026-09-26 ab 1.900 €, seitdem fuehrt
 # HU_WHITELABEL_LANDINGPAGE_MIN 1.390 (30 % unter HU_LANDINGPAGE_PRICE). Nur
 # mit Kontextwort: 1.900 € ist auch Stufe 3 der Tracking-Leiter.

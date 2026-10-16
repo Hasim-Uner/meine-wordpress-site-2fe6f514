@@ -1878,6 +1878,8 @@
 .anfrage-website .art button[aria-pressed="true"] { background: var(--papier); border-color: var(--haar); }
 .anfrage-website .art button[aria-pressed="true"]::before { content: "✓ "; color: var(--stempel); }
 .anfrage-website .aw-hinweis { font-size: var(--grad-klein); line-height: 1.5; color: var(--grau); margin-top: var(--s1); }
+.anfrage-website .aw-unsicher { padding-top: var(--s1); border-top: 1px solid var(--haar); }
+.anfrage-website .aw-unsicher a { color: inherit; font-weight: 600; text-decoration: underline; white-space: nowrap; }
 .anfrage-website .aw-extras { display: grid; gap: var(--s1); }
 .anfrage-website .aw-option { display: grid; grid-template-columns: 20px minmax(0, 1fr) auto; align-items: start; gap: var(--s1); padding: var(--s2); border: 1px solid var(--haar); border-radius: var(--r1); cursor: pointer; transition: background-color var(--t-mikro) var(--ease-aus), border-color var(--t-mikro) var(--ease-aus); }
 .anfrage-website .aw-option:has(input:checked) { border-color: var(--stempel); background: color-mix(in srgb, var(--stempel) 5%, var(--papier)); }

@@ -719,6 +719,9 @@ und in der kontextuellen Sticky-Leiste:
 `cta_website_offer_scope_project`,
 `cta_website_offer_close_project` und
 `cta_website_offer_sticky_project`.
+Solange der Versuch Ersteinschätzung an ist, steht unter dem Rechner-Button
+eine Zeile für Unentschlossene: `website_offer_ersteinschaetzung` führt über
+`hu_first_assessment_url()` zur Ersteinschätzung (seit 16.10.2026).
 
 Die drei `website_offer_scenario_1|3|5`-Hooks sind Abkürzungen für
 Seitentyp-Mischungen, keine Pakete. Seit 06.10.2026 setzen sie

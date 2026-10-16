@@ -825,13 +825,14 @@ define( 'HU_WHITELABEL_LANDINGPAGE_MIN', 1390 );
 // ein Endkunde — das bricht die 30-%-Regel, die auf jeder anderen Sprosse
 // dieser Leiter gilt.
 //
-// 780 seit 2026-09-25, davor 1.000 (Feinschliff /whitelabel-retainer/). Der
-// alte Betrag steht als wl-retainer-1000 in scripts/canon-forbidden-values.txt.
+// 840 seit 2026-10-16 (Agentursatz 70 € netto, 12 Stunden), davor 780 seit
+// 2026-09-25 und 1.000 bis dahin. Beide alten Betraege stehen als
+// wl-retainer-1000 und wl-retainer-780 in scripts/canon-forbidden-values.txt.
 //
-// Das Stundenkontingent gehoert zur Zahl: "ab 780 € / Monat" allein sagt
+// Das Stundenkontingent gehoert zur Zahl: "ab 840 € / Monat" allein sagt
 // nicht, wofuer. Ein Stundensatz steht dabei weder als Zahl noch als
 // Herleitung auf der Seite — das Kontingent ist die Einheit, nicht die Stunde.
-define( 'HU_WHITELABEL_RETAINER_MIN', 780 );
+define( 'HU_WHITELABEL_RETAINER_MIN', 840 );
 define( 'HU_WHITELABEL_RETAINER_HOURS', 12 );
 
 /**
