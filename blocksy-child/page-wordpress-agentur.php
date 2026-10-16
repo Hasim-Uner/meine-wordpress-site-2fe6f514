@@ -119,8 +119,8 @@ get_header();
 			</div>
 
 			<a class="agentur-proofline" href="<?php echo esc_url( $case_url ); ?>" data-track-action="agentur_hero_case" data-track-category="proof">
-				<strong>−80 %</strong>
-				<span>Kosten pro qualifizierter Anfrage · dokumentierter B2B-Fall, bewusst gerundet</span>
+				<strong>−<?php echo esc_html( (string) HU_E3_CPL_REDUCTION_PERCENT ); ?> %</strong>
+				<span>Kosten pro qualifizierter Anfrage · dokumentierter B2B-Fall</span>
 			</a>
 
 			<p class="mono"><?php echo esc_html( $response ); ?> · Sitz in Pattensen bei Hannover · Umsetzung DACH-weit</p>
@@ -188,13 +188,13 @@ get_header();
 
 			<div class="voll">
 				<div class="proof-messung">
-					<div class="proof-messung__zahl" aria-label="80 Prozent weniger Kosten pro qualifizierter Anfrage">
-						<span>−80</span><small>%</small>
+					<div class="proof-messung__zahl" aria-label="<?php echo esc_attr( HU_E3_CPL_REDUCTION_PERCENT . ' Prozent weniger Kosten pro qualifizierter Anfrage' ); ?>">
+						<span>−<?php echo esc_html( (string) HU_E3_CPL_REDUCTION_PERCENT ); ?></span><small>%</small>
 					</div>
 					<div class="proof-messung__text">
 						<p class="mono">Kosten pro qualifizierter Anfrage</p>
 						<h2>Beleg vor Behauptung.</h2>
-						<p>Im dokumentierten B2B-Fall wurde nicht ein einzelner WordPress-Baustein optimiert, sondern die gesamte Strecke: Zielseiten, Vorqualifizierung, Tracking und Übergabe an den Vertrieb. Die Prozentzahl ist hier bewusst konservativ gerundet und keine Erfolgszusage für andere Projekte.</p>
+						<p>Im dokumentierten B2B-Fall wurde nicht ein einzelner WordPress-Baustein optimiert, sondern die gesamte Strecke: Zielseiten, Vorqualifizierung, Tracking und Übergabe an den Vertrieb. Die Zahl vergleicht zwei Anfragequellen im selben Betrieb und ist keine Erfolgszusage für andere Projekte.</p>
 					</div>
 				</div>
 

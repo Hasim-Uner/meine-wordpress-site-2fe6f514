@@ -74,6 +74,19 @@ Ist der Schalter aus, zeigt die Tafel nur die Projektanfrage.
 - Der Beitrag verlängert die Laufzeit nicht. Endet der Versuch, gilt für die
   Tafel dieselbe Entscheidung wie für die Startseite.
 
+### Zusätzlicher Einstieg: `/wordpress-website-erstellen-lassen/` (seit 2026-10-16)
+
+Unter dem Button des Umfangsrechners steht eine Zeile für Besucher, die den
+Umfang nicht selbst einschätzen können: URL und ein Satz zum Ziel, Einordnung
+innerhalb der kanonischen Antwortzeit. Link auf `hu_first_assessment_url()`,
+Button-Text aus `hu_first_assessment_text( 'cta' )`, Hook
+`website_offer_ersteinschaetzung`. Die Hauptaktion „Weiter zur Anfrage“
+bleibt unverändert. Ist der Schalter aus, entfällt die Zeile.
+
+- **Zählung:** wie beim Beitrag über das Betreff-Präfix, getrennt auswerten
+  über die Vorseite `/wordpress-website-erstellen-lassen/`.
+- Verlängert die Laufzeit nicht.
+
 ### Preiskorrektur am 2026-09-26
 
 Der Website-Preis auf der Startseite sinkt. Statt eines Einstiegspreises ohne

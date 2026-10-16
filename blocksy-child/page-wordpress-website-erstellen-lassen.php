@@ -238,6 +238,9 @@ get_header();
             <div class="aw-zeitkalkulation"><span id="dauer-label">Produktionszeit</span><b id="bauzeit"><?php echo esc_html( $days( $quote['days'] ) ); ?></b><a href="#zeit" data-track-action="website_offer_to_zeit" data-track-category="navigation">Zeitbeiträge ansehen ↓</a></div>
             <a class="btn" id="cta-angebot" href="<?php echo esc_url( $contact_url ); ?>" data-website-cta="angebot" data-track-action="cta_website_offer_scope_project" data-track-category="lead_gen" data-track-section="website_offer_angebot">Weiter zur Anfrage <span aria-hidden="true">→</span></a>
             <p class="aw-hinweis">Ihre Auswahl wird übernommen. Antwort <?php echo esc_html( hu_response_promise( 'window' ) ); ?>.</p>
+            <?php if ( function_exists( 'hu_first_assessment_enabled' ) && hu_first_assessment_enabled() ) : ?>
+            <p class="aw-hinweis aw-unsicher">Unsicher, wie viele Seiten Sie brauchen? Schicken Sie Ihre URL und einen Satz zum Ziel. Sie bekommen <?php echo esc_html( hu_response_promise( 'window' ) ); ?> eine Einordnung, welcher Umfang reicht. <a href="<?php echo esc_url( hu_first_assessment_url() ); ?>" data-track-action="website_offer_ersteinschaetzung" data-track-category="lead_gen" data-track-section="website_offer_angebot"><?php echo esc_html( hu_first_assessment_text( 'cta' ) ); ?> <span aria-hidden="true">→</span></a></p>
+            <?php endif; ?>
           </div>
           <details class="aw-price-details"><summary>So setzt sich der Preis zusammen</summary>
           <dl class="aw-preispositionen">
