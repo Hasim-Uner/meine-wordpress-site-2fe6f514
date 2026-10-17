@@ -599,6 +599,24 @@ Contract und Abnahme: `CHAT_ASSISTANT.md`.
   Größe über das Feld „Open Graph Bild“. Kontextbrücke und Abschluss führen in
   die Projektanfrage mit Fokus `relaunch` bzw. in die Ersteinschätzung
   (`docs/architecture/CONVERSION_ROUTING.md`).
+- **`/agentic-coding/`** (Dossier `wordpress-performance`): „Agentic Coding:
+  Was es bedeutet und warum es Softwareentwicklung verändert“. Fachartikel auf
+  den Bausteinen, aus `assets/content/blog/agentic-coding.html` mit
+  Seed-Version `2026-10-18-agentic-coding-v1` angelegt
+  (`inc/article-agentic-coding.php`), danach im Editor gepflegt. Abb. 1
+  `abb-agent-schleife` (sechs Schritte, Schleife 04 → 03), Prüfliste
+  `agent-auftrag`, FAQ-Schema mit 14 Fragen, Studien- und Umfragezahlen über
+  `[hu_markt]` aus `inc/canon/market-canon.php`, Titelbild und og:image
+  `agentic-coding-hero.png` (Quelle `docs/briefings/blog-agentic-coding/`).
+  Kontextbrücke: Projektanfrage mit Fokus `website`, sekundär White-Label;
+  Abschluss: Ersteinschätzung, Hooks `blog_agentic_close_*`.
+- **Inhaltsverzeichnis (alle Beiträge mit `#article-content`):** Version 2
+  „Kapitelskala“ (`assets/js/article-reader-toc.js`): nur H2 als nummerierte
+  Kapitel, H3 nur unter dem aktiven Kapitel, Lesefortschritt als Linie,
+  Stand „03 / 10“ und Restlesezeit; unter 981 px eine Leiste unter der
+  Kopfleiste, die die Kapitel als Blatt öffnet. `data-toc` an einer H2
+  setzt die Kurzbezeichnung. Essay-Lesepfad und Entscheidungsbeiträge behalten
+  Version 1.
 - **Glossar:** `/glossar/` und `/glossar/<begriff>/` verwenden `system.css`
   mit `glossary.css` als Layout-Ergänzung. Die Übersicht zeigt das zentrale
   Register alphabetisch, mit Definitionen sowie einer optionalen Suche und

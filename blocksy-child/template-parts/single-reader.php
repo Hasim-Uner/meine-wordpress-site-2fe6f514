@@ -57,6 +57,7 @@ get_template_part( 'template-parts/blog-header' );
 
 		$is_agency_outsourcing = function_exists( 'hu_is_agency_outsourcing_article' ) && hu_is_agency_outsourcing_article();
 		$is_website_relaunch   = function_exists( 'hu_is_website_relaunch_article' ) && hu_is_website_relaunch_article();
+		$is_agentic_coding     = function_exists( 'hu_is_agentic_coding_article' ) && hu_is_agentic_coding_article();
 		$whitelabel_route_url  = function_exists( 'nexus_get_whitelabel_page_url' ) ? nexus_get_whitelabel_page_url() : home_url( '/whitelabel-retainer/' );
 
 		$post_categories = get_the_category();
@@ -161,6 +162,20 @@ get_template_part( 'template-parts/blog-header' );
 		if ( $is_website_relaunch && function_exists( 'hu_get_contact_intake_url' ) ) {
 			$article_context['primary_label'] = __( 'Relaunch-Projekt anfragen', 'blocksy-child' );
 			$article_context['primary_url']   = hu_get_contact_intake_url( 'project', 'relaunch' );
+		}
+
+		// Agentic Coding: Leser mit eigener Website gehen in die Projektanfrage,
+		// Agenturen in den White-Label-Weg (CONVERSION_ROUTING.md).
+		if ( $is_agentic_coding && function_exists( 'hu_get_contact_intake_url' ) ) {
+			$article_context = [
+				'eyebrow'         => __( 'Mit Agenten arbeiten', 'blocksy-child' ),
+				'title'           => __( 'Schneller gebaut ist noch nicht geprüft.', 'blocksy-child' ),
+				'text'            => __( 'Ob Ihre Website mit Coding-Agenten weiterentwickelt wird oder klassisch: Entscheidend ist, wer Auftrag und Abnahme schreibt.', 'blocksy-child' ),
+				'primary_label'   => __( 'Projekt anfragen', 'blocksy-child' ),
+				'primary_url'     => hu_get_contact_intake_url( 'project', 'website' ),
+				'secondary_label' => __( 'White-Label für Agenturen', 'blocksy-child' ),
+				'secondary_url'   => $whitelabel_route_url,
+			];
 		}
 
 		$article_next_links = [];

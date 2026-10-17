@@ -22,6 +22,13 @@ Wiederkehrende Elemente eines Cornerstone-Artikels. Code:
 - **Überschriften im Inhalt** sind H2 (Kapitel, mit `id`) und H3. Die
   Bausteine selbst setzen keine Überschriften, damit das Inhaltsverzeichnis
   nur die Gliederung des Artikels zeigt.
+- **Inhaltsverzeichnis.** Nur die H2 erscheinen als nummerierte Kapitel, die
+  H3 nur unter dem gerade gelesenen Kapitel (`assets/js/article-reader-toc.js`).
+  Eine lange Frage-Überschrift bekommt mit `data-toc="…"` eine Kurzbezeichnung
+  für das Verzeichnis, etwa `<h2 id="rollen" data-toc="Entwickler, Agenturen,
+  Auftraggeber">Was verändert …?</h2>`. Die Überschrift selbst und das
+  FAQ-Schema bleiben unverändert. Mehr als zehn Kapitel machen das Verzeichnis
+  unübersichtlich.
 - **FAQ-Schema.** Notiz, Abbildung, Fall, Abschluss-Tafel und Quellen tragen
   `data-hu-schema-skip`; `hu_extract_faq_schema_entities_from_content()`
   entfernt sie vor `wp_strip_all_tags()`. Eine Notiz direkt unter einer
@@ -70,6 +77,7 @@ Lädt `template-parts/editorial/abb-{id}.php`. `nr` ist die Nummer in
 |---|---|---|
 | `relaunch-kette` | 1 | Acht Stationen, fünf Bruchstellen, Rückkanal 05 → 01, auf `.tafel`. Waagerecht ab 820 px Abbildungsbreite, darunter senkrecht per Container Query; zeichnet sich einmal beim ersten Sichtkontakt. |
 | `relaunch-besser` | 2 | Vorher und nachher als zwei Bänder über acht Stationen, hell mit Linie oben. Schematisch: vier Übergänge je ein Fünftel besser, am Ende rund doppelt so viele. Werte und Rechnung in `docs/briefings/blog-website-relaunch/abb2.py`, sichtbar nur „+ 20 %“ und „rund 2 ×“. Farben und Schriften des SVG über Klassen aus `system.css`. Unter 640 px Breite scrollt die Grafik in ihrer eigenen Fläche. |
+| `agent-schleife` | 1 | Sechs Schritte vom Auftrag bis zur Freigabe auf `.tafel`, Mensch (gefüllter Punkt) und Agent (offener Punkt), Bogen „Schleife 04 → 03“, je Schritt „Prüft“ und „Typischer Fehler“, Freigabe im Stempel-Ring. Waagerecht ab 760 px Abbildungsbreite, darunter senkrecht; zeichnet sich wie die Kette einmal beim ersten Sichtkontakt. Im Einsatz auf `/agentic-coding/`. |
 
 ```html
 [hu_abb id="relaunch-kette"]

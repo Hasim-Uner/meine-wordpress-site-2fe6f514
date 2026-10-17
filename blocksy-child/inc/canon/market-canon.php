@@ -83,6 +83,76 @@ function hu_b2b_market_figures() {
 			'body'   => 'des gesamten Kaufprozesses im B2B entfallen auf Gespräche mit Vertriebsleuten.',
 			'source' => 'Gartner, 5 Ways the Shift in B2B Buying Will Reconfigure B2B Selling, 2020, aktualisiert 2022; zitiert in der Gartner-Mitteilung vom 27.03.2023',
 		],
+
+		// KI in der Softwareentwicklung (Fachartikel /agentic-coding/).
+		// Studien und Umfragen mit eigener Methodik; im Artikel steht jede
+		// Zahl neben ihrer Quelle, die Einschraenkungen stehen im Text.
+		[
+			'key'    => 'metr_2025_devs',
+			'value'  => '16',
+			'body'   => 'erfahrene Open-Source-Entwickler nahmen an der randomisierten Studie teil.',
+			'source' => 'METR, Measuring the Impact of Early-2025 AI on Experienced Open-Source Developer Productivity, 10.07.2025',
+		],
+		[
+			'key'    => 'metr_2025_tasks',
+			'value'  => '246',
+			'body'   => 'echte Aufgaben aus Projekten, die die Teilnehmenden selbst pflegen.',
+			'source' => 'METR, Studie vom 10.07.2025',
+		],
+		[
+			'key'    => 'metr_2025_slowdown',
+			'value'  => "19\u{00A0}%",
+			'body'   => 'mehr Zeit brauchten die Entwickler mit KI-Werkzeugen von Anfang 2025.',
+			'source' => 'METR, Studie vom 10.07.2025',
+		],
+		[
+			'key'    => 'metr_2025_expected',
+			'value'  => "24\u{00A0}%",
+			'body'   => 'Zeitersparnis erwarteten die Entwickler vorher.',
+			'source' => 'METR, Studie vom 10.07.2025',
+		],
+		[
+			'key'    => 'metr_2025_believed',
+			'value'  => "20\u{00A0}%",
+			'body'   => 'Zeitersparnis glaubten die Entwickler hinterher erzielt zu haben.',
+			'source' => 'METR, Studie vom 10.07.2025',
+		],
+		[
+			'key'    => 'so_2025_agent_use',
+			'value'  => "31\u{00A0}%",
+			'body'   => 'der Befragten nutzten 2025 KI-Agenten.',
+			'source' => 'Stack Overflow Developer Survey 2025, zusammengefasst im Stack Overflow Blog vom 30.09.2026',
+		],
+		[
+			'key'    => 'so_2026_agent_use',
+			'value'  => "59\u{00A0}%",
+			'body'   => 'nutzten in der kleineren Folgebefragung im April 2026 KI-Agenten.',
+			'source' => 'Stack Overflow Blog vom 30.09.2026',
+		],
+		[
+			'key'    => 'so_2025_distrust',
+			'value'  => "46\u{00A0}%",
+			'body'   => 'misstrauen der Genauigkeit von KI-Ergebnissen.',
+			'source' => 'Stack Overflow Developer Survey 2025, berichtet von InfoWorld am 29.07.2025',
+		],
+		[
+			'key'    => 'so_2025_agent_time',
+			'value'  => "70\u{00A0}%",
+			'body'   => 'der Agenten-Nutzer sehen weniger Zeitaufwand für einzelne Aufgaben.',
+			'source' => 'Stack Overflow Developer Survey 2025, berichtet von InfoWorld am 29.07.2025',
+		],
+		[
+			'key'    => 'so_2025_agent_quality',
+			'value'  => "38\u{00A0}%",
+			'body'   => 'der Agenten-Nutzer sehen bessere Codequalität.',
+			'source' => 'Stack Overflow Developer Survey 2025, berichtet von InfoWorld am 29.07.2025',
+		],
+		[
+			'key'    => 'so_2026_decision_trust',
+			'value'  => "6,6\u{00A0}%",
+			'body'   => 'würden KI eine wichtige Entscheidung überlassen.',
+			'source' => 'Stack Overflow Developer Survey 2026, berichtet von IT Brief',
+		],
 	];
 }
 

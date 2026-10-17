@@ -1,0 +1,72 @@
+<!doctype html>
+<!--
+  Titelbild /agentic-coding/ — Quelle für blocksy-child/assets/img/blog/agentic-coding-hero.png.
+  1200 × 630 CSS-Pixel, gerendert mit Faktor 2 (2400 × 1260) über render-titelbild.cjs.
+  Farben = .tafel aus system.css, Schriften aus blocksy-child/fonts/.
+  Gleicher Aufbau wie das Relaunch-Titelbild: Kopfzeile, zweizeiliger Satz,
+  darunter die Grafik. Hier: die sechs Schritte des Artikels (Abb. 1),
+  drei Durchläufe der Schleife 04 → 03, die Freigabe als einziger Akzent.
+-->
+<html lang="de">
+<head>
+<meta charset="utf-8">
+<style>
+@font-face { font-family: Satoshi; src: url(../../../blocksy-child/fonts/Satoshi-Variable.woff2) format("woff2"); font-weight: 300 900; }
+@font-face { font-family: Plex; src: url(../../../blocksy-child/fonts/IBMPlexMono-500-latin.woff2) format("woff2"); font-weight: 500; }
+@font-face { font-family: Plex; src: url(../../../blocksy-child/fonts/IBMPlexMono-500-latin-ext.woff2) format("woff2"); font-weight: 500; unicode-range: U+0100-024F; }
+:root { --papier:#17140f; --zone:#211d18; --zone2:#2b261f; --tinte:#f4f1ec; --grau:#a9a199; --matt:#9c948a; --stempel:#ef8b4d; --haar:#332e28; }
+* { box-sizing: border-box; margin: 0; }
+html, body { width: 1200px; height: 630px; background: var(--papier); overflow: hidden; }
+body { position: relative; font-family: Satoshi, sans-serif; color: var(--tinte); }
+.kopf { position: absolute; top: 56px; left: 70px; right: 70px; display: flex; justify-content: space-between; font-family: Plex, monospace; font-weight: 500; font-size: 12px; letter-spacing: .24em; text-transform: uppercase; color: var(--grau); }
+.kopf b { font-weight: 500; color: var(--stempel); }
+h1 { position: absolute; top: 112px; left: 66px; font-weight: 500; font-size: 92px; line-height: .98; letter-spacing: -.045em; }
+h1 em { font-style: normal; color: var(--stempel); }
+svg { position: absolute; left: 0; top: 0; width: 1200px; height: 630px; overflow: visible; }
+.mono { font-family: Plex, monospace; font-weight: 500; letter-spacing: .14em; }
+</style>
+</head>
+<body>
+<p class="kopf"><span><b>Agentic Coding</b> · KI in der Entwicklung</span><span>hasimuener.de</span></p>
+<h1>Der Agent baut.<br>Sie geben <em>frei.</em></h1>
+<svg viewBox="0 0 1200 630" xmlns="http://www.w3.org/2000/svg">
+  <!-- Stationen: x = 70 + i * 188 -->
+  <g stroke="#332e28" stroke-width="1">
+    <line x1="70" y1="370" x2="70" y2="500"/><line x1="258" y1="370" x2="258" y2="500"/><line x1="446" y1="370" x2="446" y2="500"/>
+    <line x1="634" y1="370" x2="634" y2="500"/><line x1="822" y1="370" x2="822" y2="500"/><line x1="1010" y1="370" x2="1010" y2="500"/>
+  </g>
+  <!-- Linie -->
+  <line x1="70" y1="470" x2="1010" y2="470" stroke="#a9a199" stroke-width="1.5"/>
+  <!-- Drei Durchlaeufe 04 -> 03, aussen der erste -->
+  <g fill="none" stroke="#ef8b4d" stroke-width="1.6" stroke-dasharray="5 5">
+    <path d="M634 462 V398 Q634 390 626 390 H454 Q446 390 446 398 V456" opacity=".35"/>
+    <path d="M634 462 V418 Q634 410 626 410 H454 Q446 410 446 418 V456" opacity=".6"/>
+    <path d="M634 462 V438 Q634 430 626 430 H454 Q446 430 446 438 V456"/>
+  </g>
+  <path d="M440 452 L446 461 L452 452 Z" fill="#ef8b4d"/>
+  <text x="540" y="380" text-anchor="middle" class="mono" font-size="11" fill="#ef8b4d">SCHLEIFE 04 → 03</text>
+  <!-- Punkte -->
+  <circle cx="70" cy="470" r="7" fill="#f4f1ec"/>
+  <g fill="#17140f" stroke="#f4f1ec" stroke-width="2">
+    <circle cx="258" cy="470" r="6.5"/><circle cx="446" cy="470" r="6.5"/><circle cx="634" cy="470" r="6.5"/><circle cx="822" cy="470" r="6.5"/>
+  </g>
+  <circle cx="1010" cy="470" r="15" fill="#2b261f"/>
+  <circle cx="1010" cy="470" r="8.5" fill="#ef8b4d"/>
+  <!-- Beschriftung -->
+  <g class="mono" font-size="13" fill="#9c948a" text-anchor="middle">
+    <text x="70" y="528">01</text><text x="258" y="528">02</text><text x="446" y="528">03</text><text x="634" y="528">04</text><text x="822" y="528">05</text><text x="1010" y="528">06</text>
+  </g>
+  <g class="mono" font-size="14" fill="#f4f1ec" text-anchor="middle" letter-spacing="2">
+    <text x="70" y="554">AUFTRAG</text><text x="258" y="554">LESEN</text><text x="446" y="554">ÄNDERN</text><text x="634" y="554">TESTEN</text><text x="822" y="554">PULL REQUEST</text><text x="1010" y="554" fill="#ef8b4d">FREIGABE</text>
+  </g>
+  <g class="mono" font-size="11" fill="#9c948a" text-anchor="middle">
+    <text x="70" y="578">MENSCH</text><text x="446" y="578">AGENT</text><text x="634" y="578">AGENT</text><text x="258" y="578">AGENT</text><text x="822" y="578">AGENT</text><text x="1010" y="578" fill="#f4f1ec">MENSCH</text>
+  </g>
+  <!-- Abnahme rechts oben neben der Freigabe -->
+  <text x="1046" y="386" class="mono" font-size="11" fill="#ef8b4d">ABNAHME</text>
+  <g font-family="Satoshi" font-size="19" font-weight="500" fill="#f4f1ec">
+    <text x="1046" y="414">Funktion</text><text x="1046" y="438">Einbindung</text><text x="1046" y="462">Wirkung</text>
+  </g>
+</svg>
+</body>
+</html>

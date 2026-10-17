@@ -191,6 +191,19 @@ in die Projektanfrage, nicht auf `/wordpress-agentur-hannover/`:
 
 Kein Marktcheck: Der Beitrag steht im Dossier `cro`, nicht im Energie-Pfad.
 
+### Fachartikel Agentic Coding (`/agentic-coding/`)
+
+- **Kontextbrücke** (`template-parts/single-reader.php`): primär „Projekt
+  anfragen“ → `hu_get_contact_intake_url('project', 'website')`, sekundär
+  „White-Label für Agenturen“ → `nexus_get_whitelabel_page_url()`.
+- **Abschluss-Tafel**: primär die Ersteinschätzung (Hook
+  `blog_agentic_close_ersteinschaetzung`), sekundär „Projekt anfragen“
+  (`/kontakt/?type=project&focus=website`, Hook `blog_agentic_close_project`),
+  beide `data-track-category="lead_gen"`, `data-track-section="abschluss"`.
+  Die Zusatzzeile verweist Agenturen auf `/whitelabel-retainer/`.
+
+Kein Marktcheck: Der Beitrag steht im Dossier `wordpress-performance`.
+
 ## Über Haşim: persönliche Methodik und Belege
 
 `/hasim-uener/` erklärt Person und Arbeitsweise; Leistungen und Preisrahmen

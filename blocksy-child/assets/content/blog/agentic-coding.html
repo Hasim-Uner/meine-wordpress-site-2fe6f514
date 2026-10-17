@@ -1,0 +1,251 @@
+<!--
+  Produktionsfassung 1: Inhalt des Beitrags /agentic-coding/ (post_content).
+  Gebaut auf den Artikel-Bausteinen (inc/editorial-bausteine.php).
+  Jede fremde Kennzahl kommt über [hu_markt] aus inc/canon/market-canon.php.
+  Titel, Vorspann (Excerpt), Titelbild, Autor und Lesezeit liefert das Reader-Template.
+  data-toc an den H2 ist die Kurzbezeichnung im Inhaltsverzeichnis.
+-->
+
+[hu_kurz]
+<ol>
+<li>Agentic Coding heißt: Eine KI bearbeitet eine Entwicklungsaufgabe über mehrere Schritte selbst. Sie liest Code, ändert Dateien, führt Tests aus und reagiert auf das Ergebnis.</li>
+<li>Der Mensch legt Ziel, Grenzen und Abnahme fest und entscheidet, was live geht. Je teurer ein Fehler wäre, desto mehr hängt an diesem Teil.</li>
+<li>Schneller wird ein Projekt nur, wenn Auftrag, Prüfung und Freigabe mithalten. Eine belastbare Zahl zur Zeitersparnis gibt es bisher nicht.</li>
+</ol>
+[/hu_kurz]
+
+<h2 id="definition" data-toc="Was es ist">Was ist Agentic Coding?</h2>
+
+<p>Agentic Coding ist eine Arbeitsweise, bei der ein KI-System eine Entwicklungsaufgabe über mehrere Schritte selbst bearbeitet. Innerhalb seiner Zugriffsrechte liest es Projektdateien, ändert Code, führt Befehle und Tests aus und wertet das Ergebnis aus. Die Zwischenschritte wählt es selbst und passt sein Vorgehen an, sobald es Neues erfährt. Der Mensch legt fest, welches Problem gelöst werden soll, welche Grenzen gelten und woran eine gute Lösung erkennbar ist.</p>
+
+[hu_abb id="agent-schleife"]
+
+<h3>Die Rückkopplung macht den Unterschied</h3>
+
+[hu_notiz label="Quelle"]Anthropic, <a href="https://www.anthropic.com/engineering/building-effective-agents" target="_blank" rel="noopener">Building effective agents</a>.[/hu_notiz]
+
+<p>„Agentisch“ beschreibt diesen Handlungsspielraum. Der entscheidende Mechanismus ist eine Rückkopplung: Das System handelt, beobachtet das Ergebnis und entscheidet über den nächsten Schritt. Anthropic unterscheidet genau danach. Bei einem Workflow sind die Schritte im Code fest vorgegeben, ein Agent steuert seinen Ablauf und seine Werkzeuge selbst.</p>
+
+<p>Daraus folgt der Unterschied zur Codevervollständigung. Eine Vervollständigung schlägt an einer Stelle Text vor. Ein Coding-Agent arbeitet an einer Aufgabe über mehrere Dateien und Schritte hinweg, bis eine Abbruchbedingung erreicht ist: Die Tests laufen durch, ein Schrittlimit ist erreicht, oder er braucht eine Entscheidung, die ihm nicht zusteht.</p>
+
+<p>Dass sich gerade Programmierung für Agenten eignet, hat einen nüchternen Grund. Code lässt sich ausführen und testen. Der Agent bekommt nach jedem Schritt eine Rückmeldung aus der Umgebung, statt sich auf seine eigene Einschätzung zu verlassen. Eine automatische Prüfung findet allerdings nur, wonach sie fragt. Ob die Lösung zum größeren System passt, beurteilt weiterhin ein Mensch.</p>
+
+<h2 id="abgrenzung" data-toc="Abgrenzung zu Vibe Coding">Was ist der Unterschied zwischen Agentic Coding und Vibe Coding?</h2>
+
+<p>Beim Vibe Coding beschreibt man, was man will, und vertraut dem Ergebnis, ohne den Code genau zu prüfen. Beim Agentic Coding ist die Prüfung fester Bestandteil der Arbeit: Jemand formuliert den Auftrag so, dass er sich abnehmen lässt, und nimmt ihn ab. Die Werkzeuge sind oft dieselben. Der Unterschied liegt darin, wer steuert und wer für das Ergebnis geradesteht.</p>
+
+<h3>Vier Arbeitsweisen im Vergleich</h3>
+
+<div class="hu-tabelle hu-tabelle--breit">
+<table class="hu-tabelle__t hu-tabelle--stapel">
+<thead><tr><th scope="col">Arbeitsweise</th><th scope="col">Was die KI tut</th><th scope="col">Was der Mensch tut</th><th scope="col">Passt für</th></tr></thead>
+<tbody>
+<tr><td>Codevervollständigung</td><td data-l="Was die KI tut">schlägt die nächsten Zeilen vor</td><td data-l="Was der Mensch tut">schreibt und entscheidet jede Zeile</td><td data-l="Passt für">Routinecode im Editor</td></tr>
+<tr><td>Chat-Assistent</td><td data-l="Was die KI tut">erklärt, entwirft Codeschnipsel</td><td data-l="Was der Mensch tut">kopiert, passt an, testet selbst</td><td data-l="Passt für">Fragen und Einzelprobleme</td></tr>
+<tr><td>Vibe Coding</td><td data-l="Was die KI tut">baut nach Beschreibung, oft mit Agenten-Werkzeugen</td><td data-l="Was der Mensch tut">beschreibt, sieht sich das Ergebnis an, liest den Code kaum</td><td data-l="Passt für">Prototypen, Wegwerf-Werkzeuge</td></tr>
+<tr><td>Agentic Coding</td><td data-l="Was die KI tut">plant, ändert Dateien, testet, korrigiert in Schleifen</td><td data-l="Was der Mensch tut">legt Ziel, Grenzen und Abnahme fest, prüft und gibt frei</td><td data-l="Passt für">abgegrenzte Aufgaben in echten Projekten</td></tr>
+</tbody>
+</table>
+</div>
+
+<p>Den Begriff Vibe Coding hat Andrej Karpathy Anfang 2025 geprägt. Das Verfahren funktioniert, solange ein Fehler nichts kostet. Für die professionelle Variante hat sich zusätzlich der Begriff <b>Agentic Engineering</b> verbreitet. Gemeint ist dasselbe Prinzip mit einem klaren Anspruch: Coding-Agenten verstärken vorhandene Fachkenntnis, sie ersetzen kein Urteilsvermögen.</p>
+
+<p class="hu-leitsatz">Je teurer ein Fehler wäre, desto mehr hängt an Auftrag und Abnahme.</p>
+
+<h2 id="werkzeuge" data-toc="Werkzeuge">Welche Werkzeuge gibt es für Agentic Coding?</h2>
+
+<p>Werkzeuge für Agentic Coding gibt es in drei Bauformen: als Agent im Terminal, als Agent in der Entwicklungsumgebung und als Hintergrund-Agent, der in einer Cloud-Umgebung arbeitet und einen Pull Request zurückgibt. Die Produktnamen ändern sich schnell, die Bauformen kaum. Entscheidend ist, wo der Agent arbeitet und wie viel er ohne Rückfrage darf.</p>
+
+<h3>Drei Bauformen</h3>
+
+<div class="hu-tabelle hu-tabelle--breit">
+<table class="hu-tabelle__t hu-tabelle--stapel">
+<thead><tr><th scope="col">Bauform</th><th scope="col">Wo der Agent arbeitet</th><th scope="col">Beispiele, Stand Oktober 2026</th><th scope="col">Passt für</th></tr></thead>
+<tbody>
+<tr><td>Terminal-Agent</td><td data-l="Wo er arbeitet">in der Kommandozeile, direkt im Projektordner</td><td data-l="Beispiele">Claude Code, OpenAI Codex CLI, Gemini CLI</td><td data-l="Passt für">Entwickler, die Schritt für Schritt mitlesen</td></tr>
+<tr><td>Agent in der Entwicklungsumgebung</td><td data-l="Wo er arbeitet">im Editor, mit Vorschau jeder Änderung</td><td data-l="Beispiele">Cursor, GitHub Copilot im Agentenmodus</td><td data-l="Passt für">Arbeit an bestehendem Code mit kurzer Rückkopplung</td></tr>
+<tr><td>Hintergrund-Agent</td><td data-l="Wo er arbeitet">in einer Cloud-Umgebung, liefert einen Pull Request</td><td data-l="Beispiele">Codex in der Cloud, GitHub Copilot Coding Agent</td><td data-l="Passt für">klar abgegrenzte Aufgaben, die man später prüft</td></tr>
+</tbody>
+</table>
+</div>
+
+[hu_notiz label="Datenlage"]Stack Overflow Developer Survey 2025 und Folgebefragung April 2026, <a href="https://stackoverflow.blog/2026/09/30/getting-ready-for-2026-results-a-look-back-on-developer-survey-findings/" target="_blank" rel="noopener">Stack Overflow Blog</a>. Die Folgebefragung war kleiner als die Hauptumfrage.[/hu_notiz]
+
+<p>Wie schnell sich das Feld bewegt, zeigt Stack Overflow: In der Entwicklerumfrage 2025 nutzten [hu_markt key="so_2025_agent_use"] der Befragten KI-Agenten, in einer kleineren Folgebefragung im April 2026 waren es [hu_markt key="so_2026_agent_use"].</p>
+
+<p>Für ein Unternehmen ist die Werkzeugwahl selten die wichtigste Frage. Wichtiger ist, welche Rechte der Agent bekommt, wo er arbeitet und wer seine Änderungen freigibt.</p>
+
+<h2 id="beispiel" data-toc="Beispiel an einer Website">Wie funktioniert Agentic Coding an einer Website?</h2>
+
+<p>Agentic Coding an einer Website funktioniert wie die Arbeit eines neuen Entwicklers, der Zugang zur Testumgebung hat. Erscheinen auf einer WordPress-Website Formularanfragen gelegentlich nicht im CRM, untersucht der Agent zuerst, wie das Formular aufgebaut ist. Dann verfolgt er die Verarbeitung vom Absenden bis zur Schnittstelle, sucht nach Ursachen und entwickelt eine Änderung. Scheitert eine Prüfung, fließt ihr Ergebnis in den nächsten Versuch ein.</p>
+
+<h3>Der Auftrag entscheidet über die Untersuchung</h3>
+
+<p>Was bedeutet „gelegentlich“? Betrifft es bestimmte Eingaben? Zeigt das Formular trotzdem eine Erfolgsmeldung? Geht die Anfrage verloren oder kommt sie verspätet an? Welche Daten dürfen zur Fehlersuche protokolliert werden, ohne gegen den Datenschutz zu verstoßen?</p>
+
+<p>Diese Fragen bilden den fachlichen Rahmen. Fehlt er, geht auch eine technisch plausible Änderung am eigentlichen Problem vorbei. So könnte der Auftrag aussehen:</p>
+
+<ol class="hu-aufgaben">
+<li><strong>Ziel</strong> Jede abgeschickte Anfrage landet im CRM. Schlägt die Übertragung fehl, wird sie gespeichert und erneut versucht.</li>
+<li><strong>Ausgangslage</strong> Ein Teil der Anfragen fehlt im CRM, das Formular meldet trotzdem Erfolg. Betroffene Fälle mit Zeitstempel liegen bei.</li>
+<li><strong>Grenzen</strong> Nur in der Testumgebung arbeiten. Keine neuen Plugins. Keine personenbezogenen Daten ins Log, nur Zeitpunkt, Formular und Fehlercode.</li>
+<li><strong>Abnahme</strong> Eine Testreihe schickt Anfragen in Serie, alle kommen an. Eine simulierte CRM-Störung erzeugt einen sichtbaren Fehlerzustand und einen erneuten Versuch.</li>
+<li><strong>Übergabe</strong> Die Änderung kommt als Pull Request mit einer kurzen Begründung, welche Ursache gefunden wurde.</li>
+</ol>
+
+<p>Der fünfte Punkt wird oft vergessen. Ohne Begründung lässt sich nicht beurteilen, ob der Agent die Ursache behoben oder nur das Symptom verdeckt hat.</p>
+
+<p class="hu-leitsatz">Eine Aufgabe braucht einen überprüfbaren Zielzustand. Wer ihn nicht formulieren kann, sollte noch nicht delegieren, sondern erst klären.</p>
+
+<aside class="hu-praxis">
+<p class="hu-praxis__label">Aus meiner Praxis</p>
+<p>Änderungen an dieser Website setze ich mit Coding-Agenten um. Jede Änderung kommt als Pull Request und durchläuft automatische Prüfungen. Bei einem Umbau sollte ein Agent eine Seite nach einer neuen Vorlage gestalten. In der Vorlage war der Anfrage-Button nur ein Platzhalter, und mein Auftrag sagte nicht ausdrücklich, dass das bestehende Formular erhalten bleiben muss. Aus dem Formular wurde ein einfacher E-Mail-Link. Technisch sauber umgesetzt, fachlich falsch. Keine der automatischen Prüfungen hat es bemerkt, weil keine danach gefragt hat.</p>
+</aside>
+
+[hu_pruefliste id="agent-auftrag" titel="Prüfliste: Auftrag an einen Coding-Agenten"]
+<ol>
+<li>Das Ziel ist als Zustand beschrieben, nicht als Tätigkeit: „Jede Anfrage kommt an“, nicht „Formular überarbeiten“.</li>
+<li>Die Ausgangslage enthält echte Beispiele, nicht nur eine Vermutung.</li>
+<li>Die Grenzen stehen fest: welche Umgebung, welche Dateien, keine neuen Abhängigkeiten ohne Rückfrage.</li>
+<li>Keine echten Zugangsdaten und keine Kundendaten im Arbeitsbereich des Agenten.</li>
+<li>Die Abnahmekriterien sind aufgeschrieben, bevor der Agent startet, und ohne den Code verständlich.</li>
+<li>Es ist klar, wie das Ergebnis unter realistischen Bedingungen geprüft wird.</li>
+<li>Die Übergabe kommt als Pull Request mit Begründung der gefundenen Ursache.</li>
+<li>Eine Person ist benannt, die freigibt und danach für die Lösung zuständig ist.</li>
+</ol>
+[/hu_pruefliste]
+
+<h2 id="bedeutung" data-toc="Warum es wichtig ist">Warum ist Agentic Coding wichtig?</h2>
+
+<p>Agentic Coding ist wichtig, weil sich damit größere Teile der Umsetzung delegieren lassen, nicht nur einzelne Zeilen. Daraus können Veränderungen entstehen, die über eingesparte Arbeitsschritte hinausgehen: Kleine Vorhaben werden wirtschaftlich, Ideen lassen sich früher prüfen, und Fachwissen fließt direkter in Software ein. Wie stark das eintritt, hängt davon ab, wie zuverlässig die Systeme arbeiten und wie gut Unternehmen sie in ihre Abläufe einbinden.</p>
+
+<h3>Drei mögliche Folgen</h3>
+
+<ol class="hu-aufgaben">
+<li><strong>Kleine Vorhaben werden wirtschaftlich</strong> Eine interne Auswertung, eine Schnittstellenanpassung, ein kleines Werkzeug für einen wiederkehrenden Prozess: Vieles scheitert heute daran, dass der Aufwand größer wirkt als der Nutzen. Sinkt der Entwicklungsaufwand, rechnet sich mehr davon, vorausgesetzt, Prüfung, Betrieb und Wartung sind mitgedacht.</li>
+<li><strong>Ideen werden früher prüfbar</strong> Ein funktionsfähiger Prototyp klärt Anforderungen schneller als jedes Konzeptpapier. Nutzer sehen, was gemeint ist, und geben konkrete Rückmeldungen. Der Nutzen entsteht erst, wenn diese Rückmeldungen in die weitere Entwicklung eingehen.</li>
+<li><strong>Fachwissen fließt direkter in Software ein</strong> Wer einen Geschäftsprozess gut kennt, kann Anforderungen präzise beschreiben und fachliche Fehler erkennen. Coding-Agenten machen die technische Umsetzung zugänglicher. Die Zusammenarbeit zwischen Fachabteilung und Entwicklung bekommt dadurch eine neue Form.</li>
+</ol>
+
+<h2 id="tempo" data-toc="Tempo und Studienlage">Werden Projekte durch Agentic Coding schneller?</h2>
+
+<p>Projekte werden durch Agentic Coding nicht automatisch schneller. Der erste Entwurf entsteht meist zügig, aber zur Projektarbeit gehören auch Auftrag, Rückfragen, Kontrolle, Korrekturen und Integration. Ein schneller Entwurf verkürzt nur einen dieser Schritte. Kontrollierte Studien liefern bisher keine belastbare Zahl für die Zeitersparnis im Projekt.</p>
+
+<h3>Was die Studien zeigen</h3>
+
+[hu_notiz label="Quelle"]METR, <a href="https://metr.org/blog/2025-07-10-early-2025-ai-experienced-os-dev-study/" target="_blank" rel="noopener">Studie vom 10.07.2025</a> und <a href="https://metr.org/blog/2026-02-24-uplift-update/" target="_blank" rel="noopener">Update vom 24.02.2026</a>.[/hu_notiz]
+
+<p>Wie weit Gefühl und Messung auseinanderliegen können, zeigt die bekannteste Studie zum Thema. Das Forschungsinstitut METR ließ Anfang 2025 [hu_markt key="metr_2025_devs"] erfahrene Open-Source-Entwickler [hu_markt key="metr_2025_tasks"] echte Aufgaben aus ihren eigenen Projekten bearbeiten, mal mit, mal ohne KI. Mit KI brauchten sie [hu_markt key="metr_2025_slowdown"] länger. Vorher hatten sie mit [hu_markt key="metr_2025_expected"] Zeitersparnis gerechnet, und selbst hinterher glaubten sie, [hu_markt key="metr_2025_believed"] schneller gewesen zu sein.</p>
+
+<p>Dieses Ergebnis wird seither in beide Richtungen falsch zitiert. Im Februar 2026 berichtete METR über die Folgestudie mit neueren Werkzeugen. Die Forschenden halten größere Zeitgewinne inzwischen für wahrscheinlich, nennen ihre neuen Daten aber unzuverlässig: Viele Entwickler wollten Aufgaben nicht mehr ohne KI bearbeiten und fielen aus dem Vergleich heraus, und wer mehrere Agenten parallel arbeiten ließ, war mit einfacher Zeitmessung nicht mehr korrekt zu erfassen. Eine belastbare neue Zahl gibt es damit nicht.</p>
+
+<div class="hu-tabelle hu-tabelle--breit">
+<table class="hu-tabelle__t hu-tabelle--stapel">
+<thead><tr><th scope="col">Quelle</th><th scope="col">Befund</th><th scope="col">Was sich daraus nicht ableiten lässt</th></tr></thead>
+<tbody>
+<tr><td>METR, Studie 2025</td><td data-l="Befund">mit KI [hu_markt key="metr_2025_slowdown"] langsamer, gefühlt schneller</td><td data-l="Nicht ableitbar">dass KI generell bremst; gemessen wurden Werkzeuge von Anfang 2025</td></tr>
+<tr><td>METR, Update 2026</td><td data-l="Befund">Zeitgewinne wahrscheinlich gestiegen, Umfang nicht messbar</td><td data-l="Nicht ableitbar">eine Beschleunigung in Prozent</td></tr>
+<tr><td>Stack Overflow, Umfrage 2025</td><td data-l="Befund">[hu_markt key="so_2025_distrust"] misstrauen der Genauigkeit von KI-Ergebnissen; von den Agenten-Nutzern sehen [hu_markt key="so_2025_agent_time"] Zeitersparnis, [hu_markt key="so_2025_agent_quality"] bessere Codequalität</td><td data-l="Nicht ableitbar">dass Zeitersparnis bessere Software bedeutet</td></tr>
+<tr><td>Stack Overflow, Umfrage 2026</td><td data-l="Befund">knapp die Hälfte vertraut KI-Ergebnissen, wenn sie sie selbst prüfen kann; [hu_markt key="so_2026_decision_trust"] würden ihr eine wichtige Entscheidung überlassen</td><td data-l="Nicht ableitbar">dass Prüfung künftig entfällt</td></tr>
+</tbody>
+</table>
+</div>
+
+<p>Das Muster ist deutlich: Die Nutzung steigt, das Vertrauen hängt an der Prüfbarkeit. Für die Praxis folgt daraus eine bessere Messgröße als die Geschwindigkeit des ersten Entwurfs.</p>
+
+<p class="hu-leitsatz">Gemessen wird, wie viel Aufwand eine Änderung insgesamt braucht, bis sie geprüft und nutzbar ist.</p>
+
+<h2 id="fehler" data-toc="Fehlerquellen und Sicherheit">Wo liegen die Fehlerquellen beim Agentic Coding?</h2>
+
+<p>Die größte Fehlerquelle beim Agentic Coding ist eine unvollständige Anforderung, die der Agent sehr konsequent umsetzt. Dazu kommen übersehene Regeln des bestehenden Systems, unnötige neue Abhängigkeiten und Lösungen, die in der Testumgebung funktionieren und unter realen Bedingungen scheitern. Weil der Agent in Schleifen arbeitet, können sich kleine Fehler über mehrere Schritte verstärken.</p>
+
+<h3>Drei Ebenen getrennt prüfen</h3>
+
+<ul class="hu-liste">
+<li><strong>Funktion:</strong> Erfüllt die Änderung die vereinbarten Anforderungen?</li>
+<li><strong>Einbindung:</strong> Passt sie zum bestehenden System, seinen Schnittstellen und Betriebsabläufen?</li>
+<li><strong>Wirkung:</strong> Hilft sie den Menschen, für die sie entwickelt wurde?</li>
+</ul>
+
+<p>Beim Formularbeispiel kann eine automatische Prüfung bestätigen, dass bestimmte Eingaben verarbeitet werden. Ob die richtige Person im Vertrieb eine brauchbare Anfrage erhält, verlangt eine Prüfung des gesamten Ablaufs.</p>
+
+<p>Eine besonders wichtige Grenze betrifft die Prüfung selbst. Leitet dieselbe KI die Lösung und deren Tests aus einer missverstandenen Anforderung ab, passen beide zusammen und bestätigen trotzdem das falsche Verhalten.</p>
+
+<p class="hu-leitsatz">Abnahmekriterien entstehen vor dem Code und unabhängig von ihm.</p>
+
+<h3>Zugriffsrechte sind eine Projektentscheidung</h3>
+
+[hu_notiz label="Quelle"]Anthropic empfiehlt für Agenten ausgiebige Tests in abgeschotteten Umgebungen, klare Abbruchbedingungen und Schutzmechanismen, <a href="https://www.anthropic.com/engineering/building-effective-agents" target="_blank" rel="noopener">Building effective agents</a>.[/hu_notiz]
+
+<p>Ein Agent, der Befehle ausführen darf, braucht dieselbe Sorgfalt wie ein neuer Mitarbeiter mit Serverzugang. Vier Regeln decken die meisten Risiken ab:</p>
+
+<ul class="hu-liste">
+<li><strong>Getrennte Umgebung.</strong> Der Agent arbeitet auf einer Kopie oder in einer Testumgebung, nie direkt auf der Live-Website.</li>
+<li><strong>Keine echten Zugangsdaten.</strong> Passwörter, API-Schlüssel und Kundendaten gehören nicht in seinen Arbeitsbereich.</li>
+<li><strong>Freigabe durch einen Menschen.</strong> Änderungen kommen als Pull Request und gehen erst nach Prüfung live.</li>
+<li><strong>Fremde Inhalte sind Daten, keine Anweisungen.</strong> Ein Agent, der Webseiten, Tickets oder Dokumente liest, kann darin versteckte Anweisungen finden. Je mehr er darf, desto wichtiger ist diese Trennung.</li>
+</ul>
+
+<h2 id="rollen" data-toc="Entwickler, Agenturen, Auftraggeber">Was verändert Agentic Coding für Entwickler, Agenturen und Auftraggeber?</h2>
+
+<p>Agentic Coding verschiebt bei allen drei die Arbeit vom Schreiben zum Beschreiben und Prüfen. Entwickler brauchen weiterhin technisches Verständnis, vermutlich mehr als vorher, weil sie fremden Code in größerer Menge beurteilen. Agenturen müssen Prüfung und Freigabe so ausbauen, dass sie mit der Umsetzung mithalten. Auftraggeber sollten nicht fragen, ob ein Dienstleister mit Agenten arbeitet, sondern wie er die Ergebnisse prüft.</p>
+
+<h3>Agenturen: Die Warteschlange wandert</h3>
+
+<p>Wenn Änderungen schneller entstehen, müssen Besprechung, Prüfung und Freigabe mithalten. Sonst wächst nur die Warteschlange vor dem nächsten Arbeitsschritt. Wer Prüfung und Freigabe nicht im eigenen Team abbilden kann, holt sie sich als Kapazität dazu, etwa über <a href="/whitelabel-retainer/">White-Label-Entwicklung</a>.</p>
+
+<h3>Auftraggeber: vier Fragen an jedes Angebot</h3>
+
+<ul class="hu-liste">
+<li>Welches Problem soll die Änderung lösen?</li>
+<li>Woran wird das Ergebnis abgenommen?</li>
+<li>Wie wird es unter realistischen Bedingungen geprüft?</li>
+<li>Wer betreut die Lösung nach der Veröffentlichung?</li>
+</ul>
+
+<p>Dass ein Dienstleister mit Coding-Agenten arbeitet, sagt für sich genommen wenig über die Qualität eines Projekts. Aussagekräftig wird die Arbeitsweise durch nachvollziehbare Entscheidungen und geprüfte Ergebnisse. Eine gute Gegenfrage im Erstgespräch: Woran sehe ich, dass eine Änderung geprüft wurde, bevor sie live ging?</p>
+
+<h2 id="faehigkeit" data-toc="Was wertvoller wird">Welche Fähigkeit wird durch Agentic Coding wertvoller?</h2>
+
+<p>Am wertvollsten wird die Fähigkeit, eine überzeugend wirkende Lösung von einer tatsächlich geeigneten zu unterscheiden. Dafür braucht es Verständnis für Nutzer, Geschäftsprozesse und technische Zusammenhänge, und die Bereitschaft, Anforderungen zu hinterfragen und eine unnötige Funktion zu verwerfen. Wenn Agenten mehr Umsetzung ermöglichen, wächst die Zahl der Entscheidungen darüber, was gebaut werden sollte.</p>
+
+<h3>Auswahl statt Ausstoß</h3>
+
+<p>Gute Entwicklung muss diese Auswahl beherrschen. Ihr Wert zeigt sich nicht daran, wie viel Code entsteht, sondern daran, ob aus einer Möglichkeit eine verlässliche, nützliche Lösung wird.</p>
+
+<p class="hu-leitsatz">Der Agent baut. Ob es live geht, entscheidet ein Mensch, der weiß, wofür.</p>
+
+<h2 id="fragen" data-toc="Häufige Fragen">Häufige Fragen zu Agentic Coding</h2>
+
+<h3>Was ist Agentic Engineering?</h3>
+
+<p>Agentic Engineering bezeichnet den professionellen Einsatz von Coding-Agenten in Projekten, die andere Menschen betreiben und warten. Die Agenten übernehmen Umsetzung und Tests, Fachleute geben Ziel und Grenzen vor, prüfen das Ergebnis und verantworten, was live geht. Der Begriff grenzt diese Arbeitsweise bewusst vom Vibe Coding ab, bei dem das Ergebnis ohne genaue Prüfung übernommen wird.</p>
+
+<h3>Braucht man noch Entwickler, wenn KI-Agenten programmieren?</h3>
+
+<p>Ja, man braucht weiterhin Entwickler. Jemand muss Aufgaben abgrenzen, fachliche und technische Fehler erkennen und verantworten, was live geht. Die Arbeit verschiebt sich vom Schreiben jeder Zeile zum Beschreiben, Prüfen und Entscheiden. Wer Code nicht lesen kann, kann auch nicht beurteilen, ob ein Agent die Ursache behoben oder nur das Symptom verdeckt hat.</p>
+
+<h3>Ist Agentic Coding mit Kundendaten sicher?</h3>
+
+<p>Agentic Coding ist mit Kundendaten nur dann vertretbar, wenn der Agent gar nicht an sie herankommt. Das heißt: Arbeit in einer getrennten Testumgebung mit Beispieldaten, keine echten Zugangsdaten im Arbeitsbereich und Freigabe jeder Änderung durch einen Menschen. Welche Daten ein Werkzeug an seinen Anbieter überträgt, gehört vor dem Einsatz in die Datenschutzprüfung.</p>
+
+<h3>Lohnt sich Agentic Coding für eine WordPress-Website?</h3>
+
+<p>Für klar abgegrenzte Aufgaben lohnt sich Agentic Coding auch bei einer WordPress-Website: Fehlersuche, Anpassungen am Theme, Schnittstellen zu CRM und Tracking, automatische Tests. Für Entscheidungen über Inhalte, Seitenstruktur und Angebot lohnt es sich nicht. Die bleiben bei dem Menschen, der das Geschäft und seine Kunden kennt.</p>
+
+<h3>Wie formuliert man einen guten Auftrag an einen Coding-Agenten?</h3>
+
+<p>Ein guter Auftrag an einen Coding-Agenten beschreibt das Ziel als überprüfbaren Zustand, nennt die Ausgangslage mit echten Beispielen, legt Grenzen für Umgebung, Dateien und Abhängigkeiten fest und schreibt die Abnahmekriterien auf, bevor der Agent startet. Dazu gehört, wie das Ergebnis übergeben wird: als Pull Request mit einer Begründung, welche Ursache gefunden wurde.</p>
+
+[hu_abschluss variante="ersteinschaetzung" fokus="website" kicker="Bevor Sie delegieren" titel="Schicken Sie mir Ihre URL. Ich sage Ihnen, wo Ihre Website eine Prüfung braucht, bevor jemand sie umbaut." projekt_label="Projekt anfragen" track="blog_agentic"]Sie sind Agentur und brauchen geprüfte Umsetzung unter Ihrem Namen? Dafür gibt es <a href="/whitelabel-retainer/">White-Label</a>.[/hu_abschluss]
+
+[hu_quellen]
+<ol>
+<li>Anthropic, <a href="https://www.anthropic.com/engineering/building-effective-agents" target="_blank" rel="noopener">Building effective agents</a>, 19.12.2024, aktualisiert 2026.</li>
+<li>METR, <a href="https://metr.org/blog/2025-07-10-early-2025-ai-experienced-os-dev-study/" target="_blank" rel="noopener">Measuring the Impact of Early-2025 AI on Experienced Open-Source Developer Productivity</a>, 10.07.2025.</li>
+<li>METR, <a href="https://metr.org/blog/2026-02-24-uplift-update/" target="_blank" rel="noopener">We are Changing our Developer Productivity Experiment Design</a>, 24.02.2026.</li>
+<li>Stack Overflow Blog, <a href="https://stackoverflow.blog/2026/09/30/getting-ready-for-2026-results-a-look-back-on-developer-survey-findings/" target="_blank" rel="noopener">Getting ready for 2026 results</a>, 30.09.2026.</li>
+<li>InfoWorld zur Stack Overflow Developer Survey 2025, <a href="https://infoworld.com/article/4031673/ai-use-among-software-developers-grows-but-trust-remains-an-issue-stack-overflow-survey.html" target="_blank" rel="noopener">AI use among software developers grows but trust remains an issue</a>, 29.07.2025.</li>
+<li>IT Brief zur Stack Overflow Developer Survey 2026, <a href="https://itbrief.co.uk/story/stack-overflow-survey-finds-developers-wary-of-ai-tools" target="_blank" rel="noopener">Stack Overflow survey finds developers wary of AI tools</a>.</li>
+</ol>
+[/hu_quellen]
