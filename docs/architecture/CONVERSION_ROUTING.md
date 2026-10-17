@@ -752,6 +752,19 @@ als Standardseiten interpretiert. Preis- oder Zeitwerte aus dem Browser werden
 niemals als Angebotswerte übernommen. Der normalisierte Scope wird im
 Kontaktformular, in beiden Mails und im CRM weitergeführt.
 
+WebMCP-Ergänzung (18.10.2026): `calculate_website_quote` ist ausschließlich auf
+der Produktseite verfügbar, wenn `document.modelContext.registerTool` unterstützt
+wird. Optional sind zusätzliche `utility_pages`, `standard_pages`, `sales_pages`,
+`art`, `texte`, `design`, `design_layouts`, `tracking`, `crm` und `dashboard`.
+Eine Hauptseite ist enthalten; leere Optionen bedeuten eine Hauptseite mit
+Basisgestaltung und eigenen Texten. Eingaben werden in JS strikt validiert.
+Das Werkzeug nutzt dieselbe Kalkulation und denselben URL-Builder wie die UI,
+liefert Nettopreis, Produktionszeit, offene Kosten/Prüfvorbehalte und `request_url`.
+Es ändert keine Auswahl und sendet keine Anfrage. Der Link durchläuft den oben
+beschriebenen Kontakt-/REST-/CRM-Vertrag mit serverseitiger Nachberechnung.
+API-Anbindung nach `modern-web-guidance` Guide `agentic-javascript-tools` und
+der aktuellen Chrome-Dokumentation zur Imperative API (16.10.2026).
+
 Seit der CRO-Kürzung vom 06.10.2026 gibt es keinen eigenen frühen
 Qualitätsblock, keinen PageSpeed-Prüflink und keinen interaktiven
 Sieben-Punkte-Vergleich mehr. Die Kapitelzeile enthält nur Preis & Umfang,

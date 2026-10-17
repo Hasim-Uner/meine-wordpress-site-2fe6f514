@@ -1,6 +1,6 @@
 # Live Status
 
-Verhalten laut Repository, nach Bereichen. Stand: 2026-10-14.
+Verhalten laut Repository, nach Bereichen. Stand: 2026-10-18.
 Der grundlegende Funnel-Umbau aus PR #565 und die Tracking-Korrekturen aus
 PR #566 sowie die Kontaktübergabe aus PR #567 sind gemerged und deployed.
 Startseite, GA4, Landingpage, Solar, Kontakt und Server-Side wurden im
@@ -464,6 +464,17 @@ Contract und Abnahme: `CHAT_ASSISTANT.md`.
   im Inhalt unverändert; die Route erlaubt im vorhandenen Kopf/Fuß Umbrüche
   bei vergrößerter Schrift. Auswertung nach acht Wochen oder 300 Aufrufen, siehe
   `docs/experimente/anfrage-website.md`.
+  Repo-Ergänzung vom 18.10.2026, Livegang ausstehend: In unterstützenden
+  Browsern registriert der Konfigurator `calculate_website_quote` über
+  `document.modelContext`. Rein lesende Vergleichskalkulation aus derselben
+  JS-Formel und denselben PHP-gerenderten Regeln wie die sichtbare Auswahl;
+  Nettopreis, Zeitbeiträge, offene Dashboard-Kosten und Anfragelink als Ergebnis.
+  Die sichtbare Auswahl bleibt erhalten. Strikte Typ-, Seiten- und Layoutprüfung;
+  keine Netzwerkanfrage, Speicherung, Formularübermittlung oder automatische
+  Navigation. Ohne WebMCP bzw. bei abgelehnter Registrierung bleibt der Rechner
+  normal nutzbar. Native Unterstützung erfordert aktuell einen passenden
+  Browser mit aktiviertem WebMCP-Testflag oder gültigem Origin-Trial-Zugang;
+  ein Produktions-Token ist nicht Teil des Repos.
 - **`/ga4-tracking-setup/`** (`page-ga4.php`, virtuelle Cluster-Route):
   Ein Grundprodukt für eine Website: Messplan, GTM/GA4, Consent-Anbindung,
   Google Ads mit bis zu drei Haupt-Conversions sowie Abnahme/Übergabe.
