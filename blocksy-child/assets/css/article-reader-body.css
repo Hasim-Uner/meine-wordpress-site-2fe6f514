@@ -150,6 +150,12 @@
 	letter-spacing: -0.045em;
 	color: var(--tinte);
 	text-wrap: balance;
+	/* Ueberschreibt hyphens: none aus single-editorial.css. Lange Titel wie
+	   "Softwareentwicklung" passen auf dem Handy nicht in eine Zeile und
+	   brachen sonst ohne Strich mitten im Wort. */
+	-webkit-hyphens: auto;
+	hyphens: auto;
+	hyphenate-limit-chars: 12 6 6;
 }
 
 .nexus-article-reader-header ~ .nexus-single-container .nexus-subtitle {
