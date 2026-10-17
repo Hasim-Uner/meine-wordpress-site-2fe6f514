@@ -14,51 +14,68 @@
     var media = window.matchMedia ? window.matchMedia('(prefers-reduced-motion: reduce)') : { matches: true };
     var eur = function (number) { return number.toLocaleString('de-DE') + '\u00a0€'; };
     var days = function (number) { return number.toLocaleString('de-DE') + (number === 1 ? ' Werktag' : ' Werktage'); };
-    var totalPages = function () { return 1 + state.utility + state.standard + state.sales; };
-    function scopeLabel() {
-        var pages = totalPages();
-        var parts = [pages + (pages === 1 ? ' Seite' : ' Seiten'), state.art === 'relaunch' ? 'Relaunch' : 'Neubau'];
-        if (state.utility) parts.push(state.utility + (state.utility === 1 ? ' kurze Seite' : ' kurze Seiten'));
-        if (state.standard) parts.push(state.standard + (state.standard === 1 ? ' Standard' : ' Standard'));
-        if (state.sales) parts.push(state.sales + (state.sales === 1 ? ' Leistung' : ' Leistungen'));
+    var totalPages = function (selection) { var config = selection || state; return 1 + config.utility + config.standard + config.sales; };
+    function scopeLabel(selection) {
+        var config = selection || state, pages = totalPages(config);
+        var parts = [pages + (pages === 1 ? ' Seite' : ' Seiten'), config.art === 'relaunch' ? 'Relaunch' : 'Neubau'];
+        if (config.utility) parts.push(config.utility + (config.utility === 1 ? ' kurze Seite' : ' kurze Seiten'));
+        if (config.standard) parts.push(config.standard + ' Standard');
+        if (config.sales) parts.push(config.sales + (config.sales === 1 ? ' Leistung' : ' Leistungen'));
         return parts.join(' · ');
     }
-    function prospectiveTextPrice() {
+    function prospectiveTextPrice(selection) {
+        var config = selection || state;
         return rules.prices.copy_base
-            + state.utility * rules.prices.copy_utility
-            + state.standard * rules.prices.copy_standard
-            + state.sales * rules.prices.copy_sales;
+            + config.utility * rules.prices.copy_utility
+            + config.standard * rules.prices.copy_standard
+            + config.sales * rules.prices.copy_sales;
     }
-    function quote() {
+    // UI and WebMCP share the same formula and PHP-rendered canonical factors.
+    function quote(selection) {
+        var config = selection || state;
         var components = {
             implementation: factors.base_implementation
-                + state.utility * factors.page_utility
-                + state.standard * factors.page_standard
-                + state.sales * factors.page_sales,
-            texts: state.texte ? factors.copy_base
-                + state.utility * factors.copy_utility
-                + state.standard * factors.copy_standard
-                + state.sales * factors.copy_sales : 0,
-            design: state.design === 'neu' ? factors.design_first + (state.designLayouts - 1) * factors.design_extra_layout : 0,
-            tracking: state.tracking ? factors.tracking : 0,
-            relaunch: state.art === 'relaunch' ? factors.relaunch : 0,
-            crm: state.crm ? factors.crm : 0
+                + config.utility * factors.page_utility
+                + config.standard * factors.page_standard
+                + config.sales * factors.page_sales,
+            texts: config.texte ? factors.copy_base
+                + config.utility * factors.copy_utility
+                + config.standard * factors.copy_standard
+                + config.sales * factors.copy_sales : 0,
+            design: config.design === 'neu' ? factors.design_first + (config.designLayouts - 1) * factors.design_extra_layout : 0,
+            tracking: config.tracking ? factors.tracking : 0,
+            relaunch: config.art === 'relaunch' ? factors.relaunch : 0,
+            crm: config.crm ? factors.crm : 0
         };
-        var pagePrice = state.utility * rules.prices.page_utility
-            + state.standard * rules.prices.page_standard
-            + state.sales * rules.prices.page_sales;
-        var textPrice = state.texte ? prospectiveTextPrice() : 0;
-        var designPrice = state.design === 'neu' ? rules.prices.design_first + (state.designLayouts - 1) * rules.prices.design_extra : 0;
+        var pagePrice = config.utility * rules.prices.page_utility
+            + config.standard * rules.prices.page_standard
+            + config.sales * rules.prices.page_sales;
+        var textPrice = config.texte ? prospectiveTextPrice(config) : 0;
+        var designPrice = config.design === 'neu' ? rules.prices.design_first + (config.designLayouts - 1) * rules.prices.design_extra : 0;
         return {
             components: components,
             days: Math.ceil(Object.values(components).reduce(function (a, b) { return a + b; }, 0)),
             pagePrice: pagePrice,
             textPrice: textPrice,
             designPrice: designPrice,
-            price: base + pagePrice + textPrice + (state.tracking ? trackingPrice : 0) + designPrice + (state.crm ? rules.prices.crm : 0)
+            price: base + pagePrice + textPrice + (config.tracking ? trackingPrice : 0) + designPrice + (config.crm ? rules.prices.crm : 0)
         };
     }
     var link = new URL($('[data-website-cta]').href, window.location.href);
+    function inquiryLink(config) {
+        var target = new URL(link.href);
+        target.searchParams.set('seiten', totalPages(config));
+        target.searchParams.set('art', config.art);
+        target.searchParams.set('kurz', config.utility);
+        target.searchParams.set('standard', config.standard);
+        target.searchParams.set('leistung', config.sales);
+        target.searchParams.set('texte', config.texte ? '1' : '0');
+        ['tracking', 'crm', 'dashboard'].forEach(function (key) { if (config[key]) target.searchParams.set(key, '1'); else target.searchParams.delete(key); });
+        if (config.design !== 'basis') target.searchParams.set('design', config.design); else target.searchParams.delete('design');
+        if (config.design === 'neu') { target.searchParams.set('screendesign', '1'); target.searchParams.set('design_layouts', config.designLayouts); }
+        else { target.searchParams.delete('screendesign'); target.searchParams.delete('design_layouts'); }
+        return target.href;
+    }
     function timeline(result) {
         var parts = result.components;
         var duration = (state.dashboard ? 'Mindestens ' : '') + days(result.days);
@@ -184,17 +201,8 @@
         }, 180);
         timeline(result);
 
-        link.searchParams.set('seiten', pages);
-        link.searchParams.set('art', state.art);
-        link.searchParams.set('kurz', state.utility);
-        link.searchParams.set('standard', state.standard);
-        link.searchParams.set('leistung', state.sales);
-        link.searchParams.set('texte', state.texte ? '1' : '0');
-        ['tracking', 'crm', 'dashboard'].forEach(function (key) { if (state[key]) link.searchParams.set(key, '1'); else link.searchParams.delete(key); });
-        if (state.design !== 'basis') link.searchParams.set('design', state.design); else link.searchParams.delete('design');
-        if (newDesign) { link.searchParams.set('screendesign', '1'); link.searchParams.set('design_layouts', state.designLayouts); }
-        else { link.searchParams.delete('screendesign'); link.searchParams.delete('design_layouts'); }
-        $$('[data-website-cta]').forEach(function (cta) { cta.href = link.href; });
+        var requestUrl = inquiryLink(state);
+        $$('[data-website-cta]').forEach(function (cta) { cta.href = requestUrl; });
         if (previousPrice !== $('#gesamt').textContent) confirmChange($('#gesamt'));
         if (newDesign && detailsWereHidden) confirmChange($('#design-details'));
     }
@@ -293,4 +301,62 @@
     }
     if (window.ResizeObserver) new ResizeObserver(scheduleSticky).observe(bar);
     updateSticky();
+
+    // Optional browser API: registration failure must leave the human calculator usable.
+    function registerQuoteTool() {
+        var context = document.modelContext;
+        if (!context || typeof context.registerTool !== 'function') return;
+        var properties = {
+            utility_pages: { type: 'integer', minimum: 0, maximum: max - 1, default: 0, description: 'Zusätzliche kurze Seiten, etwa Kontakt. Die erste Hauptseite ist bereits enthalten.' },
+            standard_pages: { type: 'integer', minimum: 0, maximum: max - 1, default: 0, description: 'Zusätzliche Standardseiten, etwa Über uns oder Team.' },
+            sales_pages: { type: 'integer', minimum: 0, maximum: max - 1, default: 0, description: 'Zusätzliche Leistungs- oder Verkaufsseiten.' },
+            art: { type: 'string', enum: ['neubau', 'relaunch'], default: 'neubau', description: 'Neue Website oder Relaunch einer bestehenden Website.' },
+            texte: { type: 'boolean', default: false, description: 'Texte für die ausgewählten Seiten erstellen lassen.' },
+            design: { type: 'string', enum: ['basis', 'vorhanden', 'neu'], default: 'basis', description: 'Inklusive Basisgestaltung, fertige Vorlage oder neues individuelles Screendesign.' },
+            design_layouts: { type: 'integer', minimum: 1, maximum: max, default: 1, description: 'Anzahl unterschiedlicher Layouts bei neuem Screendesign, höchstens die Gesamtseitenzahl.' },
+            tracking: { type: 'boolean', default: false, description: 'Projektweites Conversion-Tracking ergänzen.' },
+            crm: { type: 'boolean', default: false, description: 'Standard-CRM-Anbindung ergänzen; Umfang vor Auftrag prüfen.' },
+            dashboard: { type: 'boolean', default: false, description: 'Individuelles Dashboard anfragen; Preis und Zeit hierfür werden separat angeboten.' }
+        };
+        var tool = {
+            name: 'calculate_website_quote',
+            description: 'Berechnet eine unverbindliche WordPress-Website-Kalkulation mit Nettopreis, geplanter Produktionszeit, Umfang und vorbereitetem Anfragelink. Eine Hauptseite ist immer enthalten, insgesamt sind höchstens ' + max + ' Inhaltsseiten möglich. Ohne Optionen wird eine Hauptseite mit Basisgestaltung und eigenen Texten kalkuliert. Die aktuelle Seitenauswahl bleibt erhalten; die Anfrage wird über den zurückgegebenen Link fortgesetzt.',
+            inputSchema: { type: 'object', properties: properties, additionalProperties: false },
+            annotations: { readOnlyHint: true, consequentialHint: false, untrustedContentHint: false },
+            execute: function (input) {
+                if (!input || typeof input !== 'object' || Array.isArray(input)) return { error: 'invalid_input', message: 'Die Konfiguration muss ein Objekt sein.' };
+                if (Object.keys(input).some(function (key) { return !Object.prototype.hasOwnProperty.call(properties, key); })) return { error: 'unknown_option', message: 'Bitte nur die im Eingabeschema aufgeführten Optionen verwenden.' };
+                var values = {}, invalid = [];
+                Object.keys(properties).forEach(function (key) {
+                    var definition = properties[key];
+                    var value = Object.prototype.hasOwnProperty.call(input, key) ? input[key] : definition.default;
+                    if ((definition.type === 'integer' && (!Number.isInteger(value) || value < definition.minimum || value > definition.maximum))
+                        || (definition.type === 'boolean' && typeof value !== 'boolean')
+                        || (definition.enum && definition.enum.indexOf(value) === -1)) invalid.push(key);
+                    values[key] = value;
+                });
+                if (invalid.length) return { error: 'invalid_option', fields: invalid, message: 'Typ, Wertebereich oder Auswahl prüfen; Seitenzahlen müssen ganze Zahlen sein.' };
+                var config = { utility: values.utility_pages, standard: values.standard_pages, sales: values.sales_pages, art: values.art, texte: values.texte, design: values.design, designLayouts: values.design_layouts, tracking: values.tracking, crm: values.crm, dashboard: values.dashboard };
+                var pages = totalPages(config);
+                if (pages > max) return { error: 'too_many_pages', max_pages: max, message: 'Die erste Hauptseite und alle zusätzlichen Seiten dürfen zusammen höchstens ' + max + ' Inhaltsseiten ergeben.' };
+                if (config.design === 'neu' && config.designLayouts > pages) return { error: 'too_many_layouts', max_layouts: pages, message: 'Die Layoutanzahl darf die Gesamtseitenzahl nicht übersteigen.' };
+                var result = quote(config), review = [], excluded = ['Domain', 'Hosting', 'Externe Dienste'];
+                if (config.design === 'vorhanden') review.push('Vorhandene Designvorlage und Umsetzungsumfang prüfen.');
+                if (config.crm) review.push('Standardumfang der CRM-Anbindung vor Auftrag bestätigen.');
+                if (config.dashboard) { review.push('Individuelles Dashboard: Preis und Produktionszeit separat anbieten.'); excluded.push('Individuelles Daten-Dashboard'); }
+                return {
+                    kind: 'non_binding_estimate', calculation_version: rules.version, scope: scopeLabel(config), pages: pages,
+                    selection: values, currency: 'EUR', price_net: result.price, vat_included: false,
+                    price_excludes: excluded, scope_review: review,
+                    price_breakdown: { base: base, pages: result.pagePrice, texts: result.textPrice, design: result.designPrice, tracking: config.tracking ? trackingPrice : 0, crm: config.crm ? rules.prices.crm : 0 },
+                    production_days: result.days, production_days_are_minimum: config.dashboard, production_components: result.components,
+                    timing_note: 'Geplante Werktage bis zum geprüften Abnahmestand. Starttermin, Kundenfreigaben und Livegang separat vereinbaren.',
+                    terms: 'Unverbindliche Kalkulation. Festpreis und Starttermin werden vor Auftrag bestätigt.',
+                    request_url: inquiryLink(config)
+                };
+            }
+        };
+        Promise.resolve(context.registerTool(tool)).catch(function () { /* Unsupported trial or policy: normal UI remains available. */ });
+    }
+    try { registerQuoteTool(); } catch (error) { /* Experimental API may be unavailable in this browsing context. */ }
 })();

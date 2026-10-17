@@ -346,6 +346,117 @@ test('reduced motion has no simulated loading or browser storage', async ({ page
   expect(await page.evaluate(() => [localStorage.length, sessionStorage.length, document.cookie])).toEqual([0,0,'']);
 });
 
+async function captureWebsiteTool(page, mode = 'available') {
+  await page.addInitScript(mode => {
+    Object.defineProperty(document, 'modelContext', {
+      configurable: true,
+      value: mode === 'absent' ? undefined : {
+        registerTool(tool) {
+          if (mode === 'throws') throw new DOMException('Tools disabled', 'SecurityError');
+          if (mode === 'rejects') return Promise.reject(new DOMException('Trial unavailable', 'NotSupportedError'));
+          window.websiteQuoteTool = tool;
+        },
+      },
+    });
+  }, mode);
+}
+
+test('WebMCP quotes match PHP canon and prepare the existing inquiry path without side effects', async ({ page }) => {
+  await captureWebsiteTool(page);
+  await open(page);
+  const requests = [];
+  page.on('request', request => requests.push(request.url()));
+  const initialUrl = page.url();
+  const initialCta = await page.locator('#cta-angebot').getAttribute('href');
+  const cases = [
+    {},
+    { utility_pages: 1, standard_pages: 1, sales_pages: 2, art: 'relaunch', tracking: true, design: 'neu', design_layouts: 2, crm: true, dashboard: true },
+    { standard_pages: 9, texte: true },
+    { sales_pages: 1, design: 'vorhanden' },
+    { utility_pages: 1, texte: true, design: 'neu', design_layouts: 2 },
+  ];
+  const actual = await page.evaluate(cases => {
+    const tool = window.websiteQuoteTool;
+    return { name: tool.name, annotations: tool.annotations, schema: tool.inputSchema, results: cases.map(input => tool.execute(input)) };
+  }, cases);
+  expect(actual.name).toBe('calculate_website_quote');
+  expect(actual.annotations).toMatchObject({ readOnlyHint: true, consequentialHint: false });
+  expect(actual.schema.additionalProperties).toBe(false);
+  const canonical = canonicalQuotes(cases.map(input => ({
+    ...input, seiten: 1 + (input.utility_pages || 0) + (input.standard_pages || 0) + (input.sales_pages || 0),
+    utility_pages: input.utility_pages || 0, standard_pages: input.standard_pages || 0, sales_pages: input.sales_pages || 0,
+    art: input.art || 'neubau', tracking: input.tracking || false,
+  })));
+  for (const [index, result] of actual.results.entries()) {
+    const expected = canonical[index];
+    expect(result).toMatchObject({
+      kind: 'non_binding_estimate', currency: 'EUR', vat_included: false,
+      calculation_version: expected.version, price_net: expected.price,
+      production_days: expected.days, production_components: expected.components,
+      production_days_are_minimum: expected.duration_open, pages: expected.pages,
+    });
+    expect(Object.values(result.price_breakdown).reduce((sum, value) => sum + value, 0)).toBe(expected.price);
+    const url = new URL(result.request_url);
+    expect(url.origin).toBe('https://hasimuener.de');
+    expect(url.pathname).toBe('/kontakt/');
+    expect(Object.fromEntries(url.searchParams)).toMatchObject({
+      type: 'project', focus: 'website', seiten: String(expected.pages),
+      kurz: String(expected.page_types.utility), standard: String(expected.page_types.standard), leistung: String(expected.page_types.sales),
+    });
+  }
+  expect(actual.results[1].price_excludes).toContain('Individuelles Daten-Dashboard');
+  expect(actual.results[1].scope_review).toHaveLength(2);
+  expect(actual.results[3].scope_review).toHaveLength(1);
+  await expect(page.locator('#gesamt')).toHaveText(euro(3090));
+  expect(await page.locator('#cta-angebot').getAttribute('href')).toBe(initialCta);
+  expect(page.url()).toBe(initialUrl);
+  expect(requests).toEqual([]);
+
+  // Follow the returned scope through the real isolated PHP intake/CRM/mail builders.
+  const scope = Object.fromEntries(new URL(actual.results[1].request_url).searchParams);
+  const response = JSON.parse(execFileSync('php', [path.join(__dirname, 'submit-website-fixture.php')], {
+    input: JSON.stringify({ ...scope, request_type: 'project', name: 'Fixture Agent', email: 'agent@example.test',
+      consent: true, message: 'Wir möchten eine Website mit den angegebenen Erweiterungen anfragen.' }), encoding: 'utf8',
+  }));
+  expect(response.status).toBe(201);
+  expect(response.meta['1']._nexus_contact_website_price).toBe(actual.results[1].price_net);
+  expect(response.meta['1']._nexus_contact_website_days).toBe(actual.results[1].production_days);
+  expect(response.meta['1']._nexus_contact_website_duration_open).toBe(1);
+  expect(response.mails).toHaveLength(2);
+});
+
+test('WebMCP validates types and cross-field limits before quoting', async ({ page }) => {
+  await captureWebsiteTool(page);
+  await open(page);
+  const invalid = [null, [], '5 pages', { standard_pages: -1 }, { sales_pages: 1.5 }, { utility_pages: 10 },
+    { tracking: 'true' }, { crm: 1 }, { texte: null }, { design: 'luxury' }, { art: 'migration' },
+    { design_layouts: 0 }, { price: 1 }, { utility_pages: 5, standard_pages: 5 }, { design: 'neu', design_layouts: 2 }];
+  const results = await page.evaluate(inputs => inputs.map(input => window.websiteQuoteTool.execute(input)), invalid);
+  for (const result of results) {
+    expect(result.error).toBeTruthy();
+    expect(result.message).toBeTruthy();
+    expect(result.price_net).toBeUndefined();
+    expect(result.request_url).toBeUndefined();
+  }
+  expect(results.at(-2).error).toBe('too_many_pages');
+  expect(results.at(-1).error).toBe('too_many_layouts');
+  await expect(page.locator('#gesamt')).toHaveText(euro(3090));
+});
+
+for (const mode of ['absent', 'throws', 'rejects']) {
+  test(`WebMCP ${mode}: the normal calculator stays usable`, async ({ page }) => {
+    const errors = [];
+    page.on('pageerror', error => errors.push(error.message));
+    await captureWebsiteTool(page, mode);
+    await open(page);
+    await choosePreset(page, 1);
+    await expect(page.locator('#gesamt')).toHaveText(euro(1900));
+    await page.locator('#standard-plus').click();
+    await expect(page.locator('#gesamt')).toHaveText(euro(2300));
+    expect(errors).toEqual([]);
+  });
+}
+
 for (const width of [320, 390, 768, 1440]) {
   test(`200 percent text: calculator reflows at ${width}`, async ({ page }) => {
     await open(page, width);
