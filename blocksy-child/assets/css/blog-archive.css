@@ -273,10 +273,17 @@
 .blog-index__focus h2 {
   position: relative;
   z-index: 1;
-  max-width: 12ch;
+  /* Breit genug fuer ein langes deutsches Kompositum am Stueck;
+     schmaler trennt die Silbentrennung unten. */
+  max-width: 18ch;
   font-size: clamp(2.7rem, 4.5vw, 5rem);
   line-height: 0.96;
   letter-spacing: -0.045em;
+  /* Passt ein Wort trotzdem nicht, wird nach Woerterbuch getrennt,
+     nicht mitten im Wort ohne Strich (siehe system.css). */
+  -webkit-hyphens: auto;
+  hyphens: auto;
+  hyphenate-limit-chars: 12 6 6;
 }
 
 .blog-index__focus > p {

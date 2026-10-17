@@ -150,6 +150,20 @@ body.nx-custom-header-active {
   padding: clamp(1.4rem, 3.5vw, 2.4rem);
 }
 
+/* ══ Silbentrennung in Ueberschriften ═════════════════════════
+   Deutsche Komposita sind laenger als die Zeile grosser Ueberschriften
+   ("Softwareentwicklung" bei 5rem in 12ch). Ohne Silbentrennung bricht
+   der Browser dann irgendwo im Wort und ohne Strich. Deshalb trennen alle
+   Ueberschriften nach Woerterbuch (lang="de-DE" kommt von WordPress), aber
+   nur Woerter ab zwoelf Zeichen und mit mindestens sechs Zeichen je Seite:
+   "Software-entwicklung" ja, "Soft-wareentwicklung" nein. :where() haelt die Spezifitaet bei null: Eine Route,
+   die bewusst hyphens: none setzt, behaelt ihre Regel. */
+:where(h1, h2, h3, h4, h5, h6) {
+  -webkit-hyphens: auto;
+  hyphens: auto;
+  hyphenate-limit-chars: 12 6 6;
+}
+
 /* ══ Dokumenthuelle ═══════════════════════════════════════════ */
 
 .doku {
