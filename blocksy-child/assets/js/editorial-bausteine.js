@@ -182,7 +182,7 @@
     function init() {
         var content = document.getElementById('article-content') || document;
 
-        Array.prototype.forEach.call(content.querySelectorAll('[data-hu-kette]'), initKette);
+        Array.prototype.forEach.call(content.querySelectorAll('[data-hu-kette], [data-hu-schleife]'), initKette);
         Array.prototype.forEach.call(content.querySelectorAll('[data-hu-pruef]'), initPruefliste);
     }
 

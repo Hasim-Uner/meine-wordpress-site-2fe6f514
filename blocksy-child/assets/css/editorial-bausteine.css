@@ -544,7 +544,8 @@
 	gap: var(--s0);
 }
 
-#article-content .hu-kette-legende i {
+#article-content .hu-kette-legende i,
+#article-content .hu-schleife-legende i {
 	display: inline-block;
 	width: 9px;
 	height: 9px;
@@ -593,7 +594,8 @@
 	display: none;
 }
 
-#article-content .hu-kette__punkt {
+#article-content .hu-kette__punkt,
+#article-content .hu-schleife__punkt {
 	position: absolute;
 	top: 0;
 	left: 0;
@@ -818,6 +820,296 @@
 		padding: var(--s2);
 		border-radius: 3px;
 		background: var(--zone);
+	}
+}
+
+/* ── Abbildung: die Schleife eines Coding-Agenten ───────────── */
+
+/* Gleiche Sprache wie die Kette: Punkte, Haarlinie, Mono-Nummer, Name in
+   der Display-Schrift. Neu sind nur drei Zeichen: gefuellter Punkt fuer
+   Schritte des Menschen, Stempel-Ring fuer die Freigabe und der gestrichelte
+   Bogen 04 → 03 ueber der Linie. Die Abbildung ist ihr eigener Container. */
+#article-content .hu-abb--schleife {
+	--hu-schleife-abstand: clamp(0.7rem, 1.6vw, 1.25rem);
+	--hu-schleife-punkt: 11px;
+	padding: clamp(1.25rem, 3vw, var(--s3)) 0;
+	container-type: inline-size;
+}
+
+#article-content .hu-abb--schleife > * {
+	margin-inline: clamp(1.25rem, 3vw, var(--s3));
+}
+
+#article-content .hu-schleife-legende {
+	display: flex;
+	flex-wrap: wrap;
+	gap: var(--s0) var(--s3);
+	font-family: var(--mono);
+	font-size: var(--mono-m);
+	font-weight: 500;
+	letter-spacing: 0.14em;
+	text-transform: uppercase;
+	color: var(--grau);
+}
+
+#article-content .hu-schleife-legende span {
+	display: inline-flex;
+	align-items: center;
+	gap: var(--s0);
+}
+
+#article-content .hu-schleife-legende i.is-mensch {
+	background: var(--tinte);
+}
+
+#article-content .hu-schleife-legende i.is-fehler {
+	width: 10px;
+	height: 2px;
+	border: 0;
+	border-radius: var(--r0);
+	background: var(--stempel);
+}
+
+/* Bogen ueber den Schritten 03 und 04: Spitze zeigt auf 03. */
+#article-content .hu-schleife__runde {
+	display: grid;
+	grid-template-columns: repeat(6, minmax(0, 1fr));
+	column-gap: var(--hu-schleife-abstand);
+	align-items: end;
+	margin-top: var(--s4);
+}
+
+#article-content .hu-schleife__bogen {
+	position: relative;
+	grid-row: 2;
+	grid-column: 3 / 5;
+	height: 1.9rem;
+	margin-right: calc((100% - var(--hu-schleife-abstand)) / 2 - var(--hu-schleife-punkt) / 2);
+	margin-left: calc(var(--hu-schleife-punkt) / 2 - 0.5px);
+	border: 1.5px dashed var(--stempel);
+	border-bottom: 0;
+	border-radius: var(--r1);
+}
+
+#article-content .hu-schleife__bogen::after {
+	content: "";
+	position: absolute;
+	bottom: -2px;
+	left: -5.5px;
+	border: 4.5px solid transparent;
+	border-bottom: 0;
+	border-top: 7px solid var(--stempel);
+}
+
+#article-content .hu-schleife__runde-label {
+	grid-row: 1;
+	grid-column: 3 / 7;
+	margin-bottom: var(--s1);
+	font-family: var(--mono);
+	font-size: var(--mono-s);
+	font-weight: 500;
+	letter-spacing: 0.14em;
+	text-transform: uppercase;
+	color: var(--stempel);
+}
+
+#article-content ol.hu-schleife {
+	display: grid;
+	grid-template-columns: repeat(6, minmax(0, 1fr));
+	column-gap: var(--hu-schleife-abstand);
+	margin-top: 0;
+	margin-bottom: 0;
+	padding: 0;
+	list-style: none;
+}
+
+#article-content .hu-schleife__schritt {
+	position: relative;
+	min-width: 0;
+	margin: 0;
+	padding: calc(var(--hu-schleife-punkt) + var(--s2)) 0 0;
+	line-height: 1.4;
+	color: var(--grau);
+}
+
+#article-content .hu-schleife__schritt::before {
+	content: "";
+	position: absolute;
+	top: calc(var(--hu-schleife-punkt) / 2 - 0.5px);
+	left: calc(var(--hu-schleife-punkt) / 2);
+	width: calc(100% + var(--hu-schleife-abstand));
+	height: 1px;
+	background: var(--grau);
+	transform-origin: left;
+	transition: transform var(--t-gross) var(--ease-aus);
+}
+
+#article-content .hu-schleife__schritt:last-child::before {
+	display: none;
+}
+
+#article-content .hu-schleife__punkt {
+	width: var(--hu-schleife-punkt);
+	height: var(--hu-schleife-punkt);
+}
+
+#article-content .hu-schleife__schritt.is-mensch .hu-schleife__punkt {
+	background: var(--tinte);
+}
+
+#article-content .hu-schleife__schritt.is-tor .hu-schleife__punkt {
+	border-color: var(--stempel);
+	background: var(--stempel);
+	outline: 4px solid var(--zone2);
+}
+
+#article-content .hu-schleife__nr {
+	display: block;
+	font-family: var(--mono);
+	font-size: var(--mono-s);
+	letter-spacing: 0.14em;
+	font-variant-numeric: tabular-nums;
+	text-transform: uppercase;
+	color: var(--matt);
+}
+
+#article-content .hu-schleife__wer {
+	color: var(--grau);
+}
+
+#article-content .hu-schleife__schritt.is-mensch .hu-schleife__wer {
+	color: var(--tinte);
+}
+
+#article-content .hu-schleife__name {
+	display: block;
+	min-height: 2.4em;
+	margin-top: 0.2rem;
+	font-family: var(--serif-display);
+	font-size: 1rem;
+	font-weight: 500;
+	line-height: 1.2;
+	letter-spacing: -0.01em;
+	overflow-wrap: anywhere;
+	hyphens: auto;
+	color: var(--tinte);
+}
+
+#article-content .hu-schleife__kriterium,
+#article-content .hu-schleife__fehler {
+	display: block;
+	margin-top: var(--s1);
+	font-size: 0.76rem;
+	line-height: 1.4;
+}
+
+#article-content .hu-schleife__kriterium {
+	padding-top: var(--s0);
+	border-top: 1px solid var(--haar);
+	color: var(--grau);
+}
+
+#article-content .hu-schleife__fehler {
+	color: var(--tinte);
+}
+
+#article-content .hu-schleife__kriterium em,
+#article-content .hu-schleife__fehler em {
+	display: block;
+	margin-bottom: 0.15rem;
+	font-family: var(--mono);
+	font-size: var(--mono-s);
+	font-style: normal;
+	letter-spacing: 0.12em;
+	text-transform: uppercase;
+	color: var(--matt);
+}
+
+#article-content .hu-schleife__fehler em {
+	color: var(--stempel);
+}
+
+#article-content p.hu-schleife__abbruch {
+	display: flex;
+	flex-wrap: wrap;
+	align-items: baseline;
+	gap: var(--s0) var(--s2);
+	margin-top: var(--s3);
+	margin-bottom: 0;
+	font-size: 0.8rem;
+	line-height: 1.5;
+	color: var(--grau);
+}
+
+#article-content .hu-schleife__abbruch-label {
+	font-family: var(--mono);
+	font-size: var(--mono-m);
+	font-weight: 500;
+	letter-spacing: 0.14em;
+	text-transform: uppercase;
+	color: var(--tinte);
+}
+
+/* Zeichnen beim ersten Sichtkontakt (editorial-bausteine.js). */
+#article-content .hu-schleife.is-wartet .hu-schleife__schritt::before {
+	transform: scaleX(0);
+}
+
+#article-content .hu-schleife.is-zeichnet .hu-schleife__schritt:nth-child(2)::before { transition-delay: 90ms; }
+#article-content .hu-schleife.is-zeichnet .hu-schleife__schritt:nth-child(3)::before { transition-delay: 180ms; }
+#article-content .hu-schleife.is-zeichnet .hu-schleife__schritt:nth-child(4)::before { transition-delay: 270ms; }
+#article-content .hu-schleife.is-zeichnet .hu-schleife__schritt:nth-child(5)::before { transition-delay: 360ms; }
+
+/* Schmaler als 760 px: die Schleife steht senkrecht, der Bogen wird zur
+   Zeile ueber der Liste. */
+@container (max-width: 760px) {
+	#article-content .hu-schleife__runde {
+		display: block;
+		margin-top: var(--s3);
+		margin-bottom: var(--s3);
+	}
+
+	#article-content .hu-schleife__bogen {
+		display: none;
+	}
+
+	#article-content .hu-schleife__runde-label {
+		display: block;
+		margin: 0;
+		padding: var(--s1) var(--s2);
+		border: 1.5px dashed var(--stempel);
+		border-radius: var(--r1);
+	}
+
+	#article-content ol.hu-schleife {
+		grid-template-columns: minmax(0, 1fr);
+	}
+
+	#article-content .hu-schleife__schritt {
+		/* lint-css-spacing: allow -- oben sitzt der Punkt, der Abstand steht darunter. */
+		padding: 0 0 var(--s3) calc(var(--hu-schleife-punkt) + var(--s2));
+	}
+
+	#article-content .hu-schleife__schritt::before {
+		top: calc(var(--hu-schleife-punkt) / 2);
+		left: calc(var(--hu-schleife-punkt) / 2 - 0.5px);
+		width: 1px;
+		height: 100%;
+		transform-origin: top;
+	}
+
+	#article-content .hu-schleife.is-wartet .hu-schleife__schritt::before {
+		transform: scaleY(0);
+	}
+
+	#article-content .hu-schleife__name {
+		min-height: 0;
+		font-size: 1.08rem;
+	}
+
+	#article-content .hu-schleife__kriterium,
+	#article-content .hu-schleife__fehler {
+		max-width: 40ch;
 	}
 }
 

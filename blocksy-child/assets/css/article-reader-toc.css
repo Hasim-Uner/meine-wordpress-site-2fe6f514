@@ -155,3 +155,373 @@
 	.nexus-article-reader-header ~ .nexus-single-container .nexus-reader-toc .sticky-toc a,
 	.nexus-reader-toc__toggle-mark { transition: none !important; }
 }
+
+/* ══════════════════════════════════════════════════════════════
+   KAPITELSKALA (article-reader-toc.js, Version 2)
+
+   Gilt fuer jeden Beitrag mit #article-content. Der Essay mit eigenem
+   Lesepfad und die Entscheidungsbeitraege bleiben bei den Regeln oben.
+
+   Desktop: nur Kapitel (H2), nummeriert; Unterpunkte nur beim aktiven
+   Kapitel; Haarlinie mit Lesefortschritt; Kopf "03 / 10", Fuss mit
+   Restlesezeit. Keine eigene Scrollleiste.
+   Unter 981 px: schmale Leiste unter der Kopfleiste, ein Tipp oeffnet die
+   Kapitel als Blatt.
+
+   Die Spezifitaet liegt bewusst ueber den Reader-Regeln oben, in
+   article-reader-body.css und single-reader-unified.css, damit keine
+   dieser Dateien angefasst werden muss.
+   ══════════════════════════════════════════════════════════════ */
+
+#article-content :is(h2, h3)[id] {
+	scroll-margin-top: calc(var(--hu-toc-oben, var(--leiste-h)) + var(--s3));
+}
+
+.single-post .nexus-single-container .nexus-reader-toc.hu-toc-aside .hu-toc__alt,
+.single-post .nexus-single-container .nexus-reader-toc.hu-toc-aside #toc-list,
+.single-post .nexus-single-container .nexus-reader-toc.hu-toc-aside .nexus-reader-toc__toggle {
+	display: none !important;
+}
+
+.single-post .nexus-single-container .nexus-reader-toc.hu-toc-aside .sticky-toc.hu-toc {
+	position: static !important;
+	display: flex;
+	flex-direction: column;
+	width: 100% !important;
+	max-height: none;
+	padding: 0;
+	overflow: visible;
+	border: 0;
+	border-radius: 0;
+	background: transparent;
+	box-shadow: none;
+}
+
+.hu-toc ol {
+	margin: 0;
+	padding: 0;
+	list-style: none;
+}
+
+.single-post .nexus-single-container .nexus-reader-toc.hu-toc-aside .hu-toc li {
+	margin: 0 !important;
+}
+
+.hu-toc__kopf {
+	display: flex;
+	align-items: baseline;
+	justify-content: space-between;
+	gap: var(--s1);
+	padding-bottom: var(--s1);
+	border-bottom: 1px solid var(--strich);
+}
+
+.hu-toc__label,
+.hu-toc__stand,
+.hu-toc__fuss,
+.hu-toc__nr,
+.hu-toc__leiste-nr {
+	font-family: var(--mono);
+	font-size: var(--mono-s);
+	font-weight: 500;
+	letter-spacing: 0.12em;
+	font-variant-numeric: tabular-nums;
+	text-transform: uppercase;
+}
+
+.hu-toc__label { color: var(--stempel); }
+.hu-toc__stand { color: var(--matt); }
+
+/* Skala: Haarlinie links, Fuellung = Lesefortschritt. */
+.hu-toc__skala {
+	position: relative;
+	display: flex;
+	min-height: 0;
+}
+
+.hu-toc__schiene {
+	position: absolute;
+	top: var(--s1);
+	bottom: var(--s1);
+	left: 0;
+	width: 1px;
+	background: var(--haar);
+}
+
+.hu-toc__fuellung {
+	position: absolute;
+	inset: 0 auto 0 -0.5px;
+	width: 2px;
+	background: var(--stempel);
+	transform: scaleY(var(--hu-toc-fortschritt, 0));
+	transform-origin: top;
+}
+
+.hu-toc__liste {
+	flex: 1 1 auto;
+	min-height: 0;
+	padding-block: var(--s1) !important;
+	overflow-y: auto;
+	overscroll-behavior: contain;
+	scrollbar-width: none;
+}
+
+.hu-toc__liste::-webkit-scrollbar { display: none; }
+
+.single-post .nexus-single-container .nexus-reader-toc.hu-toc-aside .hu-toc a.hu-toc__link {
+	position: relative;
+	display: grid;
+	grid-template-columns: 1.7rem minmax(0, 1fr);
+	align-items: baseline;
+	padding: 0.42rem 0 0.42rem var(--s2);
+	border: 0;
+	color: var(--matt);
+	font-family: var(--serif);
+	font-size: 0.84rem;
+	font-weight: 500;
+	line-height: 1.32;
+	letter-spacing: 0;
+	text-decoration: none;
+	transition: color var(--t-norm) var(--ease-weich);
+}
+
+.hu-toc__nr {
+	color: var(--matt);
+	transition: color var(--t-norm) var(--ease-weich);
+}
+
+.hu-toc__text {
+	display: -webkit-box;
+	overflow: hidden;
+	-webkit-box-orient: vertical;
+	-webkit-line-clamp: 2;
+	text-wrap: pretty;
+}
+
+/* Zeiger auf der Skala am aktiven Kapitel. */
+.single-post .nexus-single-container .nexus-reader-toc.hu-toc-aside .hu-toc a.hu-toc__link::before {
+	content: "";
+	position: absolute;
+	top: calc(0.42rem + 0.42em);
+	left: -3.5px;
+	width: 8px;
+	height: 8px;
+	border-radius: 50%;
+	background: var(--stempel);
+	opacity: 0;
+	transform: scale(0.4);
+	transition: opacity var(--t-norm) var(--ease-weich), transform var(--t-norm) var(--ease-aus);
+}
+
+.hu-toc__kapitel.is-gelesen > .hu-toc__link,
+.hu-toc__kapitel.is-gelesen .hu-toc__nr {
+	color: var(--grau);
+}
+
+.single-post .nexus-single-container .nexus-reader-toc.hu-toc-aside .hu-toc .hu-toc__kapitel.is-aktiv > a.hu-toc__link {
+	color: var(--tinte);
+	font-weight: 600;
+}
+
+.single-post .nexus-single-container .nexus-reader-toc.hu-toc-aside .hu-toc .hu-toc__kapitel.is-aktiv > a.hu-toc__link::before {
+	opacity: 1;
+	transform: scale(1);
+}
+
+.hu-toc__kapitel.is-aktiv .hu-toc__nr { color: var(--stempel); }
+
+.single-post .nexus-single-container .nexus-reader-toc.hu-toc-aside .hu-toc a.hu-toc__link:hover,
+.single-post .nexus-single-container .nexus-reader-toc.hu-toc-aside .hu-toc a.hu-toc__unterlink:hover {
+	color: var(--tinte);
+}
+
+/* Unterpunkte nur beim aktiven Kapitel. */
+.hu-toc__unter-huelle {
+	display: grid;
+	grid-template-rows: 0fr;
+	transition: grid-template-rows var(--t-norm) var(--ease-aus);
+}
+
+.hu-toc__kapitel.is-aktiv > .hu-toc__unter-huelle {
+	grid-template-rows: 1fr;
+}
+
+.hu-toc__unter {
+	min-height: 0;
+	overflow: hidden;
+	padding-left: calc(var(--s2) + 1.7rem) !important;
+}
+
+.hu-toc__unter li:last-child {
+	padding-bottom: var(--s0);
+}
+
+.single-post .nexus-single-container .nexus-reader-toc.hu-toc-aside .hu-toc a.hu-toc__unterlink {
+	display: block;
+	padding: 0.2rem 0;
+	border: 0;
+	color: var(--matt);
+	font-family: var(--serif);
+	font-size: 0.78rem;
+	font-weight: 400;
+	line-height: 1.35;
+	letter-spacing: 0;
+	text-decoration: none;
+	transition: color var(--t-norm) var(--ease-weich);
+}
+
+.single-post .nexus-single-container .nexus-reader-toc.hu-toc-aside .hu-toc a.hu-toc__unterlink.is-aktiv {
+	color: var(--tinte);
+	font-weight: 500;
+}
+
+.hu-toc__fuss {
+	margin: 0;
+	padding-top: var(--s1);
+	border-top: 1px solid var(--haar);
+	color: var(--matt);
+}
+
+.hu-toc__leiste { display: none; }
+
+.hu-toc a:focus-visible,
+.hu-toc__leiste:focus-visible {
+	outline: 2px solid var(--stempel);
+	outline-offset: 2px;
+}
+
+@media (min-width: 981px) {
+	.single-post .nexus-single-container .nexus-sidebar.nexus-reader-toc.hu-toc-aside {
+		position: sticky !important;
+		top: calc(var(--hu-toc-oben, var(--leiste-h)) + var(--s3)) !important;
+		align-self: start !important;
+	}
+
+	.single-post .nexus-single-container .nexus-reader-toc.hu-toc-aside .sticky-toc.hu-toc {
+		max-height: calc(100vh - var(--hu-toc-oben, var(--leiste-h)) - (var(--s3) * 2));
+	}
+}
+
+/* ── Unter 981 px: Leiste mit Blatt ─────────────────────────── */
+
+@media (max-width: 980px) {
+	.single-post .nexus-single-container .nexus-sidebar.nexus-reader-toc.hu-toc-aside {
+		position: sticky !important;
+		top: var(--hu-toc-oben, var(--leiste-h)) !important;
+		z-index: 30;
+		margin: 0 !important;
+	}
+
+	/* Der Papiergrund reicht bis an die Fensterraender, damit der Text
+	   unter der Leiste nicht seitlich hervorschaut. Die Spalte ist
+	   zentriert, deshalb genuegt 50 % minus halbe Fensterbreite. */
+	.single-post .nexus-single-container .nexus-sidebar.nexus-reader-toc.hu-toc-aside::before,
+	.hu-toc__skala::before {
+		content: "";
+		position: absolute;
+		inset: 0 calc(50% - 50vw);
+		z-index: -1;
+		background: var(--papier);
+	}
+
+	.hu-toc__skala::before {
+		border-bottom: 1px solid var(--strich);
+	}
+
+	.hu-toc__kopf,
+	.hu-toc__fuss {
+		display: none;
+	}
+
+	.hu-toc__leiste {
+		position: relative;
+		display: grid;
+		grid-template-columns: auto minmax(0, 1fr) auto;
+		align-items: center;
+		gap: var(--s1);
+		width: 100%;
+		min-height: 48px;
+		padding: 0;
+		border: 0;
+		border-bottom: 1px solid var(--haar);
+		background: transparent;
+		color: var(--tinte);
+		font: inherit;
+		text-align: left;
+		cursor: pointer;
+	}
+
+	.hu-toc__leiste-nr { color: var(--stempel); }
+
+	.hu-toc__leiste-titel {
+		overflow: hidden;
+		font-family: var(--serif);
+		font-size: 0.92rem;
+		font-weight: 600;
+		white-space: nowrap;
+		text-overflow: ellipsis;
+	}
+
+	.hu-toc__leiste-mark {
+		width: 8px;
+		height: 8px;
+		margin-right: 0.2rem;
+		border-right: 1.5px solid currentColor;
+		border-bottom: 1.5px solid currentColor;
+		transform: translateY(-2px) rotate(45deg);
+		transition: transform var(--t-norm) var(--ease-aus);
+	}
+
+	.hu-toc.is-offen .hu-toc__leiste-mark {
+		transform: translateY(2px) rotate(-135deg);
+	}
+
+	.hu-toc__leiste-linie {
+		position: absolute;
+		right: 0;
+		bottom: -1px;
+		left: 0;
+		height: 2px;
+	}
+
+	.hu-toc__leiste-linie span {
+		display: block;
+		height: 100%;
+		background: var(--stempel);
+		transform: scaleX(var(--hu-toc-fortschritt, 0));
+		transform-origin: left;
+	}
+
+	.hu-toc__skala {
+		position: absolute;
+		top: 100%;
+		right: 0;
+		left: 0;
+		display: none;
+		max-height: min(70vh, 34rem);
+		z-index: 1;
+		padding-bottom: var(--s2);
+	}
+
+	.hu-toc.is-offen .hu-toc__skala {
+		display: flex;
+	}
+
+	.hu-toc__unter-huelle { display: none; }
+
+	.single-post .nexus-single-container .nexus-reader-toc.hu-toc-aside .hu-toc a.hu-toc__link {
+		padding-block: 0.62rem;
+		font-size: 0.95rem;
+	}
+
+	#article-content :is(h2, h3)[id] {
+		scroll-margin-top: calc(var(--hu-toc-oben, var(--leiste-h)) + 48px + var(--s2));
+	}
+}
+
+@media (prefers-reduced-motion: reduce) {
+	.hu-toc *,
+	.hu-toc *::before {
+		transition: none !important;
+	}
+}
