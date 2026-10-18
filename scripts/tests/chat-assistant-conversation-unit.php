@@ -55,10 +55,44 @@ check( '/whitelabel-retainer/' === hu_chat_normalize_page( '/whitelabel-retainer
 check( '/' === hu_chat_normalize_page( "/a\nb" ), 'page path with newline rejected' );
 
 // Bedrock body.
-$body = json_decode( hu_chat_conversation_body( $ok, '/', 'SYSTEM' ), true );
+$body = json_decode( hu_chat_conversation_body( $ok, '/', 'SYSTEM', [ 'extra_tokens' => 0 ] ), true );
 check( 'ephemeral' === $body['system'][0]['cache_control']['type'] && 'SYSTEM' === $body['system'][0]['text'], 'system prompt cached' );
 check( HU_CHAT_TOOL_NAME === $body['tools'][0]['name'] && HU_CHAT_MAX_TOKENS === $body['max_tokens'], 'tool and output cap present' );
 check( ! isset( $body['tool_choice'] ), 'model decides about the tool' );
+
+// Admin levels map to the model family.
+check( '2048' === hu_chat_thinking_from_level( 'normal', 'eu.anthropic.claude-haiku-4-5-20251001-v1:0' ), 'Haiku 4.5 normal uses a budget' );
+check( '4096' === hu_chat_thinking_from_level( 'gruendlich', 'eu.anthropic.claude-sonnet-4-5-20250929-v1:0' ), 'Sonnet 4.5 thorough uses a budget' );
+check( 'medium' === hu_chat_thinking_from_level( 'normal', 'eu.anthropic.claude-sonnet-4-6' ) && 'high' === hu_chat_thinking_from_level( 'gruendlich', 'eu.anthropic.claude-haiku-5-5' ), 'newer models use effort' );
+check( '' === hu_chat_thinking_from_level( 'off', 'eu.anthropic.claude-haiku-4-5-20251001-v1:0' ), 'off stays off' );
+check( 'medium' === hu_chat_thinking_from_level( 'normal', 'eu.anthropic.claude-opus-4-50' ), 'version boundary is exact' );
+
+// Thinking modes.
+check( [ 'extra_tokens' => 0 ] === hu_chat_thinking_settings( '' ) && [ 'extra_tokens' => 0 ] === hu_chat_thinking_settings( 'off' ), 'thinking off by default' );
+check( [ 'extra_tokens' => 0 ] === hu_chat_thinking_settings( '512' ), 'budget below the minimum is ignored' );
+$manual = hu_chat_thinking_settings( '2048' );
+check( 'enabled' === $manual['thinking']['type'] && 2048 === $manual['thinking']['budget_tokens'] && 2048 + HU_CHAT_MAX_TOKENS === hu_chat_max_tokens( $manual ), 'manual budget adds to the cap' );
+check( 16000 === hu_chat_thinking_settings( '99999' )['thinking']['budget_tokens'], 'budget capped' );
+$adaptive = hu_chat_thinking_settings( 'High' );
+check( 'adaptive' === $adaptive['thinking']['type'] && 'high' === $adaptive['output_config']['effort'], 'adaptive effort' );
+$thought = json_decode( hu_chat_conversation_body( $ok, '/', 'SYSTEM', $manual ), true );
+check( 2048 === $thought['thinking']['budget_tokens'] && $thought['max_tokens'] > $thought['thinking']['budget_tokens'], 'body carries thinking below max_tokens' );
+check( ! isset( json_decode( hu_chat_conversation_body( $ok, '/', 'SYSTEM', [ 'extra_tokens' => 0 ] ), true )['thinking'] ), 'no thinking key when off' );
+$think_stream = new HU_Chat_Anthropic_Stream();
+$events = [];
+foreach ( [
+	[ 'type' => 'message_start', 'message' => [ 'usage' => [ 'input_tokens' => 3 ] ] ],
+	[ 'type' => 'content_block_start', 'index' => 0, 'content_block' => [ 'type' => 'thinking' ] ],
+	[ 'type' => 'content_block_delta', 'index' => 0, 'delta' => [ 'type' => 'thinking_delta', 'thinking' => 'geheim' ] ],
+	[ 'type' => 'content_block_delta', 'index' => 0, 'delta' => [ 'type' => 'signature_delta', 'signature' => 'sig' ] ],
+	[ 'type' => 'content_block_stop', 'index' => 0 ],
+	[ 'type' => 'content_block_delta', 'index' => 1, 'delta' => [ 'type' => 'text_delta', 'text' => 'Antwort' ] ],
+	[ 'type' => 'message_delta', 'usage' => [ 'output_tokens' => 9 ] ],
+	[ 'type' => 'message_stop' ],
+] as $event ) {
+	$think_stream->accept( $event, static function ( $e, $d ) use ( &$events ) { $events[] = [ $e, $d ]; } );
+}
+check( ! str_contains( json_encode( $events ), 'geheim' ) && $think_stream->complete, 'thinking never reaches the visitor' );
 
 // Tool sanitizing.
 check( null === hu_chat_sanitize_tool_event( [ 'name' => 'send_mail', 'input' => [] ] ), 'unknown tool dropped' );

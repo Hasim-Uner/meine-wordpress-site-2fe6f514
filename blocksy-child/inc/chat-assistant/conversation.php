@@ -110,21 +110,90 @@ function hu_chat_normalize_page( $raw ): string {
 	return $raw;
 }
 
+/**
+ * Denkmodus aus `HU_CHAT_THINKING` (wp-config):
+ * - leer oder `off`: kein Nachdenken vor der Antwort (Standard)
+ * - Zahl ab 1024: festes Denkbudget in Tokens (Claude 4.5 und älter, z. B. Haiku 4.5)
+ * - `low`, `medium`, `high`, `max`: adaptives Denken mit Effort (neuere Modelle)
+ * Das Budget kommt zu den Antworttokens hinzu; die Kostenreservierung deckt beides.
+ *
+ * @return array{thinking?: array<string, mixed>, output_config?: array<string, string>, extra_tokens: int}
+ */
+function hu_chat_thinking_settings( string $value ): array {
+	$value = strtolower( trim( $value ) );
+	if ( preg_match( '/\A\d{4,5}\z/', $value ) && (int) $value >= 1024 ) {
+		$budget = min( (int) $value, 16000 );
+		return [ 'thinking' => [ 'type' => 'enabled', 'budget_tokens' => $budget ], 'extra_tokens' => $budget ];
+	}
+	if ( in_array( $value, [ 'low', 'medium', 'high', 'max' ], true ) ) {
+		$extra = [ 'low' => 2048, 'medium' => 4096, 'high' => 8192, 'max' => 16000 ][ $value ];
+		return [ 'thinking' => [ 'type' => 'adaptive' ], 'output_config' => [ 'effort' => $value ], 'extra_tokens' => $extra ];
+	}
+	return [ 'extra_tokens' => 0 ];
+}
+
+const HU_CHAT_THINKING_OPTION = 'hu_chat_thinking_level';
+
+/** Stufen des Admin-Schalters. @return array<string, string> */
+function hu_chat_thinking_levels(): array {
+	return [
+		'off'        => 'Aus – schnellste Antwort',
+		'normal'     => 'Normal – kurz nachdenken (empfohlen)',
+		'gruendlich' => 'Gründlich – länger nachdenken, langsamer und teurer',
+	];
+}
+
+/**
+ * Modelle bis Claude 4.5 kennen nur ein festes Denkbudget, neuere nur
+ * adaptives Denken mit Effort.
+ */
+function hu_chat_model_uses_budget( string $model ): bool {
+	return (bool) preg_match( '/claude-(?:3|(?:haiku|sonnet|opus)-4-[0-5](?![0-9]))/', $model );
+}
+
+/** Admin-Stufe in den technischen Wert für das jeweilige Modell übersetzen. */
+function hu_chat_thinking_from_level( string $level, string $model ): string {
+	$map = hu_chat_model_uses_budget( $model )
+		? [ 'normal' => '2048', 'gruendlich' => '4096' ]
+		: [ 'normal' => 'medium', 'gruendlich' => 'high' ];
+	return $map[ $level ] ?? '';
+}
+
+/** wp-config (`HU_CHAT_THINKING`) vor dem Admin-Schalter; Standard „Normal“. */
+function hu_chat_thinking_value(): string {
+	$constant = function_exists( 'nexus_get_mail_runtime_value' ) ? (string) nexus_get_mail_runtime_value( [ 'HU_CHAT_THINKING' ] ) : '';
+	if ( '' !== trim( $constant ) ) {
+		return $constant;
+	}
+	$level = function_exists( 'get_option' ) ? (string) get_option( HU_CHAT_THINKING_OPTION, 'normal' ) : 'normal';
+	$model = function_exists( 'hu_chat_config' ) ? (string) ( hu_chat_config()['model'] ?? '' ) : '';
+	return hu_chat_thinking_from_level( $level, $model );
+}
+
+/** Antworttokens plus Denkbudget: die harte Obergrenze je Aufruf. */
+function hu_chat_max_tokens( array $thinking ): int {
+	return HU_CHAT_MAX_TOKENS + (int) $thinking['extra_tokens'];
+}
+
 /** Anthropic Messages body with the cached system prompt and the tool. */
-function hu_chat_conversation_body( array $messages, string $page, string $system ): string {
-	return wp_json_encode(
-		[
-			'anthropic_version' => 'bedrock-2023-05-31',
-			'max_tokens'        => HU_CHAT_MAX_TOKENS,
-			'system'            => [
-				[ 'type' => 'text', 'text' => $system, 'cache_control' => [ 'type' => 'ephemeral' ] ],
-				[ 'type' => 'text', 'text' => 'Aktuelle Seite des Besuchers: ' . $page ],
-			],
-			'tools'             => [ hu_chat_tool_definition() ],
-			'messages'          => $messages,
+function hu_chat_conversation_body( array $messages, string $page, string $system, ?array $thinking = null ): string {
+	$thinking = $thinking ?? hu_chat_thinking_settings( hu_chat_thinking_value() );
+	$body     = [
+		'anthropic_version' => 'bedrock-2023-05-31',
+		'max_tokens'        => hu_chat_max_tokens( $thinking ),
+		'system'            => [
+			[ 'type' => 'text', 'text' => $system, 'cache_control' => [ 'type' => 'ephemeral' ] ],
+			[ 'type' => 'text', 'text' => 'Aktuelle Seite des Besuchers: ' . $page ],
 		],
-		JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES
-	);
+		'tools'             => [ hu_chat_tool_definition() ],
+		'messages'          => $messages,
+	];
+	foreach ( [ 'thinking', 'output_config' ] as $key ) {
+		if ( isset( $thinking[ $key ] ) ) {
+			$body[ $key ] = $thinking[ $key ];
+		}
+	}
+	return wp_json_encode( $body, JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES );
 }
 
 /**
@@ -210,9 +279,10 @@ function hu_chat_conversation_prepare( WP_REST_Request $request ) {
 		error_log( '[hu-chat] prompt_unavailable' );
 		return new WP_Error( 'chat_unavailable', hu_chat_unavailable_text(), [ 'status' => 503 ] );
 	}
-	$body        = hu_chat_conversation_body( $messages, hu_chat_normalize_page( $data['page'] ?? '/' ), $system );
+	$thinking    = hu_chat_thinking_settings( hu_chat_thinking_value() );
+	$body        = hu_chat_conversation_body( $messages, hu_chat_normalize_page( $data['page'] ?? '/' ), $system, $thinking );
 	$config      = hu_chat_config();
-	$reservation = hu_chat_budget_reserve( $config, strlen( $body ), HU_CHAT_MAX_TOKENS );
+	$reservation = hu_chat_budget_reserve( $config, strlen( $body ), hu_chat_max_tokens( $thinking ) );
 	if ( false === $reservation ) {
 		return new WP_Error( 'chat_budget', 'Der Assistent macht für diesen Monat Pause. Schreiben Sie bitte direkt an ' . hu_get_contact_email() . '.', [ 'status' => 429 ] );
 	}

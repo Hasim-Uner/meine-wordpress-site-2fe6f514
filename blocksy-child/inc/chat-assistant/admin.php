@@ -30,6 +30,20 @@ function hu_chat_admin_rebuild(): void {
 }
 add_action( 'admin_post_hu_chat_rebuild', 'hu_chat_admin_rebuild' );
 
+function hu_chat_admin_save_thinking(): void {
+	if ( ! current_user_can( 'manage_options' ) || ! hu_chat_assistant_enabled() ) {
+		wp_die( 'Nicht erlaubt.', 403 );
+	}
+	check_admin_referer( 'hu_chat_thinking' );
+	$level = isset( $_POST['hu_chat_thinking'] ) ? sanitize_key( wp_unslash( $_POST['hu_chat_thinking'] ) ) : '';
+	if ( isset( hu_chat_thinking_levels()[ $level ] ) ) {
+		update_option( HU_CHAT_THINKING_OPTION, $level, false );
+	}
+	wp_safe_redirect( add_query_arg( [ 'page' => 'hu-chat-assistant', 'thinking' => 'saved' ], admin_url( 'tools.php' ) ) );
+	exit;
+}
+add_action( 'admin_post_hu_chat_thinking', 'hu_chat_admin_save_thinking' );
+
 function hu_chat_admin_page(): void {
 	if ( ! current_user_can( 'manage_options' ) || ! hu_chat_assistant_enabled() ) {
 		return;
@@ -46,6 +60,9 @@ function hu_chat_admin_page(): void {
 	?>
 	<div class="wrap">
 		<h1>KI-Assistent</h1>
+		<?php if ( isset( $_GET['thinking'] ) ) : ?>
+			<div class="notice notice-success"><p>Gespeichert. Gilt ab der nächsten Antwort.</p></div>
+		<?php endif; ?>
 		<?php if ( isset( $notes[ $built ] ) ) : ?>
 			<div class="notice notice-<?php echo esc_attr( $notes[ $built ][0] ); ?>"><p><?php echo esc_html( $notes[ $built ][1] ); ?></p></div>
 		<?php endif; ?>
@@ -53,6 +70,23 @@ function hu_chat_admin_page(): void {
 			<tbody>
 				<tr><th>Modus</th><td><?php echo esc_html( 'live' === $config['mode'] ? 'live (alle Besucher)' : 'preview (nur eingeloggte Admins)' ); ?></td></tr>
 				<tr><th>Modell</th><td><code><?php echo esc_html( $config['model'] ); ?></code></td></tr>
+				<tr><th>Nachdenken vor der Antwort</th><td>
+					<?php $hu_thinking_config = (string) nexus_get_mail_runtime_value( [ 'HU_CHAT_THINKING' ] ); ?>
+					<?php if ( '' !== trim( $hu_thinking_config ) ) : ?>
+						Fest aus <code>wp-config.php</code>: <code><?php echo esc_html( $hu_thinking_config ); ?></code>
+					<?php else : ?>
+						<form method="post" action="<?php echo esc_url( admin_url( 'admin-post.php' ) ); ?>" style="display:flex;gap:8px;align-items:center;flex-wrap:wrap">
+							<input type="hidden" name="action" value="hu_chat_thinking">
+							<?php wp_nonce_field( 'hu_chat_thinking' ); ?>
+							<select name="hu_chat_thinking">
+								<?php foreach ( hu_chat_thinking_levels() as $hu_level => $hu_label ) : ?>
+									<option value="<?php echo esc_attr( $hu_level ); ?>" <?php selected( (string) get_option( HU_CHAT_THINKING_OPTION, 'normal' ), $hu_level ); ?>><?php echo esc_html( $hu_label ); ?></option>
+								<?php endforeach; ?>
+							</select>
+							<?php submit_button( 'Speichern', 'secondary', 'submit', false ); ?>
+						</form>
+					<?php endif; ?>
+				</td></tr>
 				<tr><th>Kosten diesen Monat</th><td><?php echo esc_html( number_format_i18n( $cost, 2 ) . ' USD von ' . number_format_i18n( (float) $config['budget'], 2 ) . ' USD (inkl. offener Reservierungen)' ); ?></td></tr>
 				<tr><th>Wissensdatei</th><td>
 					<?php if ( ! empty( $meta['built_at'] ) ) : ?>
