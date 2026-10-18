@@ -124,7 +124,7 @@ function hu_chat_html_to_markdown( string $html ): array {
 			foreach ( $xpath->query( './th|./td', $node ) as $cell ) {
 				$cells[] = str_replace( '|', '/', hu_chat_knowledge_clean( $cell->textContent ) );
 			}
-			$cells = array_filter( $cells, 'strlen' );
+			$cells = array_filter( $cells, static fn( string $s ): bool => '' !== $s );
 			if ( $cells ) {
 				$lines[] = '| ' . implode( ' | ', $cells ) . ' |';
 			}
@@ -223,7 +223,7 @@ function hu_chat_knowledge_post_blocks(): array {
 		}
 		$excerpt = hu_chat_knowledge_clean( wp_strip_all_tags( has_excerpt( $post ) ? $post->post_excerpt : wp_trim_words( strip_shortcodes( $post->post_content ), 45, ' …' ) ) );
 		preg_match_all( '/<h2[^>]*>(.*?)<\/h2>/is', (string) $post->post_content, $matches );
-		$outline = array_filter( array_map( static fn( $h ) => hu_chat_knowledge_clean( wp_strip_all_tags( $h ) ), $matches[1] ), 'strlen' );
+		$outline = array_filter( array_map( static fn( $h ) => hu_chat_knowledge_clean( wp_strip_all_tags( $h ) ), $matches[1] ), static fn( string $s ): bool => '' !== $s );
 		$block   = '### ' . hu_chat_knowledge_clean( get_the_title( $post ) ) . ' — ' . get_permalink( $post ) . "\n";
 		if ( '' !== $excerpt ) {
 			$block .= 'Kurzfassung: ' . $excerpt . "\n";
