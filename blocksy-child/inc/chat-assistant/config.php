@@ -46,6 +46,30 @@ function hu_chat_config_valid( array $config ): bool {
 	return true;
 }
 
+/**
+ * Public assistant: same checks as the probe, but `live` is accepted too.
+ * `preview` limits the assistant to logged-in administrators.
+ */
+function hu_chat_public_config_valid( array $config ): bool {
+	if ( ! in_array( $config['mode'] ?? '', [ 'preview', 'live' ], true ) ) {
+		return false;
+	}
+	$config['mode'] = 'preview';
+	return hu_chat_config_valid( $config );
+}
+
+function hu_chat_assistant_enabled(): bool {
+	return function_exists( 'curl_init' ) && hu_chat_public_config_valid( hu_chat_config() );
+}
+
+/** Who may see and use the assistant right now. */
+function hu_chat_visitor_allowed(): bool {
+	if ( ! hu_chat_assistant_enabled() ) {
+		return false;
+	}
+	return 'live' === hu_chat_config()['mode'] || current_user_can( 'manage_options' );
+}
+
 /** The admin probe is available only with a complete preview configuration. */
 function hu_chat_spike_enabled(): bool {
 	return hu_chat_config_valid( hu_chat_config() ) && function_exists( 'curl_init' );

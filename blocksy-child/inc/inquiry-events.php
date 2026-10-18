@@ -48,6 +48,7 @@ function hu_inquiry_event_forms() {
 		'analyse'           => 'Analyse (Solar)',
 		'sofortkontakt'     => 'Sofortkontakt (Solar)',
 		'sst'               => 'Server-Side-Tracking',
+		'chat'              => 'KI-Assistent',
 	];
 }
 

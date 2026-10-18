@@ -39,6 +39,34 @@ function hu_chat_spike_reserve( array $config ) {
 	return [ 'key' => $key, 'amount' => $total, 'one' => $one ];
 }
 
+/**
+ * Conversation reservation: every request byte is counted as at most one token
+ * at the highest configured price, plus the output cap. Stream and fallback
+ * are covered together; settlement refunds the difference.
+ *
+ * @return array<string, mixed>|false
+ */
+function hu_chat_budget_reserve( array $config, int $request_bytes, int $max_tokens ) {
+	global $wpdb;
+	$key   = 'hu_chat_cost_' . gmdate( 'Ym' );
+	$cap   = (int) floor( (float) $config['budget'] * 1000000 );
+	$one   = (int) ceil( ( $request_bytes + 1024 ) * max( array_map( 'floatval', $config['prices'] ) ) + $max_tokens * (float) $config['prices']['output'] );
+	$total = 2 * $one;
+	if ( $total > $cap ) {
+		return false;
+	}
+	add_option( $key, '0', '', false );
+	$changed = $wpdb->query( $wpdb->prepare(
+		"UPDATE {$wpdb->options} SET option_value = CAST(option_value AS UNSIGNED) + %d WHERE option_name = %s AND CAST(option_value AS UNSIGNED) <= %d",
+		$total, $key, $cap - $total
+	) );
+	if ( 1 !== $changed ) {
+		return false;
+	}
+	wp_cache_delete( $key, 'options' );
+	return [ 'key' => $key, 'amount' => $total, 'one' => $one ];
+}
+
 /** Unknown or interrupted attempts retain their full reservation. */
 function hu_chat_spike_settle( array $reservation, array $attempts, array $prices ): void {
 	global $wpdb;

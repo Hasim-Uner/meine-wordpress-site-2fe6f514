@@ -10,6 +10,8 @@ final class HU_Chat_Anthropic_Stream {
 	public bool $complete = false;
 	public bool $visible = false;
 	private bool $usage_complete = false;
+	/** Tool-use blocks in progress, keyed by content index. @var array<int, array{name: string, json: string}> */
+	private array $tools = [];
 
 	/** @param array<string, mixed> $event */
 	public function accept( array $event, callable $emit ): void {
@@ -17,9 +19,25 @@ final class HU_Chat_Anthropic_Stream {
 		if ( 'error' === $type ) {
 			throw new RuntimeException( 'chat_model_error' );
 		}
+		$index = (int) ( $event['index'] ?? -1 );
 		if ( 'message_start' === $type ) {
 			$this->usage = $event['message']['usage'] ?? [];
 			$emit( 'probe', [ 'stage' => 'bedrock_start' ] );
+		} elseif ( 'content_block_start' === $type && 'tool_use' === ( $event['content_block']['type'] ?? '' ) ) {
+			$this->tools[ $index ] = [ 'name' => (string) ( $event['content_block']['name'] ?? '' ), 'json' => '' ];
+		} elseif ( 'content_block_delta' === $type && 'input_json_delta' === ( $event['delta']['type'] ?? '' ) && isset( $this->tools[ $index ] ) ) {
+			$this->tools[ $index ]['json'] .= (string) ( $event['delta']['partial_json'] ?? '' );
+			if ( strlen( $this->tools[ $index ]['json'] ) > 16384 ) {
+				throw new RuntimeException( 'chat_tool_input_size' );
+			}
+		} elseif ( 'content_block_stop' === $type && isset( $this->tools[ $index ] ) ) {
+			$tool = $this->tools[ $index ];
+			unset( $this->tools[ $index ] );
+			$input = '' === $tool['json'] ? [] : json_decode( $tool['json'], true, 8 );
+			if ( is_array( $input ) ) {
+				$this->visible = true;
+				$emit( 'tool', [ 'name' => $tool['name'], 'input' => $input ] );
+			}
 		} elseif ( 'message_delta' === $type ) {
 			$this->usage          = array_merge( $this->usage, $event['usage'] ?? [] );
 			$this->usage_complete = isset( $event['usage']['output_tokens'] );
@@ -71,17 +89,25 @@ final class HU_Chat_Bedrock_Client {
 		if ( ! isset( $data['usage']['input_tokens'], $data['usage']['output_tokens'] ) || ! is_array( $data['content'] ?? null ) ) {
 			throw new RuntimeException( 'chat_fallback_shape' );
 		}
-		$text = '';
+		$text  = '';
+		$tools = [];
 		foreach ( $data['content'] as $block ) {
 			if ( 'text' === ( $block['type'] ?? '' ) && is_string( $block['text'] ?? null ) ) {
 				$text .= $block['text'];
+			} elseif ( 'tool_use' === ( $block['type'] ?? '' ) && is_array( $block['input'] ?? null ) ) {
+				$tools[] = [ 'name' => (string) ( $block['name'] ?? '' ), 'input' => $block['input'] ];
 			}
 		}
-		if ( '' === $text ) {
+		if ( '' === $text && ! $tools ) {
 			throw new RuntimeException( 'chat_fallback_empty' );
 		}
 		$this->attempts[1] = $data['usage'];
-		$emit( 'text', [ 'text' => $text ] );
+		if ( '' !== $text ) {
+			$emit( 'text', [ 'text' => $text ] );
+		}
+		foreach ( $tools as $tool ) {
+			$emit( 'tool', $tool );
+		}
 		return 'fallback';
 	}
 

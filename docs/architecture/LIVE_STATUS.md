@@ -51,23 +51,19 @@ Abschnitt anzuhängen; der Verlauf gehört in Commit-Nachrichten.
 
 ## Positionierung und Navigation
 
-### KI-Chat-Assistent: Admin-Spike auf der Live-Box
+### KI-Chat-Assistent
 
-`inc/chat-assistant/` bereitet den festen Bedrock-Zähltest (Text höchstens
-alle 120 ms, jede Sendung auf `HU_CHAT_FLUSH_PAD`-Blöcke aufgefüllt,
-Komprimierung abgeschaltet) auf
-`POST /wp-json/nexus/v1/chat` vor. Er verlangt `HU_CHAT_MODE=preview`,
-vollständige private Konfiguration, geprüfte Tokenpreise und Admin samt
-REST-Nonce, unabhängig von der WordPress-Umgebung. Standard `off`; `live` ist
-in dieser Phase gesperrt. Bei `off`, unvollständiger Konfiguration oder fehlendem
-cURL fehlen Route und Admin-Menü. Die Admin-Testseite liegt unter Werkzeuge.
-Öffentliche Seiten erhalten weder Orb noch
-Chat-Assets. Prompt-Vorlage und frische Kanon-Ersetzung sind vorbereitet;
-Knowledge-Builder, öffentlicher Chat und CRM-/Brevo-Handover folgen nach dem
-nachgewiesenen SSE-Gate. Der erste Durchlauf auf der Raidboxes-Live-Box
-lieferte einen Bedrock-Stream, aber alle Events in einem Chunk; der zweite
-zeigte einen größenbasierten Proxy-Puffer (~4 KB). Der Durchlauf mit
-aufgefüllten Sendungen steht aus.
+`inc/chat-assistant/` liefert den Assistenten unten rechts: eine Inline-Fassade
+ohne Netzlast, das Chatfenster lädt erst nach dem Klick. Gespräche laufen über
+`POST /wp-json/nexus/v1/chat/messages` (SSE, zustandslos) gegen Bedrock
+Frankfurt, Übergaben nach Klick des Besuchers über
+`POST /wp-json/nexus/v1/chat/handover` ins CRM mit interner Mail an die
+Kanon-Adresse. Standard `off`; `preview` zeigt ihn nur eingeloggten Admins,
+`live` allen Besuchern. `live` erst nach juristischer Prüfung des
+Datenschutz-Entwurfs (`content/legal/datenschutz-ki-chat-entwurf.md`).
+Die Wissensdatei baut sich täglich, nach jedem Deploy und per Knopf unter
+Werkzeuge → KI-Assistent neu auf. Der Admin-Streaming-Test unter
+`POST /wp-json/nexus/v1/chat` bleibt auf `preview` beschränkt.
 Contract und Abnahme: `CHAT_ASSISTANT.md`.
 
 - Öffentliche Rolle: WordPress Freelancer aus der Region Hannover; verbundene

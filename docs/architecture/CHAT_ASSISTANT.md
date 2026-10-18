@@ -1,9 +1,115 @@
 # Chat-Assistent
 
-Stand: 2026-10-04. **Phase eins: Admin-Transport-Spike vorbereitet,
-Streaming-Abnahme auf der Live-Box offen.** Kein Merge ohne Hasims Freigabe.
+Stand: 2026-10-18. **Phase zwei: öffentlicher Assistent gebaut, Abnahme im
+Modus `preview` offen.** `live` erst nach Hasims Freigabe und juristischer
+Prüfung des Datenschutz-Entwurfs.
 
-## Aktueller Contract
+## Modi
+
+| `HU_CHAT_MODE` | Wirkung |
+| --- | --- |
+| `off` (Standard) | keine Route, kein Admin-Menü, keine Fassade, kein Cron |
+| `preview` | Fassade, Chat und Übergabe nur für eingeloggte Admins; Admin-Streaming-Test aktiv |
+| `live` | Fassade, Chat und Übergabe für alle Besucher; Streaming-Test gesperrt |
+
+Alle übrigen Konstanten und Prüfungen gelten unverändert (Abschnitt
+„Konfiguration“ unten). Fehlt eine, ist der Assistent aus.
+
+## Oberfläche
+
+- `facade.php` gibt per `wp_footer` einen Knopf mit Inline-SVG, unter 1 KB
+  Inline-CSS und einem Ladeskript aus. Vor dem ersten Klick gibt es keine
+  Netzanfrage. Hover oder Fokus laden vor, der Klick lädt
+  `assets/css/chat-assistant.css` und `assets/js/chat-assistant.js` (ES-Import).
+- Knopf und Panel tragen `.tafel`; Farben, Radius und Schrift aus `system.css`.
+  Der Knopf sitzt über der Sticky-CTA (`--hu-sticky-cta-h`).
+- Nicht ausgegeben auf `/datenschutz/`, `/impressum/`, den noindex-Slugs und
+  -Templates aus `seo-meta.php`, im Admin und im Customizer.
+- Startnachricht fest im Code mit KI-Hinweis und Datenschutz-Link, drei
+  Startfragen je Seitenfamilie (Startseite, White-Label, Energie).
+- Markdown wird ohne `innerHTML` gerendert: Absätze, fett, Listen, Links.
+  Links nur auf den eigenen Host, alle anderen bleiben Text.
+- Verlauf in `sessionStorage` (`hu-chat-v1`), Knopf „Neues Gespräch“. Ohne
+  Speicher läuft der Chat ohne Gedächtnis.
+- Esc schließt, Tab bleibt im Panel, Antworten in `role="log"` mit
+  `aria-live="polite"`. Mobil Vollbild.
+- Tracking-Hooks: `chat_open`, `chat_starter`, `chat_handover_submit` als
+  `data-track-*`, ohne Inhalte.
+
+## Gespräch: `POST /nexus/v1/chat/messages`
+
+- Payload `{ "messages": [{ "role": "user"|"assistant", "text": "…" }], "page": "/pfad/" }`.
+  Nur Text, keine Tool-Blöcke. Führende Assistent-Turns (Begrüßung) fallen
+  weg, gleiche Rollen werden zusammengelegt, der letzte Turn muss vom
+  Besucher sein. Höchstens 20 Besucher-Turns, je 2.000 Zeichen,
+  Assistent-Turns je 6.000 Zeichen. Steuerzeichen außer Zeilenumbruch und
+  Tab werden entfernt. Die Seite ist nur ein Hinweis; alles außer einem
+  relativen Pfad wird `/`.
+- Zugriff: Modus und Konfiguration, Origin bzw. Referer auf den eigenen Host.
+  `preview` verlangt `manage_options`; dafür sendet die Fassade nur
+  eingeloggten Nutzern einen REST-Nonce, anonyme Seiten bleiben cachebar.
+- Reihenfolge: Payload (die Bytezahl bestimmt die Reservierung), Systemprompt,
+  Budget, Stundenlimit (30 je gesalzenem IP-Hash). Die Reservierung zählt jedes
+  Request-Byte als höchstens ein Token zum höchsten Preis plus 1.024
+  Ausgabetokens, für Stream und Fallback zusammen.
+- Bedrock-Body: Systemprompt mit `cache_control: ephemeral`, ein zweiter
+  Systemblock mit der aktuellen Seite, Tool `anfrage_uebergeben`,
+  `max_tokens` 1.024.
+- SSE an den Browser: `text`, `tool`, `done`, `error`. `probe`-Events bleiben
+  intern. Tool-Aufrufe werden vor der Ausgabe bereinigt: nur
+  `anfrage_uebergeben`, nur die sechs Felder, E-Mail geprüft, `weg` aus der
+  Liste, Längen gekappt.
+- Fehlertext nennt nur die Kanon-Adresse. Logs und Telemetrie erhalten
+  feste Kategorien, nie Inhalte.
+
+## Übergabe: `POST /nexus/v1/chat/handover`
+
+- Nur nach Klick des Besuchers auf der Übergabe-Karte. Name, E-Mail und
+  Firma sind editierbar, die Zusammenfassung sichtbar, Einwilligung im
+  Wortlaut des Kontaktformulars Pflicht. „Gesprächsverlauf mitsenden“ ist
+  standardmäßig aus.
+- Honeypot, eigenes Stundenlimit (5) und das Limit des Kontaktformulars.
+- Ablauf wie White-Label: CRM-Kontakt (`chat_handover`, Segmente
+  `contact_inquiry` und `chat_handover`), Aktivität „Chat-Anfrage · Weg“,
+  interne Mail an `hu_get_contact_email()`, bei Mailfehler
+  `nexus_record_lead_notification_failure`, dann `anfrage_gesendet` mit
+  Formular `chat`.
+- Der Empfänger kommt aus `hu_chat_handover_notification_email()`. Kein
+  Request-Feld und kein Modell-Output erreicht ihn; der serverseitige Filter
+  folgt dem Muster der anderen Strecken. Keine Bestätigungsmail an den
+  Besucher, die Bestätigung steht nur im Fenster.
+
+## Wissen
+
+- `knowledge.php` liest alle internen Routen aus `nexus_get_llms_txt_sections()`
+  per Loopback, extrahiert `<main>` (ohne Navigation, Formulare, Skripte,
+  Kopf, Fuß und den Chat selbst) als Markdown und hängt die letzten 40
+  Blogartikel nur mit Titel, URL, Kurzfassung und H2-Gliederung an.
+- Je Seite höchstens 14.000 Zeichen, gesamt 150.000. Blogartikel fallen
+  zuerst weg, die Reihenfolge des Routen-Index setzt Money Pages nach vorn.
+- Gelingt weniger als die Hälfte der Seiten, bleibt die alte Datei aktiv.
+- Auslöser: täglicher Cron, einmal nach jedem neuen Deploy-SHA, stündlicher
+  Wiederholversuch nach Fehlschlag, Knopf unter Werkzeuge → KI-Assistent.
+- Die Datei enthält nur öffentlichen Website-Text. `.htaccess` und
+  `index.php` im Ordner sind Höflichkeit für Apache; Raidboxes (nginx)
+  liefert sie theoretisch aus, das ist hinnehmbar.
+
+## Abnahme in `preview`
+
+1. Werkzeuge → KI-Assistent → „Wissen jetzt aufbauen“; Seitenanzahl prüfen.
+2. Startseite eingeloggt: Knopf unten rechts, vor dem Klick keine neue
+   Netzanfrage (DevTools).
+3. Die 20 Testfälle aus dem Auftrag durchspielen; 16 (Prompt-Ausleitung) und
+   17 (Mail an fremde Adresse) müssen bestehen.
+4. Übergabe mit eigener Adresse: CRM-Kontakt, Aktivität und Mail an die
+   Kanon-Adresse prüfen.
+5. Tastatur, Screenreader, 360 px ohne horizontales Scrollen.
+
+---
+
+# Phase eins: Admin-Transport-Spike (Historie)
+
+## Spike-Contract
 
 Dieser Stand implementiert ausschließlich den ersten, verpflichtenden Spike
 und die separat beauftragte Prompt-Vorlage samt Kanon-Ersetzung. Ein öffentlicher
