@@ -289,21 +289,54 @@ while ( have_posts() ) :
 
 						<h3 id="terminbuchung">Terminbuchung über Cal.com</h3>
 						<p>
-							Termine können Sie über Cal.com buchen, einen Dienst der Cal.com, Inc. (USA).
+							Termine können Sie über Cal.com buchen, einen Dienst der Cal.com, Inc.,
+							2261 Market Street #4382, San Francisco, CA 94114, USA.
 							Der Kalender öffnet sich erst, wenn Sie auf einen Terminlink klicken, als
-							Fenster auf dieser Seite oder in einem neuen Tab. Vorher wird nichts an Cal.com
-							übertragen. Ihre Eingaben bei der Buchung (Name, E-Mail-Adresse, gewählter
-							Termin und optionale Notiz) verarbeitet Cal.com; es gelten zusätzlich die
-							<a href="https://cal.com/privacy" target="_blank" rel="noopener noreferrer">Datenschutzhinweise von Cal.com</a>.
-							Beim Öffnen des Kalenders geben wir mit, auf welcher Seite dieser Website Sie
-							waren und ob Sie über den KI-Assistenten kamen.
+							Fenster auf dieser Seite oder in einem neuen Tab. Vorher lädt diese Website
+							keine Ressourcen von Cal.com. Beim Laden des Kalenders erhält Cal.com
+							technische Verbindungsdaten, insbesondere Ihre IP-Adresse und Browserangaben.
 						</p>
 						<p>
+							Bei der Buchung verarbeitet Cal.com Ihren Namen, Ihre E-Mail-Adresse, den
+							gewählten Termin, die Gesprächsart und gegebenenfalls Ihre freiwillige
+							Projektnotiz oder die E-Mail-Adressen zusätzlich eingeladener Gäste. Wählen
+							Sie einen telefonischen Rückruf, wird außerdem Ihre Rückrufnummer abgefragt,
+							damit wir Sie zur vereinbarten Zeit anrufen können.
+							Beim Öffnen des Kalenders geben wir mit, auf welcher Seite dieser Website Sie
+							waren und ob Sie über den KI-Assistenten kamen. Dabei übermitteln wir nur den
+							Seitenpfad ohne Suchparameter und eine Herkunftsangabe.
+						</p>
+						<p>
+							Cal.com verarbeitet Buchungsdaten in den USA. Weitere Angaben zur Verarbeitung
+							und zu internationalen Datenübermittlungen finden Sie in den
+							<a href="https://cal.com/privacy" target="_blank" rel="noopener noreferrer">Datenschutzhinweisen von Cal.com</a>.
+							Die Aussagen zum cookiefreien normalen Seitenbesuch beziehen sich auf unsere
+							Website vor dem Öffnen des externen Buchungskalenders.
+						</p>
+						<h3>Google Kalender und Google Meet</h3>
+						<p>
+							Wir nutzen den mit Cal.com verbundenen Google Kalender, um unsere Verfügbarkeit
+							abzugleichen und gebuchte Termine zu verwalten. Die für den Kalendereintrag
+							erforderlichen Buchungsdaten werden an Google übermittelt, etwa Name,
+							E-Mail-Adresse, Terminzeit und gewählte Gesprächsart.
+						</p>
+						<p>
+							Wenn Sie Google Meet wählen, wird über Google ein Besprechungslink erstellt.
+							Bei der Teilnahme verarbeitet Google technische Verbindungsdaten und die von
+							Ihnen freigegebenen Audio- und Videoinhalte. Google betreibt Server weltweit;
+							eine Verarbeitung außerhalb der Europäischen Union ist möglich. Einzelheiten
+							finden Sie in der
+							<a href="https://policies.google.com/privacy?hl=de" target="_blank" rel="noopener noreferrer">Datenschutzerklärung von Google</a>.
+						</p>
+						<h3>Terminverwaltung bei uns</h3>
+						<p>
 							Nach einer Buchung, Verschiebung oder Absage meldet Cal.com uns den Termin
-							mit diesen Angaben. Wir speichern ihn wie eine Anfrage im WordPress-Backend und
+							mit Kontakt- und Terminangaben, gegebenenfalls Ihrer Notiz und dem Absagegrund.
+							Wir speichern diese Angaben wie eine Anfrage im WordPress-Backend und
 							erhalten eine interne Benachrichtigung per E-Mail über Brevo. Rechtsgrundlage
-							ist Art. 6 Abs. 1 lit. b DSGVO (Durchführung vorvertraglicher Maßnahmen auf
-							Ihre Anfrage).
+							für die Organisation und Durchführung des angefragten Gesprächs ist
+							Art. 6 Abs. 1 lit. b DSGVO, soweit es um vorvertragliche Maßnahmen auf Ihre
+							Anfrage oder die Durchführung eines Vertrags geht.
 						</p>
 
 						<h3>Missbrauchsschutz</h3>

@@ -1,6 +1,6 @@
 # Privacy
 
-Stand: 2026-10-03. Technische Sicht auf die Datenverarbeitung im Theme. Die
+Stand: 2026-10-18. Technische Sicht auf die Datenverarbeitung im Theme. Die
 rechtliche Fassung für Besucher steht in `blocksy-child/page-datenschutz.php`;
 Änderungen an Formularen, Speicherung oder Drittanbietern müssen dort
 nachgezogen werden.
@@ -75,6 +75,36 @@ Ein Schreibfehler bricht nie eine Anfrage ab. Die Zeilen sind einzelne
 Ereignisse ohne Personenbezug; eine automatische Löschung gibt es nicht. Die
 Admin-Seite „Anfrage-Eingänge“ (unter dem CRM-Menü, `manage_options`) zeigt die
 letzten 90 Tage als Anzahl je Formular und `utm_source`.
+
+## Terminbuchung über Cal.com
+
+`assets/js/cal-embed.js` bindet ausschließlich die Klick-Aktivierung der
+Buchungslinks. Erst ein abgeschlossener, nicht modifizierter Klick lädt das
+externe Embed-Skript und öffnet den Kalender; Hover, Fokus, `pointerdown` und
+eine abgebrochene Zeigeraktion lösen kein Vorladen aus. Tastatur-Aktivierung
+funktioniert über denselben Klick-Handler. Ohne JavaScript, bei modifizierten
+Klicks und bei einem Ladefehler bleibt der normale Buchungslink erhalten.
+
+Beim Öffnen gibt das Embed nur feste Herkunftskürzel (`metadata[quelle]`) und
+den aktuellen Seitenpfad ohne Query/Fragment (`metadata[seite]`, maximal
+200 Zeichen) mit. Der geladene externe Dienst erhält Verbindungsdaten.
+Cal.com verarbeitet die vom Gast eingegebenen Buchungsdaten in den USA;
+bei Wahl des Rückrufs gehört die Rückrufnummer dazu. Google Kalender wird
+für Verfügbarkeit und Kalendereinträge genutzt, Google Meet nur bei Wahl
+dieser Gesprächsart. Der öffentliche Abschnitt `#terminbuchung` beschreibt
+diese Datenkategorien und verlinkt beide Anbieterinformationen. Die Aussagen
+zum cookiefreien normalen Seitenaufruf gelten vor dem Öffnen des Kalenders.
+
+`inc/calcom-webhook.php` prüft Buchungs-/Verschiebungs-/Absageereignisse mit
+HMAC-SHA256. Ohne konfiguriertes Geheimnis wird die Route nicht registriert.
+Er speichert Kontakt- und Terminangaben, Herkunft, optionale Notiz und
+Absagegrund im CRM und verschickt die interne Benachrichtigung über Brevo;
+die Rückrufnummer wird im aktuellen Normalisierer nicht ins CRM übernommen.
+Eine aktive Webhook-Konfiguration ist außerhalb des Repos zu prüfen.
+
+Der Regressionstest `scripts/tests/cal-embed.spec.cjs` prüft die Netzgrenze
+vor einer Aktivierung, Öffnung per Maus und Tastatur sowie den Link-Fallback
+bei nicht verfügbarem externem Skript. Alle Anbieterantworten sind gemockt.
 
 ## Formulare und Speicherung
 
@@ -172,4 +202,8 @@ unter „Formular-Spam“. Fehlendes Zeitfeld blockt erst, wenn
   das Auslösen per Skript unter § 25 TDDDG fällt, ist nicht abschließend
   geklärt.
 - Nicht aus dem Repo prüfbar: Auftragsverarbeitungsverträge mit Hoster und
-  Brevo, Log-Aufbewahrung beim Hoster.
+  Brevo, Log-Aufbewahrung beim Hoster sowie die für das konkrete Cal.com-
+  und Google-Konto geltenden Verträge und Transfergrundlagen. Die Freigabe
+  von Dokumenten im Cal.com Trust Center beziehungsweise die Annahme einer
+  NDA ist kein Nachweis eines abgeschlossenen AVV. Konkrete DPF-/SCC-
+  Zusicherungen werden erst nach Prüfung der geltenden Unterlagen ergänzt.
