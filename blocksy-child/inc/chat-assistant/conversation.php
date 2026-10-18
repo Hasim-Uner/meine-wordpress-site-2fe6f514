@@ -11,7 +11,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
 
-const HU_CHAT_MAX_TOKENS          = 1024;
+const HU_CHAT_MAX_TOKENS          = 450;
 const HU_CHAT_MAX_USER_MESSAGES   = 20;
 const HU_CHAT_MAX_USER_CHARS      = 2000;
 const HU_CHAT_MAX_ASSISTANT_CHARS = 6000;

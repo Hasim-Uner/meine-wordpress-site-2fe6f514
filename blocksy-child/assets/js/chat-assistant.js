@@ -10,10 +10,30 @@
 const STORE_KEY = 'hu-chat-v1';
 const MAX_CHARS = 2000;
 const MAX_USER_TURNS = 20;
-const GREETING = 'Ich bin ein KI-Assistent auf Basis der Inhalte dieser Website. Bitte keine sensiblen Daten eingeben.';
+const EXAMPLES = ['Was kostet eine Landingpage?', 'Brauche ich Server-Side Tracking?', 'Wie läuft ein Projekt ab?'];
+const reducedMotion = () => window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 const CARD_NOTE = '[Übergabe-Karte mit Name, E-Mail und Zusammenfassung angezeigt]';
 
 let instance = null;
+
+const SVG = 'http://www.w3.org/2000/svg';
+const arrowIcon = () => {
+	const svg = document.createElementNS(SVG, 'svg');
+	svg.setAttribute('viewBox', '0 0 24 24');
+	svg.setAttribute('width', '20');
+	svg.setAttribute('height', '20');
+	svg.setAttribute('aria-hidden', 'true');
+	svg.setAttribute('focusable', 'false');
+	const path = document.createElementNS(SVG, 'path');
+	path.setAttribute('d', 'M5 12h13M13 6l6 6-6 6');
+	path.setAttribute('fill', 'none');
+	path.setAttribute('stroke', 'currentColor');
+	path.setAttribute('stroke-width', '2.2');
+	path.setAttribute('stroke-linecap', 'round');
+	path.setAttribute('stroke-linejoin', 'round');
+	svg.append(path);
+	return svg;
+};
 
 const el = (tag, attrs = {}, children = []) => {
 	const node = document.createElement(tag);
@@ -56,16 +76,27 @@ const storage = {
 	},
 };
 
-/** Internal links only: same host or root-relative. Everything else stays text. */
+/** Internal links and the configured booking links only. Everything else stays text. */
+let bookingPrefixes = [];
 const safeHref = (href) => {
 	try {
 		const url = new URL(href, window.location.origin);
 		if (url.protocol !== 'https:' && url.protocol !== 'http:') return null;
-		return url.host === window.location.host ? url.href : null;
+		if (url.host === window.location.host) return url.href;
+		const bare = url.origin + url.pathname;
+		return bookingPrefixes.some((prefix) => bare === prefix) ? url.href : null;
 	} catch (error) {
 		return null;
 	}
 };
+const isExternal = (href) => {
+	try {
+		return new URL(href, window.location.origin).host !== window.location.host;
+	} catch (error) {
+		return false;
+	}
+};
+const link = (href, text) => el('a', isExternal(href) ? { href, text, target: '_blank', rel: 'noopener' } : { href, text });
 
 /** Inline markdown: **bold** and [text](url). */
 const inline = (text) => {
@@ -79,7 +110,7 @@ const inline = (text) => {
 			out.append(el('strong', { text: match[1] }));
 		} else {
 			const href = safeHref(match[3]);
-			out.append(href ? el('a', { href, text: match[2] }) : match[2]);
+			out.append(href ? link(href, match[2]) : match[2]);
 		}
 		last = pattern.lastIndex;
 	}
@@ -166,19 +197,27 @@ class Chat {
 		this.orb = root.querySelector('.hu-chat__orb');
 		this.state = storage.read() || { messages: [] };
 		this.busy = false;
+		bookingPrefixes = (cfg.booking || []).map((href) => {
+			try {
+				const url = new URL(href);
+				return url.origin + url.pathname;
+			} catch (error) {
+				return '';
+			}
+		}).filter(Boolean);
 		this.build();
 		this.restore();
 	}
 
 	build() {
-		const titleId = 'hu-chat-title';
-		this.log = el('div', { class: 'hu-chat__log', role: 'log', 'aria-live': 'polite', 'aria-relevant': 'additions' });
+		this.log = el('div', { class: 'hu-chat__log', role: 'log', 'aria-live': 'polite', 'aria-relevant': 'additions', tabindex: '-1' });
+		this.greet = el('p', { class: 'hu-chat__greet', id: 'hu-chat-greet' });
 		this.input = el('textarea', {
 			class: 'hu-chat__input',
 			rows: 1,
 			maxlength: MAX_CHARS,
-			placeholder: 'Ihre Frage …',
-			'aria-label': 'Nachricht an den Assistenten',
+			placeholder: EXAMPLES[0],
+			'aria-labelledby': 'hu-chat-greet',
 			oninput: () => this.autosize(),
 			onkeydown: (event) => {
 				if (event.key === 'Enter' && !event.shiftKey && !event.isComposing) {
@@ -187,42 +226,45 @@ class Chat {
 				}
 			},
 		});
-		this.send = el('button', { type: 'submit', class: 'hu-chat__send', 'aria-label': 'Senden' }, el('span', { 'aria-hidden': 'true', text: '↑' }));
+		this.send = el('button', { type: 'submit', class: 'hu-chat__send', 'aria-label': 'Senden' }, arrowIcon());
 		this.form = el('form', { class: 'hu-chat__form', onsubmit: (event) => { event.preventDefault(); this.submit(); } }, [this.input, this.send]);
-		this.starters = el('div', { class: 'hu-chat__starters' });
-		this.panel = el('div', {
-			id: 'hu-chat-panel',
-			class: 'hu-chat__panel tafel',
-			role: 'dialog',
-			'aria-labelledby': titleId,
+		this.chips = el('div', { class: 'hu-chat__chips' });
+		this.resetButton = el('button', { type: 'button', class: 'hu-chat__reset', text: 'Neues Gespräch', hidden: true, onclick: () => this.reset() });
+		this.bar = el('section', {
+			id: 'hu-chat-bar',
+			class: 'hu-chat__bar tafel',
+			'aria-label': 'KI-Assistent',
 			hidden: true,
-			onkeydown: (event) => this.onKey(event),
+			onkeydown: (event) => {
+				if (event.key === 'Escape') {
+					event.stopPropagation();
+					this.close();
+				}
+			},
 		}, [
-			el('div', { class: 'hu-chat__head' }, [
-				el('div', { class: 'hu-chat__title' }, [
-					el('span', { class: 'hu-chat__dot', 'aria-hidden': 'true' }),
-					el('h2', { id: titleId, text: 'Assistent' }),
-					this.cfg.preview ? el('span', { class: 'hu-chat__badge', text: 'Vorschau' }) : null,
-				]),
-				el('div', { class: 'hu-chat__actions' }, [
-					el('button', { type: 'button', class: 'hu-chat__reset', text: 'Neues Gespräch', onclick: () => this.reset() }),
-					el('button', { type: 'button', class: 'hu-chat__close', 'aria-label': 'Assistent schließen', onclick: () => this.close() }, el('span', { 'aria-hidden': 'true', text: '×' })),
-				]),
-			]),
 			this.log,
-			this.starters,
+			el('div', { class: 'hu-chat__top' }, [
+				el('span', { class: 'hu-chat__spark', 'aria-hidden': 'true' }),
+				this.greet,
+				el('button', { type: 'button', class: 'hu-chat__close', 'aria-label': 'Assistent schließen', onclick: () => this.close() }, el('span', { 'aria-hidden': 'true', text: '×' })),
+			]),
+			this.chips,
 			this.form,
-			el('p', { class: 'hu-chat__foot' }, [
-				'KI-generierte Antworten können Fehler enthalten. ',
+			el('p', { class: 'hu-chat__meta' }, [
+				'KI-Assistent · bitte keine sensiblen Daten · ',
 				el('a', { href: this.cfg.privacy, text: 'Datenschutz' }),
+				this.resetButton,
 			]),
 		]);
-		this.root.append(this.panel);
+		this.root.append(this.bar);
+	}
+
+	hasConversation() {
+		return this.state.messages.length > 0;
 	}
 
 	restore() {
 		this.log.replaceChildren();
-		this.addBubble('assistant', GREETING, { fixed: true });
 		for (const message of this.state.messages) {
 			if (message.card) {
 				this.renderCard(message.card, message.cardDone);
@@ -230,33 +272,67 @@ class Chat {
 				this.addBubble(message.role, message.text);
 			}
 		}
-		this.renderStarters();
+		this.sync();
 	}
 
-	renderStarters() {
-		this.starters.replaceChildren();
-		if (this.state.messages.some((m) => m.role === 'user')) return;
-		for (const question of this.cfg.starters || []) {
-			this.starters.append(el('button', {
-				type: 'button',
+	/** Log, chips and reset follow the conversation state. */
+	sync() {
+		const talking = this.hasConversation();
+		this.bar.classList.toggle('is-talking', talking);
+		this.resetButton.hidden = !talking;
+		this.chips.replaceChildren();
+		if (talking) {
+			this.greet.replaceChildren('KI-Assistent');
+			this.greet.removeAttribute('aria-label');
+			return;
+		}
+		for (const chip of this.cfg.intro?.chips || []) {
+			const attrs = {
 				class: 'hu-chat__chip',
-				'data-track-action': 'chat_starter',
-				'data-track-category': 'engagement',
-				'data-track-section': 'chat_panel',
-				text: question,
-				onclick: () => this.submit(question),
-			}));
+				'data-track-action': chip.track || 'chat_starter',
+				'data-track-category': chip.href ? 'lead_gen' : 'engagement',
+				'data-track-section': 'chat_bar',
+				text: chip.label,
+			};
+			this.chips.append(chip.href
+				? el('a', { ...attrs, href: chip.href, ...(isExternal(chip.href) ? { target: '_blank', rel: 'noopener' } : {}) })
+				: el('button', { ...attrs, type: 'button', onclick: () => this.submit(chip.send) }));
 		}
 	}
 
-	addBubble(role, text, opts = {}) {
+	/** The greeting drops in word by word; reduced motion shows it at once. */
+	typeGreeting() {
+		if (this.hasConversation()) return;
+		const text = this.cfg.intro?.greeting || 'Wie kann ich helfen?';
+		this.greet.replaceChildren();
+		this.greet.setAttribute('aria-label', text);
+		text.split(' ').forEach((word, i) => {
+			const span = el('span', { class: 'hu-chat__word', 'aria-hidden': 'true', text: word });
+			span.style.setProperty('--i', String(i));
+			this.greet.append(span, ' ');
+		});
+	}
+
+	cyclePlaceholder() {
+		window.clearInterval(this.placeholderTimer);
+		if (reducedMotion() || this.hasConversation()) {
+			this.input.placeholder = this.hasConversation() ? 'Ihre Antwort …' : EXAMPLES[0];
+			return;
+		}
+		let i = 0;
+		this.input.placeholder = EXAMPLES[0];
+		this.placeholderTimer = window.setInterval(() => {
+			if (this.input.value) return;
+			i = (i + 1) % EXAMPLES.length;
+			this.input.placeholder = EXAMPLES[i];
+		}, 3200);
+	}
+
+	addBubble(role, text) {
 		const body = el('div', { class: 'hu-chat__text' });
 		const bubble = el('div', { class: `hu-chat__msg hu-chat__msg--${role}` }, body);
 		if (role === 'assistant') renderMarkdown(body, text);
 		else body.textContent = text;
-		if (opts.fixed) {
-			body.append(el('p', { class: 'hu-chat__legal' }, el('a', { href: this.cfg.privacy, text: 'Hinweise zum Datenschutz' })));
-		}
 		this.log.append(bubble);
 		this.scroll();
 		return body;
@@ -275,20 +351,32 @@ class Chat {
 		storage.write(this.state);
 	}
 
-	open() {
-		this.panel.hidden = false;
+	/** Auto-open (scroll trigger) never moves focus, so no keyboard pops up. */
+	open(opts = {}) {
+		if (!this.bar.hidden) return this;
+		this.typeGreeting();
+		this.cyclePlaceholder();
+		this.bar.hidden = false;
+		this.bar.classList.toggle('is-auto', !!opts.auto);
 		this.root.classList.add('is-open');
 		this.orb.setAttribute('aria-expanded', 'true');
 		this.scroll();
-		window.requestAnimationFrame(() => this.input.focus());
+		if (!opts.auto) window.requestAnimationFrame(() => this.input.focus({ preventScroll: true }));
 		return this;
 	}
 
 	close() {
-		this.panel.hidden = true;
+		window.clearInterval(this.placeholderTimer);
+		const hadFocus = this.bar.contains(document.activeElement);
+		this.bar.hidden = true;
 		this.root.classList.remove('is-open');
 		this.orb.setAttribute('aria-expanded', 'false');
-		this.orb.focus();
+		try {
+			window.sessionStorage.setItem('hu-chat-auto', '1');
+		} catch (error) {
+			/* ignore */
+		}
+		if (hadFocus) this.orb.focus();
 	}
 
 	reset() {
@@ -296,34 +384,15 @@ class Chat {
 		this.state = { messages: [] };
 		storage.clear();
 		this.restore();
+		this.typeGreeting();
+		this.cyclePlaceholder();
 		this.input.focus();
-	}
-
-	onKey(event) {
-		if (event.key === 'Escape') {
-			event.stopPropagation();
-			this.close();
-			return;
-		}
-		if (event.key !== 'Tab') return;
-		const focusable = [...this.panel.querySelectorAll('a[href],button:not([disabled]),textarea:not([disabled]),input:not([disabled]),[tabindex]:not([tabindex="-1"])')].filter((n) => n.offsetParent !== null);
-		if (!focusable.length) return;
-		const first = focusable[0];
-		const last = focusable[focusable.length - 1];
-		if (event.shiftKey && document.activeElement === first) {
-			event.preventDefault();
-			last.focus();
-		} else if (!event.shiftKey && document.activeElement === last) {
-			event.preventDefault();
-			first.focus();
-		}
 	}
 
 	setBusy(busy) {
 		this.busy = busy;
 		this.send.disabled = busy;
-		this.input.disabled = busy;
-		this.panel.classList.toggle('is-busy', busy);
+		this.bar.classList.toggle('is-busy', busy);
 	}
 
 	/** Plain role/text turns only; cards travel as a fixed note. */
@@ -345,9 +414,10 @@ class Chat {
 		}
 		this.input.value = '';
 		this.autosize();
-		this.starters.replaceChildren();
 		this.state.messages.push({ role: 'user', text });
 		this.save();
+		this.sync();
+		this.cyclePlaceholder();
 		this.addBubble('user', text);
 		await this.ask();
 	}
@@ -403,6 +473,7 @@ class Chat {
 			const lost = this.state.messages.pop();
 			if (lost && lost.role === 'user' && !this.input.value) this.input.value = lost.text;
 			this.save();
+			this.sync();
 		} else {
 			if (answer) {
 				this.state.messages.push({ role: 'assistant', text: answer });
@@ -446,7 +517,7 @@ class Chat {
 			]),
 			el('input', { type: 'text', name: 'company_website', tabindex: '-1', autocomplete: 'off', class: 'hu-chat__hp', 'aria-hidden': 'true' }),
 			el('div', { class: 'hu-chat__card-actions' }, [
-				el('button', { type: 'submit', class: 'hu-chat__primary', text: 'Anfrage senden', 'data-track-action': 'chat_handover_submit', 'data-track-category': 'lead_gen', 'data-track-section': 'chat_panel' }),
+				el('button', { type: 'submit', class: 'hu-chat__primary', text: 'Anfrage senden', 'data-track-action': 'chat_handover_submit', 'data-track-category': 'lead_gen', 'data-track-section': 'chat_bar' }),
 			]),
 			status,
 		]);
