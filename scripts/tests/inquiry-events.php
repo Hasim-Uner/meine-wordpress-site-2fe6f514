@@ -6,7 +6,9 @@
  */
 require __DIR__ . '/intake-wordpress-doubles.php';
 define( 'ARRAY_A', 'ARRAY_A' );
-foreach ( [ 'canon/messaging-canon', 'canon/pricing-canon', 'canon/e3-proof-canon', 'crm', 'contact-page', 'whitelabel-request', 'review-crm', 'inquiry-events' ] as $module ) {
+if ( ! function_exists( 'wp_salt' ) ) { function wp_salt( $scheme = 'auth' ) { return 'fixture-salt'; } }
+if ( ! function_exists( 'wp_date' ) ) { function wp_date( $format, $timestamp = null ) { return gmdate( $format, $timestamp ?? time() ); } }
+foreach ( [ 'canon/messaging-canon', 'canon/pricing-canon', 'canon/e3-proof-canon', 'crm', 'contact-page', 'whitelabel-request', 'review-crm', 'inquiry-events', 'chat-assistant/config', 'chat-assistant/conversation', 'chat-assistant/handover' ] as $module ) {
 	require __DIR__ . '/../../blocksy-child/inc/' . $module . '.php';
 }
 
@@ -34,13 +36,14 @@ function run_case( $name, $callback ) {
 }
 function rows() { return $GLOBALS['wpdb']->rows; }
 function submit( $kind, $payload ) {
-	$callbacks = [ 'contact' => 'nexus_handle_contact_request_submission', 'whitelabel' => 'hu_handle_whitelabel_request_submission', 'audit' => 'nexus_handle_review_request_submission' ];
+	$callbacks = [ 'contact' => 'nexus_handle_contact_request_submission', 'whitelabel' => 'hu_handle_whitelabel_request_submission', 'audit' => 'nexus_handle_review_request_submission', 'chat' => 'hu_chat_handle_handover' ];
 	return $callbacks[ $kind ]( new WP_REST_Request( $payload ) );
 }
 
 $contact     = [ 'name' => 'Fixture Person', 'email' => 'fixture@example.test', 'request_type' => 'project', 'focus' => 'tracking', 'message' => 'Bitte das bestehende Tracking prüfen.', 'consent' => '1' ];
 $assessment  = [ 'email' => 'fixture@example.test', 'request_type' => 'ersteinschaetzung', 'focus' => 'ersteinschaetzung', 'website_url' => 'https://www.example.test/seite', 'message' => '', 'consent' => '1' ];
 $whitelabel  = [ 'email' => 'fixture@example.test', 'task' => 'Bitte das bestehende Tracking prüfen.' ];
+$chat        = [ 'name' => 'Fixture Person', 'email' => 'fixture@example.test', 'weg' => 'projekt', 'zusammenfassung' => 'Bitte das bestehende Tracking prüfen.', 'page' => '/kontakt/' ];
 $marketcheck = [ 'intake_variant' => 'energy_systems', 'audit_type' => 'b2b_system_intake', 'solution_focus' => 'photovoltaik', 'business_fit' => 'founder_led_regional', 'sales_team_size' => 'one', 'project_timing' => 'sofort', 'name' => 'Fixture Person', 'company' => 'Fixture GmbH', 'position' => 'Inhaber', 'email' => 'fixture@example.test', 'postal_code' => '30159', 'consent_privacy' => 'accepted' ];
 $order_base  = [ 'company' => 'TEST Fixture GmbH', 'email' => 'fixture@gmx.de', 'phone' => '0301234567', 'request_sources' => [ 'aroundhome', 'eigene_website' ], 'consent_privacy' => 'accepted', 'contract_version' => nexus_get_review_request_contract_version() ];
 $sofortkontakt = $order_base + [ 'intake_variant' => 'sofortkontakt', 'audit_type' => 'sofortkontakt_setup', 'lead_volume' => '20_50', 'lead_destination' => 'crm', 'crm_name' => 'TEST CRM', 'callback_name' => 'TEST Fixture Person', 'callback_mobile' => '01761234567', 'desired_start' => 'diese_woche' ];
@@ -54,6 +57,7 @@ $cases = [
 	'marktcheck'        => [ 'audit', $marketcheck ],
 	'analyse'           => [ 'audit', $analyse ],
 	'sofortkontakt'     => [ 'audit', $sofortkontakt ],
+	'chat'              => [ 'chat', $chat ],
 ];
 $known = array_keys( hu_inquiry_event_forms() );
 $tested = array_keys( $cases );

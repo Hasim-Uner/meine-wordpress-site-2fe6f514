@@ -31,6 +31,7 @@ function nexus_get_crm_contact_source_labels() {
 		'client_request'     => 'Kundenanliegen',
 		'request_analysis'   => 'Marktcheck',
 		'whitelabel_request' => 'White-Label-Anfrage',
+		'chat_handover'      => 'Chat-Anfrage',
 	];
 }
 
@@ -63,6 +64,7 @@ function nexus_get_crm_contact_segment_labels() {
 		'client_request'     => 'Kundenanliegen',
 		'analysis_lead'      => 'Analyse-Lead',
 		'whitelabel_request' => 'White-Label-Anfrage',
+		'chat_handover'      => 'Chat-Anfrage',
 	];
 }
 

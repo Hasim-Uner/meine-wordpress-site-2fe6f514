@@ -61,7 +61,7 @@ function wp_generate_password( ...$args ) { return 'fixture-token-' . count( $GL
 function wp_verify_nonce( $nonce, $action ) { return 'fixture-nonce' === $nonce; }
 function number_format_i18n( $value, $decimals = 0 ) { return number_format( $value, $decimals, ',', '.' ); }
 function apply_filters( $hook, $value ) {
-	if ( in_array( $hook, [ 'nexus_contact_notification_email', 'hu_whitelabel_request_notification_email', 'nexus_audit_notification_email' ], true ) ) {
+	if ( in_array( $hook, [ 'nexus_contact_notification_email', 'hu_whitelabel_request_notification_email', 'nexus_audit_notification_email', 'hu_chat_handover_notification_email' ], true ) ) {
 		return $GLOBALS['intake_test']['recipient'];
 	}
 	return $value;
