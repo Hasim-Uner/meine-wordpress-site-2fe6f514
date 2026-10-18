@@ -51,6 +51,18 @@ Abschnitt anzuhängen; der Verlauf gehört in Commit-Nachrichten.
 
 ## Positionierung und Navigation
 
+### Cal.com-Buchungen im CRM
+
+`inc/calcom-webhook.php` nimmt Cal.com-Webhooks unter
+`POST /wp-json/nexus/v1/calcom-webhook` an (Signatur `x-cal-signature-256`),
+legt den Kontakt mit Quelle `calendar_booking` an oder ordnet ihn zu, schreibt
+„Termin gebucht/verschoben/abgesagt“ in die Timeline und schickt eine interne
+Mail mit Quelle, Seite und Vorgeschichte. `cal-embed.js` gibt beim Öffnen des
+Kalenders `metadata[quelle]` (`chat` oder Abschnitt) und `metadata[seite]` mit.
+Ohne Geheimnis ist die Route aus; Einrichtung unter Werkzeuge →
+Cal.com-Buchungen. Buchungen über direkte Links ohne Embed erscheinen als
+„Direkt in Cal.com“.
+
 ### KI-Chat-Assistent
 
 `inc/chat-assistant/` liefert den Assistenten unten rechts: eine Inline-Fassade

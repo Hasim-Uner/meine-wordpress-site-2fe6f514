@@ -49,6 +49,7 @@ function hu_inquiry_event_forms() {
 		'sofortkontakt'     => 'Sofortkontakt (Solar)',
 		'sst'               => 'Server-Side-Tracking',
 		'chat'              => 'KI-Assistent',
+		'termin'            => 'Terminbuchung (Cal.com)',
 	];
 }
 
