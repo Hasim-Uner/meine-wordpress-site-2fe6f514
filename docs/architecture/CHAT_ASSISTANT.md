@@ -20,11 +20,15 @@ Alle übrigen Konstanten und Prüfungen gelten unverändert (Abschnitt
 - `facade.php` gibt per `wp_footer` ein rundes Symbol (`.tafel`, umlaufender
   Lichtring) mit Inline-CSS und Ladeskript aus. Vor Klick oder Scroll-Auslöser
   gibt es keine Netzanfrage. Hover oder Fokus laden vor.
-- **Auslöser:** Klick auf das Symbol, oder einmal je Sitzung, sobald der
+- **Auslöser:** Klick auf das Symbol, oder einmal je Seitenaufruf, sobald der
   Besucher rund 78 % der Seite gescrollt hat (nur auf Seiten, die mindestens
-  1,6 Bildschirmhöhen lang sind). Wer schließt oder schon geöffnet hat, sieht
-  keinen automatischen Auftritt mehr (`sessionStorage` `hu-chat-auto`). Der
-  automatische Auftritt setzt keinen Fokus, damit mobil keine Tastatur aufgeht.
+  1,6 Bildschirmhöhen lang sind). Der automatische Auftritt schreibt nichts in
+  den Browser und setzt keinen Fokus. Erst wenn der Besucher selbst öffnet oder
+  schließt, merkt sich `sessionStorage` (`hu-chat-auto`) das für die Sitzung.
+- **Gestaltung:** dunkle `.tafel`, Haarlinie, flacher Schatten, Stempelkante
+  (2 px Stempel oben links) als eigenes Element. Eingabe als Linie statt Kasten,
+  Sendepfeil wird erst mit Text zum Stempel. Antworten als Text mit Haarlinie,
+  keine Sprechblasen. Symbol: dunkle Scheibe mit Stempelpunkt.
 - **Leiste:** breite Eingabeleiste unten mittig (bis 780 px, mobil volle
   Breite über der Sticky-CTA), dunkle Tafel mit umlaufendem Lichtrand. Die
   Begrüßung fällt Wort für Wort ein, darunter drei Schnellwahlen und ein großes
@@ -35,7 +39,8 @@ Alle übrigen Konstanten und Prüfungen gelten unverändert (Abschnitt
   buchen (Cal.com aus `nexus_get_audit_calendar_url()`), Preise. White-Label:
   ihr-Form, Fit-Gespräch (`nexus_get_whitelabel_calendar_url()`), Ablauf.
   Energie: Marktcheck statt Preise.
-- KI-Hinweis und Datenschutz-Link stehen dauerhaft unter dem Eingabefeld.
+- KI-Hinweis und Datenschutz-Link (`/datenschutz/#ki-chat`) stehen dauerhaft unter dem Eingabefeld.
+- Datenschutzerklärung: Abschnitt 5 „KI-Assistent“ und „Terminbuchung über Cal.com“ in Abschnitt 4. `cal-embed.js` lädt Cal.com erst beim Klick (kein Vorladen bei Hover/Fokus).
 - Nicht ausgegeben auf `/datenschutz/`, `/impressum/`, den noindex-Slugs und
   -Templates aus `seo-meta.php`, im Admin und im Customizer.
 - Markdown wird ohne `innerHTML` gerendert: Absätze, fett, Listen, Links.

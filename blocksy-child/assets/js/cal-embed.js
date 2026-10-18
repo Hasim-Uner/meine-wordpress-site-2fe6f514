@@ -12,7 +12,6 @@
     var initialized = false;
     var preloaded = false;
     var observedRoot = null;
-    var pointerEnterEvent = window.PointerEvent ? 'pointerenter' : 'mouseenter';
 
     function ensureBootstrapNamespace(cal, namespace) {
         var namespaceApi = cal.ns[namespace];
@@ -213,8 +212,8 @@
 
         link.setAttribute('data-cal-embed-bound', 'true');
         link.addEventListener('click', handleBoundLinkClick);
-        link.addEventListener('focus', handleBoundLinkPreload, { once: true });
-        link.addEventListener(pointerEnterEvent, handleBoundLinkPreload, { passive: true, once: true });
+        // Kein Vorladen bei Hover oder Fokus: Cal.com erfährt erst beim Klick
+        // von diesem Besuch (Datenschutzerklärung, Abschnitt Terminbuchung).
         link.addEventListener('pointerdown', handleBoundLinkPreload, { passive: true, once: true });
 
         return true;

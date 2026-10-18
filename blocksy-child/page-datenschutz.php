@@ -33,7 +33,8 @@ while ( have_posts() ) :
 							Diese öffentlich zugängliche Website setzt bei normalen Besuchen keine Cookies,
 							speichert nichts in Ihrem Browser und verwendet weder Google Tag Manager noch
 							Google Analytics oder Marketing-Tracker. Seitenaufrufe zählen wir cookielos auf
-							unserem eigenen Server.
+							unserem eigenen Server. Nur wenn Sie den KI-Assistenten nutzen, hält Ihr Browser
+							das Gespräch bis zum Schließen des Tabs fest.
 						</p>
 
 						<div class="privacy-statement">
@@ -103,6 +104,7 @@ while ( have_posts() ) :
 						<li>keine Werbetracker; Seitenaufrufe nur cookielos gezählt (Koko Analytics)</li>
 						<li>keine automatischen Social-Media-Embeds</li>
 						<li>keine extern geladenen Webfonts von Google</li>
+						<li>KI-Assistent nur auf Ihren Wunsch, Verarbeitung in der EU</li>
 						<li>personenbezogene Daten nur bei aktiver Kontaktaufnahme</li>
 					</ul>
 
@@ -125,7 +127,7 @@ while ( have_posts() ) :
 						</div>
 						<div class="privacy-meta__item">
 							<span class="privacy-meta__label">Stand</span>
-							<span class="privacy-meta__value"><time datetime="2026-09-23">23. September 2026</time></span>
+							<span class="privacy-meta__value"><time datetime="2026-10-18">18. Oktober 2026</time></span>
 						</div>
 					</div>
 				</aside>
@@ -147,14 +149,17 @@ while ( have_posts() ) :
 							Bei der rein informatorischen Nutzung dieser öffentlich zugänglichen Website
 							setzen wir keine Cookies und speichern auch sonst nichts in Ihrem Browser,
 							weder im lokalen Speicher (localStorage) noch im Sitzungsspeicher
-							(sessionStorage). Remarketing- oder Marketing-Skripte werden nicht geladen.
+							(sessionStorage). Einzige Ausnahme: Wenn Sie den KI-Assistenten nutzen, legt er
+							den Gesprächsverlauf im Sitzungsspeicher Ihres Browsers ab, bis Sie den Tab
+							schließen (siehe <a href="#ki-chat">KI-Assistent</a>). Remarketing- oder
+							Marketing-Skripte werden nicht geladen.
 						</p>
 						<ul>
 							<li>kein Google Tag Manager</li>
 							<li>kein Google Analytics</li>
 							<li>kein Google Ads Conversion Tracking</li>
 							<li>keine Retargeting-Pixel</li>
-							<li>keine Speicherung im Browser für Statistik, Tracking oder Komfortfunktionen</li>
+							<li>keine Speicherung im Browser für Statistik oder Tracking</li>
 							<li>deshalb kein Cookie-Banner für öffentliche Besuche</li>
 						</ul>
 						<div class="privacy-note">
@@ -282,6 +287,25 @@ while ( have_posts() ) :
 							darin, Beiträge anhand der Rückmeldungen zu verbessern.
 						</p>
 
+						<h3 id="terminbuchung">Terminbuchung über Cal.com</h3>
+						<p>
+							Termine können Sie über Cal.com buchen, einen Dienst der Cal.com, Inc. (USA).
+							Der Kalender öffnet sich erst, wenn Sie auf einen Terminlink klicken, als
+							Fenster auf dieser Seite oder in einem neuen Tab. Vorher wird nichts an Cal.com
+							übertragen. Ihre Eingaben bei der Buchung (Name, E-Mail-Adresse, gewählter
+							Termin und optionale Notiz) verarbeitet Cal.com; es gelten zusätzlich die
+							<a href="https://cal.com/privacy" target="_blank" rel="noopener noreferrer">Datenschutzhinweise von Cal.com</a>.
+							Beim Öffnen des Kalenders geben wir mit, auf welcher Seite dieser Website Sie
+							waren und ob Sie über den KI-Assistenten kamen.
+						</p>
+						<p>
+							Nach einer Buchung, Verschiebung oder Absage meldet Cal.com uns den Termin
+							mit diesen Angaben. Wir speichern ihn wie eine Anfrage im WordPress-Backend und
+							erhalten eine interne Benachrichtigung per E-Mail über Brevo. Rechtsgrundlage
+							ist Art. 6 Abs. 1 lit. b DSGVO (Durchführung vorvertraglicher Maßnahmen auf
+							Ihre Anfrage).
+						</p>
+
 						<h3>Missbrauchsschutz</h3>
 						<p>
 							Bei Formularanfragen kann die IP-Adresse kurzfristig verarbeitet werden, um
@@ -297,12 +321,100 @@ while ( have_posts() ) :
 						</p>
 					</section>
 
+					<section class="privacy-section" id="ki-chat" aria-labelledby="privacy-ki">
+						<h2 id="privacy-ki">5. KI-Assistent</h2>
+						<p>
+							Auf dieser Website können Sie Fragen an einen KI-Assistenten stellen. Er ist kein
+							Mensch und antwortet automatisch aus den Inhalten dieser Website und unseren
+							festgelegten Angebots- und Preisangaben. Antworten können unvollständig oder
+							fehlerhaft sein. Verbindlich sind die Angaben auf den jeweiligen Seiten und
+							unsere persönliche Rückmeldung.
+						</p>
+
+						<h3>Wann der Assistent geladen wird</h3>
+						<p>
+							Der Assistent wird von unserem eigenen Server geladen, wenn Sie auf sein Symbol
+							klicken oder einmal von selbst, wenn Sie weit nach unten scrollen. Dabei wird
+							nichts an Dritte übertragen. Daten gehen erst an das Sprachmodell, wenn Sie
+							eine Nachricht absenden oder eine Schnellwahl antippen.
+						</p>
+
+						<h3>Was verarbeitet wird</h3>
+						<p>
+							Wenn Sie eine Nachricht senden, übermittelt Ihr Browser den bisherigen
+							Gesprächsverlauf dieser Sitzung und den Pfad der aktuellen Seite an unseren
+							Server. Unser Server leitet diese Angaben zusammen mit unseren Anweisungen an
+							das Sprachmodell weiter und gibt die Antwort an Sie zurück. Den Gesprächsinhalt
+							speichern wir dabei nicht. Für Missbrauchsschutz und Kostenbegrenzung
+							verarbeiten wir kurzfristig einen aus Ihrer IP-Adresse gebildeten Einwegwert
+							(Hash) und zählen Anfragen; außerdem speichern wir zusammengefasste Kosten- und
+							Mengenzahlen ohne Bezug zu Ihrer Person.
+						</p>
+
+						<h3>Sprachmodell über Amazon Bedrock</h3>
+						<p>
+							Die Antworten erzeugt ein Sprachmodell (Claude von Anthropic), das wir über
+							Amazon Bedrock nutzen, einen Dienst der Amazon Web Services EMEA SARL,
+							38 Avenue John F. Kennedy, L-1855 Luxemburg. Die Anfragen gehen an die Region
+							Frankfurt am Main und werden ausschließlich auf Rechenzentren in der
+							Europäischen Union verteilt. AWS ist für uns als Auftragsverarbeiter nach
+							Art. 28 DSGVO tätig. Nach Angaben von AWS werden Eingaben und Antworten nicht
+							zum Training von Modellen verwendet und nicht an Anthropic weitergegeben. Die
+							Protokollierung der Modellaufrufe bei AWS ist abgeschaltet.
+						</p>
+						<p>
+							Bitte geben Sie im Chat keine Gesundheitsdaten, Zugangsdaten, Zahlungsdaten
+							oder vertraulichen Geschäftsinformationen ein.
+						</p>
+
+						<h3>Anfrage an Haşim Üner</h3>
+						<p>
+							Wenn Sie es wünschen, bereitet der Assistent eine Anfrage vor. Sie sehen eine
+							Zusammenfassung, können Name, E-Mail-Adresse und Firma prüfen und entscheiden
+							selbst, ob Sie absenden. Erst dann speichern wir diese Angaben und die Seite im
+							WordPress-Backend und erhalten eine interne Benachrichtigung per E-Mail über
+							Brevo. Den Gesprächsverlauf übernehmen wir nur, wenn Sie das beim Absenden
+							ausdrücklich auswählen. Der Assistent verschickt keine E-Mails an Sie oder an
+							andere Adressen. Für Terminbuchungen verweist er auf Cal.com
+							(siehe <a href="#terminbuchung">Terminbuchung über Cal.com</a>).
+						</p>
+
+						<h3>Browser-Speicher</h3>
+						<p>
+							Damit Ihr Gespräch beim Wechsel zwischen Seiten erhalten bleibt, speichert der
+							Assistent den Verlauf im Sitzungsspeicher Ihres Browsers (sessionStorage),
+							sobald Sie die erste Nachricht senden. Schließen Sie den Assistenten oder öffnen
+							Sie ihn selbst, merkt sich der Browser das für diese Sitzung, damit er nicht
+							erneut von selbst erscheint. Der Sitzungsspeicher wird gelöscht, wenn Sie den
+							Tab schließen; „Neues Gespräch“ löscht den Verlauf sofort. Es werden keine
+							Cookies gesetzt und kein dauerhafter Speicher (localStorage) genutzt.
+						</p>
+
+						<h3>Rechtsgrundlagen und Speicherdauer</h3>
+						<p>
+							Die Beantwortung Ihrer Fragen erfolgt auf Grundlage von Art. 6 Abs. 1 lit. b
+							DSGVO, soweit sie der Anbahnung eines Auftrags dient, und im Übrigen auf
+							Grundlage von Art. 6 Abs. 1 lit. f DSGVO; unser berechtigtes Interesse liegt
+							darin, Fragen zu unserem Angebot schnell und aus den eigenen Inhalten zu
+							beantworten. Die Anfrage an Haşim Üner erfolgt auf Ihre Veranlassung nach
+							Art. 6 Abs. 1 lit. b DSGVO, die Übernahme des Gesprächsverlaufs auf Grundlage
+							Ihrer Einwilligung nach Art. 6 Abs. 1 lit. a DSGVO, die Sie jederzeit mit Wirkung
+							für die Zukunft widerrufen können. Der Sitzungsspeicher ist für den von Ihnen
+							genutzten Chat unbedingt erforderlich (§ 25 Abs. 2 Nr. 2 TDDDG).
+						</p>
+						<p>
+							Gesprächsinhalte speichern wir nur im Fall einer Anfrage und dann wie andere
+							Anfragen (siehe Speicherdauer in Abschnitt 4). Die Einwegwerte für den
+							Missbrauchsschutz verfallen nach spätestens einer Stunde.
+						</p>
+					</section>
+
 					<section class="privacy-section" aria-labelledby="privacy-links">
-						<h2 id="privacy-links">5. Externe Links und Drittseiten</h2>
+						<h2 id="privacy-links">6. Externe Links und Drittseiten</h2>
 						<p>
 							Diese Website verlinkt an einzelnen Stellen auf externe Angebote, zum Beispiel
-							auf Cal.com für Terminbuchungen sowie auf Profile bei LinkedIn oder
-							GitHub. Solche Inhalte werden nicht automatisch eingebettet. Eine Datenübertragung
+							auf Profile bei LinkedIn oder GitHub. Zur Terminbuchung über Cal.com siehe
+							<a href="#terminbuchung">Abschnitt 4</a>. Solche Inhalte werden nicht automatisch eingebettet. Eine Datenübertragung
 							an den jeweiligen Anbieter findet daher regelmäßig erst statt, wenn Sie den
 							Link aktiv anklicken.
 						</p>
@@ -314,7 +426,7 @@ while ( have_posts() ) :
 					</section>
 
 					<section class="privacy-section" aria-labelledby="privacy-security">
-						<h2 id="privacy-security">6. Sicherheit</h2>
+						<h2 id="privacy-security">7. Sicherheit</h2>
 						<p>
 							Diese Website nutzt eine verschlüsselte Verbindung per HTTPS, damit übermittelte
 							Daten während der Übertragung geschützt sind. Vollständige Sicherheit kann
@@ -323,7 +435,7 @@ while ( have_posts() ) :
 					</section>
 
 					<section class="privacy-section" id="rechte" aria-labelledby="privacy-rights">
-						<h2 id="privacy-rights">7. Ihre Rechte</h2>
+						<h2 id="privacy-rights">8. Ihre Rechte</h2>
 						<p>
 							Sie haben nach Maßgabe der DSGVO insbesondere folgende Rechte:
 						</p>

@@ -1,6 +1,6 @@
 # ENTWURF: Datenschutz-Abschnitt „KI-Assistent“ (`#ki-chat`)
 
-Status: **Entwurf, nicht live, vor Veröffentlichung juristisch prüfen.**
+Status: **Übernommen am 18.10.2026** in `blocksy-child/page-datenschutz.php` (Abschnitt 5 `#ki-chat`, dazu `#terminbuchung` in Abschnitt 4). Geprüft: AWS-Logging aus, Sonnet-4.6-EU-Profil verteilt nur auf EU-Regionen. Offen bleibt die juristische Durchsicht (Prüfpunkte unten). Dieser Entwurf ist historisch, maßgeblich ist die Seite.
 Ziel: `blocksy-child/page-datenschutz.php`, neuer Abschnitt nach „4. Kontaktaufnahme
 und Formulare“ mit `id="ki-chat"`, dazu die Anpassung von Abschnitt 2 (unten).
 Grundlage: technischer Stand laut `docs/architecture/CHAT_ASSISTANT.md`. Wo dieser
