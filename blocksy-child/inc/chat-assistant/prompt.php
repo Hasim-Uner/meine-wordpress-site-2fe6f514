@@ -38,6 +38,18 @@ function hu_chat_load_knowledge(): string {
 	return $knowledge;
 }
 
+/**
+ * Curated sales stance, versioned in the theme. Read every time and fail
+ * closed: the prompt never runs without it. Facts stay in canon and knowledge.
+ */
+function hu_chat_load_sales_knowledge(): string {
+	$sales = file_get_contents( __DIR__ . '/vertriebswissen.md' );
+	if ( false === $sales || '' === trim( $sales ) ) {
+		throw new RuntimeException( 'chat_sales_knowledge_unavailable' );
+	}
+	return trim( $sales );
+}
+
 /** Public booking links; the frontend makes exactly these clickable. @return array{general: string, agency: string} */
 function hu_chat_booking_urls(): array {
 	return [
@@ -56,6 +68,7 @@ function hu_chat_system_prompt(): string {
 		'{{ANTWORTZEIT}}' => hu_response_promise( 'value' ),
 		'{{PREISLEITER}}' => hu_chat_price_ladder(),
 		'{{WISSEN}}' => hu_chat_load_knowledge(),
+		'{{VERTRIEBSWISSEN}}' => hu_chat_load_sales_knowledge(),
 		'{{TERMIN_LINK}}' => hu_chat_booking_urls()['general'],
 		'{{TERMIN_LINK_AGENTUR}}' => hu_chat_booking_urls()['agency'],
 	];
