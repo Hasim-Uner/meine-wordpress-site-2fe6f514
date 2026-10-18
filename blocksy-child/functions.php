@@ -53,6 +53,7 @@ $modules = [
 	'solar-events.php',   // Anonyme Tageszähler der drei Solar-Türen
 	'contact-page.php',   // Kontakt-Route, schlanke Kontaktform und Mailversand
 	'whitelabel-request.php', // Vierfeldriges Agentur-Formular der White-Label-Route
+	'calcom-webhook.php', // Cal.com-Buchungen per Webhook ins CRM, mit Quelle und interner Mail
 	'chat-assistant/chat-assistant.php', // KI-Assistent: off / preview (nur Admins) / live
 	'inquiry-events.php', // Serverseitiges Protokoll anfrage_gesendet (Formular, Quelle, Zeitpunkt) und Admin-Übersicht
 	'system-diagnose-page.php', // Deutsche Analyse-Route plus Legacy-Redirect

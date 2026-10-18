@@ -8,7 +8,7 @@ require __DIR__ . '/intake-wordpress-doubles.php';
 define( 'ARRAY_A', 'ARRAY_A' );
 if ( ! function_exists( 'wp_salt' ) ) { function wp_salt( $scheme = 'auth' ) { return 'fixture-salt'; } }
 if ( ! function_exists( 'wp_date' ) ) { function wp_date( $format, $timestamp = null ) { return gmdate( $format, $timestamp ?? time() ); } }
-foreach ( [ 'canon/messaging-canon', 'canon/pricing-canon', 'canon/e3-proof-canon', 'crm', 'contact-page', 'whitelabel-request', 'review-crm', 'inquiry-events', 'chat-assistant/config', 'chat-assistant/conversation', 'chat-assistant/handover' ] as $module ) {
+foreach ( [ 'canon/messaging-canon', 'canon/pricing-canon', 'canon/e3-proof-canon', 'crm', 'contact-page', 'whitelabel-request', 'review-crm', 'inquiry-events', 'chat-assistant/config', 'chat-assistant/conversation', 'chat-assistant/handover', 'calcom-webhook' ] as $module ) {
 	require __DIR__ . '/../../blocksy-child/inc/' . $module . '.php';
 }
 
@@ -36,13 +36,14 @@ function run_case( $name, $callback ) {
 }
 function rows() { return $GLOBALS['wpdb']->rows; }
 function submit( $kind, $payload ) {
-	$callbacks = [ 'contact' => 'nexus_handle_contact_request_submission', 'whitelabel' => 'hu_handle_whitelabel_request_submission', 'audit' => 'nexus_handle_review_request_submission', 'chat' => 'hu_chat_handle_handover' ];
+	$callbacks = [ 'contact' => 'nexus_handle_contact_request_submission', 'whitelabel' => 'hu_handle_whitelabel_request_submission', 'audit' => 'nexus_handle_review_request_submission', 'chat' => 'hu_chat_handle_handover', 'termin' => static fn( $request ) => hu_calcom_process_event( $request->get_json_params() ) ];
 	return $callbacks[ $kind ]( new WP_REST_Request( $payload ) );
 }
 
 $contact     = [ 'name' => 'Fixture Person', 'email' => 'fixture@example.test', 'request_type' => 'project', 'focus' => 'tracking', 'message' => 'Bitte das bestehende Tracking prüfen.', 'consent' => '1' ];
 $assessment  = [ 'email' => 'fixture@example.test', 'request_type' => 'ersteinschaetzung', 'focus' => 'ersteinschaetzung', 'website_url' => 'https://www.example.test/seite', 'message' => '', 'consent' => '1' ];
 $whitelabel  = [ 'email' => 'fixture@example.test', 'task' => 'Bitte das bestehende Tracking prüfen.' ];
+$termin      = [ 'triggerEvent' => 'BOOKING_CREATED', 'payload' => [ 'uid' => 'fixture-uid', 'startTime' => '2026-10-21T08:30:00Z', 'attendees' => [ [ 'name' => 'Fixture Person', 'email' => 'fixture@example.test' ] ], 'metadata' => [ 'quelle' => 'chat', 'seite' => '/kontakt/' ] ] ];
 $chat        = [ 'name' => 'Fixture Person', 'email' => 'fixture@example.test', 'weg' => 'projekt', 'zusammenfassung' => 'Bitte das bestehende Tracking prüfen.', 'page' => '/kontakt/' ];
 $marketcheck = [ 'intake_variant' => 'energy_systems', 'audit_type' => 'b2b_system_intake', 'solution_focus' => 'photovoltaik', 'business_fit' => 'founder_led_regional', 'sales_team_size' => 'one', 'project_timing' => 'sofort', 'name' => 'Fixture Person', 'company' => 'Fixture GmbH', 'position' => 'Inhaber', 'email' => 'fixture@example.test', 'postal_code' => '30159', 'consent_privacy' => 'accepted' ];
 $order_base  = [ 'company' => 'TEST Fixture GmbH', 'email' => 'fixture@gmx.de', 'phone' => '0301234567', 'request_sources' => [ 'aroundhome', 'eigene_website' ], 'consent_privacy' => 'accepted', 'contract_version' => nexus_get_review_request_contract_version() ];
@@ -58,6 +59,7 @@ $cases = [
 	'analyse'           => [ 'audit', $analyse ],
 	'sofortkontakt'     => [ 'audit', $sofortkontakt ],
 	'chat'              => [ 'chat', $chat ],
+	'termin'            => [ 'termin', $termin ],
 ];
 $known = array_keys( hu_inquiry_event_forms() );
 $tested = array_keys( $cases );
@@ -135,6 +137,21 @@ run_case( 'other request types still need a name; assessment still needs a URL',
 } );
 
 foreach ( $cases as $form => $case ) {
+	if ( 'termin' === $form ) {
+		// Server-to-server webhook: no honeypot or IP limit; the signature guards it.
+		run_case( 'termin: bad signature and unusable booking leave no row', static function () use ( $case ) {
+			update_option( HU_CALCOM_SECRET_OPTION, 'fixture-secret' );
+			$unsigned = new class( json_encode( $case[1] ) ) extends WP_REST_Request {
+				public function __construct( private string $raw ) { parent::__construct( [] ); }
+				public function get_body() { return $this->raw; }
+			};
+			check( 401 === hu_calcom_handle_webhook( $unsigned )->status && ! rows(), 'Unsigned webhook' );
+			$broken = $case[1];
+			$broken['payload']['attendees'][0]['email'] = 'invalid';
+			check( 200 === hu_calcom_process_event( $broken )->status && ! rows(), 'Unusable booking' );
+		} );
+		continue;
+	}
 	run_case( "$form: honeypot, validation error and rate limit leave no row", static function () use ( $case ) {
 		[ $kind, $payload ] = $case;
 		$r = submit( $kind, $payload + [ 'company_website' => 'bot' ] );

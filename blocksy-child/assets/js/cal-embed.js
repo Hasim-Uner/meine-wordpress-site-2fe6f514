@@ -352,6 +352,27 @@
             });
     }
 
+    /*
+     * Quelle der Buchung fuer das CRM: Cal.com legt die Metadata an der
+     * Buchung ab und schickt sie im Webhook mit (inc/calcom-webhook.php).
+     * Nur feste Kuerzel und der Pfad, keine Personendaten.
+     */
+    function bookingMetadata(link) {
+        var source = 'website';
+        var section = link && link.getAttribute ? String(link.getAttribute('data-track-section') || '') : '';
+
+        if (link && link.closest && link.closest('.hu-chat')) {
+            source = 'chat';
+        } else if (/^[a-z0-9_-]{1,40}$/.test(section)) {
+            source = section;
+        }
+
+        return {
+            'metadata[quelle]': source,
+            'metadata[seite]': String(window.location.pathname || '/').slice(0, 200)
+        };
+    }
+
     function openModal(link) {
         var linkPath = getLinkCalPath(link) || calPath;
 
@@ -359,7 +380,8 @@
             .then(function (calApi) {
                 calApi('modal', {
                     calLink: String(linkPath),
-                    calOrigin: calOrigin
+                    calOrigin: calOrigin,
+                    config: bookingMetadata(link)
                 });
             })
             .catch(function () {

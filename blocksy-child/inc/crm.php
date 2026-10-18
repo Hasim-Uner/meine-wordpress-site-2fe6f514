@@ -32,6 +32,7 @@ function nexus_get_crm_contact_source_labels() {
 		'request_analysis'   => 'Marktcheck',
 		'whitelabel_request' => 'White-Label-Anfrage',
 		'chat_handover'      => 'Chat-Anfrage',
+		'calendar_booking'   => 'Terminbuchung',
 	];
 }
 
@@ -65,6 +66,7 @@ function nexus_get_crm_contact_segment_labels() {
 		'analysis_lead'      => 'Analyse-Lead',
 		'whitelabel_request' => 'White-Label-Anfrage',
 		'chat_handover'      => 'Chat-Anfrage',
+		'calendar_booking'   => 'Terminbuchung',
 	];
 }
 
