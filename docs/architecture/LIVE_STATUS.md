@@ -59,6 +59,11 @@ legt den Kontakt mit Quelle `calendar_booking` an oder ordnet ihn zu, schreibt
 „Termin gebucht/verschoben/abgesagt“ in die Timeline und schickt eine interne
 Mail mit Quelle, Seite und Vorgeschichte. `cal-embed.js` gibt beim Öffnen des
 Kalenders `metadata[quelle]` (`chat` oder Abschnitt) und `metadata[seite]` mit.
+Repo-seitig wird das externe Embed ausschließlich beim abgeschlossenen Klick
+geladen; Hover, Fokus und `pointerdown` laden nichts vor. Die
+Datenschutzerklärung beschreibt Rückrufnummern, Google Kalender, Google Meet
+und die US-Verarbeitung bei Cal.com. Vertrags- und Transfernachweise bleiben
+eine separate externe Prüfung; der Text behauptet keinen abgeschlossenen AVV.
 Ohne Geheimnis ist die Route aus; Einrichtung unter Werkzeuge →
 Cal.com-Buchungen. Buchungen über direkte Links ohne Embed erscheinen als
 „Direkt in Cal.com“.

@@ -10,7 +10,6 @@
     var config = window.NexusCalEmbedConfig || {};
     var loadPromise = null;
     var initialized = false;
-    var preloaded = false;
     var observedRoot = null;
 
     function ensureBootstrapNamespace(cal, namespace) {
@@ -191,16 +190,6 @@
         openModal(link);
     }
 
-    function handleBoundLinkPreload(event) {
-        var link = event.currentTarget;
-
-        if (!link || !markBookingLink(link)) {
-            return;
-        }
-
-        preloadModal(link);
-    }
-
     function bindBookingLink(link) {
         if (!link || !markBookingLink(link)) {
             return false;
@@ -212,9 +201,8 @@
 
         link.setAttribute('data-cal-embed-bound', 'true');
         link.addEventListener('click', handleBoundLinkClick);
-        // Kein Vorladen bei Hover oder Fokus: Cal.com erfährt erst beim Klick
-        // von diesem Besuch (Datenschutzerklärung, Abschnitt Terminbuchung).
-        link.addEventListener('pointerdown', handleBoundLinkPreload, { passive: true, once: true });
+        // Externe Ressourcen erst nach einem abgeschlossenen Klick laden,
+        // auch nicht beim Drücken der Maustaste oder Berühren des Links.
 
         return true;
     }
@@ -327,28 +315,6 @@
         }
 
         window.location.assign(href);
-    }
-
-    function preloadModal(link) {
-        var linkPath = getLinkCalPath(link) || calPath;
-
-        if (preloaded === linkPath) {
-            return;
-        }
-
-        preloaded = linkPath;
-
-        getNamespaceApi()
-            .then(function (calApi) {
-                calApi('preload', {
-                    calLink: String(linkPath),
-                    calOrigin: calOrigin,
-                    type: 'modal'
-                });
-            })
-            .catch(function () {
-                preloaded = '';
-            });
     }
 
     /*
