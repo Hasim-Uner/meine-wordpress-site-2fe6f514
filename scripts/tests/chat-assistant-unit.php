@@ -21,6 +21,8 @@ function wp_json_encode( $data, $flags = 0 ) { return json_encode( $data, $flags
 function esc_html( $text ) { return htmlspecialchars( (string) $text, ENT_QUOTES, 'UTF-8' ); }
 function rest_url( $path ) { return 'https://example.test/wp-json/' . $path; }
 function wp_create_nonce( $action ) { return 'fixture-nonce'; }
+function nexus_get_audit_calendar_url() { return 'https://cal.example.test/30min'; }
+function nexus_get_whitelabel_calendar_url() { return 'https://cal.example.test/agentur'; }
 function wp_upload_dir() { return [ 'basedir' => $GLOBALS['chat_test']['uploads'], 'error' => false ]; }
 class WP_Error {
 	public function __construct( public $code, public $message, public $data ) {}
@@ -246,6 +248,7 @@ try {
 	check_chat( str_contains( $prompt, hu_freelancer_website_price( true ) ) && str_contains( $prompt, hu_landingpage_price( true ) ), 'website and landingpage prices from canon' );
 	check_chat( str_contains( $prompt, hu_tracking_price( 'measurement', 'setup' ) ) && str_contains( $prompt, hu_whitelabel_price( 'retainer' ) ), 'tracking and White-Label canon' );
 	check_chat( str_contains( $prompt, 'FIXTURE ONE {{KONTAKT_EMAIL}}' ), 'no recursive interpolation of website text' );
+	check_chat( str_contains( $prompt, 'https://cal.example.test/30min' ) && str_contains( $prompt, 'https://cal.example.test/agentur' ), 'booking links from the calendar helpers' );
 	file_put_contents( $directory . '/hu-chat/knowledge.md', 'FIXTURE TWO' );
 	check_chat( str_contains( hu_chat_system_prompt(), 'FIXTURE TWO' ), 'knowledge read again each invocation' );
 	unlink( $directory . '/hu-chat/knowledge.md' );

@@ -38,6 +38,14 @@ function hu_chat_load_knowledge(): string {
 	return $knowledge;
 }
 
+/** Public booking links; the frontend makes exactly these clickable. @return array{general: string, agency: string} */
+function hu_chat_booking_urls(): array {
+	return [
+		'general' => function_exists( 'nexus_get_audit_calendar_url' ) ? nexus_get_audit_calendar_url() : home_url( '/kontakt/' ),
+		'agency'  => function_exists( 'nexus_get_whitelabel_calendar_url' ) ? nexus_get_whitelabel_calendar_url() : home_url( '/kontakt/' ),
+	];
+}
+
 function hu_chat_system_prompt(): string {
 	$template = file_get_contents( __DIR__ . '/systemprompt.md' );
 	if ( false === $template ) {
@@ -48,6 +56,8 @@ function hu_chat_system_prompt(): string {
 		'{{ANTWORTZEIT}}' => hu_response_promise( 'value' ),
 		'{{PREISLEITER}}' => hu_chat_price_ladder(),
 		'{{WISSEN}}' => hu_chat_load_knowledge(),
+		'{{TERMIN_LINK}}' => hu_chat_booking_urls()['general'],
+		'{{TERMIN_LINK_AGENTUR}}' => hu_chat_booking_urls()['agency'],
 	];
 	preg_match_all( '/\{\{[^{}]+\}\}/', $template, $matches );
 	if ( array_diff( $matches[0], array_keys( $values ) ) || array_diff( array_keys( $values ), $matches[0] ) ) {

@@ -17,24 +17,42 @@ Alle übrigen Konstanten und Prüfungen gelten unverändert (Abschnitt
 
 ## Oberfläche
 
-- `facade.php` gibt per `wp_footer` einen Knopf mit Inline-SVG, unter 1 KB
-  Inline-CSS und einem Ladeskript aus. Vor dem ersten Klick gibt es keine
-  Netzanfrage. Hover oder Fokus laden vor, der Klick lädt
-  `assets/css/chat-assistant.css` und `assets/js/chat-assistant.js` (ES-Import).
-- Knopf und Panel tragen `.tafel`; Farben, Radius und Schrift aus `system.css`.
-  Der Knopf sitzt über der Sticky-CTA (`--hu-sticky-cta-h`).
+- `facade.php` gibt per `wp_footer` ein rundes Symbol (`.tafel`, umlaufender
+  Lichtring) mit Inline-CSS und Ladeskript aus. Vor Klick oder Scroll-Auslöser
+  gibt es keine Netzanfrage. Hover oder Fokus laden vor.
+- **Auslöser:** Klick auf das Symbol, oder einmal je Sitzung, sobald der
+  Besucher rund 78 % der Seite gescrollt hat (nur auf Seiten, die mindestens
+  1,6 Bildschirmhöhen lang sind). Wer schließt oder schon geöffnet hat, sieht
+  keinen automatischen Auftritt mehr (`sessionStorage` `hu-chat-auto`). Der
+  automatische Auftritt setzt keinen Fokus, damit mobil keine Tastatur aufgeht.
+- **Leiste:** breite Eingabeleiste unten mittig (bis 780 px, mobil volle
+  Breite über der Sticky-CTA), dunkle Tafel mit umlaufendem Lichtrand. Die
+  Begrüßung fällt Wort für Wort ein, darunter drei Schnellwahlen und ein großes
+  Eingabefeld mit wechselnden Beispielfragen. Das Gespräch wächst über der
+  Leiste nach oben.
+- **Begrüßung und Schnellwahl** (`hu_chat_intro()`): Standard „Wie kann ich
+  Ihnen helfen? Kurz beraten oder direkt ein Termin?“ mit Beratung, Termin
+  buchen (Cal.com aus `nexus_get_audit_calendar_url()`), Preise. White-Label:
+  ihr-Form, Fit-Gespräch (`nexus_get_whitelabel_calendar_url()`), Ablauf.
+  Energie: Marktcheck statt Preise.
+- KI-Hinweis und Datenschutz-Link stehen dauerhaft unter dem Eingabefeld.
 - Nicht ausgegeben auf `/datenschutz/`, `/impressum/`, den noindex-Slugs und
   -Templates aus `seo-meta.php`, im Admin und im Customizer.
-- Startnachricht fest im Code mit KI-Hinweis und Datenschutz-Link, drei
-  Startfragen je Seitenfamilie (Startseite, White-Label, Energie).
 - Markdown wird ohne `innerHTML` gerendert: Absätze, fett, Listen, Links.
-  Links nur auf den eigenen Host, alle anderen bleiben Text.
-- Verlauf in `sessionStorage` (`hu-chat-v1`), Knopf „Neues Gespräch“. Ohne
-  Speicher läuft der Chat ohne Gedächtnis.
-- Esc schließt, Tab bleibt im Panel, Antworten in `role="log"` mit
-  `aria-live="polite"`. Mobil Vollbild.
-- Tracking-Hooks: `chat_open`, `chat_starter`, `chat_handover_submit` als
-  `data-track-*`, ohne Inhalte.
+  Klickbar sind nur Links auf den eigenen Host und die beiden Terminlinks
+  (neuer Tab), alle anderen bleiben Text.
+- Verlauf in `sessionStorage` (`hu-chat-v1`), „Neues Gespräch“ unter der
+  Eingabe. Esc schließt. Die Leiste ist nicht modal.
+- Tracking-Hooks: `chat_open`, `chat_starter`, `chat_booking`,
+  `chat_marktcheck`, `chat_handover_submit` als `data-track-*`, ohne Inhalte.
+
+## Antwortstil
+
+Der Systemprompt stellt Kürze über alles: höchstens zwei kurze Sätze, genau
+eine Frage oder ein nächster Schritt am Ende, keine Einleitung, keine
+Aufzählungen ohne Aufforderung. Die erste Antwort ordnet mit einer Frage ein
+(Projekt, White-Label, Energie). Wer einen Termin will, bekommt den Terminlink.
+`max_tokens` ist auf 450 gedeckelt.
 
 ## Gespräch: `POST /nexus/v1/chat/messages`
 
@@ -50,11 +68,11 @@ Alle übrigen Konstanten und Prüfungen gelten unverändert (Abschnitt
   eingeloggten Nutzern einen REST-Nonce, anonyme Seiten bleiben cachebar.
 - Reihenfolge: Payload (die Bytezahl bestimmt die Reservierung), Systemprompt,
   Budget, Stundenlimit (30 je gesalzenem IP-Hash). Die Reservierung zählt jedes
-  Request-Byte als höchstens ein Token zum höchsten Preis plus 1.024
+  Request-Byte als höchstens ein Token zum höchsten Preis plus 450
   Ausgabetokens, für Stream und Fallback zusammen.
 - Bedrock-Body: Systemprompt mit `cache_control: ephemeral`, ein zweiter
   Systemblock mit der aktuellen Seite, Tool `anfrage_uebergeben`,
-  `max_tokens` 1.024.
+  `max_tokens` 450.
 - SSE an den Browser: `text`, `tool`, `done`, `error`. `probe`-Events bleiben
   intern. Tool-Aufrufe werden vor der Ausgabe bereinigt: nur
   `anfrage_uebergeben`, nur die sechs Felder, E-Mail geprüft, `weg` aus der
