@@ -132,8 +132,42 @@ function hu_chat_thinking_settings( string $value ): array {
 	return [ 'extra_tokens' => 0 ];
 }
 
+const HU_CHAT_THINKING_OPTION = 'hu_chat_thinking_level';
+
+/** Stufen des Admin-Schalters. @return array<string, string> */
+function hu_chat_thinking_levels(): array {
+	return [
+		'off'        => 'Aus – schnellste Antwort',
+		'normal'     => 'Normal – kurz nachdenken (empfohlen)',
+		'gruendlich' => 'Gründlich – länger nachdenken, langsamer und teurer',
+	];
+}
+
+/**
+ * Modelle bis Claude 4.5 kennen nur ein festes Denkbudget, neuere nur
+ * adaptives Denken mit Effort.
+ */
+function hu_chat_model_uses_budget( string $model ): bool {
+	return (bool) preg_match( '/claude-(?:3|(?:haiku|sonnet|opus)-4-[0-5](?![0-9]))/', $model );
+}
+
+/** Admin-Stufe in den technischen Wert für das jeweilige Modell übersetzen. */
+function hu_chat_thinking_from_level( string $level, string $model ): string {
+	$map = hu_chat_model_uses_budget( $model )
+		? [ 'normal' => '2048', 'gruendlich' => '4096' ]
+		: [ 'normal' => 'medium', 'gruendlich' => 'high' ];
+	return $map[ $level ] ?? '';
+}
+
+/** wp-config (`HU_CHAT_THINKING`) vor dem Admin-Schalter; Standard „Normal“. */
 function hu_chat_thinking_value(): string {
-	return function_exists( 'nexus_get_mail_runtime_value' ) ? (string) nexus_get_mail_runtime_value( [ 'HU_CHAT_THINKING' ] ) : '';
+	$constant = function_exists( 'nexus_get_mail_runtime_value' ) ? (string) nexus_get_mail_runtime_value( [ 'HU_CHAT_THINKING' ] ) : '';
+	if ( '' !== trim( $constant ) ) {
+		return $constant;
+	}
+	$level = function_exists( 'get_option' ) ? (string) get_option( HU_CHAT_THINKING_OPTION, 'normal' ) : 'normal';
+	$model = function_exists( 'hu_chat_config' ) ? (string) ( hu_chat_config()['model'] ?? '' ) : '';
+	return hu_chat_thinking_from_level( $level, $model );
 }
 
 /** Antworttokens plus Denkbudget: die harte Obergrenze je Aufruf. */

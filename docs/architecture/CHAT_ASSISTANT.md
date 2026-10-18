@@ -60,7 +60,12 @@ Terminlinks rendert das Fenster als Schaltfläche („Termin mit Haşim wählen�
 auch wenn das Modell sie fett setzt oder als nackte Adresse schreibt.
 `cal-embed.js` öffnet sie als Overlay und gibt `metadata[quelle]=chat` mit.
 
-## Nachdenken vor der Antwort (`HU_CHAT_THINKING`)
+## Nachdenken vor der Antwort
+
+Schalter unter Werkzeuge → KI-Assistent: Aus, Normal (Standard), Gründlich.
+Bis Claude 4.5 wird daraus ein festes Budget (2048 bzw. 4096 Tokens), bei
+neueren Modellen adaptives Denken mit Effort `medium` bzw. `high`.
+`HU_CHAT_THINKING` in `wp-config.php` überschreibt den Schalter:
 
 | Wert | Wirkung |
 | --- | --- |
