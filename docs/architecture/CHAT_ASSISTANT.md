@@ -142,6 +142,20 @@ gemeinsam wechseln.
   `index.php` im Ordner sind Höflichkeit für Apache; Raidboxes (nginx)
   liefert sie theoretisch aus, das ist hinnehmbar.
 
+## Vertriebswissen
+
+`vertriebswissen.md` hält die Einwandbehandlung: Grundhaltung plus je Einwand
+Erkennen, Dahinter, Linie und Grenze, gegliedert nach Allgemein, Projekt/Tracking,
+White-Label und Energie. Die Datei regelt Haltung, keine Fakten; Preise und
+Zusagen kommen weiter aus Kanon und Website-Inhalt, bei Widerspruch gilt die
+Website. Sie ersetzt den früheren Abschnitt „Einwände“ im Systemprompt.
+
+- Pflege direkt in der Datei. `Status: angenommen` markiert typische Einwände
+  ohne Praxisbeleg, `Status: echt` solche aus realen Gesprächen.
+- Gleiche Regeln wie `systemprompt.md`: keine Zahlen, keine E-Mail-Adressen,
+  keine Kanon-Sperrwerte, keine Platzhalter. `test:chat` prüft das.
+- Jede Änderung leert den Prompt-Cache einmal.
+
 ## Abnahme in `preview`
 
 1. Werkzeuge → KI-Assistent → „Wissen jetzt aufbauen“; Seitenanzahl prüfen.
@@ -277,6 +291,7 @@ mitgelieferte Text. Technische Namen wie B2B bleiben erhalten.
 | `{{ANTWORTZEIT}}` | `hu_response_promise( 'value' )` |
 | `{{PREISLEITER}}` | `hu_pricing_canon()`, Website-/Landingpage-/Übernahme-Getter, `hu_tracking_product_ladder()`, `hu_whitelabel_pricing_canon()` |
 | `{{WISSEN}}` | `wp_upload_dir()['basedir']/hu-chat/knowledge.md` |
+| `{{VERTRIEBSWISSEN}}` | `blocksy-child/inc/chat-assistant/vertriebswissen.md` (versioniert, scheitert geschlossen) |
 
 Die Ersetzung ist ein einzelner `strtr`-Durchgang. Platzhalter aus fremdem
 Website-Text werden nicht erneut ausgewertet. Unbekannte/fehlende Platzhalter,

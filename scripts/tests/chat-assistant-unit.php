@@ -248,6 +248,7 @@ try {
 	check_chat( str_contains( $prompt, hu_freelancer_website_price( true ) ) && str_contains( $prompt, hu_landingpage_price( true ) ), 'website and landingpage prices from canon' );
 	check_chat( str_contains( $prompt, hu_tracking_price( 'measurement', 'setup' ) ) && str_contains( $prompt, hu_whitelabel_price( 'retainer' ) ), 'tracking and White-Label canon' );
 	check_chat( str_contains( $prompt, 'FIXTURE ONE {{KONTAKT_EMAIL}}' ), 'no recursive interpolation of website text' );
+	check_chat( str_contains( $prompt, trim( file_get_contents( $root . '/blocksy-child/inc/chat-assistant/vertriebswissen.md' ) ) ) && ! str_contains( $prompt, '{{VERTRIEBSWISSEN}}' ), 'sales knowledge injected' );
 	check_chat( str_contains( $prompt, 'https://cal.example.test/30min' ) && str_contains( $prompt, 'https://cal.example.test/agentur' ), 'booking links from the calendar helpers' );
 	file_put_contents( $directory . '/hu-chat/knowledge.md', 'FIXTURE TWO' );
 	check_chat( str_contains( hu_chat_system_prompt(), 'FIXTURE TWO' ), 'knowledge read again each invocation' );
@@ -257,14 +258,17 @@ try {
 	if ( is_file( $directory . '/hu-chat/knowledge.md' ) ) unlink( $directory . '/hu-chat/knowledge.md' );
 	rmdir( $directory . '/hu-chat' ); rmdir( $directory );
 }
-$template = file_get_contents( $root . '/blocksy-child/inc/chat-assistant/systemprompt.md' );
-check_chat( ! str_contains( $template, '<!--' ), 'HTML comment removed' );
-check_chat( ! preg_match( '/(?<![\pL\pN_])\d+(?:[.,]\d+)?(?![\pL\pN_])/u', $template ), 'no numeric literal in system prompt' );
-check_chat( ! preg_match( '/[\w.%+-]+@[\w.-]+\.[a-z]{2,}/i', $template ), 'no literal email in system prompt' );
-foreach ( file( $root . '/scripts/canon-forbidden-values.txt', FILE_IGNORE_NEW_LINES ) as $rule ) {
-	$columns = explode( "\t", $rule );
-	if ( 'rule' !== $columns[0] ) continue;
-	$matched = preg_match( '~' . str_replace( '~', '\\~', $columns[2] ) . '~m', $template );
-	check_chat( false !== $matched && 0 === $matched, 'system prompt excludes canon-forbidden rule ' . $columns[1] );
+foreach ( [ 'systemprompt.md', 'vertriebswissen.md' ] as $prompt_file ) {
+	$template = file_get_contents( $root . '/blocksy-child/inc/chat-assistant/' . $prompt_file );
+	check_chat( ! str_contains( $template, '<!--' ), $prompt_file . ': HTML comment removed' );
+	check_chat( ! preg_match( '/(?<![\pL\pN_])\d+(?:[.,]\d+)?(?![\pL\pN_])/u', $template ), $prompt_file . ': no numeric literal' );
+	check_chat( ! preg_match( '/[\w.%+-]+@[\w.-]+\.[a-z]{2,}/i', $template ), $prompt_file . ': no literal email' );
+	foreach ( file( $root . '/scripts/canon-forbidden-values.txt', FILE_IGNORE_NEW_LINES ) as $rule ) {
+		$columns = explode( "\t", $rule );
+		if ( 'rule' !== $columns[0] ) continue;
+		$matched = preg_match( '~' . str_replace( '~', '\\~', $columns[2] ) . '~m', $template );
+		check_chat( false !== $matched && 0 === $matched, $prompt_file . ' excludes canon-forbidden rule ' . $columns[1] );
+	}
 }
+check_chat( ! preg_match( '/\{\{[^{}]+\}\}/', file_get_contents( $root . '/blocksy-child/inc/chat-assistant/vertriebswissen.md' ) ), 'sales knowledge has no placeholders' );
 echo "Chat spike: $checks checks passed; no network used.\n";
