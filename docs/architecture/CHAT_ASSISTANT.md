@@ -50,9 +50,29 @@ Alle übrigen Konstanten und Prüfungen gelten unverändert (Abschnitt
 
 Der Systemprompt stellt Kürze über alles: höchstens zwei kurze Sätze, genau
 eine Frage oder ein nächster Schritt am Ende, keine Einleitung, keine
-Aufzählungen ohne Aufforderung. Die erste Antwort ordnet mit einer Frage ein
-(Projekt, White-Label, Energie). Wer einen Termin will, bekommt den Terminlink.
-`max_tokens` ist auf 450 gedeckelt.
+Aufzählungen ohne Aufforderung. Der Assistent spricht über Haşim in der
+dritten Person („Haşim meldet sich …“) und nie als Haşim. Die Kundenführung
+(zuhören, eine entscheidende Frage, leichte Ja-Schritte, entlasten) ist mit
+kurzen Gut-/Schlecht-Beispielen hinterlegt. Wer einen Menschen sprechen will,
+bekommt sofort den Terminlink. `max_tokens` für den sichtbaren Text: 450.
+
+Terminlinks rendert das Fenster als Schaltfläche („Termin mit Haşim wählen“),
+auch wenn das Modell sie fett setzt oder als nackte Adresse schreibt.
+`cal-embed.js` öffnet sie als Overlay und gibt `metadata[quelle]=chat` mit.
+
+## Nachdenken vor der Antwort (`HU_CHAT_THINKING`)
+
+| Wert | Wirkung |
+| --- | --- |
+| leer, `off` | kein Nachdenken (Standard) |
+| Zahl ab `1024` | festes Denkbudget in Tokens, für Claude 4.5 und älter (Haiku 4.5) |
+| `low`, `medium`, `high`, `max` | adaptives Denken mit Effort, für neuere Modelle |
+
+Das Budget kommt zu den 450 Antworttokens hinzu und wird in der
+Kostenreservierung mitgerechnet. Das Nachdenken erreicht den Besucher nie.
+Jede Änderung des Werts leert den Prompt-Cache einmal. Neuere Modelle lehnen
+eine feste Zahl ab, Haiku 4.5 lehnt `low` bis `max` ab: Wert und Modell
+gemeinsam wechseln.
 
 ## Gespräch: `POST /nexus/v1/chat/messages`
 

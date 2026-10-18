@@ -355,6 +355,37 @@
 	text-underline-offset: 2px;
 }
 
+/* Terminlink als Schaltfläche; cal-embed.js öffnet ihn als Overlay */
+.hu-chat__text .hu-chat__cta {
+	display: inline-flex;
+	align-items: center;
+	gap: var(--s0);
+	min-height: 44px;
+	margin: var(--s0) 0;
+	padding: 0 var(--s1) 0 var(--s1);
+	border-radius: var(--r1);
+	background: var(--stempel);
+	color: var(--papier);
+	font-family: var(--serif);
+	font-size: 15px;
+	font-weight: 650;
+	text-decoration: none;
+	transition: transform var(--t-mikro) var(--ease-aus), box-shadow var(--t-norm) var(--ease-weich);
+}
+
+.hu-chat__text .hu-chat__cta:hover {
+	transform: translateY(-1px);
+	box-shadow: 0 10px 28px -10px color-mix(in srgb, var(--stempel) 70%, transparent);
+}
+
+.hu-chat__text .hu-chat__cta svg:last-child {
+	transition: transform var(--t-mikro) var(--ease-aus);
+}
+
+.hu-chat__text .hu-chat__cta:hover svg:last-child {
+	transform: translateX(2px);
+}
+
 .hu-chat__text strong {
 	font-weight: 650;
 	color: var(--tinte);

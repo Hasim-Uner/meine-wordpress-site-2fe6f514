@@ -99,18 +99,66 @@ const isExternal = (href) => {
 const link = (href, text) => el('a', isExternal(href) ? { href, text, target: '_blank', rel: 'noopener' } : { href, text });
 
 /** Inline markdown: **bold** and [text](url). */
+const isBooking = (href) => {
+	try {
+		const url = new URL(href, window.location.origin);
+		return bookingPrefixes.includes(url.origin + url.pathname);
+	} catch (error) {
+		return false;
+	}
+};
+
+const calendarIcon = () => {
+	const svg = document.createElementNS(SVG, 'svg');
+	svg.setAttribute('viewBox', '0 0 24 24');
+	svg.setAttribute('width', '18');
+	svg.setAttribute('height', '18');
+	svg.setAttribute('aria-hidden', 'true');
+	svg.setAttribute('focusable', 'false');
+	for (const d of ['M4 6.5A1.5 1.5 0 0 1 5.5 5h13A1.5 1.5 0 0 1 20 6.5v12a1.5 1.5 0 0 1-1.5 1.5h-13A1.5 1.5 0 0 1 4 18.5z', 'M4 10h16M8.5 3v4M15.5 3v4']) {
+		const path = document.createElementNS(SVG, 'path');
+		path.setAttribute('d', d);
+		path.setAttribute('fill', 'none');
+		path.setAttribute('stroke', 'currentColor');
+		path.setAttribute('stroke-width', '1.8');
+		path.setAttribute('stroke-linecap', 'round');
+		svg.append(path);
+	}
+	return svg;
+};
+
+/** Booking links become a button; cal-embed.js opens it as the Cal.com overlay. */
+const bookingButton = (href, label) => el('a', {
+	class: 'hu-chat__cta',
+	href,
+	target: '_blank',
+	rel: 'noopener',
+	'data-track-action': 'chat_booking',
+	'data-track-category': 'lead_gen',
+	'data-track-section': 'chat_answer',
+}, [calendarIcon(), el('span', { text: label }), arrowIcon()]);
+
+/** Inline markdown: **bold** (may contain links), [text](url) and bare booking URLs. */
 const inline = (text) => {
 	const out = document.createDocumentFragment();
-	const pattern = /\*\*([^*]+)\*\*|\[([^\]]+)\]\(([^)\s]+)\)/g;
+	const pattern = /\*\*(.+?)\*\*|\[([^\]]+)\]\(([^)\s]+)\)|(https?:\/\/[^\s)<>]+)/g;
 	let last = 0;
 	let match;
 	while ((match = pattern.exec(text))) {
 		if (match.index > last) out.append(text.slice(last, match.index));
 		if (match[1] !== undefined) {
-			out.append(el('strong', { text: match[1] }));
-		} else {
+			const inner = inline(match[1]);
+			// A bold wrapper around a lone booking link is decoration, not emphasis.
+			const only = inner.childNodes.length === 1 && inner.firstChild.classList?.contains('hu-chat__cta');
+			out.append(only ? inner : el('strong', {}, inner));
+		} else if (match[2] !== undefined) {
 			const href = safeHref(match[3]);
-			out.append(href ? link(href, match[2]) : match[2]);
+			if (href && isBooking(href)) out.append(bookingButton(href, match[2]));
+			else out.append(href ? link(href, match[2]) : match[2]);
+		} else {
+			const href = safeHref(match[4]);
+			if (href && isBooking(href)) out.append(bookingButton(href, 'Termin mit Haşim wählen'));
+			else out.append(href ? link(href, match[4]) : match[4]);
 		}
 		last = pattern.lastIndex;
 	}

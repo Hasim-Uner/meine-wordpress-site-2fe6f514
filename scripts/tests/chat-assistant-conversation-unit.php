@@ -60,6 +60,33 @@ check( 'ephemeral' === $body['system'][0]['cache_control']['type'] && 'SYSTEM' =
 check( HU_CHAT_TOOL_NAME === $body['tools'][0]['name'] && HU_CHAT_MAX_TOKENS === $body['max_tokens'], 'tool and output cap present' );
 check( ! isset( $body['tool_choice'] ), 'model decides about the tool' );
 
+// Thinking modes.
+check( [ 'extra_tokens' => 0 ] === hu_chat_thinking_settings( '' ) && [ 'extra_tokens' => 0 ] === hu_chat_thinking_settings( 'off' ), 'thinking off by default' );
+check( [ 'extra_tokens' => 0 ] === hu_chat_thinking_settings( '512' ), 'budget below the minimum is ignored' );
+$manual = hu_chat_thinking_settings( '2048' );
+check( 'enabled' === $manual['thinking']['type'] && 2048 === $manual['thinking']['budget_tokens'] && 2048 + HU_CHAT_MAX_TOKENS === hu_chat_max_tokens( $manual ), 'manual budget adds to the cap' );
+check( 16000 === hu_chat_thinking_settings( '99999' )['thinking']['budget_tokens'], 'budget capped' );
+$adaptive = hu_chat_thinking_settings( 'High' );
+check( 'adaptive' === $adaptive['thinking']['type'] && 'high' === $adaptive['output_config']['effort'], 'adaptive effort' );
+$thought = json_decode( hu_chat_conversation_body( $ok, '/', 'SYSTEM', $manual ), true );
+check( 2048 === $thought['thinking']['budget_tokens'] && $thought['max_tokens'] > $thought['thinking']['budget_tokens'], 'body carries thinking below max_tokens' );
+check( ! isset( json_decode( hu_chat_conversation_body( $ok, '/', 'SYSTEM', [ 'extra_tokens' => 0 ] ), true )['thinking'] ), 'no thinking key when off' );
+$think_stream = new HU_Chat_Anthropic_Stream();
+$events = [];
+foreach ( [
+	[ 'type' => 'message_start', 'message' => [ 'usage' => [ 'input_tokens' => 3 ] ] ],
+	[ 'type' => 'content_block_start', 'index' => 0, 'content_block' => [ 'type' => 'thinking' ] ],
+	[ 'type' => 'content_block_delta', 'index' => 0, 'delta' => [ 'type' => 'thinking_delta', 'thinking' => 'geheim' ] ],
+	[ 'type' => 'content_block_delta', 'index' => 0, 'delta' => [ 'type' => 'signature_delta', 'signature' => 'sig' ] ],
+	[ 'type' => 'content_block_stop', 'index' => 0 ],
+	[ 'type' => 'content_block_delta', 'index' => 1, 'delta' => [ 'type' => 'text_delta', 'text' => 'Antwort' ] ],
+	[ 'type' => 'message_delta', 'usage' => [ 'output_tokens' => 9 ] ],
+	[ 'type' => 'message_stop' ],
+] as $event ) {
+	$think_stream->accept( $event, static function ( $e, $d ) use ( &$events ) { $events[] = [ $e, $d ]; } );
+}
+check( ! str_contains( json_encode( $events ), 'geheim' ) && $think_stream->complete, 'thinking never reaches the visitor' );
+
 // Tool sanitizing.
 check( null === hu_chat_sanitize_tool_event( [ 'name' => 'send_mail', 'input' => [] ] ), 'unknown tool dropped' );
 $tool = hu_chat_sanitize_tool_event( [ 'name' => HU_CHAT_TOOL_NAME, 'input' => [ 'name' => '<b>Ana</b>', 'email' => 'kein-mail', 'weg' => 'hack', 'zusammenfassung' => str_repeat( 'x', 2000 ), 'empfaenger' => 'x@evil.test' ] ] );
