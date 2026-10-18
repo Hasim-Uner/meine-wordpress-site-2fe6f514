@@ -393,6 +393,7 @@ class Chat {
 	autosize() {
 		this.input.style.height = 'auto';
 		this.input.style.height = Math.min(this.input.scrollHeight, 140) + 'px';
+		this.form.classList.toggle('has-text', this.input.value.trim() !== '');
 	}
 
 	save() {

@@ -371,6 +371,11 @@ add_action(
 // ── 3. BLOCKSY TITLE OVERRIDE ────────────────────────────────────
 add_filter( 'blocksy:post_types:post:has_page_title', '__return_false' );
 
+// Blocksys blauer „Nach oben“-Knopf lag unter dem KI-Assistenten unten
+// rechts und passte nicht ins System. Aus, unabhängig vom Customizer.
+// Artikel behalten ihren eigenen Knopf (template-parts/single-reader.php).
+add_filter( 'theme_mod_has_back_top', static fn() => 'no' );
+
 // Rewrite Rules flushen bei Theme-Aktivierung.
 add_action( 'after_switch_theme', function() {
     flush_rewrite_rules();
