@@ -140,7 +140,7 @@ $faq_items           = nexus_get_whitelabel_faq_items();
 $wl_access_options   = hu_whitelabel_request_access_options();
 $wl_referral_options = function_exists( 'nexus_get_inquiry_referral_options' ) ? nexus_get_inquiry_referral_options() : [];
 
-$references     = hu_public_reference_projects();
+$references     = hu_whitelabel_reference_projects();
 $reference_n    = count( $references );
 $count_words    = [ 1 => 'diese eine Website', 2 => 'diese zwei Websites', 3 => 'diese drei Websites', 4 => 'diese vier Websites', 5 => 'diese fünf Websites' ];
 $reference_word = $count_words[ $reference_n ] ?? sprintf( 'diese %d Websites', $reference_n );

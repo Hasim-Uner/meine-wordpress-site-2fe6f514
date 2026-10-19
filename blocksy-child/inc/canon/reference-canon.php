@@ -66,6 +66,32 @@ function hu_public_reference_projects() {
 }
 
 /**
+ * References for the white-label page: E3 first, then the public projects.
+ *
+ * E3 steht hier namentlich und ohne Zahlen. Keine Kennzahlen, kein Zeitraum,
+ * kein Link auf den anonymen Case — die Verbindung von Name und Zahlen bleibt
+ * ausgeschlossen (Entscheidung 10.09.2026, bestaetigt 19.10.2026).
+ *
+ * @return array<int, array<string, mixed>>
+ */
+function hu_whitelabel_reference_projects() {
+	return array_merge(
+		[
+			[
+				'name'       => 'e3-newenergy.de',
+				'url'        => 'https://e3-newenergy.de/',
+				'tag'        => 'Anfragestrecke · Solar & Wärmepumpe',
+				'discipline' => 'Anfragestrecke',
+				'role'       => 'Funnel-Architektur',
+				'text'       => 'Die komplette Anfragestrecke für Endkunden gebaut: Landingpages in WordPress, mehrstufige Formularstrecken, Server-Side-Tracking und die Übergabe jeder Anfrage ins CRM.',
+				'stack'      => [ 'Landingpages', 'Server-Side-Tracking', 'CRM-Anbindung' ],
+			],
+		],
+		hu_public_reference_projects()
+	);
+}
+
+/**
  * Project portraits approved for the website product page.
  *
  * The named E3 reference describes the work only. It must not contain metrics
