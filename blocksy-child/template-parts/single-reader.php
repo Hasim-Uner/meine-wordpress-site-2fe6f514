@@ -153,8 +153,27 @@ get_template_part( 'template-parts/blog-header' );
 		}
 
 		if ( $is_agency_outsourcing ) {
-			$article_context['primary_label'] = __( 'White-Label-Zusammenarbeit ansehen', 'blocksy-child' );
-			$article_context['primary_url']   = $whitelabel_route_url;
+			$article_context['primary_label']   = __( 'White-Label-Zusammenarbeit ansehen', 'blocksy-child' );
+			$article_context['primary_url']     = $whitelabel_route_url;
+			$article_context['secondary_label'] = __( 'Aufgabe für Ihr Kundenprojekt beschreiben', 'blocksy-child' );
+			$article_context['secondary_url']   = add_query_arg( 'case', 'aufgabe', $whitelabel_route_url ) . '#aufgabe';
+		}
+
+		// Der konkrete Anlass geht vor der gemeinsamen Dossier-Kategorie.
+		if ( 'wordpress-seo-keine-anfragen' === $post_slug ) {
+			$article_context = [
+				'eyebrow'         => __( 'Besucher zu Anfragen machen', 'blocksy-child' ),
+				'title'           => __( 'Wo verliert Ihre Website passende Anfragen?', 'blocksy-child' ),
+				'text'            => sprintf(
+					/* translators: %s: Canonical analysis price including currency. */
+					__( 'Die Anfragesystem-Analyse prüft Angebot, Seitenführung, Formular und die Übergabe an den Vertrieb. Für %s netto erhalten Sie einen schriftlichen Befund mit priorisierten nächsten Schritten. Bei Umsetzung wird der Betrag angerechnet.', 'blocksy-child' ),
+					hu_analysis_price()
+				),
+				'primary_label'   => __( 'Umfang und Preis der Analyse ansehen', 'blocksy-child' ),
+				'primary_url'     => hu_get_commercial_route( 'conversion' ),
+				'secondary_label' => __( 'Analyse für Ihre Website anfragen', 'blocksy-child' ),
+				'secondary_url'   => hu_get_contact_intake_url( 'analysis', 'conversion' ),
+			];
 		}
 
 		// Relaunch-Leser suchen keine Agentur-Seite, sondern haben ein Projekt:

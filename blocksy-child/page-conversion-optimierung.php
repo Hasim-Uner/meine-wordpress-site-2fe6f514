@@ -292,19 +292,21 @@ get_header();
 		<div class="blatt reihe">
 			<div class="spalte-links"><div class="kapitel" aria-hidden="true"><span class="nr">5</span><span class="titel">Beleg</span><span class="strich"></span></div></div>
 			<div class="haupt">
-				<h2 class="kopf" id="h-beleg"><?php echo esc_html( sprintf( 'Kosten pro Anfrage, %s Monate später.', $case_months ) ); ?></h2>
-				<p class="fall-zahl"><span class="von"><span class="nur-vorlesen">vorher </span><?php echo esc_html( $cpl_before ); ?></span><span class="bis"><span class="nur-vorlesen">nachher </span><?php echo esc_html( $cpl_after ); ?></span><span class="einh">pro qualifizierter Anfrage</span></p>
+				<h2 class="kopf" id="h-beleg">Portal-Anfragen und eigener Anfrageweg im Vergleich.</h2>
+				<p class="fall-zahl"><span class="von"><span class="nur-vorlesen">Gekaufte Portal-Anfrage vorher: </span><?php echo esc_html( $cpl_before ); ?></span><span class="bis"><span class="nur-vorlesen"><?php echo esc_html( $e3_canon['timeline']['result_label'] ); ?>: </span><?php echo esc_html( $cpl_after ); ?></span><span class="einh">pro Anfrage</span></p>
 				<p><?php
 					echo esc_html(
 						sprintf(
-							'Ein %1$s in DACH kaufte seine Anfragen bei Portalen. Er bekam stattdessen eine eigene Strecke mit Einordnung und Messung. In %2$s Monaten kamen über %3$s qualifizierte Anfragen.',
+							'Ein %1$s in DACH kaufte seine Anfragen bei Portalen. Im Projekt wurden Landingpages, Kampagnen, Vorqualifizierung, Tracking und CRM verbunden. In %2$s Monaten entstanden insgesamt %3$s Anfragen. Die Abschlussquote in der Fallstudie bezieht sich auf die vorqualifizierten CRM-Leads.',
 							$case_label,
 							$case_months,
 							$lead_count
 						)
 					);
 				?></p>
+				<p><?php echo esc_html( $e3_canon['timeline']['compact'] ); ?> Vergleich zweier Anfragequellen, kein Durchschnitt über den gesamten Zeitraum und kein isolierter Effekt der Conversion-Optimierung.</p>
 				<p><a class="textlink" href="<?php echo esc_url( $case_url ); ?>" data-track-action="cro_offer_proof_case" data-track-category="proof" data-track-section="cro_offer_proof">Fallstudie mit Herleitung</a></p>
+				<p><a class="textlink" href="<?php echo esc_url( $contact_url ); ?>" data-track-action="cro_offer_proof_analysis" data-track-category="lead_gen" data-track-section="cro_offer_proof">Analyse Ihres Anfragewegs anfragen</a> · <?php echo esc_html( $analysis_price ); ?> netto, bei Umsetzung angerechnet.</p>
 			</div>
 			<aside class="marg"><div class="note"><span class="label">Selbst nachmessen</span>Die Technik dieser Seite können Sie prüfen, bevor Sie anfragen: <a class="satzlink" href="<?php echo esc_url( $psi_url ); ?>" target="_blank" rel="noopener" data-track-action="cro_offer_proof_pagespeed" data-track-category="proof" data-track-section="cro_offer_proof">Ladezeit messen<span class="nur-vorlesen"> (öffnet in neuem Tab)</span></a>.</div></aside>
 		</div>

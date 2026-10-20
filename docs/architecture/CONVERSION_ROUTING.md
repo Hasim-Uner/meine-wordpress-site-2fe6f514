@@ -1,6 +1,6 @@
 # Conversion Routing Architecture
 
-Status: Code-Vertrag, aktualisiert 2026-10-09.
+Status: Code-Vertrag, aktualisiert 2026-10-19.
 Live-Abnahme und Prüfgrenzen: `docs/architecture/LIVE_STATUS.md`.
 
 This document separates **SEO ownership** from **conversion routing**. It exists to prevent a recurring failure mode: sending every page to the same funnel or moving a ranking query owner merely because another page has the preferred CTA.
@@ -31,7 +31,7 @@ A page can remain the canonical SEO destination for its query while its CTA rout
 | `/wordpress-website-erstellen-lassen/` | Direktkunden, WordPress-Website erstellen lassen | Die Anfrage-Website: Produkt, Umfangsrechner, Festpreis und Bauzeit | `/kontakt/?type=project&focus=website&seiten=N&art=neubau\|relaunch` plus `tracking=1` bei Auswahl; Positionen hero/angebot/beleg/leiste/abschluss | Vergleich, Belege und Bauzeit; Kontextlink von der lokalen Agenturseite |
 | `/wordpress-agentur-hannover/` | Local `wordpress agentur hannover` search intent | Local SEO acquisition + decision hub: Agenturmodell vs. direkte Verantwortung | Project request without preset focus (`hu_get_navigation_project_request_url()`, since 2026-09-26) | Context owners: Website, Conversion Tracking, Conversion-Optimierung; proof: public references `/#referenzen` and case study |
 | `/ergebnisse/` | Retired proof hub (since 2026-09-25) | 301 to `/case-study-solar-leadgenerierung/`; excluded from sitemap and `llms.txt` | none | Menu item „Ergebnisse“ → `/#arbeiten`; route `results` → case study |
-| `/case-study-solar-leadgenerierung/` | Solar proof; since 2026-09-25 also the proof target of homepage, menu item „Ergebnisse“, tracking and agency pages | Evidence page | Solar Marktcheck | Non-energy readers: quiet project request below the Marktcheck (`cta_case_study_to_project`, since 2026-09-26) |
+| `/case-study-solar-leadgenerierung/` | Solar proof; since 2026-09-25 also the proof target of homepage, menu item „Ergebnisse“, tracking and agency pages | Evidence page | Solar Marktcheck, explicitly addressed to Solar/Wärmepumpe businesses | General B2B projects: quiet project request in the transfer section (`case_transfer_project`) and below the Marktcheck (`cta_case_study_to_project`) |
 
 ## Glossar: erst erklären, dann Projektbezug
 
@@ -171,6 +171,28 @@ Hypothese wird sechs Wochen ab Livegang geprüft, siehe
 
 Routing, Inhalte, Weiterleitung, Analytics-Zuordnung und Nachkontrolle:
 `docs/decisions/homepage-freelancer-konsolidierung.md`.
+
+## Artikel mit konkretem Projektanlass
+
+In `template-parts/single-reader.php` haben diese Artikel einen eigenen
+Kontext vor den allgemeinen Dossier-Zielen. Dieselben Ziele erscheinen
+unter „Weiterarbeiten“; die vorhandenen Abschnittsmarker
+`article_context_bridge` und `article_next_steps` bleiben erhalten.
+
+- `/wordpress-seo-keine-anfragen/`: primär Umfang und Preis der
+  Anfragesystem-Analyse auf `/conversion-optimierung/`, sekundär
+  `hu_get_contact_intake_url('analysis', 'conversion')`. Die lokale
+  Hannover-Seite ist hier kein nächster Schritt.
+- `/wordpress-projekte-auslagern/`: primär White-Label-Zusammenarbeit,
+  sekundär die konkrete Aufgabe unter `/whitelabel-retainer/?case=aufgabe#aufgabe`.
+  Beide Wege bleiben im Agenturkontext.
+
+Auf `/conversion-optimierung/` kann der Besucher direkt am Fallbeleg eine
+Analyse anfragen (`cro_offer_proof_analysis`, Kategorie `lead_gen`, Abschnitt
+`cro_offer_proof`). Ziel und Preis entsprechen den übrigen Analyse-CTAs.
+Der bestehende Fallstudien-Link (`cro_offer_proof_case`) bleibt erhalten.
+Die Zahlen vergleichen Anfragequellen; Gesamtanfragen, vorqualifizierte
+CRM-Leads und der erreichte Kampagnen-CPL bleiben getrennt erläutert.
 
 ## Blog-Cornerstone `/website-relaunch/`
 

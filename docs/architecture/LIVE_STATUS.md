@@ -1,6 +1,6 @@
 # Live Status
 
-Verhalten laut Repository, nach Bereichen. Stand: 2026-10-18.
+Verhalten laut Repository, nach Bereichen. Stand: 2026-10-20.
 Der grundlegende Funnel-Umbau aus PR #565 und die Tracking-Korrekturen aus
 PR #566 sowie die Kontaktübergabe aus PR #567 sind gemerged und deployed.
 Startseite, GA4, Landingpage, Solar, Kontakt und Server-Side wurden im
@@ -18,6 +18,12 @@ Abschnitt anzuhängen; der Verlauf gehört in Commit-Nachrichten.
 
 - Basis: Repo-Inhalt, Deploy-Workflows und die Template- und Funnel-Logik im
   Theme `blocksy-child/`.
+- Die Korrekturen vom 2026-10-19 an Fallbezeichnungen, Artikel-Kontextlinks
+  und Anfragewegen sind Repo-Stand; die Veröffentlichung und Live-Abnahme
+  dieses Pakets stehen noch aus. PHP-Syntax und die gerenderten Ziel-URLs
+  der betroffenen Artikel- und Beleg-CTAs sind lokal geprüft. Die lokale
+  Browserprüfung ist durch eine Socket-Sperre der Testumgebung blockiert;
+  Browser-Integration wird über die bestehende CI geprüft.
 - Nicht aus dem Repo verifizierbar: WordPress-Admin (Menüs, Editor-Inhalte,
   Plugins), Brevo-, Cal.com- und Koko-Setups, Server-Cron und die tatsächliche
   Mailzustellung.
@@ -411,6 +417,11 @@ Contract und Abnahme: `CHAT_ASSISTANT.md`.
   Seitenanlage über `nexus_get_provisioned_pages()`. Query-Owner für
   `conversion optimierung b2b`, `conversion optimierung`,
   `conversion rate optimierung` und `wordpress conversion optimieren`.
+  Der Fallbeleg benennt die Gesamtanfragen, den getrennten Bezug der
+  CRM-Abschlussquote und den ab Projektmonat drei erreichten Kampagnenwert.
+  Er ist kein isolierter Wirkungsnachweis für CRO. Neben der Herleitung bleibt
+  eine Analyseanfrage im gewählten Produktkontext (`cro_offer_proof_analysis`),
+  mit Kanonpreis und Anrechnungshinweis.
   Eingehende Links: Fuß (Gruppe Leistungen, `cta_footer_nav_conversion`),
   `/landingpage-erstellen-lassen/` (Anlass 04), `/ga4-tracking-setup/`
   (Abschnitt Probleme), Artikel `/website-relaunch/` und die Glossarbegriffe
@@ -575,9 +586,11 @@ Contract und Abnahme: `CHAT_ASSISTANT.md`.
   `noindex`, in `wp-sitemap.xml`); der frühere Anonymisierungs-Hold ist aus
   `hu_get_noindex_follow_slugs()` entfernt, `scripts/validate-route-architecture.py`
   hält den neuen Stand fest. Notbremse: ACF-Feld `seo_noindex` an der Seite.
-  Unter dem Marktcheck
-  steht seit 2026-09-26 ein zweiter, leiser Weg in die Projektanfrage für
-  Leser ohne Energiebetrieb (`cta_case_study_to_project`). Seit 2026-10-01
+  Bereits in der Einordnung steht ein leiser Weg zur allgemeinen
+  B2B-Projektanfrage (`case_transfer_project`). Der Marktcheck darunter
+  benennt ausdrücklich Solar- und Wärmepumpenbetriebe. Der bestehende
+  Projektlink unter dem Marktcheck bleibt erhalten (`cta_case_study_to_project`).
+  Seit 2026-10-01
   steht die Seite auf `system.css` und `e3-case-v2.css` (vier `.tafel`-Flächen,
   kein `design-system.css`, kein `energy-systems.css`). Eigenes og:image
   `assets/img/fallstudie-og.jpg` (1200 × 630, JPG, nur Kanonwerte), das auch
@@ -602,6 +615,10 @@ Contract und Abnahme: `CHAT_ASSISTANT.md`.
   Gestaltung im Nachsatz von `assets/css/article-reader-body.css`. Das
   Einblenden beim Scrollen versteckt nur unter `.hu-js`; ohne JavaScript
   bleiben alle Blöcke sichtbar, nur das Leserfeedback entfällt.
+  Der konkrete Artikelanlass hat Vorrang: `/wordpress-seo-keine-anfragen/`
+  führt zur CRO-Analyse und ihrer Anfrage; `/wordpress-projekte-auslagern/`
+  zu White-Label und zur Aufgabenbeschreibung. Die Kontextbrücke und
+  „Weiterarbeiten“ verwenden dieselben Ziele und behalten ihre Tracking-Hooks.
 - **Artikel-Bausteine** (`inc/editorial-bausteine.php`): Shortcodes
   `[hu_kurz]`, `[hu_notiz]`, `[hu_abb]`, `[hu_fall]`, `[hu_pruefliste]`,
   `[hu_abschluss]`, `[hu_quellen]` und Klassen für reines HTML. CSS und JS

@@ -16,8 +16,8 @@ $diagnostic_url = function_exists( 'hu_get_request_analysis_url' )
 
 // Seit /ergebnisse/ stillgelegt ist (2026-09-25), ist dieser Fall der Beleg
 // aller Wege: Startseite, Menüpunkt „Ergebnisse“, Tracking- und Agentur-Seite
-// führen hierher. Der Marktcheck bleibt primär; wer kein Energiebetrieb ist,
-// bekommt darunter einen eigenen, leisen Weg in die Projektanfrage.
+// führen hierher. Allgemeine B2B-Projekte erhalten bereits in der Einordnung
+// einen leisen Anfrageweg. Der folgende Marktcheck benennt den Energie-Fokus.
 $project_url = hu_get_commercial_route( 'project_request' );
 
 $tracking_attrs = 'data-track-section="case_solar_methodology" data-track-funnel-stage="proof"';
@@ -358,6 +358,7 @@ get_header();
 					<p>Der konkrete <?php echo nexus_glossary_link( 'cost-per-lead', 'CPL' ); ?> hängt unter anderem von Region, Wettbewerb, Produkt, Werbekosten, Marke und Vertrieb ab. Deshalb wäre es unseriös, den Endwert dieses Referenzfalls für einen anderen Betrieb zu versprechen.</p>
 					<p>Übertragbar ist die Logik dahinter:</p>
 					<p class="e3v2-formula">Kaufabsicht erkennen <span>→</span> eigene Nachfrage erzeugen <span>→</span> qualifizieren <span>→</span> schnell übergeben <span>→</span> Ergebnis messen <span>→</span> optimieren.</p>
+					<p>Sie planen eine WordPress-Website, Landingpage oder ein Tracking-Projekt für Ihr B2B-Unternehmen? <a class="e3v2-text-link" href="<?php echo esc_url( $project_url ); ?>" data-track-action="case_transfer_project" data-track-category="lead_gen" data-track-section="case_solar_transfer">Ihr Projekt anfragen <span aria-hidden="true">→</span></a></p>
 				</div>
 			</div>
 		</section>
@@ -365,7 +366,7 @@ get_header();
 		<section class="e3v2-section e3v2-section--cta tafel" id="cta" aria-labelledby="e3v2-cta-title">
 			<div class="e3v2-container e3v2-cta-grid" data-reveal>
 				<div>
-					<p class="e3v2-kicker">Nächster Schritt</p>
+					<p class="e3v2-kicker">Für Solar- und Wärmepumpenbetriebe</p>
 					<h2 id="e3v2-cta-title">Wo verliert Ihr Anfrageweg heute Geld?</h2>
 				</div>
 				<div class="e3v2-cta-copy">
