@@ -764,6 +764,37 @@ function hu_get_reference_collection_schema() {
 }
 
 /**
+ * Service definition for the existing paid WordPress takeover check.
+ * The offer price covers diagnosis, not the subsequent development project.
+ *
+ * @return array<string, mixed>
+ */
+function hu_get_wordpress_takeover_service_definition() {
+    return [
+        'name'          => 'WordPress-Website übernehmen und weiterentwickeln',
+        'description'   => 'Bestehende WordPress-Websites prüfen und gezielt weiterentwickeln. Einstieg ist der bezahlte Übernahme-Check; die Umsetzung wird danach separat vereinbart.',
+        'serviceType'   => 'WordPress-Übernahme und Weiterentwicklung',
+        'serviceOutput' => 'Schriftlicher Befund zu Theme, Plugins, Updates, Backups, Zugängen und Ladezeit mit Prioritäten und Festpreis für den nächsten Schritt',
+        'offers'        => [
+            [
+                '@type'              => 'Offer',
+                'name'               => 'WordPress-Übernahme-Check',
+                'description'        => 'Prüfung und schriftlicher Befund. Bei Beauftragung des Folgeprojekts verrechnet. Reparaturen, Migrationen und neue Seiten separat.',
+                'price'              => HU_FREELANCER_TAKEOVER_CHECK_PRICE,
+                'priceCurrency'      => 'EUR',
+                'priceSpecification' => [
+                    '@type'                 => 'UnitPriceSpecification',
+                    'price'                 => HU_FREELANCER_TAKEOVER_CHECK_PRICE,
+                    'priceCurrency'         => 'EUR',
+                    'valueAddedTaxIncluded' => false,
+                ],
+                'url'                => hu_get_commercial_route( 'takeover' ) . '#uebernahme-check',
+            ],
+        ],
+    ];
+}
+
+/**
  * Build a generic WebPage node that anchors a singular view in the graph.
  *
  * Pages that already emit a dedicated WebPage subtype (ProfilePage, AboutPage,
@@ -1326,6 +1357,7 @@ function hu_output_schema()
 
     // Service definitions (slug => data)
     $service_definitions = [
+        'wordpress-website-uebernehmen' => hu_get_wordpress_takeover_service_definition(),
         'wordpress-agentur-hannover' => [
             'name'        => 'WordPress Agentur Hannover',
             'description' => 'WordPress Agentur in Hannover für B2B-Unternehmen: technisches SEO, laufende Betreuung, Tracking, Conversion und Angebotsseiten als ein verbundenes System mit kontrollierter Weiterentwicklung.',
@@ -2087,7 +2119,7 @@ function hu_output_schema()
         global $post;
         if ( isset( $post ) && $post instanceof WP_Post ) {
             $template_owns_faq_schema = (
-                in_array( $slug, [ 'referenzen', 'ergebnisse', 'case-studies-e-commerce', 'case-studies', 'hasim-uener', 'wordpress-agentur-hannover', 'wordpress-freelancer-hannover', 'server-side-tracking-b2b', 'aroundhome-solar-einordnung', 'whitelabel-retainer', 'whitelabel-retainer-proof', 'whitelabel', 'landingpage-erstellen-lassen', 'wordpress-website-erstellen-lassen' ], true )
+                in_array( $slug, [ 'wordpress-website-uebernehmen', 'referenzen', 'ergebnisse', 'case-studies-e-commerce', 'case-studies', 'hasim-uener', 'wordpress-agentur-hannover', 'wordpress-freelancer-hannover', 'server-side-tracking-b2b', 'aroundhome-solar-einordnung', 'whitelabel-retainer', 'whitelabel-retainer-proof', 'whitelabel', 'landingpage-erstellen-lassen', 'wordpress-website-erstellen-lassen' ], true )
                 // Template-owned pages must not emit FAQs from invisible editor caches.
                 || is_page_template( 'page-ergebnisse.php' )
                 || is_page_template( 'page-case-studies-e-commerce.php' )

@@ -500,3 +500,25 @@ im Vertrieb. Geteilte und exklusiv gekaufte Portal-Kontakte unterscheiden;
 keine pauschale Unfähigkeit der Portal-Anbieter oder automatischen
 Ergebnisverbesserungen behaupten. Modellrechnung und dokumentierten Einzelfall
 weiter ausdrücklich voneinander trennen.
+
+## Bestehende WordPress-Website übernehmen (Paket 3, 21.10.2026)
+
+`/wordpress-website-uebernehmen/` besitzt den eigenen Anlass: Die bestehende
+Website hat keine Betreuung, der technische Stand ist unklar oder Änderungen
+bleiben liegen. Sie ist keine weitere allgemeine Freelancer-Seite und kein
+klassisches Wartungspaket. Der Einstieg bleibt der vorhandene Übernahme-Check
+zum Kanonpreis mit schriftlichem Befund und Festpreis für den nächsten Schritt.
+Bei Beauftragung des Folgeprojekts wird der Check verrechnet; der Befund bleibt
+beim Kunden. Die Prüfung ist von späterer Umsetzung getrennt.
+
+Weiterentwicklung als Einzelprojekt oder bestehendes Monatskontingent,
+monatlich kündbar, ohne Rufbereitschaft und ohne garantierte Reaktionszeiten.
+Ein Relaunch ist ein eigener möglicher Folgeschritt, kein Pflichtwechsel.
+Hosting, externe Dienste und Lizenzen separat benennen. Vor einer Übernahme
+keine pauschale Zusage für jeden Fremdstack. Benötigte Zugänge vor dem Check
+abstimmen; keine Passwörter im öffentlichen Anfrageformular.
+
+Die Anfrage ist unverbindlich, der Check beginnt erst nach Beauftragung.
+Die kanonische Antwortfrist gilt für die Anfrage, nicht für den fertigen Befund.
+Das E3-Projektporträt belegt Arbeit am Bestand; sein Gesamtumfang gehört nicht
+zum Check. Keine Kennzahlen oder Ergebnisgarantie im namentlichen Porträt.

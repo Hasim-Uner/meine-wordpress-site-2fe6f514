@@ -317,6 +317,7 @@ function hu_footer_register_suppressed_templates() {
 	return [
 		'page-conversion-optimierung.php',
 		'page-referenzen.php',
+		'page-wordpress-website-uebernehmen.php',
 	];
 }
 

@@ -102,6 +102,7 @@ $by_label        = array_column( $directory_items, 'url', 'label' );
 nav_check( ( $by_label['Solar & Wärmepumpe'] ?? '' ) === $routes['energy'], 'Solar stays reachable in the quiet footer directory' );
 nav_check( ( $by_label['Conversion-Tracking'] ?? '' ) === $routes['tracking_setup'], 'broad Tracking offer stays linked from the footer' );
 nav_check( ( $by_label['Referenzen'] ?? '' ) === $routes['references'], 'footer links the reference overview' );
+nav_check( ( $by_label['WordPress-Übernahme & Weiterentwicklung'] ?? '' ) === $routes['takeover'], 'footer links the dedicated takeover offer' );
 nav_check( ( $by_label['Server-Side Tracking'] ?? '' ) === $routes['tracking_b2b'], 'specialist page keeps a sitewide link with its exact name' );
 nav_check( '/performance-marketing/' === nav_path( $by_label['Performance Marketing'] ?? '' ), 'Performance Marketing query owner is linked sitewide' );
 
@@ -119,6 +120,20 @@ foreach ( $reference_schema['hasPart'] as $part ) {
 }
 nav_check( 1 === $reference_page->query( '//h1' )->length, 'reference page has one main heading' );
 nav_check( 0 === $reference_page->query( '//section[@id="e3-new-energy"]//a[contains(@href,"case-study")]' )->length, 'named E3 portrait stays separate from the anonymous numerical case' );
+nav_test_use_context( 'takeover' );
+$takeover_page = nav_dom( nav_test_render( 'page-wordpress-website-uebernehmen.php' ) );
+$takeover_definition = hu_get_wordpress_takeover_service_definition();
+$takeover_offer = $takeover_definition['offers'][0];
+nav_check( 1 === $takeover_page->query( '//h1' )->length, 'takeover offer has one main heading' );
+nav_check( HU_FREELANCER_TAKEOVER_CHECK_PRICE === $takeover_offer['price'] && false === $takeover_offer['priceSpecification']['valueAddedTaxIncluded'], 'takeover schema reads the canonical net check price' );
+nav_check( $routes['takeover'] . '#uebernahme-check' === $takeover_offer['url'], 'takeover schema points to the visible check scope' );
+nav_check( str_contains( $takeover_page->query( '//*[@class="zahl"]' )->item(0)->textContent, hu_freelancer_takeover_check_price() ), 'visible takeover price matches the schema canon' );
+$takeover_ctas = $takeover_page->query( '//a[@data-track-action="takeover_request_hero" or @data-track-action="takeover_request_close"]' );
+nav_check( 2 === $takeover_ctas->length, 'takeover request is available at entry and close' );
+foreach ( $takeover_ctas as $cta ) {
+    nav_check( hu_get_contact_intake_url( 'project', 'takeover' ) === $cta->getAttribute( 'href' ), 'takeover request preserves its product focus' );
+}
+nav_check( 0 === $takeover_page->query( '//*[@id="beleg"]//a[contains(@href,"case-study")]' )->length, 'takeover named proof stays separate from the anonymous case' );
 nav_test_use_context( 'imprint' );
 
 // --- 1b. Doors: one decision for header and footer ------------------------------
@@ -180,6 +195,7 @@ $expect_funnel = [
 	'solar_cluster' => [ 'voll', 'marktcheck', 'energy' ],
 	'about'         => [ 'voll', 'projekt', '' ],
 	'references'    => [ 'voll', 'projekt', '' ],
+	'takeover'      => [ 'voll', 'projekt', '' ],
 	'contact'       => [ 'voll', null, '' ],
 	'agentur_local' => [ 'voll', 'projekt', '' ],
 	'imprint'       => [ 'voll', 'projekt', '' ],
@@ -227,6 +243,7 @@ $expect_current = [
 	'solar_cluster' => [],
 	'about'         => [ 'Über mich' => 'page' ],
 	'references'    => [ 'Referenzen' => 'page' ],
+	'takeover'      => [],
 	'contact'       => [],
 	'agentur_local' => [],
 	'imprint'       => [],
@@ -250,7 +267,7 @@ foreach ( nav_test_contexts() as $context => $definition ) {
 
 	// Door register: on every page except /kontakt/ and the Money Pages in hu_footer_register_suppressed_templates(),
 	// six doors in one click, own way marked, not hidden.
-	if ( in_array( $context, [ 'home', 'contact', 'conversion', 'references' ], true ) ) {
+	if ( in_array( $context, [ 'home', 'contact', 'conversion', 'references', 'takeover' ], true ) ) {
 		nav_check( 0 === $footer_x->query( '//nav[@class="register"]' )->length, "{$context}: footer skips the door register" );
 		nav_check( 1 === $footer_x->query( '//footer[@id="footer"]' )->length && 1 === $footer_x->query( '//nav[@aria-label="Weitere Seiten"]' )->length, "{$context}: footer keeps direct line, directory and sender" );
 	} else {

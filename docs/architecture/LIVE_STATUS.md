@@ -16,10 +16,12 @@ Abschnitt anzuhängen; der Verlauf gehört in Commit-Nachrichten.
 
 ## Grundlage und Grenzen
 
-- Paket 2 (Referenzen und fokussierte Navigation) ist Repo-Stand und noch
-  nicht veröffentlicht oder live abgenommen. `/referenzen/` wird beim Deploy
-  über die bestehende Seiten-Provisionierung angelegt. Die folgenden
-  Navigationsangaben beschreiben den vorbereiteten Stand.
+- Paket 2 (Referenzen und fokussierte Navigation) wurde am 21.10.2026 mit
+  PR #587 gemergt; die Live-Abnahme dieses Pakets ist hier noch nicht dokumentiert.
+  `/referenzen/` nutzt die bestehende Seiten-Provisionierung.
+- Paket 3 (WordPress-Übernahme und Weiterentwicklung) ist vorbereitet, noch
+  nicht gemergt oder live abgenommen. Die folgende Routenbeschreibung dazu
+  beschreibt den Repo-Stand.
 - Basis: Repo-Inhalt, Deploy-Workflows und die Template- und Funnel-Logik im
   Theme `blocksy-child/`.
 - Die Korrekturen an Fallbezeichnungen, Artikel-Kontextlinks und Anfragewegen
@@ -250,6 +252,34 @@ Contract und Abnahme: `CHAT_ASSISTANT.md`.
   Wettbewerb, Site Audit, Datenbasis.
 
 ## Routen
+
+### `/wordpress-website-uebernehmen/` — Paket 3, Repo-Stand
+
+Neue hardcodierte Angebotsseite für bestehende WordPress-Websites. Der
+Übernahme-Check liest Preis und Anrechnung aus dem vorhandenen Angebotsvertrag;
+Monatskontingente bleiben unverändert. Sichtbar: Anlass, E3-Arbeitsbeleg mit
+Projektgrenze, Prüfbereiche, schriftlicher Befund, Weiterentwicklung,
+Voraussetzungen und unverbindliche Anfrage. Kein Wartungsnotdienst und keine
+garantierten Reaktionszeiten. Die Antwortfrist aus dem Kanon gilt nur für die
+Anfrage. Kein fester Fertigstellungstermin für den Befund behauptet.
+
+Automatische Seiten-Provisionierung, zentraler Title/Description-Override und
+Service-Schema mit einem Offer ausschließlich für den Check. Keine FAQ-Ausgabe
+aus unsichtbaren Editor-Caches. Layout: `system.css` plus
+`wordpress-uebernahme.css`, ohne Legacy-Provider oder neue Seitenskripte.
+Startseite und Footer verlinken den Einstieg; die vier Hauptmenüpunkte bleiben.
+Der eigene Abschluss ersetzt auf dieser Seite das Footer-Türregister.
+
+Kontakt über `type=project&focus=takeover`, mit passendem PHP-/JS-Briefing.
+Der Fokus wird über den vorhandenen REST-Endpunkt in CRM und Mails übernommen.
+Bestehendes `implementation_scope` bleibt kompatibel. Keine Live-Testanfrage.
+Vor Veröffentlichung: CI und Browser-Abnahme, danach Provisionierung und normale
+URL inklusive Header/Footer prüfen. Kein Editor-Inhalt muss migriert werden.
+
+Wirkungshypothese: Der eigene Anlass und der sichtbare Check-Umfang erleichtern
+passende Übernahmeanfragen. Nach Veröffentlichung angenommene Anfragen mit Fokus
+`takeover` und ihre Passung prüfen; Klicks allein belegen keinen Geschäftserfolg.
+Keine Conversion-Steigerung gemessen und kein Nutzertest mit Zielkunden erfolgt.
 
 ### `/referenzen/`
 

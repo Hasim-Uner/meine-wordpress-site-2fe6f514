@@ -236,6 +236,10 @@ function hu_get_forced_singular_seo_map() {
 				'title'       => 'WordPress Agentur Hannover: SEO, Tracking & CRO',
 				'description' => sprintf( 'WordPress Agentur Hannover für messbare B2B-Anfragen: technisches SEO, Server-Side Tracking, CRO. Erst Projektprüfung, dann Umsetzung. CPL-Case: %s → %s.', $e3_cpl_before, $e3_cpl_after ),
 			],
+			'wordpress-website-uebernehmen' => [
+				'title'       => 'WordPress-Website übernehmen & weiterentwickeln | Haşim Üner',
+				'description' => sprintf( 'Bestehende WordPress-Website übernehmen und weiterentwickeln. Übernahme-Check für %s netto: schriftlicher Befund, Prioritäten und Festpreis für den nächsten Schritt.', hu_freelancer_takeover_check_price() ),
+			],
 			'referenzen' => [
 				'title'       => 'WordPress-Referenzen und Projekte | Haşim Üner',
 				'description' => 'WordPress-Projekte mit Ausgangslage, eigenem Beitrag und öffentlich prüfbaren Websites: Weiterentwicklung, Informationsarchitektur, Tracking und CRM.',

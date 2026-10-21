@@ -117,6 +117,11 @@ function nexus_get_llms_txt_sections() {
 			'heading' => 'Fachseiten und kommerzielle Suchintents',
 			'links'   => [
 				[
+					'label'       => 'WordPress-Übernahme und Weiterentwicklung',
+					'url'         => hu_get_commercial_route( 'takeover' ),
+					'description' => 'Bestehende WordPress-Websites prüfen und gezielt weiterentwickeln: bezahlter Übernahme-Check mit schriftlichem Befund und Festpreis für den nächsten Schritt. Bei Beauftragung des Folgeprojekts verrechnet. Danach Einzelprojekt oder optionales Monatskontingent, ohne Bereitschaftsdienst.',
+				],
+				[
 					'label'       => 'Landingpage erstellen lassen',
 					'url'         => $urls['landingpage'] ?? home_url( '/landingpage-erstellen-lassen/' ),
 					'description' => 'Festpreis-Angebot für Direktkunden: eine WordPress-Seite für ein Angebot mit Konzept, Text, Anfrageformular und Abnahme. Einstiegsseite und verfügbare Kampagnenparameter werden mitgegeben; die vereinbarte Seiten-Conversion wird in vorhandenen Konten eingerichtet. Ein vollständiges Tracking-Setup ist ein separates Produkt.',

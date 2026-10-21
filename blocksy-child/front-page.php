@@ -229,10 +229,10 @@ $offers = [
 		'price_note' => 'netto · Übernahme-Check',
 		'text'    => 'Ich prüfe Theme, Plugins, Updates, Backups, Zugänge und Ladezeit. Sie bekommen einen schriftlichen Befund mit Festpreis für den nächsten Schritt. Der Befund gehört Ihnen, auch wenn Sie mit jemand anderem weiterarbeiten.',
 		'more'    => 'Beauftragen Sie mich danach, wird der Check verrechnet.',
-		'request' => $project_link( 'implementation_scope' ),
+		'request' => $project_link( 'takeover' ),
 		'hook'    => 'home_offer_takeover',
 		'cta'     => 'Übernahme-Check anfragen',
-		'detail'  => null,
+		'detail'  => [ 'url' => $routes['takeover'], 'hook' => 'home_offer_takeover_detail' ],
 	],
 ];
 
@@ -383,7 +383,7 @@ get_header();
 						<div class="st-angebot__preise">
 							<p class="st-angebot__preis"><?php echo esc_html( $offer['price'] ); ?><small><?php echo esc_html( $offer['price_note'] ); ?></small></p>
 							<p class="st-angebot__wege"><a class="st-link st-link--stark" href="<?php echo esc_url( $offer['request'] ); ?>" data-track-action="<?php echo esc_attr( $offer['hook'] ); ?>" data-track-category="lead_gen" data-track-section="angebote"><?php echo esc_html( $offer['cta'] ); ?> <span aria-hidden="true">→</span></a>
-							<?php if ( ! empty( $offer['detail'] ) ) : ?><a class="st-link" href="<?php echo esc_url( $offer['detail']['url'] ); ?>" data-track-action="<?php echo esc_attr( $offer['detail']['hook'] ); ?>" data-track-category="navigation" data-track-section="angebote">Umfang im Detail <span aria-hidden="true">→</span><span class="nur-vorlesen"> zu <?php echo esc_html( $offer['title'] ); ?></span></a><?php endif; ?></p>
+							<a class="st-link" href="<?php echo esc_url( $offer['detail']['url'] ); ?>" data-track-action="<?php echo esc_attr( $offer['detail']['hook'] ); ?>" data-track-category="navigation" data-track-section="angebote">Umfang im Detail <span aria-hidden="true">→</span><span class="nur-vorlesen"> zu <?php echo esc_html( $offer['title'] ); ?></span></a></p>
 						</div>
 					</article>
 				<?php endforeach; ?>

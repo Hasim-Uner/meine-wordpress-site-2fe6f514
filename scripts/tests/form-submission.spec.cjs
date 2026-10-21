@@ -390,55 +390,61 @@ test('unscoped project still advances from topic to message to identity', async 
     await expect(page.locator(fixtures.contact.button)).toBeVisible();
 });
 
-test('landingpage entry uses the short briefing and keeps its focus through REST, CRM and mail', async ({ page }) => {
-  const html = '<style>.is-hidden,[hidden]{display:none!important}</style>' + contactHtml('landingpage');
-  await page.route('**/*', route => route.fulfill({ contentType: 'text/html', body: html }));
-  await page.goto('https://example.test/kontakt/?type=project&focus=landingpage');
+for (const [focus, label, help, submitLabel, focusLabel] of [
+  ['landingpage', 'Angebot, Besucherquelle und Termin', 'woher kommen die Besucher', 'Landingpage anfragen', 'WordPress-Landingpage für ein Angebot'],
+  ['takeover', 'Website und Anlass der Übernahme', 'Bitte keine Passwörter', 'Übernahme-Check anfragen', 'WordPress-Übernahme-Check'],
+]) {
+  test(`${focus} entry keeps its product briefing through REST, CRM and mail`, async ({ page }) => {
+    const html = '<style>.is-hidden,[hidden]{display:none!important}</style>' + contactHtml(focus);
+    await page.route('**/*', route => route.fulfill({ contentType: 'text/html; charset=utf-8', body: html }));
+    await page.goto(`https://example.test/kontakt/?type=project&focus=${focus}`);
 
-  // The server-rendered page already carries the selection and useful copy.
-  await expect(page.locator('[name="focus"]')).toHaveValue('landingpage');
-  await expect(page.locator('[name="request_type"]')).toHaveValue('project');
-  await expect(page.locator('[data-contact-step="focus"]')).toHaveAttribute('data-contact-step-skip', 'true');
-  await expect(page.locator('[data-contact-message-label]')).toHaveText('Angebot, Besucherquelle und Termin');
-  await expect(page.locator('.contact-alternatives a').first()).toHaveAttribute('href', 'https://cal.com/hasim-uener/30min?overlayCalendar=true');
-  await expect(page.locator('.contact-alternatives a').last()).toHaveAttribute('href', 'mailto:kontakt@hasimuener.de');
+    // The server-rendered page already carries the selection and useful copy.
+    await expect(page.locator('[name="focus"]')).toHaveValue(focus);
+    await expect(page.locator('[name="request_type"]')).toHaveValue('project');
+    await expect(page.locator('[data-contact-step="focus"]')).toHaveAttribute('data-contact-step-skip', 'true');
+    await expect(page.locator('[data-contact-message-label]')).toHaveText(label);
+    await expect(page.locator('.contact-alternatives a').first()).toHaveAttribute('href', 'https://cal.com/hasim-uener/30min?overlayCalendar=true');
+    await expect(page.locator('.contact-alternatives a').last()).toHaveAttribute('href', 'mailto:kontakt@hasimuener.de');
 
-  let response;
-  let payload;
-  await page.route('**/wp-json/nexus/v1/contact-request', async route => {
-    payload = route.request().postDataJSON();
-    response = JSON.parse(execFileSync('php', [path.join(__dirname, 'submit-website-fixture.php')], {
-      input: JSON.stringify(payload), encoding: 'utf8',
-    }));
-    await route.fulfill({ status: response.status, contentType: 'application/json', body: JSON.stringify(response.data) });
+    let response;
+    let payload;
+    await page.route('**/wp-json/nexus/v1/contact-request', async route => {
+      payload = route.request().postDataJSON();
+      response = JSON.parse(execFileSync('php', [path.join(__dirname, 'submit-website-fixture.php')], {
+        input: JSON.stringify(payload), encoding: 'utf8',
+      }));
+      await route.fulfill({ status: response.status, contentType: 'application/json', body: JSON.stringify(response.data) });
+    });
+    await page.evaluate(() => { window.NexusContactConfig = { restEndpoint: '/wp-json/nexus/v1/contact-request' }; });
+    for (const file of ['nexus-core.js', 'contact.js']) await page.addScriptTag({ path: js(file) });
+
+    await expect(page.locator('[data-contact-message-help]')).toContainText(help);
+    await expect(page.locator('[data-contact-step="focus"]')).toBeHidden();
+    await expect(page.locator('[data-contact-step-label]').first()).toHaveText('Schritt 1 von 2 - Ausgangslage');
+    const briefing = 'Website: https://example.test/ · Bisherige Betreuung endet. Formular und Angebotsseite sollen verbessert werden.';
+    await page.locator('[name="message"]').fill(briefing);
+    await page.locator('[data-contact-next]').click();
+    await page.locator('[name="name"]').fill('Fixture Person');
+    await page.locator('[name="email"]').fill('fixture@example.test');
+    await page.locator('[name="consent"]').check();
+    await expect(page.locator('[data-contact-submit]')).toHaveText(submitLabel);
+    await page.locator('[data-contact-submit]').click();
+    await expect(page.locator('[data-contact-feedback]')).toHaveClass(/is-success/);
+
+    expect(payload).toMatchObject({ request_type: 'project', focus, message: briefing, consent: '1' });
+    expect(response.status).toBe(201);
+    expect(response.meta['1']).toMatchObject({
+      _nexus_contact_focus: focus,
+      _nexus_contact_focus_label: focusLabel,
+      _nexus_contact_source: 'project_request',
+      _nexus_contact_message: briefing,
+    });
+    expect(response.mails).toHaveLength(2);
+    for (const mail of response.mails) expect(mail.body).toContain(focusLabel);
   });
-  await page.evaluate(() => { window.NexusContactConfig = { restEndpoint: '/wp-json/nexus/v1/contact-request' }; });
-  for (const file of ['nexus-core.js', 'contact.js']) await page.addScriptTag({ path: js(file) });
 
-  await expect(page.locator('[data-contact-message-help]')).toContainText('woher kommen die Besucher');
-  await expect(page.locator('[data-contact-step="focus"]')).toBeHidden();
-  await expect(page.locator('[data-contact-step-label]').first()).toHaveText('Schritt 1 von 2 - Ausgangslage');
-  const briefing = 'Beratung für Unternehmen, Besucher aus Google Ads, gewünschter Termin im November.';
-  await page.locator('[name="message"]').fill(briefing);
-  await page.locator('[data-contact-next]').click();
-  await page.locator('[name="name"]').fill('Fixture Person');
-  await page.locator('[name="email"]').fill('fixture@example.test');
-  await page.locator('[name="consent"]').check();
-  await expect(page.locator('[data-contact-submit]')).toHaveText('Landingpage anfragen');
-  await page.locator('[data-contact-submit]').click();
-  await expect(page.locator('[data-contact-feedback]')).toHaveClass(/is-success/);
-
-  expect(payload).toMatchObject({ request_type: 'project', focus: 'landingpage', message: briefing, consent: '1' });
-  expect(response.status).toBe(201);
-  expect(response.meta['1']).toMatchObject({
-    _nexus_contact_focus: 'landingpage',
-    _nexus_contact_focus_label: 'WordPress-Landingpage für ein Angebot',
-    _nexus_contact_source: 'project_request',
-    _nexus_contact_message: briefing,
-  });
-  expect(response.mails).toHaveLength(2);
-  for (const mail of response.mails) expect(mail.body).toContain('WordPress-Landingpage für ein Angebot');
-});
+}
 
 test('landingpage can also be chosen in the unscoped project intake', async ({ page }) => {
   await page.route('**/*', route => route.fulfill({ contentType: 'text/html', body: contactHtml('project') }));
@@ -454,6 +460,7 @@ test('landingpage can also be chosen in the unscoped project intake', async ({ p
   // Returning to the topic must replace the original product's copy and label.
   for (const [focus, label, submitLabel] of [
     ['tracking', 'Website, Messziel und aktuelles Setup', 'Tracking anfragen'],
+    ['takeover', 'Website und Anlass der Übernahme', 'Übernahme-Check anfragen'],
     ['website', 'Ihr Angebot und gewünschter Starttermin', 'Website-Projekt anfragen'],
     ['conversion', 'Kurzbeschreibung', 'Projekt anfragen'],
   ]) {
@@ -462,6 +469,7 @@ test('landingpage can also be chosen in the unscoped project intake', async ({ p
     await page.selectOption('[name="focus"]', focus);
     await expect(page.locator('[name="message"]')).toBeVisible();
     await expect(page.locator('[data-contact-message-label]')).toHaveText(label);
+    if (focus !== 'takeover') await expect(page.locator('[data-contact-message-help]')).not.toContainText('Der Check kostet');
     await expect(page.locator('[name="message"]')).toHaveValue('Eine Landingpage für unsere Beratung, Besucher aus Google Ads.');
     await page.locator('[data-contact-next]').click();
     await expect(page.locator('[data-contact-submit]')).toHaveText(submitLabel);

@@ -30,6 +30,7 @@ A page can remain the canonical SEO destination for its query while its CTA rout
 | `/conversion-optimierung/` | B2B websites with visitors but too few matching inquiries (`conversion optimierung b2b`) | Written finding of the inquiry path (Anfragesystem-Analyse), then fixed-price implementation (route `conversion`, since 2026-09-30) | `Analyse anfragen` → `/kontakt/?type=analysis&focus=conversion` (`cro_offer_cta_hero_analysis`, `cro_offer_cta_analysis_scope`, `cro_offer_cta_close_analysis`) | Landingpage and tracking setup as price rows (`cro_offer_to_landingpage`, `cro_offer_to_tracking`), case study (`cro_offer_proof_case`); no footer door register on this page; no Marktcheck CTA. New direct-contact links in the close: `cro_offer_close_mail`, `cro_offer_close_tel`. Since 2026-10-01 the former `cro_offer_hero_whitelabel`, `cro_offer_to_website` and `cro_offer_reference_open` are retired (hero meta boxes, website row and reference list are gone) |
 | `/wordpress-website-erstellen-lassen/` | Direktkunden, WordPress-Website erstellen lassen | Die Anfrage-Website: Produkt, Umfangsrechner, Festpreis und Bauzeit | `/kontakt/?type=project&focus=website&seiten=N&art=neubau\|relaunch` plus `tracking=1` bei Auswahl; Positionen hero/angebot/beleg/leiste/abschluss | Vergleich, Belege und Bauzeit; Kontextlink von der lokalen Agenturseite |
 | `/wordpress-agentur-hannover/` | Local `wordpress agentur hannover` search intent | Local SEO acquisition + decision hub: Agenturmodell vs. direkte Verantwortung | Project request without preset focus (`hu_get_navigation_project_request_url()`, since 2026-09-26) | Context owners: Website, Conversion Tracking, Conversion-Optimierung; proof: public references `/#referenzen` and case study |
+| `/wordpress-website-uebernehmen/` | Unternehmen mit bestehender WordPress-Website | Übernahme-Check, danach abgegrenzte Weiterentwicklung | `Übernahme-Check anfragen` → `/kontakt/?type=project&focus=takeover` | E3-Projektbeleg, Website-/Relaunch-Angebot und leiser Agenturweg |
 | `/referenzen/` | WordPress-Referenzen und Projektbelege | Kompakte Projektfälle aus dem Referenzkanon, ohne vertrauliche Kennzahlen | Allgemeine Projektanfrage; Agentur-Zweitweg | Neue eigenständige Übersicht; bestehende Ergebnisse-Redirects bleiben erhalten |
 | `/ergebnisse/` | Retired proof hub (since 2026-09-25) | 301 to `/case-study-solar-leadgenerierung/`; excluded from sitemap and `llms.txt` | none | Menu item „Referenzen“ → `/referenzen/`; route `results` → case study |
 | `/case-study-solar-leadgenerierung/` | Solar proof; since 2026-09-25 also the proof target of homepage, menu item „Ergebnisse“, tracking and agency pages | Evidence page | Solar Marktcheck, explicitly addressed to Solar/Wärmepumpe businesses | General B2B projects: quiet project request in the transfer section (`case_transfer_project`) and below the Marktcheck (`cta_case_study_to_project`) |
@@ -126,7 +127,8 @@ Hero und Abschluss nutzen die Projektanfrage `/kontakt/?type=project` ohne
 Themenvorbelegung, wenn die Ersteinschätzung aus ist. Die fünf Leistungen
 nutzen ihre passenden Fokusziele: Website `website`, Landingpage `landingpage`,
 Analyse `type=analysis&focus=conversion`, Tracking `tracking`, Übernahme
-`implementation_scope`. Produktseiten vertiefen den Umfang. Die Website-Zeile
+`takeover`. Der frühere Fokus `implementation_scope` bleibt für allgemeine
+Weiterentwicklungsanfragen gültig. Produktseiten vertiefen den Umfang. Die Website-Zeile
 verlinkt seit 2026-10-01 `/wordpress-website-erstellen-lassen/`
 (`home_offer_website_detail`). Die Homepage hat kein eigenes Formular.
 `#angebot-funnel` bleibt an der Stationsliste; `#arbeiten`, `#systemprojekt`,
@@ -138,7 +140,7 @@ verlinkt seit 2026-10-01 `/wordpress-website-erstellen-lassen/`
 | 02 Landingpage | `home_offer_landingpage` | `/kontakt/?type=project&focus=landingpage` | `home_offer_landingpage_detail` → `/landingpage-erstellen-lassen/` |
 | 03 Conversion-Analyse | `home_offer_analysis` | `/kontakt/?type=analysis&focus=conversion` | `home_offer_analysis_detail` → `/conversion-optimierung/` |
 | 04 Tracking | `home_offer_tracking` | `/kontakt/?type=project&focus=tracking` | `home_offer_tracking_detail` → `/ga4-tracking-setup/` |
-| 05 Übernahme-Check | `home_offer_takeover` | `/kontakt/?type=project&focus=implementation_scope` | keiner (keine Produktseite) |
+| 05 Übernahme-Check | `home_offer_takeover` | `/kontakt/?type=project&focus=takeover` | `home_offer_takeover_detail` → `/wordpress-website-uebernehmen/` |
 
 Der Hook `home_offer_conversion` aus der Konsolidierungsentscheidung vom
 2026-09-13 bleibt stillgelegt, damit ein Eventname nicht zwei Angebote trägt;
@@ -867,3 +869,27 @@ Die Redirect-Ziele der fünf entfallenen Routen stehen in
 `nexus_get_consolidated_solar_redirect_map()`. Interne Links zeigen direkt auf
 die endgültige Route bzw. den passenden Abschnitt. Die Query-Registry nennt
 kanonische Pfade ohne Fragmente. Vorhandene CTA-Hooks und Endpunkte bleiben.
+
+## WordPress-Übernahme und Weiterentwicklung (Paket 3)
+
+`/wordpress-website-uebernehmen/` erklärt das bestehende Angebot für fremden
+WordPress-Bestand: Theme/Plugins, Updates/Backups/Zugänge und Ladezeit prüfen,
+schriftlichen Befund mit Prioritäten und Festpreis für den nächsten Schritt
+liefern. Der Check wird bei Beauftragung des Folgeprojekts verrechnet; der
+Befund gehört dem Kunden. Reparaturen, Migrationen und neue Seiten sind separat.
+Preis und Monatskontingente lesen den vorhandenen Preiskanon unverändert.
+Keine Rufbereitschaft und keine garantierten Wartungsreaktionszeiten.
+
+Die beiden Seiten-CTAs (`takeover_request_hero`, `takeover_request_close`) und
+`home_offer_takeover` nutzen `type=project&focus=takeover`. Der neue Fokus ist
+nur für Projektanfragen zulässig. PHP und der bestehende Themenwechsel lesen
+dasselbe Briefing aus `nexus_get_contact_project_focus_copy()`; REST, CRM,
+Aktivitätsverlauf und beide Mails übernehmen Fokus und Anlass. Der Endpunkt
+bleibt unverändert. Anfrage und kostenpflichtige Beauftragung bleiben getrennt.
+Der frühere Fokus `implementation_scope` bleibt mit seiner Bedeutung erhalten.
+
+Die Hauptnavigation bleibt bei vier Punkten. Startseiten-Detail und ruhiger
+Footer-Link erschließen die neue Seite. Das prominente Footer-Türregister
+entfällt auf ihr zugunsten des eigenen Abschlusses. E3 wird als Arbeit an einer
+bestehenden Website aus dem Referenzkanon gezeigt, ohne vertrauliche Kennzahlen
+und ohne Link zur anonymisierten Zahlenfallstudie im Projektbeleg.
