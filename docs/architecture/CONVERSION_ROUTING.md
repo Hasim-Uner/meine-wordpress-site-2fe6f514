@@ -30,6 +30,7 @@ A page can remain the canonical SEO destination for its query while its CTA rout
 | `/conversion-optimierung/` | B2B websites with visitors but too few matching inquiries (`conversion optimierung b2b`) | Written finding of the inquiry path (Anfragesystem-Analyse), then fixed-price implementation (route `conversion`, since 2026-09-30) | `Analyse anfragen` → `/kontakt/?type=analysis&focus=conversion` (`cro_offer_cta_hero_analysis`, `cro_offer_cta_analysis_scope`, `cro_offer_cta_close_analysis`) | Landingpage and tracking setup as price rows (`cro_offer_to_landingpage`, `cro_offer_to_tracking`), case study (`cro_offer_proof_case`); no footer door register on this page; no Marktcheck CTA. New direct-contact links in the close: `cro_offer_close_mail`, `cro_offer_close_tel`. Since 2026-10-01 the former `cro_offer_hero_whitelabel`, `cro_offer_to_website` and `cro_offer_reference_open` are retired (hero meta boxes, website row and reference list are gone) |
 | `/wordpress-website-erstellen-lassen/` | Direktkunden, WordPress-Website erstellen lassen | Die Anfrage-Website: Produkt, Umfangsrechner, Festpreis und Bauzeit | `/kontakt/?type=project&focus=website&seiten=N&art=neubau\|relaunch` plus `tracking=1` bei Auswahl; Positionen hero/angebot/beleg/leiste/abschluss | Vergleich, Belege und Bauzeit; Kontextlink von der lokalen Agenturseite |
 | `/wordpress-agentur-hannover/` | Local `wordpress agentur hannover` search intent | Local SEO acquisition + decision hub: Agenturmodell vs. direkte Verantwortung | Project request without preset focus (`hu_get_navigation_project_request_url()`, since 2026-09-26) | Context owners: Website, Conversion Tracking, Conversion-Optimierung; proof: public references `/#referenzen` and case study |
+| `/technisches-seo-wordpress/` | Bestehende WordPress-Website mit technischem SEO-Problem | Befund, separat vereinbarte Korrektur und dokumentierte Abnahme | `SEO-Projekt anfragen` → `/kontakt/?type=project&focus=seo` | Fachartikel, eigenes prüfbares Arbeitsbeispiel, alternative Angebote nach Anlass |
 | `/wordpress-website-uebernehmen/` | Unternehmen mit bestehender WordPress-Website | Übernahme-Check, danach abgegrenzte Weiterentwicklung | `Übernahme-Check anfragen` → `/kontakt/?type=project&focus=takeover` | E3-Projektbeleg, Website-/Relaunch-Angebot und leiser Agenturweg |
 | `/referenzen/` | WordPress-Referenzen und Projektbelege | Kompakte Projektfälle aus dem Referenzkanon, ohne vertrauliche Kennzahlen | Allgemeine Projektanfrage; Agentur-Zweitweg | Neue eigenständige Übersicht; bestehende Ergebnisse-Redirects bleiben erhalten |
 | `/ergebnisse/` | Retired proof hub (since 2026-09-25) | 301 to `/case-study-solar-leadgenerierung/`; excluded from sitemap and `llms.txt` | none | Menu item „Referenzen“ → `/referenzen/`; route `results` → case study |
@@ -893,3 +894,29 @@ Footer-Link erschließen die neue Seite. Das prominente Footer-Türregister
 entfällt auf ihr zugunsten des eigenen Abschlusses. E3 wird als Arbeit an einer
 bestehenden Website aus dem Referenzkanon gezeigt, ohne vertrauliche Kennzahlen
 und ohne Link zur anonymisierten Zahlenfallstudie im Projektbeleg.
+
+## Technisches SEO für WordPress (Paket 4)
+
+Die neue Leistungsseite `/technisches-seo-wordpress/` beschreibt möglichen
+Prüfumfang, Befund, getrennte Umsetzung und Abnahme. Preis, Seitenauswahl und
+Termin werden vor Beauftragung vereinbart. Keine Verdoppelung des Übernahme-
+Checks, keine Ranking- oder Indexierungszusage. Entscheidung und Beleggrenzen:
+`docs/decisions/technical-seo-offer.md`.
+
+`technical_seo_request_hero` und `technical_seo_request_close` nutzen den
+bestehenden Kontaktfokus `type=project&focus=seo`. Briefing in PHP und JS aus
+`nexus_get_contact_project_focus_copy()`; REST, CRM und Mails bleiben auf dem
+bestehenden Vertrag. Die anderen zulässigen Typen des SEO-Fokus bleiben gültig.
+Startseite: ruhiger Detail-Link `home_offer_technical_seo_detail` nach den
+bestehenden Preiszeilen. Footer: `cta_footer_nav_technical_seo` im Verzeichnis,
+keine weitere Hauptmenüposition. Das prominente Footer-Register entfällt auf
+der Seite zugunsten ihres eigenen Abschlusses.
+
+Der Fachartikel `/technisches-seo-performance-fundament/` behält URL und
+informative Rolle. Sein `$seo_url` führt zur Leistungsseite; die direkten
+Projekt-CTAs führen nun mit SEO-Fokus in den Kontakt. Bestehende Action-Namen
+bleiben. Kostenantwort im sichtbaren FAQ und dessen Schema aus demselben Wert.
+Der allgemeine öffentliche URL-Schlüssel `seo` bleibt aus Kompatibilitätsgründen
+auf der lokalen Agenturseite; die neue Route heißt explizit `technical_seo`.
+`/wordpress-seo-keine-anfragen/` bleibt mit seinem Conversion-Analyse-Einstieg
+unverändert. Energie und Agenturen behalten ihre eigenen Anfragewege.

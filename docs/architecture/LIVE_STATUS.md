@@ -19,9 +19,10 @@ Abschnitt anzuhängen; der Verlauf gehört in Commit-Nachrichten.
 - Paket 2 (Referenzen und fokussierte Navigation) wurde am 21.10.2026 mit
   PR #587 gemergt; die Live-Abnahme dieses Pakets ist hier noch nicht dokumentiert.
   `/referenzen/` nutzt die bestehende Seiten-Provisionierung.
-- Paket 3 (WordPress-Übernahme und Weiterentwicklung) ist vorbereitet, noch
-  nicht gemergt oder live abgenommen. Die folgende Routenbeschreibung dazu
-  beschreibt den Repo-Stand.
+- Paket 3 (WordPress-Übernahme und Weiterentwicklung) wurde mit PR #588
+  gemergt; seine vollständige Live-Abnahme ist hier noch nicht dokumentiert.
+- Paket 4 (Technisches SEO für WordPress) ist Repo-Stand, noch nicht gemergt
+  oder live abgenommen. Seine Routenbeschreibung betrifft den vorbereiteten Stand.
 - Basis: Repo-Inhalt, Deploy-Workflows und die Template- und Funnel-Logik im
   Theme `blocksy-child/`.
 - Die Korrekturen an Fallbezeichnungen, Artikel-Kontextlinks und Anfragewegen
@@ -252,6 +253,29 @@ Contract und Abnahme: `CHAT_ASSISTANT.md`.
   Wettbewerb, Site Audit, Datenbasis.
 
 ## Routen
+
+### `/technisches-seo-wordpress/` — Paket 4, Repo-Stand
+
+Eigene hardcodierte Leistungsseite für technischen SEO-Befund und separat
+vereinbarte Korrekturen. Kein beschlossener Festpreis: Prüfumfang, Seiten und
+Abnahme vor dem Auftrag. Eigene Website als prüfbares Arbeitsbeispiel ohne
+Rankingbehauptung, drei alternative Angebote nach Anlass und eigener Abschluss.
+Service-Schema ohne erfundenen Offer-Preis, zentrale Metadaten, automatische
+Seiten-Provisionierung und `system.css` plus `technisches-seo.css`. Keine
+neuen Seitenskripte oder Messung. Keine FAQ-Daten aus unsichtbarem Editor-Cache.
+
+Startseite und Footer verlinken die Leistung. Der Fachartikel
+`/technisches-seo-performance-fundament/` behält seine informative Rolle und
+verlinkt den konkreten Umfang; direkte Projekt-CTAs tragen den bestehenden
+SEO-Fokus. Kostenantwort in sichtbarem FAQ und Schema stimmen überein.
+Andere Artikel-/Spezialpfade und retired SEO-Routen bleiben erhalten.
+Kontakt über `type=project&focus=seo`, mit passendem Briefing bis ins CRM und
+beide Mails. Keine Editor-Migration und keine Live-Testanfrage.
+
+Scope, aktuelle Primärquellen, öffentlicher Beleg und Wirkungshypothese:
+`docs/decisions/technical-seo-offer.md`. Keine gemessene Conversion-Wirkung und
+kein Zielkunden-Nutzertest. Nach Veröffentlichung normale URL, Provisionierung,
+Metadaten, Fachlink und Anfrage-Vorauswahl öffentlich prüfen.
 
 ### `/wordpress-website-uebernehmen/` — Paket 3, Repo-Stand
 

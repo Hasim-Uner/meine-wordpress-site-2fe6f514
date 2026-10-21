@@ -103,6 +103,7 @@ nav_check( ( $by_label['Solar & Wärmepumpe'] ?? '' ) === $routes['energy'], 'So
 nav_check( ( $by_label['Conversion-Tracking'] ?? '' ) === $routes['tracking_setup'], 'broad Tracking offer stays linked from the footer' );
 nav_check( ( $by_label['Referenzen'] ?? '' ) === $routes['references'], 'footer links the reference overview' );
 nav_check( ( $by_label['WordPress-Übernahme & Weiterentwicklung'] ?? '' ) === $routes['takeover'], 'footer links the dedicated takeover offer' );
+nav_check( ( $by_label['Technisches SEO für WordPress'] ?? '' ) === $routes['technical_seo'], 'footer links the technical SEO service' );
 nav_check( ( $by_label['Server-Side Tracking'] ?? '' ) === $routes['tracking_b2b'], 'specialist page keeps a sitewide link with its exact name' );
 nav_check( '/performance-marketing/' === nav_path( $by_label['Performance Marketing'] ?? '' ), 'Performance Marketing query owner is linked sitewide' );
 
@@ -134,6 +135,17 @@ foreach ( $takeover_ctas as $cta ) {
     nav_check( hu_get_contact_intake_url( 'project', 'takeover' ) === $cta->getAttribute( 'href' ), 'takeover request preserves its product focus' );
 }
 nav_check( 0 === $takeover_page->query( '//*[@id="beleg"]//a[contains(@href,"case-study")]' )->length, 'takeover named proof stays separate from the anonymous case' );
+nav_test_use_context( 'technical_seo' );
+$technical_seo_page = nav_dom( nav_test_render( 'page-technisches-seo-wordpress.php' ) );
+$technical_seo_definition = hu_get_wordpress_technical_seo_service_definition();
+nav_check( 1 === $technical_seo_page->query( '//h1' )->length, 'technical SEO service has one main heading' );
+nav_check( ! isset( $technical_seo_definition['offers'] ) && ! isset( $technical_seo_definition['price'] ), 'technical SEO schema invents no fixed or free price' );
+$technical_seo_ctas = $technical_seo_page->query( '//a[@data-track-action="technical_seo_request_hero" or @data-track-action="technical_seo_request_close"]' );
+nav_check( 2 === $technical_seo_ctas->length, 'technical SEO request available at entry and close' );
+foreach ( $technical_seo_ctas as $cta ) {
+    nav_check( hu_get_contact_intake_url( 'project', 'seo' ) === $cta->getAttribute( 'href' ), 'technical SEO uses the existing typed contact contract' );
+}
+nav_check( 1 === $technical_seo_page->query( '//*[@id="abnahme"]' )->length && 1 === $technical_seo_page->query( '//*[@id="arbeitsbeispiel"]' )->length, 'technical SEO offer exposes acceptance and own evidence' );
 nav_test_use_context( 'imprint' );
 
 // --- 1b. Doors: one decision for header and footer ------------------------------
@@ -196,6 +208,7 @@ $expect_funnel = [
 	'about'         => [ 'voll', 'projekt', '' ],
 	'references'    => [ 'voll', 'projekt', '' ],
 	'takeover'      => [ 'voll', 'projekt', '' ],
+	'technical_seo' => [ 'voll', 'projekt', '' ],
 	'contact'       => [ 'voll', null, '' ],
 	'agentur_local' => [ 'voll', 'projekt', '' ],
 	'imprint'       => [ 'voll', 'projekt', '' ],
@@ -244,6 +257,7 @@ $expect_current = [
 	'about'         => [ 'Über mich' => 'page' ],
 	'references'    => [ 'Referenzen' => 'page' ],
 	'takeover'      => [],
+	'technical_seo' => [],
 	'contact'       => [],
 	'agentur_local' => [],
 	'imprint'       => [],
@@ -267,7 +281,7 @@ foreach ( nav_test_contexts() as $context => $definition ) {
 
 	// Door register: on every page except /kontakt/ and the Money Pages in hu_footer_register_suppressed_templates(),
 	// six doors in one click, own way marked, not hidden.
-	if ( in_array( $context, [ 'home', 'contact', 'conversion', 'references', 'takeover' ], true ) ) {
+	if ( in_array( $context, [ 'home', 'contact', 'conversion', 'references', 'takeover', 'technical_seo' ], true ) ) {
 		nav_check( 0 === $footer_x->query( '//nav[@class="register"]' )->length, "{$context}: footer skips the door register" );
 		nav_check( 1 === $footer_x->query( '//footer[@id="footer"]' )->length && 1 === $footer_x->query( '//nav[@aria-label="Weitere Seiten"]' )->length, "{$context}: footer keeps direct line, directory and sender" );
 	} else {

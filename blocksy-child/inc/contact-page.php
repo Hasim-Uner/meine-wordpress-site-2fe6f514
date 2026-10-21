@@ -447,6 +447,12 @@ function nexus_get_contact_focus_labels( $include_inactive = false ) {
  */
 function nexus_get_contact_project_focus_copy() {
 	return [
+		'seo' => [
+			'messageLabel'       => 'Website, betroffene Seiten und beobachtetes Problem',
+			'messageHelp'        => 'Welche URLs oder Seitentypen sind betroffen? Was fällt auf, und was wurde zuletzt geändert? Umfang und Preis werden vor dem Start vereinbart. Bitte keine Zugangsdaten eintragen.',
+			'messagePlaceholder' => 'Website: … · Betroffene Seiten: … · Problem oder letzte Änderung: …',
+			'submitLabel'        => 'SEO-Projekt anfragen',
+		],
 		'takeover' => [
 			'messageLabel'       => 'Website und Anlass der Übernahme',
 			'messageHelp'        => sprintf( 'Welche Website soll übernommen werden, und was bleibt liegen? Der Check kostet %s netto und beginnt erst nach Beauftragung. Bitte keine Passwörter eintragen.', hu_freelancer_takeover_check_price() ),

@@ -1394,6 +1394,12 @@ add_action( 'init', 'nexus_mark_route_pages_ensured', 99 );
 function nexus_get_provisioned_pages() {
 	return [
 		[
+			'slug'     => 'technisches-seo-wordpress',
+			'title'    => 'Technisches SEO für WordPress',
+			'excerpt'  => 'Technischer SEO-Befund und vereinbarte Korrekturen für bestehende WordPress-Websites. Prüfumfang, Preis und Abnahme stehen vor dem Start fest.',
+			'template' => 'page-technisches-seo-wordpress.php',
+		],
+		[
 			'slug'     => 'wordpress-website-uebernehmen',
 			'title'    => 'WordPress-Website übernehmen und weiterentwickeln',
 			'excerpt'  => 'Bestehende WordPress-Website prüfen: Übernahme-Check mit schriftlichem Befund, danach gezielte Weiterentwicklung mit vereinbartem Umfang.',

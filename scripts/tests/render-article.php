@@ -19,13 +19,15 @@ require __DIR__ . '/navigation-harness.php';
 
 $slug   = $argv[1] ?? 'checkfox-solar-waermepumpe-einordnung';
 $sheets = array_filter( explode( ',', $argv[2] ?? '' ) );
+$template = 'technisches-seo-performance-fundament' === $slug ? 'page-seo-cornerstone.php' : 'template-parts/single-reader.php';
+if ( 'page-seo-cornerstone.php' === $template ) { require_once __DIR__ . '/glossary-links-harness.php'; }
 
 $GLOBALS['nav_test'] = [
 	'path'     => '/blog/' . $slug . '/',
 	'front'    => false,
 	'page'     => '',
 	'template' => '',
-	'post'     => [ 'slug' => $slug, 'categories' => [ 'leadgenerierung' ] ],
+	'post'     => [ 'slug' => $slug, 'categories' => [ 'technisches-seo-performance-fundament' === $slug ? 'seo' : 'leadgenerierung' ] ],
 ];
 $_SERVER['REQUEST_URI'] = $GLOBALS['nav_test']['path'];
 
@@ -63,11 +65,14 @@ $doubles = [
 	'has_post_thumbnail'    => static function () { return false; },
 	'get_the_title'         => static function () { return $GLOBALS['article_test']['title']; },
 	'get_the_excerpt'       => static function () { return $GLOBALS['article_test']['excerpt']; },
+	'the_title'             => static function () { echo $GLOBALS['article_test']['title']; },
+	'the_excerpt'           => static function () { echo $GLOBALS['article_test']['excerpt']; },
 	'get_the_content'       => static function () { return $GLOBALS['article_test']['content']; },
 	'the_content'           => static function () { echo $GLOBALS['article_test']['content']; }, // phpcs:ignore
 	'get_the_date'          => static function () { return '1. September 2026'; },
 	'get_the_modified_date' => static function () { return '1. September 2026'; },
 	'get_the_author'        => static function () { return 'Haşim Üner'; },
+	'the_author'            => static function () { echo 'Haşim Üner'; },
 	'get_the_author_meta'   => static function () { return ''; },
 	'get_avatar'            => static function () { return ''; },
 	'get_category_link'     => static function () { return home_url( '/blog/' ); },
@@ -94,7 +99,7 @@ $theme = '/wp-content/themes/blocksy-child';
 
 ob_start();
 try {
-	require get_stylesheet_directory() . '/template-parts/single-reader.php';
+	require get_stylesheet_directory() . '/' . $template;
 } catch ( Throwable $error ) {
 	fwrite( STDERR, 'Template failed: ' . $error->getMessage() . ' at ' . $error->getFile() . ':' . $error->getLine() . "\n" );
 	exit( 1 );

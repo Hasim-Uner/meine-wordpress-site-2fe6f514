@@ -389,6 +389,7 @@ get_header();
 				<?php endforeach; ?>
 			</div>
 			<div class="st-weiter"><p><strong>Weiterentwicklung nach dem Projekt.</strong> <?php echo esc_html( $retainer ); ?> im Monat, monatlich kündbar. Eine Voraussetzung ist das nicht.</p><a class="st-link" href="#uebergabe" data-track-action="home_offer_retainer_more" data-track-category="navigation" data-track-section="angebote">Was Sie ohnehin behalten <span aria-hidden="true">↓</span></a></div>
+            <div class="st-weiter"><p><strong>Technisches SEO im Bestand.</strong> Indexierung, Vorlagen und Ladezeit gezielt prüfen und korrigieren. Umfang und Preis nach Ausgangslage.</p><a class="st-link" href="<?php echo esc_url( $routes['technical_seo'] ); ?>" data-track-action="home_offer_technical_seo_detail" data-track-category="navigation" data-track-section="angebote">SEO-Leistungsumfang ansehen <span aria-hidden="true">→</span></a></div>
 			<p class="st-preisnotiz">Hosting, Lizenzen und externe Dienste stehen getrennt im Angebot und laufen auf Ihren Namen.</p>
 			<?php if ( $first_assessment_on ) : ?>
 			<aside class="st-erstcheck tafel" aria-labelledby="home-erstcheck-h">

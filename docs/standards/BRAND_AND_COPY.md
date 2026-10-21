@@ -522,3 +522,20 @@ Die Anfrage ist unverbindlich, der Check beginnt erst nach Beauftragung.
 Die kanonische Antwortfrist gilt für die Anfrage, nicht für den fertigen Befund.
 Das E3-Projektporträt belegt Arbeit am Bestand; sein Gesamtumfang gehört nicht
 zum Check. Keine Kennzahlen oder Ergebnisgarantie im namentlichen Porträt.
+
+## Technisches SEO für WordPress (Paket 4, 22.10.2026)
+
+Die Leistungsseite `/technisches-seo-wordpress/` bietet technischen Befund
+und separat vereinbarte Korrekturen an einer bestehenden WordPress-Website.
+Vor dem Auftrag Prüffragen, URLs/Seitentypen, Preis, Zugänge und Abnahme klären.
+Kein freier SEO-Befund durch Absenden, kein neuer fester Einstiegspreis und
+kein erneut verkaufter Übernahme-Check. Alle bisherigen Preise bleiben.
+
+Abnahme bedeutet dokumentierten technischen Zustand und wiederholbare Prüfung,
+keine garantierte Indexierung, Position, Anfragezahl oder Anzeigenersparnis.
+Labortests und verfügbare Nutzungsdaten getrennt ausweisen. Arbeitsbeispiel aus
+der eigenen Website ausdrücklich als eigenes Projekt und ohne Wirkungszahlen
+kennzeichnen. Der Fachartikel bleibt informativ und verlinkt den konkreten
+Leistungsumfang; lokaler Agentur-Intent, WordPress-Neubau, Übernahme und
+Conversion-Analyse behalten ihre eigenen Rollen. Ausführliche Abgrenzung und
+Quellen: `docs/decisions/technical-seo-offer.md`.

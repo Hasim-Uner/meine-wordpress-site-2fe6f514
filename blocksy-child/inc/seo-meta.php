@@ -240,6 +240,10 @@ function hu_get_forced_singular_seo_map() {
 				'title'       => 'WordPress-Website übernehmen & weiterentwickeln | Haşim Üner',
 				'description' => sprintf( 'Bestehende WordPress-Website übernehmen und weiterentwickeln. Übernahme-Check für %s netto: schriftlicher Befund, Prioritäten und Festpreis für den nächsten Schritt.', hu_freelancer_takeover_check_price() ),
 			],
+			'technisches-seo-wordpress' => [
+				'title'       => 'Technisches SEO für WordPress: Befund & Korrektur | Haşim Üner',
+				'description' => 'Technisches SEO für bestehende WordPress-Websites: Indexierung, Vorlagen und Ladezeit prüfen, Korrekturen umsetzen und dokumentiert abnehmen. Umfang und Preis vorab.',
+			],
 			'referenzen' => [
 				'title'       => 'WordPress-Referenzen und Projekte | Haşim Üner',
 				'description' => 'WordPress-Projekte mit Ausgangslage, eigenem Beitrag und öffentlich prüfbaren Websites: Weiterentwicklung, Informationsarchitektur, Tracking und CRM.',

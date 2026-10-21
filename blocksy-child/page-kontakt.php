@@ -139,6 +139,11 @@ if ( 'website' === $selected_focus ) {
 	$form_title = 'Zwei kurze Schritte zum Übernahme-Check.';
 	$form_intro = 'Beschreiben Sie Ihre Website und den Anlass der Übernahme. Ihre Anfrage ist unverbindlich.';
 	$message_step_title = 'Welche Website soll übernommen werden?';
+} elseif ( 'seo' === $selected_focus && 'project' === $selected_type ) {
+	$hero_title = 'Technisches SEO für Ihre WordPress-Website.';
+	$form_title = 'Zwei kurze Schritte zu Ihrer SEO-Projektanfrage.';
+	$form_intro = 'Beschreiben Sie die betroffenen Seiten und das beobachtete Problem. Ihre Anfrage ist unverbindlich; Umfang und Preis klären wir vor dem Start.';
+	$message_step_title = 'Welche Seiten machen Probleme?';
 }
 
 if ( 'project' === $selected_type && isset( $project_focus_copy[ $selected_focus ] ) ) {
