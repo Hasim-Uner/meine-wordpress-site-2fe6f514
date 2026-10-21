@@ -1,6 +1,6 @@
 # Live Status
 
-Verhalten laut Repository, nach Bereichen. Stand: 2026-10-20.
+Verhalten laut Repository, nach Bereichen. Stand: 2026-10-21.
 Der grundlegende Funnel-Umbau aus PR #565 und die Tracking-Korrekturen aus
 PR #566 sowie die Kontaktübergabe aus PR #567 sind gemerged und deployed.
 Startseite, GA4, Landingpage, Solar, Kontakt und Server-Side wurden im
@@ -18,12 +18,22 @@ Abschnitt anzuhängen; der Verlauf gehört in Commit-Nachrichten.
 
 - Basis: Repo-Inhalt, Deploy-Workflows und die Template- und Funnel-Logik im
   Theme `blocksy-child/`.
-- Die Korrekturen vom 2026-10-19 an Fallbezeichnungen, Artikel-Kontextlinks
-  und Anfragewegen sind Repo-Stand; die Veröffentlichung und Live-Abnahme
-  dieses Pakets stehen noch aus. PHP-Syntax und die gerenderten Ziel-URLs
-  der betroffenen Artikel- und Beleg-CTAs sind lokal geprüft. Die lokale
-  Browserprüfung ist durch eine Socket-Sperre der Testumgebung blockiert;
-  Browser-Integration wird über die bestehende CI geprüft.
+- Die Korrekturen an Fallbezeichnungen, Artikel-Kontextlinks und Anfragewegen
+  aus PR #585 sind mit Merge `cf4d6c112591` und Produktions-Deploy
+  `39435620953` veröffentlicht. CI `39433864980` einschließlich PHPStan und
+  aller vier Browser-Shards sowie Linkprüfung `39433864827` sind erfolgreich.
+  Frische öffentliche Inhaltsabrufe am 2026-10-21 bestätigen die korrigierten
+  Bezeichnungen auf Startseite/CRO-Seite, die Analyse- und White-Label-Ziele
+  beider Artikel und den zusätzlichen B2B-Projektweg in der Solar-Fallstudie.
+  Das ist eine Inhalts- und Linkkontrolle, keine visuelle Live-Abnahme und
+  keine Prüfung der tatsächlichen Mailzustellung.
+- Im Editor-Inhalt von `/wordpress-seo-keine-anfragen/` stehen beim Abruf
+  am 2026-10-21 weiterhin überholte Fallzahlen und Bezugsgrößen. Die
+  versionierte Artikelquelle enthält die vorbereitete Korrektur des
+  Abschnitts `proof-systemwirkung`; ihre Übernahme im WordPress-Editor steht
+  aus. Die bestehende Einmalmigration ersetzt bereits veröffentlichte
+  v2-Inhalte nicht. Genaue Übernahmegrenzen und Kontrolle stehen in
+  `content/blog-drafts/wordpress-seo-keine-anfragen.html`.
 - Nicht aus dem Repo verifizierbar: WordPress-Admin (Menüs, Editor-Inhalte,
   Plugins), Brevo-, Cal.com- und Koko-Setups, Server-Cron und die tatsächliche
   Mailzustellung.
