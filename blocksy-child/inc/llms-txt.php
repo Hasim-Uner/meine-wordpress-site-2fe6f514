@@ -116,6 +116,11 @@ function nexus_get_llms_txt_sections() {
 		[
 			'heading' => 'Fachseiten und kommerzielle Suchintents',
 			'links'   => [
+                [
+                    'label'       => 'Technisches SEO für WordPress',
+                    'url'         => hu_get_commercial_route( 'technical_seo' ),
+                    'description' => 'Technischer SEO-Befund und separat vereinbarte Korrekturen für bestehende WordPress-Websites: Indexierung, Vorlagen und Ladezeit. Prüfumfang, Preis und Abnahme vor dem Start; keine Rankinggarantie.',
+                ],
 				[
 					'label'       => 'WordPress-Übernahme und Weiterentwicklung',
 					'url'         => hu_get_commercial_route( 'takeover' ),

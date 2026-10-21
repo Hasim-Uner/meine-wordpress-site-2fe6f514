@@ -12,9 +12,11 @@ const rendered = {};
 const pageTemplates = {
   references: ['page-referenzen.php', 'assets/css/system.css,assets/css/referenzen.css'],
   takeover: ['page-wordpress-website-uebernehmen.php', 'assets/css/system.css,assets/css/wordpress-uebernahme.css'],
+  technical_seo: ['page-technisches-seo-wordpress.php', 'assets/css/system.css,assets/css/technisches-seo.css'],
 };
 const html = context => {
   if (rendered[context]) return rendered[context];
+  if (context === 'seo_guide') return (rendered[context] = execFileSync('php', [path.join(__dirname, 'render-article.php'), 'technisches-seo-performance-fundament', 'assets/css/system.css,assets/css/seo-cornerstone.css'], { encoding: 'utf8' }));
   const output = execFileSync('php', pageTemplates[context]
     ? [path.join(__dirname, 'render-page.php'), context, ...pageTemplates[context]]
     : [path.join(__dirname, 'render-navigation.php'), context], { encoding: 'utf8' });
@@ -351,7 +353,7 @@ for (const [width, columns] of [[390, 2], [1280, 4]]) {
     await open(page, 'imprint', { width, height: 900 });
     const directory = page.getByRole('navigation', { name: 'Weitere Seiten' });
     await expect(directory.getByRole('list')).toHaveCount(4);
-    await expect(directory.getByRole('list', { name: 'Leistungen' }).getByRole('link')).toHaveText(['Conversion-Tracking', 'Server-Side Tracking', 'Performance Marketing', 'WordPress Agentur Hannover', 'Landingpage erstellen lassen', 'Conversion-Optimierung', 'WordPress-Website erstellen lassen', 'WordPress-Übernahme & Weiterentwicklung']);
+    await expect(directory.getByRole('list', { name: 'Leistungen' }).getByRole('link')).toHaveText(['Conversion-Tracking', 'Server-Side Tracking', 'Performance Marketing', 'WordPress Agentur Hannover', 'Landingpage erstellen lassen', 'Conversion-Optimierung', 'WordPress-Website erstellen lassen', 'WordPress-Übernahme & Weiterentwicklung', 'Technisches SEO für WordPress']);
     await expect(directory.getByRole('link', { name: 'Impressum' })).toHaveAttribute('aria-current', 'page');
     const tracks = await directory.evaluate(el => getComputedStyle(el).gridTemplateColumns.split(' ').length);
     expect(tracks).toBe(columns);
@@ -637,4 +639,56 @@ test('takeover: without JavaScript the offer, native questions and request remai
   await expect(page.locator('#voraussetzungen details').nth(1)).toContainText('Ein Wechsel ist keine Voraussetzung');
   expect(await noHorizontalScroll(page)).toBe(true);
   await context.close();
+});
+
+
+for (const width of [320, 390, 1280]) {
+  test(`technical SEO ${width}: agreed scope, own evidence and enquiry fit without fixed-price promises`, async ({ page }, testInfo) => {
+    await open(page, 'technical_seo', { width, height: 900 });
+    const content = page.locator('#technical-seo-content');
+    await expect(content.getByRole('heading', { level: 1 })).toHaveText('Technisches SEO für Ihre WordPress-Website.');
+    for (const position of ['hero', 'close']) {
+      await expect(content.locator(`[data-track-action="technical_seo_request_${position}"]`)).toHaveAttribute('href', 'https://hasimuener.de/kontakt/?type=project&focus=seo');
+    }
+    await expect(content).toContainText('Preis nach vereinbartem Umfang');
+    await expect(content).not.toContainText(/\d[\d.,]*\s*(?:€|%)/);
+    await expect(content.locator('#abnahme')).toContainText('wiederholbare Prüfung');
+    await expect(content.locator('#arbeitsbeispiel')).toContainText('keine Kundenreferenz');
+    await expect(content.locator('[data-track-action="technical_seo_proof_page"]')).toHaveAttribute('href', 'https://hasimuener.de/referenzen/');
+    await expect(content.locator('[data-track-action="technical_seo_to_takeover"]')).toHaveAttribute('href', 'https://hasimuener.de/wordpress-website-uebernehmen/');
+    await expect(content.locator('[data-track-action="technical_seo_read_guide"]')).toHaveAttribute('href', 'https://hasimuener.de/technisches-seo-performance-fundament/');
+    await expect(content.locator('a[href*="marktcheck"]')).toHaveCount(0);
+    await expect(page.locator('.fuss .register')).toHaveCount(0);
+    const cta = content.locator('[data-track-action="technical_seo_request_hero"]');
+    await cta.focus();
+    expect(await cta.evaluate(el => getComputedStyle(el).outlineStyle)).not.toBe('none');
+    await cta.evaluate(el => el.blur());
+    await page.evaluate(() => window.scrollTo({ top: 0, behavior: 'instant' }));
+    expect(await noHorizontalScroll(page)).toBe(true);
+    await page.screenshot({ path: testInfo.outputPath(`technical-seo-${width}.png`), fullPage: true });
+  });
+}
+
+test('technical SEO: without JavaScript the scope, evidence and typed enquiry remain available', async ({ browser }) => {
+  const context = await browser.newContext({ javaScriptEnabled: false });
+  const page = await context.newPage();
+  await open(page, 'technical_seo', { width: 390, height: 900 });
+  await expect(page.locator('#abnahme')).toBeVisible();
+  await expect(page.locator('[data-track-action="technical_seo_request_hero"]')).toHaveAttribute('href', 'https://hasimuener.de/kontakt/?type=project&focus=seo');
+  expect(await noHorizontalScroll(page)).toBe(true);
+  await context.close();
+});
+
+
+test('technical SEO guide: service link, typed enquiry and cost FAQ remain consistent', async ({ page }) => {
+  await open(page, 'seo_guide', { width: 1280, height: 900 });
+  await expect(page.locator('[data-track-action="cta_seo_cornerstone_audit"]')).toHaveAttribute('href', 'https://hasimuener.de/technisches-seo-wordpress/');
+  await expect(page.locator('[data-track-action="cta_seo_cornerstone_project"]')).toHaveAttribute('href', 'https://hasimuener.de/kontakt/?type=project&focus=seo');
+  const visibleAnswer = await page.locator('details').filter({ has: page.locator('summary', { hasText: 'Was kostet technisches SEO' }) }).locator('.nx-faq__content').textContent();
+  const schemaAnswer = await page.locator('script[type="application/ld+json"]').evaluateAll(scripts => {
+    const faq = scripts.map(s => JSON.parse(s.textContent)).find(s => s['@type'] === 'FAQPage');
+    return faq.mainEntity.find(q => q.name === 'Was kostet technisches SEO für den Mittelstand?').acceptedAnswer.text;
+  });
+  expect(schemaAnswer).toBe(visibleAnswer);
+  expect(visibleAnswer).toContain('Abnahmekriterien');
 });

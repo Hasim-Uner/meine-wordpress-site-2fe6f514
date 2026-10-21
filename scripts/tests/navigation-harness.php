@@ -30,6 +30,7 @@ function nav_test_contexts() {
 		'solar_cluster' => [ 'path' => '/b2b-solar-leads/', 'front' => false, 'page' => 'b2b-solar-leads', 'template' => 'page-b2b-solar-leads.php' ],
 		'references'    => [ 'path' => '/referenzen/', 'front' => false, 'page' => 'referenzen', 'template' => 'page-referenzen.php' ],
 		'takeover'      => [ 'path' => '/wordpress-website-uebernehmen/', 'front' => false, 'page' => 'wordpress-website-uebernehmen', 'template' => 'page-wordpress-website-uebernehmen.php' ],
+		'technical_seo' => [ 'path' => '/technisches-seo-wordpress/', 'front' => false, 'page' => 'technisches-seo-wordpress', 'template' => 'page-technisches-seo-wordpress.php' ],
 		'about'         => [ 'path' => '/hasim-uener/', 'front' => false, 'page' => 'hasim-uener', 'template' => 'page-hasim-uener.php' ],
 		'contact'       => [ 'path' => '/kontakt/', 'front' => false, 'page' => 'kontakt', 'template' => 'page-kontakt.php' ],
 		'agentur_local' => [ 'path' => '/wordpress-agentur-hannover/', 'front' => false, 'page' => 'wordpress-agentur-hannover', 'template' => 'page-wordpress-agentur.php' ],

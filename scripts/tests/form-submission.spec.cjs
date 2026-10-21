@@ -393,6 +393,7 @@ test('unscoped project still advances from topic to message to identity', async 
 for (const [focus, label, help, submitLabel, focusLabel] of [
   ['landingpage', 'Angebot, Besucherquelle und Termin', 'woher kommen die Besucher', 'Landingpage anfragen', 'WordPress-Landingpage für ein Angebot'],
   ['takeover', 'Website und Anlass der Übernahme', 'Bitte keine Passwörter', 'Übernahme-Check anfragen', 'WordPress-Übernahme-Check'],
+  ['seo', 'Website, betroffene Seiten und beobachtetes Problem', 'Umfang und Preis', 'SEO-Projekt anfragen', 'Technisches SEO'],
 ]) {
   test(`${focus} entry keeps its product briefing through REST, CRM and mail`, async ({ page }) => {
     const html = '<style>.is-hidden,[hidden]{display:none!important}</style>' + contactHtml(focus);
@@ -461,6 +462,7 @@ test('landingpage can also be chosen in the unscoped project intake', async ({ p
   for (const [focus, label, submitLabel] of [
     ['tracking', 'Website, Messziel und aktuelles Setup', 'Tracking anfragen'],
     ['takeover', 'Website und Anlass der Übernahme', 'Übernahme-Check anfragen'],
+    ['seo', 'Website, betroffene Seiten und beobachtetes Problem', 'SEO-Projekt anfragen'],
     ['website', 'Ihr Angebot und gewünschter Starttermin', 'Website-Projekt anfragen'],
     ['conversion', 'Kurzbeschreibung', 'Projekt anfragen'],
   ]) {

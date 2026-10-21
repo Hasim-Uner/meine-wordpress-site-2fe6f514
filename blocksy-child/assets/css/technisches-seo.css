@@ -1,0 +1,27 @@
+/* Technical SEO offer: route layouts on the shared system.css core. */
+.seo-angebot .seo-angebot-raster { display: grid; grid-template-columns: minmax(0, 1.3fr) minmax(0, 1fr); gap: var(--s5); align-items: start; }
+.seo-angebot .seo-angebot-text,
+.seo-angebot .seo-angebot-abschnitt { display: grid; justify-items: start; gap: var(--s3); }
+.seo-angebot .seo-angebot-text { max-width: var(--satz); }
+.seo-angebot .gegenstand { margin-bottom: 0; }
+.seo-angebot .aufriss { margin-top: 0; }
+.seo-angebot .seo-angebot-hinweis { font-size: var(--grad-klein); color: var(--grau); }
+.seo-angebot .seo-angebot-liste { margin: 0; width: 100%; }
+.seo-angebot .seo-angebot-liste > div { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 2fr); gap: var(--s3) var(--s5); border-top: 1px solid var(--haar); padding-block: var(--s3); }
+.seo-angebot .seo-angebot-liste dt { font-weight: 600; }
+.seo-angebot .seo-angebot-liste dd { margin: 0; }
+.seo-angebot .seo-angebot-schritte { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: var(--s4); margin: 0; padding-left: var(--s3); }
+.seo-angebot .seo-angebot-schritte li { padding-left: var(--s1); }
+.seo-angebot .seo-angebot-schritte h3 { font-size: var(--grad-text); margin-bottom: var(--s2); }
+.seo-angebot .seo-angebot-grenze { max-width: var(--satz); border-left: 2px solid var(--stempel); padding-left: var(--s3); }
+.seo-angebot .seo-angebot-links { display: flex; flex-wrap: wrap; gap: var(--s3); }
+.seo-angebot .seo-angebot-wege { display: grid; gap: var(--s3); width: 100%; list-style: none; padding: 0; margin: 0; }
+.seo-angebot .seo-angebot-wege li { display: grid; justify-items: start; gap: var(--s2); border-top: 1px solid var(--haar); padding-top: var(--s3); }
+
+@media (max-width: 800px) {
+  .seo-angebot .seo-angebot-raster,
+  .seo-angebot .seo-angebot-liste > div,
+  .seo-angebot .seo-angebot-schritte { grid-template-columns: minmax(0, 1fr); }
+  .seo-angebot .seo-angebot-raster { gap: var(--s4); }
+  .seo-angebot .seo-angebot-liste > div { gap: var(--s2); }
+}

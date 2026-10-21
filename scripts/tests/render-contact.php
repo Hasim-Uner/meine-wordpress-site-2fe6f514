@@ -14,6 +14,7 @@ $_GET = ( $argv[1] ?? '' ) === 'assessment' ? [ 'focus' => 'ersteinschaetzung' ]
 if ( ( $argv[1] ?? '' ) === 'project' ) unset( $_GET['focus'] );
 if ( ( $argv[1] ?? '' ) === 'landingpage' ) $_GET['focus'] = 'landingpage';
 if ( ( $argv[1] ?? '' ) === 'takeover' ) $_GET['focus'] = 'takeover';
+if ( ( $argv[1] ?? '' ) === 'seo' ) $_GET['focus'] = 'seo';
 if ( in_array( $argv[1] ?? '', [ 'website', 'energy', 'sofortkontakt' ], true ) ) {
     $default_query = 'website' === $argv[1] ? 'type=project&focus=website&seiten=5&art=relaunch&tracking=1' : 'type=project&focus=' . $argv[1];
     parse_str( $argv[2] ?? $default_query, $_GET );

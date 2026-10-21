@@ -795,6 +795,20 @@ function hu_get_wordpress_takeover_service_definition() {
 }
 
 /**
+ * Technical SEO service with individually agreed scope; no fixed-price Offer.
+ *
+ * @return array<string, string>
+ */
+function hu_get_wordpress_technical_seo_service_definition() {
+    return [
+        'name'          => 'Technisches SEO für WordPress',
+        'description'   => 'Technischen Befund und vereinbarte Korrekturen für bestehende WordPress-Websites abgrenzen. Umfang, Preis und Abnahmekriterien stehen vor dem Auftrag fest.',
+        'serviceType'   => 'Technisches SEO für WordPress',
+        'serviceOutput' => 'Befund mit betroffenen URLs, Nachweis und Prioritäten; separat vereinbarte technische Korrekturen mit dokumentierter Prüfung',
+    ];
+}
+
+/**
  * Build a generic WebPage node that anchors a singular view in the graph.
  *
  * Pages that already emit a dedicated WebPage subtype (ProfilePage, AboutPage,
@@ -1358,6 +1372,8 @@ function hu_output_schema()
     // Service definitions (slug => data)
     $service_definitions = [
         'wordpress-website-uebernehmen' => hu_get_wordpress_takeover_service_definition(),
+        'technisches-seo-wordpress' => hu_get_wordpress_technical_seo_service_definition(),
+
         'wordpress-agentur-hannover' => [
             'name'        => 'WordPress Agentur Hannover',
             'description' => 'WordPress Agentur in Hannover für B2B-Unternehmen: technisches SEO, laufende Betreuung, Tracking, Conversion und Angebotsseiten als ein verbundenes System mit kontrollierter Weiterentwicklung.',
@@ -2119,7 +2135,7 @@ function hu_output_schema()
         global $post;
         if ( isset( $post ) && $post instanceof WP_Post ) {
             $template_owns_faq_schema = (
-                in_array( $slug, [ 'wordpress-website-uebernehmen', 'referenzen', 'ergebnisse', 'case-studies-e-commerce', 'case-studies', 'hasim-uener', 'wordpress-agentur-hannover', 'wordpress-freelancer-hannover', 'server-side-tracking-b2b', 'aroundhome-solar-einordnung', 'whitelabel-retainer', 'whitelabel-retainer-proof', 'whitelabel', 'landingpage-erstellen-lassen', 'wordpress-website-erstellen-lassen' ], true )
+                in_array( $slug, [ 'technisches-seo-wordpress', 'wordpress-website-uebernehmen', 'referenzen', 'ergebnisse', 'case-studies-e-commerce', 'case-studies', 'hasim-uener', 'wordpress-agentur-hannover', 'wordpress-freelancer-hannover', 'server-side-tracking-b2b', 'aroundhome-solar-einordnung', 'whitelabel-retainer', 'whitelabel-retainer-proof', 'whitelabel', 'landingpage-erstellen-lassen', 'wordpress-website-erstellen-lassen' ], true )
                 // Template-owned pages must not emit FAQs from invisible editor caches.
                 || is_page_template( 'page-ergebnisse.php' )
                 || is_page_template( 'page-case-studies-e-commerce.php' )

@@ -11,18 +11,16 @@ if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
 
-$seo_url          = function_exists( 'nexus_get_primary_public_url' ) ? nexus_get_primary_public_url( 'seo', home_url( '/wordpress-agentur-hannover/#zusammenarbeit' ) ) : home_url( '/wordpress-agentur-hannover/#zusammenarbeit' );
+$seo_url          = hu_get_commercial_route( 'technical_seo' );
 $cwv_url          = function_exists( 'nexus_get_primary_public_url' ) ? nexus_get_primary_public_url( 'cwv', home_url( '/wordpress-agentur-hannover/#zusammenarbeit' ) ) : home_url( '/wordpress-agentur-hannover/#zusammenarbeit' );
 $tracking_url     = function_exists( 'nexus_get_primary_public_url' ) ? nexus_get_primary_public_url( 'tracking', home_url( '/ga4-tracking-setup/' ) ) : home_url( '/ga4-tracking-setup/' );
 $cro_url          = function_exists( 'nexus_get_primary_public_url' ) ? nexus_get_primary_public_url( 'cro', home_url( '/#angebot-funnel' ) ) : home_url( '/#angebot-funnel' );
 $seo_category_url = function_exists( 'nexus_get_primary_public_url' ) ? nexus_get_primary_public_url( 'seo_category', home_url( '/category/seo/' ) ) : home_url( '/category/seo/' );
-// Cornerstone für technisches SEO — kein Energy-Kontext. Alle drei CTAs der
-// Seite führten bisher in den Solar-Marktcheck; sie führen jetzt auf die
-// generische Projektanfrage.
-$project_url      = function_exists( 'hu_get_commercial_route' )
-	? hu_get_commercial_route( 'project_request', home_url( '/kontakt/' ) )
-	: home_url( '/kontakt/' );
-$project_cta_label = 'Projekt anfragen';
+// Fachartikel und Leistungsseite behalten getrennte Rollen. Konkrete
+// Projektanfragen tragen den bestehenden SEO-Fokus bis ins CRM.
+$project_url      = hu_get_contact_intake_url( 'project', 'seo' );
+$project_cta_label = 'SEO-Projekt anfragen';
+$seo_cost_answer = 'Der Preis richtet sich nach betroffenen Seiten, Prüffragen und nötiger Umsetzung. Befund und Korrekturen werden getrennt vereinbart. Umfang, Preis und Abnahmekriterien stehen vor der Beauftragung fest.';
 
 get_header();
 ?>
@@ -371,25 +369,23 @@ get_header();
 				<p>Wenn mehrere Antworten unklar sind, ist das kein Problem. Es ist ein Priorisierungssignal für die nächsten 90 Tage.</p>
 				<p>Wichtig für die Praxis: Diese Checkliste ist kein Audit-Ersatz, sondern ein Entscheidungsfilter für die nächste Managementrunde. Wenn zwei oder mehr Punkte kritisch sind, sollte die nächste Budgetdiskussion nicht bei der Reichweitenfrage beginnen, sondern bei der Systemfrage: Welche technische und prozessuale Reibung verhindert aktuell die wirtschaftliche Skalierung?</p>
 
-				<h2 id="fazit">Fazit: Nicht zuerst Spend erhöhen, zuerst Systemqualität erhöhen</h2>
-				<p>Technisches SEO ist kein Nice-to-have. Es ist die Voraussetzung, damit Performance Marketing wirtschaftlich skaliert. Wer nur in Kampagnen denkt, optimiert Symptome. Wer in Systemen denkt, optimiert Ergebnisqualität.</p>
-				<p>Die strategische Reihenfolge für Entscheider ist klar: Fundament, dann Skalierung. Erst Technik, Seitenlogik und Tracking stabilisieren. Dann Reichweite erhöhen. Genau so sinken Streuverlust, CPC-Druck und Vertriebsreibung gleichzeitig.</p>
-				<p>Der eigentliche Wettbewerbsvorteil liegt dabei nicht in einem einzelnen Kanal, sondern in der Verbindung aus technischer Stabilität, sauberer Messbarkeit und klarer Vertriebshandover-Logik. Unternehmen, die diesen Dreiklang beherrschen, kaufen nicht nur effizienter ein, sie bauen zugleich ein Nachfrage-Asset auf, das mit jeder Optimierung belastbarer wird. Genau dieser Asset-Gedanke trennt kurzfristige Kampagnengewinne von nachhaltigem Wachstum.</p>
-				<p>Wenn Sie diese Reihenfolge konsequent umsetzen, verändert sich nicht nur die Marketingeffizienz. Auch Forecast-Qualität, Vertriebsfokus und strategische Steuerbarkeit verbessern sich messbar deutlich über mehrere Quartale.</p>
+				<h2 id="fazit">Fazit: Technische Hindernisse benennen und gezielt beheben</h2>
+                <p>Technisches SEO prüft, ob Seiten erreichbar und ihre Angaben widerspruchsfrei sind. Befunde zu Indexierung, Vorlagen und Ladezeit brauchen betroffene URLs, einen Nachweis und eine nachvollziehbare Priorität.</p>
+                <p>Die technische Korrektur lässt sich anschließend prüfen. Ob Sichtbarkeit und Anfragen steigen, hängt auch von Inhalt, Nachfrage, Wettbewerb und weiteren Faktoren ab. Ein guter Labortestwert ist keine Rankinggarantie und keine Zusage für niedrigere Anzeigenkosten.</p>
 
 				<div class="seo-cornerstone__cta-box">
 					<h2>Nächster Schritt</h2>
-					<p>Wenn Sie wissen wollen, wie belastbar Ihr technisches Fundament heute ist, starten Sie mit einer strukturierten Analyse von Technik, Tracking, Conversion-Logik und Lead-Übergabe.</p>
+					<p>Beschreiben Sie Ihre Website und das beobachtete technische Problem. Auf der Leistungsseite sehen Sie den möglichen Prüfumfang und wie Befund, Korrektur und Abnahme getrennt vereinbart werden.</p>
 					<div class="seo-cornerstone__cta-buttons">
-						<a class="nx-btn nx-btn--primary" href="<?php echo esc_url( $seo_url ); ?>" data-track-action="cta_seo_cornerstone_audit" data-track-category="lead_gen">Technisches SEO Audit anfragen</a>
-							<a class="nx-btn nx-btn--ghost" href="<?php echo esc_url( $project_url ); ?>" data-track-action="cta_seo_cornerstone_project" data-track-category="lead_gen">Projekt anfragen</a>
+						<a class="nx-btn nx-btn--primary" href="<?php echo esc_url( $seo_url ); ?>" data-track-action="cta_seo_cornerstone_audit" data-track-category="lead_gen">Technischen SEO-Leistungsumfang ansehen</a>
+							<a class="nx-btn nx-btn--ghost" href="<?php echo esc_url( $project_url ); ?>" data-track-action="cta_seo_cornerstone_project" data-track-category="lead_gen">SEO-Projekt anfragen</a>
 					</div>
 				</div>
 
 				<h2>FAQ</h2>
 				<details class="nx-faq__item" name="hu-faq-cornerstone">
 					<summary>Was kostet technisches SEO für den Mittelstand?</summary>
-					<div class="nx-faq__content">Die Kosten hängen von Ausgangslage, Seitengröße und Umsetzungsgrad ab. In der Praxis ist entscheidend, welche Maßnahmen direkt auf CPL, Conversion Rate und Vertriebsaufwand wirken. Ein gutes Setup priorisiert nicht nach Checkliste, sondern nach Umsatzhebel und Umsetzungsreife.</div>
+					<div class="nx-faq__content"><?php echo esc_html( $seo_cost_answer ); ?></div>
 				</details>
 				<details class="nx-faq__item" name="hu-faq-cornerstone">
 					<summary>Wie hängen Quality Score und Ladezeit zusammen?</summary>
@@ -480,7 +476,7 @@ get_header();
 					'name'           => 'Was kostet technisches SEO für den Mittelstand?',
 					'acceptedAnswer' => [
 						'@type' => 'Answer',
-						'text'  => 'Die Kosten hängen von Ausgangslage, Seitengröße und Umsetzungsgrad ab. Entscheidend ist, welche Maßnahmen direkt auf CPL, Conversion Rate und Vertriebsaufwand wirken. Ein gutes Setup priorisiert nach Umsatzhebel und Umsetzungsreife.',
+						'text'  => $seo_cost_answer,
 					],
 				],
 				[
