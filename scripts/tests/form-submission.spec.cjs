@@ -396,7 +396,7 @@ for (const [focus, label, help, submitLabel, focusLabel] of [
 ]) {
   test(`${focus} entry keeps its product briefing through REST, CRM and mail`, async ({ page }) => {
     const html = '<style>.is-hidden,[hidden]{display:none!important}</style>' + contactHtml(focus);
-    await page.route('**/*', route => route.fulfill({ contentType: 'text/html', body: html }));
+    await page.route('**/*', route => route.fulfill({ contentType: 'text/html; charset=utf-8', body: html }));
     await page.goto(`https://example.test/kontakt/?type=project&focus=${focus}`);
 
     // The server-rendered page already carries the selection and useful copy.
