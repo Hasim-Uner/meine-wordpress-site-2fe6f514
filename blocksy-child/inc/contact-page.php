@@ -345,6 +345,10 @@ function nexus_get_contact_focus_options( $include_inactive = false ) {
 			'label' => 'Bestehende Website weiterentwickeln',
 			'types' => [ 'implementation', 'project' ],
 		],
+		'takeover' => [
+			'label' => 'WordPress-Übernahme-Check',
+			'types' => [ 'project' ],
+		],
 		'ongoing_scope'    => [
 			'label' => 'Laufende Weiterentwicklung',
 			'types' => [ 'ongoing', 'client' ],
@@ -443,6 +447,12 @@ function nexus_get_contact_focus_labels( $include_inactive = false ) {
  */
 function nexus_get_contact_project_focus_copy() {
 	return [
+		'takeover' => [
+			'messageLabel'       => 'Website und Anlass der Übernahme',
+			'messageHelp'        => sprintf( 'Welche Website soll übernommen werden, und was bleibt liegen? Der Check kostet %s netto und beginnt erst nach Beauftragung. Bitte keine Passwörter eintragen.', hu_freelancer_takeover_check_price() ),
+			'messagePlaceholder' => 'Website: … · Bisherige Betreuung: … · Als Nächstes soll …',
+			'submitLabel'        => 'Übernahme-Check anfragen',
+		],
 		'website' => [
 			'messageLabel'       => 'Ihr Angebot und gewünschter Starttermin',
 			'messageHelp'        => 'Welche Leistungen zeigen Sie, und bis wann soll die Website stehen?',

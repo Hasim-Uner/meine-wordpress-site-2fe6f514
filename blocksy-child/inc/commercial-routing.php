@@ -106,6 +106,7 @@ function hu_get_commercial_route_map() {
 		'website'         => function_exists( 'nexus_get_page_url' )
 			? nexus_get_page_url( [ 'wordpress-website-erstellen-lassen' ], home_url( '/wordpress-website-erstellen-lassen/' ) )
 			: home_url( '/wordpress-website-erstellen-lassen/' ),
+		'takeover'        => home_url( '/wordpress-website-uebernehmen/' ),
 		'agentur_local'   => function_exists( 'nexus_get_page_url' )
 			? nexus_get_page_url( [ 'wordpress-agentur-hannover', 'wordpress-agentur' ], home_url( '/wordpress-agentur-hannover/' ) )
 			: home_url( '/wordpress-agentur-hannover/' ),
@@ -421,6 +422,12 @@ function hu_get_site_footer_navigation_contract() {
 						'label'    => __( 'WordPress-Website erstellen lassen', 'blocksy-child' ),
 						'url'      => $routes['website'],
 						'track'    => 'cta_footer_nav_website_offer',
+						'category' => 'navigation',
+					],
+					[
+						'label'    => __( 'WordPress-Übernahme & Weiterentwicklung', 'blocksy-child' ),
+						'url'      => $routes['takeover'],
+						'track'    => 'cta_footer_nav_takeover',
 						'category' => 'navigation',
 					],
 				],

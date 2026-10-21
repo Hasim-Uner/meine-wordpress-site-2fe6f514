@@ -1394,6 +1394,12 @@ add_action( 'init', 'nexus_mark_route_pages_ensured', 99 );
 function nexus_get_provisioned_pages() {
 	return [
 		[
+			'slug'     => 'wordpress-website-uebernehmen',
+			'title'    => 'WordPress-Website übernehmen und weiterentwickeln',
+			'excerpt'  => 'Bestehende WordPress-Website prüfen: Übernahme-Check mit schriftlichem Befund, danach gezielte Weiterentwicklung mit vereinbartem Umfang.',
+			'template' => 'page-wordpress-website-uebernehmen.php',
+		],
+		[
 			'slug'     => 'referenzen',
 			'title'    => 'WordPress-Referenzen und Projekte',
 			'excerpt'  => 'Ausgewählte WordPress-Projekte mit Ausgangslage, eigenem Beitrag und öffentlich prüfbaren Websites.',

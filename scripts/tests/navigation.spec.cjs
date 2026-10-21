@@ -9,18 +9,23 @@ const { execFileSync } = require('node:child_process');
 const theme = path.resolve(__dirname, '../../blocksy-child');
 const types = { '.css': 'text/css', '.js': 'text/javascript', '.woff2': 'font/woff2', '.woff': 'font/woff', '.webp': 'image/webp' };
 const rendered = {};
+const pageTemplates = {
+  references: ['page-referenzen.php', 'assets/css/system.css,assets/css/referenzen.css'],
+  takeover: ['page-wordpress-website-uebernehmen.php', 'assets/css/system.css,assets/css/wordpress-uebernahme.css'],
+};
 const html = context => {
   if (rendered[context]) return rendered[context];
-  const output = execFileSync('php', context === 'references'
-    ? [path.join(__dirname, 'render-page.php'), context, 'page-referenzen.php', 'assets/css/system.css,assets/css/referenzen.css']
+  const output = execFileSync('php', pageTemplates[context]
+    ? [path.join(__dirname, 'render-page.php'), context, ...pageTemplates[context]]
     : [path.join(__dirname, 'render-navigation.php'), context], { encoding: 'utf8' });
-  return (rendered[context] = context === 'references'
+  return (rendered[context] = pageTemplates[context]
     ? output.replace('</body>', '<script src="/wp-content/themes/blocksy-child/assets/js/leiste.js"></script></body>')
     : output);
 };
 const freeAmount = execFileSync('php', ['-r', `require '${path.join(__dirname, 'navigation-harness.php')}'; echo hu_format_eur(0);`], { encoding: 'utf8' });
 const marketcheckAmount = execFileSync('php', ['-r', `require '${path.join(__dirname, 'navigation-harness.php')}'; echo hu_marketcheck_price();`], { encoding: 'utf8' });
 const trackingAmount = execFileSync('php', ['-r', `require '${path.join(__dirname, 'navigation-harness.php')}'; echo 'ab ' . hu_tracking_price('measurement', 'setup');`], { encoding: 'utf8' });
+const takeoverAmount = execFileSync('php', ['-r', `require '${path.join(__dirname, 'navigation-harness.php')}'; echo hu_freelancer_takeover_check_price();`], { encoding: 'utf8' });
 
 async function open(page, context, viewport) {
   await page.setViewportSize(viewport);
@@ -590,3 +595,46 @@ for (const width of [390, 1280]) {
     }
   });
 }
+
+
+for (const width of [320, 390, 1280]) {
+  test(`takeover ${width}: price, scope, evidence and request fit the existing-site offer`, async ({ page }, testInfo) => {
+    await open(page, 'takeover', { width, height: 900 });
+    const content = page.locator('#takeover-content');
+    await expect(content.getByRole('heading', { level: 1 })).toHaveText('Ihre WordPress-Website weiterentwickeln.');
+    await expect(content.locator('.uebernahme-preis .zahl')).toHaveText(takeoverAmount);
+    for (const action of ['hero', 'close']) {
+      await expect(content.locator(`[data-track-action="takeover_request_${action}"]`)).toHaveAttribute('href', 'https://hasimuener.de/kontakt/?type=project&focus=takeover');
+    }
+    await expect(content.locator('#uebernahme-check')).toContainText('Reparaturen, Migrationen und neue Seiten werden separat vereinbart');
+    await expect(content.locator('#weiterentwicklung')).toContainText('Ohne Rufbereitschaft und ohne garantierte Reaktionszeiten');
+    await expect(content.locator('#beleg a')).toHaveAttribute('href', 'https://hasimuener.de/referenzen/#e3-new-energy');
+    await expect(content.locator('#beleg')).not.toContainText(/\d[\d.,]*\s*(?:%|€)|1\.750/);
+    await expect(content.locator('a[href*="marktcheck"], a[href*="case-study"]')).toHaveCount(0);
+    await expect(page.locator('.fuss .register')).toHaveCount(0);
+    const image = content.locator('img');
+    await image.evaluate(async img => { img.loading = 'eager'; await img.decode(); });
+    await expect(image).toHaveAttribute('width', '960');
+    await expect(image).toHaveAttribute('height', '600');
+    const question = content.locator('summary').first();
+    await question.focus();
+    await page.keyboard.press('Enter');
+    await expect(content.locator('details').first()).toHaveAttribute('open', '');
+    await expect(content.locator('details').first().locator('.antwort')).toBeVisible();
+    await page.keyboard.press('Enter');
+    expect(await noHorizontalScroll(page)).toBe(true);
+    await page.screenshot({ path: testInfo.outputPath(`takeover-${width}.png`), fullPage: true });
+  });
+}
+
+test('takeover: without JavaScript the offer, native questions and request remain usable', async ({ browser }) => {
+  const context = await browser.newContext({ javaScriptEnabled: false });
+  const page = await context.newPage();
+  await open(page, 'takeover', { width: 390, height: 900 });
+  await expect(page.locator('[data-track-action="takeover_request_hero"]')).toBeVisible();
+  await page.locator('#voraussetzungen summary').nth(1).click();
+  await expect(page.locator('#voraussetzungen details').nth(1)).toHaveAttribute('open', '');
+  await expect(page.locator('#voraussetzungen details').nth(1)).toContainText('Ein Wechsel ist keine Voraussetzung');
+  expect(await noHorizontalScroll(page)).toBe(true);
+  await context.close();
+});

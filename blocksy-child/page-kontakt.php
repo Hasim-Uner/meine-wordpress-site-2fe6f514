@@ -57,7 +57,7 @@ $public_focus_options = array_filter(
 // Bei Projektanfragen stehen die häufigsten Vorhaben oben; die Schlüssel
 // bleiben unverändert, nur die Reihenfolge der Auswahl ändert sich.
 if ( 'project' === $selected_type ) {
-	$project_focus_order  = [ 'website', 'landingpage', 'relaunch', 'implementation_scope', 'conversion', 'tracking', 'seo', 'performance', 'website_strategy', 'followup_scope' ];
+	$project_focus_order  = [ 'website', 'landingpage', 'relaunch', 'takeover', 'implementation_scope', 'conversion', 'tracking', 'seo', 'performance', 'website_strategy', 'followup_scope' ];
 	$public_focus_options = array_merge(
 		array_intersect_key( array_flip( $project_focus_order ), $public_focus_options ),
 		$public_focus_options
@@ -134,6 +134,11 @@ if ( 'website' === $selected_focus ) {
 	$form_title = 'Zwei kurze Schritte zu Ihrer Landingpage-Anfrage.';
 	$form_intro = 'Beschreiben Sie Ihr Angebot, die geplante Besucherquelle und den gewünschten Termin.';
 	$message_step_title = 'Welches Angebot soll die Landingpage verkaufen?';
+} elseif ( 'takeover' === $selected_focus ) {
+	$hero_title = 'Ihre bestehende WordPress-Website übernehmen.';
+	$form_title = 'Zwei kurze Schritte zum Übernahme-Check.';
+	$form_intro = 'Beschreiben Sie Ihre Website und den Anlass der Übernahme. Ihre Anfrage ist unverbindlich.';
+	$message_step_title = 'Welche Website soll übernommen werden?';
 }
 
 if ( 'project' === $selected_type && isset( $project_focus_copy[ $selected_focus ] ) ) {

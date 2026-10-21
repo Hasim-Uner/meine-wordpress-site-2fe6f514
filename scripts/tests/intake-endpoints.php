@@ -152,6 +152,23 @@ foreach ( [ 'audit', 'analysis', 'implementation', 'ongoing', 'general', 'client
 		check( 400 === $r->status && 'invalid_focus_type' === $r->data['error_code'] && ! $GLOBALS['intake_test']['events'], 'Landingpage is only a project focus; invalid combinations have no side effects' );
 	} );
 }
+run_case( 'takeover product reaches CRM, activity and both mails', static function () use ( $contact ) {
+    $p = array_merge( $contact, [ 'focus' => 'takeover', 'message' => 'Unsere bestehende Website soll nach Ende der Betreuung übernommen werden.' ] );
+    $r = call_intake( 'contact', $p );
+    check( 201 === $r->status && true === $r->data['ok'], 'Takeover project accepted by existing contact endpoint' );
+    check( 'takeover' === get_post_meta( 1, '_nexus_contact_focus' ) && 'WordPress-Übernahme-Check' === get_post_meta( 1, '_nexus_contact_focus_label' ), 'Product focus persisted in CRM' );
+    check( str_contains( nexus_get_contact_request_activity_summary( nexus_validate_contact_request_payload( $p ) ), 'WordPress-Übernahme-Check' ), 'Activity retains the takeover product' );
+    check( 2 === count( $GLOBALS['intake_test']['mails'] ), 'Internal notification and customer confirmation built' );
+    foreach ( $GLOBALS['intake_test']['mails'] as $mail ) {
+        check( str_contains( $mail['body'], 'WordPress-Übernahme-Check' ) && str_contains( $mail['body'], $p['message'] ), 'Mail carries the takeover focus and briefing' );
+    }
+} );
+foreach ( [ 'audit', 'analysis', 'implementation', 'ongoing', 'general', 'client' ] as $request_type ) {
+    run_case( "takeover rejects request type $request_type", static function () use ( $contact, $request_type ) {
+        $r = call_intake( 'contact', array_merge( $contact, [ 'focus' => 'takeover', 'request_type' => $request_type ] ) );
+        check( 400 === $r->status && 'invalid_focus_type' === $r->data['error_code'] && ! $GLOBALS['intake_test']['events'], 'Invalid takeover type has no side effects' );
+    } );
+}
 run_case( 'assessment URL required, optional goal, canonical mail prefix', static function () use ( $contact ) {
 	$p = array_merge( $contact, [ 'request_type' => 'ersteinschaetzung', 'focus' => 'ersteinschaetzung', 'message' => '' ] );
 	$r = call_intake( 'contact', $p );

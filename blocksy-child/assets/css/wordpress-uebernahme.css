@@ -1,0 +1,53 @@
+/* WordPress takeover: layout deltas on the shared system.css core. */
+.uebernahme .uebernahme-einstieg,
+.uebernahme .uebernahme-beleg {
+  display: grid;
+  grid-template-columns: minmax(0, 1.3fr) minmax(0, 1fr);
+  align-items: start;
+  gap: var(--s5);
+}
+
+.uebernahme .uebernahme-einstieg > div,
+.uebernahme .uebernahme-angebot,
+.uebernahme .uebernahme-beleg > div,
+.uebernahme .uebernahme-abschnitt,
+.uebernahme .uebernahme-titel,
+.uebernahme .uebernahme-befund,
+.uebernahme .uebernahme-abschluss,
+.uebernahme .uebernahme-aktionen { display: grid; justify-items: start; gap: var(--s3); }
+
+.uebernahme .uebernahme-einstieg .aufriss { margin: 0; }
+.uebernahme .uebernahme-preis { display: grid; gap: var(--s1); }
+.uebernahme .uebernahme-preis strong { font-size: var(--grad-h2); line-height: 1.2; }
+.uebernahme .uebernahme-hinweis,
+.uebernahme figcaption { font-size: var(--grad-klein); color: var(--grau); }
+.uebernahme .gegenstand { margin-bottom: 0; }
+.uebernahme .uebernahme-angebot .tun { max-width: 100%; }
+.uebernahme .uebernahme-titel { max-width: var(--satz); }
+.uebernahme figure { margin: 0; }
+.uebernahme figure img { display: block; width: 100%; height: auto; border: 1px solid var(--haar); }
+.uebernahme figcaption { margin-top: var(--s1); }
+
+.uebernahme .uebernahme-liste { width: 100%; margin: 0; }
+.uebernahme .uebernahme-liste > div {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 2fr);
+  gap: var(--s3) var(--s5);
+  padding-block: var(--s3);
+  border-top: 1px solid var(--haar);
+}
+.uebernahme .uebernahme-liste dt { font-weight: 600; }
+.uebernahme .uebernahme-liste dd { display: grid; justify-items: start; gap: var(--s2); margin: 0; }
+.uebernahme .uebernahme-befund { max-width: var(--satz); border-left: 2px solid var(--stempel); padding-left: var(--s3); }
+.uebernahme .uebernahme-befund h3 { font-size: var(--grad-h2-leise); }
+.uebernahme .fragen { width: 100%; }
+.uebernahme .uebernahme-abschluss > div { max-width: var(--satz); }
+
+@media (max-width: 800px) {
+  .uebernahme .uebernahme-einstieg,
+  .uebernahme .uebernahme-beleg,
+  .uebernahme .uebernahme-liste > div { grid-template-columns: minmax(0, 1fr); }
+  .uebernahme .uebernahme-einstieg,
+  .uebernahme .uebernahme-beleg { gap: var(--s4); }
+  .uebernahme .uebernahme-liste > div { gap: var(--s2); }
+}
