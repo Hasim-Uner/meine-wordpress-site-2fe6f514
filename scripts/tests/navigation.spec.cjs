@@ -206,16 +206,16 @@ test('without JavaScript the navigation stays open and usable', async ({ browser
   const context = await browser.newContext({ javaScriptEnabled: false });
   const page = await context.newPage();
   await open(page, 'imprint', { width: 390, height: 844 });
-  await expect(sheet(page).getByRole('link', { name: 'Tracking' })).toBeVisible();
+  await expect(sheet(page).getByRole('link', { name: 'Leistungen' })).toBeVisible();
   await expect(klappe(page)).toBeHidden();
   await expect(rowDoor(page)).toBeHidden();
   await context.close();
 });
 
-test('desktop keyboard: wordmark, five links, door, visible focus', async ({ page }) => {
+test('desktop keyboard: wordmark, four links, door, visible focus', async ({ page }) => {
   await open(page, 'imprint', { width: 1280, height: 800 });
   const order = [];
-  for (let i = 0; i < 7; i++) {
+  for (let i = 0; i < 6; i++) {
     await page.keyboard.press('Tab');
     order.push(await page.evaluate(() => {
       const el = document.activeElement;
@@ -223,19 +223,21 @@ test('desktop keyboard: wordmark, five links, door, visible focus', async ({ pag
       return [el.innerText.trim().replace(/\s+/g, ' ').toLowerCase(), getComputedStyle(el).outlineStyle];
     }));
   }
-  expect(order.map(([text]) => text)).toEqual(['haşim üner.', 'projekte', 'tracking', 'white-label', 'solar & wärmepumpe', 'ergebnisse', 'projekt anfragen →']);
+  expect(order.map(([text]) => text)).toEqual(['haşim üner.', 'leistungen', 'für agenturen', 'referenzen', 'über mich', 'projekt anfragen →']);
   for (const [, outline] of order) expect(outline).not.toBe('none');
 });
 
-test('active states: page vs. area', async ({ page }) => {
-  await open(page, 'server_side', { width: 1280, height: 800 });
-  const tracking = rowNav(page).getByRole('link', { name: 'Tracking' });
-  await expect(tracking).toHaveAttribute('aria-current', 'true');
+test('active states: only the linked reference page claims the current page', async ({ page }) => {
+  await open(page, 'references', { width: 1280, height: 800 });
+  const reference = rowNav(page).getByRole('link', { name: 'Referenzen' });
+  await expect(reference).toHaveAttribute('aria-current', 'page');
   const [active, idle] = await Promise.all([
-    tracking.evaluate(el => getComputedStyle(el).color),
-    rowNav(page).getByRole('link', { name: 'White-Label' }).evaluate(el => getComputedStyle(el).color),
+    reference.evaluate(el => getComputedStyle(el).color),
+    rowNav(page).getByRole('link', { name: 'Für Agenturen' }).evaluate(el => getComputedStyle(el).color),
   ]);
   expect(active).not.toBe(idle);
+  await open(page, 'server_side', { width: 1280, height: 800 });
+  await expect(rowNav(page).locator('[aria-current]')).toHaveCount(0);
 });
 
 test('home: no nav item claims the page, the wordmark does', async ({ page }) => {
@@ -283,17 +285,15 @@ test('wordmark and About keep separate tracking actions', async ({ page }) => {
   await open(page, 'home', { width: 560, height: 800 });
   await expect(page.locator('.leiste .sig')).toHaveAttribute('data-track-action', 'nav_header_home');
   await klappe(page).click();
-  await expect(sheet(page).getByRole('link', { name: 'Über Haşim' })).toHaveAttribute('data-track-action', 'nav_header_about');
+  await expect(sheet(page).getByRole('link', { name: 'Über mich' })).toHaveAttribute('data-track-action', 'nav_header_about');
 });
 
-test('solar cluster: Marktcheck in the header and Ihr Weg on the Energy footer row', async ({ page }) => {
+test('solar cluster: specialised header door and quiet footer access', async ({ page }) => {
   await open(page, 'solar_cluster', { width: 1440, height: 900 });
   await expect(rowDoor(page)).toHaveAttribute('data-door', 'marktcheck');
   await expect(rowDoor(page)).toHaveAccessibleName(`Marktcheck ${marketcheckAmount}`);
-  const energy = page.locator('.register .weg.ist-hier');
-  await expect(energy).toHaveCount(1);
-  await expect(energy).toHaveAttribute('aria-labelledby', 'fuss-weg-energy');
-  await expect(energy.locator('.hier')).toHaveText('Ihr Weg');
+  await expect(page.locator('.register [data-door="marktcheck"]')).toHaveCount(0);
+  await expect(page.getByRole('navigation', { name: 'Weitere Seiten' }).getByRole('link', { name: 'Solar & Wärmepumpe' })).toHaveAttribute('href', 'https://hasimuener.de/solar-waermepumpen-leadgenerierung/');
 });
 
 test('contact: no door, the page is the target', async ({ page }) => {
@@ -346,7 +346,7 @@ for (const [width, columns] of [[390, 2], [1280, 4]]) {
     await open(page, 'imprint', { width, height: 900 });
     const directory = page.getByRole('navigation', { name: 'Weitere Seiten' });
     await expect(directory.getByRole('list')).toHaveCount(4);
-    await expect(directory.getByRole('list', { name: 'Leistungen' }).getByRole('link')).toHaveText(['Server-Side Tracking', 'Performance Marketing', 'WordPress Agentur Hannover', 'Landingpage erstellen lassen', 'Conversion-Optimierung', 'WordPress-Website erstellen lassen']);
+    await expect(directory.getByRole('list', { name: 'Leistungen' }).getByRole('link')).toHaveText(['Conversion-Tracking', 'Server-Side Tracking', 'Performance Marketing', 'WordPress Agentur Hannover', 'Landingpage erstellen lassen', 'Conversion-Optimierung', 'WordPress-Website erstellen lassen']);
     await expect(directory.getByRole('link', { name: 'Impressum' })).toHaveAttribute('aria-current', 'page');
     const tracks = await directory.evaluate(el => getComputedStyle(el).gridTemplateColumns.split(' ').length);
     expect(tracks).toBe(columns);
@@ -354,14 +354,14 @@ for (const [width, columns] of [[390, 2], [1280, 4]]) {
   });
 }
 
-// Door register in the footer: four active doors on every page except /kontakt/, own way marked, one column on a phone.
+// Door register in the footer: three active doors on every page except /kontakt/, own way marked, one column on a phone.
 const register = page => page.getByRole('navigation', { name: 'Welcher Weg passt?' });
 
 for (const [width, tracks] of [[390, 1], [768, 2], [1280, 2]]) {
   test(`footer register ${width}: ${tracks} column(s) per way, no overflow, every door one click away`, async ({ page }) => {
     await open(page, 'imprint', { width, height: 900 });
-    await expect(register(page).locator('.weg')).toHaveCount(4);
-    await expect(register(page).getByRole('link')).toHaveCount(4);
+    await expect(register(page).locator('.weg')).toHaveCount(3);
+    await expect(register(page).getByRole('link')).toHaveCount(3);
     const columns = await register(page).locator('.weg').first().evaluate(el => getComputedStyle(el).gridTemplateColumns.split(' ').length);
     expect(columns).toBe(tracks);
     const rows = await register(page).getByRole('link').evaluateAll(els => els.map(el => Math.round(el.getBoundingClientRect().height)));
@@ -379,7 +379,7 @@ test('footer register: active amounts use mono/tabular figures and paid doors ar
     const cs = getComputedStyle(el);
     return { text: el.textContent.trim(), family: cs.fontFamily, tabular: cs.fontVariantNumeric, color: cs.color };
   }));
-  expect(info.map(i => i.text)).toEqual(['nach Umfang', trackingAmount, expect.stringMatching(/^\d[\d.]* €$/), expect.stringMatching(/^\d[\d.]* €$/)]);
+  expect(info.map(i => i.text)).toEqual(['nach Umfang', trackingAmount, expect.stringMatching(/^\d[\d.]* €$/)]);
   for (const entry of info) {
     expect(entry.family).toContain('IBM Plex Mono');
     expect(entry.tabular).toContain('tabular-nums');
@@ -405,7 +405,7 @@ test('footer register: the own way is marked with a 3 px edge and "Ihr Weg", not
   // The door column stays flush with the other ways.
   const lefts = await register(page).locator('.weg .tueren').evaluateAll(els => els.map(el => Math.round(el.getBoundingClientRect().left)));
   expect(new Set(lefts).size).toBe(1);
-  await expect(register(page).locator('.weg')).toHaveCount(4);
+  await expect(register(page).locator('.weg')).toHaveCount(3);
 });
 
 test('footer register: no way is marked on a page of no way', async ({ page }) => {
@@ -413,12 +413,10 @@ test('footer register: no way is marked on a page of no way', async ({ page }) =
   await expect(register(page).locator('.ist-hier')).toHaveCount(0);
 });
 
-test('footer register: the Solar page points its doors at its own anchors, in the same order', async ({ page }) => {
+test('footer register: the Solar page keeps the global project paths and a quiet specialisation link', async ({ page }) => {
   await open(page, 'solar', { width: 1280, height: 900 });
-  const energy = register(page).locator('.weg.ist-hier');
-  await expect(energy.getByRole('link')).toHaveCount(1);
-  expect(await energy.getByRole('link').evaluateAll(els => els.map(el => el.getAttribute('href')))).toEqual(['#marktcheck']);
-  expect(await energy.getByRole('link').evaluateAll(els => els.map(el => el.dataset.door))).toEqual(['marktcheck']);
+  expect(await register(page).getByRole('link').evaluateAll(els => els.map(el => el.dataset.door))).toEqual(['projekt', 'tracking', 'aufgabe']);
+  await expect(page.getByRole('navigation', { name: 'Weitere Seiten' }).getByRole('link', { name: 'Solar & Wärmepumpe' })).toHaveAttribute('aria-current', 'page');
 });
 
 test('footer register: contact has none, the page is the target of every door', async ({ page }) => {
@@ -443,11 +441,11 @@ test('footer register: keyboard reaches the active doors in header order after t
   await open(page, 'imprint', { width: 1280, height: 900 });
   await register(page).getByRole('link').first().focus();
   const doors = [];
-  for (let i = 0; i < 4; i++) {
+  for (let i = 0; i < 3; i++) {
     doors.push(await page.evaluate(() => [document.activeElement.dataset.door, getComputedStyle(document.activeElement).outlineStyle]));
     await page.keyboard.press('Tab');
   }
-  expect(doors.map(([door]) => door)).toEqual(['projekt', 'tracking', 'aufgabe', 'marktcheck']);
+  expect(doors.map(([door]) => door)).toEqual(['projekt', 'tracking', 'aufgabe']);
   for (const [, outline] of doors) expect(outline).not.toBe('none');
 });
 
@@ -521,9 +519,10 @@ for (const width of [320, 360, 370, 390, 414, 560]) {
   });
 }
 
-test('solar focus: the footer register marks the Energy way and uses the same anchors', async ({ page }) => {
+test('solar focus: Marktcheck stays on the page ladder and outside global footer doors', async ({ page }) => {
   await open(page, 'solar', { width: 1280, height: 900 });
-  expect(await register(page).locator('.weg.ist-hier').getByRole('link').evaluateAll(els => els.map(el => el.getAttribute('href')))).toEqual(await ladder(page).getByRole('link').evaluateAll(els => els.map(el => el.getAttribute('href'))));
+  await expect(ladder(page).getByRole('link')).toHaveAttribute('href', '#marktcheck');
+  await expect(register(page).locator('[data-door="marktcheck"]')).toHaveCount(0);
 });
 
 // White-Label landing page: its own header (page anchors) with the Test-Sprint door.
