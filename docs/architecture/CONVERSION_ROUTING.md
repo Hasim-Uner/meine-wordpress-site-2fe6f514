@@ -30,7 +30,8 @@ A page can remain the canonical SEO destination for its query while its CTA rout
 | `/conversion-optimierung/` | B2B websites with visitors but too few matching inquiries (`conversion optimierung b2b`) | Written finding of the inquiry path (Anfragesystem-Analyse), then fixed-price implementation (route `conversion`, since 2026-09-30) | `Analyse anfragen` → `/kontakt/?type=analysis&focus=conversion` (`cro_offer_cta_hero_analysis`, `cro_offer_cta_analysis_scope`, `cro_offer_cta_close_analysis`) | Landingpage and tracking setup as price rows (`cro_offer_to_landingpage`, `cro_offer_to_tracking`), case study (`cro_offer_proof_case`); no footer door register on this page; no Marktcheck CTA. New direct-contact links in the close: `cro_offer_close_mail`, `cro_offer_close_tel`. Since 2026-10-01 the former `cro_offer_hero_whitelabel`, `cro_offer_to_website` and `cro_offer_reference_open` are retired (hero meta boxes, website row and reference list are gone) |
 | `/wordpress-website-erstellen-lassen/` | Direktkunden, WordPress-Website erstellen lassen | Die Anfrage-Website: Produkt, Umfangsrechner, Festpreis und Bauzeit | `/kontakt/?type=project&focus=website&seiten=N&art=neubau\|relaunch` plus `tracking=1` bei Auswahl; Positionen hero/angebot/beleg/leiste/abschluss | Vergleich, Belege und Bauzeit; Kontextlink von der lokalen Agenturseite |
 | `/wordpress-agentur-hannover/` | Local `wordpress agentur hannover` search intent | Local SEO acquisition + decision hub: Agenturmodell vs. direkte Verantwortung | Project request without preset focus (`hu_get_navigation_project_request_url()`, since 2026-09-26) | Context owners: Website, Conversion Tracking, Conversion-Optimierung; proof: public references `/#referenzen` and case study |
-| `/ergebnisse/` | Retired proof hub (since 2026-09-25) | 301 to `/case-study-solar-leadgenerierung/`; excluded from sitemap and `llms.txt` | none | Menu item „Ergebnisse“ → `/#arbeiten`; route `results` → case study |
+| `/referenzen/` | WordPress-Referenzen und Projektbelege | Kompakte Projektfälle aus dem Referenzkanon, ohne vertrauliche Kennzahlen | Allgemeine Projektanfrage; Agentur-Zweitweg | Neue eigenständige Übersicht; bestehende Ergebnisse-Redirects bleiben erhalten |
+| `/ergebnisse/` | Retired proof hub (since 2026-09-25) | 301 to `/case-study-solar-leadgenerierung/`; excluded from sitemap and `llms.txt` | none | Menu item „Referenzen“ → `/referenzen/`; route `results` → case study |
 | `/case-study-solar-leadgenerierung/` | Solar proof; since 2026-09-25 also the proof target of homepage, menu item „Ergebnisse“, tracking and agency pages | Evidence page | Solar Marktcheck, explicitly addressed to Solar/Wärmepumpe businesses | General B2B projects: quiet project request in the transfer section (`case_transfer_project`) and below the Marktcheck (`cta_case_study_to_project`) |
 
 ## Glossar: erst erklären, dann Projektbezug
@@ -247,10 +248,30 @@ eine öffentliche WordPress-Arbeit belegen den Ansatz mit getrenntem Kontext.
   JavaScript-Laufzeit. Profil, Kontaktformular, Consent und CRM bleiben in ihren
   bisherigen Zuständigkeiten. Kein Solar-Marktcheck als allgemeiner Seiten-CTA.
 
+## Referenzübersicht: eigener Beitrag und öffentliche Arbeiten
+
+`/referenzen/` wird als eigene WordPress-Seite mit `page-referenzen.php`
+provisioniert. Die zwei kompakten Projektfälle kommen aus
+`hu_reference_case_projects()` in `inc/canon/reference-canon.php`: E3 New
+Energy (Weiterentwicklung und Anfrageweg) und Civaka Azad
+(Informationsarchitektur, Navigation und Archive). Vorhandene Projektporträts,
+Screenshots und Rollenbeschreibungen werden wiederverwendet. Weitere öffentliche
+Arbeiten bleiben als kurze Links sichtbar; das eigene Journal ist als eigenes
+Projekt gekennzeichnet. Keine erfundenen Kennzahlen oder alleinige Urheberschaft.
+
+Die namentliche E3-Projektbeschreibung enthält keine Kennzahlen und keinen Link
+zur anonymisierten Fallstudie. Ausgangslage, eigener Beitrag und Umfang werden
+getrennt erläutert. Der Abschluss führt zur offenen Projektanfrage
+(`references_request_project`); der ruhigere Agentur-Link zur White-Label-Seite
+(`references_agency_collaboration`). Startseite und White-Label-Proof verlinken
+mit `home_references_overview` und `whitelabel_references_overview` hierher.
+Die Übersicht erhält zentrale Metadaten und einen `CollectionPage`-Knoten aus
+demselben Projektkanon; CSS verwendet nur `system.css` plus `referenzen.css`.
+
 ## Ergebnisse-Hub: Arbeitsbelege für die drei Geschäftspfade
 
 Stillgelegt seit 2026-09-25: `/ergebnisse/` leitet per 301 auf die Fallstudie,
-der Menüpunkt „Ergebnisse“ führt auf `/#arbeiten`. Der folgende Stand
+die neue Referenzübersicht liegt unabhängig davon auf `/referenzen/`. Der folgende Stand
 beschreibt `page-ergebnisse.php`, das im Repo bleibt, aber nicht mehr
 ausgeliefert wird.
 
@@ -471,22 +492,26 @@ Quelle der Punkte: `hu_get_site_header_navigation_contract()` in
 `hu_funnel_doors()` und `hu_funnel_context()` in
 `blocksy-child/inc/funnel-doors.php`; Kopf und Fuß lesen dieselbe
 Entscheidung. Kopfzeile und Klappblatt rendern dieselbe Liste in derselben
-Reihenfolge (das Blatt zusätzlich „Über Haşim“); das gespeicherte
+Reihenfolge; das gespeicherte
 WordPress-Menü, die 404-Seite und das SEO Cockpit lesen denselben Contract.
 Geprüft von `scripts/tests/navigation-contract.php` (CI).
 
 | Punkt | Ziel | Event | Zeile |
 |---|---|---|---|
-| Projekte | `/#angebote` | `nav_header_freelancer` | ja |
-| Tracking | `/ga4-tracking-setup/` (Route `tracking_setup`) | `nav_header_tracking` | ja |
-| White-Label | `/whitelabel-retainer/` | `nav_header_whitelabel` | ja |
-| Solar & Wärmepumpe | `/solar-waermepumpen-leadgenerierung/` | `nav_header_solar` | ja |
-| Ergebnisse (hinter einer Haarlinie) | `/#arbeiten` | `nav_header_results` | ja |
-| Über Haşim | `/hasim-uener/` | `nav_header_about` | nur Blatt |
+| Leistungen | `/#angebote` | `nav_header_freelancer` | ja |
+| Für Agenturen | `/whitelabel-retainer/` | `nav_header_whitelabel` | ja |
+| Referenzen (hinter einer Haarlinie) | `/referenzen/` | `nav_header_results` | ja |
+| Über mich | `/hasim-uener/` | `nav_header_about` | ja |
+
+Der Anfragebutton bleibt kontextabhängig. Solar steht als Spezialisierung im
+ruhigeren Fußverzeichnis. Das breite Tracking-Angebot bleibt über die
+Leistungsübersicht und den Fuß erreichbar. Die bestehenden Actions bleiben
+an erhaltenen Links stabil; `nav_header_results` führt seit Paket 2 zur neuen
+Referenzübersicht. Tracking und Solar sind keine primären Menüpunkte mehr.
 
 Seit 2026-10-03 trägt die Wortmarke (Ziel `/`) `nav_header_home`.
 Die Zeitreihe von `nav_header_about` ist bis zu dieser Umstellung mit
-Logo-Klicks vermischt; „Über Haşim“ behält `nav_header_about`.
+Logo-Klicks vermischt; „Über mich“ behält `nav_header_about`.
 
 `meta.location` bleibt im Kopf-Contract für das Klappblatt. Die dort nie
 gerenderten E-Mail-, Telefon- und hasimuener.org-Links (`meta.links`) sind
@@ -588,7 +613,7 @@ Türschlüssel) und `hu_funnel_doors()` in `blocksy-child/inc/funnel-doors.php`
 (Bezeichnung, Betrag, Ziel), gerendert von `template-parts/site-footer.php`.
 Der Fuß trägt keinen Sammel-CTA. Er fragt, wer der Besucher ist, in derselben
 Reihenfolge wie der Kopf, und führt jeden Weg auf seine Türen statt auf eine
-Landingpage. Kopfzeile des Registers: links „Welcher Weg passt?“, rechts
+Landingpage. Die drei Wege folgen Leistungen und Agenturen. Kopfzeile des Registers: links „Welcher Weg passt?“, rechts
 „Preise netto · “ plus `hu_response_promise()`.
 
 | Satz | Türen (Schlüssel) | Event je Tür |
@@ -596,7 +621,6 @@ Landingpage. Kopfzeile des Registers: links „Welcher Weg passt?“, rechts
 | Ich habe **eine Website** … | Projekt anfragen (`projekt`, „nach Umfang“) | `cta_footer_door_projekt` |
 | Ich brauche **belastbare Messung** … | Tracking-Projekt anfragen (`tracking`, „ab“ Grundprodukt) | `cta_footer_door_tracking` |
 | Ich bin **Agentur** … | Test-Sprint anfragen (`aufgabe`) | `cta_footer_door_aufgabe` |
-| Ich bin **Solar- oder Wärmepumpenbetrieb** und kaufe heute Portal-Anfragen. | Marktcheck, regional (`marktcheck`, Kanonpreis) | `cta_footer_door_marktcheck` |
 
 Jede Tür ist eine Zeile mit Bezeichnung, Betrag (Mono, tabellarische Ziffern)
 und Pfeil; die Beträge kommen aus dem Kanon (`hu_funnel_doors()`), kein
@@ -616,7 +640,7 @@ Die eigene Route wird nicht mehr ausgeblendet, sondern markiert (3-px-Kante in
 Tracking-Seiten zählen als Tracking; Fallstudie, Portal-Einordnungen und das
 Dossier „Leadgenerierung“ als Energie; Dossier „Tracking“ als Tracking). Auf
 der Seite, die den Anker besitzt, zeigt die Tür auf den Anker der Seite
-(Energie-Seite: `#marktcheck`, `#einstieg`). Das Register erscheint auf der Energie-Seite. Auf der Startseite bleibt es
+(White-Label-Seite: `#aufgabe`). Solar hat keine Zeile im globalen Register. Auf der Startseite bleibt es
 wegen der eigenen Nebenwege und des Abschlusses weg; auf `/kontakt/` ebenso, die
 Seite ist das Ziel jeder Tür. `/whitelabel-retainer/` rendert einen eigenen
 Fuß und zeigt das Register nicht.
@@ -624,19 +648,17 @@ Fuß und zeigt das Register nicht.
 Der Schalter sitzt zentral: `hu_footer_shows_register()` in
 `blocksy-child/inc/funnel-doors.php` liefert `false` für die Startseite, die Kontaktseite und für
 jede Seite, deren Template in `hu_footer_register_suppressed_templates()`
-steht (derzeit `page-conversion-optimierung.php`: eine Money Page mit genau einem
+steht (derzeit `page-conversion-optimierung.php` und `page-referenzen.php`: eine Money Page mit genau einem
 Angebot und eigenem Abschluss braucht darunter keine zweite Auswahl). Der Fuß
 (`template-parts/site-footer.php`) liest nur die Funktion und bleibt sonst
 unverändert, Direktzeile, Verzeichnis und Absender erscheinen weiter. Eine weitere
 Money Page ohne Register trägt man mit ihrer Template-Datei in diese Liste ein;
-`scripts/tests/navigation-contract.php` prüft die Kontexte `home` und `conversion`.
+`scripts/tests/navigation-contract.php` prüft unter anderem `home`, `conversion` und `references`.
 
-Die Energie-Zeile führt den Marktcheck damit auf jeder Seite (außer Kontakt
-und White-Label) als eine von drei Türen der Energie-Betriebe. Das ist die
-Vorgabe des Auftrags; `AGENTS.md` nennt sitewide Marktcheck-Routing als nicht
-wieder einzuführen. Offen, ob die Energie-Zeile davon ausgenommen sein soll
-(Entscheidung bei Haşim). Der Kopf zeigt den Marktcheck weiter nur im
-Energie-Kontext.
+Der Solar-Weg steht als „Solar & Wärmepumpe“ im Verzeichnis unter
+„Spezialisierung & Wissen“, ohne Preis oder Marktcheck-Tür. Das laute
+Türregister enthält nur Projekt, Tracking und Agenturen. Der Kopf zeigt den
+Marktcheck weiterhin ausschließlich im Energie-Kontext.
 
 Darunter die Direktzeile, ebenfalls `lead_gen`:
 
@@ -652,16 +674,19 @@ Ein Eintrag, der die aufgerufene Seite ist, trägt `aria-current="page"`.
 
 | Gruppe | Link | Destination | Event | Category |
 |---|---|---|---|---|
+| Leistungen | Conversion-Tracking | `/ga4-tracking-setup/` | `cta_footer_nav_tracking` | `navigation` |
 | Leistungen | Server-Side Tracking | `/server-side-tracking-b2b/` | `cta_footer_nav_server_side_tracking` | `navigation` |
 | Leistungen | Performance Marketing | `/performance-marketing/` | `cta_footer_nav_performance_marketing` | `navigation` |
 | Leistungen | WordPress Agentur Hannover | `/wordpress-agentur-hannover/` | `cta_footer_nav_agentur_local` | `navigation` |
 | Leistungen | Landingpage erstellen lassen | `/landingpage-erstellen-lassen/` | `cta_footer_nav_landingpage` | `navigation` |
 | Leistungen | Conversion-Optimierung | `/conversion-optimierung/` | `cta_footer_nav_conversion` | `navigation` |
 | Leistungen | WordPress-Website erstellen lassen | `/wordpress-website-erstellen-lassen/` | `cta_footer_nav_website_offer` | `navigation` |
+| Belege & Person | Referenzen | `/referenzen/` | `cta_footer_nav_references` | `trust` |
 | Belege & Person | Solar-Fallstudie | `/case-study-solar-leadgenerierung/` | `cta_footer_nav_case_study_proof` | `trust` |
-| Belege & Person | Über Haşim | `/hasim-uener/` | `cta_footer_nav_about` | `navigation` |
-| Wissen | Blog | `/blog/` | `cta_footer_nav_insights` | `navigation` |
-| Wissen | Glossar | `/glossar/` | `cta_footer_nav_glossary` | `navigation` |
+| Belege & Person | Über mich | `/hasim-uener/` | `cta_footer_nav_about` | `navigation` |
+| Spezialisierung & Wissen | Solar & Wärmepumpe | `/solar-waermepumpen-leadgenerierung/` | `cta_footer_nav_energy` | `navigation` |
+| Spezialisierung & Wissen | Blog | `/blog/` | `cta_footer_nav_insights` | `navigation` |
+| Spezialisierung & Wissen | Glossar | `/glossar/` | `cta_footer_nav_glossary` | `navigation` |
 | Rechtliches | Impressum | `/impressum/` | `cta_footer_nav_imprint` | `navigation` |
 | Rechtliches | Datenschutz | `/datenschutz/` | `cta_footer_nav_privacy` | `navigation` |
 

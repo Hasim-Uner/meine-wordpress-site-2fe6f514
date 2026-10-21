@@ -12,8 +12,8 @@
  * Modus und Tuer entscheidet hu_funnel_context() (inc/funnel-doors.php), nicht
  * dieses Template; der Fuss liest dieselbe Entscheidung:
  *
- * - voll:  Wortmarke, vier Wege, Haarlinie, Ergebnisse, Tuer, Menue. "Ueber
- *          Hasim" steht nur im Klappblatt und im Fuss.
+ * - voll:  Wortmarke, Leistungen, Agenturen, Referenzen, Person, Tuer, Menue.
+ *          Solar steht als Spezialisierung im Fussverzeichnis.
  * - leser: Wortmarke, Artikelpfad (Wissen / Dossier), Tuer. Kein Hauptmenue.
  *          Einzelbeitraege tragen ueber dieses Template keinen zweiten Kopf
  *          mehr; blog-header.php ruft es auf. Die Klasse
@@ -94,7 +94,7 @@ foreach ( $nav_items as $nav_item ) {
 		'track'    => (string) ( $nav_item['track'] ?? '' ),
 		'category' => (string) ( $nav_item['category'] ?? 'navigation' ),
 		'row'      => ! array_key_exists( 'row', $nav_item ) || ! empty( $nav_item['row'] ),
-		'beleg'    => 'group' === ( $nav_item['kind'] ?? '' ) && ! empty( $nav_item['row'] ),
+		'beleg'    => ! empty( $nav_item['divider'] ),
 	];
 }
 

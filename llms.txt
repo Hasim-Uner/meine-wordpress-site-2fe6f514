@@ -22,6 +22,7 @@ Standort: Pattensen bei Hannover, Niedersachsen (DE). Persönliche Termine, Work
 - [White-Label für Agenturen](/whitelabel-retainer/) - Agentur-/Partner-Intent: Aufgabe beschreiben, Erstprojekt mit fixem Scope, Retainer erst danach.
 
 ## Proof und zitierfähige Quellen
+- [WordPress-Referenzen und Projekte](/referenzen/) - Kompakte Projektfälle mit Ausgangslage, eigenem Beitrag und öffentlich prüfbarer Website. Die namentlichen Projektporträts enthalten keine vertraulichen Kennzahlen.
 - [Solar Case Study](/case-study-solar-leadgenerierung/) - Proof-Case für Nachfrageaufbau, Vorqualifizierung, Tracking und Conversion.
 - [Solar-Leads-Kosten: CPL und Kosten pro Auftrag](/solar-leads-kosten-studie/) - Kostenleitfaden für Photovoltaik- und Wärmepumpen-Anfragen: CPL, Vertriebszeit, Abschlussquote und Berechnung mit eigenen Zahlen. Keine pauschalen Anbieterpreise oder Amortisationszusage.
 - [Haşim Üner](/hasim-uener/) - Personenprofil des Betreibers: Arbeitsweise und fachliche Kompetenz.

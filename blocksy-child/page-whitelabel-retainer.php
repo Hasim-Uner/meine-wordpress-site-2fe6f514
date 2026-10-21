@@ -337,6 +337,7 @@ $marke = static function ( $nr, $name ) {
 						<?php endforeach; ?>
 					</ul>
 				<?php endif; ?>
+				<p class="wl-referenzen__satz"><a class="st-link" href="<?php echo esc_url( hu_get_commercial_route( 'references' ) ); ?>" data-track-action="whitelabel_references_overview" data-track-category="proof" data-track-section="proof">Projektaufgaben und meinen Beitrag ansehen <span aria-hidden="true">→</span></a></p>
 			</div>
 		</div>
 	</section>

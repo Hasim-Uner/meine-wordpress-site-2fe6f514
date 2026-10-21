@@ -82,26 +82,44 @@ $routes   = hu_get_commercial_route_map();
 $header   = hu_get_site_header_navigation_contract();
 $footer   = hu_get_site_footer_navigation_contract();
 $labels   = array_map( static function ( $item ) { return $item['label']; }, hu_get_primary_navigation_contract() );
-$tracking = $header['routes'][1];
+$references = $header['groups'][0]['items'][0];
 
-nav_check( [ 'Projekte', 'Tracking', 'White-Label', 'Solar & Wärmepumpe', 'Ergebnisse', 'Über Haşim', 'Projekt anfragen' ] === $labels, 'header order: projects, audience paths, proof, default door' );
-nav_check( [ true, false ] === array_column( $header['groups'][0]['items'], 'row' ), 'header row carries Ergebnisse; Über Haşim stays in sheet and footer' );
+nav_check( [ 'Leistungen', 'Für Agenturen', 'Referenzen', 'Über mich', 'Projekt anfragen' ] === $labels, 'header order: projects, audience paths, proof, default door' );
+nav_check( [ true, true ] === array_column( $header['groups'][0]['items'], 'row' ), 'header row and sheet both carry references and person' );
 nav_check( [ 'location' ] === array_keys( $header['meta'] ) && '' !== $header['meta']['location'], 'header metadata keeps location without phantom links' );
 nav_check( '/ga4-tracking-setup/' === nav_path( $routes['tracking_setup'] ), 'route tracking_setup is the Tracking offer' );
 nav_check( '/server-side-tracking-b2b/' === nav_path( $routes['tracking_b2b'] ), 'route tracking_b2b stays the Server-Side specialist page' );
-nav_check( 'Tracking' === $tracking['label'] && $routes['tracking_setup'] === $tracking['url'], 'header "Tracking" links the Tracking offer' );
+nav_check( '/referenzen/' === nav_path( $references['url'] ) && $routes['references'] === $references['url'], 'reference navigation uses the dedicated overview, not the Solar case' );
 nav_check( 'https://hasimuener.de/kontakt/?type=project' === $header['cta']['url'], 'header CTA is the open project request' );
-nav_check( [ 'freelancer', 'tracking', 'whitelabel', 'energy' ] === array_column( $footer['routes'], 'route' ), 'footer ways follow the header order' );
-nav_check( [ [ 'projekt' ], [ 'tracking' ], [ 'aufgabe' ], [ 'marktcheck' ] ] === array_column( $footer['routes'], 'doors' ), 'footer ways carry their door keys; the Energy way ends in the paid ladder' );
+nav_check( [ 'freelancer', 'tracking', 'whitelabel' ] === array_column( $footer['routes'], 'route' ), 'footer ways follow the header order' );
+nav_check( [ [ 'projekt' ], [ 'tracking' ], [ 'aufgabe' ] ] === array_column( $footer['routes'], 'doors' ), 'footer main ways cover services and agencies' );
 nav_check( ! array_key_exists( 'picks', $footer ), 'footer contract no longer carries landing-page picks' );
-nav_check( 'Ich bin Solar- oder Wärmepumpenbetrieb und kaufe heute Portal-Anfragen.' === implode( '', array_map( static function ( $part ) use ( $footer ) { return $footer['routes'][3][ $part ]; }, [ 'pre', 'strong', 'post' ] ) ), 'footer Energy sentence names today\'s portal buyers' );
 nav_check( count( hu_get_site_footer_door_urls() ) === count( array_unique( hu_get_site_footer_door_urls() ) ) && 0 < count( hu_get_site_footer_door_urls() ), 'footer door URLs are listed once for the SEO cockpit' );
-nav_check( [ 'Leistungen', 'Belege & Person', 'Wissen', 'Rechtliches' ] === array_column( $footer['directory'], 'title' ), 'footer directory has four groups' );
+nav_check( [ 'Leistungen', 'Belege & Person', 'Spezialisierung & Wissen', 'Rechtliches' ] === array_column( $footer['directory'], 'title' ), 'footer directory has four groups' );
 
 $directory_items = array_merge( ...array_column( $footer['directory'], 'items' ) );
 $by_label        = array_column( $directory_items, 'url', 'label' );
+nav_check( ( $by_label['Solar & Wärmepumpe'] ?? '' ) === $routes['energy'], 'Solar stays reachable in the quiet footer directory' );
+nav_check( ( $by_label['Conversion-Tracking'] ?? '' ) === $routes['tracking_setup'], 'broad Tracking offer stays linked from the footer' );
+nav_check( ( $by_label['Referenzen'] ?? '' ) === $routes['references'], 'footer links the reference overview' );
 nav_check( ( $by_label['Server-Side Tracking'] ?? '' ) === $routes['tracking_b2b'], 'specialist page keeps a sitewide link with its exact name' );
 nav_check( '/performance-marketing/' === nav_path( $by_label['Performance Marketing'] ?? '' ), 'Performance Marketing query owner is linked sitewide' );
+
+// Reference schema and visible project anchors share the approved source.
+require_once get_stylesheet_directory() . '/inc/canon/reference-canon.php';
+require_once get_stylesheet_directory() . '/inc/org-schema.php';
+nav_test_use_context( 'references' );
+$reference_schema = hu_get_reference_collection_schema();
+$reference_page   = nav_dom( nav_test_render( 'page-referenzen.php' ) );
+nav_check( 'CollectionPage' === $reference_schema['@type'] && $routes['references'] === $reference_schema['url'], 'reference schema identifies the dedicated collection URL' );
+nav_check( 2 === count( $reference_schema['hasPart'] ), 'reference collection includes the two approved compact cases' );
+foreach ( $reference_schema['hasPart'] as $part ) {
+    $anchor = (string) wp_parse_url( $part['@id'], PHP_URL_FRAGMENT );
+    nav_check( 1 === $reference_page->query( '//section[@id="' . $anchor . '"]' )->length, 'reference schema part has a visible project section: ' . $anchor );
+}
+nav_check( 1 === $reference_page->query( '//h1' )->length, 'reference page has one main heading' );
+nav_check( 0 === $reference_page->query( '//section[@id="e3-new-energy"]//a[contains(@href,"case-study")]' )->length, 'named E3 portrait stays separate from the anonymous numerical case' );
+nav_test_use_context( 'imprint' );
 
 // --- 1b. Doors: one decision for header and footer ------------------------------
 
@@ -161,6 +179,7 @@ $expect_funnel = [
 	'case_study'    => [ 'voll', 'marktcheck', 'energy' ],
 	'solar_cluster' => [ 'voll', 'marktcheck', 'energy' ],
 	'about'         => [ 'voll', 'projekt', '' ],
+	'references'    => [ 'voll', 'projekt', '' ],
 	'contact'       => [ 'voll', null, '' ],
 	'agentur_local' => [ 'voll', 'projekt', '' ],
 	'imprint'       => [ 'voll', 'projekt', '' ],
@@ -202,22 +221,23 @@ nav_check( count( array_column( $directory_items, 'track' ) ) === count( array_u
 
 $expect_current = [
 	'home'          => [],
-	'tracking'      => [ 'Tracking' => 'page' ],
-	'server_side'   => [ 'Tracking' => 'true' ],
-	'case_study'    => [ 'Ergebnisse' => 'true' ],
+	'tracking'      => [],
+	'server_side'   => [],
+	'case_study'    => [],
 	'solar_cluster' => [],
-	'about'         => [ 'Über Haşim' => 'page' ],
+	'about'         => [ 'Über mich' => 'page' ],
+	'references'    => [ 'Referenzen' => 'page' ],
 	'contact'       => [],
 	'agentur_local' => [],
 	'imprint'       => [],
 	'conversion'    => [],
 	'not_found'     => [],
-	// nexus_is_results_context() schliesst die Agenturseite ein; das gilt unveraendert.
-	'whitelabel'    => [ 'White-Label' => 'page', 'Ergebnisse' => 'true' ],
+	// Agency and reference pages are distinct destinations.
+	'whitelabel'    => [ 'Für Agenturen' => 'page' ],
 ];
 
 // Mark per context which way the footer register flags as "Ihr Weg" and where its doors point.
-$footer_door_order = [ 'projekt', 'tracking', 'aufgabe', 'marktcheck' ];
+$footer_door_order = [ 'projekt', 'tracking', 'aufgabe' ];
 
 foreach ( nav_test_contexts() as $context => $definition ) {
 	nav_test_use_context( $context );
@@ -226,11 +246,11 @@ foreach ( nav_test_contexts() as $context => $definition ) {
 	$footer_html = nav_test_render( 'template-parts/site-footer.php' );
 	$footer_x    = nav_dom( $footer_html );
 	$register    = nav_links( $footer_html, '//nav[@class="register"]//a' );
-	$route_now   = $expect_funnel[ $context ][2];
+	$route_now   = 'energy' === $expect_funnel[ $context ][2] ? '' : $expect_funnel[ $context ][2];
 
 	// Door register: on every page except /kontakt/ and the Money Pages in hu_footer_register_suppressed_templates(),
 	// six doors in one click, own way marked, not hidden.
-	if ( in_array( $context, [ 'home', 'contact', 'conversion' ], true ) ) {
+	if ( in_array( $context, [ 'home', 'contact', 'conversion', 'references' ], true ) ) {
 		nav_check( 0 === $footer_x->query( '//nav[@class="register"]' )->length, "{$context}: footer skips the door register" );
 		nav_check( 1 === $footer_x->query( '//footer[@id="footer"]' )->length && 1 === $footer_x->query( '//nav[@aria-label="Weitere Seiten"]' )->length, "{$context}: footer keeps direct line, directory and sender" );
 	} else {
@@ -240,10 +260,7 @@ foreach ( nav_test_contexts() as $context => $definition ) {
 
 		$marked = $footer_x->query( '//div[contains(concat(" ", @class, " "), " ist-hier ")]' );
 		nav_check( '' === $route_now ? 0 === $marked->length : ( 1 === $marked->length && 'fuss-weg-' . $route_now . '' === ( $marked->item( 0 )->getAttribute( 'aria-labelledby' ) ) ), "{$context}: own way " . ( '' === $route_now ? 'none marked' : "{$route_now} marked, not hidden" ) );
-		if ( 'solar_cluster' === $context ) {
-			nav_check( 1 === $footer_x->query( '//div[@aria-labelledby="fuss-weg-energy"]//span[@class="hier" and text()="Ihr Weg"]' )->length, 'solar_cluster: Energy way carries Ihr Weg' );
-		}
-		nav_check( 4 === $footer_x->query( '//nav[@class="register"]//div[@class="tueren" or contains(@class,"weg")]/p[@class="satz"]' )->length, "{$context}: all four ways stay in the register" );
+		nav_check( 3 === $footer_x->query( '//nav[@class="register"]//div[@class="tueren" or contains(@class,"weg")]/p[@class="satz"]' )->length, "{$context}: three main ways stay in the register" );
 
 		foreach ( $register as $index => $door_link ) {
 			$spec_row = $door_spec[ $door_link['door'] ];
@@ -258,7 +275,7 @@ foreach ( nav_test_contexts() as $context => $definition ) {
 
 	// On the page that owns the anchors, the doors point at the page itself.
 	if ( 'solar' === $context ) {
-		nav_check( [ '#marktcheck' ] === array_slice( array_column( $register, 'href' ), 3 ), 'solar: Energy doors point at anchors of the page' );
+		nav_check( ! in_array( '#marktcheck', array_column( $register, 'href' ), true ), 'solar: global footer keeps the specialisation in its directory' );
 	}
 
 	$header_html = nav_test_render( 'template-parts/site-header.php' );
@@ -276,11 +293,11 @@ foreach ( nav_test_contexts() as $context => $definition ) {
 	nav_check( $header_el && $expected_header_class === preg_replace( '/ nexus-article-reader-header$/', '', $header_el->getAttribute( 'class' ) ), "{$context}: header renders mode {$mode} with dark measurement tokens only on home" );
 
 	if ( 'voll' === $mode ) {
-		$sheet_without_about = array_values( array_filter( $sheet, static function ( $link ) { return 'Über Haşim' !== $link['text']; } ) );
-		nav_check( array_column( $row, 'href' ) === array_column( $sheet_without_about, 'href' ), "{$context}: row lists the sheet targets in the same order, without Über Haşim" );
-		nav_check( [ 'Projekte', 'Tracking', 'White-Label', 'Solar & Wärmepumpe', 'Ergebnisse', 'Über Haşim' ] === array_column( $sheet, 'text' ), "{$context}: sheet lists all six points" );
-		nav_check( 'nav_header_about' === $sheet[5]['track'], "{$context}: Über Haşim keeps its tracking action" );
-		nav_check( 1 === $header_x->query( '//nav[@aria-label="Hauptnavigation"]//a[@class="beleg"]' )->length && 'Ergebnisse' === $row[4]['text'], "{$context}: hairline sits before Ergebnisse" );
+		nav_check( array_column( $row, 'href' ) === array_column( $sheet, 'href' ), "{$context}: row and sheet list the same targets in the same order" );
+		nav_check( [ 'Leistungen', 'Für Agenturen', 'Referenzen', 'Über mich' ] === array_column( $sheet, 'text' ), "{$context}: main navigation focuses on services, agencies, evidence and person" );
+		nav_check( 'nav_header_about' === $sheet[3]['track'], "{$context}: person link keeps its tracking action" );
+		nav_check( 1 === $header_x->query( '//nav[@aria-label="Hauptnavigation"]//a[@class="beleg"]' )->length && 'Referenzen' === $row[2]['text'], "{$context}: hairline sits before references" );
+		nav_check( ! in_array( 'Solar & Wärmepumpe', array_column( $sheet, 'text' ), true ), "{$context}: energy is not a primary-menu topic" );
 
 		$current = [];
 		foreach ( $sheet as $link ) {
@@ -407,7 +424,7 @@ nav_check( false !== strpos( (string) file_get_contents( get_stylesheet_director
 
 nav_test_use_context( 'not_found' );
 $not_found = nav_links( nav_test_render( '404.php' ), '//div[contains(@class,"nexus-404__links")]//a' );
-nav_check( [ 'Startseite', 'Projekte', 'Tracking', 'White-Label', 'Solar & Wärmepumpe', 'Blog' ] === array_column( $not_found, 'text' ), '404: recovery links mirror the header routes' );
+nav_check( [ 'Startseite', 'Leistungen', 'Für Agenturen', 'Referenzen', 'Über mich', 'Blog' ] === array_column( $not_found, 'text' ), '404: recovery links mirror the header routes' );
 nav_check( ! preg_grep( '/marktcheck/i', array_column( $not_found, 'href' ) ), '404: no sitewide Marktcheck link' );
 nav_check( count( $not_found ) === count( array_unique( array_column( $not_found, 'track' ) ) ), '404: tracking actions are unique' );
 

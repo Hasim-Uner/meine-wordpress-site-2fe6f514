@@ -1,0 +1,60 @@
+/* Reference overview: route layouts on the shared system.css core. */
+.referenzen .referenzen-index {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--s2) var(--s4);
+  margin-top: var(--s3);
+}
+
+.referenzen .referenzen-projekt {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+  align-items: start;
+  gap: var(--s5);
+}
+
+.referenzen .referenzen-befund {
+  display: grid;
+  gap: var(--s3);
+  margin: var(--s3) 0;
+}
+
+.referenzen .referenzen-befund dt {
+  margin-bottom: var(--s1);
+  font-family: var(--mono);
+  font-size: var(--mono-m);
+  color: var(--grau);
+}
+
+.referenzen .referenzen-befund dd { margin: 0; }
+.referenzen .referenzen-befund ul { margin: var(--s2) 0 0; padding-left: var(--s3); }
+
+.referenzen .referenzen-grenze,
+.referenzen .referenzen-bild figcaption {
+  color: var(--grau);
+  font-size: var(--grad-klein);
+}
+
+.referenzen .referenzen-grenze { margin-bottom: var(--s2); }
+.referenzen .referenzen-bild { margin: 0; }
+.referenzen .referenzen-bild img { display: block; width: 100%; height: auto; border: 1px solid var(--haar); }
+.referenzen .referenzen-bild figcaption { margin-top: var(--s1); }
+
+.referenzen .referenzen-weitere {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: var(--s4);
+  list-style: none;
+  padding: 0;
+  margin: var(--s3) 0 0;
+}
+
+.referenzen .referenzen-weitere li { display: grid; justify-items: start; gap: var(--s2); }
+.referenzen .referenzen-abschluss { display: grid; gap: var(--s4); }
+.referenzen .referenzen-aktionen { display: flex; flex-wrap: wrap; align-items: center; gap: var(--s3); }
+
+@media (max-width: 800px) {
+  .referenzen .referenzen-projekt,
+  .referenzen .referenzen-weitere { grid-template-columns: minmax(0, 1fr); }
+  .referenzen .referenzen-projekt { gap: var(--s3); }
+}

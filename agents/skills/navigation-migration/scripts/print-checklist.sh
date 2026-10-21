@@ -46,7 +46,10 @@ Manual WordPress admin (not verifiable from the repo):
 - Purge the page cache (nginx/Varnish) so no page keeps the old header.
 
 Post-deploy QA, uncached:
-- Header on desktop and mobile: "Tracking" opens /ga4-tracking-setup/.
+- Header on desktop and mobile: Leistungen -> /#angebote, Für Agenturen ->
+  /whitelabel-retainer/, Referenzen -> /referenzen/, Über mich -> /hasim-uener/.
+- Footer: "Solar & Wärmepumpe" stays reachable under specialisation;
+  "Conversion-Tracking" opens /ga4-tracking-setup/.
 - Footer: "Server-Side Tracking" opens /server-side-tracking-b2b/.
 - Mobile: open the menu, Escape closes it, a link closes it.
 - A 404 URL lists the header routes and no Marktcheck.

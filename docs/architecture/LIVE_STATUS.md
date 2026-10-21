@@ -16,6 +16,10 @@ Abschnitt anzuhängen; der Verlauf gehört in Commit-Nachrichten.
 
 ## Grundlage und Grenzen
 
+- Paket 2 (Referenzen und fokussierte Navigation) ist Repo-Stand und noch
+  nicht veröffentlicht oder live abgenommen. `/referenzen/` wird beim Deploy
+  über die bestehende Seiten-Provisionierung angelegt. Die folgenden
+  Navigationsangaben beschreiben den vorbereiteten Stand.
 - Basis: Repo-Inhalt, Deploy-Workflows und die Template- und Funnel-Logik im
   Theme `blocksy-child/`.
 - Die Korrekturen an Fallbezeichnungen, Artikel-Kontextlinks und Anfragewegen
@@ -111,11 +115,11 @@ Contract und Abnahme: `CHAT_ASSISTANT.md`.
 - Kopf: `.leiste` aus `system.css` plus `leiste.js`, gerendert von
   `template-parts/site-header.php`. Seit 2026-10-01 entscheidet
   `hu_funnel_context()` (`inc/funnel-doors.php`) Modus und Tür; Kopf und Fuß
-  lesen dieselbe Entscheidung. Modus `voll`: Wortmarke, Projekte (`/#angebote`),
-  Tracking (`/ga4-tracking-setup/`, Route `tracking_setup`), White-Label,
-  Solar & Wärmepumpe, Haarlinie, Ergebnisse (`/#arbeiten`, Ziel aus
-  `hu_get_results_nav_url()`), die Tür, „Menü“; „Über Haşim“ steht nur im
-  Klappblatt und im Fuß. Modus `leser` (Einzelbeiträge): Wortmarke,
+  lesen dieselbe Entscheidung. Modus `voll`: Wortmarke, Leistungen
+  (`/#angebote`), Für Agenturen, Haarlinie, Referenzen (`/referenzen/`, Ziel
+  aus `hu_get_results_nav_url()`), Über mich und die passende Anfragetür.
+  Kopfzeile und Klappblatt führen dieselben vier Punkte. Solar bleibt als
+  Spezialisierung im ruhigeren Fußverzeichnis erreichbar. Modus `leser` (Einzelbeiträge): Wortmarke,
   Artikelpfad „Wissen / Dossier“, die Tür, kein Hauptmenü; der frühere
   Lesekopf (`article-reader-header.php`, `blog-header.css`) ist entfallen, die
   Klasse `nexus-article-reader-header` bleibt als Haken für die Artikel-
@@ -132,8 +136,8 @@ Contract und Abnahme: `CHAT_ASSISTANT.md`.
   WordPress-Menü (`inc/menu-setup.php`, nur Backend-Zustand, nirgends
   gerendert) und SEO Cockpit lesen denselben Contract.
   `aria-current="page"` nur auf dem Link, der die Seite ist;
-  `aria-current="true"` für den Bereich (Server-Side-Seite unter Tracking,
-  Fallstudie unter Ergebnisse). Unter 1081 px bleibt die Tür in der Zeile
+  `aria-current="true"` nur für einen tatsächlich verlinkten Bereich.
+  Referenzen und Person markieren ihre jeweils eigene Seite mit `page`. Unter 1081 px bleibt die Tür in der Zeile
   neben „Menü“ (unter 561 px als Kurztext, unter 371 px ohne Betrag, unter
   340 px nur im Blatt); auf Seiten mit Sticky-CTA-Leiste übernimmt unter
   761 px die Leiste. Das Klappblatt scrollt selbst, wenn es höher als der
@@ -146,29 +150,20 @@ Contract und Abnahme: `CHAT_ASSISTANT.md`.
   `.leiste` (`template-parts/whitelabel-header.php`), ohne Klappblatt, mit der
   Tür „Test-Sprint anfragen“ aus `hu_funnel_doors()` (Action
   `cta_whitelabel_header_task_brief` bleibt, `data-door="aufgabe"`).
-  Auf der Startseite (über `startseite-strecke.css/.js`) ist „Projekte“ nur
+  Auf der Startseite (über `startseite-strecke.css/.js`) ist „Leistungen“ nur
   aktiv, solange `#angebote` im Blick ist (`aria-current="location"`), ohne
   JavaScript neutral; die Wortmarke trägt `aria-current="page"`. Der
   Menüknopf hat kein eigenes `aria-label`, der sichtbare Text
   „Menü“/„Schließen“ ist sein Name.
-- Fuß: `template-parts/site-footer.php` aus
-  `hu_get_site_footer_navigation_contract()` und `hu_funnel_doors()`. Seit
-  2026-10-01 ein Türregister: vier Wege in Kopf-Reihenfolge (Website,
-  Tracking, Agentur, Energie), je Tür eine Zeile mit Bezeichnung, Betrag
-  (aus dem Kanon) und Pfeil, Tracking `cta_footer_door_<schlüssel>`. Die
-  Tracking-Tür im Fuß und die anderen allgemeinen Tracking-Türen lesen
-  denselben Messung-Einstieg (`measurement/setup`); der Server-Side-Gesamtpreis
-  steht beim ausdrücklich serverseitigen Umfang auf der Fachseite.
-  eigene Route ist markiert („Ihr Weg“), nicht ausgeblendet; das Register
-  erscheint auf der Energie-Seite; Startseite, `/kontakt/` und die
-  Seiten aus `hu_footer_register_suppressed_templates()` (`inc/funnel-doors.php`,
-  derzeit `/conversion-optimierung/`) zeigen es nicht. Darunter Direktzeile und Verzeichnis in vier Gruppen: Leistungen
-  (Server-Side Tracking, Performance Marketing, WordPress Agentur Hannover,
-  Landingpage erstellen lassen, Conversion-Optimierung, WordPress-Website
-  erstellen lassen), Belege & Person
-  (Solar-Fallstudie, Über Haşim), Wissen (Blog, Glossar), Rechtliches
-  (Impressum, Datenschutz). Der frühere `<style>`-Block im Template
-  (Kontaktseite) steht jetzt in `contact.css`.
+- Fuß: `template-parts/site-footer.php` liest den zentralen Contract und
+  `hu_funnel_doors()`. Das Türregister führt Website-Projekt, Tracking und
+  Agenturen; Beträge stammen aus dem Kanon. Solar steht mit unveränderter
+  URL im ruhigeren Verzeichnis unter „Spezialisierung & Wissen“. Die direkte
+  Marktcheck-Tür ist dort entfallen. Auf Startseite, Kontakt, Conversion und
+  Referenzübersicht entfällt das Register zugunsten des jeweiligen Abschlusses.
+  Das Verzeichnis führt Leistungen (einschließlich des breiten Tracking-Angebots
+  und Server-Side-Fachseite), Referenzen und Person, Spezialisierung und Wissen
+  sowie Rechtliches. Bestehende Solar- und Tracking-Anfragewege bleiben aktiv.
 - 404: dieselben Wege wie der Kopf plus Startseite und Blog; kein Marktcheck.
 - Prüfung: `scripts/tests/navigation-contract.php` (Contract, Ziele,
   aria-current, bekannte Routen) und `scripts/tests/navigation.spec.cjs`
@@ -255,6 +250,17 @@ Contract und Abnahme: `CHAT_ASSISTANT.md`.
   Wettbewerb, Site Audit, Datenbasis.
 
 ## Routen
+
+### `/referenzen/`
+
+Neue Referenzübersicht mit zwei kompakten Projektfällen (E3 New Energy und
+Civaka Azad) aus `hu_reference_case_projects()`. Namentliche E3-Arbeit ohne
+vertrauliche Kennzahlen und ohne Verlinkung zur anonymisierten Fallstudie.
+Weitere öffentliche Arbeiten bleiben klar als solche benannt. Eigener
+Projektabschluss und ruhiger Agentur-Zweitweg, zentrale Metadaten und
+`CollectionPage`. Startseite und White-Label-Proof verlinken die Übersicht.
+`/ergebnisse/` bleibt beim bestehenden Redirect auf die Solar-Fallstudie.
+
 
 - **`/`** (`front-page.php`): Money Page für direkte WordPress-Projekte.
   Schichtenfolge am 2026-10-09 umgesetzt und auf der normalen Live-URL geprüft.

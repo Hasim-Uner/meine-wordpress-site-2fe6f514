@@ -5,15 +5,16 @@ cd "$ROOT"
 
 # The checklist must render the contract, not a hand-kept list.
 output="$(bash agents/skills/navigation-migration/scripts/print-checklist.sh)"
-grep -q '^- Tracking -> /ga4-tracking-setup/ \[nav_header_tracking\]$' <<<"$output"
-grep -q '^- Leistungen: Server-Side Tracking /server-side-tracking-b2b/' <<<"$output"
+grep -q '^- Referenzen -> /referenzen/ \[nav_header_results\]$' <<<"$output"
+grep -q '^- Leistungen: Conversion-Tracking /ga4-tracking-setup/.*Server-Side Tracking /server-side-tracking-b2b/' <<<"$output"
+grep -q '^- Spezialisierung & Wissen: Solar & Wärmepumpe /solar-waermepumpen-leadgenerierung/' <<<"$output"
 if grep -Eq 'ergebnisse/' <<<"$output"; then
   echo 'checklist lists a retired target' >&2
   exit 1
 fi
-# Marktcheck is a door of the footer's Energy way only, never a header or directory target.
-if grep '#marktcheck' <<<"$output" | grep -qv '^- Solar- oder Wärmepumpenbetrieb: Marktcheck'; then
-  echo 'checklist lists a Marktcheck target outside the Energy door' >&2
+# This generic-context checklist keeps the specialised Marktcheck off global navigation.
+if grep -q '#marktcheck' <<<"$output"; then
+  echo 'checklist lists a specialised Marktcheck target in global navigation' >&2
   exit 1
 fi
 

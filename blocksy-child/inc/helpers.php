@@ -1394,6 +1394,12 @@ add_action( 'init', 'nexus_mark_route_pages_ensured', 99 );
 function nexus_get_provisioned_pages() {
 	return [
 		[
+			'slug'     => 'referenzen',
+			'title'    => 'WordPress-Referenzen und Projekte',
+			'excerpt'  => 'Ausgewählte WordPress-Projekte mit Ausgangslage, eigenem Beitrag und öffentlich prüfbaren Websites.',
+			'template' => 'page-referenzen.php',
+		],
+		[
 			'slug'     => 'solar-waermepumpen-leadgenerierung',
 			'legacy'   => [ 'website-fuer-solar-und-waermepumpen-anbieter' ],
 			'title'    => 'Leadgenerierung für Solar- und Wärmepumpen-Anbieter',

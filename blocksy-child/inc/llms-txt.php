@@ -160,9 +160,13 @@ function nexus_get_llms_txt_sections() {
 		],
 		[
 			'heading' => 'Proof und zitierfähige Quellen',
-			// Der Proof-Hub /ergebnisse/ ist seit 2026-09-25 stillgelegt und
-			// leitet auf die Fallstudie weiter; sie steht hier als erster Beleg.
+			// Projektportraets und anonymisierte Zahlenfallstudie bleiben getrennt.
 			'links'   => [
+				[
+					'label'       => 'WordPress-Referenzen und Projekte',
+					'url'         => hu_get_commercial_route( 'references' ),
+					'description' => 'Kompakte Projektfälle mit Ausgangslage, eigenem Beitrag und öffentlich prüfbarer Website. Die namentlichen Projektporträts enthalten keine vertraulichen Kennzahlen.',
+				],
 				[
 					'label'       => 'Solar Case Study',
 					'url'         => $urls['e3'] ?? home_url( '/case-study-solar-leadgenerierung/' ),

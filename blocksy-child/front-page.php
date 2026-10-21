@@ -503,6 +503,7 @@ get_header();
 							</li>
 						<?php endforeach; ?>
 					</ul>
+					<p class="st-referenzen__intro"><a class="st-link" href="<?php echo esc_url( hu_get_commercial_route( 'references' ) ); ?>" data-track-action="home_references_overview" data-track-category="proof" data-track-section="pruefstand">Projektaufgaben und meinen Beitrag ansehen <span aria-hidden="true">→</span></a></p>
 				</div>
 			<?php endif; ?>
 		</div>
