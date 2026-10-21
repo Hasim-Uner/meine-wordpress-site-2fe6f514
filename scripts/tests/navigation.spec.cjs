@@ -7,9 +7,17 @@ const { execFileSync } = require('node:child_process');
 // system.css, fonts and leiste.js. No WordPress, no network: every request to
 // the site origin is answered from the working tree.
 const theme = path.resolve(__dirname, '../../blocksy-child');
-const types = { '.css': 'text/css', '.js': 'text/javascript', '.woff2': 'font/woff2', '.woff': 'font/woff' };
+const types = { '.css': 'text/css', '.js': 'text/javascript', '.woff2': 'font/woff2', '.woff': 'font/woff', '.webp': 'image/webp' };
 const rendered = {};
-const html = context => (rendered[context] ??= execFileSync('php', [path.join(__dirname, 'render-navigation.php'), context], { encoding: 'utf8' }));
+const html = context => {
+  if (rendered[context]) return rendered[context];
+  const output = execFileSync('php', context === 'references'
+    ? [path.join(__dirname, 'render-page.php'), context, 'page-referenzen.php', 'assets/css/system.css,assets/css/referenzen.css']
+    : [path.join(__dirname, 'render-navigation.php'), context], { encoding: 'utf8' });
+  return (rendered[context] = context === 'references'
+    ? output.replace('</body>', '<script src="/wp-content/themes/blocksy-child/assets/js/leiste.js"></script></body>')
+    : output);
+};
 const freeAmount = execFileSync('php', ['-r', `require '${path.join(__dirname, 'navigation-harness.php')}'; echo hu_format_eur(0);`], { encoding: 'utf8' });
 const marketcheckAmount = execFileSync('php', ['-r', `require '${path.join(__dirname, 'navigation-harness.php')}'; echo hu_marketcheck_price();`], { encoding: 'utf8' });
 const trackingAmount = execFileSync('php', ['-r', `require '${path.join(__dirname, 'navigation-harness.php')}'; echo 'ab ' . hu_tracking_price('measurement', 'setup');`], { encoding: 'utf8' });
@@ -44,12 +52,12 @@ const wideDoors = ['imprint', 'tracking', 'whitelabel', 'case_study'];
 
 for (const width of [1081, 1280, 1440]) {
   for (const context of wideDoors) {
-    test(`desktop ${width} (${context}): one row, five links, door apart from the menu`, async ({ page }) => {
+    test(`desktop ${width} (${context}): one row, four links, door apart from the menu`, async ({ page }) => {
       await open(page, context, { width, height: 800 });
       await expect(page.locator('[data-leiste][data-leiste-bereit]')).toHaveCount(1);
       const links = rowNav(page).getByRole('link');
-      await expect(links).toHaveText(['Projekte', 'Tracking', 'White-Label', 'Solar & Wärmepumpe', 'Ergebnisse']);
-      await expect(links.nth(1)).toHaveAttribute('href', 'https://hasimuener.de/ga4-tracking-setup/');
+      await expect(links).toHaveText(['Leistungen', 'Für Agenturen', 'Referenzen', 'Über mich']);
+      await expect(links.nth(1)).toHaveAttribute('href', 'https://hasimuener.de/whitelabel-retainer/');
       await expect(rowDoor(page)).toBeVisible();
       await expect(klappe(page)).toBeHidden();
       await expect(sheet(page)).toBeHidden();
@@ -61,7 +69,7 @@ for (const width of [1081, 1280, 1440]) {
   }
 }
 
-test('desktop: the door is one bordered field per value, the hairline sits before Ergebnisse', async ({ page }) => {
+test('desktop: the door is one bordered field per value, the hairline sits before Referenzen', async ({ page }) => {
   await open(page, 'tracking', { width: 1280, height: 800 });
   const door = rowDoor(page);
   await expect(door).toHaveAccessibleName(`Tracking anfragen ${trackingAmount}`);
@@ -75,7 +83,7 @@ test('desktop: the door is one bordered field per value, the hairline sits befor
   expect(style.height).toBe(40);
   expect(style.divider).toBe('1px');
   const beleg = await page.locator('.leiste nav .beleg').evaluate(el => ({ line: getComputedStyle(el).borderLeftWidth, text: el.textContent }));
-  expect(beleg).toEqual({ line: '1px', text: 'Ergebnisse' });
+  expect(beleg).toEqual({ line: '1px', text: 'Referenzen' });
 });
 
 test('desktop: hover turns the door around and moves the arrow by 3 px', async ({ page }) => {
@@ -148,7 +156,7 @@ test('mobile menu: open, keyboard order, Escape returns focus, link closes', asy
   await expect(klappe(page)).toHaveAttribute('aria-expanded', 'true');
   await expect(klappe(page)).toHaveAccessibleName('Schließen');
   await expect(sheet(page)).toBeVisible();
-  await expect(sheet(page).getByRole('link')).toHaveText(['Projekte', 'Tracking', 'White-Label', 'Solar & Wärmepumpe', 'Ergebnisse', 'Über Haşim', /Projekt anfragen/]);
+  await expect(sheet(page).getByRole('link')).toHaveText(['Leistungen', 'Für Agenturen', 'Referenzen', 'Über mich', /Projekt anfragen/]);
   // The sheet carries the full-width door; the row door steps back.
   await expect(rowDoor(page)).toBeHidden();
 
@@ -166,7 +174,7 @@ test('mobile menu: open, keyboard order, Escape returns focus, link closes', asy
   // Stay on the fixture: the sheet must close on the click itself.
   await page.evaluate(() => document.addEventListener('click', event => event.preventDefault()));
   await klappe(page).click();
-  await sheet(page).getByRole('link', { name: 'Projekte' }).click();
+  await sheet(page).getByRole('link', { name: 'Leistungen' }).click();
   await expect(klappe(page)).toHaveAttribute('aria-expanded', 'false');
   await expect(sheet(page)).toBeHidden();
 });
@@ -550,5 +558,36 @@ for (const width of [360, 390, 767]) {
     await expect(wlDoor(page)).toBeHidden();
     await expect(page.locator('.wl-site-header .sig')).toBeVisible();
     expect(await noHorizontalScroll(page)).toBe(true);
+  });
+}
+
+for (const width of [390, 1280]) {
+  test(`references ${width}: project scope, public evidence and enquiry stay readable`, async ({ page }, testInfo) => {
+    await open(page, 'references', { width, height: 900 });
+    await expect(page.getByRole('heading', { level: 1 })).toHaveCount(1);
+    await expect(page.locator('#e3-new-energy, #civaka-azad')).toHaveCount(2);
+    await expect(page.locator('#e3-new-energy a[target="_blank"]')).toHaveAttribute('href', 'https://e3-newenergy.de/');
+    await expect(page.locator('#civaka-azad a[target="_blank"]')).toHaveAttribute('href', 'https://civaka-azad.org/');
+    await expect(page.locator('#e3-new-energy')).not.toContainText(/\d[\d.,]*\s*(?:%|€)|1\.750/);
+    await expect(page.locator('#e3-new-energy a[href*="case-study"]')).toHaveCount(0);
+    await expect(page.locator('[data-track-action="references_request_project"]')).toHaveAttribute('href', 'https://hasimuener.de/kontakt/?type=project');
+    await expect(page.locator('[data-track-action="references_agency_collaboration"]')).toHaveAttribute('href', 'https://hasimuener.de/whitelabel-retainer/');
+    const dimensions = await page.locator('.referenzen-bild img').evaluateAll(images => images.map(img => ({ width: img.getAttribute('width'), height: img.getAttribute('height'), alt: img.alt })));
+    expect(dimensions.every(img => img.width === '960' && img.height === '600' && img.alt.length > 0)).toBe(true);
+    await page.locator('.referenzen-bild img').evaluateAll(async images => {
+      images.forEach(img => { img.loading = 'eager'; });
+      await Promise.all(images.map(img => img.decode()));
+    });
+    await page.screenshot({ path: testInfo.outputPath(`references-${width}.png`), fullPage: true });
+    if (width === 390) {
+      await klappe(page).click();
+      await expect(sheet(page)).toBeVisible();
+      await page.screenshot({ path: testInfo.outputPath('references-mobile-menu.png') });
+      await page.keyboard.press('Escape');
+    }
+    expect(await noHorizontalScroll(page)).toBe(true);
+    if (width > 1080) {
+      await expect(rowNav(page).getByRole('link', { name: 'Referenzen' })).toHaveAttribute('aria-current', 'page');
+    }
   });
 }

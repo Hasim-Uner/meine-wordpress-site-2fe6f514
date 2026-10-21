@@ -15,7 +15,7 @@ get_header();
 $primary_urls = function_exists( 'nexus_get_primary_public_url_map' ) ? nexus_get_primary_public_url_map() : [];
 
 /*
- * Die Wege zurueck sind dieselben wie im Kopf: Startseite, die vier Routen
+ * Die Wege zurueck sind dieselben wie im Kopf: Startseite, die Hauptpunkte
  * aus hu_get_site_header_navigation_contract() und der Blog. Frueher stand
  * hier eine eigene Liste mit dem Marktcheck als seitenweitem Einstieg und
  * einem SEO-Anker, den die Zielseite nicht mehr hat. Eine 404 ist kein Ort
@@ -31,7 +31,12 @@ $recovery_links = [
 	],
 ];
 
-foreach ( (array) ( $nav_contract['routes'] ?? [] ) as $nav_route ) {
+$recovery_items = array_merge(
+	(array) ( $nav_contract['routes'] ?? [] ),
+	...array_map( static function ( $group ) { return (array) ( $group['items'] ?? [] ); }, (array) ( $nav_contract['groups'] ?? [] ) )
+);
+
+foreach ( $recovery_items as $nav_route ) {
 	$recovery_links[] = [
 		'label' => (string) ( $nav_route['label'] ?? '' ),
 		'url'   => (string) ( $nav_route['url'] ?? home_url( '/' ) ),

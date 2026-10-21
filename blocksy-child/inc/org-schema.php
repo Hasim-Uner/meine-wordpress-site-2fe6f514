@@ -731,6 +731,39 @@ function hu_get_aroundhome_decision_schema_data( $post_id, $fallback_description
 }
 
 /**
+ * Reference overview schema from the same approved cases as the visible page.
+ *
+ * Project elements describe the own contribution; no result metrics or sole
+ * customer-site authorship are asserted here.
+ *
+ * @return array<string, mixed>
+ */
+function hu_get_reference_collection_schema() {
+    return [
+        '@context'    => 'https://schema.org',
+        '@type'       => 'CollectionPage',
+        '@id'         => home_url( '/referenzen/#collection' ),
+        'url'         => home_url( '/referenzen/' ),
+        'name'        => 'WordPress-Referenzen und Projekte',
+        'description' => 'Ausgewählte WordPress-Projekte mit Ausgangslage, eigenem Beitrag und öffentlich prüfbaren Websites.',
+        'inLanguage'  => 'de',
+        'isPartOf'    => [ '@id' => home_url( '/#website' ) ],
+        'about'       => [ '@id' => home_url( '/#organization' ) ],
+        'hasPart'     => array_map(
+            static function ( $project ) {
+                return [
+                    '@type'       => 'WebPageElement',
+                    '@id'         => home_url( '/referenzen/#' . $project['id'] ),
+                    'name'        => $project['name'],
+                    'description' => $project['text'],
+                ];
+            },
+            hu_reference_case_projects()
+        ),
+    ];
+}
+
+/**
  * Build a generic WebPage node that anchors a singular view in the graph.
  *
  * Pages that already emit a dedicated WebPage subtype (ProfilePage, AboutPage,
@@ -753,6 +786,7 @@ function hu_build_generic_webpage_schema( $post_id, $slug ) {
         'case-studies',               // CollectionPage
         'case-studies-e-commerce',    // CollectionPage
         'ergebnisse',                 // CollectionPage
+        'referenzen',                 // CollectionPage
         'whitelabel-retainer',        // AboutPage
         'whitelabel-retainer-proof',  // AboutPage
         'whitelabel',                 // AboutPage
@@ -1953,6 +1987,10 @@ function hu_output_schema()
             $schemas[] = $e3_article;
         }
 
+        if ( 'referenzen' === $slug ) {
+            $schemas[] = hu_get_reference_collection_schema();
+        }
+
         // Ergebnisse hub: CollectionPage schema
         if ($slug === 'case-studies' || $slug === 'case-studies-e-commerce' || $slug === 'ergebnisse') {
             $collection = [
@@ -2049,7 +2087,7 @@ function hu_output_schema()
         global $post;
         if ( isset( $post ) && $post instanceof WP_Post ) {
             $template_owns_faq_schema = (
-                in_array( $slug, [ 'ergebnisse', 'case-studies-e-commerce', 'case-studies', 'hasim-uener', 'wordpress-agentur-hannover', 'wordpress-freelancer-hannover', 'server-side-tracking-b2b', 'aroundhome-solar-einordnung', 'whitelabel-retainer', 'whitelabel-retainer-proof', 'whitelabel', 'landingpage-erstellen-lassen', 'wordpress-website-erstellen-lassen' ], true )
+                in_array( $slug, [ 'referenzen', 'ergebnisse', 'case-studies-e-commerce', 'case-studies', 'hasim-uener', 'wordpress-agentur-hannover', 'wordpress-freelancer-hannover', 'server-side-tracking-b2b', 'aroundhome-solar-einordnung', 'whitelabel-retainer', 'whitelabel-retainer-proof', 'whitelabel', 'landingpage-erstellen-lassen', 'wordpress-website-erstellen-lassen' ], true )
                 // Template-owned pages must not emit FAQs from invisible editor caches.
                 || is_page_template( 'page-ergebnisse.php' )
                 || is_page_template( 'page-case-studies-e-commerce.php' )

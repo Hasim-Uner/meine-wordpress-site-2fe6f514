@@ -95,8 +95,8 @@ function hu_whitelabel_reference_projects() {
  * Project portraits approved for the website product page.
  *
  * The named E3 reference describes the work only. It must not contain metrics
- * or link to the separate anonymous case. Other reference surfaces retain
- * their existing public project selection.
+ * or link to the separate anonymous case. The reference overview reuses
+ * these approved work descriptions, with its own compact case selection.
  *
  * @return array<int, array<string, mixed>>
  */
@@ -134,4 +134,38 @@ function hu_website_reference_projects() {
 		$references[] = array_merge( $public[ $name ], $portrait );
 	}
 	return $references;
+}
+
+/**
+ * Compact project cases for /referenzen/.
+ *
+ * Project identity, screenshot and work description stay in the existing
+ * portrait registry. These fields explain context and scope, not measured
+ * business outcomes or sole authorship of an existing customer website.
+ *
+ * @return array<int, array<string, mixed>>
+ */
+function hu_reference_case_projects() {
+	$portraits = array_column( hu_website_reference_projects(), null, 'name' );
+	$cases = [
+		'E3 New Energy' => [
+			'id'      => 'e3-new-energy',
+			'context' => 'Eine bestehende Unternehmenswebsite mit Angeboten für erneuerbare Energien. Mein Beitrag lag in der Weiterentwicklung und im Ausbau des Anfragewegs.',
+			'work'    => [ 'Landingpages und Anfrageformulare', 'Technisches SEO und Tracking', 'Übergabe der Anfragen ins CRM' ],
+			'limit'   => 'Die Website bestand bereits. Gezeigt wird mein Beitrag zur Weiterentwicklung, kein vollständiger Website-Neubau.',
+		],
+		'civaka-azad.org' => [
+			'id'      => 'civaka-azad',
+			'context' => 'Ein redaktioneller WordPress-Bestand mit vielen Inhalten. Die Aufgabe war, den Zugang zu Themen über Navigation und Archive zu strukturieren.',
+			'work'    => [ 'Informationsarchitektur des redaktionellen Bestands', 'Struktur von Navigation und Archiven', 'WordPress als Content-System' ],
+			'limit'   => 'Die öffentliche Website zeigt den heutigen Stand. Die Beschreibung benennt meinen eigenen Beitrag zur Struktur.',
+		],
+	];
+	$projects = [];
+	foreach ( $cases as $name => $case ) {
+		if ( isset( $portraits[ $name ] ) ) {
+			$projects[] = array_merge( $portraits[ $name ], $case );
+		}
+	}
+	return $projects;
 }

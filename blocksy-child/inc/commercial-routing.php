@@ -112,6 +112,7 @@ function hu_get_commercial_route_map() {
 		'results'         => function_exists( 'nexus_get_results_url' )
 			? nexus_get_results_url()
 			: home_url( '/case-study-solar-leadgenerierung/' ),
+		'references'      => home_url( '/referenzen/' ),
 		'about'           => function_exists( 'nexus_get_page_url' )
 			? nexus_get_page_url( [ 'hasim-uener', 'uber-mich' ], home_url( '/hasim-uener/' ) )
 			: home_url( '/hasim-uener/' ),
@@ -139,19 +140,16 @@ function hu_get_commercial_route( $key, $fallback = '' ) {
 }
 
 /**
- * Return the navigation target of the "Ergebnisse" menu item.
+ * Return the reference overview used by navigation and stored-menu repair.
  *
- * Seit der Stilllegung von /ergebnisse/ (2026-09-25) fuehrt der Menuepunkt
- * auf den Nachweis-Abschnitt der Startseite: Fall und Referenzen stehen dort
- * unter #arbeiten. Links im Text verweisen weiter ueber die Route 'results'
- * direkt auf die Fallstudie. Kopf, gespeichertes WordPress-Menue und dessen
- * Fallback lesen diese eine Funktion, damit kein Menue mehr auf den alten
- * Hub zeigt.
+ * The historical helper name and tracking action stay stable. The separate
+ * route 'results' still resolves to the anonymous Solar case; retired
+ * /ergebnisse/ redirects are not changed by this new reference overview.
  *
  * @return string
  */
 function hu_get_results_nav_url() {
-	return home_url( '/#arbeiten' );
+	return hu_get_commercial_route( 'references' );
 }
 
 /**
@@ -218,20 +216,12 @@ function hu_nav_current_state( $is_target, $in_section = false ) {
  * lesen diese eine Struktur. Die Tracking-Action-Namen bleiben die
  * historischen Werte, damit die Zeitreihe vergleichbar bleibt.
  *
- * Reihenfolge seit 2026-09-25: erst was ich anbiete (Projekte, Tracking),
- * dann die beiden Wege fuer bestimmte Absender (White-Label fuer Agenturen,
- * Solar & Waermepumpe fuer Energiebetriebe), dann Belege und Person. Der
- * Fuss (template-parts/site-footer.php) fuehrt seine vier Wege als Tuerregister in
- * derselben Reihenfolge. Tracking stand vorher zwischen White-Label und Solar und
- * trennte damit die beiden direkten Leistungen voneinander.
- *
- * Seit 2026-10-01 zeigt die Zeile die vier Wege, eine Haarlinie und
- * "Ergebnisse"; "Ueber Hasim" steht nur im Klappblatt und im Fuss. Das
- * Flag `row` einer Gruppen-Zeile sagt, ob sie in der Zeile steht (true) oder
- * nur im Klappblatt. Die Tuer rechts ist kontextabhaengig und kommt nicht aus
- * diesem Contract, sondern aus hu_funnel_context() (inc/funnel-doors.php);
- * `cta` bleibt die Standardtuer "Projekt anfragen" fuer Menue, 404 und SEO
- * Cockpit.
+ * Seit Paket 2: Leistungen und Agenturen, danach Referenzen und Person.
+ * Alle vier Punkte stehen in Zeile und Klappblatt. Die Solar-Spezialisierung
+ * liegt im leisen Fussverzeichnis; Tracking bleibt unter Leistungen und im
+ * Fuss erreichbar. `divider` markiert nur die Grenze vor den Referenzen.
+ * Die kontextabhaengige Anfragetuer kommt weiter aus hu_funnel_context();
+ * der Contract-CTA bleibt die Standardanfrage fuer Menue, 404 und Cockpit.
  *
  * `current` ist ein aria-current-Wert aus hu_nav_current_state(), kein Bool.
  *
@@ -251,7 +241,7 @@ function hu_get_site_header_navigation_contract() {
 			[
 				'kind'     => 'route',
 				'kicker'   => __( 'Direkte Projekte', 'blocksy-child' ),
-				'label'    => __( 'Projekte', 'blocksy-child' ),
+				'label'    => __( 'Leistungen', 'blocksy-child' ),
 				'desc'     => __( 'Neubau, Relaunch und Weiterentwicklung — mit Messung, die von Anfang an mitgebaut wird.', 'blocksy-child' ),
 				'url'      => home_url( '/#angebote' ),
 				// Ein Anker, keine Seite: Auf der Startseite setzt
@@ -263,41 +253,16 @@ function hu_get_site_header_navigation_contract() {
 				'category' => 'navigation',
 				'section'  => 'header',
 			],
-			[
-				'kind'     => 'route',
-				'kicker'   => __( 'Messung', 'blocksy-child' ),
-				'label'    => __( 'Tracking', 'blocksy-child' ),
-				'desc'     => __( 'Conversion Tracking mit GA4, Tag Manager, Consent Mode und Google Ads, abgenommen mit Testfällen. Server-Side und CRM, wenn sie gebraucht werden.', 'blocksy-child' ),
-				'url'      => $routes['tracking_setup'],
-				'current'  => hu_nav_current_state( hu_is_tracking_setup_route(), hu_is_tracking_route_context() ),
-				'class'    => 'nav-tracking-link',
-				'track'    => 'nav_header_tracking',
-				'category' => 'navigation',
-				'section'  => 'header',
-			],
-			// White-Label ist seit 2026-09-22 gleichrangiger Geschaeftspfad und
-			// steht deshalb direkt hinter den direkten Leistungen.
+			// Der Agenturweg folgt direkt auf die Leistungen fuer Unternehmen.
 			[
 				'kind'     => 'route',
 				'kicker'   => __( 'Für Agenturen', 'blocksy-child' ),
-				'label'    => __( 'White-Label', 'blocksy-child' ),
+				'label'    => __( 'Für Agenturen', 'blocksy-child' ),
 				'desc'     => __( 'Technik im Hintergrund, unter Ihrem Namen. Erstprojekt mit festem Umfang, Retainer erst danach.', 'blocksy-child' ),
 				'url'      => $routes['whitelabel'],
 				'current'  => hu_nav_current_state( function_exists( 'nexus_is_agency_nav_context' ) && nexus_is_agency_nav_context() ),
 				'class'    => 'nav-agency-link',
 				'track'    => 'nav_header_whitelabel',
-				'category' => 'navigation',
-				'section'  => 'header',
-			],
-			[
-				'kind'     => 'route',
-				'kicker'   => __( 'Spezialisierung', 'blocksy-child' ),
-				'label'    => __( 'Solar & Wärmepumpe', 'blocksy-child' ),
-				'desc'     => __( 'Anfragesysteme für Betriebe, die keine gekauften Portalleads mehr wollen.', 'blocksy-child' ),
-				'url'      => $routes['energy'],
-				'current'  => hu_nav_current_state( function_exists( 'nexus_is_energy_systems_context' ) && nexus_is_energy_systems_context() ),
-				'class'    => 'nav-solar-link',
-				'track'    => 'nav_header_solar',
 				'category' => 'navigation',
 				'section'  => 'header',
 			],
@@ -308,12 +273,11 @@ function hu_get_site_header_navigation_contract() {
 				'items' => [
 					[
 						'kind'     => 'group',
-						'label'    => __( 'Ergebnisse', 'blocksy-child' ),
+						'label'    => __( 'Referenzen', 'blocksy-child' ),
 						'row'      => true,
+						'divider'  => true,
 						'url'      => hu_get_results_nav_url(),
-						// Das Ziel ist ein Abschnitt der Startseite; die
-						// Fallstudie liegt nur im Bereich des Punkts.
-						'current'  => hu_nav_current_state( false, function_exists( 'nexus_is_results_context' ) && nexus_is_results_context() ),
+						'current'  => hu_nav_current_state( is_page( 'referenzen' ) || is_page_template( 'page-referenzen.php' ) ),
 						'class'    => 'nav-results-link',
 						'track'    => 'nav_header_results',
 						'category' => 'navigation',
@@ -321,8 +285,8 @@ function hu_get_site_header_navigation_contract() {
 					],
 					[
 						'kind'     => 'group',
-						'label'    => __( 'Über Haşim', 'blocksy-child' ),
-						'row'      => false,
+						'label'    => __( 'Über mich', 'blocksy-child' ),
+						'row'      => true,
 						'url'      => $routes['about'],
 						'current'  => hu_nav_current_state( is_page( 'hasim-uener' ) || is_page( 'uber-mich' ) || is_page_template( 'page-hasim-uener.php' ) ),
 						'class'    => 'nav-about-link',
@@ -373,24 +337,11 @@ function hu_get_primary_navigation_contract() {
 /**
  * Return the repo-owned footer navigation contract.
  *
- * Der Fuss hat zwei Lautstaerken. Laut ist das Tuerregister (`routes`): vier
- * Wege in der Reihenfolge des Kopfs (Website, Tracking, Agentur, Energie),
- * jeder mit seinem Selbstauskunftssatz und den Tuerschluesseln aus
- * hu_funnel_doors() (inc/funnel-doors.php). Betrag, Ziel und Tracking-Action
- * liefert die Tuer, nicht dieser Contract: Kopf und Fuss lesen dieselbe
- * Entscheidung. Leise ist das Verzeichnis (`directory`) in vier kleinen
- * Gruppen. Es fuehrt, was der Kopf nicht fuehrt: die Fachseiten, die eigene
- * Suchanfragen besitzen (docs/seo/query-ownership.csv), Belege, Wissen und
- * Rechtliches.
- *
- * Die frueheren Wege (`picks`, `cta_footer_pick_*`) fuehrten auf Landing-
- * pages und sind entfallen; die Tueren tragen `cta_footer_door_<schluessel>`.
- *
- * "Server-Side Tracking" steht hier mit genau diesem Namen, weil der
- * Kopfpunkt "Tracking" seit 2026-09-25 auf das breite Tracking-Angebot zeigt;
- * die Fachseite behaelt so ihren seitenweiten Link und ihren eigenen
- * Ankertext. Die bestehenden cta_footer_*-Werte bleiben unveraendert, neue
- * Links bekommen eigene Werte.
+ * Das Tuerregister fuehrt direkte Projekte, Tracking und Agenturen.
+ * Die ruhigere Verzeichnis-Navigation fuehrt zusaetzlich Referenzen, Person,
+ * Fachseiten, Solar als Spezialisierung, Wissen und Rechtliches. Betraege,
+ * Ziel und Tracking-Actions der Anfragetuer kommen aus hu_funnel_doors().
+ * Der Solar-Marktcheck bleibt auf den Energie-Kontext begrenzt.
  *
  * template-parts/site-footer.php rendert diese Struktur, das SEO Cockpit
  * zaehlt sie als seitenweite Linkquelle.
@@ -424,19 +375,18 @@ function hu_get_site_footer_navigation_contract() {
 				'post'   => ' und brauche Technik unter meinem Namen.',
 				'doors'  => [ 'aufgabe' ],
 			],
-			[
-				'route'  => 'energy',
-				'pre'    => 'Ich bin ',
-				'strong' => 'Solar- oder Wärmepumpenbetrieb',
-				'post'   => ' und kaufe heute Portal-Anfragen.',
-				'doors'  => [ 'marktcheck' ],
-			],
 		],
 		'directory' => [
 			[
 				'key'   => 'leistungen',
 				'title' => __( 'Leistungen', 'blocksy-child' ),
 				'items' => [
+					[
+						'label'    => __( 'Conversion-Tracking', 'blocksy-child' ),
+						'url'      => $routes['tracking_setup'],
+						'track'    => 'cta_footer_nav_tracking',
+						'category' => 'navigation',
+					],
 					[
 						'label'    => __( 'Server-Side Tracking', 'blocksy-child' ),
 						'url'      => $routes['tracking_b2b'],
@@ -480,13 +430,19 @@ function hu_get_site_footer_navigation_contract() {
 				'title' => __( 'Belege & Person', 'blocksy-child' ),
 				'items' => [
 					[
+						'label'    => __( 'Referenzen', 'blocksy-child' ),
+						'url'      => $routes['references'],
+						'track'    => 'cta_footer_nav_references',
+						'category' => 'trust',
+					],
+					[
 						'label'    => __( 'Solar-Fallstudie', 'blocksy-child' ),
 						'url'      => $urls['e3'] ?? $routes['results'],
 						'track'    => 'cta_footer_nav_case_study_proof',
 						'category' => 'trust',
 					],
 					[
-						'label'    => __( 'Über Haşim', 'blocksy-child' ),
+						'label'    => __( 'Über mich', 'blocksy-child' ),
 						'url'      => $routes['about'],
 						'track'    => 'cta_footer_nav_about',
 						'category' => 'navigation',
@@ -495,8 +451,14 @@ function hu_get_site_footer_navigation_contract() {
 			],
 			[
 				'key'   => 'wissen',
-				'title' => __( 'Wissen', 'blocksy-child' ),
+				'title' => __( 'Spezialisierung & Wissen', 'blocksy-child' ),
 				'items' => [
+					[
+						'label'    => __( 'Solar & Wärmepumpe', 'blocksy-child' ),
+						'url'      => $routes['energy'],
+						'track'    => 'cta_footer_nav_energy',
+						'category' => 'navigation',
+					],
 					[
 						'label'    => __( 'Blog', 'blocksy-child' ),
 						'url'      => $urls['blog'] ?? home_url( '/blog/' ),

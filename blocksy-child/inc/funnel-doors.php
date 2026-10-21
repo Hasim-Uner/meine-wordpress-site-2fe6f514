@@ -316,6 +316,7 @@ function hu_funnel_reader_dossier( $post_slug = '' ) {
 function hu_footer_register_suppressed_templates() {
 	return [
 		'page-conversion-optimierung.php',
+		'page-referenzen.php',
 	];
 }
 

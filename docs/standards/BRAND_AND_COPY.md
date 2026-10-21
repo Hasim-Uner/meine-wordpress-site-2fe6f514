@@ -52,7 +52,7 @@ Sperrliste aufgenommen — nicht andersherum.
 
 **Haşim Üner verbindet WordPress-Entwicklung, Tracking und Conversion so, dass Websites, Landingpages und Anfragesysteme technisch zusammenpassen und messbar werden.**
 
-Die Website hat drei Geschäftspfade. Die Startseite gehört den direkten WordPress-Projekten. White-Label (Platz 3 in der Navigation, direkt hinter Leistungen und Tracking) und Solar/Wärmepumpe sind auf der Startseite seit 2026-09-24 leise Nebenausgänge: eine kleine Zeile unter den Leistungen, keine Weiche im Hero. Ihre eigenen Seiten und Anfragewege bleiben unverändert:
+Die Website hat drei Geschäftspfade. Die Startseite gehört den direkten WordPress-Projekten. Die Hauptnavigation führt Leistungen, Für Agenturen, Referenzen und Über mich; daneben steht der kontextabhängige Anfragebutton. Solar/Wärmepumpe bleibt als Spezialisierung im ruhigeren Fußverzeichnis und als Nebenweg auf der Startseite erreichbar. Tracking bleibt Teil der Leistungen mit eigenem fachlichem Einstieg. Ihre eigenen Seiten und Anfragewege bleiben unverändert:
 
 1. **Direkte Unternehmen / WordPress-Projekte** → `/` bzw. generische Projektanfrage
 2. **Agenturen** → `/whitelabel-retainer/` bzw. Aufgabe beschreiben / Erstprojekt
@@ -93,7 +93,7 @@ Die Startseite ist zugleich Marke und direkte Freelancer-Money-Page. Sie überni
 - Solar-/SHK-Unterseiten, Portalvergleiche und Lead-Kauf-Intent dürfen weiterhin auf den Marktcheck führen
 - E3 bleibt der wichtigste fachliche Proof für Nachfrageaufbau, Tracking, Vorqualifizierung und Conversion
 
-### Namentliche E3-Referenz auf der Anfrage-Website
+### Namentliche E3-Referenz auf Anfrage-Website und Referenzübersicht
 
 - Freigegeben am 05.10.2026: E3 New Energy als Unternehmensreferenz für die
   aufgebaute Funnel-Architektur vom Klick bis zur CRM-Übergabe nennen.
@@ -101,8 +101,9 @@ Die Startseite ist zugleich Marke und direkte Freelancer-Money-Page. Sie überni
   zur separaten anonymisierten Fallstudie. Die Beschreibung nennt den eigenen
   Beitrag; der aktuelle Website-Screenshot zeigt den öffentlichen Stand.
 - `hu_website_reference_projects()` in `reference-canon.php` besitzt die
-  Auswahl und Projektcopy dieser Produktseite. Die anderen Referenzflächen
-  behalten ihre bisherige Auswahl. Die größere E3-Strecke ist kein Beleg für
+  Auswahl und Projektcopy dieser Produktseite. Die neue Referenzübersicht nutzt `hu_reference_case_projects()` für zwei
+  kompakte Fälle aus diesen vorhandenen Projektbeschreibungen. Die übrigen
+  Referenzflächen behalten ihre bisherige Auswahl. Die größere E3-Strecke ist kein Beleg für
   den Inklusivumfang des Grundprodukts.
 
 ## CTA- und Routing-Regeln

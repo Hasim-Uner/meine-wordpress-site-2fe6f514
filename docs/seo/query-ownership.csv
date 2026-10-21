@@ -42,6 +42,7 @@
 # Spezial-Slugs liefern 410 Gone. Tracking-Queries laufen nicht in lokale
 # WordPress-Routen, nur weil Tracking dort fachlich vorkommt.
 query;owner_path;intent;status;source;distinct_from
+wordpress referenzen;/referenzen/;commercial;owned;Paket 2 vom 2026-10-21: Projektübersicht mit eigenem Beitrag, keine Suchvolumenbehauptung;wordpress freelancer|wordpress agentur hannover
 leadgenerierung photovoltaik;/solar-waermepumpen-leadgenerierung/;transactional;owned;gsc-verlauf-2026-07-20.md#kannibalisierungs-karte — GSC 28d 2026-07-30: /b2b-solar-leads/ rankt Pos. 46,2 (Owner-Entscheidung offen);
 leadgenerierung waermepumpe;/solar-waermepumpen-leadgenerierung/;transactional;owned;seo-meta.php forced-map;
 photovoltaik leads;/solar-waermepumpen-leadgenerierung/;transactional;owned;keyword-map.md#a-money — GSC 28d 2026-07-30: /b2b-solar-leads/ rankt Pos. 50,0, Titel/H1 dort bereinigt;photovoltaik leads kaufen

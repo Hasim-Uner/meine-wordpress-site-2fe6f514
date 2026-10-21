@@ -6,7 +6,7 @@
  * Designsystem (`assets/css/system.css`) statt auf einem eigenen
  * Farbsystem — `site-footer.css` ist damit abgeloest, nicht ergaenzt.
  *
- * Zwei Lautstaerken bleiben. Laut ist das Tuerregister: vier Wege mit ihrem
+ * Zwei Lautstaerken bleiben. Laut ist das Tuerregister: drei Wege mit ihrem
  * Selbstauskunftssatz, darunter je Tuer eine Zeile mit Bezeichnung, Betrag und
  * Pfeil. Leise sind das gruppierte Verzeichnis (Leistungen, Belege & Person,
  * Wissen, Rechtliches) und die Absenderzeile. Wege kommen aus
@@ -92,7 +92,7 @@ $direct[] = [
 
 /*
  * Verzeichnis: breit genug fuer Crawl- und Orientierungswege, aber deutlich
- * leiser als die vier kommerziellen Entscheidungen. Vier kleine Gruppen statt
+ * leiser als die drei kommerziellen Entscheidungen. Vier kleine Gruppen statt
  * einer Zeile, in der die lokale Agentur-Seite neben dem Impressum stand. Die
  * lokale Agentur-Seite bleibt bewusst hier statt im Header: Sie besitzt
  * lokale WordPress-Queries, ist aber kein globaler Geschaeftspfad.
