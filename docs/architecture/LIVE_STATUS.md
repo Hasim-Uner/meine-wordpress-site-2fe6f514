@@ -1,6 +1,6 @@
 # Live Status
 
-Verhalten laut Repository, nach Bereichen. Stand: 2026-10-21.
+Verhalten laut Repository, nach Bereichen. Stand: 2026-10-22.
 Der grundlegende Funnel-Umbau aus PR #565 und die Tracking-Korrekturen aus
 PR #566 sowie die Kontaktübergabe aus PR #567 sind gemerged und deployed.
 Startseite, GA4, Landingpage, Solar, Kontakt und Server-Side wurden im
@@ -16,13 +16,19 @@ Abschnitt anzuhängen; der Verlauf gehört in Commit-Nachrichten.
 
 ## Grundlage und Grenzen
 
-- Paket 2 (Referenzen und fokussierte Navigation) wurde am 21.10.2026 mit
-  PR #587 gemergt; die Live-Abnahme dieses Pakets ist hier noch nicht dokumentiert.
-  `/referenzen/` nutzt die bestehende Seiten-Provisionierung.
-- Paket 3 (WordPress-Übernahme und Weiterentwicklung) wurde mit PR #588
-  gemergt; seine vollständige Live-Abnahme ist hier noch nicht dokumentiert.
-- Paket 4 (Technisches SEO für WordPress) ist Repo-Stand, noch nicht gemergt
-  oder live abgenommen. Seine Routenbeschreibung betrifft den vorbereiteten Stand.
+- Paket 2 (Referenzen und fokussierte Navigation, PR #587), Paket 3
+  (WordPress-Übernahme und Weiterentwicklung, PR #588) und Paket 4
+  (Technisches SEO für WordPress, PR #589) sind gemergt und veröffentlicht.
+  Der Produktions-Deploy `39693342063` zu Merge `8ffa46703ece` ist erfolgreich.
+  Frische öffentliche Abrufe am 2026-10-22 bestätigen HTTP 200, eigene
+  Canonicals, eine H1 und die vorgesehenen Schema-Typen auf `/referenzen/`,
+  `/wordpress-website-uebernehmen/` und `/technisches-seo-wordpress/`.
+  Header und Footer zeigen die neue Navigation; Startseite und SEO-Ratgeber
+  verlinken die vorgesehenen Leistungs- und Anfragewege. Die Kontaktaufrufe
+  mit `type=project&focus=takeover` beziehungsweise `focus=seo` wählen das
+  richtige Thema, Briefing und den passenden Absende-Text vor. Das ist eine
+  Inhalts- und Linkkontrolle, keine visuelle Live-Abnahme oder Prüfung der
+  tatsächlichen Formular- und Mailzustellung.
 - Basis: Repo-Inhalt, Deploy-Workflows und die Template- und Funnel-Logik im
   Theme `blocksy-child/`.
 - Die Korrekturen an Fallbezeichnungen, Artikel-Kontextlinks und Anfragewegen
@@ -34,12 +40,15 @@ Abschnitt anzuhängen; der Verlauf gehört in Commit-Nachrichten.
   beider Artikel und den zusätzlichen B2B-Projektweg in der Solar-Fallstudie.
   Das ist eine Inhalts- und Linkkontrolle, keine visuelle Live-Abnahme und
   keine Prüfung der tatsächlichen Mailzustellung.
-- Im Editor-Inhalt von `/wordpress-seo-keine-anfragen/` stehen beim Abruf
-  am 2026-10-21 weiterhin überholte Fallzahlen und Bezugsgrößen. Die
-  versionierte Artikelquelle enthält die vorbereitete Korrektur des
-  Abschnitts `proof-systemwirkung`; ihre Übernahme im WordPress-Editor steht
-  aus. Die bestehende Einmalmigration ersetzt bereits veröffentlichte
-  v2-Inhalte nicht. Genaue Übernahmegrenzen und Kontrolle stehen in
+- Der Editor-Inhalt von `/wordpress-seo-keine-anfragen/` wurde am 2026-10-22
+  über WPWriter korrigiert (Beitrag `14989`). Ausschließlich der Abschnitt
+  `proof-systemwirkung` wurde durch die vorbereitete Passage der versionierten
+  Artikelquelle ersetzt. Der gespeicherte Inhalt stimmt außerhalb dieses
+  Abschnitts exakt mit dem vorherigen Stand überein. Der frische öffentliche
+  Abruf bestätigt die korrigierte Einordnung und den Wegfall der alten
+  Zahlenbehauptungen samt Kennzahlenleiste; URL, Titel und Canonical bleiben
+  erhalten. Die bestehende Einmalmigration bleibt unverändert, der
+  WordPress-Editor bleibt Content-Owner. Details stehen in
   `content/blog-drafts/wordpress-seo-keine-anfragen.html`.
 - Nicht aus dem Repo verifizierbar: WordPress-Admin (Menüs, Editor-Inhalte,
   Plugins), Brevo-, Cal.com- und Koko-Setups, Server-Cron und die tatsächliche
@@ -254,7 +263,7 @@ Contract und Abnahme: `CHAT_ASSISTANT.md`.
 
 ## Routen
 
-### `/technisches-seo-wordpress/` — Paket 4, Repo-Stand
+### `/technisches-seo-wordpress/` — Paket 4, veröffentlicht
 
 Eigene hardcodierte Leistungsseite für technischen SEO-Befund und separat
 vereinbarte Korrekturen. Kein beschlossener Festpreis: Prüfumfang, Seiten und
@@ -274,10 +283,11 @@ beide Mails. Keine Editor-Migration und keine Live-Testanfrage.
 
 Scope, aktuelle Primärquellen, öffentlicher Beleg und Wirkungshypothese:
 `docs/decisions/technical-seo-offer.md`. Keine gemessene Conversion-Wirkung und
-kein Zielkunden-Nutzertest. Nach Veröffentlichung normale URL, Provisionierung,
-Metadaten, Fachlink und Anfrage-Vorauswahl öffentlich prüfen.
+kein Zielkunden-Nutzertest. Normale URL, Metadaten, Fachlink und
+Anfrage-Vorauswahl wurden am 2026-10-22 öffentlich geprüft; die Seite wurde
+durch die bestehende Provisionierung angelegt.
 
-### `/wordpress-website-uebernehmen/` — Paket 3, Repo-Stand
+### `/wordpress-website-uebernehmen/` — Paket 3, veröffentlicht
 
 Neue hardcodierte Angebotsseite für bestehende WordPress-Websites. Der
 Übernahme-Check liest Preis und Anrechnung aus dem vorhandenen Angebotsvertrag;
@@ -297,8 +307,9 @@ Der eigene Abschluss ersetzt auf dieser Seite das Footer-Türregister.
 Kontakt über `type=project&focus=takeover`, mit passendem PHP-/JS-Briefing.
 Der Fokus wird über den vorhandenen REST-Endpunkt in CRM und Mails übernommen.
 Bestehendes `implementation_scope` bleibt kompatibel. Keine Live-Testanfrage.
-Vor Veröffentlichung: CI und Browser-Abnahme, danach Provisionierung und normale
-URL inklusive Header/Footer prüfen. Kein Editor-Inhalt muss migriert werden.
+CI und Browser-Abnahme vor Veröffentlichung sind erfolgreich. Die normale URL
+inklusive Header/Footer und Anfrage-Vorauswahl wurde am 2026-10-22 öffentlich
+geprüft. Kein Editor-Inhalt musste migriert werden.
 
 Wirkungshypothese: Der eigene Anlass und der sichtbare Check-Umfang erleichtern
 passende Übernahmeanfragen. Nach Veröffentlichung angenommene Anfragen mit Fokus
