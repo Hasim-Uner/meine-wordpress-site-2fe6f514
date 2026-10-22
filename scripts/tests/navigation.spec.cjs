@@ -650,7 +650,7 @@ for (const width of [320, 390, 1280]) {
     for (const position of ['hero', 'close']) {
       await expect(content.locator(`[data-track-action="technical_seo_request_${position}"]`)).toHaveAttribute('href', 'https://hasimuener.de/kontakt/?type=project&focus=seo');
     }
-    await expect(content).toContainText('Preis nach vereinbartem Umfang');
+    await expect(content).toContainText('SEO-Befund für');
     await expect(content).not.toContainText(/\d[\d.,]*\s*(?:€|%)/);
     await expect(content.locator('#abnahme')).toContainText('wiederholbare Prüfung');
     await expect(content.locator('#arbeitsbeispiel')).toContainText('keine Kundenreferenz');

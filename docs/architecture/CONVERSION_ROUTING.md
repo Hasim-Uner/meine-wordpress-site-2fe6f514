@@ -19,7 +19,7 @@ A page can remain the canonical SEO destination for its query while its CTA rout
 
 | Route | Primary audience / intent | Page role | Primary CTA | Secondary CTA / bridge |
 | --- | --- | --- | --- | --- |
-| `/` | Brand and direct WordPress/Freelancer intent | Homepage and direct WordPress money page | `Projekt anfragen` in the hero; offer-specific project requests in price rows. With the Ersteinschätzung experiment on, header, case, the assessment card after offers and page close retain `/kontakt/?focus=ersteinschaetzung` | Scope/prices, proof / White-Label / Solar / tracking specialist |
+| `/` | Brand and direct WordPress/Freelancer intent | Homepage and direct WordPress money page | `Projekt anfragen` in header and hero; offer-specific project requests in price rows. With the Ersteinschätzung experiment on, case, the assessment card after offers and page close keep it as fallback; card and close use a URL field that prefills `/kontakt/?focus=ersteinschaetzung&url=…` | Scope/prices, proof / White-Label / Solar / tracking specialist |
 | `/wordpress-freelancer-hannover/` | Retired direct-client route | 301 to `/`; excluded from sitemap | Homepage takes over content and query ownership | Legacy content anchors remain on `/` |
 | `/whitelabel-retainer/` | Agencies seeking delivery capacity | Agency money page | White-Label request form (`?case=aufgabe` / `?case=angebotsphase` / `?case=vormerken`) or scoped first project | 30-minute call / proof |
 | `/solar-waermepumpen-leadgenerierung/` | Solar, heat-pump and storage businesses | Energy vertical money page | Paid Marktcheck (99 €) for cold intent; configurator for the enquiry system from 9.999 € | Sofortkontakt routes to the separate contact path; Solar proof / case study |
@@ -118,15 +118,16 @@ Endpunkt, Anfragefelder, Typ-/Fokuswerte und Tracking-Actions bleiben erhalten.
 Seit der Betreiberentscheidung vom 2026-09-13 übernimmt `/` die Inhalte und
 Suchintention der früheren Freelancer-Route. Die Template-Fassung
 vom 2026-10-09 ordnet die vorhandene Strecke neu: Klick → Angebote → Strecke →
-Fall → Prüfstand mit Referenzen → Übergabe → Fragen → Anfrage. Die fünf
+Fall → Prüfstand mit Referenzen → Übergabe → Fragen → Anfrage. Die sechs
 Angebotszeilen mit Preisen stehen direkt nach dem Hero; Hero samt Kopf und
 Messtafel sind die dunklen Messinstrumente.
-White-Label und Solar/Wärmepumpe stehen unter „Wann ein anderer Weg besser
-passt“ in der Übergabe (`home_door_whitelabel`, `home_door_energy`).
+White-Label und Solar/Wärmepumpe stehen unter „Drei Fälle mit eigenem Weg.“
+in der Übergabe (`home_door_whitelabel`, `home_door_energy`).
 
 Hero und Abschluss nutzen die Projektanfrage `/kontakt/?type=project` ohne
-Themenvorbelegung, wenn die Ersteinschätzung aus ist. Die fünf Leistungen
+Themenvorbelegung, wenn die Ersteinschätzung aus ist. Die sechs Leistungen
 nutzen ihre passenden Fokusziele: Website `website`, Landingpage `landingpage`,
+Anfragestrecke `anfragestrecke`,
 Analyse `type=analysis&focus=conversion`, Tracking `tracking`, Übernahme
 `takeover`. Der frühere Fokus `implementation_scope` bleibt für allgemeine
 Weiterentwicklungsanfragen gültig. Produktseiten vertiefen den Umfang. Die Website-Zeile
@@ -139,17 +140,21 @@ verlinkt seit 2026-10-01 `/wordpress-website-erstellen-lassen/`
 | --- | --- | --- | --- |
 | 01 Website und Relaunch | `home_offer_relaunch` | `/kontakt/?type=project&focus=website` | `home_offer_website_detail` → `/wordpress-website-erstellen-lassen/` |
 | 02 Landingpage | `home_offer_landingpage` | `/kontakt/?type=project&focus=landingpage` | `home_offer_landingpage_detail` → `/landingpage-erstellen-lassen/` |
-| 03 Conversion-Analyse | `home_offer_analysis` | `/kontakt/?type=analysis&focus=conversion` | `home_offer_analysis_detail` → `/conversion-optimierung/` |
-| 04 Tracking | `home_offer_tracking` | `/kontakt/?type=project&focus=tracking` | `home_offer_tracking_detail` → `/ga4-tracking-setup/` |
-| 05 Übernahme-Check | `home_offer_takeover` | `/kontakt/?type=project&focus=takeover` | `home_offer_takeover_detail` → `/wordpress-website-uebernehmen/` |
+| 03 Anfragestrecke | `home_offer_anfragestrecke` | `/kontakt/?type=project&focus=anfragestrecke` | `home_offer_anfragestrecke_case` (`proof`) → Fallstudie |
+| 04 Conversion-Analyse | `home_offer_analysis` | `/kontakt/?type=analysis&focus=conversion` | `home_offer_analysis_detail` → `/conversion-optimierung/` |
+| 05 Tracking | `home_offer_tracking` | `/kontakt/?type=project&focus=tracking` | `home_offer_tracking_detail` → `/ga4-tracking-setup/` |
+| 06 Übernahme-Check | `home_offer_takeover` | `/kontakt/?type=project&focus=takeover` | `home_offer_takeover_detail` → `/wordpress-website-uebernehmen/` |
 
 Der Hook `home_offer_conversion` aus der Konsolidierungsentscheidung vom
 2026-09-13 bleibt stillgelegt, damit ein Eventname nicht zwei Angebote trägt;
 die Analyse läuft unter `home_offer_analysis`.
 
 **Versuch Ersteinschätzung (`HU_EXPERIMENT_ERSTEINSCHAETZUNG`):** Solange er an
-ist, führen Kopf, Fall, Preisabschluss und Seitenabschluss über
-`hu_first_assessment_url()` zur kostenlosen Ersteinschätzung. Seit Freigabe
+ist, führen Fall, Preisabschluss und Seitenabschluss zur kostenlosen
+Ersteinschätzung; Preisabschluss und Seitenabschluss als URL-Feld (GET an
+`/kontakt/`, `focus=ersteinschaetzung`, `url=`), das /kontakt/ vorbefüllt.
+Seit 22.10.2026 führt der Kopf auch bei aktivem Versuch zur Projektanfrage
+(ein Hauptziel auf der Startseite). Seit Freigabe
 vom 04.10.2026 ist im Hero die Projektanfrage (`home_head_contact`) die
 Hauptaktion, auch bei aktivem Versuch. Die Kopf-Tür `ersteinschaetzung` trägt
 `nav_header_ersteinschaetzung`; der Abschluss `home_close_ersteinschaetzung`.
@@ -533,8 +538,7 @@ Menüs, `fokus` den Marktcheck-Einstieg der Solar-Seite):
 
 | Route | Modus | Tür | Betrag (Kanon) | Ziel | `data-track-action` |
 |---|---|---|---|---|---|
-| Über, sonstige Seiten; Startseite bei ausgeschaltetem Versuch | voll | Projekt anfragen | kein Betrag | `/kontakt/?type=project` | `nav_header_project` |
-| Startseite bei eingeschaltetem Versuch | voll | Ersteinschätzung (`hu_first_assessment_text( 'label' )`) | kostenlos (`hu_format_eur( 0 )`) | `/kontakt/?focus=ersteinschaetzung` | `nav_header_ersteinschaetzung` |
+| Startseite, Über, sonstige Seiten | voll | Projekt anfragen | kein Betrag | `/kontakt/?type=project` | `nav_header_project` |
 | `/ga4-tracking-setup/`, `/server-side-tracking-b2b/` | voll | Tracking anfragen | „ab“ Messung-Setup | `/kontakt/?type=project&focus=tracking` | `nav_header_door_tracking` |
 | White-Label | voll | Test-Sprint anfragen | Test-Sprint | `/whitelabel-retainer/#aufgabe` | `nav_header_door_whitelabel` |
 | Portal-Einordnungen (Checkfox, Aroundhome, Wattfox, DAA) | leser | Sofortkontakt | Sofortkontakt-Setup | `/kontakt/?type=project&focus=sofortkontakt` | `nav_header_door_sofortkontakt` |

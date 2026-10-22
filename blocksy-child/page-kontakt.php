@@ -57,7 +57,7 @@ $public_focus_options = array_filter(
 // Bei Projektanfragen stehen die häufigsten Vorhaben oben; die Schlüssel
 // bleiben unverändert, nur die Reihenfolge der Auswahl ändert sich.
 if ( 'project' === $selected_type ) {
-	$project_focus_order  = [ 'website', 'landingpage', 'relaunch', 'takeover', 'implementation_scope', 'conversion', 'tracking', 'seo', 'performance', 'website_strategy', 'followup_scope' ];
+	$project_focus_order  = [ 'website', 'landingpage', 'anfragestrecke', 'relaunch', 'takeover', 'implementation_scope', 'conversion', 'tracking', 'seo', 'performance', 'website_strategy', 'followup_scope' ];
 	$public_focus_options = array_merge(
 		array_intersect_key( array_flip( $project_focus_order ), $public_focus_options ),
 		$public_focus_options
@@ -134,6 +134,11 @@ if ( 'website' === $selected_focus ) {
 	$form_title = 'Zwei kurze Schritte zu Ihrer Landingpage-Anfrage.';
 	$form_intro = 'Beschreiben Sie Ihr Angebot, die geplante Besucherquelle und den gewünschten Termin.';
 	$message_step_title = 'Welches Angebot soll die Landingpage verkaufen?';
+} elseif ( 'anfragestrecke' === $selected_focus ) {
+	$hero_title = 'Ihre Anfragestrecke: von der Seite bis zum Vertrieb.';
+	$form_title = 'Zwei kurze Schritte zu Ihrer Anfragestrecke.';
+	$form_intro = 'Beschreiben Sie Ihr Angebot, woher Anfragen heute kommen und welches CRM Sie nutzen. Ihre Anfrage ist unverbindlich.';
+	$message_step_title = 'Für welches Angebot sollen Anfragen kommen?';
 } elseif ( 'takeover' === $selected_focus ) {
 	$hero_title = 'Ihre bestehende WordPress-Website übernehmen.';
 	$form_title = 'Zwei kurze Schritte zum Übernahme-Check.';
@@ -167,8 +172,23 @@ if ( $is_first_assessment ) {
 // Kopf "Was passiert danach?" auf jeder Variante. Antwortzeit aus dem Kanon;
 // der Satz zur kostenlosen Ersteinschaetzung nur, solange der Versuch laeuft.
 $after_text = 'Ich lese jede Anfrage selbst und antworte ' . $response_window . ' — mit Rückfragen oder einem Festpreis.';
-if ( function_exists( 'hu_first_assessment_enabled' ) && hu_first_assessment_enabled() ) {
+if ( $is_first_assessment ) {
 	$after_text .= ' Die ' . hu_first_assessment_text( 'label' ) . ' ist kostenlos und verpflichtet zu nichts.';
+} elseif ( 'project' === $selected_type ) {
+	$after_text .= ' Die Anfrage ist unverbindlich. Ein Projekt beginnt erst nach Ihrer Zusage.';
+}
+
+// URL aus dem Feld der Startseite (?url=…). "beispiel.de" ohne Schema wird
+// zu https://beispiel.de; alles andere als http(s) verwirft esc_url_raw().
+$prefill_url = '';
+if ( isset( $_GET['url'] ) ) { // phpcs:ignore WordPress.Security.NonceVerification.Recommended -- read-only prefill.
+	$raw_url = trim( sanitize_text_field( wp_unslash( $_GET['url'] ) ) ); // phpcs:ignore WordPress.Security.NonceVerification.Recommended
+	if ( preg_match( '#^([a-z][a-z0-9+.-]*):#i', $raw_url, $scheme ) && ! in_array( strtolower( $scheme[1] ), [ 'http', 'https' ], true ) ) {
+		$raw_url = ''; // Fremdes Schema (javascript:, data:, …) wird nicht vorbefüllt.
+	} elseif ( '' !== $raw_url && ! preg_match( '#^https?://#i', $raw_url ) ) {
+		$raw_url = 'https://' . ltrim( $raw_url, '/' );
+	}
+	$prefill_url = '' === $raw_url ? '' : esc_url_raw( $raw_url, [ 'http', 'https' ] );
 }
 ?>
 
@@ -284,7 +304,7 @@ if ( function_exists( 'hu_first_assessment_enabled' ) && hu_first_assessment_ena
 					<section class="contact-flow-step contact-flow-step--short" data-contact-step="message">
 						<div class="contact-field" data-contact-field="website_url">
 							<label for="contact-website"><?php echo esc_html( hu_first_assessment_text( 'website_label' ) ); ?></label>
-							<input id="contact-website" name="website_url" type="url" autocomplete="url" inputmode="url" placeholder="<?php echo esc_attr( $website_placeholder ); ?>" required aria-describedby="contact-website-error" data-contact-website data-contact-required-error="<?php echo esc_attr( hu_first_assessment_text( 'website_missing' ) ); ?>">
+							<input id="contact-website" name="website_url" type="url" autocomplete="url" inputmode="url" placeholder="<?php echo esc_attr( $website_placeholder ); ?>" value="<?php echo esc_attr( $prefill_url ); ?>" required aria-describedby="contact-website-error" data-contact-website data-contact-required-error="<?php echo esc_attr( hu_first_assessment_text( 'website_missing' ) ); ?>">
 							<p class="contact-field__error is-hidden" id="contact-website-error" aria-live="polite"></p>
 						</div>
 						<div class="contact-field" data-contact-field="message">
@@ -293,7 +313,7 @@ if ( function_exists( 'hu_first_assessment_enabled' ) && hu_first_assessment_ena
 						</div>
 						<div class="contact-field" data-contact-field="email">
 							<label for="contact-email">E-Mail</label>
-							<input id="contact-email" name="email" type="email" autocomplete="email" inputmode="email" required aria-describedby="contact-email-error">
+							<input id="contact-email" name="email" type="email" autocomplete="email" inputmode="email" required aria-describedby="contact-email-error"<?php echo '' !== $prefill_url ? ' autofocus' : ''; // raw-ok -- static attribute. ?>>
 							<p class="contact-field__error is-hidden" id="contact-email-error" aria-live="polite"></p>
 						</div>
 						<label class="contact-consent" data-contact-field="consent">
@@ -330,7 +350,7 @@ if ( function_exists( 'hu_first_assessment_enabled' ) && hu_first_assessment_ena
 						<div class="contact-brief-meta">
 							<div class="contact-field">
 								<label for="contact-website">Website <span>optional</span></label>
-								<input id="contact-website" name="website_url" type="url" autocomplete="url" inputmode="url" placeholder="<?php echo esc_attr( $website_placeholder ); ?>">
+								<input id="contact-website" name="website_url" type="url" autocomplete="url" inputmode="url" placeholder="<?php echo esc_attr( $website_placeholder ); ?>" value="<?php echo esc_attr( $prefill_url ); ?>">
 							</div>
 							<div class="contact-field<?php echo esc_attr( $show_timeline_field ? '' : ' is-hidden' ); ?>" data-contact-context-field="timeline">
 								<label for="contact-timeline" data-contact-timeline-label>Zeitfenster <span>optional</span></label>

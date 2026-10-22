@@ -40,8 +40,10 @@ for (const width of [360, 768, 1024, 1440]) {
     await expect(page.locator('.st-hero__kopfzeile a')).toHaveCount(0);
     await expect(page.locator('.st-hero__beleg')).toBeVisible();
     await expect(page.locator('#angebote .st-erstcheck')).toContainText('Drei Befunde');
-    await expect(page.locator('#angebote .st-erstcheck .tun')).toHaveAttribute('href', 'https://hasimuener.de/kontakt/?focus=ersteinschaetzung');
-    await expect(page.locator('.leiste .rechts > .tuer')).toHaveAttribute('data-door', 'ersteinschaetzung');
+    await expect(page.locator('#angebote .st-erstcheck form')).toHaveAttribute('action', 'https://hasimuener.de/kontakt/');
+    await expect(page.locator('#angebote .st-erstcheck input[name="focus"]')).toHaveValue('ersteinschaetzung');
+    await expect(page.locator('#angebote .st-erstcheck input[name="url"]')).toHaveAttribute('inputmode', 'url');
+    await expect(page.locator('.leiste .rechts > .tuer')).toHaveAttribute('data-door', 'projekt');
     await expect(page.locator('.fuss .register')).toHaveCount(0);
     await expect(page.locator('.fuss .verzeichnis')).toHaveCount(1);
     await expect(page.locator('[data-st-wert="herkunft"]')).toHaveText('Direkt aufgerufen');
@@ -149,14 +151,14 @@ test('homepage: FAQ schema, retained anchors and enquiry locations', async ({ pa
   const schema = await page.locator('#fragen script[type="application/ld+json"]').textContent();
   expect(JSON.parse(schema).mainEntity.map(entry => ({ q: entry.name, a: entry.acceptedAnswer.text }))).toEqual(visible);
   expect(visible.length).toBe(5);
-  for (const id of ['angebot-funnel', 'systemprojekt', 'arbeiten', 'referenzen', 'kontakt', 'angebot-website', 'angebot-landingpage', 'angebot-conversion', 'angebot-tracking', 'angebot-weiterentwicklung']) {
+  for (const id of ['angebot-funnel', 'systemprojekt', 'arbeiten', 'referenzen', 'kontakt', 'angebot-website', 'angebot-landingpage', 'angebot-anfragestrecke', 'angebot-conversion', 'angebot-tracking', 'angebot-weiterentwicklung']) {
     await expect(page.locator(`[id="${id}"]`)).toHaveCount(1);
   }
   await page.evaluate(() => document.addEventListener('click', e => {
     if (e.target.closest('[data-track-category="lead_gen"]')) e.preventDefault();
   }));
   for (const [selector, name] of [
-    ['.leiste .rechts > .tuer', 'Kopf'], ['#klick .tun', 'Einstieg'], ['#arbeiten .tun', 'Fall'], ['#angebote .st-erstcheck .tun', 'Preise'], ['#anfrage .tun', 'Ende'],
+    ['.leiste .rechts > .tuer', 'Kopf'], ['#klick .tun', 'Einstieg'], ['#arbeiten .tun', 'Fall'], ['#angebote .st-erstcheck .tun', 'Preise'], ['#anfrage [data-track-action="home_close_ersteinschaetzung"]', 'Ende'],
   ]) {
     await page.locator(selector).click();
     await expect(page.locator('[data-st-wert="klick"]')).toHaveText('geöffnet · ' + name);

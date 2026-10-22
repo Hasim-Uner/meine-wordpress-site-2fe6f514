@@ -256,7 +256,7 @@ get_header();
 			<div class="haupt">
 				<p class="mono stempelfarbe">Vor dem Start klären</p>
 				<h2 class="kopf">Die Seite ergänzt Ihre Website. Den Rest buchen Sie bei Bedarf.</h2>
-				<p class="vorspann">Die seitenbezogene Conversion in vorhandenen Konten ist enthalten. Müssen GA4, Tag Manager und Consent erst als vollständiges System eingerichtet werden, ist das ein eigenes Tracking-Produkt für <?php echo esc_html( $tracking_price ); ?> netto.</p>
+				<p class="vorspann">Die seitenbezogene Conversion in vorhandenen Konten ist enthalten. Müssen GA4, Tag Manager und Consent erst als vollständiges System eingerichtet werden, ist das ein eigenes Tracking-Produkt für <?php echo esc_html( $tracking_price ); ?> netto. Seite, mehrstufiges Formular, Tracking und Benachrichtigung zusammen gibt es als <a href="<?php echo esc_url( home_url( '/#angebot-anfragestrecke' ) ); ?>" data-track-action="landingpage_to_anfragestrecke" data-track-category="navigation" data-track-section="einordnung">Anfragestrecke für <?php echo esc_html( hu_anfragestrecke_price( false, true ) ); ?></a>.</p>
 				<div class="ausgang">
 					<a class="textlink" href="<?php echo esc_url( $tracking_url ); ?>" data-track-action="lp_offer_to_tracking_setup" data-track-category="navigation" data-track-section="lp_offer_addons">Vollständiges Tracking-Setup ansehen</a>
 					<a class="textlink" href="<?php echo esc_url( $website_url ); ?>" data-track-action="lp_offer_to_website_offer" data-track-category="navigation" data-track-section="lp_offer_addons">Website-Angebot ansehen</a>

@@ -381,6 +381,10 @@ function nexus_get_contact_focus_options( $include_inactive = false ) {
 			'label' => 'Die Anfrage-Website · Neubau oder Relaunch',
 			'types' => [ 'project' ],
 		],
+		'anfragestrecke' => [
+			'label' => 'Anfragestrecke · Landingpage, Formular, Tracking, CRM',
+			'types' => [ 'project' ],
+		],
 		'energy' => [
 			'label' => 'Anfragesystem für Solar und Wärmepumpe',
 			'types' => [ 'project' ],
@@ -470,6 +474,12 @@ function nexus_get_contact_project_focus_copy() {
 			'messageHelp'        => 'Was bieten Sie an, woher kommen die Besucher und wann soll die Seite live gehen?',
 			'messagePlaceholder' => 'Angebot: … · Besucherquelle: … · Gewünschter Termin: …',
 			'submitLabel'        => 'Landingpage anfragen',
+		],
+		'anfragestrecke' => [
+			'messageLabel'       => 'Angebot, Anfragequellen und CRM',
+			'messageHelp'        => sprintf( 'Für welches Angebot sollen Anfragen kommen, woher kommen sie heute, und welches CRM nutzen Sie? Die Anfragestrecke kostet %1$s netto, mit CRM-Anbindung %2$s netto. Bitte keine Zugangsdaten eintragen.', hu_anfragestrecke_price(), hu_anfragestrecke_price( true ) ),
+			'messagePlaceholder' => 'Angebot: … · Anfragen kommen heute über … · Unser CRM: …',
+			'submitLabel'        => 'Anfragestrecke anfragen',
 		],
 		'energy' => [
 			'messageLabel'       => 'Zielgebiet, Anfragequellen und Start',

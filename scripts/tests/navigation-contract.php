@@ -200,7 +200,7 @@ nav_check( is_array( $flag_on ) && str_ends_with( (string) $flag_on['analyse'], 
 // --- 1c. Decision per context ---------------------------------------------------
 
 $expect_funnel = [
-	'home'          => [ 'voll', 'ersteinschaetzung', 'freelancer' ],
+	'home'          => [ 'voll', 'projekt', 'freelancer' ],
 	'tracking'      => [ 'voll', 'tracking', 'tracking' ],
 	'server_side'   => [ 'voll', 'tracking', 'tracking' ],
 	'case_study'    => [ 'voll', 'marktcheck', 'energy' ],

@@ -411,8 +411,11 @@ function hu_funnel_context() {
 		return [ 'mode' => 'voll', 'door' => 'marktcheck', 'route' => 'energy' ];
 	}
 
+	// Startseite: ein Hauptziel. Die Projektanfrage fuehrt im Kopf; die
+	// Ersteinschaetzung steht als Auffangnetz unter den Preisen und im
+	// Abschluss (Entscheidung 22.10.2026).
 	if ( is_front_page() ) {
-		return [ 'mode' => 'voll', 'door' => hu_first_assessment_enabled() ? 'ersteinschaetzung' : 'projekt', 'route' => 'freelancer' ];
+		return [ 'mode' => 'voll', 'door' => 'projekt', 'route' => 'freelancer' ];
 	}
 
 	return [ 'mode' => 'voll', 'door' => 'projekt', 'route' => '' ];

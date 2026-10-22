@@ -242,7 +242,7 @@ function hu_get_forced_singular_seo_map() {
 			],
 			'technisches-seo-wordpress' => [
 				'title'       => 'Technisches SEO für WordPress: Befund & Korrektur | Haşim Üner',
-				'description' => 'Technisches SEO für bestehende WordPress-Websites: Indexierung, Vorlagen und Ladezeit prüfen, Korrekturen umsetzen und dokumentiert abnehmen. Umfang und Preis vorab.',
+				'description' => sprintf( 'Technisches SEO für bestehende WordPress-Websites: SEO-Befund für %s netto zu Indexierung, Vorlagen und Ladezeit, danach Korrekturen zum Festpreis.', hu_seo_finding_price() ),
 			],
 			'referenzen' => [
 				'title'       => 'WordPress-Referenzen und Projekte | Haşim Üner',

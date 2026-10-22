@@ -3,7 +3,9 @@
  * Template Name: Technisches SEO für WordPress
  * Description: Technischen Befund, Korrektur und Abnahme vor dem Auftrag abgrenzen.
  *
- * Hardcoded service page. No fixed price or ranking promise. Metadata and
+ * Hardcoded service page. Fixed price only for the written finding
+ * (hu_seo_finding_price()); corrections are quoted after it. No ranking
+ * promise. Metadata and
  * Service schema are owned by the central modules, not this template.
  *
  * @package Blocksy_Child
@@ -30,9 +32,9 @@ get_header();
 		</div>
 		<aside class="tafel seo-angebot-text" aria-labelledby="technical-seo-start-title">
 			<p class="gegenstand" id="technical-seo-start-title">Vor dem Auftrag</p>
-			<h2 class="kopf leise">Erst Umfang und Preis klären.</h2>
+			<h2 class="kopf leise">Erst der Befund, dann der Festpreis.</h2>
 			<p>Sie schicken die Website-Adresse und beschreiben das Problem. Wir grenzen die betroffenen Seiten, Prüffragen und nötigen Zugänge ein.</p>
-			<p><strong>Preis nach vereinbartem Umfang.</strong> Befund und Umsetzung werden getrennt vereinbart. Sie erhalten ein schriftliches Angebot vor dem Start.</p>
+			<p><strong>SEO-Befund für <?php echo esc_html( hu_seo_finding_price( true ) ); ?>.</strong> Schriftlich, mit betroffenen URLs, Nachweis und Priorität. Beauftragen Sie danach die Korrekturen, wird der Befund angerechnet. Die Korrekturen bekommen einen Festpreis nach Befund.</p>
 			<a class="tun" href="<?php echo esc_url( $request_url ); ?>" data-track-action="technical_seo_request_hero" data-track-category="lead_gen" data-track-section="technical_seo_intro">SEO-Projekt anfragen <span aria-hidden="true">→</span></a>
 			<p class="seo-angebot-hinweis">Mit dem Absenden fragen Sie eine Zusammenarbeit an. Eine Prüfung beginnt erst nach Beauftragung.</p>
 		</aside>
