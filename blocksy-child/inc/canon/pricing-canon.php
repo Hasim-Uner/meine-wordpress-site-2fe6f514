@@ -9,7 +9,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
 
-define( 'HU_FOUNDATION_PRICE_STANDARD', 9999 );
+define( 'HU_FOUNDATION_PRICE_STANDARD', 9900 ); // Seit 22.10.2026; zuvor 9.999 € (Freigabe Haşim).
 define( 'HU_FOUNDATION_EXTRA_PRODUCT_PRICE', 1000 );
 define( 'HU_MARKETCHECK_PRICE', 99 );
 define( 'HU_FOUNDATION_HOSTING_MONTHLY', 50 );

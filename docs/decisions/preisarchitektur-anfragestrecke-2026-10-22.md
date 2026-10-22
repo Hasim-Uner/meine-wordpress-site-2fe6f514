@@ -25,6 +25,11 @@ Kanon: `HU_ANFRAGESTRECKE_PRICE`, `HU_ANFRAGESTRECKE_CRM_PRICE`,
 `HU_SEO_FINDING_PRICE` in `blocksy-child/inc/canon/pricing-canon.php`.
 Der Entwurf „Anfragestrecken ab 2.700 €“ (25.09.2026) ist abgelöst und gesperrt.
 
+Solar-Vertikale: Anfragesystem von 9.999 € auf 9.900 € netto (Freigabe
+22.10.2026, Kanon `HU_FOUNDATION_PRICE_STANDARD`). Die 9-9-9-Endung passte
+nicht zum Ton der übrigen Preise. Weitere Produktstrecke und Marktcheck
+unverändert.
+
 Unverändert und bewusst nicht angefasst:
 
 - Anfrage-Website (Konfigurator, 1.900 € für Grundsystem und erste Hauptseite,
@@ -32,7 +37,6 @@ Unverändert und bewusst nicht angefasst:
   „2.490 € für drei Seiten“ beruhte auf einer veralteten, gecachten Live-Seite.
   Die Startseitenkarte sagt jetzt, dass Texte geliefert oder dazugebucht werden,
   damit der Vergleich zur Landingpage (Text inklusive) lesbar bleibt.
-- Solar-Vertikale (9.999 €, Entscheidung 14.10.2026). Offener Vorschlag: 9.900 €.
 - White-Label-Leiter, Tracking-Leiter, Übernahme-Check, Kontingente.
 
 Startseite:
