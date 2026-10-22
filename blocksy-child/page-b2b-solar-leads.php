@@ -280,7 +280,7 @@ get_header();
 							PV-Referenzfall zur Systemarchitektur <span aria-hidden="true"><?php echo hu_arrow_up_right_svg(); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- static inline SVG ?></span>
 						</a>
 					</div>
-					<p class="hu-b2b__microcopy">Marktcheck: <?php echo esc_html( hu_marketcheck_price( true ) ); ?> · Aufbau ab <?php echo esc_html( hu_foundation_price_display() ); ?> netto · Absenden ist noch keine Buchung</p>
+					<p class="hu-b2b__microcopy">Marktcheck <?php echo esc_html( hu_marketcheck_price( true ) ); ?> · Aufbau ab <?php echo esc_html( hu_foundation_price_display() ); ?> netto · Absenden ist noch keine Buchung</p>
 				</div>
 
 				<aside class="hu-b2b__gate" aria-labelledby="hu-b2b-gate-title">

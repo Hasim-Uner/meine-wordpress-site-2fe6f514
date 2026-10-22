@@ -161,7 +161,7 @@ $objections = [
 	],
 	[
 		'question' => 'Was kosten Marktcheck und eigener Anfrageweg?',
-		'answer'   => sprintf( 'Der Marktcheck kostet %s netto und wird bei Beauftragung des Anfragesystems angerechnet. Der Aufbau beginnt bei %s netto für eine Produktstrecke; jede weitere kostet %s zusätzlich. Rund %s Hosting pro Monat, Werbebudget und der vereinbarte Betreuungsumfang kommen hinzu. Umfang und Start werden vor der Beauftragung geklärt.', hu_marketcheck_price(), hu_foundation_price_display(), hu_foundation_extra_product_price_display(), hu_foundation_hosting_display() ),
+		'answer'   => sprintf( 'Der Marktcheck vorab ist %s. Der Aufbau beginnt bei %s netto für eine Produktstrecke; jede weitere kostet %s zusätzlich. Rund %s Hosting pro Monat, Werbebudget und der vereinbarte Betreuungsumfang kommen hinzu. Umfang und Start werden vor der Beauftragung geklärt.', hu_marketcheck_price(), hu_foundation_price_display(), hu_foundation_extra_product_price_display(), hu_foundation_hosting_display() ),
 	],
 	[
 		'question' => 'Verkaufen Sie selbst Wärmepumpen-Leads?',

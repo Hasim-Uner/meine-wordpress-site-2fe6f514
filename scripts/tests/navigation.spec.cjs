@@ -26,7 +26,8 @@ const html = context => {
 };
 // Einziger Betrag der SEO-Seite: der Befund (hu_seo_finding_price()); die Korrekturen bleiben ohne Zahl.
 const seoFindingPrice = execFileSync('php', ['-r', `require '${path.join(__dirname, 'navigation-harness.php')}'; echo hu_seo_finding_price();`], { encoding: 'utf8' });
-const marketcheckAmount = execFileSync('php', ['-r', `require '${path.join(__dirname, 'navigation-harness.php')}'; echo hu_marketcheck_price();`], { encoding: 'utf8' });
+// Betrag der Marktcheck-Tuer im Kopf (kurze Form, "0 €" solange kostenlos).
+const marketcheckAmount = execFileSync('php', ['-r', `require '${path.join(__dirname, 'navigation-harness.php')}'; echo hu_funnel_doors()['marktcheck']['amount'];`], { encoding: 'utf8' });
 const trackingAmount = execFileSync('php', ['-r', `require '${path.join(__dirname, 'navigation-harness.php')}'; echo 'ab ' . hu_tracking_price('measurement', 'setup');`], { encoding: 'utf8' });
 const takeoverAmount = execFileSync('php', ['-r', `require '${path.join(__dirname, 'navigation-harness.php')}'; echo hu_freelancer_takeover_check_price();`], { encoding: 'utf8' });
 
@@ -481,7 +482,7 @@ async function expectLadderFields(page) {
 }
 
 for (const width of [561, 640, 768, 1024, 1080, 1280, 1440]) {
-  test(`solar focus ${width}: paid Marktcheck only, no menu, one row, not sticky`, async ({ page }) => {
+  test(`solar focus ${width}: Marktcheck only, no menu, one row, not sticky`, async ({ page }) => {
     await open(page, 'solar', { width, height: 800 });
     await expect(leiste(page)).toHaveAttribute('data-leiste-modus', 'fokus');
     await expect(klappe(page)).toHaveCount(0);

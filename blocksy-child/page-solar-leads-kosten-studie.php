@@ -88,7 +88,7 @@ get_header();
 				'description' => 'Tragen Sie Preis und Menge aus Ihrem Vertrag oder Ihrer Auswertung ein. Abschlussquote, Bearbeitungszeit und interner Stundensatz ergänzen die Rechnung.',
 				'example_text' => 'Keine Anbieterpreise oder Branchenquoten voreingestellt. Es werden keine Eingaben gespeichert oder übertragen.',
 				'cta_label' => 'Ausgangslage im Marktcheck einordnen',
-				'cta_note' => sprintf( 'Marktcheck: %s netto, Befund per E-Mail %s. Aufbau, Betreuung und weitere Kanal-Kosten sind in dieser Rechnung nicht enthalten.', $marketcheck_price, hu_marketcheck_reply_label() ),
+				'cta_note' => sprintf( 'Marktcheck: %s, Befund per E-Mail %s. Aufbau, Betreuung und weitere Kanal-Kosten sind in dieser Rechnung nicht enthalten.', $marketcheck_price, hu_marketcheck_reply_label() ),
 			] );
 			?>
 			<noscript><p class="hu-buy__section-lead">Der Rechner benötigt JavaScript. Sie können mit der Formel rechnen: Anfragegebühren plus interne Vertriebskosten, geteilt durch gewonnene Aufträge. Der Marktcheck bleibt über den Abschluss dieser Seite erreichbar.</p></noscript>
@@ -126,7 +126,7 @@ get_header();
 		</div></div>
 	</section>
 	<section class="hu-buy__band hu-buy__band--light hu-buy__band--final" id="final-cta" aria-labelledby="hu-study-final-title" data-track-section="final">
-		<div class="hu-buy__container hu-buy__container--narrow hu-buy__final-inner"><p class="hu-buy__eyebrow">Vor der Investition</p><h2 class="hu-buy__h2" id="hu-study-final-title">Klären Sie, welcher Anfrageweg zu Ihrem Betrieb passt.</h2><p class="hu-buy__final-text">Der Marktcheck ordnet Angebot, Zielgebiet, Projektwerte und Bearbeitung ein. Sie erhalten einen Befund per E-Mail <?php echo esc_html( hu_marketcheck_reply_label() ); ?> mit einer Empfehlung und priorisierten Ansatzpunkten.</p><a class="hu-buy__button hu-buy__button--primary" href="<?php echo esc_url( $marktcheck_url ); ?>" data-track-action="cta_marktcheck" data-track-category="study_solar_leads_kosten" data-track-section="final">Marktcheck anfragen · <?php echo esc_html( $marketcheck_price ); ?> <span aria-hidden="true">→</span></a><p class="hu-buy__final-note">Netto · Absenden ist noch keine Buchung · bei Beauftragung des Anfragesystems anrechenbar</p></div>
+		<div class="hu-buy__container hu-buy__container--narrow hu-buy__final-inner"><p class="hu-buy__eyebrow">Vor der Investition</p><h2 class="hu-buy__h2" id="hu-study-final-title">Klären Sie, welcher Anfrageweg zu Ihrem Betrieb passt.</h2><p class="hu-buy__final-text">Der Marktcheck ordnet Angebot, Zielgebiet, Projektwerte und Bearbeitung ein. Sie erhalten einen Befund per E-Mail <?php echo esc_html( hu_marketcheck_reply_label() ); ?> mit einer Empfehlung und priorisierten Ansatzpunkten.</p><a class="hu-buy__button hu-buy__button--primary" href="<?php echo esc_url( $marktcheck_url ); ?>" data-track-action="cta_marktcheck" data-track-category="study_solar_leads_kosten" data-track-section="final">Marktcheck anfragen · <?php echo esc_html( $marketcheck_price ); ?> <span aria-hidden="true">→</span></a><p class="hu-buy__final-note">Absenden ist noch keine Buchung · kein Pflicht-Call</p></div>
 	</section>
 	<script type="application/ld+json"><?php echo wp_json_encode( $article_schema, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE ); ?></script>
 	<script type="application/ld+json"><?php echo wp_json_encode( $faq_schema, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE ); ?></script>
