@@ -370,8 +370,8 @@ Keine Gesamt-CPO-Rechnung aus dem erreichten Kampagnen-CPL und der CRM-Quote.
 
 Zielgruppe und persönliche Umsetzung zuerst; ein kompakter Fallbeleg enthält
 die Projektphasen und Einzelfallgrenzen. Danach folgen Produktumfang mit
-Konfigurator, Passung und bezahlter Marktcheck; Preise und Anrechnung stammen
-aus dem Kanon. Rechner, Mechanismus, technische Fragen und Cluster-Verweise
+Konfigurator, Passung und kostenloser Marktcheck (seit 22.10.2026); Preise
+stammen aus dem Kanon. Rechner, Mechanismus, technische Fragen und Cluster-Verweise
 sind freiwillige Vertiefung. Der interaktive Rechner enthält Annahmen und
 darf nicht als Ergebnisprognose dargestellt werden. Der Marktcheck bleibt
 der primäre Schritt: persönliche Prüfung, schriftlicher E-Mail-Befund gemäß

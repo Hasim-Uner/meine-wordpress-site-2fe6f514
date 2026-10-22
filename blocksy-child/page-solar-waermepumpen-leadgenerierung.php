@@ -78,9 +78,9 @@ $pricing_canon = function_exists( 'hu_pricing_canon' ) ? hu_pricing_canon() : []
 
 // Rohwerte gehen zusaetzlich als data-Attribute ins Markup, damit das
 // JavaScript den Aufbaupreis nicht ein zweites Mal kennen muss.
-$calc_build   = (int) ( $pricing_canon['foundation_price_standard'] ?? 9999 );
+$calc_build   = (int) ( $pricing_canon['foundation_price_standard'] ?? HU_FOUNDATION_PRICE_STANDARD );
 $calc_extra_product = (int) ( $pricing_canon['foundation_extra_product_price'] ?? 1000 );
-$marketcheck_price_value = (int) ( $pricing_canon['marketcheck_price'] ?? 99 );
+$marketcheck_price_value = (int) ( $pricing_canon['marketcheck_price'] ?? HU_MARKETCHECK_PRICE );
 $calc_hosting = (int) ( $pricing_canon['foundation_hosting_monthly'] ?? 50 );
 $calc_months  = 24;
 $module_a_orders = $calc_defaults['a1'] * $calc_defaults['a3'] / 100;
@@ -105,7 +105,7 @@ $format_numeric_orders = static function ( float $orders ): string {
 
 $foundation_price    = $format_eur( $calc_build );
 $extra_product_price = $format_eur( $calc_extra_product );
-$marketcheck_price   = $format_eur( $marketcheck_price_value );
+$marketcheck_price   = hu_marketcheck_price();
 $hosting_price       = $format_eur( $calc_hosting );
 
 // ── Marktcheck (Diagnose-Canon) ────────────────────────────────
@@ -221,7 +221,7 @@ $system_includes = [
 $exits = [
 	[
 		'titel' => 'Nach dem Marktcheck.',
-		'text'  => sprintf( 'Sie erhalten den schriftlichen Befund unabhängig davon, ob anschließend ein Aufbau sinnvoll ist. Die %s werden bei Beauftragung des Anfragesystems angerechnet.', $marketcheck_price ),
+		'text'  => 'Sie erhalten den schriftlichen Befund unabhängig davon, ob anschließend ein Aufbau sinnvoll ist. Der Marktcheck kostet nichts und verpflichtet zu nichts.',
 	],
 	[
 		'titel' => 'Während des Aufbaus.',
@@ -254,7 +254,7 @@ $receipt_rows = [
 	// um, ohne etwas hinzuzufuegen: der Name daneben sagt das "von" schon.
 	[ 'k' => 'Geprüft',       'v' => 'Haşim Üner, persönlich' ],
 	[ 'k' => 'Auch bei Nein', 'v' => 'drei priorisierte Hebel' ],
-	[ 'k' => 'Preis',         'v' => $marketcheck_price . ' netto' ],
+	[ 'k' => 'Preis',         'v' => $marketcheck_price ],
 ];
 
 // ── 07 Fragen ──────────────────────────────────────────────────
@@ -273,7 +273,7 @@ $faq_items = [
 		'id'   => 'faq-kosten',
 		'q'    => 'Was kostet es, eigene Photovoltaik-Anfragen zu generieren statt zu kaufen?',
 		'lead' => sprintf( 'Das standardisierte Anfragesystem startet bei %s netto für eine Produktstrecke. Jede weitere eigenständige Produktstrecke kostet %s zusätzlich.', $foundation_price, $extra_product_price ),
-		'rest' => sprintf( 'Vorqualifizierung, CRM-Anbindung, Server-Side-Tracking, Messarchitektur und Übergabe sind im Grundsystem enthalten. Der Marktcheck kostet %s netto und wird bei Beauftragung angerechnet; Werbebudget und rund %s Hosting pro Monat kommen separat hinzu.', $marketcheck_price, $hosting_price ),
+		'rest' => sprintf( 'Vorqualifizierung, CRM-Anbindung, Server-Side-Tracking, Messarchitektur und Übergabe sind im Grundsystem enthalten. Der Marktcheck vorab ist %s; Werbebudget und rund %s Hosting pro Monat kommen separat hinzu.', $marketcheck_price, $hosting_price ),
 	],
 	[
 		'id'   => 'faq-cpo',
@@ -398,7 +398,7 @@ $schema_blocks[] = [
 			'name'          => 'Marktcheck für Solar- und SHK-Betriebe',
 			'price'         => (string) $marketcheck_price_value,
 			'priceCurrency' => 'EUR',
-			'description'   => sprintf( '%d Fit-Fragen plus Kontaktdaten in %d Schritten. Persönlicher schriftlicher Befund mit drei priorisierten Hebeln und klarer Empfehlung — %s. Netto; bei Aufbau anrechenbar.', $marketcheck_fit_q, $marketcheck_visible_steps, $marketcheck_reply ),
+			'description'   => sprintf( '%d Fit-Fragen plus Kontaktdaten in %d Schritten. Persönlicher schriftlicher Befund mit drei priorisierten Hebeln und klarer Empfehlung — %s. Kostenlos.', $marketcheck_fit_q, $marketcheck_visible_steps, $marketcheck_reply ),
 			'availability'  => 'https://schema.org/InStock',
 		],
 		[
@@ -741,8 +741,8 @@ get_header();
 			<div class="blatt reihe">
 				<?php $render_chapter( $chapter_by_id['marktcheck'] ); ?>
 				<div class="voll">
-					<h2 class="kopf" id="marktcheck-titel">Marktcheck für <?php echo esc_html( $marketcheck_price ); ?> netto.</h2>
-					<p class="vorspann">Bevor Sie in den Aufbau investieren, prüfe ich Ihr Angebot, Ihre Projektgrößen, Ihr Zielgebiet und die Bearbeitung Ihrer Anfragen. Sie erhalten <?php echo esc_html( $marketcheck_reply ); ?> einen Befund per E-Mail: eine Empfehlung und drei priorisierte Ansatzpunkte. Die <?php echo esc_html( $marketcheck_price ); ?> werden bei Beauftragung des Anfragesystems angerechnet.</p>
+					<h2 class="kopf" id="marktcheck-titel">Marktcheck, <?php echo esc_html( $marketcheck_price ); ?>.</h2>
+					<p class="vorspann">Bevor Sie in den Aufbau investieren, prüfe ich Ihr Angebot, Ihre Projektgrößen, Ihr Zielgebiet und die Bearbeitung Ihrer Anfragen. Sie erhalten <?php echo esc_html( $marketcheck_reply ); ?> einen Befund per E-Mail: eine Empfehlung und drei priorisierte Ansatzpunkte. Der Marktcheck kostet nichts und verpflichtet zu nichts.</p>
 
 					<div class="gate">
 						<div>

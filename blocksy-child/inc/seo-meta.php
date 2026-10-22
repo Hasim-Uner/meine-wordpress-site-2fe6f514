@@ -284,8 +284,8 @@ function hu_get_forced_singular_seo_map() {
 				'title'       => 'Photovoltaik-Anfragen selbst generieren statt Leads kaufen',
 				'description' => sprintf(
 					'Anfragesystem für Photovoltaik und Wärmepumpe: eigene Anfragen, Vorqualifizierung, CRM und Server-Side-Tracking. Aufbau ab %s, Marktcheck %s.',
-					hu_seo_price_display( 'foundation_price_standard', 9999 ),
-					hu_seo_price_display( 'marketcheck_price', 99 )
+					hu_seo_price_display( 'foundation_price_standard', HU_FOUNDATION_PRICE_STANDARD ),
+					hu_marketcheck_price()
 				),
 			],
 			'website-fuer-solar-und-waermepumpen-anbieter' => [

@@ -372,7 +372,7 @@ get_header();
 				<div class="e3v2-cta-copy">
 					<p>Im Marktcheck prüfe ich Anfragequellen, Qualifizierung, Tracking und Übergabe an den Vertrieb. Keine pauschale CPL-Prognose — sondern eine Einordnung, wo im bestehenden System der größte Hebel liegt und ob ein eigener Anfrageweg wirtschaftlich sinnvoll ist.</p>
 					<a class="e3v2-button" href="<?php echo esc_url( $diagnostic_url ); ?>" data-track-action="cta_case_study_to_diagnostic_request" data-track-category="lead_gen" data-track-section="case_solar_methodology">Marktcheck anfragen · <?php echo esc_html( hu_marketcheck_price() ); ?> <span aria-hidden="true">→</span></a>
-					<p class="e3v2-cta-micro">Netto · bei Aufbau anrechenbar · Befund <?php echo esc_html( hu_marketcheck_reply_label() ); ?> · kein Pflicht-Termin · keine Zahlungsdaten</p>
+					<p class="e3v2-cta-micro">Kostenlos · Befund <?php echo esc_html( hu_marketcheck_reply_label() ); ?> · kein Pflicht-Termin · keine Zahlungsdaten</p>
 					<p class="e3v2-cta-alt">Kein Solar- oder Wärmepumpenbetrieb? Website, Tracking und die Übergabe an den Vertrieb baue ich auch für andere B2B-Unternehmen. <a href="<?php echo esc_url( $project_url ); ?>" data-track-action="cta_case_study_to_project" data-track-category="lead_gen" data-track-section="case_solar_methodology">Projekt anfragen&nbsp;<span aria-hidden="true">→</span></a></p>
 				</div>
 			</div>

@@ -117,6 +117,7 @@ function apply_filters( $hook, $value ) {
 
 require_once __DIR__ . '/../blocksy-child/inc/robots-txt.php';
 require_once __DIR__ . '/../blocksy-child/inc/canon/messaging-canon.php';
+require_once __DIR__ . '/../blocksy-child/inc/canon/pricing-canon.php'; // llms.txt liest Solar- und Marktcheck-Preise aus dem Kanon.
 require_once __DIR__ . '/../blocksy-child/inc/org-schema.php';
 require_once __DIR__ . '/../blocksy-child/inc/helpers.php';
 require_once __DIR__ . '/../blocksy-child/inc/llms-txt.php';

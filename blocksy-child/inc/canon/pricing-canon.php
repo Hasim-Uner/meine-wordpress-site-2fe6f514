@@ -9,9 +9,11 @@ if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
 
-define( 'HU_FOUNDATION_PRICE_STANDARD', 9999 );
+define( 'HU_FOUNDATION_PRICE_STANDARD', 9900 ); // Seit 22.10.2026; zuvor 9.999 € (Freigabe Haşim).
 define( 'HU_FOUNDATION_EXTRA_PRODUCT_PRICE', 1000 );
-define( 'HU_MARKETCHECK_PRICE', 99 );
+// Marktcheck kostenlos seit 22.10.2026 (zuvor 99 € netto): Die Hürde zum
+// ersten Kontakt soll so klein wie möglich sein. Freigabe Haşim.
+define( 'HU_MARKETCHECK_PRICE', 0 );
 define( 'HU_FOUNDATION_HOSTING_MONTHLY', 50 );
 define( 'HU_FOUNDATION_DURATION_WEEKS_MIN', 8 );
 define( 'HU_FOUNDATION_DURATION_WEEKS_MAX', 10 );
@@ -79,14 +81,28 @@ function hu_foundation_extra_product_price_display() {
 }
 
 /**
- * Display the paid Solar/SHK marketcheck price.
+ * Display the Solar/SHK marketcheck price.
  *
- * @param bool $with_net Append the net qualifier.
+ * Kostenlos wird als Wort ausgegeben, nie als "0 €" und nie mit "netto".
+ *
+ * @param bool $with_net Append the net qualifier (only for a paid price).
  * @return string
  */
 function hu_marketcheck_price( $with_net = false ) {
+	if ( hu_marketcheck_is_free() ) {
+		return 'kostenlos';
+	}
 	$price = hu_format_eur( HU_MARKETCHECK_PRICE );
 	return $with_net ? $price . ' netto' : $price;
+}
+
+/**
+ * Whether the marketcheck is free.
+ *
+ * @return bool
+ */
+function hu_marketcheck_is_free() {
+	return 0 === (int) HU_MARKETCHECK_PRICE;
 }
 
 /**

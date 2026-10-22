@@ -37,7 +37,9 @@ if [[ -z "${DIFF_OUTPUT}" ]]; then
   exit 0
 fi
 
-VALUE_PATTERN='(^|[^[:alnum:]_/-])(590[[:space:]]*(EUR|€)|750[[:space:]]*(EUR|€)|1\.500[[:space:]]*(EUR|€|€/Mt|/Mt|€/Monat|/Monat)|1500[[:space:]]*(EUR|€|€/Mt|/Mt|€/Monat|/Monat)|9\.900[[:space:]]*(EUR|€)|9900[[:space:]]*(EUR|€)|14\.900[[:space:]]*(EUR|€)|14900[[:space:]]*(EUR|€)|6900[[:space:]]*(EUR|€))([^[:alnum:]_/-]|$)'
+# 9.900 € ist seit 22.10.2026 wieder der Kanonpreis des Solar-Anfragesystems
+# (HU_FOUNDATION_PRICE_STANDARD); gesperrt ist jetzt der abgeloeste Wert davor.
+VALUE_PATTERN='(^|[^[:alnum:]_/-])(590[[:space:]]*(EUR|€)|750[[:space:]]*(EUR|€)|1\.500[[:space:]]*(EUR|€|€/Mt|/Mt|€/Monat|/Monat)|1500[[:space:]]*(EUR|€|€/Mt|/Mt|€/Monat|/Monat)|9\.999[[:space:]]*(EUR|€)|9999[[:space:]]*(EUR|€)|14\.900[[:space:]]*(EUR|€)|14900[[:space:]]*(EUR|€)|6900[[:space:]]*(EUR|€))([^[:alnum:]_/-]|$)'
 TERM_PATTERN='(^|[^[:alnum:]_/-])(Pilotprojekt|Pilot|Beta|Test|eigentlich kostet das viel mehr|ich bin neu|starte gerade|Berufsanfänger|Modul)([^[:alnum:]_/-]|$)'
 
 # Fristen-Literale. BRAND_AND_COPY.md ("Zusagen mit Zeitangabe") verbietet sie
