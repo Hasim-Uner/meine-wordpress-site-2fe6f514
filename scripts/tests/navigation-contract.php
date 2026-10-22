@@ -157,7 +157,7 @@ $door_spec = [
 	'ersteinschaetzung' => [ hu_first_assessment_text( 'label' ), hu_first_assessment_text( 'label' ), hu_format_eur( 0 ), '/kontakt/?focus=ersteinschaetzung', 'nav_header_ersteinschaetzung' ],
 	'tracking'   => [ 'Tracking anfragen', 'Tracking', 'ab ' . hu_tracking_price( 'measurement', 'setup' ), '/kontakt/?type=project&focus=tracking', 'nav_header_door_tracking' ],
 	'aufgabe'    => [ 'Test-Sprint anfragen', 'Test-Sprint', hu_format_eur( HU_WHITELABEL_TEST_SPRINT_PRICE ), '/whitelabel-retainer/#aufgabe', 'nav_header_door_whitelabel' ],
-	'marktcheck' => [ 'Marktcheck', 'Marktcheck', hu_marketcheck_price(), '/solar-waermepumpen-leadgenerierung/#marktcheck', 'nav_header_door_marktcheck' ],
+	'marktcheck' => [ 'Marktcheck', 'Marktcheck', hu_funnel_doors()['marktcheck']['amount'], '/solar-waermepumpen-leadgenerierung/#marktcheck', 'nav_header_door_marktcheck' ],
 	'analyse'    => [ 'Analyse anfragen', 'Analyse', hu_analysis_price(), '/solar-waermepumpen-leadgenerierung/#einstieg', 'nav_header_door_analyse' ],
 	'sofort'     => [ 'Sofortkontakt', 'Sofortkontakt', hu_entry_setup_price(), '/kontakt/?type=project&focus=sofortkontakt', 'nav_header_door_sofortkontakt' ],
 ];
@@ -347,7 +347,7 @@ foreach ( nav_test_contexts() as $context => $definition ) {
 	} elseif ( 'fokus' === $mode ) {
 		$ladder = nav_links( $header_html, '//nav[@class="leiter"]//a' );
 		nav_check( [] === $row && [] === $sheet && 0 === $header_x->query( '//button[@data-leiste-klappe]' )->length, "{$context}: focus mode has no main menu, sheet or menu button" );
-		nav_check( [ 'marktcheck' ] === array_column( $ladder, 'door' ), "{$context}: focus ladder is the paid Marktcheck only" );
+		nav_check( [ 'marktcheck' ] === array_column( $ladder, 'door' ), "{$context}: focus ladder is the Marktcheck only" );
 		nav_check( [ '#marktcheck' ] === array_column( $ladder, 'href' ), "{$context}: focus ladder points at anchors of the page" );
 		nav_check( [ 'nav_header_door_marktcheck' ] === array_column( $ladder, 'track' ), "{$context}: focus ladder keeps the nav_header_door_* actions" );
 		nav_check(

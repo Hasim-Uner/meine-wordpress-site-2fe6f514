@@ -157,7 +157,7 @@ $objections = [
 	],
 	[
 		'question' => 'Was kostet der Aufbau eines eigenen Anfragesystems?',
-		'answer'   => sprintf( 'Der Aufbau beginnt bei %s netto für eine Produktstrecke; jede weitere kostet %s zusätzlich. Rund %s Hosting pro Monat und Werbebudget kommen hinzu. Der Marktcheck kostet %s netto und wird bei Beauftragung angerechnet. Umfang und Start werden vor dem Auftrag vereinbart.', $foundation_price, $extra_product_price, $hosting_price, $marketcheck_price ),
+		'answer'   => sprintf( 'Der Aufbau beginnt bei %s netto für eine Produktstrecke; jede weitere kostet %s zusätzlich. Rund %s Hosting pro Monat und Werbebudget kommen hinzu. Der Marktcheck vorab ist %s. Umfang und Start werden vor dem Auftrag vereinbart.', $foundation_price, $extra_product_price, $hosting_price, $marketcheck_price ),
 	],
 	[
 		'question' => 'Wie lange dauert es, bis sich das rechnet?',
@@ -255,7 +255,7 @@ get_header();
 							Kosten mit eigenen Zahlen prüfen
 						</a>
 					</div>
-					<p class="hu-buy__microcopy"><?php echo esc_html( $marketcheck_price ); ?> netto · Befund per E-Mail · Absenden ist noch keine Buchung</p>
+					<p class="hu-buy__microcopy"><?php echo esc_html( ucfirst( $marketcheck_price ) ); ?> · Befund per E-Mail · Absenden ist noch keine Buchung</p>
 				</div>
 
 				<aside class="hu-buy__proof" aria-labelledby="hu-buy-proof-title">
@@ -485,7 +485,7 @@ get_header();
 			<div class="hu-buy__actions hu-buy__actions--centered">
 				<a class="hu-buy__button hu-buy__button--primary" href="<?php echo esc_url( $marktcheck_url ); ?>" data-track-action="cta_marktcheck" data-track-category="intercept_solar_leads" data-track-section="final">Marktcheck anfragen <span aria-hidden="true">→</span></a>
 			</div>
-			<p class="hu-buy__final-note"><?php echo esc_html( $marketcheck_price ); ?> netto · bei Aufbau anrechenbar · Absenden ist noch keine Buchung.</p>
+			<p class="hu-buy__final-note"><?php echo esc_html( ucfirst( $marketcheck_price ) ); ?> · Absenden ist noch keine Buchung.</p>
 			<p class="hu-buy__final-note">Erst die Gesamtmethode verstehen? <a href="<?php echo esc_url( $solar_money_url ); ?>" data-track-action="cta_money_page" data-track-category="internal_link_hierarchy" data-track-section="final">Das eigene Anfragesystem ansehen</a>.</p>
 		</div>
 	</section>

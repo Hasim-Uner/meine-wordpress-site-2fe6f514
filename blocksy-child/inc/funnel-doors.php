@@ -126,8 +126,10 @@ function hu_funnel_doors() {
 				__( '%s, regional', 'blocksy-child' ),
 				HU_REQUEST_ANALYSIS_LABEL
 			),
-			'amount'       => function_exists( 'hu_marketcheck_price' ) ? hu_marketcheck_price() : hu_format_eur( 99 ),
-			'tier'         => 'paid',
+			// Kopf und Leiter brauchen die kurze Form: "kostenlos" passt unter 414 px
+			// nicht neben Wortmarke und Menue. Gleiche Konvention wie die Ersteinschaetzung.
+			'amount'       => hu_marketcheck_is_free() ? hu_format_eur( 0 ) : hu_marketcheck_price(),
+			'tier'         => hu_marketcheck_is_free() ? 'free' : 'paid',
 			'url'          => (string) $routes['marketcheck'],
 			'track'        => 'nav_header_door_marktcheck',
 		],

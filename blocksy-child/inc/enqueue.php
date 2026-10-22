@@ -410,7 +410,7 @@ function hu_enqueue_assets() {
 			// Zusage im Skript stehen und konnte sie damit ueberschreiben.
 			// Jetzt reicht der Canon sie durch.
 			'replyPromise' => hu_response_promise( 'window' ),
-			'marketcheckPrice' => function_exists( 'hu_marketcheck_price' ) ? hu_marketcheck_price( true ) : '99 € netto',
+			'marketcheckPrice' => function_exists( 'hu_marketcheck_price' ) ? hu_marketcheck_price( true ) : 'kostenlos',
 			'pageUrl'      => function_exists( 'nexus_get_energy_systems_url' )
 				? nexus_get_energy_systems_url()
 				: home_url( '/solar-waermepumpen-leadgenerierung/' ),
