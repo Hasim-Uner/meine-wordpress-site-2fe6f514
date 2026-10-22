@@ -41,6 +41,9 @@ function hu_pricing_canon() {
 		'website_design_extra_price'     => HU_WEBSITE_DESIGN_EXTRA,
 		'website_crm_standard_price'     => HU_WEBSITE_CRM_STANDARD,
 		'landingpage_price'               => HU_LANDINGPAGE_PRICE,
+		'anfragestrecke_price'            => HU_ANFRAGESTRECKE_PRICE,
+		'anfragestrecke_crm_price'        => HU_ANFRAGESTRECKE_CRM_PRICE,
+		'seo_finding_price'               => HU_SEO_FINDING_PRICE,
 		// Als Satzbaustein, nicht als Stufen-Array: [hu_price] gibt nur Skalare aus.
 		'freelancer_retainer_display'     => hu_freelancer_retainer_display(),
 		'guarantee_scope'                 => 'Funktionsfähiges Anfragesystem, kein Anfrage-Volumen.',
@@ -672,6 +675,26 @@ function hu_website_quote( $pages, $kind = 'neubau', $tracking = false, $options
 // Anfrage-Website erklärt sich durch den spezialisierten Angebotsumfang und die Messung.
 define( 'HU_LANDINGPAGE_PRICE', 1990 );
 
+// Anfragestrecke (Entscheidung 22.10.2026): das Produkt zum dokumentierten Fall.
+// Eine Landingpage für ein Angebot plus alles danach. Zwei Stufen, beide aus
+// den bestehenden Bausteinen hergeleitet, damit kein Preis frei schwebt:
+// - Anfragestrecke: Landingpage inkl. Text (1.990) + Conversion-Tracking im
+//   Browser (890) + mehrstufiges Formular mit Vorqualifizierung,
+//   Team-Benachrichtigung und Bestätigung mit Terminlink.
+// - Mit CRM: zusätzlich CRM Standard (990), Server-Side statt Browser-Messung
+//   (Differenz der Tracking-Leiter) und Rückgabe qualifizierter Anfragen an
+//   Google Ads. Das ist der Umfang, der im dokumentierten Fall gebaut wurde.
+// Die Solar-Vertikale liegt darüber, weil sie Kampagnen, Branchen-
+// Vorqualifizierung, Rechner und SEO-Basis zusätzlich enthält.
+define( 'HU_ANFRAGESTRECKE_PRICE', 3490 );
+define( 'HU_ANFRAGESTRECKE_CRM_PRICE', 5490 );
+
+// Technischer SEO-Befund (Entscheidung 22.10.2026): fester Einstieg der
+// SEO-Route, gleiche Logik wie Conversion-Analyse und Übernahme-Check.
+// Schriftlicher Befund, wird bei Beauftragung der Korrekturen angerechnet.
+// Die Korrekturen selbst bleiben ein Festpreis nach Befund.
+define( 'HU_SEO_FINDING_PRICE', 690 );
+
 // Übernahme-Check: bezahlte Diagnose, bevor eine fremde WordPress-Installation
 // in Weiterentwicklung oder Relaunch übernommen wird. Ohne Check keine offene
 // "nach Absprache"-Zusage für Fremdbestand (Entscheidung 02.09.2026).
@@ -750,6 +773,31 @@ function hu_pricing_count_word( $count ) {
  */
 function hu_landingpage_price( $with_net = false ) {
 	$price = hu_format_eur( HU_LANDINGPAGE_PRICE );
+
+	return $with_net ? $price . ' netto' : $price;
+}
+
+/**
+ * Display the canonical fixed price of the request route (Anfragestrecke).
+ *
+ * @param bool $with_crm Return the tier with CRM, server-side and Ads return.
+ * @param bool $with_net Append the "netto" qualifier.
+ * @return string
+ */
+function hu_anfragestrecke_price( $with_crm = false, $with_net = false ) {
+	$price = hu_format_eur( $with_crm ? HU_ANFRAGESTRECKE_CRM_PRICE : HU_ANFRAGESTRECKE_PRICE );
+
+	return $with_net ? $price . ' netto' : $price;
+}
+
+/**
+ * Display the canonical price of the technical SEO finding.
+ *
+ * @param bool $with_net Append the "netto" qualifier.
+ * @return string
+ */
+function hu_seo_finding_price( $with_net = false ) {
+	$price = hu_format_eur( HU_SEO_FINDING_PRICE );
 
 	return $with_net ? $price . ' netto' : $price;
 }

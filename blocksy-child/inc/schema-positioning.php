@@ -253,6 +253,12 @@ function hu_get_wordpress_freelancer_service_schema() : array {
 					'WordPress-Entwicklung'
 				),
 				$offer(
+					'Anfragestrecke',
+					'Landingpage für ein Angebot mit mehrstufigem Formular zur Vorqualifizierung, Conversion-Tracking, Team-Benachrichtigung und Bestätigung mit Terminlink; optional mit CRM-Anbindung, serverseitiger Messung und Rückgabe qualifizierter Anfragen an Google Ads.',
+					'angebot-anfragestrecke',
+					'Leadgenerierung'
+				),
+				$offer(
 					hu_tracking_product_ladder()['measurement']['name'],
 					'Messplan mit GA4, Google Tag Manager, Consent Mode und Google Ads, abgenommene Conversions mit Testfällen. Server-Side Tracking und die Übergabe ins CRM als eigene Stufen nach Bedarf.',
 					'angebot-tracking',
