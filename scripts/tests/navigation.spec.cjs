@@ -24,7 +24,8 @@ const html = context => {
     ? output.replace('</body>', '<script src="/wp-content/themes/blocksy-child/assets/js/leiste.js"></script></body>')
     : output);
 };
-const freeAmount = execFileSync('php', ['-r', `require '${path.join(__dirname, 'navigation-harness.php')}'; echo hu_format_eur(0);`], { encoding: 'utf8' });
+// Einziger Betrag der SEO-Seite: der Befund (hu_seo_finding_price()); die Korrekturen bleiben ohne Zahl.
+const seoFindingPrice = execFileSync('php', ['-r', `require '${path.join(__dirname, 'navigation-harness.php')}'; echo hu_seo_finding_price();`], { encoding: 'utf8' });
 const marketcheckAmount = execFileSync('php', ['-r', `require '${path.join(__dirname, 'navigation-harness.php')}'; echo hu_marketcheck_price();`], { encoding: 'utf8' });
 const trackingAmount = execFileSync('php', ['-r', `require '${path.join(__dirname, 'navigation-harness.php')}'; echo 'ab ' . hu_tracking_price('measurement', 'setup');`], { encoding: 'utf8' });
 const takeoverAmount = execFileSync('php', ['-r', `require '${path.join(__dirname, 'navigation-harness.php')}'; echo hu_freelancer_takeover_check_price();`], { encoding: 'utf8' });
@@ -253,25 +254,27 @@ test('home: no nav item claims the page, the wordmark does', async ({ page }) =>
   await expect(page.locator('.leiste .sig')).toHaveAttribute('aria-current', 'page');
 });
 
-test('home, narrow: the door stays in the row like on every route, and in the sheet', async ({ page }) => {
+// Seit 22.10.2026 fuehrt der Kopf der Startseite zur Projektanfrage (ein
+// Hauptziel); die Ersteinschaetzung steht als URL-Feld im Inhalt.
+test('home, narrow: the project door stays in the row like on every route, and in the sheet', async ({ page }) => {
   await open(page, 'home', { width: 390, height: 844 });
   await expect(rowDoor(page)).toBeVisible();
+  await expect(rowDoor(page)).toHaveAttribute('data-door', 'projekt');
   await klappe(page).click();
   await expect(sheet(page).locator('.tuer')).toBeVisible();
-  await expect(sheet(page).locator('.tuer .preis')).toBeVisible();
-  await expect(sheet(page).locator('.tuer .preis')).toHaveText(freeAmount);
+  await expect(sheet(page).locator('.tuer')).toHaveAttribute('data-door', 'projekt');
+  await expect(sheet(page).locator('.tuer .preis')).toHaveCount(0);
 });
 
 for (const width of [1440, 1080, 560, 414, 413, 390, 371, 370]) {
-  test(`home assessment ${width}: label, canon amount and header fit`, async ({ page }) => {
+  test(`home project door ${width}: label, no amount and header fit`, async ({ page }) => {
     await open(page, 'home', { width, height: 800 });
     const door = rowDoor(page);
     await expect(door).toBeVisible();
-    await expect(door).toHaveAttribute('data-track-action', 'nav_header_ersteinschaetzung');
-    await expect(door).toHaveAccessibleName(width < 414 ? 'Ersteinschätzung' : `Ersteinschätzung ${freeAmount}`);
-    await expect(door.locator('.preis')).toHaveText(freeAmount);
-    if (width < 414) await expect(door.locator('.preis')).toBeHidden();
-    else await expect(door.locator('.preis')).toBeVisible();
+    await expect(door).toHaveAttribute('data-door', 'projekt');
+    await expect(door).toHaveAttribute('data-track-action', 'nav_header_project');
+    await expect(door).toContainText('Projekt');
+    await expect(door.locator('.preis')).toHaveCount(0);
     const sig = await page.locator('.leiste .sig').boundingBox();
     const doorBox = await door.boundingBox();
     expect(sig.x + sig.width).toBeLessThanOrEqual(doorBox.x);
@@ -643,15 +646,18 @@ test('takeover: without JavaScript the offer, native questions and request remai
 
 
 for (const width of [320, 390, 1280]) {
-  test(`technical SEO ${width}: agreed scope, own evidence and enquiry fit without fixed-price promises`, async ({ page }, testInfo) => {
+  test(`technical SEO ${width}: priced finding, agreed corrections, own evidence and enquiry fit`, async ({ page }, testInfo) => {
     await open(page, 'technical_seo', { width, height: 900 });
     const content = page.locator('#technical-seo-content');
     await expect(content.getByRole('heading', { level: 1 })).toHaveText('Technisches SEO für Ihre WordPress-Website.');
     for (const position of ['hero', 'close']) {
       await expect(content.locator(`[data-track-action="technical_seo_request_${position}"]`)).toHaveAttribute('href', 'https://hasimuener.de/kontakt/?type=project&focus=seo');
     }
-    await expect(content).toContainText('SEO-Befund für');
-    await expect(content).not.toContainText(/\d[\d.,]*\s*(?:€|%)/);
+    await expect(content).toContainText(`SEO-Befund für ${seoFindingPrice} netto`);
+    // Genau ein Betrag auf der Seite: der Befund. Korrekturen bekommen ihren
+    // Festpreis erst nach dem Befund, Prozent- und Ranking-Zusagen gibt es keine.
+    const amounts = (await content.textContent()).match(/\d[\d.,]*\s*(?:€|%)/g) || [];
+    expect(amounts.map(a => a.replace(/\s+/g, ' '))).toEqual([seoFindingPrice.replace(/\s+/g, ' ')]);
     await expect(content.locator('#abnahme')).toContainText('wiederholbare Prüfung');
     await expect(content.locator('#arbeitsbeispiel')).toContainText('keine Kundenreferenz');
     await expect(content.locator('[data-track-action="technical_seo_proof_page"]')).toHaveAttribute('href', 'https://hasimuener.de/referenzen/');
