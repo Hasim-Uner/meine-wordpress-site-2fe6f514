@@ -91,6 +91,8 @@ rule	preis-landingpage	(^|[^0-9.,])1\.?990[[:space:]]*(€|&nbsp;€|&euro;|Euro
 # Anfragestrecke seit 22.10.2026: 3.490 € und mit CRM 5.490 €. Der Entwurf
 # "Anfragestrecken ab 2.700 €" vom 25.09.2026 ist abgeloest.
 rule	preis-anfragestrecke	(^|[^0-9.,])(2\.?700|3\.?490|5\.?490)[[:space:]]*(€|&nbsp;€|&euro;|Euro)	[Aa]nfragestrecke	Preis kommt aus hu_anfragestrecke_price().
+# Solar-Anfragesystem seit 22.10.2026: 9.900 € statt 9.999 €.
+rule	preis-solar-9999	(^|[^0-9.,])9\.?999[[:space:]]*(€|&nbsp;€|&euro;|Euro)	-	Preis kommt aus HU_FOUNDATION_PRICE_STANDARD / hu_foundation_price_display().
 rule	preis-seo-befund	(^|[^0-9.,])690[[:space:]]*(€|&nbsp;€|&euro;|Euro)	SEO-Befund|SEO-Check	Preis kommt aus hu_seo_finding_price().
 
 # ── Tracking-Leiter ───────────────────────────────────────────────────────

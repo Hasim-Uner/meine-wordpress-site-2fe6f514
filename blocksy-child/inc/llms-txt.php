@@ -99,7 +99,12 @@ function nexus_get_llms_txt_sections() {
 				[
 					'label'       => 'Anfragestrecke für Photovoltaik, Wärmepumpe und Speicher',
 					'url'         => $urls['energy'] ?? home_url( '/solar-waermepumpen-leadgenerierung/' ),
-					'description' => 'Money Page des Energie-Clusters. Definiert das eigene Anfragesystem, vergleicht Cost per Order mit Lead-Einkauf und führt zu zwei klaren Produkten: bezahlter Marktcheck für 99 € netto und konfigurierbares Anfragesystem ab 9.999 € netto; eine Produktstrecke ist enthalten, weitere Produktstrecken kosten jeweils 1.000 € zusätzlich. Das Sofortkontakt-Setup läuft über eine separate Kontaktstrecke. Enthält den dokumentierten Fall mit 150 € auf 22 € pro qualifizierter Anfrage.',
+					'description' => sprintf(
+						'Money Page des Energie-Clusters. Definiert das eigene Anfragesystem, vergleicht Cost per Order mit Lead-Einkauf und führt zu zwei klaren Produkten: bezahlter Marktcheck für %1$s netto und konfigurierbares Anfragesystem ab %2$s netto; eine Produktstrecke ist enthalten, weitere Produktstrecken kosten jeweils %3$s zusätzlich. Das Sofortkontakt-Setup läuft über eine separate Kontaktstrecke. Enthält den dokumentierten Fall mit 150 € auf 22 € pro qualifizierter Anfrage.',
+						hu_format_eur( HU_MARKETCHECK_PRICE ),
+						hu_format_eur( HU_FOUNDATION_PRICE_STANDARD ),
+						hu_format_eur( HU_FOUNDATION_EXTRA_PRODUCT_PRICE )
+					),
 				],
 				[
 					'label'       => 'Projekt anfragen',

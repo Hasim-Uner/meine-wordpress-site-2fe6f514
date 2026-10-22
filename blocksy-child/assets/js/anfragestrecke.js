@@ -514,7 +514,7 @@
     var priceNode = root.querySelector('[data-config-price]');
     var selectionNode = root.querySelector('[data-config-selection]');
     var requestLink = root.querySelector('[data-system-request-link]');
-    var base = Number(root.getAttribute('data-base-price')) || 9999;
+    var base = Number(root.getAttribute('data-base-price')) || 9900;
     var extra = Number(root.getAttribute('data-extra-price')) || 1000;
     var formatter = new Intl.NumberFormat('de-DE', { style: 'currency', currency: 'EUR', maximumFractionDigits: 0 });
 

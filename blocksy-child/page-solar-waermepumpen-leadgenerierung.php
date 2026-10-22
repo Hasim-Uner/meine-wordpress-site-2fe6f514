@@ -78,7 +78,7 @@ $pricing_canon = function_exists( 'hu_pricing_canon' ) ? hu_pricing_canon() : []
 
 // Rohwerte gehen zusaetzlich als data-Attribute ins Markup, damit das
 // JavaScript den Aufbaupreis nicht ein zweites Mal kennen muss.
-$calc_build   = (int) ( $pricing_canon['foundation_price_standard'] ?? 9999 );
+$calc_build   = (int) ( $pricing_canon['foundation_price_standard'] ?? HU_FOUNDATION_PRICE_STANDARD );
 $calc_extra_product = (int) ( $pricing_canon['foundation_extra_product_price'] ?? 1000 );
 $marketcheck_price_value = (int) ( $pricing_canon['marketcheck_price'] ?? 99 );
 $calc_hosting = (int) ( $pricing_canon['foundation_hosting_monthly'] ?? 50 );
