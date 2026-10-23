@@ -153,7 +153,7 @@ $stations = [
 		'teaser' => 'Die Anfrage kommt an, ihre Quelle nicht.',
 		'bricht' => 'Die Anfrage landet als E-Mail in einem Sammelpostfach. Die Quelle fehlt, der Vertrieb tippt sie ab, und ob jemand zurückgerufen hat, steht nirgends.',
 		'baue'   => 'Die Übergabe der Anfrage mit Formularinhalt und verfügbarer Quelle oder Kampagne in Ihr CRM, wenn vereinbart. Vor dem Livegang verfolge ich eine Testanfrage bis dorthin.',
-		'beleg'  => [ 'text' => 'Im dokumentierten B2B-Fall reicht die Strecke bis zur Übergabe an den Vertrieb.', 'url' => '#arbeiten', 'label' => 'Zum Fall', 'hook' => 'home_station_fall' ],
+		'beleg'  => [ 'text' => 'Im dokumentierten B2B-Fall reicht die Strecke bis ins CRM und von dort zurück an die Werbekonten.', 'url' => '#arbeiten', 'label' => 'Zum Fall', 'hook' => 'home_station_fall' ],
 	],
 	[
 		'slug'   => 'anfrage',

@@ -908,9 +908,9 @@ function nexus_get_checkfox_faq_items() {
  * Shared between the page template and centralized JSON-LD output, so the
  * visible answers and the FAQPage node can never drift apart.
  *
- * Prices stay out of these answers on purpose: scope is what the Marktcheck
- * establishes, and every figure that belongs to a customer promise lives in
- * blocksy-child/inc/canon/ instead of in page copy.
+ * Every figure comes from blocksy-child/inc/canon/: case metrics from the E3
+ * canon, the Anfragestrecke price from hu_anfragestrecke_price() (since
+ * 2026-10-23 the case is proof for that product, not only for the Marktcheck).
  *
  * @return array<int, array{question: string, answer: string}>
  */
@@ -933,7 +933,9 @@ function nexus_get_e3_case_faq_items() {
 		],
 		[
 			'question' => 'Was kostet der Aufbau eines eigenen Anfragesystems?',
-			'answer'   => 'Das hängt davon ab, was bereits steht. Ein Betrieb mit sauberem CRM und funktionierender Website braucht etwas anderes als einer, der bei Tracking und Anfragestrecke bei null anfängt. Genau diese Einordnung ist der Zweck des Marktchecks: erst der Befund, dann der Umfang, dann ein Preis. Eine Zahl vor der Diagnose wäre geraten.',
+			'answer'   => function_exists( 'hu_anfragestrecke_price' )
+				? sprintf( 'Die Strecke aus diesem Fall gibt es heute als Festpreis: Landingpage, mehrstufiges Formular, Conversion-Tracking und Benachrichtigung für %1$s netto, mit CRM-Anbindung und Rückmeldung an Google Ads für %2$s netto. Werbebudget kommt dazu und läuft über Ihre eigenen Konten. Für Solar- und Wärmepumpenbetriebe gibt es zusätzlich den kostenlosen Marktcheck.', hu_anfragestrecke_price(), hu_anfragestrecke_price( true ) )
+				: 'Das hängt davon ab, was bereits steht. Ein Betrieb mit sauberem CRM und funktionierender Website braucht etwas anderes als einer, der bei Tracking und Anfragestrecke bei null anfängt.',
 		],
 		[
 			'question' => 'Was muss der Betrieb selbst leisten?',

@@ -504,13 +504,18 @@ function hu_enqueue_assets() {
 	}
 
 	// ── F1b) Fallstudie (page-case-study-solar.php) ─────────────────────────
-	// Das Template haengt e3-case-v2.css selbst an (Deps: system.css). Der
-	// frueher hier geladene energy-systems.css traf auf dieser Route zwei
-	// Regeln (Reveal) und ist entfallen; das Reveal liegt in e3-case-v2.css.
-	// Der Slug website-fuer-solar-und-waermepumpen-anbieter hat kein Template
-	// im Theme und behaelt Legacy-Provider, Sticky-Leiste und Hero-Skript.
+	// Das Template haengt e3-case-v2.css selbst an (Deps: system.css). Seit
+	// 2026-10-23 gibt es auf der Fallstudie kein Reveal pro Abschnitt mehr;
+	// case-study-motion.js traegt genau drei Bewegungen (Strecke, Balken,
+	// Zaehler). Der Slug website-fuer-solar-und-waermepumpen-anbieter hat kein
+	// Template im Theme und behaelt Legacy-Provider, Sticky-Leiste und Hero-Skript.
+	if ( $is_case_study_route ) {
+		hu_enqueue_js( 'hu-case-study-motion-js', 'case-study-motion.js', [] );
+	}
 	if ( is_page( 'website-fuer-solar-und-waermepumpen-anbieter' ) || $is_case_study_route ) {
-		hu_enqueue_js( 'nexus-solar-hero-js', 'solar-hero.js', [ 'nexus-core-js' ] );
+		if ( ! $is_case_study_route ) {
+			hu_enqueue_js( 'nexus-solar-hero-js', 'solar-hero.js', [ 'nexus-core-js' ] );
+		}
 
 		// Sticky-CTA-Bar: die Case Study hatte bis 2026-08 keinen einzigen CTA
 		// oberhalb des Seitenendes. Gleiche Komponente wie auf den Intercept-Routen.
