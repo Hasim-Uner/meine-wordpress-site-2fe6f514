@@ -6,8 +6,8 @@
    Fragen in voller Breite.
 
    Farbe, Radius, Schrift, Abstand und Bewegung kommen aus system.css. Das
-   Geraet legt die --geraet-* Tokens lokal auf die Grund-Tokens; hier steht
-   kein Farbwert.
+   Geraet traegt .tafel.tafel--graphit (Token-Umbelegung in system.css); hier
+   steht kein Farbwert und keine Token-Definition.
 
    Bewegung (case-study-motion.js): Zahl, Skala, Stationen, Signalpunkt und
    Rueckkopplung folgen dem Kapitel in der Bildmitte. Ohne JS und bei
@@ -97,15 +97,6 @@
 
 /* ── Messgeraet ───────────────────────────────────────────────── */
 .fs-geraet {
-  --papier: var(--geraet-papier);
-  --zone: var(--geraet-zone);
-  --zone2: var(--geraet-zone2);
-  --tinte: var(--geraet-tinte);
-  --grau: var(--geraet-grau);
-  --matt: var(--geraet-matt);
-  --haar: var(--geraet-haar);
-  --stempel: var(--geraet-stempel);
-
   position: sticky;
   top: calc(var(--leiste-h) + var(--s2));
   align-self: start;

@@ -162,6 +162,19 @@ body.nx-custom-header-active {
   padding: clamp(1.4rem, 3.5vw, 2.4rem);
 }
 
+/* Graphit-Tafel: dieselbe Rolle wie .tafel, neutral statt warm. Traegt das
+   Messgeraet der Fallstudie; die Werte stehen als --geraet-* in :root. */
+.tafel--graphit {
+  --papier: var(--geraet-papier);
+  --zone: var(--geraet-zone);
+  --zone2: var(--geraet-zone2);
+  --tinte: var(--geraet-tinte);
+  --grau: var(--geraet-grau);
+  --matt: var(--geraet-matt);
+  --haar: var(--geraet-haar);
+  --stempel: var(--geraet-stempel);
+}
+
 /* ══ Silbentrennung in Ueberschriften ═════════════════════════
    Deutsche Komposita sind laenger als die Zeile grosser Ueberschriften
    ("Softwareentwicklung" bei 5rem in 12ch). Ohne Silbentrennung bricht

@@ -147,7 +147,7 @@ get_header();
 <div class="site-main">
 	<article class="e3-case-v2 fs" <?php echo $tracking_attrs; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?>>
 		<div class="fs-lauf">
-			<aside class="fs-geraet" id="fs-geraet" aria-label="Messgerät: Werbekosten pro Anfrage im Verlauf des Falls" data-ziel="1" data-schleife="1" data-ende="0">
+			<aside class="tafel tafel--graphit fs-geraet" id="fs-geraet" aria-label="Messgerät: Werbekosten pro Anfrage im Verlauf des Falls" data-ziel="1" data-schleife="1" data-ende="0">
 				<p class="fs-label">Messprotokoll · Werbekosten pro Anfrage</p>
 				<div class="fs-anzeige">
 					<p class="fs-wert"><span class="fs-wert__zahl" data-geraet-zahl><?php echo esc_html( (string) $meter_after ); ?></span><span class="fs-wert__einheit" data-geraet-einheit>€</span></p>
