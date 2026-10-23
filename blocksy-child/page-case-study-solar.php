@@ -46,7 +46,7 @@ $e3_sst_effect   = $e3( 'sst_effect', 'display', 'über 40 %' );
 $e3_crm_share    = $e3( 'crm_capture_share', 'display', '95 %' );
 $e3_reduction    = (string) HU_E3_CPL_REDUCTION_PERCENT;
 $e3_reached      = isset( $e3_canon['cpl_reached_label'] ) ? (string) $e3_canon['cpl_reached_label'] : 'ab Monat 3';
-$e3_cpl_share    = HU_E3_CPL_BEFORE > 0 ? round( HU_E3_CPL_AFTER / HU_E3_CPL_BEFORE, 4 ) : 0;
+$e3_cpl_share    = round( HU_E3_CPL_AFTER / HU_E3_CPL_BEFORE, 4 );
 
 // Seit 2026-10-23 Kompetenzbeleg fuer alle Wege: Hauptaktion ist die
 // Projektanfrage mit Fokus Anfragestrecke, weil der Fall genau dieses Produkt
