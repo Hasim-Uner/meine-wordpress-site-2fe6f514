@@ -607,7 +607,7 @@ function hu_get_wayfinding_context() {
 	if ( is_page( 'hasim-uener' ) || is_page( 'uber-mich' ) || is_page_template( 'page-hasim-uener.php' ) ) {
 		return [
 			'key'        => 'about',
-			'label'      => 'Über Haşim',
+			'label'      => 'Über mich',
 			'breadcrumb' => true,
 			'toc_mode'   => 'existing',
 			'next'       => [], // Der bestehende About-Abschluss führt bereits zu Projekt und White-Label.

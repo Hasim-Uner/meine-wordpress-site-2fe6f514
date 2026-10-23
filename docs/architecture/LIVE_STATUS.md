@@ -683,7 +683,10 @@ Projektabschluss und ruhiger Agentur-Zweitweg, zentrale Metadaten und
   `inc/canon/e3-proof-canon.php`, Referenzen aus
   `inc/canon/reference-canon.php`.
 - **`/hasim-uener/`** (`page-hasim-uener.php`): Personenseite mit
-  Person-/ProfilePage-Bezug; `/uber-mich/` leitet per 301 hierher.
+  Person-/ProfilePage-Bezug; `/uber-mich/` leitet per 301 hierher. Seit
+  2026-10-23 vier Abschnitte (Person, Perspektive, Arbeitsweise,
+  Zusammenarbeit), Title „Über mich: Haşim Üner | WordPress-Entwickler“,
+  sichtbarer Breadcrumb „Über mich“.
 - **Blog:** `/blog/` (`home.php`) und vier Dossiers unter `/category/`:
   `leadgenerierung`, `wordpress-performance`, `tracking`, `cro`. Alte
   Kategorien leiten per 301 auf das passende Dossier. Beiträge rendern über
