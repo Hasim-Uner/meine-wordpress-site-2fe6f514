@@ -405,8 +405,11 @@ function hu_funnel_context() {
 		return [ 'mode' => 'voll', 'door' => 'aufgabe', 'route' => 'whitelabel' ];
 	}
 
+	// Seit 2026-10-23 Kompetenzbeleg fuer alle Wege, nicht mehr Eingang in den
+	// Solar-Trichter: Kopf fuehrt zur Projektanfrage. Der Marktcheck bleibt als
+	// leiser Link im Abschluss der Seite.
 	if ( is_page( [ 'case-study-solar-leadgenerierung', 'e3-new-energy' ] ) || is_page_template( 'page-case-study-solar.php' ) ) {
-		return [ 'mode' => 'voll', 'door' => 'marktcheck', 'route' => 'energy' ];
+		return [ 'mode' => 'voll', 'door' => 'projekt', 'route' => '' ];
 	}
 
 	if ( function_exists( 'hu_get_solar_cluster_link_map' ) && is_page( array_keys( hu_get_solar_cluster_link_map() ) ) ) {

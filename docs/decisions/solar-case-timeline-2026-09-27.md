@@ -1,5 +1,7 @@
 # Referenzfall: Zeitverlauf berichtigen
 
+> Abgelöst durch [solar-case-timeline-2026-10-23.md](solar-case-timeline-2026-10-23.md).
+
 Stand: 27.09.2026. Grundlage ist die ausdrückliche Schilderung und Korrektur
 von Haşim Üner in der gemeinsamen Prüfung, kein neu ausgewerteter Ads-Export.
 
