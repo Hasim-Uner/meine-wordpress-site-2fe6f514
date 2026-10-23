@@ -155,6 +155,13 @@ function hu_e3_canon() {
 				'display'    => '120 → 70–80 €',
 				'label'      => 'Kosten pro Anfrage zum Kampagnenstart und nach zwei bis drei Wochen Testen',
 			],
+			// Betreiberklaerung vom 23.10.2026: Stand nach zwei bis drei Wochen Testen.
+			'cpl_tested'       => [
+				'value'      => 70,
+				'value_high' => 80,
+				'display'    => '70–80 €',
+				'label'      => 'Kosten pro Anfrage nach zwei bis drei Wochen Testen im zweiten Projektmonat',
+			],
 			// Betreiberklaerung vom 23.10.2026. Einzelne Monate ab Projektmonat 3.
 			'cpl_range_late'   => [
 				'display' => '15–30 €',

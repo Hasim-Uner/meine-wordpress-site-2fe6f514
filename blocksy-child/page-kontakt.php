@@ -190,6 +190,17 @@ if ( isset( $_GET['url'] ) ) { // phpcs:ignore WordPress.Security.NonceVerificat
 	}
 	$prefill_url = '' === $raw_url ? '' : esc_url_raw( $raw_url, [ 'http', 'https' ] );
 }
+
+// Ausgangslage aus Schritt 1 der Fallstudie (?ausgangslage=…). Nur bekannte
+// Schluessel; der Text kommt aus hu_contact_situation_options().
+$prefill_message = '';
+if ( isset( $_GET['ausgangslage'] ) && function_exists( 'hu_contact_situation_options' ) ) { // phpcs:ignore WordPress.Security.NonceVerification.Recommended -- read-only prefill.
+	$situation_key     = sanitize_key( wp_unslash( $_GET['ausgangslage'] ) ); // phpcs:ignore WordPress.Security.NonceVerification.Recommended
+	$situation_options = hu_contact_situation_options();
+	if ( isset( $situation_options[ $situation_key ] ) ) {
+		$prefill_message = 'Ausgangslage: ' . $situation_options[ $situation_key ] . "\n";
+	}
+}
 ?>
 
 <div class="<?php echo esc_attr( $page_classes ); ?>" data-track-section="contact_page">
@@ -343,7 +354,7 @@ if ( isset( $_GET['url'] ) ) { // phpcs:ignore WordPress.Security.NonceVerificat
 						<div class="contact-field" data-contact-field="message">
 							<label for="contact-message" data-contact-message-label><?php echo esc_html( $message_label ); ?></label>
 							<p id="contact-message-help" class="contact-field__help" data-contact-message-help><?php echo esc_html( $message_help ); ?></p>
-							<textarea id="contact-message" name="message" rows="6" required minlength="<?php echo esc_attr( (string) $message_minlength ); ?>" placeholder="<?php echo esc_attr( $message_placeholder ); ?>" aria-describedby="contact-message-help contact-message-error" data-contact-message></textarea>
+							<textarea id="contact-message" name="message" rows="6" required minlength="<?php echo esc_attr( (string) $message_minlength ); ?>" placeholder="<?php echo esc_attr( $message_placeholder ); ?>" aria-describedby="contact-message-help contact-message-error" data-contact-message><?php echo esc_textarea( $prefill_message ); ?></textarea>
 							<p class="contact-field__error is-hidden" id="contact-message-error" aria-live="polite"></p>
 						</div>
 

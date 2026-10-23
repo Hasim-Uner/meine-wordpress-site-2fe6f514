@@ -947,7 +947,7 @@ function nexus_get_e3_case_faq_items() {
 		],
 		[
 			'question' => 'Ersetzt das den Portal-Einkauf sofort?',
-			'answer'   => 'Nein, und das sollte es auch nicht. In diesem Mandat lief der Portal-Einkauf weiter, bis die eigene Strecke messbar lieferte, und wurde erst danach heruntergefahren. Ein harter Schnitt vor dem ersten belastbaren Monat setzt den Vertrieb ohne Not auf Diät.',
+			'answer'   => 'Nein, nicht sofort. Portal-Einkauf und eigene Strecke liefen parallel. Heruntergefahren wurde der Einkauf erst, als die eigene Strecke messbar lieferte. So hatte der Vertrieb in der Anlaufphase keine Lücke.',
 		],
 		[
 			'question' => 'Wem gehören die Anfragen und die Daten?',

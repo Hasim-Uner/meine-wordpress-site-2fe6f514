@@ -43,6 +43,7 @@ function esc_url_raw( $value ) { return trim( $value ); }
 function wp_http_validate_url( $value ) { return (bool) filter_var( $value, FILTER_VALIDATE_URL ); }
 function wp_parse_url( $value, $component = -1 ) { return parse_url( $value, $component ); }
 function esc_html( $value ) { return htmlspecialchars( (string) $value, ENT_QUOTES, 'UTF-8' ); }
+function esc_textarea( $value ) { return htmlspecialchars( (string) $value, ENT_QUOTES, 'UTF-8' ); }
 function esc_attr( $value ) { return esc_html( $value ); }
 function esc_url( $value ) { return esc_html( $value ); }
 function wp_kses( $value, $allowed ) { return $value; }
