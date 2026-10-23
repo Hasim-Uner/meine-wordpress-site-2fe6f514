@@ -380,7 +380,7 @@ get_header();
 					<h2 class="fs-h2-leise" id="fs-fragen">Was häufig nachgefragt wird.</h2>
 					<div class="fs-faq">
 						<?php foreach ( $faq_items as $faq_item ) : ?>
-							<details>
+							<details name="fs-faq">
 								<summary><?php echo esc_html( $faq_item['question'] ); ?></summary>
 								<p><?php echo esc_html( $faq_item['answer'] ); ?></p>
 							</details>

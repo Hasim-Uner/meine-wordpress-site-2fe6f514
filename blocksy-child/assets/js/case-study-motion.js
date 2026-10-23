@@ -12,6 +12,24 @@
 (function () {
 	'use strict';
 
+	// FAQ: nur eine Antwort offen. Browser mit <details name> erledigen das
+	// selbst; fuer aeltere schliesst dieses Stueck die uebrigen.
+	var faq = document.querySelectorAll('.fs-faq details');
+	if (faq.length && !('name' in HTMLDetailsElement.prototype)) {
+		Array.prototype.forEach.call(faq, function (d) {
+			d.addEventListener('toggle', function () {
+				if (!d.open) {
+					return;
+				}
+				Array.prototype.forEach.call(faq, function (o) {
+					if (o !== d) {
+						o.open = false;
+					}
+				});
+			});
+		});
+	}
+
 	var reduce = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 	if (reduce || !('IntersectionObserver' in window)) {
 		return;

@@ -153,8 +153,9 @@
 .fs-kennz > div + div { padding-left: var(--s1); border-left: 1px solid var(--haar); }
 .fs-kennz strong {
   display: block;
+  white-space: nowrap;
   font-family: var(--serif-display);
-  font-size: clamp(1.5rem, 1.1rem + 1.4vw, 2.1rem);
+  font-size: clamp(1.35rem, 1rem + 1.2vw, 1.9rem);
   letter-spacing: -.03em;
   line-height: 1;
   font-variant-numeric: tabular-nums;
@@ -310,6 +311,14 @@
   border-radius: var(--r1);
   transition: transform var(--t-norm) var(--ease-aus);
 }
+/* Blocksy setzt a:hover/a:active global auf die Theme-Linkfarbe (fast
+   Weiss). Auf hellem Grund verschwand die Schrift beim Klicken. Jeder Link
+   dieser Route nennt seine Farbe deshalb fuer alle Zustaende selbst. */
+.fs .fs-knopf, .fs .fs-knopf:visited, .fs .fs-knopf:hover, .fs .fs-knopf:focus, .fs .fs-knopf:active { color: var(--papier); }
+.fs .fs-link, .fs .fs-link:visited, .fs .fs-link:hover, .fs .fs-link:focus, .fs .fs-link:active,
+.fs .fs-verweise a, .fs .fs-verweise a:visited, .fs .fs-verweise a:hover, .fs .fs-verweise a:focus, .fs .fs-verweise a:active { color: var(--tinte); }
+.fs .fs-link--leise, .fs .fs-link--leise:visited, .fs .fs-link--leise:hover, .fs .fs-link--leise:focus, .fs .fs-link--leise:active { color: var(--grau); }
+.fs .fs-link:hover { text-decoration-thickness: 2px; }
 .fs-knopf:hover { transform: translateY(-1px); }
 .fs-knopf:active { transform: translateY(0); }
 .fs-link { color: var(--tinte); font-size: .92rem; text-underline-offset: .2em; }
