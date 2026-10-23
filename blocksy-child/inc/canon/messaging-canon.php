@@ -612,3 +612,19 @@ function hu_install_tracking_schema_alignment() {
 	add_action( 'wp_head', 'hu_output_tracking_aligned_schema', 10 );
 }
 add_action( 'wp_loaded', 'hu_install_tracking_schema_alignment', 20 );
+
+/**
+ * Ausgangslagen aus Schritt 1 der Fallstudie (?ausgangslage=…).
+ *
+ * Die Fallstudie fragt dieselbe Frage wie ihr eigenes Formular; die Antwort
+ * belegt auf /kontakt/ das Nachrichtenfeld vor. Nur diese Schluessel gelten.
+ *
+ * @return array<string, string>
+ */
+function hu_contact_situation_options() {
+	return [
+		'zu-wenige' => 'Es kommen zu wenige Anfragen.',
+		'falsche'   => 'Es kommen Anfragen, aber die falschen.',
+		'herkunft'  => 'Ich weiß nicht, woher Anfragen kommen.',
+	];
+}

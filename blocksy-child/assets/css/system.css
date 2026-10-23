@@ -54,6 +54,18 @@
   --haar: #dedad3;
   --strich: #171412;
 
+  /* ── Messgeraet (Fallstudie). Graphit statt der warmen Tafel:
+     neutral, damit der Stempel als einziges Signal leuchtet. Wird in
+     e3-case-v2.css lokal auf die Grund-Tokens gelegt. */
+  --geraet-papier: #121416;
+  --geraet-zone: #1b1e21;
+  --geraet-zone2: #262a2e;
+  --geraet-tinte: #f1f2f0;
+  --geraet-grau: #a3a8ac;
+  --geraet-matt: #868c91;
+  --geraet-haar: #2f3438;
+  --geraet-stempel: #ef8b4d;
+
   /* ── Schrift ───────────────────────────────────────────────────
      Die Hausschrift der Domain, nicht die Serif der Vorlage. Der
      Tokenname benennt die Rolle (Textschrift), nicht die Gattung —
