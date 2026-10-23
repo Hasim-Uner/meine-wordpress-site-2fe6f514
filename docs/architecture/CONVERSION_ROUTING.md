@@ -237,21 +237,18 @@ Kein Marktcheck: Der Beitrag steht im Dossier `wordpress-performance`.
 
 ## Über Haşim: persönliche Methodik und Belege
 
-`/hasim-uener/` erklärt Person und Arbeitsweise; Leistungen und Preisrahmen
-bleiben auf der Homepage. Die Seite führt durch persönlichen Hintergrund,
-Engpass-Priorisierung, Defekt/Gestaltung/Hypothese, unterschiedliche
-Besucherbedürfnisse, Gestaltung und Übergabe. Ein kanonischer Solar-Fall und
-eine öffentliche WordPress-Arbeit belegen den Ansatz mit getrenntem Kontext.
+`/hasim-uener/` erklärt zuerst die Person, dann Perspektive, Arbeitsweise und
+Zusammenarbeit (vier Abschnitte, Stand 2026-10-23); Leistungen und Preisrahmen
+bleiben auf der Homepage. Der Solar-Fall steht dort als eigener Beitrag ohne
+Zahl; die Zahlen stehen eingeordnet in der Fallstudie.
 
 - Hero: `about_read_method` springt zu `#arbeitsweise` (Navigation).
-- Besucherbeispiele: direkte Anbieterwahl → `/#angebote`
-  (`link_about_freelancer`), Lösungsprüfung → `/case-study-solar-leadgenerierung/`
-  (`about_view_results`, bis 2026-09-25 `/ergebnisse/`), Orientierung → `/blog/` (`about_read_expertise`).
-- Abschluss: `cta_about_project` → kanonische Projektanfrage;
-  `link_about_whitelabel` → eigene White-Label-Seite.
-- `about_station_solar_case` bleibt als Aktion erhalten; der Beleg steht jetzt
-  im Abschnitt `about_method`. Neue Beleg-Links: `about_reference_open` und
-  `about_code_history`. Bestehende Profil-/Mail-Actions bleiben erhalten.
+- Beleg in `about_method`: `about_station_solar_case` → Fallstudie,
+  `about_reference_open` → `/referenzen/`. Übergabe: `about_code_history`.
+- Abschluss: `cta_about_project` → kanonische Projektanfrage (einziger
+  Haupt-CTA); `link_about_whitelabel` als Textzeile → White-Label-Seite.
+- Entfallen 2026-10-23: `link_about_freelancer`, `about_view_results`
+  (Menü und Footer tragen beide Wege). Profil-/Mail-Actions bleiben erhalten.
 - Native `<details>` erläutern Besucherbedürfnisse ohne zusätzliche
   JavaScript-Laufzeit. Profil, Kontaktformular, Consent und CRM bleiben in ihren
   bisherigen Zuständigkeiten. Kein Solar-Marktcheck als allgemeiner Seiten-CTA.

@@ -223,7 +223,7 @@ function hu_get_forced_singular_seo_map() {
 				'description' => hu_get_contact_offer_description(),
 			],
 			'hasim-uener' => [
-				'title'       => 'Über Haşim Üner | Arbeitsweise für B2B-Websites',
+				'title'       => 'Über mich: Haşim Üner | WordPress-Entwickler',
 				'description' => 'Ihre Website führt Gespräche, bei denen Sie nicht dabei sind. Wie Haşim Üner Websites baut, die gut kommunizieren und zeigen, was aus Anfragen wird.',
 			],
 			// Seiten sind noindex, sitemap-excluded oder geschuetzte 301-Einstiege,

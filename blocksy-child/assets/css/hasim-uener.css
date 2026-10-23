@@ -1478,3 +1478,25 @@
     transform: none;
   }
 }
+
+/* ══ Fassung 4 Abschnitte (Oktober 2026) ══════════════════════════
+   Abschluss ohne Agentur-Spalte, Beleg ohne Zahlenspalte: beide Raster
+   werden einspaltig. Der Agentur-Weg steht als Textzeile in .about-exits. */
+
+.hu-about .about-close {
+  grid-template-columns: minmax(0, 1fr);
+}
+
+.hu-about .about-proof {
+  grid-template-columns: minmax(0, 1fr);
+  align-items: start;
+}
+
+.hu-about .about-proof-copy .mono {
+  margin-right: var(--s1);
+}
+
+.hu-about .about-origin-copy p strong,
+.hu-about #gestaltung strong {
+  color: var(--tinte);
+}

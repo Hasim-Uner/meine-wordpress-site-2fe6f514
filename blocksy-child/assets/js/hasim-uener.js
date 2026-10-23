@@ -32,12 +32,9 @@
     }
 
     const stepId = step.id;
-    const groupedStory = ['geschichte', 'erstes-gespraech', 'zuhoeren'].includes(stepId)
-      ? 'geschichte'
-      : stepId;
 
     indexLinks.forEach((link) => {
-      const isCurrent = link.getAttribute('href') === `#${groupedStory}`;
+      const isCurrent = link.getAttribute('href') === `#${stepId}`;
       link.classList.toggle('is-current', isCurrent);
 
       if (isCurrent) {
