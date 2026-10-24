@@ -523,7 +523,7 @@ function hu_send_analysis_lead_confirmation( array $payload ) {
 			[
 				'preheader' => 'Ihre Analyse ist eingegangen — nächster Schritt: Termin buchen.',
 				'eyebrow'   => 'System-Diagnose',
-				'headline'  => 'Danke, ' . $payload['name'] . '.',
+				'headline'  => 'Danke für Ihre Antworten.',
 				'intro'     => 'Ihre 20 Antworten sind eingegangen. Hier ist das Ergebnis und der direkte Weg in ein 30-Minuten-Gespräch.',
 				'content'   => $content,
 				'footer'    => 'Viele Grüße, Haşim Üner',

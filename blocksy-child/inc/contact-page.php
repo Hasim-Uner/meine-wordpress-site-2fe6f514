@@ -1524,22 +1524,8 @@ function nexus_send_contact_request_confirmation( $payload ) {
 		);
 	}
 
-	if ( '' !== $payload['website_url'] ) {
-		$meta_rows .= sprintf(
-			'<br><strong style="color:#f7f3ee;">Website:</strong> <a href="%1$s" style="color:#f7f3ee;">%2$s</a>',
-			esc_url( $payload['website_url'] ),
-			esc_html( $payload['website_url'] )
-		);
-	}
-
-	if ( '' !== $payload['linkedin_url'] ) {
-		$meta_rows .= sprintf(
-			'<br><strong style="color:#f7f3ee;">LinkedIn:</strong> <a href="%1$s" style="color:#f7f3ee;">%2$s</a>',
-			esc_url( $payload['linkedin_url'] ),
-			esc_html( $payload['linkedin_url'] )
-		);
-	}
-
+	// Freitext (Name, Nachricht, URLs) bleibt bewusst draussen: Die Bestaetigung
+	// geht an eine ungepruefte Adresse und darf kein Relay fuer fremde Inhalte sein.
 	$content = sprintf(
 		'<table role="presentation" width="100%%" cellspacing="0" cellpadding="0" border="0" style="margin:0 0 18px 0; border-collapse:separate; border-spacing:0 10px;">
 			<tr>
@@ -1556,16 +1542,13 @@ function nexus_send_contact_request_confirmation( $payload ) {
 				<td style="padding:14px 16px; border:1px solid rgba(255,255,255,0.08); border-radius:18px; background:rgba(255,255,255,0.03); font-family:Helvetica, Arial, sans-serif;">
 					<div style="font-size:11px; letter-spacing:0.08em; text-transform:uppercase; color:#9ea8b2; margin-bottom:8px;">Ihre Angaben</div>
 					<div style="font-size:14px; line-height:1.8; color:#c5ced7;">
-						%2$s<br>
-						<strong style="color:#f7f3ee;">Nachricht:</strong> %3$s
+						%2$s
 					</div>
 				</td>
 			</tr>
 		</table>',
 		esc_html( nexus_get_contact_confirmation_step_three( $payload['request_type'] ) ),
-		$meta_rows,
-		// Nur bei der Ersteinschaetzung darf die Nachricht leer sein.
-		'' !== $payload['message'] ? esc_html( wp_trim_words( $payload['message'], 18, '...' ) ) : '–'
+		$meta_rows
 	);
 
 	$html = nexus_get_contact_email_shell(
@@ -1573,7 +1556,7 @@ function nexus_send_contact_request_confirmation( $payload ) {
 			'preheader' => 'Ihre Anfrage ist eingegangen.',
 			'eyebrow'   => $payload['request_type_label'],
 			'headline'  => 'Ihre Anfrage ist eingegangen.',
-			'intro'     => ( ! isset( $payload['name_provided'] ) || $payload['name_provided'] ? 'Danke, ' . $payload['name'] . '.' : 'Danke.' ) . ' Ich prüfe Ihre Angaben persönlich und melde mich zeitnah zurück.',
+			'intro'     => 'Danke. Ich prüfe Ihre Angaben persönlich und melde mich zeitnah zurück.',
 			'content'   => $content,
 			'footer'    => 'Viele Grüße, Haşim Üner',
 		]

@@ -487,6 +487,9 @@ function hu_send_whitelabel_request_confirmation( $payload ) {
 
 	$next_step = hu_whitelabel_request_cases()[ $payload['case'] ]['next'];
 
+	// Keine Eingaben zurueckspiegeln: Die Bestaetigung geht an eine ungepruefte
+	// Adresse und darf kein Relay fuer fremde Inhalte sein.
+
 	$content = sprintf(
 		'<table role="presentation" width="100%%" cellspacing="0" cellpadding="0" border="0" style="margin:0 0 18px 0; border-collapse:separate; border-spacing:0 10px;">
 			<tr>
@@ -499,20 +502,9 @@ function hu_send_whitelabel_request_confirmation( $payload ) {
 					</div>
 				</td>
 			</tr>
-			<tr>
-				<td style="padding:14px 16px; border:1px solid rgba(255,255,255,0.08); border-radius:18px; background:rgba(255,255,255,0.03); font-family:Helvetica, Arial, sans-serif;">
-					<div style="font-size:11px; letter-spacing:0.08em; text-transform:uppercase; color:#9ea8b2; margin-bottom:8px;">Eure Angaben</div>
-					<div style="font-size:14px; line-height:1.8; color:#c5ced7;">
-						%3$s<br>
-						<strong style="color:#f7f3ee;">Aufgabe:</strong> %4$s
-					</div>
-				</td>
-			</tr>
 		</table>',
 		esc_html( $response_promise ),
-		esc_html( $next_step ),
-		hu_whitelabel_request_detail_rows( $payload ),
-		esc_html( wp_trim_words( $payload['task'], 24, '…' ) )
+		esc_html( $next_step )
 	);
 
 	$html = hu_whitelabel_request_mail_shell(

@@ -150,7 +150,24 @@ run_case( 'landingpage project reaches CRM, activity and both mails', static fun
 	check( $p['message'] === get_post_meta( 1, '_nexus_contact_message' ) && str_contains( nexus_get_contact_request_activity_summary( $v ), $v['focus_label'] ), 'Briefing and focus retained for follow-up' );
 	check( 2 === count( $GLOBALS['intake_test']['mails'] ), 'Internal notification and confirmation built' );
 	foreach ( $GLOBALS['intake_test']['mails'] as $mail ) {
-		check( str_contains( $mail['body'], $v['focus_label'] ) && str_contains( $mail['body'], $p['message'] ), 'Both mails carry landingpage label and briefing' );
+		check( str_contains( $mail['body'], $v['focus_label'] ), 'Both mails carry the landingpage label' );
+	}
+	$with_briefing = array_filter( $GLOBALS['intake_test']['mails'], static fn( $mail ) => str_contains( $mail['body'], $p['message'] ) );
+	check( 1 === count( $with_briefing ), 'Only the internal mail carries the briefing; the confirmation echoes no free text' );
+} );
+run_case( 'confirmations echo no submitted free text (relay guard)', static function () use ( $contact, $whitelabel ) {
+	$marker = 'RELAYMARKER';
+	foreach ( [
+		'contact'    => array_merge( $contact, [ 'name' => 'Fixture ' . $marker, 'message' => 'Bitte prüfen ' . $marker . ' danke.' ] ),
+		'whitelabel' => array_merge( $whitelabel, [ 'task' => 'Bitte prüfen ' . $marker . ' danke.', 'timeframe' => 'nächste Woche ' . $marker ] ),
+	] as $kind => $payload ) {
+		intake_reset();
+		$r = call_intake( $kind, $payload );
+		check( 201 === $r->status && 2 === count( $GLOBALS['intake_test']['mails'] ), "$kind accepted with both mails" );
+		$echoing = array_filter( $GLOBALS['intake_test']['mails'], static fn( $mail ) => str_contains( $mail['body'], $marker ) );
+		check( 1 === count( $echoing ), "$kind: free text appears only in the internal mail" );
+		$confirmation = array_values( array_filter( $GLOBALS['intake_test']['mails'], static fn( $mail ) => 'fixture@example.test' === $mail['to'] ) );
+		check( 1 === count( $confirmation ) && ! str_contains( $confirmation[0]['body'], $marker ), "$kind: confirmation to the submitted address carries no free text" );
 	}
 } );
 foreach ( [ 'audit', 'analysis', 'implementation', 'ongoing', 'general', 'client' ] as $request_type ) {
@@ -167,8 +184,9 @@ run_case( 'takeover product reaches CRM, activity and both mails', static functi
     check( str_contains( nexus_get_contact_request_activity_summary( nexus_validate_contact_request_payload( $p ) ), 'WordPress-Übernahme-Check' ), 'Activity retains the takeover product' );
     check( 2 === count( $GLOBALS['intake_test']['mails'] ), 'Internal notification and customer confirmation built' );
     foreach ( $GLOBALS['intake_test']['mails'] as $mail ) {
-        check( str_contains( $mail['body'], 'WordPress-Übernahme-Check' ) && str_contains( $mail['body'], $p['message'] ), 'Mail carries the takeover focus and briefing' );
+        check( str_contains( $mail['body'], 'WordPress-Übernahme-Check' ), 'Mail carries the takeover focus' );
     }
+    check( 1 === count( array_filter( $GLOBALS['intake_test']['mails'], static fn( $mail ) => str_contains( $mail['body'], $p['message'] ) ) ), 'Only the internal mail carries the briefing' );
 } );
 foreach ( [ 'audit', 'analysis', 'implementation', 'ongoing', 'general', 'client' ] as $request_type ) {
     run_case( "takeover rejects request type $request_type", static function () use ( $contact, $request_type ) {
