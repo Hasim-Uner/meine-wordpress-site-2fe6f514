@@ -186,7 +186,7 @@ get_header();
 				</div>
 			</div>
 			<aside class="marg">
-				<p class="note"><span class="label">Live auf dieser Website</span>Hier läuft derselbe Test jeden Morgen automatisch, öffentlich einsehbar.
+				<p class="note"><span class="label">Live auf dieser Website</span>Hier läuft dieselbe Prüfung jeden Morgen automatisch, öffentlich einsehbar.
 					<?php if ( '' !== $monitor_line ) : ?>
 						<b class="wartung-live" data-state="<?php echo esc_attr( $monitor_state ); ?>"><?php echo esc_html( $monitor_line ); ?></b>
 					<?php endif; ?>
@@ -215,7 +215,7 @@ get_header();
 					<div class="ausgang">
 						<a class="tun" href="<?php echo esc_url( $request_url ); ?>" data-track-action="maintenance_request_price" data-track-category="lead_gen" data-track-section="maintenance_price">Wartung anfragen <span aria-hidden="true">→</span></a>
 					</div>
-					<p class="wartung-hinweis">Keine Mindestlaufzeit. Bei Shops prüft der Test zusätzlich Warenkorb und Kasse.</p>
+					<p class="wartung-hinweis">Keine Mindestlaufzeit. Bei Shops prüft der Monatstest zusätzlich Warenkorb und Kasse.</p>
 				</div>
 				<div class="wartung-preis__rand">
 					<div>
