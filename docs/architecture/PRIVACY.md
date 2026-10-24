@@ -66,6 +66,14 @@ Zeitpunkt, Prüfergebnisse und Dauern (Optionen `hu_monitor_runs`, 90 Läufe, un
 `/anfrage-monitor/` zeigen Ampeln, Verlauf und die Tage seit der letzten echten
 Anfrage, keine Personendaten.
 
+Den Lauf führt ein geplanter GitHub-Actions-Workflow aus
+(`scripts/monitor/anfrage_monitor.py`). Der Runner liest im Postfach nur die
+Betreffzeilen von Mails, deren Betreff `MONITOR <Lauf-ID>` enthält, und das
+ausschließlich lesend (IMAP `EXAMINE`, `BODY.PEEK`): Er markiert nichts als
+gelesen, verschiebt und löscht nichts. Mail-Inhalte und Zugangsdaten gelangen
+nicht ins Log. Das IMAP-Passwort und das Monitor-Geheimnis liegen als
+GitHub-Secrets; der Job läuft nur auf `main`.
+
 ## Anfrage-Protokoll `anfrage_gesendet`
 
 `inc/inquiry-events.php` schreibt je erfolgreich verarbeiteter Anfrage eine

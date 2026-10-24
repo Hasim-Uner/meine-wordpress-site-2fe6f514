@@ -2,16 +2,17 @@
 /**
  * Anfrage-Monitor: prueft taeglich, ob Anfragen ueber diese Website ankommen.
  *
- * Ein externer Taktgeber (n8n auf Hetzner) sendet einmal am Tag eine echte
- * Testanfrage ueber das Kontaktformular im Browser, prueft das Postfach und
- * meldet das Ergebnis an `POST /nexus/v1/monitor/result`. Die Testanfrage
- * durchlaeuft den echten Weg (CRM, interne Mail, Protokoll, Bestaetigung),
- * traegt aber einen Marker:
+ * Ein geplanter GitHub-Actions-Lauf (scripts/monitor/anfrage_monitor.py)
+ * sendet einmal am Tag eine echte Testanfrage ueber das Kontaktformular im
+ * Browser, prueft das Postfach und meldet das Ergebnis an
+ * `POST /nexus/v1/monitor/result`. Die Testanfrage durchlaeuft den echten Weg
+ * (CRM, interne Mail, Protokoll, Bestaetigung), traegt aber einen Marker:
  *
  * - Der CRM-Kontakt wird archiviert und nie zur Verkaufschance.
  * - Das Protokoll schreibt das Ereignis `monitor_test` statt
  *   `anfrage_gesendet`; keine Summe zaehlt es mit.
- * - Der Betreff der internen Mail beginnt mit `[MONITOR <lauf>]`.
+ * - Der Betreff der internen Mail beginnt mit `[MONITOR <lauf>]`, der der
+ *   Bestaetigung an den Absender mit `[MONITOR <lauf> · Bestätigung]`.
  *
  * `GET /nexus/v1/monitor/status` und die Seite /anfrage-monitor/ zeigen drei
  * Ampeln: Anfragen kommen an, Seite ist aktuell, Stille (Tage seit der
