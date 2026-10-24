@@ -53,6 +53,9 @@ run_case( 'valid marker runs the real path and is marked everywhere', static fun
 	check( $r->data['monitor']['contactStored'] && $r->data['monitor']['notified'] && $r->data['monitor']['eventRecorded'], 'Real path reported' );
 	$internal = array_values( array_filter( $GLOBALS['intake_test']['mails'], static fn( $m ) => 'internal@example.test' === $m['to'] ) );
 	check( 0 === strpos( $internal[0]['subject'], '[MONITOR run-20261025] ' ), 'Internal mail subject carries the run' );
+	$confirmation = array_values( array_filter( $GLOBALS['intake_test']['mails'], static fn( $m ) => 'monitor@example.test' === $m['to'] ) );
+	check( 1 === count( $confirmation ), 'Confirmation mail went to the sender' );
+	check( 0 === strpos( $confirmation[0]['subject'], '[MONITOR run-20261025 · Bestätigung] ' ), 'Confirmation mail subject carries the run' );
 	check( 'monitor_test' === $GLOBALS['wpdb']->rows[0]['event'], 'Event is monitor_test, not anfrage_gesendet' );
 	$contact_id = $r->data['contactId'];
 	check( 'archived' === get_post_meta( $contact_id, '_nexus_contact_status' ), 'CRM contact archived' );
@@ -68,6 +71,9 @@ run_case( 'wrong token behaves exactly like a normal request', static function (
 	check( 'anfrage_gesendet' === $GLOBALS['wpdb']->rows[0]['event'], 'Counted as a real inquiry' );
 	$internal = array_values( array_filter( $GLOBALS['intake_test']['mails'], static fn( $m ) => 'internal@example.test' === $m['to'] ) );
 	check( false === strpos( $internal[0]['subject'], 'MONITOR' ), 'No monitor subject' );
+	foreach ( $GLOBALS['intake_test']['mails'] as $mail ) {
+		check( false === strpos( $mail['subject'], 'MONITOR' ), 'No mail subject contains MONITOR' );
+	}
 	check( 'new' === get_post_meta( $r->data['contactId'], '_nexus_contact_status' ), 'Normal CRM status' );
 } );
 
