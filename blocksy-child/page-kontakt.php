@@ -57,7 +57,7 @@ $public_focus_options = array_filter(
 // Bei Projektanfragen stehen die häufigsten Vorhaben oben; die Schlüssel
 // bleiben unverändert, nur die Reihenfolge der Auswahl ändert sich.
 if ( 'project' === $selected_type ) {
-	$project_focus_order  = [ 'website', 'landingpage', 'anfragestrecke', 'relaunch', 'takeover', 'implementation_scope', 'conversion', 'tracking', 'seo', 'performance', 'website_strategy', 'followup_scope' ];
+	$project_focus_order  = [ 'website', 'landingpage', 'anfragestrecke', 'relaunch', 'takeover', 'wartung', 'implementation_scope', 'conversion', 'tracking', 'seo', 'performance', 'website_strategy', 'followup_scope' ];
 	$public_focus_options = array_merge(
 		array_intersect_key( array_flip( $project_focus_order ), $public_focus_options ),
 		$public_focus_options
@@ -144,6 +144,11 @@ if ( 'website' === $selected_focus ) {
 	$form_title = 'Zwei kurze Schritte zum Übernahme-Check.';
 	$form_intro = 'Beschreiben Sie Ihre Website und den Anlass der Übernahme. Ihre Anfrage ist unverbindlich.';
 	$message_step_title = 'Welche Website soll übernommen werden?';
+} elseif ( 'wartung' === $selected_focus ) {
+	$hero_title = 'WordPress-Wartung mit Anfrage-Test.';
+	$form_title = 'Zwei kurze Schritte zur Wartungsanfrage.';
+	$form_intro = 'Nennen Sie Ihre Website und wer sie bisher betreut. Ihre Anfrage ist unverbindlich; zuerst kommt der Übernahme-Check.';
+	$message_step_title = 'Welche Website soll gewartet werden?';
 } elseif ( 'seo' === $selected_focus && 'project' === $selected_type ) {
 	$hero_title = 'Technisches SEO für Ihre WordPress-Website.';
 	$form_title = 'Zwei kurze Schritte zu Ihrer SEO-Projektanfrage.';

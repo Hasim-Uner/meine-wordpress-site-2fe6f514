@@ -48,6 +48,8 @@ function hu_pricing_canon() {
 		'seo_finding_price'               => HU_SEO_FINDING_PRICE,
 		// Als Satzbaustein, nicht als Stufen-Array: [hu_price] gibt nur Skalare aus.
 		'freelancer_retainer_display'     => hu_freelancer_retainer_display(),
+		'maintenance_price'               => HU_MAINTENANCE_PRICE,
+		'maintenance_shop_price'          => HU_MAINTENANCE_SHOP_PRICE,
 		'guarantee_scope'                 => 'Funktionsfähiges Anfragesystem, kein Anfrage-Volumen.',
 	];
 }
@@ -847,6 +849,78 @@ function hu_freelancer_retainer_display() {
 	);
 
 	return implode( ' oder ', $tiers ) . ' netto';
+}
+
+// ── WordPress-Wartung mit Anfrage-Test ───────────────────────────
+// Entscheidung 24.10.2026 (löst die Absagen vom 02.09. und 04.09. ab): Die
+// Route /wordpress-wartung/ bekommt ein eigenes Wartungsangebot, getrennt vom
+// Weiterentwicklungs-Kontingent oben. Unterschied zu üblichen Verträgen:
+// jeden Monat eine echte Testanfrage mit Zustell- und Messprüfung.
+//
+// Die Reaktion bei einem Ausfall ist eine EIGENE Zusage und nicht die
+// Antwortzeit auf eine Anfrage (hu_response_promise() in messaging-canon.php).
+// Sie gilt nur in der Werktagsspanne unten; nachts, am Wochenende und an
+// Feiertagen gibt es keinen Notdienst.
+define( 'HU_MAINTENANCE_PRICE', 149 );
+define( 'HU_MAINTENANCE_SHOP_PRICE', 199 );
+define( 'HU_MAINTENANCE_OUTAGE_HOURS', 4 );
+define( 'HU_MAINTENANCE_OUTAGE_WINDOW', 'werktags 8–18 Uhr' );
+define( 'HU_MAINTENANCE_SECURITY_UPDATE_HOURS', 24 );
+define( 'HU_MAINTENANCE_BACKUP_RETENTION_DAYS', 30 );
+
+/**
+ * Display the monthly maintenance price.
+ *
+ * @param bool $shop     Return the WooCommerce tier.
+ * @param bool $with_net Append the "netto" qualifier.
+ * @return string
+ */
+function hu_maintenance_price( $shop = false, $with_net = false ) {
+	$price = hu_format_eur( $shop ? HU_MAINTENANCE_SHOP_PRICE : HU_MAINTENANCE_PRICE );
+
+	return $with_net ? $price . ' netto' : $price;
+}
+
+/**
+ * Outage reaction promise of the maintenance offer.
+ *
+ * - `short`    "4 Stunden" für Kennzahlkacheln, Fenster steht daneben.
+ * - `window`   das Zeitfenster allein.
+ * - `phrase`   "innerhalb von 4 Stunden, werktags 8–18 Uhr".
+ *
+ * @param string $variant One of: short, window, phrase.
+ * @return string
+ */
+function hu_maintenance_outage_promise( $variant = 'phrase' ) {
+	$hours = sprintf( '%d Stunden', HU_MAINTENANCE_OUTAGE_HOURS );
+
+	if ( 'short' === $variant ) {
+		return $hours;
+	}
+
+	if ( 'window' === $variant ) {
+		return HU_MAINTENANCE_OUTAGE_WINDOW;
+	}
+
+	return sprintf( 'innerhalb von %s, %s', $hours, HU_MAINTENANCE_OUTAGE_WINDOW );
+}
+
+/**
+ * The money-back promise of the maintenance offer, as one sentence.
+ *
+ * Gilt für Störungen, die zum Zeitpunkt des Monatstests bestanden und die der
+ * Test prüft (Zustellung, Messung). Eine Störung, die erst nach dem Test
+ * entsteht, kann er nicht finden — das steht ausdrücklich dabei.
+ *
+ * @param string $variant One of: headline, condition.
+ * @return string
+ */
+function hu_maintenance_guarantee( $variant = 'headline' ) {
+	if ( 'condition' === $variant ) {
+		return 'Gemeint ist eine Störung bei Zustellung oder Messung, die beim Monatstest schon bestand und die der Test nicht gemeldet hat. Was erst nach dem Test kaputtgeht, kann er nicht finden; dafür gilt die Reaktionszeit bei Ausfall.';
+	}
+
+	return 'Übersieht der Monatstest eine Störung, die er hätte finden müssen, zahlen Sie den Monat nicht.';
 }
 
 // ── White-Label-Nebenpfad ────────────────────────────────────────

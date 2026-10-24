@@ -349,6 +349,10 @@ function nexus_get_contact_focus_options( $include_inactive = false ) {
 			'label' => 'WordPress-Übernahme-Check',
 			'types' => [ 'project' ],
 		],
+		'wartung' => [
+			'label' => 'WordPress-Wartung mit Anfrage-Test',
+			'types' => [ 'project' ],
+		],
 		'ongoing_scope'    => [
 			'label' => 'Laufende Weiterentwicklung',
 			'types' => [ 'ongoing', 'client' ],
@@ -462,6 +466,12 @@ function nexus_get_contact_project_focus_copy() {
 			'messageHelp'        => sprintf( 'Welche Website soll übernommen werden, und was bleibt liegen? Der Check kostet %s netto und beginnt erst nach Beauftragung. Bitte keine Passwörter eintragen.', hu_freelancer_takeover_check_price() ),
 			'messagePlaceholder' => 'Website: … · Bisherige Betreuung: … · Als Nächstes soll …',
 			'submitLabel'        => 'Übernahme-Check anfragen',
+		],
+		'wartung' => [
+			'messageLabel'       => 'Website und wer sie heute betreut',
+			'messageHelp'        => sprintf( 'Welche Website soll gewartet werden, läuft ein Shop darauf, und wer kümmert sich bisher darum? Vor dem Start steht der Übernahme-Check für %s netto, angerechnet bei Buchung der Wartung. Bitte keine Passwörter eintragen.', hu_freelancer_takeover_check_price() ),
+			'messagePlaceholder' => 'Website: … · Shop: ja/nein · Bisherige Betreuung: …',
+			'submitLabel'        => 'Wartung anfragen',
 		],
 		'website' => [
 			'messageLabel'       => 'Ihr Angebot und gewünschter Starttermin',

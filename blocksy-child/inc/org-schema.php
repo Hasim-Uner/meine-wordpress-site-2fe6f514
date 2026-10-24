@@ -795,6 +795,44 @@ function hu_get_wordpress_takeover_service_definition() {
 }
 
 /**
+ * Monthly WordPress maintenance with inquiry test; prices from pricing-canon.php.
+ *
+ * @return array<string, mixed>
+ */
+function hu_get_wordpress_maintenance_service_definition() {
+    $offer = static function ( $name, $price, $description ) {
+        return [
+            '@type'              => 'Offer',
+            'name'               => $name,
+            'description'        => $description,
+            'price'              => $price,
+            'priceCurrency'      => 'EUR',
+            'priceSpecification' => [
+                '@type'                 => 'UnitPriceSpecification',
+                'price'                 => $price,
+                'priceCurrency'         => 'EUR',
+                'unitText'              => 'Monat',
+                'billingDuration'       => 'P1M',
+                'valueAddedTaxIncluded' => false,
+            ],
+            'url'                => hu_get_commercial_route( 'maintenance' ) . '#preis',
+        ];
+    };
+
+    return [
+        'name'          => 'WordPress-Wartung mit Anfrage-Test',
+        'description'   => 'Monatliche WordPress-Wartung mit Updates, externen Backups, Überwachung und einer echten Testanfrage, die prüft, ob Anfragen ankommen und gemessen werden. Monatlich kündbar.',
+        'serviceType'   => 'WordPress-Wartung',
+        'serviceOutput' => 'Monatsbericht mit Ergebnis des Anfrage-Tests, eingespielten Updates, Backups, Ausfällen und Empfehlungen',
+        'areaServed'    => [ '@type' => 'Country', 'name' => 'Deutschland' ],
+        'offers'        => [
+            $offer( 'WordPress-Wartung', HU_MAINTENANCE_PRICE, 'Monatlicher Anfrage-Test, Updates, tägliche externe Backups, Überwachung und Monatsbericht. Zum Monatsende kündbar.' ),
+            $offer( 'WordPress-Wartung für WooCommerce-Shops', HU_MAINTENANCE_SHOP_PRICE, 'Wie die WordPress-Wartung, zusätzlich mit Prüfung von Warenkorb und Kasse.' ),
+        ],
+    ];
+}
+
+/**
  * Technical SEO service with individually agreed scope; no fixed-price Offer.
  *
  * @return array<string, string>
@@ -1372,6 +1410,7 @@ function hu_output_schema()
     // Service definitions (slug => data)
     $service_definitions = [
         'wordpress-website-uebernehmen' => hu_get_wordpress_takeover_service_definition(),
+        'wordpress-wartung' => hu_get_wordpress_maintenance_service_definition(),
         'technisches-seo-wordpress' => hu_get_wordpress_technical_seo_service_definition(),
 
         'wordpress-agentur-hannover' => [
@@ -1690,6 +1729,10 @@ function hu_output_schema()
                 $service['offers'] = $def['offers'];
             }
 
+            if (isset($def['areaServed'])) {
+                $service['areaServed'] = $def['areaServed'];
+            }
+
             if (isset($def['hasOfferCatalog'])) {
                 $service['hasOfferCatalog'] = $def['hasOfferCatalog'];
             }
@@ -1877,6 +1920,33 @@ function hu_output_schema()
                     'mainEntity' => $website_faq_entities,
                 ];
             }
+        }
+
+        if ('wordpress-wartung' === $slug && function_exists('hu_maintenance_faq_items')) {
+            // Dieselbe Quelle wie die sichtbaren Fragen im Template.
+            $maintenance_faq_entities = array_map(
+                static function ($item) {
+                    return [
+                        '@type'          => 'Question',
+                        'name'           => (string) $item['question'],
+                        'acceptedAnswer' => [
+                            '@type' => 'Answer',
+                            'text'  => (string) $item['answer'],
+                        ],
+                    ];
+                },
+                hu_maintenance_faq_items()
+            );
+
+            $schemas[] = [
+                '@context'   => 'https://schema.org',
+                '@type'      => 'FAQPage',
+                '@id'        => home_url('/wordpress-wartung/#fragen'),
+                'url'        => home_url('/wordpress-wartung/'),
+                'inLanguage' => 'de',
+                'publisher'  => ['@id' => home_url('/#organization')],
+                'mainEntity' => $maintenance_faq_entities,
+            ];
         }
 
         if ('conversion-optimierung' === $slug && function_exists('nexus_get_conversion_faq_items')) {
@@ -2135,7 +2205,7 @@ function hu_output_schema()
         global $post;
         if ( isset( $post ) && $post instanceof WP_Post ) {
             $template_owns_faq_schema = (
-                in_array( $slug, [ 'technisches-seo-wordpress', 'wordpress-website-uebernehmen', 'referenzen', 'ergebnisse', 'case-studies-e-commerce', 'case-studies', 'hasim-uener', 'wordpress-agentur-hannover', 'wordpress-freelancer-hannover', 'server-side-tracking-b2b', 'aroundhome-solar-einordnung', 'whitelabel-retainer', 'whitelabel-retainer-proof', 'whitelabel', 'landingpage-erstellen-lassen', 'wordpress-website-erstellen-lassen' ], true )
+                in_array( $slug, [ 'technisches-seo-wordpress', 'wordpress-website-uebernehmen', 'referenzen', 'ergebnisse', 'case-studies-e-commerce', 'case-studies', 'hasim-uener', 'wordpress-agentur-hannover', 'wordpress-freelancer-hannover', 'server-side-tracking-b2b', 'aroundhome-solar-einordnung', 'whitelabel-retainer', 'whitelabel-retainer-proof', 'whitelabel', 'landingpage-erstellen-lassen', 'wordpress-website-erstellen-lassen', 'wordpress-wartung' ], true )
                 // Template-owned pages must not emit FAQs from invisible editor caches.
                 || is_page_template( 'page-ergebnisse.php' )
                 || is_page_template( 'page-case-studies-e-commerce.php' )
