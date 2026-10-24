@@ -105,13 +105,13 @@ get_header();
 					<?php foreach ( $test_rows as $row ) : ?>
 						<?php if ( 'teiler' === $row ) : ?>
 							<li class="wartung-test__teiler mono">Was übliche Wartung nicht prüft</li>
-							<?php continue; ?>
-						<?php endif; ?>
+						<?php else : ?>
 						<li class="wartung-test__zeile" data-state="<?php echo esc_attr( $row[0] ); ?>" style="--i: <?php echo (int) $hu_row++; ?>">
 							<span class="wartung-test__zeichen" aria-hidden="true"><?php echo 'ok' === $row[0] ? '✓' : '✕'; ?></span>
 							<span><?php echo esc_html( $row[1] ); ?><span class="nur-vorlesen">: <?php echo 'ok' === $row[0] ? 'in Ordnung' : 'Störung'; ?></span></span>
 							<span class="zahl wartung-test__wert"><?php echo esc_html( $row[2] ); ?></span>
 						</li>
+						<?php endif; ?>
 					<?php endforeach; ?>
 				</ul>
 				<p class="wartung-test__ergebnis"><strong>Die Website läuft. Anfragen kommen nicht an.</strong> <span>Gefunden im Monatstest, behoben, bevor ein Kunde nachfragt.</span></p>
