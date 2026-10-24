@@ -386,9 +386,13 @@ function hu_get_forced_singular_seo_map() {
 			// ist. Zielgruppe und Ansprache folgen der Whitelabel-Ausnahme in
 			// docs/standards/BRAND_AND_COPY.md: Agenturen, „ihr/euch“,
 			// sichtbar immer „White-Label“, Einstieg über das Erstprojekt.
+			// GSC 90 Tage bis 2026-10-22: "seo white label" 78 Impressionen auf
+			// Pos. 2,3 ohne Klick — der Title nannte SEO nicht. Technisches SEO
+			// ist Teil des Lieferumfangs (Leistungsfeld Weiterentwicklung), Content-
+			// und Link-SEO nicht; deshalb "technisches SEO", nicht "SEO".
 			'whitelabel-retainer' => [
-				'title'       => 'White-Label WordPress & Tracking für Agenturen · Haşim Üner',
-				'description' => sprintf( 'WordPress-Umsetzung, Tracking und CRM-Anbindung unter eurem Namen, mit Abnahmeprotokoll. Test-Sprint %1$s, Antwort %2$s.', hu_whitelabel_price( 'test_sprint' ), hu_response_promise_short() ),
+				'title'       => 'White-Label WordPress, technisches SEO & Tracking für Agenturen',
+				'description' => sprintf( 'WordPress-Umsetzung, technisches SEO, Tracking und CRM-Anbindung unter eurem Namen, mit Abnahmeprotokoll. Test-Sprint %1$s, Antwort %2$s.', hu_whitelabel_price( 'test_sprint' ), hu_response_promise_short() ),
 			],
 			// Die Stack-Seite trug „White-Label“ in Title UND Description und
 			// zielte damit auf dasselbe Signal wie /whitelabel-retainer/. Zwei
