@@ -191,8 +191,18 @@ Freitextfeldern (kyrillische/ostasiatische Schrift, mehr als ein Link,
 Link-Markup, Spam-Begriffe). Verworfen wird still mit Erfolgsantwort. Gezählt
 wird in der Option `nexus_intake_spam_stats` nur Tag, Formular und Grund,
 30 Tage lang – keine IP, keine Personendaten, kein Text. Übersicht im CRM-Menü
-unter „Formular-Spam“. Fehlendes Zeitfeld blockt erst, wenn
-`NEXUS_SPAM_REQUIRE_TIMING` auf `true` steht.
+unter „Formular-Spam“. Fehlendes Zeitfeld blockt seit 24.10.2026 standardmäßig
+(`NEXUS_SPAM_REQUIRE_TIMING` = `true`), weil Bots direkt an die REST-Endpunkte
+posten. Ein Link im Feld „Zeitraum“ gilt immer als Spam.
+
+Cloudflare Turnstile ist optional und nur aktiv, wenn in `wp-config.php`
+`NEXUS_TURNSTILE_SITE_KEY` und `NEXUS_TURNSTILE_SECRET_KEY` stehen. Dann lädt
+`nexus-core.js` das Skript von `challenges.cloudflare.com` erst bei der ersten
+Formular-Interaktion, nie beim Seitenaufruf; der Server prüft das Token per
+`siteverify` und übergibt dabei die IP. Turnstile setzt nach Angabe von
+Cloudflare keine Cookies, überträgt aber Browser- und Verbindungsdaten an
+Cloudflare: Vor dem Einschalten muss die Datenschutzerklärung Cloudflare als
+Empfänger nennen.
 
 ## Offen
 

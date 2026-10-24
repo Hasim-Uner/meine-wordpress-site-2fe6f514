@@ -32,7 +32,7 @@ if ( ! defined( 'NEXUS_SPAM_MIN_ELAPSED_MS' ) ) {
 }
 
 if ( ! defined( 'NEXUS_SPAM_REQUIRE_TIMING' ) ) {
-	define( 'NEXUS_SPAM_REQUIRE_TIMING', false );
+	define( 'NEXUS_SPAM_REQUIRE_TIMING', true );
 }
 
 /**
@@ -58,7 +58,7 @@ const NEXUS_SPAM_STATS_DAYS = 30;
  * @return string[]
  */
 function nexus_intake_spam_text_fields() {
-	return [ 'name', 'company', 'position', 'message', 'task', 'tracking_setup', 'analysis_question', 'current_challenge', 'extra_context' ];
+	return [ 'name', 'company', 'position', 'message', 'task', 'tracking_setup', 'analysis_question', 'current_challenge', 'extra_context', 'timeframe' ];
 }
 
 /**
@@ -106,7 +106,10 @@ function nexus_intake_spam_reason( $payload ) {
 		$link_count = preg_match_all( '~(?:https?://|www\.)~i', $joined );
 		$name_link  = isset( $texts['name'] ) && preg_match( '~(?:https?://|www\.|\.(?:com|ru|xyz|top|online|site)\b)~i', $texts['name'] );
 
-		if ( $link_count > 1 || $name_link || preg_match( '~\[url|<a\s~i', $joined ) ) {
+		// Ein Zeitraum ist nie ein Link. Bots nutzen das Feld als zweiten Linkplatz.
+		$timeframe_link = isset( $texts['timeframe'] ) && preg_match( '~(?:https?://|www\.)~i', $texts['timeframe'] );
+
+		if ( $link_count > 1 || $name_link || $timeframe_link || preg_match( '~\[url|<a\s~i', $joined ) ) {
 			return 'links';
 		}
 	}
@@ -122,7 +125,13 @@ function nexus_intake_spam_reason( $payload ) {
 	}
 
 	if ( null === $elapsed || '' === $elapsed ) {
-		return nexus_intake_spam_timing_required() ? 'no_timing' : '';
+		if ( nexus_intake_spam_timing_required() ) {
+			return 'no_timing';
+		}
+	}
+
+	if ( nexus_turnstile_enabled() && ! nexus_turnstile_verify( $payload['cf_turnstile_token'] ?? '' ) ) {
+		return 'turnstile';
 	}
 
 	return '';
@@ -215,6 +224,7 @@ function nexus_render_intake_spam_admin_page() {
 		'links'            => 'Links im Text',
 		'keyword'          => 'Spam-Begriff',
 		'no_timing_passed' => 'Ohne Zeitfeld, durchgelassen (nur Beobachtung)',
+		'turnstile'        => 'Turnstile-Prüfung nicht bestanden',
 	];
 
 	$stats  = get_option( NEXUS_SPAM_STATS_OPTION, [] );
@@ -246,3 +256,80 @@ function nexus_render_intake_spam_admin_page() {
 
 	echo '</tbody></table></div>';
 }
+
+/*
+ * Cloudflare Turnstile. Aktiv nur, wenn in wp-config.php beide Schluessel
+ * stehen:
+ *   define( 'NEXUS_TURNSTILE_SITE_KEY', '...' );
+ *   define( 'NEXUS_TURNSTILE_SECRET_KEY', '...' );
+ * Ohne Schluessel bleibt alles wie bisher. Faellt Cloudflare selbst aus,
+ * wird die Anfrage durchgelassen statt verloren (fail-open, mit Log).
+ */
+function nexus_turnstile_site_key() {
+	return defined( 'NEXUS_TURNSTILE_SITE_KEY' ) ? trim( (string) constant( 'NEXUS_TURNSTILE_SITE_KEY' ) ) : '';
+}
+
+function nexus_turnstile_secret_key() {
+	return defined( 'NEXUS_TURNSTILE_SECRET_KEY' ) ? trim( (string) constant( 'NEXUS_TURNSTILE_SECRET_KEY' ) ) : '';
+}
+
+function nexus_turnstile_enabled() {
+	return '' !== nexus_turnstile_site_key() && '' !== nexus_turnstile_secret_key();
+}
+
+/**
+ * Pruefe ein Turnstile-Token serverseitig.
+ *
+ * @param mixed $token Token aus dem Payload.
+ * @return bool
+ */
+function nexus_turnstile_verify( $token ) {
+	$token = is_scalar( $token ) ? trim( (string) $token ) : '';
+
+	if ( '' === $token || strlen( $token ) > 2048 ) {
+		return false;
+	}
+
+	$body = [
+		'secret'   => nexus_turnstile_secret_key(),
+		'response' => $token,
+	];
+
+	$ip = function_exists( 'nexus_get_review_request_ip' ) ? (string) nexus_get_review_request_ip() : '';
+	if ( '' !== $ip ) {
+		$body['remoteip'] = $ip;
+	}
+
+	$response = wp_remote_post(
+		'https://challenges.cloudflare.com/turnstile/v0/siteverify',
+		[
+			'timeout' => 5,
+			'body'    => $body,
+		]
+	);
+
+	if ( is_wp_error( $response ) || 200 !== (int) wp_remote_retrieve_response_code( $response ) ) {
+		error_log( '[Nexus Spam] Turnstile nicht erreichbar, Anfrage durchgelassen.' );
+		return true;
+	}
+
+	$data = json_decode( (string) wp_remote_retrieve_body( $response ), true );
+
+	return is_array( $data ) && ! empty( $data['success'] );
+}
+
+/**
+ * Site-Key fuer nexus-core.js bereitstellen, nur wenn Turnstile aktiv ist.
+ */
+function nexus_turnstile_enqueue_config() {
+	if ( ! nexus_turnstile_enabled() || ! wp_script_is( 'nexus-core-js', 'enqueued' ) ) {
+		return;
+	}
+
+	wp_add_inline_script(
+		'nexus-core-js',
+		'window.NexusTurnstile = ' . wp_json_encode( [ 'siteKey' => nexus_turnstile_site_key() ] ) . ';',
+		'before'
+	);
+}
+add_action( 'wp_enqueue_scripts', 'nexus_turnstile_enqueue_config', 50 );

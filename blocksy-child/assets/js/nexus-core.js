@@ -36,6 +36,94 @@
         });
     }
 
+    /*
+     * Cloudflare Turnstile gegen Formular-Bots. Aktiv nur, wenn der Server
+     * window.NexusTurnstile.siteKey ausliefert (Schluessel in wp-config.php).
+     * Das Skript laedt erst bei der ersten Formular-Interaktion, nie beim
+     * Seitenaufruf. Kein Token (Skript blockiert, Zeitlimit) = leerer String;
+     * der Server entscheidet (inc/intake-spam-guard.php).
+     */
+    var nexusTurnstile = { script: null, widgetId: null, pending: null };
+
+    function turnstileSiteKey() {
+        var config = window.NexusTurnstile;
+        return config && typeof config.siteKey === 'string' ? config.siteKey : '';
+    }
+
+    function loadTurnstileScript() {
+        if (nexusTurnstile.script) return nexusTurnstile.script;
+        nexusTurnstile.script = new Promise(function (resolve, reject) {
+            if (window.turnstile) {
+                resolve(window.turnstile);
+                return;
+            }
+            var script = document.createElement('script');
+            script.src = 'https://challenges.cloudflare.com/turnstile/v0/api.js?render=explicit';
+            script.async = true;
+            script.onload = function () {
+                if (window.turnstile) resolve(window.turnstile);
+                else reject(new Error('turnstile'));
+            };
+            script.onerror = function () {
+                nexusTurnstile.script = null;
+                reject(new Error('turnstile'));
+            };
+            document.head.appendChild(script);
+        });
+        return nexusTurnstile.script;
+    }
+
+    function settleTurnstile(token) {
+        var pending = nexusTurnstile.pending;
+        nexusTurnstile.pending = null;
+        if (pending) pending(token || '');
+    }
+
+    function getTurnstileToken() {
+        if (!turnstileSiteKey()) return Promise.resolve('');
+
+        return loadTurnstileScript().then(function (turnstile) {
+            return new Promise(function (resolve) {
+                var timer = window.setTimeout(function () { settleTurnstile(''); }, 25000);
+                nexusTurnstile.pending = function (token) {
+                    window.clearTimeout(timer);
+                    resolve(token);
+                };
+
+                if (nexusTurnstile.widgetId === null) {
+                    // Unsichtbar, solange Cloudflare keine Interaktion verlangt.
+                    var box = document.createElement('div');
+                    box.className = 'nx-turnstile';
+                    box.style.cssText = 'position:fixed;right:16px;bottom:16px;z-index:2147483000;';
+                    document.body.appendChild(box);
+                    nexusTurnstile.widgetId = turnstile.render(box, {
+                        sitekey: turnstileSiteKey(),
+                        appearance: 'interaction-only',
+                        execution: 'execute',
+                        language: 'de',
+                        callback: settleTurnstile,
+                        'error-callback': function () { settleTurnstile(''); }
+                    });
+                } else {
+                    turnstile.reset(nexusTurnstile.widgetId);
+                }
+
+                turnstile.execute(nexusTurnstile.widgetId);
+            });
+        }).catch(function () {
+            return '';
+        });
+    }
+
+    // Skript vorwaermen, sobald jemand ein Formular beruehrt.
+    if (turnstileSiteKey()) {
+        document.addEventListener('focusin', function (event) {
+            if (event.target && typeof event.target.closest === 'function' && event.target.closest('form')) {
+                loadTurnstileScript().catch(function () {});
+            }
+        }, true);
+    }
+
     const NexusCore = {
 
         /**
@@ -63,6 +151,23 @@
                 }
             }
 
+            return getTurnstileToken().then(function (token) {
+                if (token && typeof requestOptions.body === 'string') {
+                    try {
+                        var withToken = JSON.parse(requestOptions.body);
+                        if (withToken && typeof withToken === 'object' && !Array.isArray(withToken)) {
+                            withToken.cf_turnstile_token = token;
+                            requestOptions.body = JSON.stringify(withToken);
+                        }
+                    } catch (error) {
+                        // Kein JSON-Objekt: ohne Token senden.
+                    }
+                }
+
+                return sendOnce();
+            });
+
+            function sendOnce() {
             return new Promise(function (resolve, reject) {
                 var settled = false;
                 var deadline = Date.now() + 30000;
@@ -93,6 +198,7 @@
                     finish(new Error(uncertain));
                 });
             });
+            }
         },
 
         // Freeze the submitted values and navigation until this attempt settles.
