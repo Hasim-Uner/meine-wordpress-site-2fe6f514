@@ -51,7 +51,7 @@ for (const width of [320, 360, 768, 1440]) {
     await open(page, width);
 
     await expect(page).toHaveTitle('WordPress-Website erstellen lassen ab ' + euro(1900) + ' | Haşim Üner');
-    await expect(page.locator('meta[name="description"]')).toHaveAttribute('content', /technisches SEO, geprüfte Anfrage-Strecke und Basis-Daten-Cockpit inklusive/);
+    await expect(page.locator('meta[name="description"]')).toHaveAttribute('content', /technisches SEO, geprüfte Anfrage-Strecke und Daten-Cockpit inklusive/);
     await expect(page.locator('h1')).toHaveCount(1);
     expect(await page.locator('.anfrage-website > section').evaluateAll(els => els.map(el => el.id)))
       .toEqual(['hero','unterschied','beleg','angebot','zeit','fragen','anfrage']);
