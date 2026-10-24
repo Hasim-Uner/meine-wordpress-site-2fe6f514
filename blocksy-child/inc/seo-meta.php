@@ -240,6 +240,10 @@ function hu_get_forced_singular_seo_map() {
 				'title'       => 'WordPress-Website übernehmen & weiterentwickeln | Haşim Üner',
 				'description' => sprintf( 'Bestehende WordPress-Website übernehmen und weiterentwickeln. Übernahme-Check für %s netto: schriftlicher Befund, Prioritäten und Festpreis für den nächsten Schritt.', hu_freelancer_takeover_check_price() ),
 			],
+			'wordpress-wartung' => [
+				'title'       => sprintf( 'WordPress-Wartung mit Anfrage-Test ab %s/Monat | Haşim Üner', hu_maintenance_price() ),
+				'description' => sprintf( 'WordPress-Wartung für %1$s netto im Monat: Updates, Backups und jeden Monat eine echte Testanfrage, die prüft, ob Anfragen ankommen. Reaktion bei Ausfall %2$s.', hu_maintenance_price(), hu_maintenance_outage_promise() ),
+			],
 			'technisches-seo-wordpress' => [
 				'title'       => 'Technisches SEO für WordPress: Befund & Korrektur | Haşim Üner',
 				'description' => sprintf( 'Technisches SEO für bestehende WordPress-Websites: SEO-Befund für %s netto zu Indexierung, Vorlagen und Ladezeit, danach Korrekturen zum Festpreis.', hu_seo_finding_price() ),

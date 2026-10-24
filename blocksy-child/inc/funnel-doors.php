@@ -320,6 +320,7 @@ function hu_footer_register_suppressed_templates() {
 		'page-conversion-optimierung.php',
 		'page-referenzen.php',
 		'page-wordpress-website-uebernehmen.php',
+		'page-wordpress-wartung.php',
 		'page-technisches-seo-wordpress.php',
 	];
 }

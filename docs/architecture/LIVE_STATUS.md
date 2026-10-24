@@ -515,6 +515,15 @@ Projektabschluss und ruhiger Agentur-Zweitweg, zentrale Metadaten und
   für 301 statt 410 konnte nicht abgeschlossen werden (DataForSEO ohne
   Guthaben, Bing-Linkdaten nicht angebunden, im Repo nur Domain-Summary:
   31 Backlinks, 25 verweisende Domains); Entscheidung offen.
+- **`/wordpress-wartung/`** (`page-wordpress-wartung.php`, ab 2026-10-24,
+  Branch `feat/wordpress-wartung-money-page`): nationale Money Page für den
+  Wartungs-Intent auf `system.css` plus `wordpress-wartung.css`. Preise und
+  Zusagen aus `canon/pricing-canon.php` (`HU_MAINTENANCE_*`), Antwortzeit aus
+  `hu_response_promise()`, Fragen aus `inc/wordpress-wartung.php` (zugleich
+  FAQPage-Quelle). Alle CTAs → `/kontakt/?type=project&focus=wartung`. Verlinkt
+  `/anfrage-monitor/` als Live-Beleg; zeigt dessen Status nur, wenn der
+  Monitor eingerichtet ist. Ortsbezogene Wartungs-Queries bleiben auf
+  `/wordpress-agentur-hannover/`; `/wordpress-wartung-hannover/` bleibt 410.
 - **`/wordpress-website-erstellen-lassen/`** (`page-wordpress-website-erstellen-lassen.php`,
   Die Anfrage-Website, finale Gestaltung 06.10.2026): Frühe Qualitätsgründe
   mit Prüflinks, Kapitelziele und reale Projekte vor dem Konfigurator.

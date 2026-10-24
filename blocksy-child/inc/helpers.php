@@ -543,7 +543,8 @@ function nexus_get_primary_public_url_map() {
 	// auf der Startseite.
 	$seo_url     = trailingslashit( $agentur_url ) . '#zusammenarbeit';
 	$cro_url     = home_url( '/#angebot-funnel' );
-	$wartung_url = trailingslashit( $agentur_url ) . '#zusammenarbeit';
+	// Wartung hat seit 2026-10-24 eine eigene nationale Route.
+	$wartung_url = nexus_get_page_url( [ 'wordpress-wartung' ], home_url( '/wordpress-wartung/' ) );
 	$cwv_url     = trailingslashit( $agentur_url ) . '#zusammenarbeit';
 
 	$urls = [
@@ -1474,6 +1475,12 @@ function nexus_get_provisioned_pages() {
 			'title'    => 'WordPress-Website erstellen lassen',
 			'excerpt'  => 'WordPress-Website zum Festpreis: Neubau oder Relaunch auf einer Testumgebung, live nach Ihrer Abnahme. Jede alte URL bekommt eine Weiterleitung.',
 			'template' => 'page-wordpress-website-erstellen-lassen.php',
+		],
+		[
+			'slug'     => 'wordpress-wartung',
+			'title'    => 'WordPress-Wartung mit Anfrage-Test',
+			'excerpt'  => 'Monatliche WordPress-Wartung mit echter Testanfrage: Updates, Backups und die Prüfung, ob Anfragen ankommen und gemessen werden.',
+			'template' => 'page-wordpress-wartung.php',
 		],
 	];
 }

@@ -107,6 +107,8 @@ function hu_get_commercial_route_map() {
 			? nexus_get_page_url( [ 'wordpress-website-erstellen-lassen' ], home_url( '/wordpress-website-erstellen-lassen/' ) )
 			: home_url( '/wordpress-website-erstellen-lassen/' ),
 		'takeover'        => home_url( '/wordpress-website-uebernehmen/' ),
+		// WordPress-Wartung mit Anfrage-Test (seit 2026-10-24).
+		'maintenance'     => home_url( '/wordpress-wartung/' ),
 		'technical_seo'   => home_url( '/technisches-seo-wordpress/' ),
 		'agentur_local'   => function_exists( 'nexus_get_page_url' )
 			? nexus_get_page_url( [ 'wordpress-agentur-hannover', 'wordpress-agentur' ], home_url( '/wordpress-agentur-hannover/' ) )
