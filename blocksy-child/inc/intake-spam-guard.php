@@ -130,10 +130,6 @@ function nexus_intake_spam_reason( $payload ) {
 		}
 	}
 
-	if ( nexus_turnstile_enabled() && ! nexus_turnstile_verify( $payload['cf_turnstile_token'] ?? '' ) ) {
-		return 'turnstile';
-	}
-
 	return '';
 }
 
@@ -224,7 +220,6 @@ function nexus_render_intake_spam_admin_page() {
 		'links'            => 'Links im Text',
 		'keyword'          => 'Spam-Begriff',
 		'no_timing_passed' => 'Ohne Zeitfeld, durchgelassen (nur Beobachtung)',
-		'turnstile'        => 'Turnstile-Prüfung nicht bestanden',
 	];
 
 	$stats  = get_option( NEXUS_SPAM_STATS_OPTION, [] );
@@ -257,79 +252,3 @@ function nexus_render_intake_spam_admin_page() {
 	echo '</tbody></table></div>';
 }
 
-/*
- * Cloudflare Turnstile. Aktiv nur, wenn in wp-config.php beide Schluessel
- * stehen:
- *   define( 'NEXUS_TURNSTILE_SITE_KEY', '...' );
- *   define( 'NEXUS_TURNSTILE_SECRET_KEY', '...' );
- * Ohne Schluessel bleibt alles wie bisher. Faellt Cloudflare selbst aus,
- * wird die Anfrage durchgelassen statt verloren (fail-open, mit Log).
- */
-function nexus_turnstile_site_key() {
-	return defined( 'NEXUS_TURNSTILE_SITE_KEY' ) ? trim( (string) constant( 'NEXUS_TURNSTILE_SITE_KEY' ) ) : '';
-}
-
-function nexus_turnstile_secret_key() {
-	return defined( 'NEXUS_TURNSTILE_SECRET_KEY' ) ? trim( (string) constant( 'NEXUS_TURNSTILE_SECRET_KEY' ) ) : '';
-}
-
-function nexus_turnstile_enabled() {
-	return '' !== nexus_turnstile_site_key() && '' !== nexus_turnstile_secret_key();
-}
-
-/**
- * Pruefe ein Turnstile-Token serverseitig.
- *
- * @param mixed $token Token aus dem Payload.
- * @return bool
- */
-function nexus_turnstile_verify( $token ) {
-	$token = is_scalar( $token ) ? trim( (string) $token ) : '';
-
-	if ( '' === $token || strlen( $token ) > 2048 ) {
-		return false;
-	}
-
-	$body = [
-		'secret'   => nexus_turnstile_secret_key(),
-		'response' => $token,
-	];
-
-	$ip = function_exists( 'nexus_get_review_request_ip' ) ? (string) nexus_get_review_request_ip() : '';
-	if ( '' !== $ip ) {
-		$body['remoteip'] = $ip;
-	}
-
-	$response = wp_remote_post(
-		'https://challenges.cloudflare.com/turnstile/v0/siteverify',
-		[
-			'timeout' => 5,
-			'body'    => $body,
-		]
-	);
-
-	if ( is_wp_error( $response ) || 200 !== (int) wp_remote_retrieve_response_code( $response ) ) {
-		error_log( '[Nexus Spam] Turnstile nicht erreichbar, Anfrage durchgelassen.' );
-		return true;
-	}
-
-	$data = json_decode( (string) wp_remote_retrieve_body( $response ), true );
-
-	return is_array( $data ) && ! empty( $data['success'] );
-}
-
-/**
- * Site-Key fuer nexus-core.js bereitstellen, nur wenn Turnstile aktiv ist.
- */
-function nexus_turnstile_enqueue_config() {
-	if ( ! nexus_turnstile_enabled() || ! wp_script_is( 'nexus-core-js', 'enqueued' ) ) {
-		return;
-	}
-
-	wp_add_inline_script(
-		'nexus-core-js',
-		'window.NexusTurnstile = ' . wp_json_encode( [ 'siteKey' => nexus_turnstile_site_key() ] ) . ';',
-		'before'
-	);
-}
-add_action( 'wp_enqueue_scripts', 'nexus_turnstile_enqueue_config', 50 );

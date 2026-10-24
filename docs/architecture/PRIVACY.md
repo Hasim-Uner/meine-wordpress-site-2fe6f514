@@ -195,15 +195,6 @@ unter „Formular-Spam“. Fehlendes Zeitfeld blockt seit 24.10.2026 standardmä
 (`NEXUS_SPAM_REQUIRE_TIMING` = `true`), weil Bots direkt an die REST-Endpunkte
 posten. Ein Link im Feld „Zeitraum“ gilt immer als Spam.
 
-Cloudflare Turnstile ist optional und nur aktiv, wenn in `wp-config.php`
-`NEXUS_TURNSTILE_SITE_KEY` und `NEXUS_TURNSTILE_SECRET_KEY` stehen. Dann lädt
-`nexus-core.js` das Skript von `challenges.cloudflare.com` erst bei der ersten
-Formular-Interaktion, nie beim Seitenaufruf; der Server prüft das Token per
-`siteverify` und übergibt dabei die IP. Turnstile setzt nach Angabe von
-Cloudflare keine Cookies, überträgt aber Browser- und Verbindungsdaten an
-Cloudflare: Vor dem Einschalten muss die Datenschutzerklärung Cloudflare als
-Empfänger nennen.
-
 ## Offen
 
 - Rechtlich bestätigen lassen (Anwalt oder Datenschutzbeauftragter): Koko
