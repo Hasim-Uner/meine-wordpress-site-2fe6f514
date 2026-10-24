@@ -55,6 +55,17 @@ Payloads, Einwilligungen, CRM-Einträge und Koko-Statistik bleiben getrennt.
 Die Besucherinformation steht in `page-datenschutz.php`. Vor dem Merge des
 zugehörigen PRs ist Hasims Bestätigung zur cookiefreien Linie erforderlich.
 
+## Anfrage-Monitor
+
+`inc/anfrage-monitor.php` lässt täglich eine Testanfrage mit eigener Absenderadresse
+durch `/kontakt/` laufen. Sie trägt den Marker `monitor_token`/`monitor_run_id`,
+landet als archivierter `nexus_contact` ohne Verkaufschance und schreibt im
+Protokoll das Ereignis `monitor_test`. Gespeichert werden je Lauf nur Lauf-ID,
+Zeitpunkt, Prüfergebnisse und Dauern (Optionen `hu_monitor_runs`, 90 Läufe, und
+`hu_monitor_intake`, 20 Läufe). `GET /nexus/v1/monitor/status` und
+`/anfrage-monitor/` zeigen Ampeln, Verlauf und die Tage seit der letzten echten
+Anfrage, keine Personendaten.
+
 ## Anfrage-Protokoll `anfrage_gesendet`
 
 `inc/inquiry-events.php` schreibt je erfolgreich verarbeiteter Anfrage eine

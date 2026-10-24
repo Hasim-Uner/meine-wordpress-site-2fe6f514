@@ -9,6 +9,11 @@ if ( ! defined( 'ABSPATH' ) ) { exit; }
  * @return bool
  */
 function nexus_crm_contact_is_sales_relevant( $contact_id ) {
+	// Testanfragen des Anfrage-Monitors gehoeren nie in die Pipeline.
+	if ( '' !== (string) get_post_meta( $contact_id, '_nexus_contact_monitor_run', true ) ) {
+		return false;
+	}
+
 	$source   = sanitize_key( (string) get_post_meta( $contact_id, '_nexus_contact_latest_source', true ) );
 	$segments = function_exists( 'nexus_get_contact_segments' ) ? nexus_get_contact_segments( $contact_id ) : [];
 

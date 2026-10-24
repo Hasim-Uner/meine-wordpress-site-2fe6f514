@@ -617,6 +617,13 @@ function nexus_sync_contact_request_to_crm( $payload ) {
 		unset( $contact_args['meta']['_nexus_contact_name'] );
 	}
 
+	// Testanfrage des Anfrage-Monitors: archiviert, nie eine Verkaufschance
+	// (nexus_crm_contact_is_sales_relevant() liest die Lauf-Meta).
+	if ( ! empty( $payload['monitor_run_id'] ) ) {
+		$contact_args['status']                             = 'archived';
+		$contact_args['meta']['_nexus_contact_monitor_run'] = sanitize_key( (string) $payload['monitor_run_id'] );
+	}
+
 	return nexus_upsert_crm_contact( $contact_args );
 }
 

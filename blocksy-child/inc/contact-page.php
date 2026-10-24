@@ -735,8 +735,13 @@ function nexus_handle_contact_request_submission( WP_REST_Request $request ) {
 		$payload = $request->get_body_params();
 	}
 
+	// Testanfrage des Anfrage-Monitors (inc/anfrage-monitor.php): gleicher Weg,
+	// aber ohne Spam-Guard und Rate-Limit, damit der taegliche Lauf nie
+	// selbst ausgesperrt wird. Der Honeypot bleibt aktiv.
+	$monitor_run = function_exists( 'hu_monitor_request_run_id' ) ? hu_monitor_request_run_id( $payload ) : '';
+
 	$honeypot = isset( $payload['company_website'] ) ? trim( (string) $payload['company_website'] ) : '';
-	if ( '' !== $honeypot || ( function_exists( 'nexus_intake_is_spam' ) && nexus_intake_is_spam( $payload, 'contact' ) ) ) {
+	if ( '' !== $honeypot || ( '' === $monitor_run && function_exists( 'nexus_intake_is_spam' ) && nexus_intake_is_spam( $payload, 'contact' ) ) ) {
 		return new WP_REST_Response(
 			[
 				'ok'      => true,
@@ -746,7 +751,7 @@ function nexus_handle_contact_request_submission( WP_REST_Request $request ) {
 		);
 	}
 
-	$rate_limit_error = nexus_validate_contact_request_rate_limit();
+	$rate_limit_error = '' === $monitor_run ? nexus_validate_contact_request_rate_limit() : true;
 	if ( is_wp_error( $rate_limit_error ) ) {
 		return new WP_REST_Response(
 			[
@@ -767,6 +772,11 @@ function nexus_handle_contact_request_submission( WP_REST_Request $request ) {
 			],
 			400
 		);
+	}
+
+	if ( '' !== $monitor_run ) {
+		$validated['monitor_run_id'] = $monitor_run;
+		hu_monitor_current_run( $monitor_run );
 	}
 
 	$contact_id = function_exists( 'nexus_sync_contact_request_to_crm' )
@@ -807,17 +817,31 @@ function nexus_handle_contact_request_submission( WP_REST_Request $request ) {
 		nexus_record_lead_notification_failure( $contact_id, 'contact_request' );
 	}
 
-	if ( function_exists( 'hu_record_inquiry_event' ) ) {
-		hu_record_inquiry_event( hu_inquiry_event_form_for_contact( $validated, $payload ), $payload );
-	}
+	$event_recorded = function_exists( 'hu_record_inquiry_event' )
+		? hu_record_inquiry_event( hu_inquiry_event_form_for_contact( $validated, $payload ), $payload )
+		: false;
 
 	$confirmation_sent = nexus_send_contact_request_confirmation( $validated );
 	if ( ! $confirmation_sent && function_exists( 'nexus_record_lead_notification_failure' ) ) {
 		nexus_record_lead_notification_failure( $contact_id, 'contact_request', 'confirmation' );
 	}
 
+	$monitor = null;
+	if ( '' !== $monitor_run ) {
+		$monitor = [
+			'runId'            => $monitor_run,
+			'contactStored'    => $contact_id > 0,
+			'notified'         => (bool) $notified,
+			'eventRecorded'    => (bool) $event_recorded,
+			'confirmationSent' => (bool) $confirmation_sent,
+		];
+		hu_monitor_record_intake( $monitor_run, $monitor );
+		hu_monitor_current_run( '' );
+	}
+
 	return new WP_REST_Response(
-		[
+		array_filter( [
+			'monitor' => $monitor,
 			'ok'      => true,
 			'contactId' => $contact_id,
 			'confirmationSent' => $confirmation_sent,
@@ -828,7 +852,9 @@ function nexus_handle_contact_request_submission( WP_REST_Request $request ) {
 				nexus_get_contact_request_response_label( $validated['request_type'] ),
 				hu_response_promise( 'window' )
 			),
-		],
+		], static function ( $value ) {
+			return null !== $value;
+		} ),
 		201
 	);
 }
@@ -1305,6 +1331,9 @@ function nexus_send_contact_request_admin_notification( $payload, $contact_id = 
 		),
 		$payload['request_type']
 	);
+	if ( ! empty( $payload['monitor_run_id'] ) ) {
+		$subject = '[MONITOR ' . $payload['monitor_run_id'] . '] ' . $subject;
+	}
 	$headers = [];
 
 	if ( ! empty( $payload['email'] ) && is_email( $payload['email'] ) ) {

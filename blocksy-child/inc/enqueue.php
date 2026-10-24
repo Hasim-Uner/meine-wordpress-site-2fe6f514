@@ -107,7 +107,8 @@ function hu_enqueue_assets() {
 	// Legacy-Provider, bis ihre impliziten Token-/Selector-Abhaengigkeiten
 	// einzeln nachgewiesen und migriert sind.
 	$is_contact_route          = function_exists( 'nexus_is_contact_page' ) && nexus_is_contact_page();
-	$uses_legacy_design_system = ! ( is_front_page() || hu_is_person_page() || $is_results_hub || $is_references || $is_takeover || $is_technical_seo || $is_glossary || $is_whitelabel || $is_contact_route || is_page( 'wordpress-website-erstellen-lassen' ) || is_page_template( 'page-wordpress-website-erstellen-lassen.php' ) || $is_sst_route || $is_case_study_route );
+	$is_monitor_route          = function_exists( 'hu_monitor_is_route' ) && hu_monitor_is_route();
+	$uses_legacy_design_system = ! ( is_front_page() || hu_is_person_page() || $is_results_hub || $is_references || $is_takeover || $is_technical_seo || $is_glossary || $is_whitelabel || $is_contact_route || $is_monitor_route || is_page( 'wordpress-website-erstellen-lassen' ) || is_page_template( 'page-wordpress-website-erstellen-lassen.php' ) || $is_sst_route || $is_case_study_route );
 	if ( $uses_legacy_design_system ) {
 		hu_enqueue_css( 'nexus-design-system', 'design-system.css', [ 'blocksy-child-style' ] );
 	}
@@ -336,6 +337,11 @@ function hu_enqueue_assets() {
 	if ( hu_is_person_page() ) {
 		hu_enqueue_css( 'nexus-about-css', 'hasim-uener.css', [ 'nexus-system-css' ] );
 		hu_enqueue_js( 'nexus-about-js', 'hasim-uener.js', [] );
+	}
+
+	// ── E1) Anfrage-Monitor ───────────────────────────────────────
+	if ( $is_monitor_route ) {
+		hu_enqueue_css( 'hu-anfrage-monitor-css', 'anfrage-monitor.css', [ 'nexus-system-css' ] );
 	}
 
 	// ── E2) Kontakt ───────────────────────────────────────────────
