@@ -2769,7 +2769,7 @@ function nexus_send_review_request_confirmation( $payload ) {
 			'preheader' => $is_order ? 'Ihre Anfrage für ' . $payload['audit_type_label'] . ' ist eingegangen.' : 'Ihre Anfrage für den ' . $payload['audit_type_label'] . ' ist eingegangen.',
 			'eyebrow'   => $payload['audit_type_label'],
 			'headline'  => $is_order ? 'Ihre Anfrage ist im System.' : 'Ihr ' . $payload['audit_type_label'] . ' ist im System.',
-			'intro'     => $is_order ? 'Angekommen. Ich melde mich ' . hu_response_promise( 'window' ) . '.' : 'Danke, ' . $payload['name'] . '. Ich prüfe die Seite und melde mich ' . hu_response_promise( 'window' ) . ' per E-Mail.',
+			'intro'     => $is_order ? 'Angekommen. Ich melde mich ' . hu_response_promise( 'window' ) . '.' : 'Danke. Ich prüfe die Seite und melde mich ' . hu_response_promise( 'window' ) . ' per E-Mail.',
 			'content'   => $content,
 			'footer'    => 'Viele Grüße, Haşim Üner',
 		]
