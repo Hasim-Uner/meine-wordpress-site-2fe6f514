@@ -56,6 +56,7 @@ $modules = [
 	'calcom-webhook.php', // Cal.com-Buchungen per Webhook ins CRM, mit Quelle und interner Mail
 	'chat-assistant/chat-assistant.php', // KI-Assistent: off / preview (nur Admins) / live
 	'inquiry-events.php', // Serverseitiges Protokoll anfrage_gesendet (Formular, Quelle, Zeitpunkt) und Admin-Übersicht
+	'anfrage-monitor.php', // Täglicher Anfrage-Test: Marker im Kontakt-Handler, Ergebnis/Status-REST, Route /anfrage-monitor/
 	'system-diagnose-page.php', // Deutsche Analyse-Route plus Legacy-Redirect
 	'analysis-intake.php', // REST-Endpoint der früheren Analyse; standardmäßig aus (HU_FEATURE_READINESS_SUBMIT)
 	'blog-notify.php',    // Blog-Benachrichtigungen, DOI und Artikel-Mails

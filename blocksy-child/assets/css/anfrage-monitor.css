@@ -1,0 +1,224 @@
+/*
+ * Anfrage-Monitor — /anfrage-monitor/ im Gutachten-Designsystem.
+ * Das Geraet ist die Graphit-Tafel aus system.css. Der Stempel ist das
+ * einzige Signal: Er markiert Stoerung und Warnung, "in Ordnung" bleibt
+ * ruhig in Tinte. Zustand steckt zusaetzlich im Zeichen und im Text,
+ * nie in der Farbe allein.
+ */
+
+.anfrage-monitor {
+    padding-block: var(--s5) var(--s6);
+}
+
+.anfrage-monitor__shell {
+    width: min(100%, 64rem);
+    margin-inline: auto;
+    padding-inline: clamp(1.25rem, 4vw, 3rem);
+    display: grid;
+    gap: var(--s5);
+}
+
+.anfrage-monitor .screen-reader-text {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    margin: -1px;
+    padding: 0;
+    overflow: hidden;
+    clip: rect(0 0 0 0);
+    white-space: nowrap;
+    border: 0;
+}
+
+/* ── Kopf ─────────────────────────────────────────────────── */
+
+.anfrage-monitor__kopf {
+    display: grid;
+    gap: var(--s2);
+}
+
+.anfrage-monitor__kicker {
+    font-family: var(--mono);
+    font-size: var(--mono-l);
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--grau);
+}
+
+.anfrage-monitor .anfrage-monitor__kopf h1 {
+    max-width: 16ch;
+    text-wrap: balance;
+}
+
+.anfrage-monitor__lead {
+    max-width: var(--satz);
+    color: var(--grau);
+    text-wrap: pretty;
+}
+
+/* ── Geraet ───────────────────────────────────────────────── */
+
+.anfrage-monitor .anfrage-monitor__geraet-titel {
+    font-family: var(--mono);
+    font-size: var(--mono-l);
+    font-weight: 400;
+    letter-spacing: 0.08em;
+    color: var(--grau);
+    padding-bottom: var(--s2);
+    border-bottom: 1px solid var(--haar);
+}
+
+.anfrage-monitor__ampeln {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: grid;
+}
+
+.anfrage-monitor__ampel {
+    display: grid;
+    grid-template-columns: 2.25rem minmax(0, 1fr);
+    gap: var(--s2);
+    align-items: start;
+    padding-block: var(--s3);
+    border-bottom: 1px solid var(--haar);
+}
+
+.anfrage-monitor__ampel:last-child {
+    border-bottom: 0;
+    padding-bottom: 0;
+}
+
+.anfrage-monitor__zeichen {
+    width: 2.25rem;
+    height: 2.25rem;
+    display: grid;
+    place-items: center;
+    border: 1px solid var(--haar);
+    border-radius: 50%;
+    font-family: var(--mono);
+    font-size: 1rem;
+    color: var(--tinte);
+}
+
+.anfrage-monitor__ampel[data-state="warn"] .anfrage-monitor__zeichen,
+.anfrage-monitor__ampel[data-state="fail"] .anfrage-monitor__zeichen {
+    border-color: var(--stempel);
+    color: var(--stempel);
+}
+
+.anfrage-monitor__ampel[data-state="none"] .anfrage-monitor__zeichen {
+    color: var(--matt);
+}
+
+.anfrage-monitor__text {
+    display: grid;
+    gap: var(--s0);
+    min-width: 0;
+}
+
+.anfrage-monitor__titel {
+    font-family: var(--mono);
+    font-size: var(--mono-m);
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--grau);
+}
+
+.anfrage-monitor__wert {
+    font-family: var(--serif-display);
+    font-size: var(--grad-h2-leise);
+    letter-spacing: -0.02em;
+    line-height: 1.1;
+}
+
+.anfrage-monitor__ampel[data-state="fail"] .anfrage-monitor__wert {
+    color: var(--stempel);
+}
+
+.anfrage-monitor__meta {
+    font-family: var(--mono);
+    font-size: var(--mono-l);
+    color: var(--matt);
+}
+
+.anfrage-monitor__leer {
+    color: var(--grau);
+}
+
+/* ── Verlauf ──────────────────────────────────────────────── */
+
+.anfrage-monitor .anfrage-monitor__verlauf h2,
+.anfrage-monitor .anfrage-monitor__pruefung h2 {
+    font-size: var(--grad-h2-leise);
+    letter-spacing: -0.02em;
+    margin-bottom: var(--s2);
+}
+
+.anfrage-monitor__punkte {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--s0);
+}
+
+.anfrage-monitor__punkt {
+    width: 0.9rem;
+    height: 0.9rem;
+    border-radius: 50%;
+    background: var(--tinte);
+}
+
+.anfrage-monitor__punkt[data-ok="0"] {
+    background: var(--papier);
+    box-shadow: inset 0 0 0 2px var(--stempel);
+}
+
+.anfrage-monitor__hinweis {
+    margin-top: var(--s2);
+    max-width: var(--satz);
+    font-size: var(--grad-klein);
+    color: var(--matt);
+}
+
+/* ── Pruefung ─────────────────────────────────────────────── */
+
+.anfrage-monitor__schritte {
+    margin: 0;
+    padding: 0;
+    list-style: none;
+    counter-reset: schritt;
+    border-top: 1px solid var(--strich);
+}
+
+.anfrage-monitor__schritte li {
+    counter-increment: schritt;
+    display: grid;
+    grid-template-columns: 2.5rem minmax(0, 1fr);
+    padding-block: var(--s1);
+    border-bottom: 1px solid var(--haar);
+}
+
+.anfrage-monitor__schritte li::before {
+    content: counter(schritt, decimal-leading-zero);
+    font-family: var(--mono);
+    font-size: var(--mono-l);
+    color: var(--stempel);
+    padding-top: 0.2em;
+}
+
+@media (prefers-reduced-motion: no-preference) {
+    .anfrage-monitor__ampel {
+        animation: anfrage-monitor-ein var(--t-gross) var(--ease-aus) both;
+    }
+
+    .anfrage-monitor__ampel:nth-child(2) { animation-delay: 60ms; }
+    .anfrage-monitor__ampel:nth-child(3) { animation-delay: 120ms; }
+
+    @keyframes anfrage-monitor-ein {
+        from { opacity: 0; transform: translateY(0.4rem); }
+        to { opacity: 1; transform: none; }
+    }
+}

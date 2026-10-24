@@ -1071,6 +1071,10 @@ function hu_get_resolved_document_title() {
 		return hu_get_contact_offer_title();
 	}
 
+	if ( function_exists( 'hu_monitor_is_route' ) && hu_monitor_is_route() ) {
+		return 'Anfrage-Monitor: Kommen Anfragen an? | Haşim Üner';
+	}
+
 	if ( is_singular() ) {
 		$post_id    = get_queried_object_id();
 		$slug       = $post_id ? get_post_field( 'post_name', $post_id ) : '';
@@ -1298,6 +1302,13 @@ function hu_get_seo_meta() {
 		$meta['og_title']    = hu_get_contact_offer_title();
 		$meta['description'] = hu_get_contact_offer_description();
 		$meta['canonical']   = function_exists( 'nexus_get_contact_url' ) ? nexus_get_contact_url() : home_url( '/kontakt/' );
+
+	} elseif ( function_exists( 'hu_monitor_is_route' ) && hu_monitor_is_route() ) {
+		// Beleg-Seite fuer die Wartung: oeffentlich pruefbar, aber kein Suchziel.
+		$meta['og_title']    = 'Anfrage-Monitor: Kommen Anfragen an? | Haşim Üner';
+		$meta['description'] = 'Jeden Morgen läuft eine echte Testanfrage durch das Kontaktformular dieser Website. Die Ampel zeigt, ob sie im Postfach und im CRM ankommt.';
+		$meta['canonical']   = home_url( '/anfrage-monitor/' );
+		$meta['robots']      = 'noindex, follow';
 
 	} elseif ( function_exists( 'hu_is_request_analysis_request_path' ) && hu_is_request_analysis_request_path() ) {
 		$meta['og_title']    = 'Marktcheck | Haşim Üner';

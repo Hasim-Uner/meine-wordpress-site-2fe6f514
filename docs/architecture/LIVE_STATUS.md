@@ -854,6 +854,11 @@ Projektabschluss und ruhiger Agentur-Zweitweg, zentrale Metadaten und
   vorherige und Referrer-URL, Kampagnenquelle, Suchbegriff, `utm_medium`,
   `utm_campaign` und die optionale Frage, wie jemand aufmerksam wurde. Die
   Meta-Keys liefert `nexus_get_inquiry_attribution_meta()` in `inc/crm.php`.
+- Anfrage-Monitor (`inc/anfrage-monitor.php`, Route `/anfrage-monitor/`,
+  `noindex, follow`): aktiv erst mit `HU_MONITOR_TOKEN` in `wp-config.php`;
+  ohne Taktgeber (n8n, Stufe 1b) zeigt die Seite "Noch kein Testlauf".
+  Testanfragen umgehen Spam-Guard und Rate-Limit, nicht den Honeypot, und
+  erscheinen weder in Pipeline noch Antwortfrist-Wächter noch Anfrage-Eingängen.
 - Antwortfrist-Wächter (`inc/crm-sales/watchdog.php`): stündlich am Event
   `nexus_crm_sales_followup_cron`. Sechs Werktagsstunden vor Ablauf der
   zugesagten Antwortzeit geht eine interne Sammelmail raus, wenn es seit Anlage

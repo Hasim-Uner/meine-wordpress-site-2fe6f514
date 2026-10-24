@@ -226,6 +226,10 @@ function hu_record_inquiry_event( $form, $payload = [] ) {
 		$source = hu_inquiry_event_token( $payload['ads_source'] ?? '', 64 );
 	}
 
+	// Der Anfrage-Monitor schreibt seine Testanfragen als `monitor_test`;
+	// alle Auswertungen lesen nur `anfrage_gesendet`.
+	$event = function_exists( 'hu_monitor_inquiry_event_name' ) ? hu_monitor_inquiry_event_name( HU_INQUIRY_EVENT_NAME ) : HU_INQUIRY_EVENT_NAME;
+
 	try {
 		if ( ! hu_inquiry_events_install() ) {
 			return false;
@@ -234,7 +238,7 @@ function hu_record_inquiry_event( $form, $payload = [] ) {
 		$written = $wpdb->insert(
 			hu_inquiry_events_table(),
 			[
-				'event'        => HU_INQUIRY_EVENT_NAME,
+				'event'        => $event,
 				'form'         => $form,
 				'seite'        => hu_inquiry_event_page( $payload ),
 				'utm_source'   => $source,
