@@ -1523,6 +1523,9 @@ function nexus_send_contact_request_confirmation( $payload ) {
 		sprintf( '[%s] %s eingegangen', wp_specialchars_decode( get_bloginfo( 'name' ), ENT_QUOTES ), $payload['request_type_label'] ),
 		$payload['request_type']
 	);
+	if ( ! empty( $payload['monitor_run_id'] ) ) {
+		$subject = '[MONITOR ' . $payload['monitor_run_id'] . ' · Bestätigung] ' . $subject;
+	}
 	$meta_rows = sprintf(
 		'<strong style="color:#f7f3ee;">Anfragetyp:</strong> %1$s<br><strong style="color:#f7f3ee;">Thema:</strong> %2$s',
 		esc_html( $payload['request_type_label'] ),

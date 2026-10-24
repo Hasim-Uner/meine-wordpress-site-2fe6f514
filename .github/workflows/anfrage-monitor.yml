@@ -1,0 +1,44 @@
+name: Anfrage-Monitor
+
+# Taeglich eine echte Testanfrage ueber das Kontaktformular, Postfachpruefung per IMAP,
+# Meldung an /wp-json/nexus/v1/monitor/result. Schlaegt der Lauf fehl, schickt GitHub
+# die uebliche Mail zu fehlgeschlagenen Workflows. Einrichtung: docs/briefings/anfrage-monitor/stufe-1b-runner.md
+on:
+  schedule:
+    - cron: '17 4 * * *' # 06:17 Berlin im Sommer, 05:17 im Winter
+  workflow_dispatch:
+
+concurrency:
+  group: anfrage-monitor
+  cancel-in-progress: false
+
+permissions:
+  contents: read
+
+jobs:
+  monitor:
+    # Geheimnisse nur fuer main: kein Zugriff aus Branches oder Pull Requests.
+    if: github.ref == 'refs/heads/main'
+    runs-on: ubuntu-24.04
+    timeout-minutes: 20
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+
+      - name: Install Playwright
+        run: |
+          python -m pip install playwright==1.63.0
+          python -m playwright install --with-deps chromium
+
+      - name: Run Anfrage-Monitor
+        env:
+          HU_MONITOR_TOKEN: ${{ secrets.HU_MONITOR_TOKEN }}
+          MONITOR_IMAP_USER: ${{ secrets.MONITOR_IMAP_USER }}
+          MONITOR_IMAP_PASSWORD: ${{ secrets.MONITOR_IMAP_PASSWORD }}
+          MONITOR_SITE_URL: ${{ vars.MONITOR_SITE_URL || 'https://hasimuener.de' }}
+        run: python scripts/monitor/anfrage_monitor.py

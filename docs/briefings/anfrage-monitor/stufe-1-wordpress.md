@@ -5,7 +5,7 @@ Primary skill: `wordpress-growth-architecture` · Local context: `blocksy-child/
 
 ## Ziel
 
-hasimuener.de prüft sich jeden Tag selbst: Eine echte Testanfrage läuft durch das Kontaktformular, und eine öffentliche Ampel unter `/anfrage-monitor/` zeigt, ob Anfragen ankommen. Die Seite ist der Beweis für das neue Wartungsangebot (`/wordpress-wartung/`, eigener PR später). Dieser PR baut nur den WordPress-Teil. Den täglichen Browser-Test und die Postfach-Prüfung übernimmt n8n auf Hetzner (Stufe 1b, eigenes Briefing).
+hasimuener.de prüft sich jeden Tag selbst: Eine echte Testanfrage läuft durch das Kontaktformular, und eine öffentliche Ampel unter `/anfrage-monitor/` zeigt, ob Anfragen ankommen. Die Seite ist der Beweis für das neue Wartungsangebot (`/wordpress-wartung/`, eigener PR später). Dieser PR baut nur den WordPress-Teil. Den täglichen Browser-Test und die Postfach-Prüfung übernimmt ein geplanter GitHub-Actions-Workflow (Stufe 1b, `stufe-1b-runner.md`).
 
 ## Befund im Repo (Ausgangslage)
 
@@ -25,25 +25,25 @@ Neues optionales Payload-Feld `monitor_token` plus `monitor_run_id` (`[a-z0-9-]{
 
 - Spam-Guard und Rate-Limit werden übersprungen. Der Honeypot bleibt aktiv (der Test sendet ihn leer).
 - CRM-Sync und Admin-Mail laufen **unverändert**, denn genau sie sind der Prüfgegenstand.
-- Der CRM-Kontakt bekommt Status `archived` und die Meta `_nexus_monitor_test = run_id`. Watchdog, CRM-Listen und Sales-Ansichten schließen Kontakte mit dieser Meta aus.
-- Der Betreff der Admin-Mail beginnt mit `[MONITOR <run_id>] `, damit n8n sie im Postfach findet.
-- `hu_record_inquiry_event()` schreibt mit `form = 'monitor_test'`. Diese Zeilen zählen in keiner Summe, keiner Admin-Übersicht und nicht in der Stille-Berechnung.
-- Die Bestätigungsmail geht wie bei echten Anfragen an die Absenderadresse (`monitor@hasimuener.de`).
+- Der CRM-Kontakt bekommt Status `archived` und die Meta `_nexus_contact_monitor_run = run_id`. Watchdog, CRM-Listen und Sales-Ansichten schließen Kontakte mit dieser Meta aus.
+- Der Betreff der Admin-Mail beginnt mit `[MONITOR <run_id>] `, damit der Runner sie im Postfach findet.
+- `hu_record_inquiry_event()` ruft `hu_monitor_inquiry_event_name()` direkt auf (kein Filter) und schreibt für Testanfragen das Ereignis `monitor_test` statt `anfrage_gesendet`. Diese Zeilen zählen in keiner Summe, keiner Admin-Übersicht und nicht in der Stille-Berechnung.
+- Die Bestätigungsmail geht wie bei echten Anfragen an die Absenderadresse (`kontakt@hasimuener.de`, dasselbe Postfach wie die interne Mail). Ihr Betreff beginnt mit `[MONITOR <run_id> · Bestätigung] `, damit der Runner beide Mails unterscheidet.
 - Die Antwort enthält zusätzlich `monitor: { runId, contactId, notified, eventRecorded, confirmationSent }`.
 
 Ein ungültiger Token wird wie ein fehlender behandelt (keine Fehlermeldung, die ihn bestätigt).
 
 ### 3. Ergebnis-Endpunkt
-`POST /nexus/v1/monitor/result`, Header `Authorization: Bearer <HU_MONITOR_TOKEN>`. Body von n8n:
+`POST /nexus/v1/monitor/result`, Header `Authorization: Bearer <HU_MONITOR_TOKEN>`. Body des Runners (GitHub Actions):
 
 ```json
-{ "runId": "2026-10-25-0614", "startedAt": "2026-10-25T06:14:00Z",
+{ "runId": "run-20261025-0417-ab12", "startedAt": "2026-10-25T04:17:00Z",
   "checks": { "pageLoad": true, "formSubmit": true, "uiSuccess": true,
               "mailAdmin": true, "mailConfirmation": true },
-  "failedAt": null, "durationsMs": { "mailAdmin": 41000 } }
+  "durationsMs": { "mailAdmin": 41000 } }
 ```
 
-Gespeichert werden die letzten 90 Läufe nach dem Muster von `inquiry-events.php` (eigene Tabelle oder Option mit `autoload = false`, Wahl begründen). Serverseitig ergänzt: Für die `runId` prüft WordPress selbst, ob CRM-Kontakt und Ereigniszeile existieren (`crmStored`, `eventRecorded`).
+Gespeichert werden die letzten 90 Läufe in der Option `hu_monitor_runs` (`autoload = false`); die Feststellungen des Kontakt-Handlers je Lauf (die letzten 20) liegen in der Option `hu_monitor_intake`. Serverseitig ergänzt: Für die `runId` prüft WordPress selbst, ob CRM-Kontakt und Ereigniszeile existieren (`crmStored`, `eventRecorded`).
 
 ### 4. Status-Endpunkt
 `GET /nexus/v1/monitor/status`, öffentlich, ohne personenbezogene Daten, Antwort 5 Minuten zwischengespeichert. Drei Felder plus Verlauf:
@@ -70,7 +70,7 @@ Repo-gesteuert, virtuelle Seite nach dem Muster der Kontaktseite (`nexus_preempt
 Gestaltung über das `frontend-system`-Skill nach Freigabe des Wartungsseiten-Entwurfs (gleiche Sprache: Monospace für Messwerte, Akzentfarbe nur für die Hauptaktion).
 
 ## Nicht in diesem PR
-- n8n-Workflow, Browser-Test, Postfach-Prüfung (Stufe 1b)
+- Runner (GitHub Actions), Browser-Test, Postfach-Prüfung (Stufe 1b, `stufe-1b-runner.md`)
 - Wartungsseite `/wordpress-wartung/`
 - Kundenportal und Plugin für Kundenseiten (Stufe 2)
 
