@@ -191,8 +191,9 @@ Freitextfeldern (kyrillische/ostasiatische Schrift, mehr als ein Link,
 Link-Markup, Spam-Begriffe). Verworfen wird still mit Erfolgsantwort. Gezählt
 wird in der Option `nexus_intake_spam_stats` nur Tag, Formular und Grund,
 30 Tage lang – keine IP, keine Personendaten, kein Text. Übersicht im CRM-Menü
-unter „Formular-Spam“. Fehlendes Zeitfeld blockt erst, wenn
-`NEXUS_SPAM_REQUIRE_TIMING` auf `true` steht.
+unter „Formular-Spam“. Fehlendes Zeitfeld blockt seit 24.10.2026 standardmäßig
+(`NEXUS_SPAM_REQUIRE_TIMING` = `true`), weil Bots direkt an die REST-Endpunkte
+posten. Ein Link im Feld „Zeitraum“ gilt immer als Spam.
 
 ## Offen
 

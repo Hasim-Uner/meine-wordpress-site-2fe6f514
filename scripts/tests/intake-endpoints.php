@@ -10,10 +10,10 @@ function call_intake( $kind, $payload ) {
 	$callbacks = [ 'contact' => 'nexus_handle_contact_request_submission', 'whitelabel' => 'hu_handle_whitelabel_request_submission', 'marketcheck' => 'nexus_handle_review_request_submission', 'blog' => 'nexus_handle_blog_subscribe_submission' ];
 	return $callbacks[ $kind ]( new WP_REST_Request( $payload ) );
 }
-$contact = [ 'name' => 'Fixture Person', 'email' => 'fixture@example.test', 'request_type' => 'project', 'focus' => 'tracking', 'message' => 'Bitte das bestehende Tracking prüfen.', 'consent' => '1' ];
-$whitelabel = [ 'email' => 'fixture@example.test', 'task' => 'Bitte das bestehende Tracking prüfen.', 'case' => 'angebotsphase' ];
-$marketcheck = [ 'intake_variant' => 'energy_systems', 'audit_type' => 'b2b_system_intake', 'solution_focus' => 'photovoltaik', 'business_fit' => 'founder_led_regional', 'sales_team_size' => 'one', 'project_timing' => 'sofort', 'name' => 'Fixture Person', 'company' => 'Fixture GmbH', 'position' => 'Inhaber', 'email' => 'fixture@example.test', 'postal_code' => '30159', 'consent_privacy' => 'accepted' ];
-$blog = [ 'email' => 'fixture@example.test', 'nonce' => 'fixture-nonce' ];
+$contact = [ 'name' => 'Fixture Person', 'email' => 'fixture@example.test', 'request_type' => 'project', 'focus' => 'tracking', 'message' => 'Bitte das bestehende Tracking prüfen.', 'consent' => '1', 'form_elapsed_ms' => 45000 ];
+$whitelabel = [ 'email' => 'fixture@example.test', 'task' => 'Bitte das bestehende Tracking prüfen.', 'case' => 'angebotsphase', 'form_elapsed_ms' => 45000 ];
+$marketcheck = [ 'intake_variant' => 'energy_systems', 'audit_type' => 'b2b_system_intake', 'solution_focus' => 'photovoltaik', 'business_fit' => 'founder_led_regional', 'sales_team_size' => 'one', 'project_timing' => 'sofort', 'name' => 'Fixture Person', 'company' => 'Fixture GmbH', 'position' => 'Inhaber', 'email' => 'fixture@example.test', 'postal_code' => '30159', 'consent_privacy' => 'accepted', 'form_elapsed_ms' => 45000 ];
+$blog = [ 'email' => 'fixture@example.test', 'nonce' => 'fixture-nonce', 'form_elapsed_ms' => 45000 ];
 
 foreach ( [ 'contact' => $contact, 'whitelabel' => $whitelabel ] as $kind => $payload ) {
 	foreach ( [ false, true ] as $storage_fail ) {
@@ -90,10 +90,17 @@ foreach ( [ 'contact' => [ $contact, 'message' ], 'whitelabel' => [ $whitelabel,
 		check( 201 === $r->status && true === $r->data['ok'], 'Legitimate enquiry still accepted' );
 	} );
 }
-run_case( 'missing timing passes while timing is not required', static function () use ( $contact ) {
+run_case( 'missing timing is dropped silently', static function () use ( $contact ) {
+	unset( $contact['form_elapsed_ms'] );
 	$r = call_intake( 'contact', $contact );
-	check( 201 === $r->status, 'Old cached pages without timing still submit' );
-	check( 1 === ( end( $GLOBALS['intake_test']['options'][ NEXUS_SPAM_STATS_OPTION ] )['contact:no_timing_passed'] ?? 0 ), 'Missing timing is observed' );
+	check( $r->status === 200 && $r->data['ok'] === true && ! $GLOBALS['intake_test']['events'], 'Direct REST posts without timing are dropped' );
+	check( 1 === ( end( $GLOBALS['intake_test']['options'][ NEXUS_SPAM_STATS_OPTION ] )['contact:no_timing'] ?? 0 ), 'Missing timing is counted' );
+} );
+run_case( 'whitelabel link in timeframe is dropped silently', static function () use ( $whitelabel ) {
+	$whitelabel['task']      = 'look here: https://search.example/abc';
+	$whitelabel['timeframe'] = 'https://search.example/abc';
+	$r = call_intake( 'whitelabel', $whitelabel );
+	check( $r->status === 200 && $r->data['ok'] === true && ! $GLOBALS['intake_test']['events'], 'Link in timeframe is spam' );
 } );
 
 foreach ( [ 'contact' => $contact, 'whitelabel' => $whitelabel, 'marketcheck' => $marketcheck, 'blog' => $blog ] as $kind => $payload ) {
@@ -213,7 +220,7 @@ run_case( 'marketcheck freemail is accepted and flagged', static function () use
 $order_base = [
 	'company' => 'TEST Fixture GmbH', 'email' => 'fixture@gmx.de', 'phone' => '0301234567',
 	'request_sources' => [ 'aroundhome', 'eigene_website' ], 'consent_privacy' => 'accepted',
-	'company_website' => '', 'contract_version' => nexus_get_review_request_contract_version(),
+	'company_website' => '', 'contract_version' => nexus_get_review_request_contract_version(), 'form_elapsed_ms' => 45000,
 ];
 run_case( 'sofortkontakt order reaches audit endpoint and persists variant', static function () use ( $order_base ) {
 	$payload = array_merge( $order_base, [

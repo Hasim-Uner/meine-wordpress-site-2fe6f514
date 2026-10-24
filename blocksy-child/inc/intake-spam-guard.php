@@ -32,7 +32,7 @@ if ( ! defined( 'NEXUS_SPAM_MIN_ELAPSED_MS' ) ) {
 }
 
 if ( ! defined( 'NEXUS_SPAM_REQUIRE_TIMING' ) ) {
-	define( 'NEXUS_SPAM_REQUIRE_TIMING', false );
+	define( 'NEXUS_SPAM_REQUIRE_TIMING', true );
 }
 
 /**
@@ -58,7 +58,7 @@ const NEXUS_SPAM_STATS_DAYS = 30;
  * @return string[]
  */
 function nexus_intake_spam_text_fields() {
-	return [ 'name', 'company', 'position', 'message', 'task', 'tracking_setup', 'analysis_question', 'current_challenge', 'extra_context' ];
+	return [ 'name', 'company', 'position', 'message', 'task', 'tracking_setup', 'analysis_question', 'current_challenge', 'extra_context', 'timeframe' ];
 }
 
 /**
@@ -106,7 +106,10 @@ function nexus_intake_spam_reason( $payload ) {
 		$link_count = preg_match_all( '~(?:https?://|www\.)~i', $joined );
 		$name_link  = isset( $texts['name'] ) && preg_match( '~(?:https?://|www\.|\.(?:com|ru|xyz|top|online|site)\b)~i', $texts['name'] );
 
-		if ( $link_count > 1 || $name_link || preg_match( '~\[url|<a\s~i', $joined ) ) {
+		// Ein Zeitraum ist nie ein Link. Bots nutzen das Feld als zweiten Linkplatz.
+		$timeframe_link = isset( $texts['timeframe'] ) && preg_match( '~(?:https?://|www\.)~i', $texts['timeframe'] );
+
+		if ( $link_count > 1 || $name_link || $timeframe_link || preg_match( '~\[url|<a\s~i', $joined ) ) {
 			return 'links';
 		}
 	}
@@ -122,7 +125,9 @@ function nexus_intake_spam_reason( $payload ) {
 	}
 
 	if ( null === $elapsed || '' === $elapsed ) {
-		return nexus_intake_spam_timing_required() ? 'no_timing' : '';
+		if ( nexus_intake_spam_timing_required() ) {
+			return 'no_timing';
+		}
 	}
 
 	return '';
@@ -246,3 +251,4 @@ function nexus_render_intake_spam_admin_page() {
 
 	echo '</tbody></table></div>';
 }
+
