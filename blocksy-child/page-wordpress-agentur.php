@@ -93,6 +93,7 @@ $contact_url    = hu_get_navigation_project_request_url();
 $website_url    = hu_get_commercial_route( 'website', home_url( '/wordpress-website-erstellen-lassen/' ) );
 $tracking_url   = hu_get_commercial_route( 'tracking_setup', home_url( '/ga4-tracking-setup/' ) );
 $conversion_url = hu_get_commercial_route( 'conversion', home_url( '/conversion-optimierung/' ) );
+$maintenance_url = hu_get_commercial_route( 'maintenance', home_url( '/wordpress-wartung/' ) );
 $references_url = home_url( '/#referenzen' );
 $case_url       = nexus_get_results_url();
 $response       = hu_response_promise( 'compact' );
@@ -281,6 +282,11 @@ get_header();
 						<span>Wirkung</span>
 						<strong>Conversion-Optimierung für B2B</strong>
 						<small>Wenn bereits Besucher da sind, aber zu wenige passende Anfragen entstehen.</small>
+					</a>
+					<a href="<?php echo esc_url( $maintenance_url ); ?>" data-track-action="agentur_to_maintenance_offer" data-track-category="internal_link">
+						<span>Betrieb</span>
+						<strong>WordPress-Wartung mit Anfrage-Test</strong>
+						<small>Wenn die Website läuft und jeden Monat geprüft sein soll, ob Anfragen ankommen.</small>
 					</a>
 				</nav>
 

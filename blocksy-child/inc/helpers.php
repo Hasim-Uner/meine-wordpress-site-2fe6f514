@@ -694,7 +694,7 @@ function nexus_get_agentur_faq_items() {
 		],
 		[
 			'question' => 'Bieten Sie WordPress-Wartung in Hannover an?',
-			'answer'   => 'Ja, als planbare Weiterentwicklung für Systeme, die ich gebaut oder vorher technisch geprüft habe. Es gibt jedoch keine 24/7-Bereitschaft und kein austauschbares Vertretungsteam. Wenn genau das benötigt wird, ist ein Wartungsanbieter mit größerem Team die passendere Struktur.',
+			'answer'   => sprintf( 'Ja, als feste Wartung für %1$s netto im Monat, für WooCommerce-Shops %2$s. Neben Updates und Backups prüft jeden Monat eine echte Testanfrage, ob Anfragen ankommen. Bei einem Ausfall reagiere ich %3$s; eine 24/7-Bereitschaft und ein Vertretungsteam gibt es nicht. Vor dem Start steht der Übernahme-Check.', hu_maintenance_price(), hu_maintenance_price( true ), hu_maintenance_outage_promise() ),
 		],
 	];
 }
