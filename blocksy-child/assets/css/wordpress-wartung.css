@@ -230,6 +230,7 @@
 
 .wartung .wartung-preis__paket { display: grid; gap: var(--s3); }
 .wartung .wartung-preis__paket .ausgang { margin-top: 0; }
+.wartung .wartung-preis__paket .protokoll.posten .z { grid-template-columns: minmax(0, 7.5rem) minmax(0, 1fr); }
 
 .wartung .wartung-preis__betrag { display: grid; gap: var(--s0); }
 
@@ -278,6 +279,17 @@
   transition: color var(--t-mikro) ease;
 }
 
+.wartung .wartung-ohne summary::-webkit-details-marker { display: none; }
+.wartung .wartung-ohne summary { list-style: none; justify-content: space-between; gap: var(--s2); }
+
+.wartung .wartung-ohne summary::after {
+  content: "+";
+  font-family: var(--mono);
+  color: var(--stempel);
+  transition: transform var(--t-norm) var(--ease-aus);
+}
+
+.wartung .wartung-ohne[open] summary::after { transform: rotate(45deg); }
 .wartung .wartung-ohne summary:hover { color: var(--stempel); }
 
 .wartung .wartung-ohne ul {
@@ -336,6 +348,8 @@
   .wartung .wartung-einstieg .meta dl { grid-template-columns: minmax(0, 1fr); }
   .wartung .wartung-einstieg .meta div { border-right: 0; }
   .wartung .wartung-brueche { grid-template-columns: minmax(0, 1fr); }
+  .wartung .wartung-test__zeile { grid-template-columns: 1.4rem minmax(0, 1fr); row-gap: 0; }
+  .wartung .wartung-test__wert { grid-column: 2; text-align: left; }
   .wartung .wartung-schritte { grid-template-columns: minmax(0, 1fr); }
   .wartung .wartung-schritte li { grid-template-columns: 2.5rem minmax(0, 1fr); column-gap: var(--s1); }
   .wartung .wartung-schritte li .zahl { grid-row: span 2; }
