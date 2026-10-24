@@ -122,8 +122,11 @@ vom 2026-10-09 ordnet die vorhandene Strecke neu: Klick → Angebote → Strecke
 Fall → Prüfstand mit Referenzen → Übergabe → Fragen → Anfrage. Die sechs
 Angebotszeilen mit Preisen stehen direkt nach dem Hero; Hero samt Kopf und
 Messtafel sind die dunklen Messinstrumente.
-White-Label und Solar/Wärmepumpe stehen unter „Drei Fälle mit eigenem Weg.“
-in der Übergabe (`home_door_whitelabel`, `home_door_energy`).
+Wartung, White-Label und Solar/Wärmepumpe stehen unter „Drei Fälle mit eigenem
+Weg.“ in der Übergabe (`home_door_maintenance` seit 2026-10-25,
+`home_door_whitelabel`, `home_door_energy`). Die Agentur-Seite verlinkt die
+Wartung als vierte Route-Kachel (`agentur_to_maintenance_offer`), die
+Übernahme-FAQ im Ausfall-Absatz (`takeover_faq_to_maintenance`).
 
 Hero und Abschluss nutzen die Projektanfrage `/kontakt/?type=project` ohne
 Themenvorbelegung, wenn die Ersteinschätzung aus ist. Die sechs Leistungen
