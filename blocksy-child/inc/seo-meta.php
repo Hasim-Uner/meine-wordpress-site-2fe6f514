@@ -69,9 +69,9 @@ function hu_get_homepage_description() {
 	return (string) apply_filters(
 		'hu_homepage_seo_description',
 		sprintf(
-			'WordPress-Websites, die Anfragen bringen, mit Messung bis zur Quelle. Feste Preise ab %s netto, Antwort %s. Haşim Üner, Pattensen bei Hannover.',
+			'WordPress-Websites, die Anfragen bringen, mit Messung bis zur Quelle. Festpreise ab %s netto, Antwort in %s. Aus Pattensen bei Hannover.',
 			hu_freelancer_website_price(),
-			hu_response_promise_short()
+			hu_response_promise( 'badge' )
 		)
 	);
 }
@@ -238,11 +238,11 @@ function hu_get_forced_singular_seo_map() {
 			],
 			'wordpress-website-uebernehmen' => [
 				'title'       => 'WordPress-Website übernehmen & weiterentwickeln | Haşim Üner',
-				'description' => sprintf( 'Bestehende WordPress-Website übernehmen und weiterentwickeln. Übernahme-Check für %s netto: schriftlicher Befund, Prioritäten und Festpreis für den nächsten Schritt.', hu_freelancer_takeover_check_price() ),
+				'description' => sprintf( 'Bestehende WordPress-Website übernehmen und weiterentwickeln: Übernahme-Check für %s netto mit schriftlichem Befund, Prioritäten und Festpreis.', hu_freelancer_takeover_check_price() ),
 			],
 			'wordpress-wartung' => [
 				'title'       => sprintf( 'WordPress-Wartung mit Anfrage-Test ab %s/Monat | Haşim Üner', hu_maintenance_price() ),
-				'description' => sprintf( 'WordPress-Wartung für %1$s netto im Monat: Updates, Backups und jeden Monat eine echte Testanfrage, die prüft, ob Anfragen ankommen. Reaktion bei Ausfall %2$s.', hu_maintenance_price(), hu_maintenance_outage_promise() ),
+				'description' => sprintf( 'WordPress-Wartung für %1$s netto im Monat: Updates, Backups und monatlich eine echte Testanfrage. Reaktion bei Ausfall in %2$s, %3$s.', hu_maintenance_price(), hu_maintenance_outage_promise( 'short' ), hu_maintenance_outage_promise( 'window' ) ),
 			],
 			'technisches-seo-wordpress' => [
 				'title'       => 'Technisches SEO für WordPress: Befund & Korrektur | Haşim Üner',
@@ -316,7 +316,7 @@ function hu_get_forced_singular_seo_map() {
 			// "website relaunch" gehoert dem Beitrag /website-relaunch/.
 			'wordpress-website-erstellen-lassen' => [
 				'title'       => sprintf( 'WordPress-Website erstellen lassen ab %s | Haşim Üner', hu_freelancer_website_price() ),
-				'description' => sprintf( 'WordPress-Website ab %s: technisches SEO, geprüfte Anfrage-Strecke und Basis-Daten-Cockpit inklusive. Umfang, Texte & Extras konfigurieren, Preis und Produktionszeit sofort sehen.', hu_freelancer_website_price( true ) ),
+				'description' => sprintf( 'WordPress-Website ab %s: technisches SEO, geprüfte Anfrage-Strecke und Daten-Cockpit inklusive. Umfang wählen, Preis und Bauzeit sofort sehen.', hu_freelancer_website_price( true ) ),
 			],
 			// Query-Owner "conversion optimierung b2b" (docs/seo/query-ownership.csv).
 			// Die Dauer der Analyse kommt aus dem Kanon, damit Snippet und Seite
