@@ -2324,6 +2324,7 @@ function hu_output_schema()
                 'name'     => function_exists( 'hu_is_e3_methodology_case_post' ) && hu_is_e3_methodology_case_post( $page_id )
                     ? hu_get_e3_methodology_case_schema_name()
                     : get_the_title(),
+                'item'     => get_permalink( $page_id ),
             ];
 
         } elseif ( is_category() ) {

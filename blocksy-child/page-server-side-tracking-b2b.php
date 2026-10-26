@@ -112,7 +112,7 @@ $faq = [
 	],
 ];
 
-// ── Schema.org: BreadcrumbList + Service + FAQPage ────────────
+// ── Schema.org: Service + FAQPage ────────────────────────────
 $author_person = function_exists( 'hu_get_canonical_author_person' )
 	? hu_get_canonical_author_person()
 	: [
@@ -121,28 +121,7 @@ $author_person = function_exists( 'hu_get_canonical_author_person' )
 		'url'   => home_url( '/' ),
 	];
 
-// Bewusst kein hu_get_solar_subpage_breadcrumb_schema(): die Seite besitzt
-// laut docs/seo/query-ownership.csv nicht ortsgebundene, branchenoffene
-// Tracking-Queries und haengt inhaltlich nicht unter der Solar-Money-Page.
-$breadcrumb_schema = [
-	'@context'        => 'https://schema.org',
-	'@type'           => 'BreadcrumbList',
-	'@id'             => trailingslashit( $page_url ) . '#breadcrumb',
-	'itemListElement' => [
-		[
-			'@type'    => 'ListItem',
-			'position' => 1,
-			'name'     => 'Startseite',
-			'item'     => home_url( '/' ),
-		],
-		[
-			'@type'    => 'ListItem',
-			'position' => 2,
-			'name'     => 'Server-Side Tracking',
-			'item'     => $page_url,
-		],
-	],
-];
+// BreadcrumbList und WebPage kommen zentral aus inc/org-schema.php.
 
 $service_offers = [
 	[
@@ -474,7 +453,6 @@ get_header();
 		</div>
 	</section>
 
-	<script type="application/ld+json"><?php echo wp_json_encode( $breadcrumb_schema, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE ); ?></script>
 	<script type="application/ld+json"><?php echo wp_json_encode( $service_schema, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE ); ?></script>
 	<script type="application/ld+json"><?php echo wp_json_encode( $faq_schema, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE ); ?></script>
 </div>
