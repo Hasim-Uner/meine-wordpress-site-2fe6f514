@@ -584,9 +584,18 @@ function nexus_get_contact_timeline_options() {
  * @return string
  */
 function nexus_get_contact_notification_email() {
-	$default = function_exists( 'nexus_get_audit_notification_email' )
-		? nexus_get_audit_notification_email()
-		: (string) get_option( 'admin_email' );
+	// Seit 2026-10-26 die öffentliche Kontaktadresse aus dem Kanon statt der
+	// WordPress-Admin-Adresse (privates Gmail). Grund: Die interne Mail landete
+	// nicht in kontakt@, wo der Anfrage-Monitor prüft, und die Bestätigungsmail
+	// trug das private Gmail als Antwortadresse. Der Filter bleibt der Weg für
+	// eine abweichende Zieladresse.
+	if ( function_exists( 'hu_get_contact_email' ) && is_email( hu_get_contact_email() ) ) {
+		$default = hu_get_contact_email();
+	} else {
+		$default = function_exists( 'nexus_get_audit_notification_email' )
+			? nexus_get_audit_notification_email()
+			: (string) get_option( 'admin_email' );
+	}
 
 	return (string) apply_filters( 'nexus_contact_notification_email', $default );
 }
