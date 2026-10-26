@@ -118,6 +118,11 @@ if ( $hu_mon_enabled ) {
 			</ol>
 			<p class="anfrage-monitor__hinweis">Die Testanfrage ist markiert: Sie zählt in keiner Auswertung und landet archiviert im CRM. Die Stille-Ampel zählt nur echte Anfragen und meldet sich, wenn ungewöhnlich lange keine kommt.</p>
 		</section>
+
+		<section class="anfrage-monitor__kunden" aria-labelledby="anfrage-monitor-kunden">
+			<h2 id="anfrage-monitor-kunden">Und bei Kunden?</h2>
+			<p class="anfrage-monitor__hinweis">Diese Seite zeigt nur meine eigene Website. Kunden der Wartung bekommen keine öffentliche Seite. Ihr Ergebnis steht in einem privaten Monatsbericht, den nur sie per Mail bekommen. <a href="<?php echo esc_url( home_url( '/wordpress-wartung/' ) ); ?>" data-track-action="monitor_to_maintenance" data-track-category="navigation" data-track-section="anfrage_monitor">Zur Wartung mit Anfrage-Test →</a></p>
+		</section>
 	</div>
 </div>
 <?php

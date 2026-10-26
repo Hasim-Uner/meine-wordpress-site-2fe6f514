@@ -917,7 +917,7 @@ function hu_maintenance_outage_promise( $variant = 'phrase' ) {
  */
 function hu_maintenance_guarantee( $variant = 'headline' ) {
 	if ( 'condition' === $variant ) {
-		return 'Gemeint ist eine Störung bei Zustellung oder Messung, die beim Monatstest schon bestand und die der Test nicht gemeldet hat. Was erst nach dem Test kaputtgeht, kann er nicht finden; dafür gilt die Reaktionszeit bei Ausfall.';
+		return 'Gemeint ist eine Störung bei Zustellung oder Messung, die beim Test schon da war und nicht gemeldet wurde. Was erst nach dem Test kaputtgeht, kann er nicht finden. Dafür gilt die Reaktionszeit bei Ausfall.';
 	}
 
 	return 'Übersieht der Monatstest eine Störung, die er hätte finden müssen, zahlen Sie den Monat nicht.';

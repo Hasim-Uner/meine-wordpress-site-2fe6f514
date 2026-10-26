@@ -45,7 +45,7 @@ function hu_maintenance_faq_items() {
 		],
 		[
 			'question' => 'Mein Hoster spielt Updates automatisch ein. Reicht das?',
-			'answer'   => 'Automatische Updates laufen ohne Prüfung danach. Ob nach dem Update das Formular noch zustellt oder der Cookie-Banner die Messung blockiert, sieht dabei niemand.',
+			'answer'   => 'Nein. Automatische Updates prüft danach niemand. Ob das Formular noch zustellt oder der Cookie-Banner die Messung blockiert, merkt dann keiner.',
 		],
 		[
 			'question' => 'Wie oft werden Updates eingespielt?',
@@ -54,6 +54,10 @@ function hu_maintenance_faq_items() {
 		[
 			'question' => 'Was passiert, wenn die Website ausfällt oder gehackt wird?',
 			'answer'   => sprintf( 'Ich reagiere %s und stelle aus dem Backup wieder her. Eine tiefere Bereinigung nach einem Angriff rechne ich nach Aufwand ab. Einen Notdienst nachts, am Wochenende oder an Feiertagen gibt es nicht.', hu_maintenance_outage_promise() ),
+		],
+		[
+			'question' => 'Ist das Ergebnis für meine Website öffentlich zu sehen?',
+			'answer'   => 'Nein. Ihr Ergebnis steht nur in Ihrem Monatsbericht, den Sie per Mail bekommen. Öffentlich ist nur der Anfrage-Monitor meiner eigenen Website. Er zeigt, dass die Prüfung funktioniert.',
 		],
 		[
 			'question' => 'Gibt es eine Mindestlaufzeit?',

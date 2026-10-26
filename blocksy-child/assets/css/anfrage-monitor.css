@@ -149,7 +149,8 @@
 /* ── Verlauf ──────────────────────────────────────────────── */
 
 .anfrage-monitor .anfrage-monitor__verlauf h2,
-.anfrage-monitor .anfrage-monitor__pruefung h2 {
+.anfrage-monitor .anfrage-monitor__pruefung h2,
+.anfrage-monitor .anfrage-monitor__kunden h2 {
     font-size: var(--grad-h2-leise);
     letter-spacing: -0.02em;
     margin-bottom: var(--s2);

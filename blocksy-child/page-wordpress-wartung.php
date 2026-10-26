@@ -51,26 +51,26 @@ $test_rows = [
 $breaks = [
 	[ 'Ein Plugin-Update ändert den Mailversand.', 'Das Formular zeigt „Danke“, die Mail kommt nie an.' ],
 	[ 'Das Passwort des Mailversands läuft ab.', 'Ab diesem Tag landet jede Anfrage im Nichts, ohne Fehlermeldung.' ],
-	[ 'Der Cookie-Banner bekommt ein Update.', 'Er blockiert das Conversion-Tag. Die Werbung optimiert danach auf null Anfragen.' ],
-	[ 'Ein Cache liefert ein altes Formular aus.', 'Pflichtfelder oder Zieladresse stimmen nicht mehr mit dem Live-Stand überein.' ],
+	[ 'Der Cookie-Banner bekommt ein Update.', 'Er blockiert die Messung. Google Ads sieht keine Anfragen mehr und wirbt danach schlechter.' ],
+	[ 'Ein Cache zeigt ein altes Formular.', 'Es sieht richtig aus, schickt aber an eine alte Adresse.' ],
 ];
 
 $steps = [
 	[ 'Sichern', 'Backup vor jedem Eingriff, extern gespeichert.' ],
-	[ 'Aktualisieren', 'Kern, Theme und Plugins, auf Verträglichkeit geprüft.' ],
+	[ 'Aktualisieren', 'WordPress, Theme und Plugins.' ],
 	[ 'Testanfrage', 'Eine echte Anfrage über Ihr Formular.', true ],
 	[ 'Ankunft prüfen', 'Kommt sie im Postfach oder CRM an?', true ],
-	[ 'Messung prüfen', 'Wird die Anfrage gezählt, greift die Einwilligung?', true ],
+	[ 'Messung prüfen', 'Wird die Anfrage in Analytics oder Google Ads gezählt?', true ],
 	[ 'Bericht', 'Erste Zeile: Anfragen kommen an, ja oder nein.' ],
 ];
 
 $included = [
 	[ 'Anfrage-Test', 'Monatlich eine echte Testanfrage mit Prüfung der Zustellung' ],
-	[ 'Messung', 'Prüfung, ob die Anfrage in Analytics oder Google Ads zählt und die Einwilligung greift' ],
+	[ 'Messung', 'Prüfung, ob die Anfrage in Analytics oder Google Ads zählt' ],
 	[ 'Sicherheit', sprintf( 'Sicherheitsupdates werktags innerhalb von %d Stunden, alle übrigen Updates wöchentlich', HU_MAINTENANCE_SECURITY_UPDATE_HOURS ) ],
 	[ 'Backups', sprintf( 'Täglich, extern gespeichert, %d Tage aufbewahrt', HU_MAINTENANCE_BACKUP_RETENTION_DAYS ) ],
 	[ 'Überwachung', 'Erreichbarkeit und SSL-Zertifikat' ],
-	[ 'Bericht', 'Einmal im Monat, eine Seite, verständliches Deutsch' ],
+	[ 'Bericht', 'Einmal im Monat per Mail, nur für Sie, eine Seite' ],
 ];
 
 get_header();
@@ -81,7 +81,7 @@ get_header();
 			<div class="wartung-einstieg__text">
 				<p class="gegenstand">WordPress-Wartung · mit Anfrage-Test</p>
 				<h1>WordPress-Wartung, die prüft, ob Ihre Anfragen ankommen.</h1>
-				<p class="aufriss">Updates und Backups gehören zu jeder Wartung. Zusätzlich schicke ich jeden Monat eine echte Testanfrage durch Ihr Formular und prüfe, ob sie im Postfach ankommt und gemessen wird.</p>
+				<p class="aufriss">Updates und Backups gehören zu jeder Wartung. Ich prüfe zusätzlich jeden Monat mit einer echten Testanfrage: Kommt sie bei Ihnen an? Wird sie gezählt?</p>
 				<div class="ausgang">
 					<a class="tun" href="<?php echo esc_url( $request_url ); ?>" data-track-action="maintenance_request_hero" data-track-category="lead_gen" data-track-section="maintenance_hero">Wartung anfragen <span aria-hidden="true">→</span></a>
 					<a class="textlink" href="#bericht" data-track-action="maintenance_hero_report" data-track-category="navigation" data-track-section="maintenance_hero">So sieht der Monatsbericht aus</a>
@@ -114,7 +114,7 @@ get_header();
 						<?php endif; ?>
 					<?php endforeach; ?>
 				</ul>
-				<p class="wartung-test__ergebnis"><strong>Die Website läuft. Anfragen kommen nicht an.</strong> <span>Gefunden im Monatstest, behoben, bevor ein Kunde nachfragt.</span></p>
+				<p class="wartung-test__ergebnis"><strong>Die Website läuft. Anfragen kommen nicht an.</strong> <span>Der Monatstest findet das. Ich behebe es, bevor ein Kunde nachfragt.</span></p>
 			</figure>
 		</div>
 	</header>
@@ -124,7 +124,7 @@ get_header();
 			<div class="spalte-links"><div class="kapitel" aria-hidden="true"><span class="nr">01</span><span class="titel">Das blinde Feld</span><span class="strich"></span></div></div>
 			<div class="haupt">
 				<h2 class="kopf" id="wartung-gap-titel">Grüne Häkchen sagen nichts darüber, ob Anfragen ankommen.</h2>
-				<p class="vorspann">Übliche Wartung prüft, ob die Website erreichbar ist. Ob das Formular noch zustellt und die Messung noch zählt, prüft sie nicht. Genau dort gehen Anfragen verloren, oft wochenlang, weil das Formular trotzdem „Danke“ anzeigt.</p>
+				<p class="vorspann">Übliche Wartung prüft nur, ob die Website erreichbar ist. Ob Anfragen ankommen, prüft sie nicht. Das Formular zeigt trotzdem „Danke“. So fällt der Fehler oft wochenlang niemandem auf.</p>
 			</div>
 			<div class="voll">
 				<ol class="wartung-brueche">
@@ -154,7 +154,7 @@ get_header();
 			<div class="spalte-links"><div class="kapitel" aria-hidden="true"><span class="nr">02</span><span class="titel">Jeden Monat</span><span class="strich"></span></div></div>
 			<div class="haupt">
 				<h2 class="kopf" id="wartung-ablauf-titel">Sechs Schritte, in fester Reihenfolge.</h2>
-				<p class="vorspann">Erst sichern, dann ändern, dann nachweisen, dass alles wieder funktioniert. Die mittleren drei Schritte sind das, was diese Wartung von anderen unterscheidet.</p>
+				<p class="vorspann">Erst sichern, dann aktualisieren, dann prüfen. Die Schritte 3 bis 5 macht übliche Wartung nicht.</p>
 			</div>
 			<div class="voll">
 				<ol class="wartung-schritte">
@@ -170,10 +170,10 @@ get_header();
 		<div class="blatt reihe">
 			<div class="spalte-links"><div class="kapitel" aria-hidden="true"><span class="nr">03</span><span class="titel">Der Bericht</span><span class="strich"></span></div></div>
 			<div class="haupt">
-				<h2 class="kopf" id="wartung-bericht-titel">Die erste Zeile beantwortet die Frage, die zählt.</h2>
-				<p class="vorspann">Darunter steht, was geändert wurde, was aufgefallen ist und was ich empfehle. Auf einer Seite, ohne Fachjargon.</p>
+				<h2 class="kopf" id="wartung-bericht-titel">Ihr Bericht beginnt mit einer Frage: Kommen Anfragen an?</h2>
+				<p class="vorspann">Den Bericht bekommen nur Sie, einmal im Monat per Mail. Darunter steht, was ich geändert habe und was ich empfehle. Eine Seite, ohne Fachsprache.</p>
 				<div class="wartung-bericht" role="group" aria-label="Beispiel eines Monatsberichts">
-					<p class="wartung-bericht__kopf"><span class="mono">Bericht · Oktober · ihre-firma.de</span><span class="mono">Beispiel</span></p>
+					<p class="wartung-bericht__kopf"><span class="mono">Bericht · Oktober · ihre-firma.de</span><span class="mono">Privat · Beispiel</span></p>
 					<p class="mono">Anfragen kommen an</p>
 					<p class="wartung-bericht__antwort">Ja</p>
 					<p class="wartung-bericht__beleg">Testanfrage am 3. Oktober gesendet, nach 40 Sekunden im Postfach, als Conversion gezählt.</p>
@@ -186,12 +186,12 @@ get_header();
 				</div>
 			</div>
 			<aside class="marg">
-				<p class="note"><span class="label">Live auf dieser Website</span>Hier läuft dieselbe Prüfung jeden Morgen automatisch, öffentlich einsehbar.
+				<p class="note"><span class="label">Mein eigener Beweis</span>Auf hasimuener.de läuft dieselbe Prüfung jeden Morgen. Das Ergebnis zeige ich öffentlich, damit Sie es prüfen können. Für Ihre Website gibt es keine öffentliche Seite. Ihr Ergebnis steht nur in Ihrem Bericht.
 					<?php if ( '' !== $monitor_line ) : ?>
 						<b class="wartung-live" data-state="<?php echo esc_attr( $monitor_state ); ?>"><?php echo esc_html( $monitor_line ); ?></b>
 					<?php endif; ?>
 				</p>
-				<p class="note"><a class="satzlink" href="<?php echo esc_url( $monitor_url ); ?>" data-track-action="maintenance_monitor_proof" data-track-category="trust" data-track-section="maintenance_report">Zum Anfrage-Monitor →</a></p>
+				<p class="note"><a class="satzlink" href="<?php echo esc_url( $monitor_url ); ?>" data-track-action="maintenance_monitor_proof" data-track-category="trust" data-track-section="maintenance_report">Meinen Anfrage-Monitor ansehen →</a></p>
 			</aside>
 		</div>
 	</section>
@@ -201,7 +201,7 @@ get_header();
 			<div class="spalte-links"><div class="kapitel" aria-hidden="true"><span class="nr">04</span><span class="titel">Preis</span><span class="strich"></span></div></div>
 			<div class="haupt">
 				<h2 class="kopf" id="wartung-preis-titel">Ein Paket. Ein Preis. Zum Monatsende kündbar.</h2>
-				<p class="vorspann">Kein Stufenmenü, in dem das Wichtige erst im teuersten Paket steckt. Der Anfrage-Test ist immer dabei.</p>
+				<p class="vorspann">Keine Stufen, kein Premium-Paket. Der Anfrage-Test ist immer dabei.</p>
 			</div>
 			<div class="voll wartung-preis">
 				<div class="tafel wartung-preis__paket">
@@ -221,13 +221,13 @@ get_header();
 					<div>
 						<p class="mono">Vor dem Start</p>
 						<h3>Übernahme-Check · <span class="zahl"><?php echo esc_html( $check_price ); ?></span></h3>
-						<p>Ich prüfe Zugänge, Backups, Plugins, Formular und Messung, bevor ich Verantwortung übernehme. Wird voll angerechnet, wenn Sie die Wartung buchen. Den Befund behalten Sie in jedem Fall.</p>
+						<p>Bevor ich übernehme, prüfe ich Zugänge, Backups, Plugins, Formular und Messung. Buchen Sie danach die Wartung, wird der Preis voll angerechnet. Den Befund behalten Sie immer.</p>
 						<a class="textlink" href="<?php echo esc_url( $routes['takeover'] ); ?>" data-track-action="maintenance_to_takeover" data-track-category="navigation" data-track-section="maintenance_price">Was der Check klärt</a>
 					</div>
 					<div>
 						<p class="mono">Änderungen und Ausbau</p>
 						<h3>Getrennt von der Wartung</h3>
-						<p>Neue Seiten, Inhalte und Funktionen laufen über ein Kontingent: <?php echo esc_html( $retainer ); ?> im Monat. So bleibt der Wartungspreis fest.</p>
+						<p>Neue Seiten, Texte und Funktionen laufen über ein Stundenkontingent: <?php echo esc_html( $retainer ); ?> im Monat. So bleibt der Wartungspreis fest.</p>
 					</div>
 					<details class="wartung-ohne">
 						<summary>Was nicht enthalten ist</summary>
@@ -263,7 +263,7 @@ get_header();
 				</div>
 			</div>
 			<aside class="marg">
-				<p class="note"><span class="label">Einwand</span><b>„Ein Einzelner ist ein Ausfallrisiko.“</b> Berechtigt. Deshalb bleiben alle Zugänge bei Ihnen, Backups liegen extern, und jede Änderung steht im Bericht. Wenn wir aufhören, übernimmt jeder Nachfolger die Website ohne Rätselraten.</p>
+				<p class="note"><span class="label">Einwand</span><b>„Ein Einzelner ist ein Ausfallrisiko.“</b> Stimmt. Deshalb bleiben alle Zugänge bei Ihnen, die Backups liegen extern, und jede Änderung steht im Bericht. Hören wir auf, kann jeder Nachfolger sofort weitermachen.</p>
 			</aside>
 		</div>
 	</section>
@@ -291,7 +291,7 @@ get_header();
 					<ol class="wartung-start">
 						<li><span class="zahl">01</span><span><b>Anfrage senden.</b> Website-Adresse und eine Zeile zur bisherigen Betreuung genügen.</span></li>
 						<li><span class="zahl">02</span><span><b>Übernahme-Check.</b> Sie bekommen den Befund, auch wenn Sie danach nicht buchen.</span></li>
-						<li><span class="zahl">03</span><span><b>Wartung läuft.</b> Erster Monatstest im Folgemonat, der Bericht kommt per Mail.</span></li>
+						<li><span class="zahl">03</span><span><b>Wartung läuft.</b> Die erste Prüfung läuft im Folgemonat, der Bericht kommt per Mail an Sie.</span></li>
 					</ol>
 				</div>
 				<div class="wartung-abschluss__aktion">
