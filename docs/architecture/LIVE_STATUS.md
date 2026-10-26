@@ -868,7 +868,8 @@ Projektabschluss und ruhiger Agentur-Zweitweg, zentrale Metadaten und
   Meta-Keys liefert `nexus_get_inquiry_attribution_meta()` in `inc/crm.php`.
 - Anfrage-Monitor (`inc/anfrage-monitor.php`, Route `/anfrage-monitor/`,
   `noindex, follow`): aktiv erst mit `HU_MONITOR_TOKEN` in `wp-config.php`;
-  ohne Taktgeber (n8n, Stufe 1b) zeigt die Seite "Noch kein Testlauf".
+  ohne Runner (GitHub Actions `anfrage-monitor.yml`, Stufe 1b; läuft nur auf
+  `main` und braucht die drei GitHub-Secrets) zeigt die Seite "Noch kein Testlauf".
   Testanfragen umgehen Spam-Guard und Rate-Limit, nicht den Honeypot, und
   erscheinen weder in Pipeline noch Antwortfrist-Wächter noch Anfrage-Eingängen.
 - Antwortfrist-Wächter (`inc/crm-sales/watchdog.php`): stündlich am Event
