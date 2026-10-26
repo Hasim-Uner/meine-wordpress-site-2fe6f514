@@ -225,8 +225,8 @@ get_header();
 						<a class="textlink" href="<?php echo esc_url( $routes['takeover'] ); ?>" data-track-action="maintenance_to_takeover" data-track-category="navigation" data-track-section="maintenance_price">Was der Check klärt</a>
 					</div>
 					<div>
-						<p class="mono">Änderungen und Ausbau</p>
-						<h3>Getrennt von der Wartung</h3>
+						<p class="mono">Getrennt von der Wartung</p>
+						<h3>Betreuung: Änderungen und Ausbau</h3>
 						<p>Neue Seiten, Texte und Funktionen laufen über ein Stundenkontingent: <?php echo esc_html( $retainer ); ?> im Monat. So bleibt der Wartungspreis fest.</p>
 					</div>
 					<details class="wartung-ohne">

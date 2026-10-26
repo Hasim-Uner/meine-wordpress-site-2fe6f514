@@ -329,7 +329,7 @@ function hu_get_forced_singular_seo_map() {
 			// DSGVO-Queries, die diese Seite laut docs/seo/query-ownership.csv
 			// besitzt. CAPI steht dafuer in der Description.
 			'server-side-tracking-b2b' => [
-				'title'       => 'Server-Side Tracking einrichten lassen | GA4, Ads & Consent',
+				'title'       => 'Server-Side Tracking für B2B-Anfragen | GA4 & Google Ads',
 				'description' => sprintf( 'Server-Side Tracking für GA4 und Google Ads: Messbasis, Server-GTM, Consent und Paralleltest. Setup %s netto, Hosting extra. Meta CAPI separat.', $tracking_setup_price ),
 			],
 			// Informationaler Supporting-Artikel. Der Kaufintent und die Anbieter-
