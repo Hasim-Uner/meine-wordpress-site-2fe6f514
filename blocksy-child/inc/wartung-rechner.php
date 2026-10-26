@@ -23,7 +23,7 @@ if ( ! defined( 'ABSPATH' ) ) {
  * Default inputs of the calculator.
  *
  * Der Artikel rechnet im Fließtext mit genau diesen Werten (15 Anfragen, 20 %,
- * 1.500 €, 21 Tage). Wer sie ändert, ändert den Beispielabsatz mit.
+ * 2.000 €, 21 Tage). Wer sie ändert, ändert den Beispielabsatz mit.
  *
  * @return array<string, array<string, int|string>>
  */
@@ -31,7 +31,7 @@ function hu_wartung_rechner_fields() : array {
 	return [
 		'anfragen' => [ 'label' => 'Anfragen über die Website pro Monat', 'min' => 1, 'max' => 200, 'step' => 1, 'value' => 15 ],
 		'quote'    => [ 'label' => 'Davon werden zu Aufträgen', 'min' => 1, 'max' => 60, 'step' => 1, 'value' => 20 ],
-		'db'       => [ 'label' => 'Deckungsbeitrag je Auftrag', 'min' => 100, 'max' => 20000, 'step' => 100, 'value' => 1500 ],
+		'db'       => [ 'label' => 'Deckungsbeitrag je Auftrag', 'min' => 100, 'max' => 20000, 'step' => 100, 'value' => 2000 ],
 		'tage'     => [ 'label' => 'Tage, bis es jemand merkt', 'min' => 1, 'max' => 90, 'step' => 1, 'value' => 21 ],
 		'wartung'  => [
 			'label' => 'Wartung pro Monat, netto',
