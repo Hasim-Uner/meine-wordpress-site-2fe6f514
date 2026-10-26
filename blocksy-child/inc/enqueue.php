@@ -291,6 +291,11 @@ function hu_enqueue_assets() {
 			hu_enqueue_js( 'nexus-cpo-calculator-js', 'cpo-calculator.js', [ 'nexus-core-js' ] );
 		}
 
+		if ( has_shortcode( $post_content, 'hu_wartung_rechner' ) ) {
+			hu_enqueue_css( 'nexus-wartung-rechner-css', 'wartung-rechner.css', [ 'nexus-single-editorial-css' ] );
+			hu_enqueue_js( 'nexus-wartung-rechner-js', 'wartung-rechner.js', [] );
+		}
+
 		if ( $is_checkfox_decision ) {
 			hu_enqueue_css( 'nexus-checkfox-decision-css', 'checkfox-decision.css', [ 'nexus-cpo-calculator-css' ] );
 			hu_enqueue_js( 'nexus-checkfox-decision-js', 'checkfox-decision.js', [ 'nexus-cpo-calculator-js' ] );

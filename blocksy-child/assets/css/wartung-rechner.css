@@ -1,0 +1,140 @@
+/* Rechner „Was kostet ein Formular, das still ausfällt?“ — [hu_wartung_rechner].
+   Nur Tokens aus system.css, kein Farbwert, kein eigener Radius. Eingabe auf
+   Papier, Ergebnis auf der Geräte-Fläche wie die Messflächen der Money Pages. */
+
+.hu-wartung-rechner {
+	display: grid;
+	grid-template-columns: minmax(0, 1fr);
+	margin: var(--s4) 0;
+	border: 1px solid var(--haar);
+	border-radius: var(--r0);
+	background: var(--papier);
+	color: var(--tinte);
+	overflow: hidden;
+}
+
+@media (min-width: 760px) {
+	.hu-wartung-rechner {
+		grid-template-columns: minmax(0, 1.1fr) minmax(0, 1fr);
+	}
+}
+
+.hu-wartung-rechner__eingabe,
+.hu-wartung-rechner__ergebnis {
+	padding: var(--s3);
+}
+
+.hu-wartung-rechner__kicker {
+	margin: 0 0 var(--s0);
+	font-family: var(--mono);
+	font-size: var(--mono-m);
+	letter-spacing: 0.08em;
+	text-transform: uppercase;
+	color: var(--matt);
+}
+
+.hu-wartung-rechner__titel {
+	margin: 0 0 var(--s3);
+	font-family: var(--serif-display);
+	font-size: clamp(1.25rem, 1.1rem + 0.6vw, 1.5rem);
+	line-height: 1.2;
+}
+
+.hu-wartung-rechner__feld {
+	display: grid;
+	gap: var(--s0);
+	margin-bottom: var(--s2);
+}
+
+.hu-wartung-rechner__feld label {
+	display: flex;
+	justify-content: space-between;
+	gap: var(--s2);
+	font-size: var(--grad-klein);
+	line-height: 1.35;
+}
+
+.hu-wartung-rechner__feld output {
+	flex: none;
+	font-family: var(--mono);
+	font-size: var(--mono-l);
+	font-variant-numeric: tabular-nums;
+}
+
+.hu-wartung-rechner__feld input[type="range"] {
+	width: 100%;
+	min-height: 44px;
+	margin: 0;
+	accent-color: var(--stempel);
+}
+
+.hu-wartung-rechner__feld input[type="range"]:focus-visible {
+	outline: 2px solid var(--stempel);
+	outline-offset: 2px;
+}
+
+.hu-wartung-rechner__hinweis {
+	margin: 0;
+	font-size: var(--grad-klein);
+	color: var(--grau);
+}
+
+.hu-wartung-rechner__ergebnis {
+	display: flex;
+	flex-direction: column;
+	gap: var(--s2);
+	background: var(--geraet-papier);
+	color: var(--geraet-tinte);
+}
+
+.hu-wartung-rechner__ergebnis .hu-wartung-rechner__kicker,
+.hu-wartung-rechner__notiz {
+	color: var(--geraet-grau);
+}
+
+.hu-wartung-rechner__zahl {
+	margin: 0;
+	font-family: var(--mono);
+	font-size: clamp(2rem, 1.5rem + 2.5vw, 2.75rem);
+	font-weight: 600;
+	line-height: 1;
+	font-variant-numeric: tabular-nums;
+	color: var(--geraet-stempel);
+}
+
+.hu-wartung-rechner__zeilen {
+	margin: 0;
+}
+
+.hu-wartung-rechner__zeilen div {
+	display: flex;
+	justify-content: space-between;
+	gap: var(--s2);
+	padding-top: var(--s1);
+	margin-top: var(--s1);
+	border-top: 1px solid var(--geraet-haar);
+	font-size: var(--grad-klein);
+}
+
+.hu-wartung-rechner__zeilen dt {
+	margin: 0;
+	font-weight: 400;
+}
+
+.hu-wartung-rechner__zeilen dd {
+	margin: 0;
+	font-family: var(--mono);
+	font-variant-numeric: tabular-nums;
+}
+
+.hu-wartung-rechner__satz {
+	margin: 0;
+	padding-left: var(--s1);
+	border-left: 2px solid var(--geraet-stempel);
+	line-height: 1.5;
+}
+
+.hu-wartung-rechner__notiz {
+	margin: 0;
+	font-size: var(--mono-l);
+}
