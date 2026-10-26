@@ -8,7 +8,6 @@ blocksy-child/assets/css/footer-cta.css
 blocksy-child/assets/css/homepage-redesign.css
 blocksy-child/assets/css/homepage.css
 blocksy-child/assets/css/related-content.css
-blocksy-child/assets/css/seo-cornerstone.css
 blocksy-child/assets/css/seo.css
 blocksy-child/assets/css/single-editorial.css
 blocksy-child/assets/css/single.css

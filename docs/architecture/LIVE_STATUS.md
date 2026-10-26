@@ -715,6 +715,16 @@ Projektabschluss und ruhiger Agentur-Zweitweg, zentrale Metadaten und
   führt zur CRO-Analyse und ihrer Anfrage; `/wordpress-projekte-auslagern/`
   zu White-Label und zur Aufgabenbeschreibung. Die Kontextbrücke und
   „Weiterarbeiten“ verwenden dieselben Ziele und behalten ihre Tracking-Hooks.
+- **Technischer SEO-Fachartikel** (`/technisches-seo-performance-fundament/`):
+  `page-seo-cornerstone.php` bleibt Quelle für Artikeltext und sein bestehendes
+  Schema, verwendet aber den gemeinsamen Lesekopf und die Reader-Klassen:
+  Titel über dem vollständig sichtbaren Beitragsbild, gemeinsamer Satzspiegel
+  und Kapitelskala. `seo-cornerstone.css` gestaltet ausschließlich die lokalen
+  Inhaltsmodule mit Gutachten-Tokens. Breite Tabellen scrollen innerhalb der
+  Lesespalte; das statische Inhaltsverzeichnis bleibt ohne JavaScript nutzbar.
+  Buttons, FAQ und Autor verwenden lesbare Kontraste. Die Agentic-Coding-Route,
+  gemeinsame Reader-Dateien, URL, Anfrageziele und Schema bleiben unverändert.
+  Repo-Stand; Produktionsverifikation erfolgt nach Veröffentlichung.
 - **Artikel-Bausteine** (`inc/editorial-bausteine.php`): Shortcodes
   `[hu_kurz]`, `[hu_notiz]`, `[hu_abb]`, `[hu_fall]`, `[hu_pruefliste]`,
   `[hu_abschluss]`, `[hu_quellen]` und Klassen für reines HTML. CSS und JS

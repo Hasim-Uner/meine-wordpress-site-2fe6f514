@@ -1,202 +1,152 @@
-/* =========================================
-   SEO CORNERSTONE (Single-Layout Integration)
-   ========================================= */
+/* SEO-Fachartikel: Inhaltsmodule auf dem gemeinsamen Article Reader.
+   Kopf, Satzspiegel, Typografie und Kapitelskala kommen unveraendert aus
+   article-reader-body.css, article-reader-toc.css und single-reader-unified.css.
+   modern-web-guidance: typography, color. */
 
-.seo-cornerstone {
-	background: var(--nx-bg-deep);
-	color: var(--nx-text);
+.seo-cornerstone.nexus-single-container .nexus-article-cover .nexus-hero-image {
+	aspect-ratio: auto;
+	block-size: auto;
+	background: var(--geraet-papier);
 }
 
-.seo-cornerstone .nexus-article-hero {
-	margin-bottom: 0;
-}
-
-.seo-cornerstone .nexus-hero-image {
-	min-height: 500px;
-	overflow: hidden;
-	display: flex;
-	align-items: center;
-	justify-content: center;
-}
-
-.seo-cornerstone .nexus-hero-image img {
-	width: 100%;
-	height: auto;
-	max-width: 100%;
-	max-height: 90%;
+.seo-cornerstone.nexus-single-container .nexus-article-cover .nexus-hero-image img {
+	display: block;
+	inline-size: min(100%, 600px);
+	max-block-size: 32rem;
+	margin-inline: auto;
 	object-fit: contain;
-	object-position: center center;
 }
 
-.seo-cornerstone__hero-placeholder {
-	width: 100%;
-	height: 100%;
-	min-height: 420px;
-	background:
-		radial-gradient(circle at 20% 25%, rgba(255, 176, 32, 0.2), transparent 52%),
-		radial-gradient(circle at 85% 80%, rgba(255, 176, 32, 0.08), transparent 46%),
-		linear-gradient(145deg, #15171b, #090a0d);
+.seo-cornerstone .seo-cornerstone__content {
+	min-inline-size: 0;
+	overflow-wrap: anywhere;
 }
 
-.seo-cornerstone__subtitle {
-	max-width: 760px;
-	margin: 0;
-	color: var(--nx-text-muted);
-	line-height: 1.65;
-	font-size: 1.05rem;
+.seo-cornerstone .seo-cornerstone__content .seo-cornerstone__table {
+	display: block;
+	inline-size: 100%;
+	max-inline-size: 100%;
+	overflow-x: auto;
 }
 
 .seo-cornerstone__meta {
 	display: flex;
 	flex-wrap: wrap;
-	align-items: center;
-	gap: 0.55rem;
-	margin-top: 1rem;
-	font-size: 0.82rem;
-	color: var(--nx-text-dim);
+	gap: var(--s1);
+	margin-top: var(--s2);
+	font-size: var(--grad-klein);
+	color: var(--grau);
 }
 
-.seo-cornerstone__meta-sep {
-	opacity: 0.4;
-}
-
-.seo-cornerstone .nexus-post-layout {
-	margin-top: 3.25rem;
-}
-
-.seo-cornerstone .nexus-article-content .wp-block-table-of-contents,
-.seo-cornerstone .nexus-article-content .ez-toc-container,
-.seo-cornerstone .nexus-article-content .rank-math-toc-block,
-.seo-cornerstone .nexus-article-content .sticky-toc,
-.seo-cornerstone .nexus-article-content nav[id*="toc"],
-.seo-cornerstone .nexus-article-content nav[class*="toc"],
-.seo-cornerstone .nexus-article-content > div[id*="toc"],
-.seo-cornerstone .nexus-article-content > div[class*="toc-container"],
-.seo-cornerstone .nexus-article-content > div[class*="table-of-contents"] {
-	display: none !important;
-}
-
-.seo-cornerstone__cta-box {
-	margin-top: 2rem;
-	padding: 1.35rem;
-	border: 1px solid var(--nx-border-gold);
-	border-radius: var(--nx-radius-lg);
-	background: rgba(255, 176, 32, 0.05);
+.seo-cornerstone__inline-cta,
+.seo-cornerstone__cta-box,
+.seo-cornerstone__visual-note {
+	margin-block: var(--s4);
+	padding: var(--s3);
+	border-block: 1px solid var(--haar);
+	background: var(--zone);
+	color: var(--tinte);
 }
 
 .seo-cornerstone__inline-cta {
-	margin-top: 1.4rem;
-	margin-bottom: 1.4rem;
-	padding: 1rem 1.1rem;
-	background: rgba(255, 176, 32, 0.06);
-	border: 1px solid var(--nx-border-gold);
-	border-radius: var(--nx-radius);
 	display: flex;
-	gap: 0.8rem;
+	flex-wrap: wrap;
 	align-items: center;
 	justify-content: space-between;
-	flex-wrap: wrap;
+	gap: var(--s2);
 }
 
 .seo-cornerstone__inline-cta p {
+	flex: 1 1 16rem;
 	margin: 0;
-	color: var(--nx-text);
-	font-weight: 600;
-}
-
-.seo-cornerstone__visual-note {
-	margin-top: 1rem;
-	margin-bottom: 1rem;
-	padding: 0.95rem 1rem;
-	border: 1px solid var(--nx-border);
-	border-radius: var(--nx-radius);
-	background: rgba(255, 255, 255, 0.03);
-	color: var(--nx-text-muted);
-}
-
-.seo-cornerstone__table {
-	width: 100%;
-	border-collapse: collapse;
-	margin-top: 0.8rem;
-	margin-bottom: 1.1rem;
-	font-size: 0.95rem;
-}
-
-.seo-cornerstone__table th,
-.seo-cornerstone__table td {
-	border: 1px solid var(--nx-border);
-	padding: 0.6rem 0.7rem;
-	text-align: left;
-}
-
-.seo-cornerstone__table th {
-	color: var(--nx-text);
-	background: rgba(255, 255, 255, 0.04);
-}
-
-.seo-cornerstone__cta-box h2 {
-	margin-top: 0;
 }
 
 .seo-cornerstone__cta-buttons {
-	margin-top: 1rem;
 	display: flex;
 	flex-wrap: wrap;
-	gap: 0.8rem;
+	gap: var(--s1);
+	margin-top: var(--s2);
 }
 
-.seo-cornerstone__cta-buttons .nx-btn {
-	text-decoration: none !important;
+.seo-cornerstone .seo-cornerstone__content .seo-cornerstone__cta-box h2 {
+	margin: 0 0 var(--s2);
+	padding: 0;
+	border: 0;
 }
 
-.seo-cornerstone__cta-buttons .nx-btn--primary {
-	color: #0b0e12 !important;
-	background: var(--nx-gold) !important;
-	border: 1px solid transparent;
+.seo-cornerstone .seo-cornerstone__button {
+	display: inline-flex;
+	align-items: center;
+	justify-content: center;
+	max-inline-size: 100%;
+	min-block-size: 44px;
+	padding: var(--s1) var(--s2);
+	border: 1px solid var(--strich);
+	border-radius: var(--r0);
+	background: var(--papier);
+	/* single-editorial.css erzwingt noch die alte inverse Button-Schrift. */
+	color: var(--tinte) !important;
+	font-family: var(--mono);
+	font-size: var(--mono-l);
+	line-height: 1.5;
+	text-align: center;
+	text-decoration: none;
+	text-transform: none;
+	letter-spacing: normal;
+	margin: 0;
+	box-shadow: none;
+	white-space: normal;
+	overflow-wrap: anywhere;
 }
 
-.seo-cornerstone__cta-buttons .nx-btn--primary:visited {
-	color: #0b0e12 !important;
+.seo-cornerstone .seo-cornerstone__button--primary {
+	border-color: var(--stempel);
+	background: var(--stempel);
+	color: var(--papier) !important;
 }
 
-.seo-cornerstone__cta-buttons .nx-btn--primary:hover,
-.seo-cornerstone__cta-buttons .nx-btn--primary:focus-visible {
-	color: #0b0e12 !important;
-	background: var(--nx-gold-hover) !important;
+.seo-cornerstone .seo-cornerstone__button:hover {
+	border-color: var(--stempel);
+	background: var(--zone);
+	color: var(--stempel) !important;
 }
 
-.seo-cornerstone__cta-buttons .nx-btn--ghost {
-	color: var(--nx-text) !important;
-	background: rgba(255, 255, 255, 0.04) !important;
-	border: 1px solid var(--nx-border-hover) !important;
+.seo-cornerstone .seo-cornerstone__button:focus-visible {
+	outline: 2px solid var(--stempel);
+	outline-offset: 3px;
 }
 
-.seo-cornerstone__cta-buttons .nx-btn--ghost:visited {
-	color: var(--nx-text) !important;
+.seo-cornerstone .seo-cornerstone__faq {
+	padding-block: var(--s2);
+	border: 0;
+	border-bottom: 1px solid var(--haar);
+	border-radius: var(--r0);
+	background: transparent;
 }
 
-.seo-cornerstone__cta-buttons .nx-btn--ghost:hover,
-.seo-cornerstone__cta-buttons .nx-btn--ghost:focus-visible {
-	color: var(--nx-text) !important;
-	background: rgba(255, 255, 255, 0.08) !important;
-	border-color: var(--nx-text) !important;
+.seo-cornerstone .seo-cornerstone__faq summary {
+	padding-block: var(--s1);
+	font-weight: 600;
+	color: var(--tinte);
+	cursor: pointer;
 }
 
-@media (max-width: 768px) {
-	.seo-cornerstone__subtitle {
-		font-size: 1rem;
-	}
+.seo-cornerstone .seo-cornerstone__faq summary:focus-visible {
+	outline: 2px solid var(--stempel);
+	outline-offset: 3px;
+}
 
-	.seo-cornerstone .nexus-hero-image {
-		min-height: 290px;
-	}
+.seo-cornerstone__answer {
+	padding-top: var(--s1);
+	color: var(--grau);
+}
 
-	.seo-cornerstone .nexus-hero-image img {
-		max-width: 100%;
-		max-height: 92%;
-	}
+/* Ohne JavaScript bleibt das serverseitige Kapitelverzeichnis erreichbar.
+   Sobald die Kapitelskala uebernimmt, gelten ausschliesslich deren Regeln. */
+.seo-cornerstone .nexus-sidebar.nexus-reader-toc:not(.hu-toc-aside) {
+	display: block !important;
+}
 
-	.seo-cornerstone__hero-placeholder {
-		min-height: 280px;
-	}
+.seo-cornerstone .nexus-reader-toc:not(.hu-toc-aside) #toc-list {
+	display: block !important;
 }
