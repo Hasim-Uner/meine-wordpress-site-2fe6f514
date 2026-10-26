@@ -60,8 +60,12 @@ function hu_maintenance_faq_items() {
 			'answer'   => 'Nein. Ihr Ergebnis steht nur in Ihrem Monatsbericht, den Sie per Mail bekommen. Öffentlich ist nur der Anfrage-Monitor meiner eigenen Website. Er zeigt, dass die Prüfung funktioniert.',
 		],
 		[
+			'question' => 'Was ist der Unterschied zwischen Wartung und Betreuung?',
+			'answer'   => sprintf( 'Die Wartung hält die Technik aktuell und prüft jeden Monat, ob Anfragen ankommen. Die Betreuung umfasst Änderungen an Inhalten und Funktionen, zum Beispiel neue Seiten oder Texte. Sie läuft getrennt über ein Stundenkontingent: %s im Monat.', hu_freelancer_retainer_display() ),
+		],
+		[
 			'question' => 'Gibt es eine Mindestlaufzeit?',
-			'answer'   => 'Nein. Die Wartung ist zum Monatsende kündbar. Zugänge, Backups und Bericht bleiben bei Ihnen.',
+			'answer'   => 'Nein. Es ist ein Wartungsvertrag ohne Mindestlaufzeit, zum Monatsende kündbar. Zugänge, Backups und Bericht bleiben bei Ihnen.',
 		],
 		[
 			'question' => 'Übernehmen Sie auch Websites, die jemand anderes gebaut hat?',
