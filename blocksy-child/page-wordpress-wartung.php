@@ -186,7 +186,7 @@ get_header();
 				</div>
 			</div>
 			<aside class="marg">
-				<p class="note"><span class="label">Mein eigener Beweis</span>Auf hasimuener.de läuft derselbe Test jeden Morgen. Das Ergebnis zeige ich öffentlich, damit Sie es prüfen können. Für Ihre Website gibt es keine öffentliche Seite. Ihr Ergebnis steht nur in Ihrem Bericht.
+				<p class="note"><span class="label">Mein eigener Beweis</span>Auf hasimuener.de läuft dieselbe Prüfung jeden Morgen. Das Ergebnis zeige ich öffentlich, damit Sie es prüfen können. Für Ihre Website gibt es keine öffentliche Seite. Ihr Ergebnis steht nur in Ihrem Bericht.
 					<?php if ( '' !== $monitor_line ) : ?>
 						<b class="wartung-live" data-state="<?php echo esc_attr( $monitor_state ); ?>"><?php echo esc_html( $monitor_line ); ?></b>
 					<?php endif; ?>
@@ -291,7 +291,7 @@ get_header();
 					<ol class="wartung-start">
 						<li><span class="zahl">01</span><span><b>Anfrage senden.</b> Website-Adresse und eine Zeile zur bisherigen Betreuung genügen.</span></li>
 						<li><span class="zahl">02</span><span><b>Übernahme-Check.</b> Sie bekommen den Befund, auch wenn Sie danach nicht buchen.</span></li>
-						<li><span class="zahl">03</span><span><b>Wartung läuft.</b> Der erste Test kommt im Folgemonat, der Bericht per Mail an Sie.</span></li>
+						<li><span class="zahl">03</span><span><b>Wartung läuft.</b> Die erste Prüfung läuft im Folgemonat, der Bericht kommt per Mail an Sie.</span></li>
 					</ol>
 				</div>
 				<div class="wartung-abschluss__aktion">

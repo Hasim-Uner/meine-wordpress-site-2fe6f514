@@ -57,7 +57,7 @@ function hu_maintenance_faq_items() {
 		],
 		[
 			'question' => 'Ist das Ergebnis für meine Website öffentlich zu sehen?',
-			'answer'   => 'Nein. Ihr Ergebnis steht nur in Ihrem Monatsbericht, den Sie per Mail bekommen. Öffentlich ist nur der Anfrage-Monitor meiner eigenen Website. Er zeigt, dass der Test funktioniert.',
+			'answer'   => 'Nein. Ihr Ergebnis steht nur in Ihrem Monatsbericht, den Sie per Mail bekommen. Öffentlich ist nur der Anfrage-Monitor meiner eigenen Website. Er zeigt, dass die Prüfung funktioniert.',
 		],
 		[
 			'question' => 'Gibt es eine Mindestlaufzeit?',
