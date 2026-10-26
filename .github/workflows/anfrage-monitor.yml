@@ -20,7 +20,9 @@ jobs:
     # Geheimnisse nur fuer main: kein Zugriff aus Branches oder Pull Requests.
     if: github.ref == 'refs/heads/main'
     runs-on: ubuntu-24.04
-    timeout-minutes: 20
+    # Erster Lauf am 2026-10-26: Browser-Installation 11 Minuten, dazu bis zu
+    # 10 Minuten Postfachabfrage. 20 Minuten brachen den Lauf mitten im Test ab.
+    timeout-minutes: 35
     steps:
       - name: Checkout
         uses: actions/checkout@v4
@@ -29,6 +31,12 @@ jobs:
         uses: actions/setup-python@v5
         with:
           python-version: '3.12'
+
+      - name: Cache Playwright-Browser
+        uses: actions/cache@v4
+        with:
+          path: ~/.cache/ms-playwright
+          key: playwright-chromium-1.63.0-${{ runner.os }}
 
       - name: Install Playwright
         run: |
