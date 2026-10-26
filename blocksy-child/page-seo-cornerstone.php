@@ -23,31 +23,20 @@ $project_cta_label = 'SEO-Projekt anfragen';
 $seo_cost_answer = 'Der Preis richtet sich nach betroffenen Seiten, Prüffragen und nötiger Umsetzung. Befund und Korrekturen werden getrennt vereinbart. Umfang, Preis und Abnahmekriterien stehen vor der Beauftragung fest.';
 
 get_header();
+// Einzelbeitraege betreten denselben Lesekopf wie der gemeinsame Reader.
+// Bei Pages hat inc/header.php den Kopf bereits ausgegeben.
+if ( is_singular( 'post' ) ) {
+	get_template_part( 'template-parts/blog-header' );
+}
 ?>
 
-<div class="site-main nexus-single-container seo-cornerstone">
+<div class="nexus-reading-progress" aria-hidden="true"></div>
+
+<div class="site-main nexus-single-container nexus-single-container--with-blog-header nexus-single-container--editorial hu-hp seo-cornerstone">
 
 	<?php while ( have_posts() ) : the_post(); ?>
 
-		<header class="nexus-article-hero" data-track-section="article_hero">
-
-			<div class="nexus-hero-image">
-				<?php if ( has_post_thumbnail() ) : ?>
-					<?php
-					the_post_thumbnail(
-						'full',
-						[
-							'loading'       => 'eager',
-							'fetchpriority' => 'high',
-							'decoding'      => 'async',
-							'sizes'         => '(max-width: 900px) 100vw, 50vw',
-						]
-					);
-					?>
-				<?php else : ?>
-					<div class="seo-cornerstone__hero-placeholder" aria-hidden="true"></div>
-				<?php endif; ?>
-			</div>
+		<header class="nexus-article-hero nexus-article-hero--editorial" data-track-section="article_hero" aria-labelledby="nexus-article-title">
 
 			<div class="nexus-hero-content">
 
@@ -57,9 +46,9 @@ get_header();
 					<span class="nexus-reading-time">8 Min. Lesezeit</span>
 				</div>
 
-				<h1 class="nexus-title">Technisches SEO für B2B: Performance, Tracking und Landingpages</h1>
+				<h1 id="nexus-article-title" class="nexus-title">Technisches SEO für B2B: Performance, Tracking und Landingpages</h1>
 
-				<p class="seo-cornerstone__subtitle">
+				<p class="nexus-subtitle">
 					Technisches SEO als Infrastruktur: Crawlability, Page Experience, Tracking und Conversion gemeinsam prüfen — ohne Kanal-Kausalitäten zu erfinden.
 				</p>
 
@@ -73,21 +62,41 @@ get_header();
 					<div class="nexus-author-row">
 						<?php echo get_avatar( get_the_author_meta( 'ID' ), 48 ); ?>
 						<div class="nexus-author-info">
-							<span class="by"><?php esc_html_e( 'Written by', 'blocksy-child' ); ?></span>
+							<span class="by"><?php esc_html_e( 'Geschrieben von', 'blocksy-child' ); ?></span>
 							<span class="name"><?php the_author(); ?></span>
 						</div>
 					</div>
 
-					<?php if ( is_singular( 'post' ) && function_exists( 'nexus_render_share_buttons' ) ) { nexus_render_share_buttons(); } ?>
 				</div>
 
 			</div>
 		</header>
 
+		<figure class="nexus-article-cover" data-track-section="article_cover">
+			<div class="nexus-hero-image">
+				<?php if ( has_post_thumbnail() ) : ?>
+					<?php
+					the_post_thumbnail(
+						'full',
+						[
+							'loading'       => 'eager',
+							'fetchpriority' => 'high',
+							'decoding'      => 'async',
+							'sizes'         => '(max-width: 600px) 100vw, 600px',
+						]
+					);
+					?>
+				<?php else : ?>
+					<div class="seo-cornerstone__hero-placeholder" aria-hidden="true"></div>
+				<?php endif; ?>
+			</div>
+
+		</figure>
+
 		<div class="nexus-post-layout">
-			<aside class="nexus-sidebar" aria-label="Inhaltsverzeichnis">
-				<div class="sticky-toc">
-					<div class="sticky-toc__label">Inhalt</div>
+			<aside class="nexus-sidebar nexus-reader-toc" aria-label="Inhaltsverzeichnis">
+				<div class="sticky-toc nexus-reader-toc__shell">
+					<h2>Inhalt</h2>
 					<ul id="toc-list">
 						<li><a href="#problem">Das eigentliche Problem</a></li>
 						<li><a href="#rechnung">Rechenbeispiel: Der stille Verlust</a></li>
@@ -109,7 +118,7 @@ get_header();
 				</div>
 			</aside>
 
-			<article class="nexus-article-content seo-cornerstone__content nx-prose" id="article-content">
+			<article class="nexus-article-content seo-cornerstone__content" id="article-content" data-track-section="article_content">
 
 				<h2 id="problem">Das eigentliche Problem: Mehr Budget, gleiche Reibung</h2>
 				<p>Viele Unternehmen erhöhen jedes Jahr den Media-Spend in Ads. Trotzdem verbessert sich die Lead-Qualität nicht proportional. Die Ursache liegt meist nicht in der Kampagnenidee, sondern in der Zielseite und im technischen Fundament dahinter.</p>
@@ -143,7 +152,7 @@ get_header();
 
 				<div class="seo-cornerstone__inline-cta">
 					<p>Wie tragfähig ist Ihr Fundament heute?</p>
-					<a class="nx-btn nx-btn--ghost" href="<?php echo esc_url( $project_url ); ?>" data-track-action="cta_inline_cornerstone_project" data-track-category="lead_gen">
+					<a class="nexus-btn seo-cornerstone__button" href="<?php echo esc_url( $project_url ); ?>" data-track-action="cta_inline_cornerstone_project" data-track-category="lead_gen">
 						<?php echo esc_html( $project_cta_label ); ?>
 					</a>
 				</div>
@@ -202,7 +211,7 @@ get_header();
 
 				<div class="seo-cornerstone__inline-cta">
 					<p>Sie wollen sehen, wo Ihre Lead-Reibung entsteht? <?php echo esc_html( hu_response_promise( 'sentence' ) ); ?></p>
-					<a class="nx-btn nx-btn--ghost" href="<?php echo esc_url( $project_url ); ?>" data-track-action="cta_inline_cornerstone_reibung" data-track-category="lead_gen">
+					<a class="nexus-btn seo-cornerstone__button" href="<?php echo esc_url( $project_url ); ?>" data-track-action="cta_inline_cornerstone_reibung" data-track-category="lead_gen">
 						Lead-Reibung analysieren
 					</a>
 				</div>
@@ -377,43 +386,50 @@ get_header();
 					<h2>Nächster Schritt</h2>
 					<p>Beschreiben Sie Ihre Website und das beobachtete technische Problem. Auf der Leistungsseite sehen Sie den möglichen Prüfumfang und wie Befund, Korrektur und Abnahme getrennt vereinbart werden.</p>
 					<div class="seo-cornerstone__cta-buttons">
-						<a class="nx-btn nx-btn--primary" href="<?php echo esc_url( $seo_url ); ?>" data-track-action="cta_seo_cornerstone_audit" data-track-category="lead_gen">Technischen SEO-Leistungsumfang ansehen</a>
-							<a class="nx-btn nx-btn--ghost" href="<?php echo esc_url( $project_url ); ?>" data-track-action="cta_seo_cornerstone_project" data-track-category="lead_gen">SEO-Projekt anfragen</a>
+						<a class="nexus-btn seo-cornerstone__button seo-cornerstone__button--primary" href="<?php echo esc_url( $seo_url ); ?>" data-track-action="cta_seo_cornerstone_audit" data-track-category="lead_gen">Technischen SEO-Leistungsumfang ansehen</a>
+							<a class="nexus-btn seo-cornerstone__button" href="<?php echo esc_url( $project_url ); ?>" data-track-action="cta_seo_cornerstone_project" data-track-category="lead_gen">SEO-Projekt anfragen</a>
 					</div>
 				</div>
 
 				<h2>FAQ</h2>
-				<details class="nx-faq__item" name="hu-faq-cornerstone">
+				<details class="seo-cornerstone__faq" name="hu-faq-cornerstone">
 					<summary>Was kostet technisches SEO für den Mittelstand?</summary>
-					<div class="nx-faq__content"><?php echo esc_html( $seo_cost_answer ); ?></div>
+					<div class="seo-cornerstone__answer"><?php echo esc_html( $seo_cost_answer ); ?></div>
 				</details>
-				<details class="nx-faq__item" name="hu-faq-cornerstone">
+				<details class="seo-cornerstone__faq" name="hu-faq-cornerstone">
 					<summary>Wie hängen Quality Score und Ladezeit zusammen?</summary>
-					<div class="nx-faq__content">Die Landingpage-Erfahrung ist ein zentraler Bestandteil der Anzeigenqualität. Langsame oder instabile Seiten verschlechtern Nutzersignale, was den Quality Score belastet und CPC-Druck erhöht. Bessere Ladezeiten und klare Seitenstruktur verbessern Relevanz und Wirtschaftlichkeit gleichzeitig.</div>
+					<div class="seo-cornerstone__answer">Die Landingpage-Erfahrung ist ein zentraler Bestandteil der Anzeigenqualität. Langsame oder instabile Seiten verschlechtern Nutzersignale, was den Quality Score belastet und CPC-Druck erhöht. Bessere Ladezeiten und klare Seitenstruktur verbessern Relevanz und Wirtschaftlichkeit gleichzeitig.</div>
 				</details>
-				<details class="nx-faq__item" name="hu-faq-cornerstone">
+				<details class="seo-cornerstone__faq" name="hu-faq-cornerstone">
 					<summary>Was bringt technisches SEO konkret für Google Ads?</summary>
-					<div class="nx-faq__content">Technisches SEO verbessert die Grundlage, auf der Ads konvertieren: schnellere Zielseiten, stabilere mobile Erfahrung, sauberes Tracking und klarere Informationsarchitektur. Das führt typischerweise zu besserer Seitenerfahrung, geringerer Reibung im Funnel und dadurch zu besserem Cost per Lead.</div>
+					<div class="seo-cornerstone__answer">Technisches SEO verbessert die Grundlage, auf der Ads konvertieren: schnellere Zielseiten, stabilere mobile Erfahrung, sauberes Tracking und klarere Informationsarchitektur. Das führt typischerweise zu besserer Seitenerfahrung, geringerer Reibung im Funnel und dadurch zu besserem Cost per Lead.</div>
 				</details>
-				<details class="nx-faq__item" name="hu-faq-cornerstone">
+				<details class="seo-cornerstone__faq" name="hu-faq-cornerstone">
 					<summary>Wie schnell sind erste Effekte sichtbar?</summary>
-					<div class="nx-faq__content">Technik- und Tracking-Effekte sind häufig in wenigen Wochen messbar. Organische Sichtbarkeit und belastbare Inbound-Effekte bauen sich über Monate auf. Entscheidend ist, früh die richtigen KPI-Signale zu definieren und die Umsetzung in kurzen Iterationen zu steuern.</div>
+					<div class="seo-cornerstone__answer">Technik- und Tracking-Effekte sind häufig in wenigen Wochen messbar. Organische Sichtbarkeit und belastbare Inbound-Effekte bauen sich über Monate auf. Entscheidend ist, früh die richtigen KPI-Signale zu definieren und die Umsetzung in kurzen Iterationen zu steuern.</div>
 				</details>
-				<details class="nx-faq__item" name="hu-faq-cornerstone">
+				<details class="seo-cornerstone__faq" name="hu-faq-cornerstone">
 					<summary>Ist das nur für große Konzerne relevant?</summary>
-					<div class="nx-faq__content">Nein. Gerade Unternehmen im Mittelstand profitieren stark, weil Budgeteffizienz und Vertriebszeit besonders eng getaktet sind. Je kleiner die Fehlertoleranz, desto wichtiger ist ein sauberes technisches Fundament vor jeder aggressiven Kampagnenskalierung.</div>
+					<div class="seo-cornerstone__answer">Nein. Gerade Unternehmen im Mittelstand profitieren stark, weil Budgeteffizienz und Vertriebszeit besonders eng getaktet sind. Je kleiner die Fehlertoleranz, desto wichtiger ist ein sauberes technisches Fundament vor jeder aggressiven Kampagnenskalierung.</div>
 				</details>
-				<details class="nx-faq__item" name="hu-faq-cornerstone">
+				<details class="seo-cornerstone__faq" name="hu-faq-cornerstone">
 					<summary>Welche Rolle spielt CRO im SEO-und-SEA-System?</summary>
-					<div class="nx-faq__content">CRO sorgt dafür, dass vorhandener Traffic besser in qualifizierte Anfragen übersetzt wird. Ohne CRO bleibt Reichweite teuer. Mit CRO sinkt Reibung im Formularprozess, Lead-Qualität steigt und die Wirkung von SEO wie SEA wird deutlich besser messbar.</div>
+					<div class="seo-cornerstone__answer">CRO sorgt dafür, dass vorhandener Traffic besser in qualifizierte Anfragen übersetzt wird. Ohne CRO bleibt Reichweite teuer. Mit CRO sinkt Reibung im Formularprozess, Lead-Qualität steigt und die Wirkung von SEO wie SEA wird deutlich besser messbar.</div>
 				</details>
-				<details class="nx-faq__item" name="hu-faq-cornerstone">
+				<details class="seo-cornerstone__faq" name="hu-faq-cornerstone">
 					<summary>Welche internen Teams sollten eingebunden werden?</summary>
-					<div class="nx-faq__content">Marketing, Vertrieb und Technik sollten gemeinsam priorisieren. Marketing steuert Nachfrage, Vertrieb bewertet Qualität, Technik sichert Umsetzbarkeit und Datensauberkeit. Erst diese Verbindung macht aus Einzelmaßnahmen ein skalierbares Wachstumssystem mit klarer Verantwortung.</div>
+					<div class="seo-cornerstone__answer">Marketing, Vertrieb und Technik sollten gemeinsam priorisieren. Marketing steuert Nachfrage, Vertrieb bewertet Qualität, Technik sichert Umsetzbarkeit und Datensauberkeit. Erst diese Verbindung macht aus Einzelmaßnahmen ein skalierbares Wachstumssystem mit klarer Verantwortung.</div>
 				</details>
 
 			</article>
 		</div>
+
+		<?php if ( is_singular( 'post' ) && function_exists( 'nexus_render_share_buttons' ) ) : ?>
+			<div class="nexus-bottom-share" data-track-section="article_share">
+				<h3><?php esc_html_e( 'Diesen Artikel teilen', 'blocksy-child' ); ?></h3>
+				<?php nexus_render_share_buttons(); ?>
+			</div>
+		<?php endif; ?>
 
 
 

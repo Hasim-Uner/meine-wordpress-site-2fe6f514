@@ -16,7 +16,7 @@ const pageTemplates = {
 };
 const html = context => {
   if (rendered[context]) return rendered[context];
-  if (context === 'seo_guide') return (rendered[context] = execFileSync('php', [path.join(__dirname, 'render-article.php'), 'technisches-seo-performance-fundament', 'assets/css/system.css,assets/css/seo-cornerstone.css'], { encoding: 'utf8' }));
+  if (context === 'seo_guide') return (rendered[context] = execFileSync('php', [path.join(__dirname, 'render-article.php'), 'technisches-seo-performance-fundament', 'assets/css/design-system.css,assets/css/system.css,assets/css/single.css,assets/css/single-editorial.css,assets/css/seo-cornerstone.css,assets/css/article-reader-body.css,assets/css/article-reader-toc.css,assets/css/single-reader-unified.css'], { encoding: 'utf8' }));
   const output = execFileSync('php', pageTemplates[context]
     ? [path.join(__dirname, 'render-page.php'), context, ...pageTemplates[context]]
     : [path.join(__dirname, 'render-navigation.php'), context], { encoding: 'utf8' });
@@ -691,11 +691,59 @@ test('technical SEO guide: service link, typed enquiry and cost FAQ remain consi
   await open(page, 'seo_guide', { width: 1280, height: 900 });
   await expect(page.locator('[data-track-action="cta_seo_cornerstone_audit"]')).toHaveAttribute('href', 'https://hasimuener.de/technisches-seo-wordpress/');
   await expect(page.locator('[data-track-action="cta_seo_cornerstone_project"]')).toHaveAttribute('href', 'https://hasimuener.de/kontakt/?type=project&focus=seo');
-  const visibleAnswer = await page.locator('details').filter({ has: page.locator('summary', { hasText: 'Was kostet technisches SEO' }) }).locator('.nx-faq__content').textContent();
+  const visibleAnswer = await page.locator('details').filter({ has: page.locator('summary', { hasText: 'Was kostet technisches SEO' }) }).locator('.seo-cornerstone__answer').textContent();
   const schemaAnswer = await page.locator('script[type="application/ld+json"]').evaluateAll(scripts => {
     const faq = scripts.map(s => JSON.parse(s.textContent)).find(s => s['@type'] === 'FAQPage');
     return faq.mainEntity.find(q => q.name === 'Was kostet technisches SEO für den Mittelstand?').acceptedAnswer.text;
   });
   expect(schemaAnswer).toBe(visibleAnswer);
   expect(visibleAnswer).toContain('Abnahmekriterien');
+});
+
+for (const width of [320, 390, 768, 1440]) {
+  test(`technical SEO guide ${width}: readable reader layout and contrast`, async ({ page }, testInfo) => {
+    await open(page, 'seo_guide', { width, height: 900 });
+    await expect(page.locator('.nexus-article-reader-header')).toHaveCount(1);
+    await expect(page.locator('h1')).toHaveCount(1);
+    const title = page.locator('#nexus-article-title');
+    expect(await title.evaluate(el => el.clientWidth)).toBeGreaterThan(width * 0.65);
+    expect(await page.locator('#article-content').evaluate(el => el.getBoundingClientRect().width)).toBeLessThanOrEqual(width);
+    const contrast = await page.locator('.seo-cornerstone').evaluate(root => {
+      const rgb = color => (color.match(/[\d.]+/g) || []).slice(0, 3).map(Number);
+      const luminance = color => rgb(color).map(v => {
+        v /= 255;
+        return v <= 0.04045 ? v / 12.92 : ((v + 0.055) / 1.055) ** 2.4;
+      }).reduce((sum, v, i) => sum + v * [0.2126, 0.7152, 0.0722][i], 0);
+      return [...root.querySelectorAll('h1, .nexus-subtitle, .nexus-author-info .name, #problem, #problem + p, .seo-cornerstone__button, .seo-cornerstone__faq summary')].map(el => {
+        let node = el;
+        while (node.parentElement && getComputedStyle(node).backgroundColor === 'rgba(0, 0, 0, 0)') node = node.parentElement;
+        const a = luminance(getComputedStyle(el).color), b = luminance(getComputedStyle(node).backgroundColor);
+        return { text: el.textContent.trim().slice(0, 70), ratio: (Math.max(a, b) + 0.05) / (Math.min(a, b) + 0.05) };
+      });
+    });
+    for (const sample of contrast) expect(sample.ratio, sample.text).toBeGreaterThanOrEqual(4.5);
+    const cta = page.locator('[data-track-action="cta_seo_cornerstone_project"]');
+    await cta.focus();
+    expect(await cta.evaluate(el => getComputedStyle(el).outlineStyle)).not.toBe('none');
+    expect(await noHorizontalScroll(page)).toBe(true);
+    await page.evaluate(() => window.scrollTo({ top: 0, behavior: 'instant' }));
+    await page.screenshot({ path: testInfo.outputPath(`seo-guide-${width}.png`) });
+  });
+}
+
+test('technical SEO guide: 200 percent text and no JavaScript keep the article usable', async ({ browser }) => {
+  const context = await browser.newContext({ javaScriptEnabled: false });
+  const page = await context.newPage();
+  await open(page, 'seo_guide', { width: 390, height: 900 });
+  await page.evaluate(() => { document.documentElement.style.fontSize = '200%'; });
+  await expect(page.locator('#nexus-article-title')).toBeVisible();
+  await expect(page.locator('#toc-list a').first()).toBeVisible();
+  await page.locator('.seo-cornerstone__faq summary').first().click();
+  await expect(page.locator('.seo-cornerstone__answer').first()).toBeVisible();
+  // Scope this reflow check to the article; shared header/footer have their
+  // own zoom coverage and are deliberately unchanged by this repair.
+  const bounds = await page.locator('#article-content').boundingBox();
+  expect(bounds.x).toBeGreaterThanOrEqual(0);
+  expect(bounds.x + bounds.width).toBeLessThanOrEqual(390);
+  await context.close();
 });
