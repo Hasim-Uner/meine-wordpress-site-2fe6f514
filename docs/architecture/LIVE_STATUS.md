@@ -617,6 +617,9 @@ Projektabschluss und ruhiger Agentur-Zweitweg, zentrale Metadaten und
   Der Marker `sst-product-page` hält den älteren JS-Template-Umbau fern:
   keine zweite Belegsektion, keine Paketvorauswahl oder Formularüberschreibung.
   Die gemeinsame Sticky-Anfrageleiste bleibt aktiv.
+  `BreadcrumbList` und `WebPage` stammen zentral aus `inc/org-schema.php`;
+  das Template gibt keinen zweiten Breadcrumb-Knoten unter derselben `@id`
+  aus. Der letzte Breadcrumb-Eintrag enthält die Seitenadresse als `item`.
   Seitenweit verlinkt
   im Fuß als „Server-Side Tracking“ (Route `tracking_b2b`). Beide
   Tracking-Seiten gelten als ein Kontext (`hu_is_tracking_route_context()`).
