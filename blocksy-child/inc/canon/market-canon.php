@@ -84,6 +84,22 @@ function hu_b2b_market_figures() {
 			'source' => 'Gartner, 5 Ways the Shift in B2B Buying Will Reconfigure B2B Selling, 2020, aktualisiert 2022; zitiert in der Gartner-Mitteilung vom 27.03.2023',
 		],
 
+		// Marktpreise WordPress-Wartung (Fachartikel /wordpress-wartung-kosten/).
+		// Öffentliche Listenpreise, abgerufen am 26.10.2026. Fremde Preise,
+		// keine eigenen; die eigenen kommen aus pricing-canon.php.
+		[
+			'key'    => 'wp_wartung_einstieg',
+			'value'  => '25 bis 35 €',
+			'body'   => 'netto im Monat kosten Einstiegspakete deutscher Anbieter.',
+			'source' => 'Kopf und Stift, WordPress-Wartung ab 25 € netto; WP-Wartung24 ab 35 € zzgl. MwSt. laut hosttest-Vergleich vom 13.08.2026; abgerufen am 26.10.2026',
+		],
+		[
+			'key'    => 'wp_wartung_business_usd',
+			'value'  => '100 bis 300 US-Dollar',
+			'body'   => 'im Monat nennt WPBeginner für die Wartung von Geschäftswebsites.',
+			'source' => 'WPBeginner, WordPress Maintenance Costs, deutsche Fassung; abgerufen am 26.10.2026',
+		],
+
 		// KI in der Softwareentwicklung (Fachartikel /agentic-coding/).
 		// Studien und Umfragen mit eigener Methodik; im Artikel steht jede
 		// Zahl neben ihrer Quelle, die Einschraenkungen stehen im Text.

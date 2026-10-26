@@ -736,6 +736,17 @@ Projektabschluss und ruhiger Agentur-Zweitweg, zentrale Metadaten und
   Größe über das Feld „Open Graph Bild“. Kontextbrücke und Abschluss führen in
   die Projektanfrage mit Fokus `relaunch` bzw. in die Ersteinschätzung
   (`docs/architecture/CONVERSION_ROUTING.md`).
+- **`/wordpress-wartung-kosten/`** (Dossier `wordpress-performance`): „WordPress-Wartung:
+  Was sie kostet und was es kostet, wenn sie fehlt“. Fachartikel auf den
+  Bausteinen, aus `assets/content/blog/wordpress-wartung-kosten.html` mit
+  Seed-Version `2026-10-26-wartung-kosten-v1` angelegt
+  (`inc/article-wordpress-wartung-kosten.php`), danach im Editor gepflegt.
+  Rechner `[hu_wartung_rechner]` (`inc/wartung-rechner.php`, eigenes CSS/JS,
+  nur auf Beiträgen mit dem Shortcode), Prüfliste `wartung-selbst`,
+  FAQ-Schema mit fünf Fragen, Marktpreise über `hu_markt`, eigene Preise über
+  `hu_price`. Titelbild `wordpress-wartung-kosten-hero.png`. Abschluss führt in
+  die Projektanfrage mit Fokus `wartung`, Fließtext auf `/wordpress-wartung/`
+  und `/anfrage-monitor/`. Besitzt „wordpress wartung kosten“.
 - **`/agentic-coding/`** (Dossier `wordpress-performance`): „Agentic Coding:
   Was es bedeutet und warum es Softwareentwicklung verändert“. Fachartikel auf
   den Bausteinen, aus `assets/content/blog/agentic-coding.html` mit

@@ -50,7 +50,11 @@ wordpress website uebernehmen;/wordpress-website-uebernehmen/;commercial;owned;P
 wordpress weiterentwicklung;/wordpress-website-uebernehmen/;commercial;owned;Paket 3 vom 2026-10-21: eigener Übernahme-Check und Weiterentwicklung von WordPress-Bestand, keine Suchvolumenbehauptung;wordpress freelancer|wordpress website erstellen lassen|wordpress wartung hannover
 wordpress wartung;/wordpress-wartung/;commercial;owned;Entscheidung 2026-10-24: nationale Wartungsroute mit eigenem Angebot, keine Volumenbehauptung im Repo;wordpress wartung hannover|wordpress website uebernehmen|wordpress weiterentwicklung
 wordpress wartungsvertrag;/wordpress-wartung/;transactional;owned;Entscheidung 2026-10-24: nationale Wartungsroute mit eigenem Angebot, keine Volumenbehauptung im Repo;wordpress wartung hannover|wordpress website uebernehmen|wordpress weiterentwicklung
-wordpress wartung kosten;/wordpress-wartung/;commercial;owned;Entscheidung 2026-10-24: nationale Wartungsroute mit eigenem Angebot, keine Volumenbehauptung im Repo;wordpress wartung hannover|wordpress website uebernehmen|wordpress weiterentwicklung
+# Wartungskosten-Intent (2026-10-26): Die SERP fuer "wordpress wartung kosten" besteht aus
+# Ratgebern (WPBeginner, Seahawk, Codeable), also informational. Der Fachartikel
+# /wordpress-wartung-kosten/ besitzt sie und fuehrt auf /wordpress-wartung/.
+# "wordpress wartungsvertrag" (transaktional) bleibt bei der Money Page.
+wordpress wartung kosten;/wordpress-wartung-kosten/;informational;owned;SERP-Pruefung 2026-10-26 (WPBeginner, Seahawk Media, Codeable, hosttest);wordpress wartung|wordpress wartungsvertrag
 wordpress betreuung;/wordpress-wartung/;commercial;owned;Entscheidung 2026-10-24: nationale Wartungsroute mit eigenem Angebot, keine Volumenbehauptung im Repo;wordpress wartung hannover|wordpress website uebernehmen|wordpress weiterentwicklung
 wordpress pflege;/wordpress-wartung/;commercial;owned;Entscheidung 2026-10-24: nationale Wartungsroute mit eigenem Angebot, keine Volumenbehauptung im Repo;wordpress wartung hannover|wordpress website uebernehmen|wordpress weiterentwicklung
 seo white label;/whitelabel-retainer/;commercial;owned;GSC 90d bis 2026-10-22: 78 Impr., Pos. 2,3, 0 Klicks — Title nennt seit 2026-10-25 technisches SEO;technisches seo wordpress

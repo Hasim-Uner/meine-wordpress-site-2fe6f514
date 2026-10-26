@@ -33,6 +33,7 @@ $modules = [
 	'editorial-bausteine.php',                 // Artikel-Bausteine: Kurzantwort, Notiz, Abbildung, Fall, Prüfliste, Abschluss, Quellen
 	'article-website-relaunch.php',            // … Cornerstone Website-Relaunch
 	'article-agentic-coding.php',              // … Fachartikel Agentic Coding
+	'article-wordpress-wartung-kosten.php',    // … Fachartikel Kosten der WordPress-Wartung
 	'canon/e3-proof-canon.php', // Kanonische E3-Proof-Zahlen und Displaywerte
 	'canon/diagnose-canon.php', // Kanonische Diagnose-Stufen, Preise und Scope-Grenzen
 	'canon/pricing-canon.php', // Kanonische Foundation-, Performance- und Premium-Preise
@@ -63,6 +64,7 @@ $modules = [
 	'blog-notify.php',    // Blog-Benachrichtigungen, DOI und Artikel-Mails
 	'post-rating.php',    // Artikel-Bewertung (Hilfreich/Nicht hilfreich) + Admin-Spalte
 	'cpo-calculator.php', // CPO-Rechner für Photovoltaik-Anfragen
+	'wartung-rechner.php', // Rechner stiller Formularausfall (Wartungsartikel)
 	'blog-provider-posts.php', // Einmalige Live-Anlage der Lead-Anbieter-Markteinordnungen
 	'blog-pillar-posts.php', // Einmalige Live-Anlage strategischer Pillar-Beiträge
 	'robots-txt.php',     // Dynamische /robots.txt-Route für Search- und KI-Crawler
