@@ -96,7 +96,7 @@ run_case( 'missing timing is dropped silently', static function () use ( $contac
 	check( $r->status === 200 && $r->data['ok'] === true && ! $GLOBALS['intake_test']['events'], 'Direct REST posts without timing are dropped' );
 	check( 1 === ( end( $GLOBALS['intake_test']['options'][ NEXUS_SPAM_STATS_OPTION ] )['contact:no_timing'] ?? 0 ), 'Missing timing is counted' );
 } );
-run_case( 'spamming ip is muted after strike limit without further writes', static function () use ( $contact ) {
+run_case( 'spamming ip is muted after strike limit and still counted', static function () use ( $contact ) {
 	$spam = $contact;
 	$spam['message'] = 'Привет, хороший сайт';
 	for ( $i = 0; $i < NEXUS_SPAM_IP_STRIKES; $i++ ) {
@@ -104,12 +104,10 @@ run_case( 'spamming ip is muted after strike limit without further writes', stat
 	}
 	$stats = end( $GLOBALS['intake_test']['options'][ NEXUS_SPAM_STATS_OPTION ] );
 	check( NEXUS_SPAM_IP_STRIKES === ( $stats['contact:script'] ?? 0 ), 'Strikes up to the limit are counted' );
-	check( 1 === ( $stats['contact:ip_muted'] ?? 0 ), 'Muting is recorded once' );
-	$options_before    = $GLOBALS['intake_test']['options'];
-	$transients_before = $GLOBALS['intake_test']['transients'];
+	check( 0 === ( $stats['contact:ip_muted'] ?? 0 ), 'Nothing muted before the limit' );
 	$r = call_intake( 'contact', $spam );
 	check( $r->status === 200 && $r->data['ok'] === true && ! $GLOBALS['intake_test']['events'], 'Muted ip is acknowledged silently' );
-	check( $options_before === $GLOBALS['intake_test']['options'] && $transients_before === $GLOBALS['intake_test']['transients'], 'Muted ip causes no writes' );
+	check( 1 === ( end( $GLOBALS['intake_test']['options'][ NEXUS_SPAM_STATS_OPTION ] )['contact:ip_muted'] ?? 0 ), 'Muted hits are still counted' );
 	$r = call_intake( 'contact', $contact );
 	check( $r->status === 200 && ! $GLOBALS['intake_test']['events'], 'Muted ip cannot submit for the rest of the hour' );
 	$_SERVER['REMOTE_ADDR'] = '198.51.100.7';

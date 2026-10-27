@@ -23,7 +23,8 @@
  * 3. Stummschaltung: Jede verworfene Absendung zaehlt pro IP und Stunde
  *    einen Treffer (nur als Hash im Transient-Schluessel, gilt eine Stunde).
  *    Ab NEXUS_SPAM_IP_STRIKES Treffern wird die IP fuer den Rest der Stunde
- *    ohne Pruefung und ohne jeden Schreibvorgang verworfen. Das IP-Limit der
+ *    ohne Inhaltspruefung verworfen; jede dieser Absendungen wird weiter als
+ *    `ip_muted` gezaehlt, damit die Angriffsmenge sichtbar bleibt. Das IP-Limit der
  *    Handler laeuft erst nach dieser Pruefung und hat Spam-Bots deshalb nie
  *    gebremst.
  *
@@ -53,7 +54,7 @@ function nexus_intake_spam_timing_required() {
 }
 
 if ( ! defined( 'NEXUS_SPAM_IP_STRIKES' ) ) {
-	define( 'NEXUS_SPAM_IP_STRIKES', 20 );
+	define( 'NEXUS_SPAM_IP_STRIKES', 5 );
 }
 
 /** Option mit den Tageszaehlern. */
@@ -155,8 +156,9 @@ function nexus_intake_is_spam( $payload, $endpoint ) {
 	$strike_key = nexus_intake_spam_strike_key();
 	$strikes    = '' !== $strike_key ? (int) get_transient( $strike_key ) : 0;
 
-	// Stummgeschaltet: nur ein Lesezugriff, kein Zaehler, kein Transient.
+	// Stummgeschaltet: ohne Inhaltspruefung verwerfen, aber mitzaehlen.
 	if ( $strikes >= NEXUS_SPAM_IP_STRIKES ) {
+		nexus_intake_spam_count( $endpoint, 'ip_muted' );
 		return true;
 	}
 
@@ -167,10 +169,6 @@ function nexus_intake_is_spam( $payload, $endpoint ) {
 
 		if ( '' !== $strike_key ) {
 			set_transient( $strike_key, $strikes + 1, HOUR_IN_SECONDS );
-
-			if ( $strikes + 1 === NEXUS_SPAM_IP_STRIKES ) {
-				nexus_intake_spam_count( $endpoint, 'ip_muted' );
-			}
 		}
 
 		return true;
@@ -260,7 +258,7 @@ function nexus_render_intake_spam_admin_page() {
 		'links'            => 'Links im Text',
 		'keyword'          => 'Spam-Begriff',
 		'no_timing_passed' => 'Ohne Zeitfeld, durchgelassen (nur Beobachtung)',
-		'ip_muted'         => 'IP für eine Stunde stummgeschaltet',
+		'ip_muted'         => 'Von stummgeschalteter IP (sofort verworfen)',
 	];
 
 	$stats  = get_option( NEXUS_SPAM_STATS_OPTION, [] );
@@ -276,7 +274,7 @@ function nexus_render_intake_spam_admin_page() {
 
 	echo '<div class="wrap"><h1>Formular-Spam</h1>';
 	echo '<p>' . esc_html( sprintf( 'Verworfene Absendungen der letzten %d Tage. Honeypot-Treffer laufen vorher ab und sind hier nicht enthalten. Gespeichert werden nur Tag, Formular und Grund.', NEXUS_SPAM_STATS_DAYS ) ) . '</p>';
-	echo '<p>' . esc_html( sprintf( 'Ab %d verworfenen Absendungen pro Stunde wird eine IP stummgeschaltet. Ihre weiteren Absendungen in dieser Stunde werden ohne Zählung verworfen; die Zeile „stummgeschaltet“ zählt solche IP-Stunden.', NEXUS_SPAM_IP_STRIKES ) ) . '</p>';
+	echo '<p>' . esc_html( sprintf( 'Ab %d verworfenen Absendungen pro Stunde wird eine IP für den Rest der Stunde stummgeschaltet. Ihre weiteren Absendungen werden sofort verworfen und weiter mitgezählt.', NEXUS_SPAM_IP_STRIKES ) ) . '</p>';
 	echo '<p>' . esc_html( 'Zeitfeld-Pflicht: ' . ( nexus_intake_spam_timing_required() ? 'an' : 'aus (nur Beobachtung)' ) ) . '</p>';
 
 	if ( empty( $totals ) ) {
