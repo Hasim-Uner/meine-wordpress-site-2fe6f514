@@ -1,6 +1,6 @@
 /* NEXUS: schmaler, nicht modaler KI-Chat rechts unten.
    Neutrales Schwarz kommt aus system.css (.tafel--chat).
-   Vor dem Klick bleibt nur die beschriftete Inline-Fassade sichtbar. */
+   Vor dem Klick beziehungsweise Footer bleibt nur das runde Symbol sichtbar. */
 .hu-chat__bar {
 	position: absolute;
 	right: 0;
@@ -44,15 +44,6 @@
 	color: var(--tinte);
 }
 .hu-chat__name span { color: var(--stempel); }
-.hu-chat__disclosure {
-	margin: var(--s0) 0 0;
-	font-family: var(--mono);
-	font-size: 11px;
-	line-height: 1.5;
-	letter-spacing: .06em;
-	text-transform: uppercase;
-	color: var(--grau);
-}
 .hu-chat__close {
 	appearance: none;
 	display: grid;

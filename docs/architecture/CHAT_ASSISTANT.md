@@ -17,25 +17,30 @@ Alle übrigen Konstanten und Prüfungen gelten unverändert (Abschnitt
 
 ## Oberfläche
 
-- `facade.php` liefert einen schwarzen, beschrifteten Zugang unten rechts:
-  „KI · Frage zum Projekt?“. Ohne JavaScript wird er ausgeblendet. Hover und
-  Fokus laden CSS/JS vor, aber keine KI-Antwort und keinen Buchungskalender.
-- **Auslöser:** Das Fenster öffnet ausschließlich nach Klick. Sobald der echte
-  Footer sichtbar ist, erscheint einmal je Sitzung ein kleiner schließbarer
-  Hinweis, sofern kein Formularfeld aktiv ist. `sessionStorage` (`hu-chat-auto`)
-  merkt bereits das Anzeigen des Hinweises sowie manuelles Öffnen/Schließen.
-  Scrolltiefe allein öffnet kein Fenster. Verlassen des Footers blendet den
-  Hinweis aus; ohne IntersectionObserver bleibt der manuelle Zugang nutzbar.
+- `facade.php` liefert wieder ein rundes schwarzes Chat-Symbol unten rechts,
+  ohne sichtbare Beschriftung und ohne kleine Hinweisbox. Es sitzt etwas tiefer
+  (`--s1` statt `--s2` Abstand unten), weiterhin über Sticky-CTA und Safe Area.
+  Ohne JavaScript bleibt es verborgen. Hover und Fokus können die Oberfläche
+  vorladen, lösen aber keine KI-Anfrage aus.
+- **Auslöser:** Klick öffnet jederzeit. Sobald der echte Footer sichtbar ist,
+  öffnet sich das vollständige schwarze Fenster einmal je Sitzung automatisch,
+  ohne Fokuswechsel und ohne mobile Tastatur. Aktive Formulare werden nicht
+  unterbrochen. Nach dem Laden werden Footer-Sichtbarkeit, Fokus und ein
+  zwischenzeitlicher manueller Klick erneut geprüft. `sessionStorage`
+  (`hu-chat-footer-v2`, als `autoKey` an den Controller übergeben) merkt Öffnen
+  und Einklappen; Neuladen öffnet danach nicht erneut automatisch. Der alte
+  Schlüssel der Hinweisbox wird für diese ausdrücklich gewünschte Interaktion
+  nicht wiederverwendet. Ohne IntersectionObserver bleibt der manuelle Zugang.
 - **Gestaltung:** NEXUS, neutrales Schwarz ohne Braunanteil (`.tafel--chat`),
   dezente graue Konturen und Orange für Aktionen. Hochformat rechts unten,
   maximal 380 px breit, in der Unterhaltung maximal 600 px hoch. Die verfügbare
   Fensterhöhe, mobile Tastatur (VisualViewport), Safe Areas und die Sticky-CTA
   begrenzen Größe und Position. Verlauf beziehungsweise Begrüßung scrollen bei
   kleinen Höhen; Kopf, kompakte Eingabe und Metazeile bleiben zugänglich.
-- **Identität:** „NEXUS“ und „KI-Projektassistent“ stehen dauerhaft im Kopf,
-  auch während einer Antwort. Keine Statuspunkte, die Online-Präsenz oder eine
-  ungelesene Nachricht vortäuschen. Ruhige, sofort lesbare Begrüßung und
-  statischer Eingabeplatzhalter.
+- **Identität:** Im Kopf steht NEXUS. Die auffällige KI-Unterzeile entfällt
+  auf ausdrücklichen Wunsch; die dezente Kennzeichnung KI-Assistent bleibt
+  unten in der Metazeile bei Datenschutz. Keine fingierten Online-/Nachrichten-
+  Signale. Begrüßung und Eingabeplatzhalter bleiben ruhig und sofort lesbar.
 - **Begrüßung und Schnellwahl** (`hu_chat_intro()`): „Was haben Sie vor?“ mit
   Projekt besprechen, Kosten einordnen und Termin vereinbaren. White-Label:
   ihr-Form, Projekt besprechen, Fit-Gespräch und Ablauf. Energie: Marktcheck
