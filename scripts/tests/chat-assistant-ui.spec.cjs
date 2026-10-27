@@ -96,6 +96,9 @@ for (const viewport of [{ width: 1440, height: 900 }, { width: 390, height: 844 
 
 test('failed response remains visible and keeps the message for retry', async ({ page }) => {
   await setup(page, { fail: true });
+  await page.evaluate(() => sessionStorage.setItem('hu-chat-v1', JSON.stringify({ messages: [
+    { role: 'user', text: 'Eine frühere Frage' }, { role: 'assistant', text: 'Eine frühere Antwort' },
+  ] })));
   await page.getByRole('button', { name: 'KI-Assistent öffnen', exact: true }).click();
   const input = page.locator('.hu-chat__input');
   await input.fill('Meine Frage');
@@ -103,6 +106,9 @@ test('failed response remains visible and keeps the message for retry', async ({
   await expect(page.locator('.hu-chat__status')).toBeVisible();
   await expect(page.locator('.hu-chat__status')).toHaveText('Bitte erneut versuchen.');
   await expect(input).toHaveValue('Meine Frage');
+  await page.getByRole('button', { name: 'Neues Gespräch' }).click();
+  await expect(page.locator('.hu-chat__status')).toBeHidden();
+  await expect(page.getByRole('heading', { name: 'Was haben Sie vor?' })).toBeVisible();
 });
 
 test('late answer preserves collapse and focus in another form', async ({ page }) => {

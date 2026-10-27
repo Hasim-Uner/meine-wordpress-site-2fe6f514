@@ -432,6 +432,8 @@ class Chat {
 		if (this.busy) return;
 		this.state = { messages: [] };
 		storage.clear();
+		this.errorStatus.hidden = true;
+		this.errorStatus.textContent = '';
 		this.restore();
 		this.typeGreeting();
 		this.cyclePlaceholder();
