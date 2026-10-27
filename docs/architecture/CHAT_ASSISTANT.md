@@ -17,29 +17,34 @@ Alle übrigen Konstanten und Prüfungen gelten unverändert (Abschnitt
 
 ## Oberfläche
 
-- `facade.php` gibt per `wp_footer` ein rundes Symbol (`.tafel`, umlaufender
-  Lichtring) mit Inline-CSS und Ladeskript aus. Vor Klick oder Scroll-Auslöser
-  gibt es keine Netzanfrage. Hover oder Fokus laden vor.
-- **Auslöser:** Klick auf das Symbol, oder einmal je Seitenaufruf, sobald der
-  Besucher rund 78 % der Seite gescrollt hat (nur auf Seiten, die mindestens
-  1,6 Bildschirmhöhen lang sind). Der automatische Auftritt schreibt nichts in
-  den Browser und setzt keinen Fokus. Erst wenn der Besucher selbst öffnet oder
-  schließt, merkt sich `sessionStorage` (`hu-chat-auto`) das für die Sitzung.
-- **Gestaltung:** dunkle `.tafel`, Haarlinie, flacher Schatten, Stempelkante
-  (2 px Stempel oben links) als eigenes Element. Eingabe als Linie statt Kasten,
-  Sendepfeil wird erst mit Text zum Stempel. Antworten als Text mit Haarlinie,
-  keine Sprechblasen. Symbol: dunkle Scheibe mit Stempelpunkt.
-- **Leiste:** breite Eingabeleiste unten mittig (bis 780 px, mobil volle
-  Breite über der Sticky-CTA), dunkle Tafel mit umlaufendem Lichtrand. Die
-  Begrüßung fällt Wort für Wort ein, darunter drei Schnellwahlen und ein großes
-  Eingabefeld mit wechselnden Beispielfragen. Das Gespräch wächst über der
-  Leiste nach oben.
-- **Begrüßung und Schnellwahl** (`hu_chat_intro()`): Standard „Wie kann ich
-  Ihnen helfen? Kurz beraten oder direkt ein Termin?“ mit Beratung, Termin
-  buchen (Cal.com aus `nexus_get_audit_calendar_url()`), Preise. White-Label:
-  ihr-Form, Fit-Gespräch (`nexus_get_whitelabel_calendar_url()`), Ablauf.
-  Energie: Marktcheck statt Preise.
-- KI-Hinweis und Datenschutz-Link (`/datenschutz/#ki-chat`) stehen dauerhaft unter dem Eingabefeld.
+- `facade.php` liefert einen schwarzen, beschrifteten Zugang unten rechts:
+  „KI · Frage zum Projekt?“. Ohne JavaScript wird er ausgeblendet. Hover und
+  Fokus laden CSS/JS vor, aber keine KI-Antwort und keinen Buchungskalender.
+- **Auslöser:** Das Fenster öffnet ausschließlich nach Klick. Sobald der echte
+  Footer sichtbar ist, erscheint einmal je Sitzung ein kleiner schließbarer
+  Hinweis, sofern kein Formularfeld aktiv ist. `sessionStorage` (`hu-chat-auto`)
+  merkt bereits das Anzeigen des Hinweises sowie manuelles Öffnen/Schließen.
+  Scrolltiefe allein öffnet kein Fenster. Verlassen des Footers blendet den
+  Hinweis aus; ohne IntersectionObserver bleibt der manuelle Zugang nutzbar.
+- **Gestaltung:** NEXUS, neutrales Schwarz ohne Braunanteil (`.tafel--chat`),
+  dezente graue Konturen und Orange für Aktionen. Hochformat rechts unten,
+  maximal 380 px breit, in der Unterhaltung maximal 600 px hoch. Die verfügbare
+  Fensterhöhe, mobile Tastatur (VisualViewport), Safe Areas und die Sticky-CTA
+  begrenzen Größe und Position. Verlauf beziehungsweise Begrüßung scrollen bei
+  kleinen Höhen; Kopf, kompakte Eingabe und Metazeile bleiben zugänglich.
+- **Identität:** „NEXUS“ und „KI-Projektassistent“ stehen dauerhaft im Kopf,
+  auch während einer Antwort. Keine Statuspunkte, die Online-Präsenz oder eine
+  ungelesene Nachricht vortäuschen. Ruhige, sofort lesbare Begrüßung und
+  statischer Eingabeplatzhalter.
+- **Begrüßung und Schnellwahl** (`hu_chat_intro()`): „Was haben Sie vor?“ mit
+  Projekt besprechen, Kosten einordnen und Termin vereinbaren. White-Label:
+  ihr-Form, Projekt besprechen, Fit-Gespräch und Ablauf. Energie: Marktcheck
+  statt Kosten. Die bestehenden Termin-/Marktcheckziele bleiben erhalten.
+- KI-Hinweis und Datenschutz-Link (`/datenschutz/#ki-chat`) stehen dauerhaft
+  unter dem Eingabefeld. Fehlgeschlagene Anfragen erscheinen als sichtbare
+  Statusmeldung und lassen die Eingabe für einen erneuten Versuch stehen.
+- Einklappen während einer Antwort bleibt erhalten; eine verspätete Antwort
+  öffnet das Fenster nicht und zieht keinen Fokus aus einem anderen Formular.
 - Datenschutzerklärung: Abschnitt 5 „KI-Assistent“ und „Terminbuchung über Cal.com“ in Abschnitt 4. `cal-embed.js` lädt Cal.com erst beim Klick (kein Vorladen bei Hover/Fokus).
 - Nicht ausgegeben auf `/datenschutz/`, `/impressum/`, den noindex-Slugs und
   -Templates aus `seo-meta.php`, im Admin und im Customizer.

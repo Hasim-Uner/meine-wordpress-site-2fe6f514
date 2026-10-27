@@ -10,8 +10,6 @@
 const STORE_KEY = 'hu-chat-v1';
 const MAX_CHARS = 2000;
 const MAX_USER_TURNS = 20;
-const EXAMPLES = ['Was kostet eine Landingpage?', 'Brauche ich Server-Side Tracking?', 'Wie läuft ein Projekt ab?'];
-const reducedMotion = () => window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 const CARD_NOTE = '[Übergabe-Karte mit Name, E-Mail und Zusammenfassung angezeigt]';
 
 let instance = null;
@@ -259,13 +257,18 @@ class Chat {
 
 	build() {
 		this.log = el('div', { class: 'hu-chat__log', role: 'log', 'aria-live': 'polite', 'aria-relevant': 'additions', tabindex: '-1' });
-		this.greet = el('p', { class: 'hu-chat__greet', id: 'hu-chat-greet' });
+		this.greet = el('h2', { class: 'hu-chat__greet', id: 'hu-chat-greet' });
+		this.intro = el('div', { class: 'hu-chat__intro' }, [
+			el('p', { class: 'hu-chat__kicker', text: 'WordPress · Tracking · Conversion' }),
+			this.greet,
+			el('p', { class: 'hu-chat__description', text: 'Eine Frage zum Angebot oder zum nächsten Schritt?' }),
+		]);
 		this.input = el('textarea', {
 			class: 'hu-chat__input',
 			rows: 1,
 			maxlength: MAX_CHARS,
-			placeholder: EXAMPLES[0],
-			'aria-labelledby': 'hu-chat-greet',
+			placeholder: 'Was möchten Sie wissen?',
+			'aria-label': 'Ihre Frage an den KI-Assistenten',
 			oninput: () => this.autosize(),
 			onkeydown: (event) => {
 				if (event.key === 'Enter' && !event.shiftKey && !event.isComposing) {
@@ -276,12 +279,13 @@ class Chat {
 		});
 		this.send = el('button', { type: 'submit', class: 'hu-chat__send', 'aria-label': 'Senden' }, arrowIcon());
 		this.form = el('form', { class: 'hu-chat__form', onsubmit: (event) => { event.preventDefault(); this.submit(); } }, [this.input, this.send]);
+		this.errorStatus = el('p', { class: 'hu-chat__status', role: 'status', hidden: true });
 		this.chips = el('div', { class: 'hu-chat__chips' });
 		this.resetButton = el('button', { type: 'button', class: 'hu-chat__reset', text: 'Neues Gespräch', hidden: true, onclick: () => this.reset() });
 		this.bar = el('section', {
 			id: 'hu-chat-bar',
-			class: 'hu-chat__bar tafel',
-			'aria-label': 'KI-Assistent',
+			class: 'hu-chat__bar tafel tafel--chat',
+			'aria-label': 'NEXUS · KI-Projektassistent',
 			hidden: true,
 			onkeydown: (event) => {
 				if (event.key === 'Escape') {
@@ -290,14 +294,17 @@ class Chat {
 				}
 			},
 		}, [
-			this.log,
 			el('div', { class: 'hu-chat__top' }, [
-				el('span', { class: 'hu-chat__spark', 'aria-hidden': 'true' }),
-				this.greet,
-				el('button', { type: 'button', class: 'hu-chat__close', 'aria-label': 'Assistent schließen', onclick: () => this.close() }, el('span', { 'aria-hidden': 'true', text: '×' })),
+				el('div', { class: 'hu-chat__identity' }, [
+					el('p', { class: 'hu-chat__name' }, ['NEXUS', el('span', { 'aria-hidden': 'true', text: '·' })]),
+					el('p', { class: 'hu-chat__disclosure', text: 'KI-Projektassistent' }),
+				]),
+				el('button', { type: 'button', class: 'hu-chat__close', 'aria-label': 'KI-Assistent einklappen', onclick: () => this.close() }, el('span', { 'aria-hidden': 'true', text: '−' })),
 			]),
-			this.chips,
+			el('div', { class: 'hu-chat__welcome' }, [this.intro, this.chips]),
+			this.log,
 			this.form,
+			this.errorStatus,
 			el('p', { class: 'hu-chat__meta' }, [
 				'KI-Assistent · bitte keine sensiblen Daten · ',
 				el('a', { href: this.cfg.privacy, text: 'Datenschutz' }),
@@ -305,6 +312,18 @@ class Chat {
 			]),
 		]);
 		this.root.append(this.bar);
+		// VisualViewport also accounts for the on-screen keyboard on mobile.
+		const fitViewport = () => {
+			const viewport = window.visualViewport;
+			const height = viewport ? viewport.height : window.innerHeight;
+			const keyboard = viewport ? Math.max(0, window.innerHeight - viewport.height - viewport.offsetTop) : 0;
+			this.root.style.setProperty('--hu-chat-viewport', `${height}px`);
+			this.root.style.setProperty('--hu-chat-keyboard', `${keyboard}px`);
+		};
+		fitViewport();
+		window.addEventListener('resize', fitViewport, { passive: true });
+		window.visualViewport?.addEventListener('resize', fitViewport, { passive: true });
+		window.visualViewport?.addEventListener('scroll', fitViewport, { passive: true });
 	}
 
 	hasConversation() {
@@ -330,8 +349,6 @@ class Chat {
 		this.resetButton.hidden = !talking;
 		this.chips.replaceChildren();
 		if (talking) {
-			this.greet.replaceChildren('KI-Assistent');
-			this.greet.removeAttribute('aria-label');
 			return;
 		}
 		for (const chip of this.cfg.intro?.chips || []) {
@@ -348,32 +365,14 @@ class Chat {
 		}
 	}
 
-	/** The greeting drops in word by word; reduced motion shows it at once. */
+	/** The welcome stays readable immediately, including with reduced motion. */
 	typeGreeting() {
 		if (this.hasConversation()) return;
-		const text = this.cfg.intro?.greeting || 'Wie kann ich helfen?';
-		this.greet.replaceChildren();
-		this.greet.setAttribute('aria-label', text);
-		text.split(' ').forEach((word, i) => {
-			const span = el('span', { class: 'hu-chat__word', 'aria-hidden': 'true', text: word });
-			span.style.setProperty('--i', String(i));
-			this.greet.append(span, ' ');
-		});
+		this.greet.textContent = this.cfg.intro?.greeting || 'Was haben Sie vor?';
 	}
 
 	cyclePlaceholder() {
-		window.clearInterval(this.placeholderTimer);
-		if (reducedMotion() || this.hasConversation()) {
-			this.input.placeholder = this.hasConversation() ? 'Ihre Antwort …' : EXAMPLES[0];
-			return;
-		}
-		let i = 0;
-		this.input.placeholder = EXAMPLES[0];
-		this.placeholderTimer = window.setInterval(() => {
-			if (this.input.value) return;
-			i = (i + 1) % EXAMPLES.length;
-			this.input.placeholder = EXAMPLES[i];
-		}, 3200);
+		this.input.placeholder = this.hasConversation() ? 'Ihre Antwort …' : 'Was möchten Sie wissen?';
 	}
 
 	addBubble(role, text) {
@@ -408,14 +407,15 @@ class Chat {
 		this.bar.hidden = false;
 		this.bar.classList.toggle('is-auto', !!opts.auto);
 		this.root.classList.add('is-open');
+		this.root.querySelector('.hu-chat__hint')?.setAttribute('hidden', '');
 		this.orb.setAttribute('aria-expanded', 'true');
+		this.autosize();
 		this.scroll();
 		if (!opts.auto) window.requestAnimationFrame(() => this.input.focus({ preventScroll: true }));
 		return this;
 	}
 
 	close() {
-		window.clearInterval(this.placeholderTimer);
 		const hadFocus = this.bar.contains(document.activeElement);
 		this.bar.hidden = true;
 		this.root.classList.remove('is-open');
@@ -435,7 +435,7 @@ class Chat {
 		this.restore();
 		this.typeGreeting();
 		this.cyclePlaceholder();
-		this.input.focus();
+		this.input.focus({ preventScroll: true });
 	}
 
 	setBusy(busy) {
@@ -472,6 +472,8 @@ class Chat {
 	}
 
 	async ask() {
+		this.errorStatus.hidden = true;
+		this.errorStatus.textContent = '';
 		this.setBusy(true);
 		const body = this.addBubble('assistant', '');
 		body.parentElement.classList.add('is-typing');
@@ -516,6 +518,8 @@ class Chat {
 		}
 		body.parentElement.classList.remove('is-typing');
 		if (failed && !answer && !card) {
+			this.errorStatus.textContent = failed;
+			this.errorStatus.hidden = false;
 			body.parentElement.classList.add('is-error');
 			body.replaceChildren(el('p', { text: failed }));
 			// The turn goes back into the input so the visitor can resend it.
@@ -536,7 +540,10 @@ class Chat {
 			this.save();
 		}
 		this.setBusy(false);
-		this.input.focus();
+		this.autosize();
+		if (!this.bar.hidden && (this.form.contains(document.activeElement) || document.activeElement === document.body)) {
+			this.input.focus({ preventScroll: true });
+		}
 	}
 
 	renderCard(card, done) {

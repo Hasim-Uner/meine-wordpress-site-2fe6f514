@@ -31,6 +31,10 @@ Radius, Schriftgrade und Tür-Maße gehören `system.css` allein; keine andere D
 
 Die dunkle `.tafel` ist Teil desselben Systems. Sie überschreibt die semantischen Tokens lokal; sie ist kein zweites Theme.
 
+Der Modifier `.tafel--chat` verwendet die neutralen schwarzen `--chat-*`-Farben
+aus `system.css`. Nur dieses eigenständige Chatfenster setzt `--r1` lokal auf
+14 px; alle übrigen Tafeln und Eingaben behalten den Standardradius.
+
 Neue Seiten verwenden diese Tokens. Sie definieren weder eine zweite Abstandsskala noch einen zweiten Satz an Farben unter anderem Namen, wenn die vorhandene Semantik passt.
 
 ## 2. Solar-Anfragestrecke: `anfragestrecke.css`
