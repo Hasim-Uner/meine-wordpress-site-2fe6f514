@@ -102,11 +102,13 @@ Cal.com-Buchungen. Buchungen über direkte Links ohne Embed erscheinen als
 
 ### KI-Chat-Assistent
 
-`inc/chat-assistant/` liefert NEXUS unten rechts: beschrifteter Zugang mit
-sichtbarem KI-Hinweis, neutrales schwarzes Hochformat (maximal 380 px breit).
-Ein einmaliger Hinweis erscheint erst am sichtbaren Footer; das Fenster öffnet
-nur nach Klick. Hover/Fokus laden die Oberfläche vor, ohne eine KI-Anfrage.
-„KI-Projektassistent“ bleibt im Kopf während des Gesprächs sichtbar. Gespräche laufen über
+`inc/chat-assistant/` liefert NEXUS unten rechts: rundes schwarzes Symbol
+und neutrales schwarzes Hochformat (maximal 380 px breit), etwas tiefer gesetzt.
+Am tatsächlich sichtbaren Footer öffnet das vollständige Fenster einmal je
+Sitzung automatisch ohne Fokuswechsel; aktive Formulare werden nicht gestört.
+Die kleine Hinweisbox entfällt. Im Kopf steht NEXUS, die dezente KI-Kennzeichnung
+bleibt unten bei Datenschutz. Hover/Fokus laden nur die Oberfläche vor, ohne
+KI-Anfrage. Gespräche laufen über
 `POST /wp-json/nexus/v1/chat/messages` (SSE, zustandslos) gegen Bedrock
 Frankfurt, Übergaben nach Klick des Besuchers über
 `POST /wp-json/nexus/v1/chat/handover` ins CRM mit interner Mail an die

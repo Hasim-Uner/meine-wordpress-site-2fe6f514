@@ -297,7 +297,6 @@ class Chat {
 			el('div', { class: 'hu-chat__top' }, [
 				el('div', { class: 'hu-chat__identity' }, [
 					el('p', { class: 'hu-chat__name' }, ['NEXUS', el('span', { 'aria-hidden': 'true', text: '·' })]),
-					el('p', { class: 'hu-chat__disclosure', text: 'KI-Projektassistent' }),
 				]),
 				el('button', { type: 'button', class: 'hu-chat__close', 'aria-label': 'KI-Assistent einklappen', onclick: () => this.close() }, el('span', { 'aria-hidden': 'true', text: '−' })),
 			]),
@@ -407,7 +406,6 @@ class Chat {
 		this.bar.hidden = false;
 		this.bar.classList.toggle('is-auto', !!opts.auto);
 		this.root.classList.add('is-open');
-		this.root.querySelector('.hu-chat__hint')?.setAttribute('hidden', '');
 		this.orb.setAttribute('aria-expanded', 'true');
 		this.autosize();
 		this.scroll();
@@ -421,7 +419,7 @@ class Chat {
 		this.root.classList.remove('is-open');
 		this.orb.setAttribute('aria-expanded', 'false');
 		try {
-			window.sessionStorage.setItem('hu-chat-auto', '1');
+			window.sessionStorage.setItem(this.cfg.autoKey || 'hu-chat-auto', '1');
 		} catch (error) {
 			/* ignore */
 		}

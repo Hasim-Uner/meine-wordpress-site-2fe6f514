@@ -39,22 +39,31 @@ async function setup(page, { fail = false, delayed = false } = {}) {
   return { requests, release: () => release?.() };
 }
 
-test('footer offers help once without opening chat, loading AI or interrupting a form', async ({ page }) => {
+test('round launcher opens the full chat only at the footer, once and without interrupting a form', async ({ page }) => {
   const { requests } = await setup(page);
+  const launcher = page.getByRole('button', { name: 'KI-Assistent öffnen', exact: true });
+  await expect(launcher).toHaveCSS('border-radius', '50%');
+  await expect(launcher).toHaveText('');
+  const circle = await launcher.boundingBox();
+  expect(circle.width).toBe(56);
+  expect(circle.height).toBe(56);
+  await page.evaluate(() => scrollTo(0, document.documentElement.scrollHeight * .78 - innerHeight));
+  await expect(page.locator('#hu-chat-bar')).toHaveCount(0);
   await page.locator('#contact-email').focus();
   await page.locator('footer').scrollIntoViewIfNeeded();
-  await expect(page.locator('.hu-chat__hint')).toBeHidden();
+  await expect(page.locator('#hu-chat-bar')).toHaveCount(0);
   await expect(page.locator('#contact-email')).toBeFocused();
   expect(requests).toEqual([]);
   await page.locator('#contact-email').evaluate(input => input.blur());
-  await expect(page.locator('.hu-chat__hint')).toBeVisible();
-  await expect(page.locator('#hu-chat-bar')).toHaveCount(0);
-  expect(requests).toEqual([]);
-  await page.getByRole('button', { name: 'Chat-Hinweis schließen' }).click();
-  await expect(page.locator('.hu-chat__hint')).toBeHidden();
+  await expect(page.locator('#hu-chat-bar')).toBeVisible();
+  await expect(page.locator('.hu-chat__hint')).toHaveCount(0);
+  await expect(page.locator('.hu-chat__input')).not.toBeFocused();
+  expect(requests.some(url => url.includes('/wp-json/'))).toBe(false);
+  await page.getByRole('button', { name: 'KI-Assistent einklappen' }).click();
+  await expect(page.locator('#hu-chat-bar')).toBeHidden();
   await page.reload();
   await page.locator('footer').scrollIntoViewIfNeeded();
-  await expect(page.locator('.hu-chat__hint')).toBeHidden();
+  await expect(page.locator('#hu-chat-bar')).toHaveCount(0);
 });
 
 for (const viewport of [{ width: 1440, height: 900 }, { width: 390, height: 844 }, { width: 320, height: 568 }, { width: 844, height: 390 }]) {
@@ -65,7 +74,9 @@ for (const viewport of [{ width: 1440, height: 900 }, { width: 390, height: 844 
     await launcher.click();
     const panel = page.locator('#hu-chat-bar');
     await expect(panel).toBeVisible();
-    await expect(page.locator('.hu-chat__disclosure')).toHaveText('KI-Projektassistent');
+    await expect(page.locator('.hu-chat__name')).toHaveText('NEXUS·');
+    await expect(page.locator('.hu-chat__top')).not.toContainText('KI-');
+    await expect(page.locator('.hu-chat__meta')).toContainText('KI-Assistent');
     await expect(panel).toHaveCSS('background-color', 'rgb(8, 8, 8)');
     await expect(page.getByRole('heading', { name: 'Was haben Sie vor?' })).toBeVisible();
     await expect(page.locator('.hu-chat__input')).toBeFocused();
@@ -77,7 +88,7 @@ for (const viewport of [{ width: 1440, height: 900 }, { width: 390, height: 844 
       expect(box.x + box.width).toBeLessThanOrEqual(viewport.width);
       expect(box.y + box.height).toBeLessThanOrEqual(viewport.height);
       await expect(page.getByRole('button', { name: 'Senden', exact: true })).toBeInViewport();
-      await expect(page.locator('.hu-chat__disclosure')).toBeInViewport();
+      await expect(page.locator('.hu-chat__name')).toBeInViewport();
     };
     await fits();
     await page.locator('.hu-chat__input').fill('Ich brauche eine Website.');
@@ -90,7 +101,7 @@ for (const viewport of [{ width: 1440, height: 900 }, { width: 390, height: 844 
     await launcher.press('Enter');
     await expect(panel).toBeVisible();
     await expect(page.locator('.hu-chat__msg--assistant')).toContainText('Was soll Ihre Website leisten?');
-    await expect(page.locator('.hu-chat__disclosure')).toBeVisible();
+    await expect(page.locator('.hu-chat__name')).toBeVisible();
   });
 }
 
