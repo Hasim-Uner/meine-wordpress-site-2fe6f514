@@ -815,42 +815,42 @@ function nexus_get_aroundhome_faq_items() {
 		[
 			'key'      => 'kosten',
 			'question' => 'Was kostet Aroundhome für Handwerker?',
-			'answer'   => 'Einen einheitlichen öffentlichen Preis nennt Aroundhome nicht. Laut eigener Partnerseite hängt der Preis vom angebotenen Produkt ab und wird im digitalen Vertragsprozess angezeigt. Für Ihren Betrieb zählt zusätzlich der interne Bearbeitungsaufwand. Maßgeblich sind deshalb das aktuelle schriftliche Angebot und Ihre Kosten pro gewonnenem Auftrag.',
+			'answer'   => 'Aroundhome nennt keinen öffentlichen Preis. Laut Partnerseite zahlen Fachbetriebe einen Festpreis pro übermittelter Anfrage, abhängig vom gewählten Produkt; der Betrag wird erst im digitalen Vertragsprozess angezeigt. Eine Provision auf den Auftrag fällt nicht an, die Gebühr aber auch dann, wenn kein Auftrag entsteht.',
 		],
 		[
-			'key'      => 'lohnt-sich',
-			'question' => 'Lohnt sich Aroundhome für Solar- oder SHK-Betriebe?',
-			'answer'   => 'Das lässt sich nicht aus dem Preis pro Anfrage allein ableiten. Wirtschaftlich wird der Kanal erst, wenn Preis, Abschlussquote, Vertriebszeit und Deckungsbeitrag zusammenpassen. Eine positive Rechnung ersetzt außerdem nicht die Prüfung von Laufzeit, Menge, Region und Reklamationsregeln.',
+			'key'      => 'serioes',
+			'question' => 'Ist Aroundhome seriös?',
+			'answer'   => 'Aroundhome veröffentlicht Partner-AGB und beschreibt sein Abrechnungsmodell offen auf der Partnerseite. Seriosität sagt aber nichts darüber, ob der Kanal für Ihren Betrieb wirtschaftlich ist. Das entscheiden Ihr Vertrag und Ihre Kosten pro gewonnenem Auftrag.',
+		],
+		[
+			'key'      => 'funktioniert',
+			'question' => 'Funktioniert Aroundhome für Solar- und SHK-Betriebe?',
+			'answer'   => 'Es funktioniert, wenn Sie schnell reagieren und genug Anfragen in Aufträge verwandeln. Jede Anfrage geht laut Aroundhome an bis zu drei Fachbetriebe, wer zuerst anruft, hat die besten Chancen. Ob es sich rechnet, zeigt der Rechner oben mit Ihrer Abschlussquote.',
 		],
 		[
 			'key'      => 'exklusivitaet',
 			'question' => 'Sind Aroundhome-Leads exklusiv?',
-			'answer'   => 'Nicht pauschal. Aroundhome beschreibt auf der öffentlichen Partnerseite eine Vermittlung an maximal drei Fachpartner; die Partner-AGB stellen zugleich auf Verfügbarkeit, Eignung und vertragliche Vereinbarungen ab. Entscheidend ist daher, was für Ihr Produkt und Ihren Vertrag schriftlich zugesagt wird.',
+			'answer'   => 'In der Regel nicht. Aroundhome beschreibt eine Vermittlung an höchstens drei Fachpartner, also bis zu zwei Mitbewerber pro Anfrage. Was für Ihr Produkt gilt, steht im Vertrag.',
 		],
 		[
-			'key'      => 'cpo',
-			'question' => 'Wie berechne ich die tatsächlichen Kosten pro Auftrag?',
-			'answer'   => 'Addieren Sie die monatlichen Anfragegebühren und die internen Vertriebskosten. Teilen Sie diese Summe durch die tatsächlich gewonnenen Aufträge. Erst dieser Wert lässt sich sinnvoll mit Deckungsbeitrag, anderen Kanälen und dem Aufbau eines eigenen Anfragewegs vergleichen.',
+			'key'      => 'laufzeit',
+			'question' => 'Gibt es eine Mindestlaufzeit?',
+			'answer'   => 'Laut Partnerseite ist die Zusammenarbeit in den meisten Fällen monatlich kündbar. Pausen, etwa im Urlaub, können beantragt werden, werden aber geprüft. Lassen Sie sich Laufzeit, Mengen und Pausenregeln schriftlich bestätigen.',
 		],
 		[
 			'key'      => 'erfahrungen',
-			'question' => 'Welche Aroundhome-Erfahrungen sind für Handwerker aussagekräftig?',
-			'answer'   => 'Eine Erfahrung ist nur eingeschränkt übertragbar, wenn Gewerk, Region, Zeitraum, Vertragsmodell und gemessene Abschlussquote fehlen. Online-Bewertungen können gute Prüffragen liefern. Für die Investitionsentscheidung sind die eigenen CRM-Daten und der aktuelle Vertrag belastbarer.',
+			'question' => 'Welche Aroundhome-Erfahrungen sind aussagekräftig?',
+			'answer'   => 'Nur solche, die Gewerk, Region, Zeitraum und Abschlussquote nennen. Einzelne Online-Bewertungen liefern gute Fragen für das Vertragsgespräch, aber keinen Beleg für Ihre Kosten pro Auftrag. Belastbarer sind Ihre eigenen CRM-Zahlen nach zwei bis drei Monaten.',
 		],
 		[
-			'key'      => 'vertrag',
-			'question' => 'Was sollte vor dem Vertragsabschluss schriftlich geklärt sein?',
-			'answer'   => 'Klären Sie mindestens das abrechenbare Ereignis, Preisbestandteile, Verteilung und Exklusivität, Region und Leadkriterien, Menge und Laufzeit, Reklamationsregeln sowie die mitgelieferten Herkunfts-, Einwilligungs- und Zeitdaten. Offene Punkte machen jede Kostenrechnung zu einer Annahme.',
-		],
-		[
-			'key'      => 'alternative',
-			'question' => 'Aroundhome-Leads kaufen oder eigene Anfragen gewinnen?',
-			'answer'   => 'Das ist kein zwingendes Entweder-oder. Ein Portal kann kurzfristig Nachfrage ergänzen. Ein eigener Anfrageweg baut dagegen kontrollierbare Botschaft, Qualifizierung und Messdaten auf. In einer Übergangsphase ist ein Hybrid sinnvoll, wenn beide Quellen getrennt gemessen und nach Kosten pro Auftrag bewertet werden.',
+			'key'      => 'alternativen',
+			'question' => 'Welche Alternativen gibt es zu Aroundhome?',
+			'answer'   => 'Andere Portale wie Checkfox, Wattfox oder DAA verkaufen Anfragen nach ähnlichem Prinzip. Die eigentliche Alternative ist ein eigener Anfrageweg über Ihre Website: Die Anfragen gehören nur Ihnen und die Daten bleiben im Betrieb. Übergangsweise funktioniert beides parallel, wenn Sie die Quellen getrennt messen.',
 		],
 		[
 			'key'      => 'beratung',
-			'question' => 'Ersetzt diese Einordnung eine Rechts- oder Vertragsberatung?',
-			'answer'   => 'Nein. Die Seite ist eine wirtschaftliche Entscheidungshilfe und keine Rechtsberatung. Rechtliche Fragen und die Auslegung Ihres konkreten Vertrags gehören in eine qualifizierte rechtliche Prüfung.',
+			'question' => 'Ersetzt diese Seite eine Vertragsberatung?',
+			'answer'   => 'Nein. Sie ist eine wirtschaftliche Entscheidungshilfe, keine Rechtsberatung. Rechtliche Fragen zu Ihrem Vertrag gehören zu einer qualifizierten Beratung.',
 		],
 	];
 }

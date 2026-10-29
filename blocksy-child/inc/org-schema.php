@@ -724,7 +724,7 @@ function hu_get_aroundhome_decision_schema_data( $post_id, $fallback_description
     $modified    = hu_get_decision_cockpit_modified_time( $post_id, 'aroundhome-solar-einordnung' );
 
     return [
-        'headline'     => 'Aroundhome-Kosten für Handwerker: Rechnen Sie den Auftrag, nicht den Lead.',
+        'headline'     => 'Aroundhome: Kosten für Handwerker',
         'description'  => $description,
         'dateModified' => $modified,
     ];

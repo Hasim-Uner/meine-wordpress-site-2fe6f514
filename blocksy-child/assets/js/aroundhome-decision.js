@@ -90,11 +90,11 @@
 			result.textContent = clarified + ' von ' + checks.length + ' schriftlich geklärt';
 
 			if (clarified === checks.length) {
-				detail.textContent = 'Die Entscheidungsgrundlage ist dokumentiert. Prüfen Sie jetzt, ob der berechnete CPO zu Deckungsbeitrag und Vertriebskapazität passt.';
+				detail.textContent = 'Alles geklärt. Jetzt zählt nur noch, ob die Kosten pro Auftrag zu Ihrer Marge passen.';
 			} else if (clarified >= Math.ceil(checks.length / 2)) {
-				detail.textContent = 'Die Basis steht. Schließen Sie die offenen Punkte, bevor Annahmen zu Kosten oder Risiko werden.';
+				detail.textContent = 'Gute Basis. Klären Sie den Rest vor der Unterschrift.';
 			} else {
-				detail.textContent = 'Solange Grundlagen offen sind, rechnet der Kostenvergleich mit Annahmen statt mit vertraglich geklärten Werten.';
+				detail.textContent = 'Offene Punkte machen jede Rechnung zur Schätzung.';
 			}
 
 			if (!completionTracked && clarified === checks.length) {
