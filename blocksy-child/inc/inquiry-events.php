@@ -1,6 +1,6 @@
 <?php
 /**
- * Anfrage-Ereignisse: serverseitiges Protokoll `anfrage_gesendet`.
+ * Serverseitiges Protokoll fuer Anfragen und Kampagnenaufrufe (`besuch`).
  *
  * Eine Zeile je erfolgreich verarbeiteter Anfrage, geschrieben von den drei
  * REST-Handlern (`contact-request`, `whitelabel-request`, `audit-request`)
@@ -13,9 +13,8 @@
  * kein Name, keine Nachricht, kein Query-String, kein Cookie. Deshalb braucht
  * dieses Protokoll weder Banner noch Einwilligung (docs/architecture/PRIVACY.md).
  *
- * Eine Zeile je Anfrage; Rohdaten statt Tageszaehler, damit "Formular x
- * Quelle" ohne weitere Auswertung lesbar ist. Ein Fehler beim Schreiben
- * bricht nie eine Anfrage ab.
+ * Kampagnenaufrufe zaehlen ohne Cookie jeden Aufruf, keine Personen.
+ * Ein Fehler beim Schreiben bricht nie eine Anfrage oder einen Besuch ab.
  *
  * @package Blocksy_Child
  */
@@ -24,8 +23,11 @@ if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
 
-/** Name des einzigen Ereignisses dieses Protokolls. */
+/** Ereignisname fuer erfolgreich verarbeitete Anfragen. */
 const HU_INQUIRY_EVENT_NAME = 'anfrage_gesendet';
+
+/** Ereignisname fuer einen gefilterten Kampagnenaufruf. */
+const HU_INQUIRY_VISIT_EVENT_NAME = 'besuch';
 
 /** Zeitfenster der Admin-Uebersicht in Tagen. */
 const HU_INQUIRY_EVENTS_WINDOW_DAYS = 90;
@@ -114,24 +116,31 @@ function hu_inquiry_event_token( $value, $length ) {
 }
 
 /**
- * Seitenpfad der absendenden Seite, ohne Query-String und Fragment.
+ * Seitenpfad ohne Query-String und Fragment.
  *
  * Quelle ist der Referer des Fetch-Aufrufs, der auf der Formularseite
  * startet. Fehlt er, dient die uebermittelte Landing-Page. Fremde Hosts
- * werden verworfen.
+ * werden verworfen. Bei Besuchen gilt ausschliesslich die aktuelle Request-URI,
+ * nie die verweisende Seite oder ein vom Client gelieferter Host.
  *
- * @param array $payload Roher Payload.
+ * @param array $payload         Roher Payload.
+ * @param bool  $current_request Aktuellen Aufruf statt Formularseite lesen.
  * @return string
  */
-function hu_inquiry_event_page( $payload ) {
+function hu_inquiry_event_page( $payload, $current_request = false ) {
 	$home_host  = (string) wp_parse_url( home_url( '/' ), PHP_URL_HOST );
 	$candidates = [];
 
-	if ( isset( $_SERVER['HTTP_REFERER'] ) && is_string( $_SERVER['HTTP_REFERER'] ) ) {
+	if ( $current_request ) {
+		$uri  = isset( $_SERVER['REQUEST_URI'] ) && is_string( $_SERVER['REQUEST_URI'] ) ? wp_unslash( $_SERVER['REQUEST_URI'] ) : '/';
+		$path = wp_parse_url( $uri, PHP_URL_PATH );
+		// Nur den Host aus der eigenen Konfiguration verwenden, auch bei Host-Spoofing.
+		$candidates[] = 'https://' . $home_host . '/' . ltrim( is_string( $path ) ? $path : '', '/' );
+	} elseif ( isset( $_SERVER['HTTP_REFERER'] ) && is_string( $_SERVER['HTTP_REFERER'] ) ) {
 		$candidates[] = wp_unslash( $_SERVER['HTTP_REFERER'] );
 	}
 
-	if ( isset( $payload['landing_page_url'] ) && is_scalar( $payload['landing_page_url'] ) ) {
+	if ( ! $current_request && isset( $payload['landing_page_url'] ) && is_scalar( $payload['landing_page_url'] ) ) {
 		$candidates[] = (string) $payload['landing_page_url'];
 	}
 
@@ -201,20 +210,26 @@ function hu_inquiry_events_install() {
 }
 
 /**
- * Eine erfolgreich verarbeitete Anfrage protokollieren.
+ * Eine erfolgreich verarbeitete Anfrage oder einen Kampagnenaufruf protokollieren.
  *
  * Gibt false zurueck, ohne etwas zu werfen, wenn das Formular unbekannt ist
  * oder das Schreiben scheitert: Das Protokoll darf keine Anfrage kosten.
  *
- * @param string $form    Schluessel aus hu_inquiry_event_forms().
+ * @param string $form    Schluessel aus hu_inquiry_event_forms(); leer fuer besuch.
  * @param array  $payload Roher Payload; gelesen werden nur ads_source,
  *                        utm_source, utm_campaign und landing_page_url.
+ * @param string $event   anfrage_gesendet (Standard) oder besuch.
  * @return bool
  */
-function hu_record_inquiry_event( $form, $payload = [] ) {
+function hu_record_inquiry_event( $form, $payload = [], $event = HU_INQUIRY_EVENT_NAME ) {
 	global $wpdb;
 
-	if ( ! isset( hu_inquiry_event_forms()[ $form ] ) || ! is_object( $wpdb ) ) {
+	if ( ! is_object( $wpdb ) || ! in_array( $event, [ HU_INQUIRY_EVENT_NAME, HU_INQUIRY_VISIT_EVENT_NAME ], true ) ) {
+		return false;
+	}
+
+	$is_visit = HU_INQUIRY_VISIT_EVENT_NAME === $event;
+	if ( $is_visit ? '' !== $form : ! isset( hu_inquiry_event_forms()[ $form ] ) ) {
 		return false;
 	}
 
@@ -227,8 +242,10 @@ function hu_record_inquiry_event( $form, $payload = [] ) {
 	}
 
 	// Der Anfrage-Monitor schreibt seine Testanfragen als `monitor_test`;
-	// alle Auswertungen lesen nur `anfrage_gesendet`.
-	$event = function_exists( 'hu_monitor_inquiry_event_name' ) ? hu_monitor_inquiry_event_name( HU_INQUIRY_EVENT_NAME ) : HU_INQUIRY_EVENT_NAME;
+	// die Anfrageauswertungen lesen nur `anfrage_gesendet`, nie Testanfragen.
+	if ( ! $is_visit && function_exists( 'hu_monitor_inquiry_event_name' ) ) {
+		$event = hu_monitor_inquiry_event_name( $event );
+	}
 
 	try {
 		if ( ! hu_inquiry_events_install() ) {
@@ -240,7 +257,7 @@ function hu_record_inquiry_event( $form, $payload = [] ) {
 			[
 				'event'        => $event,
 				'form'         => $form,
-				'seite'        => hu_inquiry_event_page( $payload ),
+				'seite'        => hu_inquiry_event_page( $payload, $is_visit ),
 				'utm_source'   => $source,
 				'utm_campaign' => hu_inquiry_event_token( $payload['utm_campaign'] ?? '', 96 ),
 				'created_at'   => gmdate( 'Y-m-d H:i:s' ),
@@ -252,6 +269,92 @@ function hu_record_inquiry_event( $form, $payload = [] ) {
 	}
 
 	return false !== $written;
+}
+
+/**
+ * Kampagnenaufrufe ohne Browser-Request, Cookie oder Besucherkennung zaehlen.
+ *
+ * Der User-Agent wird nur fluechtig geprueft und nie gespeichert. Die Filter
+ * reduzieren Scanner, koennen menschenaehnliche Scanner aber nicht erkennen.
+ * Ein vorgeschalteter Seitencache muss UTM-Aufrufe bis zu WordPress durchlassen.
+ *
+ * @return void
+ */
+function hu_record_acquisition_visit() {
+	if ( 'GET' !== ( $_SERVER['REQUEST_METHOD'] ?? '' ) || is_admin() || ( defined( 'REST_REQUEST' ) && REST_REQUEST ) || is_feed() || is_preview() || current_user_can( 'manage_options' ) ) {
+		return;
+	}
+
+	if ( ! isset( $_GET['utm_source'] ) ) {
+		return;
+	}
+
+	$source = hu_inquiry_event_token( wp_unslash( $_GET['utm_source'] ), 64 );
+	if ( '' === $source ) {
+		return;
+	}
+
+	// Schuetzt Antworten, die PHP erreichen; ersetzt keine Ausnahme im Host-Cache.
+	// Auch ein Scanner darf keine cachebare Antwort fuer spaetere Besucher fuellen.
+	if ( ! defined( 'DONOTCACHEPAGE' ) ) {
+		define( 'DONOTCACHEPAGE', true );
+	}
+	nocache_headers();
+
+	$accept = isset( $_SERVER['HTTP_ACCEPT'] ) && is_string( $_SERVER['HTTP_ACCEPT'] ) ? $_SERVER['HTTP_ACCEPT'] : '';
+	$agent  = isset( $_SERVER['HTTP_USER_AGENT'] ) && is_string( $_SERVER['HTTP_USER_AGENT'] ) ? $_SERVER['HTTP_USER_AGENT'] : '';
+	if ( ! preg_match( '~(?:^|,)\s*text/html(?:\s*;[^,]*)?(?:,|$)~i', $accept ) || preg_match( '/bot|crawl|spider|preview|fetch|scan|monitor|curl|python|headless|googleimageproxy|safelinks/i', $agent ) ) {
+		return;
+	}
+
+	hu_record_inquiry_event(
+		'',
+		[
+			'utm_source'   => $source,
+			'utm_campaign' => isset( $_GET['utm_campaign'] ) ? wp_unslash( $_GET['utm_campaign'] ) : '',
+		],
+		HU_INQUIRY_VISIT_EVENT_NAME
+	);
+}
+add_action( 'template_redirect', 'hu_record_acquisition_visit' );
+
+/**
+ * Kampagnenauswertung im gleichen Zeitfenster wie die Formularauswertung.
+ *
+ * @param int $days Zeitfenster in Tagen.
+ * @return array<int, array{utm_source:string,utm_campaign:string,visits:int,inquiries:int}>
+ */
+function hu_inquiry_events_campaign_summary( $days = HU_INQUIRY_EVENTS_WINDOW_DAYS ) {
+	global $wpdb;
+
+	if ( ! is_object( $wpdb ) || ! hu_inquiry_events_install() ) {
+		return [];
+	}
+
+	$table = hu_inquiry_events_table();
+	$rows  = $wpdb->get_results(
+		$wpdb->prepare(
+			"SELECT utm_source, utm_campaign, SUM(CASE WHEN event = %s THEN 1 ELSE 0 END) AS visits, SUM(CASE WHEN event = %s THEN 1 ELSE 0 END) AS inquiries FROM {$table} WHERE event IN (%s, %s) AND created_at >= %s GROUP BY utm_source, utm_campaign ORDER BY visits DESC, inquiries DESC, utm_source ASC, utm_campaign ASC",
+			HU_INQUIRY_VISIT_EVENT_NAME,
+			HU_INQUIRY_EVENT_NAME,
+			HU_INQUIRY_VISIT_EVENT_NAME,
+			HU_INQUIRY_EVENT_NAME,
+			gmdate( 'Y-m-d H:i:s', time() - (int) $days * DAY_IN_SECONDS )
+		),
+		'ARRAY_A'
+	);
+
+	return array_map(
+		static function ( $row ) {
+			return [
+				'utm_source'   => (string) $row['utm_source'],
+				'utm_campaign' => (string) $row['utm_campaign'],
+				'visits'       => (int) $row['visits'],
+				'inquiries'    => (int) $row['inquiries'],
+			];
+		},
+		(array) $rows
+	);
 }
 
 /**
@@ -324,7 +427,7 @@ function hu_register_inquiry_events_admin_page() {
 add_action( 'admin_menu', 'hu_register_inquiry_events_admin_page', 31 );
 
 /**
- * Admin-Seite: Eingaenge der letzten 90 Tage je Formular und utm_source.
+ * Admin-Seite: Kampagnenaufrufe und Anfragen der letzten 90 Tage.
  *
  * @return void
  */
@@ -337,7 +440,22 @@ function hu_render_inquiry_events_admin_page() {
 	$total   = array_sum( array_column( $summary, 'total' ) );
 
 	echo '<div class="wrap"><h1>Anfrage-Eingänge</h1>';
-	echo '<p>' . esc_html( sprintf( 'Erfolgreich abgesendete Anfragen der letzten %d Tage, serverseitig gezählt. Gespeichert werden nur Formular, Seitenpfad, utm_source, utm_campaign und Zeitpunkt – keine IP, keine Personendaten.', HU_INQUIRY_EVENTS_WINDOW_DAYS ) ) . '</p>';
+	echo '<p>' . esc_html( sprintf( 'Kampagnenaufrufe und erfolgreich abgesendete Anfragen der letzten %d Tage, serverseitig gezählt. Gespeichert werden nur Ereignis, Formular, Seitenpfad, utm_source, utm_campaign und Zeitpunkt – keine IP, keine Personendaten.', HU_INQUIRY_EVENTS_WINDOW_DAYS ) ) . '</p>';
+	echo '<h2>Nach Quelle und Kampagne</h2>';
+	echo '<p>Besuche zählen gefilterte Aufrufe mit utm_source, keine Personen oder eindeutigen Klicks. Ohne Cookie gibt es keine Deduplizierung; erneutes Laden zählt erneut. Scanner werden gefiltert, lassen sich aber nicht vollständig ausschließen. Anfragen/Besuche ist ein Verhältnis im selben Zeitraum, keine Zuordnung zu einzelnen Besuchern; bei 0 Besuchen ist es nicht berechenbar.</p>';
+
+	$campaigns = hu_inquiry_events_campaign_summary();
+	if ( empty( $campaigns ) ) {
+		echo '<p>Noch keine Kampagnenereignisse im Zeitraum.</p>';
+	} else {
+		echo '<table class="widefat striped" style="max-width:960px"><thead><tr><th>Quelle</th><th>Kampagne</th><th style="text-align:right">Besuche</th><th style="text-align:right">Anfragen</th><th style="text-align:right">Anfragen/Besuche</th></tr></thead><tbody>';
+		foreach ( $campaigns as $campaign ) {
+			$ratio = $campaign['visits'] > 0 ? number_format_i18n( 100 * $campaign['inquiries'] / $campaign['visits'], 1 ) . ' %' : '–';
+			echo '<tr><td>' . esc_html( '' !== $campaign['utm_source'] ? $campaign['utm_source'] : 'ohne utm_source' ) . '</td><td>' . esc_html( '' !== $campaign['utm_campaign'] ? $campaign['utm_campaign'] : 'ohne utm_campaign' ) . '</td><td style="text-align:right">' . esc_html( (string) $campaign['visits'] ) . '</td><td style="text-align:right">' . esc_html( (string) $campaign['inquiries'] ) . '</td><td style="text-align:right">' . esc_html( $ratio ) . '</td></tr>';
+		}
+		echo '</tbody></table>';
+	}
+	echo '<h2>Nach Formular</h2>';
 
 	if ( empty( $summary ) ) {
 		echo '<p><strong>Noch keine Einträge im Zeitraum.</strong></p></div>';

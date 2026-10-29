@@ -917,6 +917,14 @@ Projektabschluss und ruhiger Agentur-Zweitweg, zentrale Metadaten und
   in `inc/inquiry-events.php`, Admin-Seite „Anfrage-Eingänge“, letzte 90 Tage
   je Formular und `utm_source`); `contact.js` und die Produktseite der
   Anfrage-Website senden dafür keine Browser-Ereignisse mehr.
+- Branch `feat/akquise-besuche`: `inc/inquiry-events.php` ergänzt gefilterte
+  Frontend-GETs mit `utm_source` als `besuch` (leeres Formular), ohne Cookies,
+  Browser-Request oder Besucherkennung. Die Admin-Seite zeigt darüber Quelle
+  × Kampagne mit Besuchen, Anfragen und deren Verhältnis. Deployment und
+  Live-Abnahme stehen aus. Betriebsvoraussetzung: Im Hosting URLs mit
+  `utm_source` vom Varnish-/Seitencache ausnehmen und Cache leeren. Die
+  Beispiel-URL war am 29.10.2026 vor dieser Änderung ein Cache-HIT; ein
+  PHP-Hook allein zählt solche Treffer nicht. Details: `PRIVACY.md`.
 - Auswertung: Koko Analytics (Plugin, admin-owned, Tracking-Methode
   `fingerprint`, cookielos) und das SEO-Cockpit im Admin (Search Console per
   OAuth, Linkgraph, Lead-Attribution aus dem CRM). Das Cockpit besitzt zusätzlich

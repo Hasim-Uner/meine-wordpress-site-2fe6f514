@@ -176,6 +176,21 @@ while ( have_posts() ) :
 							Formularinhalte, Besucherkennung, IP-Adresse oder Browserkennung und nutzt
 							keine Cookies oder Browser-Speicherung. Die Zahlen bleiben auf unserem Server.
 						</p>
+						<h3>Aufrufe mit Kampagnenangaben</h3>
+						<p>
+							Wenn ein Link die Kampagnenangabe utm_source enthält, protokolliert unser
+							Server den Aufruf mit Seitenpfad, Quelle (utm_source), Kampagne (utm_campaign)
+							und Zeitpunkt. Andere Suchparameter, IP-Adresse, Browserkennung und
+							Besucherkennungen werden in diesem Protokoll nicht gespeichert. Die
+							Browserkennung wird nur kurzzeitig geprüft, um automatisierte Aufrufe
+							möglichst auszufiltern. Es entstehen keine Cookies, keine Speicherung im
+							Browser und keine zusätzliche Übertragung durch ein Skript. Mehrfache Aufrufe
+							werden einzeln gezählt; Personen oder Sitzungen lassen sich nicht zuordnen.
+							Die Ereignisse bleiben auf unserem Server und werden nicht automatisch gelöscht.
+						</p>
+						<p>
+							Damit vergleichen wir, welche Kampagnen zu Aufrufen und Anfragen führen.
+						</p>
 						<h3>Besucherstatistik mit Koko Analytics</h3>
 						<p>
 							Um zu sehen, welche Seiten gelesen werden, nutzen wir Koko Analytics, eine
