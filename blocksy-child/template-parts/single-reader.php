@@ -43,6 +43,10 @@ get_template_part( 'template-parts/blog-header' );
 		if ( '' === $article_summary ) {
 			$article_summary = wp_trim_words( wp_strip_all_tags( get_the_content() ), 30, '...' );
 		}
+		if ( $is_aroundhome_decision_request ) {
+			// Zwei-Satz-Antwort laut Bauplan; Quelle: Aroundhome-Partnerseite, Stand 29.10.2026.
+			$article_summary = 'Aroundhome nennt keinen festen Preis: Sie zahlen pro übermittelter Anfrage, der Betrag hängt vom Produkt ab und steht erst im Vertrag. Entscheidend ist, was Sie ein gewonnener Auftrag kostet, und das rechnen Sie unten in einer Minute aus.';
+		}
 		$reading_time = function_exists( 'nexus_get_reading_time' ) ? (int) nexus_get_reading_time() : 0;
 
 		$primary_urls = function_exists( 'nexus_get_primary_public_url_map' ) ? nexus_get_primary_public_url_map() : [];
@@ -222,6 +226,8 @@ get_template_part( 'template-parts/blog-header' );
 						<span class="hu-design-title__line">Design ist kein Geschmack.</span>
 						<span class="hu-design-title__line">Es ist Architektur.</span>
 					</h1>
+				<?php elseif ( $is_aroundhome_decision_request ) : ?>
+					<h1 id="nexus-article-title" class="nexus-title">Aroundhome: Kosten für Handwerker</h1>
 				<?php else : ?>
 					<h1 id="nexus-article-title" class="nexus-title"><?php echo esc_html( get_the_title() ); ?></h1>
 				<?php endif; ?>
