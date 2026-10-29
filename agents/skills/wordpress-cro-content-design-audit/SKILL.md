@@ -80,7 +80,7 @@ Review in this order. Do not skip to design polish before the copy diagnosis is 
    - Reduce duplicate framing, ornamental metaphors, repeated claims, and unclear gateways.
 8. `Measurement readiness`
    - Check whether key CTAs, qualifiers, accordions, proof links, sticky CTAs, and form handoffs have stable tracking hooks.
-   - Attribution survives to the lead: the conversion fires once per real submission, and the click ID (`gclid`, `gbraid`/`wbraid`, `fbclid`, `msclkid`) reaches the CRM payload even when the visitor changes pages before submitting. Test: land with `?gclid=TEST123`, click to the form route, submit, check the lead. Click IDs belong to the CRM attribution contract, never to analytics parameters (`agents/skills/revenue-learning-loop/references/measurement-contract.md`).
+   - Attribution survives to the lead: the conversion fires once per real submission, and the click ID (`gclid`, `gbraid`/`wbraid`, `fbclid`, `msclkid`) reaches the CRM payload even when the visitor changes pages before submitting. Check it: land with `?gclid=TEST123`, click to the form route, submit, check the lead. Click IDs belong to the CRM attribution contract, never to analytics parameters (`agents/skills/revenue-learning-loop/references/measurement-contract.md`).
 
 ## Evidence Limits
 
