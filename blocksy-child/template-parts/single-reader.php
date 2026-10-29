@@ -261,7 +261,13 @@ get_template_part( 'template-parts/blog-header' );
 			<?php endif; ?>
 		</header>
 
-		<?php if ( ! $is_design_aesthetics ) : ?>
+		<?php
+		/*
+		 * Kein Titelbild auf den Portal-Entscheidungsseiten: post-visual.css wird
+		 * dort nicht geladen, das generierte Motiv blieb ein ungestylter Kasten.
+		 */
+		?>
+		<?php if ( ! $is_design_aesthetics && ! $is_provider_decision_request ) : ?>
 		<figure class="nexus-article-cover nexus-reveal" data-track-section="article_cover">
 			<div class="nexus-hero-image<?php echo esc_attr( $has_hero_image ? '' : ' nexus-hero-image--generated' ); ?>">
 				<?php if ( $has_hero_image ) : ?>

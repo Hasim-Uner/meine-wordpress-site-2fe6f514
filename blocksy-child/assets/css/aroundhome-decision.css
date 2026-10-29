@@ -965,6 +965,10 @@
 	color: var(--grau);
 }
 
+.hu-aroundhome__method-wrap {
+	margin-block-start: var(--s5);
+}
+
 .hu-aroundhome__method {
 	grid-column: 1 / -1;
 	padding: var(--s3);
