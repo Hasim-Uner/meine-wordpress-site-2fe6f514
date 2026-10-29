@@ -102,7 +102,8 @@ $path_items = [
 		<div class="hu-aroundhome__inner hu-aroundhome__hero-grid">
 			<div class="hu-aroundhome__hero-copy">
 				<p class="hu-aroundhome__eyebrow">Kostenentscheid für Solar- &amp; SHK-Betriebe</p>
-				<h1 id="nexus-article-title">Aroundhome-Kosten für Handwerker: Rechnen Sie den Auftrag, nicht den Lead.</h1>
+				<?php /* Kein h1: Der Hero ist im Leserlayout ausgeblendet, die einzige H1 traegt der Redaktionskopf (single-reader.php). */ ?>
+				<p class="hu-aroundhome__hero-title">Aroundhome-Kosten für Handwerker: Rechnen Sie den Auftrag, nicht den Lead.</p>
 				<p class="hu-aroundhome__hero-lead">Aroundhome nennt auf seiner Partnerseite keinen einheitlichen öffentlichen Leadpreis. Der produktabhängige Preis wird nach Anbieterangaben im digitalen Vertragsprozess sichtbar. Ob der Kanal für Ihren Betrieb trägt, zeigen erst Abschlussquote, Vertriebszeit und Deckungsbeitrag.</p>
 				<div class="hu-aroundhome__hero-actions">
 					<a class="hu-aroundhome__button hu-aroundhome__button--primary" href="#kostenrechner" data-track-action="jump_aroundhome_calculator" data-track-category="engagement" data-track-section="aroundhome_hero">CPO mit eigenen Zahlen prüfen</a>
@@ -346,7 +347,10 @@ $path_items = [
 					</details>
 				<?php endforeach; ?>
 			</div>
+		</div>
 
+		<?php /* Ausserhalb des FAQ-Rasters: dort ist der Abschnittskopf sticky und lief beim Scrollen ueber diesen Kasten. */ ?>
+		<div class="hu-aroundhome__inner hu-aroundhome__method-wrap">
 			<div class="hu-aroundhome__method" data-track-section="aroundhome_methodology">
 				<h2>Quellen, Stand und Grenze</h2>
 				<ul>

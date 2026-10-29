@@ -45,7 +45,8 @@ $toc_items = [
 	<header class="hu-checkfox__hero" data-track-section="checkfox_hero" aria-labelledby="nexus-article-title">
 		<div class="hu-checkfox__hero-copy">
 			<p class="hu-checkfox__eyebrow">Markteinordnung für Solar- &amp; SHK-Betriebe</p>
-			<h1 id="nexus-article-title">Checkfox seriös? Erst Vertrag prüfen, dann Kosten pro Auftrag rechnen.</h1>
+			<?php /* Kein h1: Der Hero ist im Leserlayout ausgeblendet, die einzige H1 traegt der Redaktionskopf (single-reader.php). */ ?>
+				<p class="hu-checkfox__hero-title">Checkfox seriös? Erst Vertrag prüfen, dann Kosten pro Auftrag rechnen.</p>
 			<p class="hu-checkfox__hero-lead">Seriosität lässt sich über Anbieterangaben, Datenschutz und Vertragsregeln prüfen. Ob sich der Kanal für Ihren Betrieb lohnt, zeigen erst Abschlussquote, Vertriebszeit und Marge.</p>
 			<div class="hu-checkfox__hero-actions">
 				<a class="hu-checkfox__button hu-checkfox__button--primary" href="#portal-kostenrechner" data-track-action="jump_checkfox_calculator" data-track-category="engagement" data-track-section="checkfox_hero">Kosten pro Auftrag berechnen</a>
