@@ -208,9 +208,9 @@ $toc_items = [
 		<p class="hu-checkfox__section-lead">Diese Seite trennt öffentlich prüfbare Seriositätsmerkmale von der internen Wirtschaftlichkeitsrechnung eines Betriebs. Sie ist kein Erfahrungsbericht, keine Rechtsberatung und keine Aussage über konkrete Checkfox-Verträge, Preise, Exklusivität oder Leadqualität.</p>
 		<ul class="hu-checkfox__sources">
 			<li><strong>Seriositätsprüfung:</strong> Anbieterangaben, Impressum, Vertragswerk, Datenschutzhinweise und Reklamationsregeln des jeweiligen Anbieters. Öffentliche Bewertungen liefern zusätzliche Perspektiven, ersetzen aber die Prüfung Ihres konkreten Vertrags nicht.</li>
-			<li><strong>Rechenlogik:</strong> Die voreingestellten Werte im Rechner sind Beispiele, keine Checkfox-Konditionen. Anfragepreis, Abschlussquote und Vertriebszeit stammen aus Ihrem Betrieb — erst damit wird die Rechnung belastbar.</li>
+			<li><strong>Rechenlogik:</strong> Der Rechner ist bewusst leer, es gibt keine öffentlichen Checkfox-Konditionen. Anfragepreis, Abschlussquote und Vertriebszeit stammen aus Ihrem Angebot und Ihrem Betrieb.</li>
 			<?php
-			// Der Rechner arbeitet sonst nur mit Beispielwerten. Ein belegter
+			// Der Rechner ist leer (keine Vorbelegungen). Ein belegter
 			// eigener Referenzwert zeigt, welche Groessenordnung ein Kanalwechsel
 			// annehmen kann — als Prozentwert, nicht als Betrag, weil die
 			// absoluten Zahlen betriebsspezifisch sind und ohne Kontext mehr

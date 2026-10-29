@@ -30,12 +30,14 @@ function hu_render_portal_cpo_calculator( $args = [] ) {
 	$marktcheck_url  = function_exists( 'hu_get_request_analysis_url' )
 		? hu_get_request_analysis_url()
 		: home_url( '/solar-waermepumpen-leadgenerierung/#marktcheck' );
+	// Keine erfundenen Vorbelegungen (Entscheidung 29.10.2026): Ohne belegte
+	// Quelle bleibt jedes Feld leer und der Nutzer trägt eigene Werte ein.
 	$default_values  = [
-		'cpl'           => 90,
-		'leads'         => 50,
-		'close_rate'    => 5,
-		'sales_minutes' => 35,
-		'hourly_rate'   => 60,
+		'cpl'           => '',
+		'leads'         => '',
+		'close_rate'    => '',
+		'sales_minutes' => '',
+		'hourly_rate'   => '',
 	];
 	$args            = wp_parse_args(
 		(array) $args,
@@ -44,7 +46,7 @@ function hu_render_portal_cpo_calculator( $args = [] ) {
 			'tracking_prefix' => 'checkfox',
 			'tracking_section' => 'checkfox_portal_calculator',
 			'defaults'        => $default_values,
-			'require_complete' => false,
+			'require_complete' => true,
 			'heading'         => 'Was kostet der Portal-Kanal pro gewonnenem Auftrag?',
 			'description'     => 'Tragen Sie Ihre echten Vertriebswerte ein. Der Rechner verbindet Anfragepreis, Abschlussquote und interne Vertriebszeit.',
 			'example_text'    => '',
@@ -79,7 +81,7 @@ function hu_render_portal_cpo_calculator( $args = [] ) {
 	if ( '' === $example_text ) {
 		$example_text = sprintf(
 			/* translators: %s: provider name */
-			'Beispielwerte – keine %s-Konditionen. Die voreingestellten Werte dienen nur als Rechenbeispiel.',
+			'Keine %s-Konditionen voreingestellt. Tragen Sie Werte aus Ihrem Angebot und Ihrem Betrieb ein; nichts wird gespeichert.',
 			$provider_label
 		);
 	}
