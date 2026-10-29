@@ -45,7 +45,7 @@ get_template_part( 'template-parts/blog-header' );
 		}
 		if ( $is_aroundhome_decision_request ) {
 			// Zwei-Satz-Antwort laut Bauplan; Quelle: Aroundhome-Partnerseite, Stand 29.10.2026.
-			$article_summary = 'Aroundhome nennt keinen festen Preis: Sie zahlen pro übermittelter Anfrage, der Betrag hängt vom Produkt ab und steht erst im Vertrag. Entscheidend ist, was Sie ein gewonnener Auftrag kostet, und das rechnen Sie unten in einer Minute aus.';
+			$article_summary = 'Aroundhome nennt keinen festen Preis: Sie zahlen pro übermittelter Anfrage, der Betrag hängt vom Produkt ab und steht erst im Vertrag. Laut Aroundhome wird im Schnitt etwa jede zehnte Anfrage zum Auftrag, ein Auftrag kostet Sie also rund zehn Anfragepreise plus Vertriebszeit.';
 		}
 		$reading_time = function_exists( 'nexus_get_reading_time' ) ? (int) nexus_get_reading_time() : 0;
 

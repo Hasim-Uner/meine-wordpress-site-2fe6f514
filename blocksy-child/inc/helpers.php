@@ -825,7 +825,7 @@ function nexus_get_aroundhome_faq_items() {
 		[
 			'key'      => 'funktioniert',
 			'question' => 'Funktioniert Aroundhome für Solar- und SHK-Betriebe?',
-			'answer'   => 'Es funktioniert, wenn Sie schnell reagieren und genug Anfragen in Aufträge verwandeln. Jede Anfrage geht laut Aroundhome an bis zu drei Fachbetriebe, wer zuerst anruft, hat die besten Chancen. Ob es sich rechnet, zeigt der Rechner oben mit Ihrer Abschlussquote.',
+			'answer'   => 'Laut Aroundhome wird im Schnitt etwa jede zehnte Anfrage zum Auftrag. Jede Anfrage geht an bis zu drei Fachbetriebe, wer zuerst anruft, hat die besten Chancen. Ob es sich für Sie rechnet, hängt vom Preis in Ihrem Vertrag ab: Bei 10 % Quote kostet ein Auftrag rund zehn Anfragepreise plus Vertriebszeit.',
 		],
 		[
 			'key'      => 'exklusivitaet',
