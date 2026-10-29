@@ -535,17 +535,15 @@ function nexus_get_primary_public_url_map() {
 		[ 'wordpress-agentur-hannover', 'wordpress-agentur' ],
 		home_url( '/wordpress-agentur-hannover/' )
 	);
-	// Die Agentur-Seite hat seit dem Umbau zur Entscheidungsseite keine Anker
-	// #methode, #technisches-seo oder #wordpress-wartung mehr. SEO, Betreuung
-	// und Methode behandelt dort #zusammenarbeit; SEO- und Wartungs-Queries
-	// gehören laut docs/seo/query-ownership.csv weiter dieser Seite.
+	// Generic technical SEO has its own offer. The local agency intent keeps
+	// its separate URL; query ownership and article next steps stay distinct.
 	// Conversion-Links führen zur Leistung "Anfragestrecken & Landingpages"
 	// auf der Startseite.
-	$seo_url     = trailingslashit( $agentur_url ) . '#zusammenarbeit';
+	$seo_url     = home_url( '/technisches-seo-wordpress/' );
 	$cro_url     = home_url( '/#angebot-funnel' );
 	// Wartung hat seit 2026-10-24 eine eigene nationale Route.
 	$wartung_url = nexus_get_page_url( [ 'wordpress-wartung' ], home_url( '/wordpress-wartung/' ) );
-	$cwv_url     = trailingslashit( $agentur_url ) . '#zusammenarbeit';
+	$cwv_url     = $seo_url . '#pruefumfang';
 
 	$urls = [
 		'home'                 => home_url( '/' ),
@@ -1687,6 +1685,8 @@ function nexus_get_legacy_offer_redirect_map() {
 		// High-probability external entry paths. Internal/historical tool,
 		// Content and query ownership moved to / by the homepage consolidation.
 		'/wordpress-freelancer-hannover/' => home_url( '/' ),
+		// Both live posts had identical content; the unsuffixed slug owns the query.
+		'/wordpress-wartung-kosten-2/' => home_url( '/wordpress-wartung-kosten/' ),
 		'/growth-audit/'             => $request_url,
 		'/audit/'                    => $request_url,
 		'/customer-journey-audit/'   => $request_url,

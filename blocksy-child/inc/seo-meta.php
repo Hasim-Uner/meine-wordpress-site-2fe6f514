@@ -653,6 +653,22 @@ function hu_is_seo_cornerstone_article() {
 	return 'technisches-seo-performance-fundament' === $slug;
 }
 
+/**
+ * Shared identity for the template-owned technical SEO article.
+ *
+ * The stored WordPress title can predate the visible template. Headline,
+ * search metadata and Article markup must describe the same current article.
+ *
+ * @return array{headline: string, title: string, description: string}
+ */
+function hu_get_seo_cornerstone_identity() {
+	return [
+		'headline'    => 'Technisches SEO für B2B: Performance, Tracking und Landingpages',
+		'title'       => 'Technisches SEO für B2B: Performance, Tracking & Landingpages',
+		'description' => 'Technisches SEO im B2B: Crawlability, Core Web Vitals, Landingpage-Erfahrung und Tracking gemeinsam prüfen — ohne direkte SEO-zu-CPC-Versprechen.',
+	];
+}
+
 
 
 /**
@@ -825,6 +841,7 @@ function hu_get_noindex_nofollow_slugs() {
 function hu_get_noindex_follow_slugs() {
 	return [
 		'wordpress-freelancer-hannover', // Retired; 301 to the homepage, excluded from sitemaps.
+		'wordpress-wartung-kosten-2', // Duplicate; redirects to the retained article owner.
 		// Five content routes consolidated on 2026-10-14; their destinations remain indexable.
 		'eigene-leadgenerierung-vs-portale',
 		'lead-funnel-solar',
@@ -1065,7 +1082,7 @@ function hu_get_resolved_document_title() {
 	}
 
 	if ( hu_is_seo_cornerstone_article() ) {
-		return 'Technisches SEO für B2B: Performance, Tracking & Landingpages';
+		return hu_get_seo_cornerstone_identity()['title'];
 	}
 
 	if ( is_singular( 'post' ) ) {
@@ -1392,8 +1409,9 @@ function hu_get_seo_meta() {
 		}
 
 		if ( 'technisches-seo-performance-fundament' === $slug ) {
-			$meta['og_title']    = 'Technisches SEO für B2B: Performance, Tracking & Landingpages';
-			$meta['description'] = 'Technisches SEO im B2B: Crawlability, Core Web Vitals, Landingpage-Erfahrung und Tracking gemeinsam prüfen — ohne direkte SEO-zu-CPC-Versprechen.';
+			$cornerstone         = hu_get_seo_cornerstone_identity();
+			$meta['og_title']    = $cornerstone['title'];
+			$meta['description'] = $cornerstone['description'];
 		}
 
 

@@ -12,7 +12,8 @@ if ( ! defined( 'ABSPATH' ) ) {
 }
 
 $seo_url          = hu_get_commercial_route( 'technical_seo' );
-$cwv_url          = function_exists( 'nexus_get_primary_public_url' ) ? nexus_get_primary_public_url( 'cwv', home_url( '/wordpress-agentur-hannover/#zusammenarbeit' ) ) : home_url( '/wordpress-agentur-hannover/#zusammenarbeit' );
+$cornerstone_seo  = hu_get_seo_cornerstone_identity();
+$cwv_url          = function_exists( 'nexus_get_primary_public_url' ) ? nexus_get_primary_public_url( 'cwv', home_url( '/technisches-seo-wordpress/#pruefumfang' ) ) : home_url( '/technisches-seo-wordpress/#pruefumfang' );
 $tracking_url     = function_exists( 'nexus_get_primary_public_url' ) ? nexus_get_primary_public_url( 'tracking', home_url( '/ga4-tracking-setup/' ) ) : home_url( '/ga4-tracking-setup/' );
 $cro_url          = function_exists( 'nexus_get_primary_public_url' ) ? nexus_get_primary_public_url( 'cro', home_url( '/#angebot-funnel' ) ) : home_url( '/#angebot-funnel' );
 $seo_category_url = function_exists( 'nexus_get_primary_public_url' ) ? nexus_get_primary_public_url( 'seo_category', home_url( '/category/seo/' ) ) : home_url( '/category/seo/' );
@@ -46,7 +47,7 @@ if ( is_singular( 'post' ) ) {
 					<span class="nexus-reading-time">8 Min. Lesezeit</span>
 				</div>
 
-				<h1 id="nexus-article-title" class="nexus-title">Technisches SEO für B2B: Performance, Tracking und Landingpages</h1>
+				<h1 id="nexus-article-title" class="nexus-title"><?php echo esc_html( $cornerstone_seo['headline'] ); ?></h1>
 
 				<p class="nexus-subtitle">
 					Technisches SEO als Infrastruktur: Crawlability, Page Experience, Tracking und Conversion gemeinsam prüfen — ohne Kanal-Kausalitäten zu erfinden.
@@ -246,25 +247,11 @@ if ( is_singular( 'post' ) ) {
 				</table>
 				<p>Die Zahlen variieren je Markt, aber das Muster ist stabil: Wer Nachfragebesitz aufbaut, senkt langfristig Akquisekosten und erhöht Forecast-Sicherheit.</p>
 
-				<h2 id="praxisfall">Praxisfall: Von 150 EUR auf 25 EUR CPL durch Fundament-Arbeit</h2>
-				<p>Ein anonymisierter Praxisfall aus dem Mittelstand zeigt, wie stark der Hebel ausfällt, wenn Technik, Tracking und Conversion-Logik vor der nächsten Skalierungsrunde sauber gesetzt werden.</p>
-				<p>Ausgangslage:</p>
-				<ul>
-					<li>hoher Anteil gekaufter Nachfrage über Ads und Portale</li>
-					<li>CPL im Schnitt bei rund 150 EUR</li>
-					<li>verstreute Zielseiten ohne klare Intent-Trennung</li>
-					<li>kein einheitliches Lead-Scoring zwischen Marketing und Vertrieb</li>
-				</ul>
-				<p>Vorgehen über mehrere Iterationen:</p>
-				<ul>
-					<li>technisches SEO-Audit inklusive Ladezeit-, Indexierungs- und Tracking-Prüfung</li>
-					<li>Priorisierung von Money Pages mit kaufnahen Suchintentionen</li>
-					<li>Formularlogik für Qualifizierung statt Volumen maximieren</li>
-					<li>CRM-Felder und UTM-Signale als Pflichtbestandteil der Übergabe</li>
-					<li>SEA-Kampagnen auf die stabilisierten Zielseiten konsolidiert</li>
-				</ul>
-				<p>Ergebnisbild: Der CPL sank schrittweise von etwa 150 EUR auf rund 25 EUR. Wichtig ist dabei nicht nur die Endzahl, sondern der Weg dorthin: Erst als Technik, CRO und Tracking als ein System umgesetzt wurden, griff Skalierung ohne Zusatzreibungsverlust.</p>
-				<p>Der zentrale Punkt für Entscheider: Ein solcher Effekt entsteht nicht durch "ein neues Creative". Er entsteht durch einen kontrollierten Umbau des Nachfrage-Systems.</p>
+				<h2 id="praxisfall">Praxisfall: Von <?php echo esc_html( hu_e3_metric( 'cpl_before' ) ); ?> auf <?php echo esc_html( hu_e3_metric( 'cpl_after' ) ); ?> pro Anfrage</h2>
+				<p>Der dokumentierte Fall betrifft einen <?php echo esc_html( hu_e3_canon()['case_label_accusative'] ); ?> in DACH.</p>
+				<p><?php echo esc_html( hu_e3_canon()['timeline']['comparison'] ); ?></p>
+				<p>Zum Aufbau gehörten Landingpages, Messung, Vorqualifizierung und die Übergabe ins CRM. Der erreichte Kampagnenwert ist kein Durchschnitt über den gesamten Projektzeitraum und kein isolierter Effekt des technischen SEO oder einer bestimmten Ladezeit.</p>
+				<p>Der Fall beschreibt ein einzelnes Projekt, keine Benchmark oder Ergebniszusage. Die <a href="<?php echo esc_url( hu_e3_canon()['url'] ); ?>">Fallstudie mit Verlauf und Bezugsgrößen</a> ordnet die Zahlen ein.</p>
 
 				<h2 id="kpi-board">KPI-Board für Entscheider: Welche Kennzahlen wirklich führen</h2>
 				<p>Viele Dashboards zeigen sehr viele Zahlen, aber zu wenig Steuerbarkeit. Für C-Level und Bereichsleitung braucht es ein reduziertes KPI-Board mit klarer Logik zwischen Marketing und Vertrieb.</p>
@@ -435,8 +422,8 @@ if ( is_singular( 'post' ) ) {
 
 		<?php
 		$article_url         = get_permalink();
-		$article_title       = get_the_title();
-		$article_description = 'Performance Marketing ohne technisches SEO-Fundament verbrennt Budget. So wirken Technik, CRO und Tracking zusammen - inklusive Entscheider-Checkliste.';
+		$article_title       = $cornerstone_seo['headline'];
+		$article_description = $cornerstone_seo['description'];
 		$published_w3c       = get_the_date( DATE_W3C );
 		$modified_w3c        = get_the_modified_date( DATE_W3C );
 		$author_name         = get_the_author();

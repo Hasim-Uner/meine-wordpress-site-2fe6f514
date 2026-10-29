@@ -53,7 +53,7 @@ get_template_part( 'template-parts/blog-header' );
 		$audit_url    = function_exists( 'nexus_get_audit_url' ) ? nexus_get_audit_url() : home_url( '/solar-waermepumpen-leadgenerierung/#marktcheck' );
 		$energy_url   = function_exists( 'nexus_get_energy_systems_url' ) ? nexus_get_energy_systems_url() : home_url( '/solar-waermepumpen-leadgenerierung/' );
 		$agentur_url  = $primary_urls['agentur'] ?? home_url( '/wordpress-agentur-hannover/' );
-		$seo_url      = $primary_urls['seo'] ?? trailingslashit( $agentur_url ) . '#zusammenarbeit';
+		$seo_url      = $primary_urls['seo'] ?? home_url( '/technisches-seo-wordpress/' );
 		$cro_url      = $primary_urls['cro'] ?? home_url( '/#angebot-funnel' );
 		$tracking_url = home_url( '/server-side-tracking-b2b/' );
 		$portal_url   = home_url( '/solar-leads-kaufen-alternative/#vergleich' );

@@ -925,3 +925,17 @@ Der allgemeine öffentliche URL-Schlüssel `seo` bleibt aus Kompatibilitätsgrü
 auf der lokalen Agenturseite; die neue Route heißt explizit `technical_seo`.
 `/wordpress-seo-keine-anfragen/` bleibt mit seinem Conversion-Analyse-Einstieg
 unverändert. Energie und Agenturen behalten ihre eigenen Anfragewege.
+
+
+## Technische SEO-Artikel — Konsistenzkorrektur 30.10.2026
+
+Die zentralen URL-Schlüssel `seo` und `cwv` führen auf
+`/technisches-seo-wordpress/` beziehungsweise dessen Abschnitt `#pruefumfang`.
+Artikel-Kontext und verwandte Inhalte nutzen diese Ziele für das technische
+SEO-Angebot. `agentur` bleibt `/wordpress-agentur-hannover/`; lokale
+Query-Ownership und White-Label-Wege ändern sich nicht.
+
+Der Leitartikel `/technisches-seo-performance-fundament/` bezieht sichtbare
+Hauptüberschrift, Suchmetadaten und Article-Identität aus
+`hu_get_seo_cornerstone_identity()`. Der anonymisierte Fall liest die
+Kostenwerte und deren zeitliche Einordnung aus `e3-proof-canon.php`.

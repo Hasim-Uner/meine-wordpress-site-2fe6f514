@@ -129,7 +129,7 @@ Die Entscheidung sollte deshalb nicht auf einem Versprechen wie „Root-Server i
 
 ## 7. Was Performance im CPL wirklich bewegt
 
-Im dokumentierten [E3-New-Energy-Fall](/case-study-solar-leadgenerierung/) sank der Cost per Lead von **150 € auf 22 €**. Das ist ein Referenzfall für ein gesamtes System — nicht der Beweis, dass ein bestimmter TTFB-Wert den CPL um einen festen Prozentsatz senkt.
+Im dokumentierten [Fall eines mittelständischen PV-Installationsbetriebs](/case-study-solar-leadgenerierung/) sank der Cost per Lead von **150 € auf 22 €**. Das ist ein Referenzfall für ein gesamtes System — nicht der Beweis, dass ein bestimmter TTFB-Wert den CPL um einen festen Prozentsatz senkt.
 
 Zu den Veränderungen gehörten mehrere Ebenen: Landingpage, Messung, Vorqualifizierung und Vertriebsübergabe. Page Speed ist in so einem System wichtig, weil technische Wartezeit keine zusätzliche Nachfrage erzeugt. Wie groß der wirtschaftliche Effekt einer Performance-Änderung ist, muss aber mit realen Kampagnen- und Conversion-Daten geprüft werden.
 
