@@ -8,28 +8,41 @@ require __DIR__ . '/intake-wordpress-doubles.php';
 define( 'ARRAY_A', 'ARRAY_A' );
 if ( ! function_exists( 'wp_salt' ) ) { function wp_salt( $scheme = 'auth' ) { return 'fixture-salt'; } }
 if ( ! function_exists( 'wp_date' ) ) { function wp_date( $format, $timestamp = null ) { return gmdate( $format, $timestamp ?? time() ); } }
-foreach ( [ 'canon/messaging-canon', 'canon/pricing-canon', 'canon/e3-proof-canon', 'crm', 'contact-page', 'whitelabel-request', 'review-crm', 'inquiry-events', 'chat-assistant/config', 'chat-assistant/conversation', 'chat-assistant/handover', 'calcom-webhook' ] as $module ) {
+foreach ( [ 'canon/messaging-canon', 'canon/pricing-canon', 'canon/e3-proof-canon', 'crm', 'contact-page', 'whitelabel-request', 'review-crm', 'inquiry-events', 'anfrage-monitor', 'chat-assistant/config', 'chat-assistant/conversation', 'chat-assistant/handover', 'calcom-webhook' ] as $module ) {
 	require __DIR__ . '/../../blocksy-child/inc/' . $module . '.php';
 }
+function is_admin() { return $GLOBALS['visit_context']['admin']; }
+function is_feed() { return $GLOBALS['visit_context']['feed']; }
+function is_preview() { return $GLOBALS['visit_context']['preview']; }
+function current_user_can( $capability ) { return $GLOBALS['visit_context']['manage_options']; }
+function nocache_headers() { $GLOBALS['visit_context']['nocache'] = true; }
 
 class InquiryDatabase {
 	public $prefix = 'wp_';
 	public $rows = [];
 	public $fail = false;
 	public $summary_rows = [];
+	public $campaign_rows = [];
 	public function insert( $table, $data, $format ) {
 		if ( $this->fail ) return false;
 		$this->rows[] = [ 'table' => $table ] + $data;
 		return 1;
 	}
 	public function prepare( $sql, ...$values ) { return [ $sql, $values ]; }
-	public function get_results( $query, $format ) { return $this->summary_rows; }
+	public function get_results( $query, $format ) { return str_contains( $query[0], 'GROUP BY utm_source, utm_campaign' ) ? $this->campaign_rows : $this->summary_rows; }
 }
 function check( $condition, $message ) { if ( ! $condition ) throw new RuntimeException( $message ); }
 function run_case( $name, $callback ) {
 	intake_reset();
 	update_option( 'hu_inquiry_events_schema', '1' );
 	$GLOBALS['wpdb'] = new InquiryDatabase();
+	$GLOBALS['visit_context'] = [ 'admin' => false, 'feed' => false, 'preview' => false, 'manage_options' => false, 'nocache' => false ];
+	$_GET = [];
+	$_SERVER['REQUEST_METHOD'] = 'GET';
+	$_SERVER['REQUEST_URI'] = '/whitelabel-retainer/?utm_source=akquise&utm_campaign=kaltakquise';
+	$_SERVER['HTTP_ACCEPT'] = 'text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8';
+	$_SERVER['HTTP_USER_AGENT'] = 'Mozilla/5.0 Firefox/159.0';
+	hu_monitor_current_run( '' );
 	unset( $_SERVER['HTTP_REFERER'] );
 	$callback();
 	echo "PASS $name\n";
@@ -202,6 +215,126 @@ run_case( 'summary groups by form and source in display order', static function 
 	$summary = hu_inquiry_events_summary();
 	check( [ 'kontakt', 'sst' ] === array_keys( $summary ), 'Display order, unknown rows dropped' );
 	check( 7 === $summary['kontakt']['total'] && [ '' => 5, 'google' => 2 ] === $summary['kontakt']['sources'], 'Totals and sources, largest first' );
+} );
+
+run_case( 'campaign landing and whitelabel enquiry each write exactly one event', static function () use ( $whitelabel ) {
+	$_GET = [ 'utm_source' => 'akquise', 'utm_campaign' => 'kaltakquise' ];
+	$_SERVER['HTTP_REFERER'] = 'https://example.test/kontakt/?email=private@example.test';
+	hu_record_acquisition_visit();
+	check( 1 === count( rows() ), 'Exactly one row for a landing request' );
+	$row = rows()[0];
+	check( 'besuch' === $row['event'] && '' === $row['form'], 'Visit with no form' );
+	check( '/whitelabel-retainer/' === $row['seite'], 'Current path, never the same-site referrer' );
+	check( 'akquise' === $row['utm_source'] && 'kaltakquise' === $row['utm_campaign'], 'Campaign attribution' );
+	check( [ 'table', 'event', 'form', 'seite', 'utm_source', 'utm_campaign', 'created_at' ] === array_keys( $row ), 'No identifiers or request headers are written' );
+	check( ! $GLOBALS['intake_test']['posts'] && ! $GLOBALS['intake_test']['mails'] && ! $GLOBALS['intake_test']['activities'], 'Visit does not create a lead, mail or CRM activity' );
+	check( $GLOBALS['visit_context']['nocache'] && DONOTCACHEPAGE, 'WordPress responses opt out of page caching' );
+	check( 201 === submit( 'whitelabel', $whitelabel + [ 'ads_source' => 'akquise', 'utm_campaign' => 'kaltakquise' ] )->status, 'Real whitelabel handler accepts the existing payload' );
+	check( 2 === count( rows() ) && 'anfrage_gesendet' === rows()[1]['event'], 'One visit and one inquiry' );
+} );
+
+run_case( 'reloads count as additional views without deduplication', static function () {
+	$_GET = [ 'utm_source' => 'akquise' ];
+	hu_record_acquisition_visit();
+	hu_record_acquisition_visit();
+	check( 2 === count( rows() ), 'Two HTTP requests count as two views' );
+	check( '' === rows()[0]['utm_campaign'], 'Missing campaign stays empty' );
+} );
+
+foreach ( [ 'HEAD', 'POST', 'OPTIONS' ] as $method ) {
+	run_case( "$method is not a visit", static function () use ( $method ) {
+		$_GET = [ 'utm_source' => 'akquise' ];
+		$_SERVER['REQUEST_METHOD'] = $method;
+		hu_record_acquisition_visit();
+		check( ! rows(), 'Only GET requests count' );
+	} );
+}
+foreach ( [ 'admin', 'feed', 'preview', 'manage_options' ] as $context ) {
+	run_case( "$context is not a visit", static function () use ( $context ) {
+		$_GET = [ 'utm_source' => 'akquise' ];
+		$GLOBALS['visit_context'][ $context ] = true;
+		hu_record_acquisition_visit();
+		check( ! rows(), 'Excluded WordPress context' );
+	} );
+}
+foreach ( [ [], [ 'utm_campaign' => 'kaltakquise' ], [ 'utm_source' => '' ], [ 'utm_source' => [ 'akquise' ] ], [ 'utm_source' => '<>' ] ] as $query ) {
+	run_case( 'missing or invalid source is not a visit: ' . json_encode( $query ), static function () use ( $query ) {
+		$_GET = $query;
+		hu_record_acquisition_visit();
+		check( ! rows(), 'A nonempty source token in the URL is required' );
+	} );
+}
+foreach ( [ '', '*/*', 'application/json', 'application/nottext/html' ] as $accept ) {
+	run_case( "non-HTML Accept is not a visit: $accept", static function () use ( $accept ) {
+		$_GET = [ 'utm_source' => 'akquise' ];
+		$_SERVER['HTTP_ACCEPT'] = $accept;
+		hu_record_acquisition_visit();
+		check( ! rows(), 'Explicit HTML Accept is required' );
+	} );
+}
+foreach ( [ 'Googlebot', 'Crawler', 'Spider', 'Outlook Preview', 'GoogleImageProxy', 'Microsoft SafeLinks', 'Monitor', 'curl/8.0', 'python-requests', 'HeadlessChrome' ] as $agent ) {
+	run_case( "scanner is not a visit: $agent", static function () use ( $agent ) {
+		$_GET = [ 'utm_source' => 'akquise' ];
+		$_SERVER['HTTP_USER_AGENT'] = $agent;
+		hu_record_acquisition_visit();
+		check( ! rows(), 'Agent filter also applies to scanners accepting HTML' );
+	} );
+}
+run_case( 'campaign tokens are bounded and malformed campaign cannot break a page', static function () {
+	$_GET = [ 'utm_source' => str_repeat( 'A', 100 ), 'utm_campaign' => str_repeat( 'B', 150 ) ];
+	hu_record_acquisition_visit();
+	check( str_repeat( 'a', 64 ) === rows()[0]['utm_source'] && str_repeat( 'b', 96 ) === rows()[0]['utm_campaign'], 'Token bounds apply to visits too' );
+	$_GET['utm_campaign'] = [ 'unexpected' ];
+	hu_record_acquisition_visit();
+	check( '' === rows()[1]['utm_campaign'], 'Array campaign is ignored' );
+	$GLOBALS['wpdb']->fail = true;
+	hu_record_acquisition_visit();
+	check( 2 === count( rows() ), 'Failed insert does not throw or interrupt rendering' );
+} );
+run_case( 'visits bypass the real monitor even when a monitor run is active', static function () {
+	$_GET = [ 'utm_source' => 'akquise' ];
+	hu_monitor_current_run( 'run-20261029' );
+	hu_record_acquisition_visit();
+	check( 'besuch' === rows()[0]['event'], 'Visit is never renamed to monitor_test' );
+	check( 'run-20261029' === hu_monitor_current_run() && [] === get_option( 'hu_monitor_intake', [] ), 'Visit never changes monitor state' );
+} );
+run_case( 'campaign overview renders before any enquiry exists and escapes labels', static function () {
+	$GLOBALS['visit_context']['manage_options'] = true;
+	$GLOBALS['wpdb']->campaign_rows = [ [ 'utm_source' => '<akquise>', 'utm_campaign' => 'kaltakquise', 'visits' => '1', 'inquiries' => '0' ] ];
+	ob_start();
+	hu_render_inquiry_events_admin_page();
+	$html = ob_get_clean();
+	check( str_contains( $html, '&lt;akquise&gt;' ) && ! str_contains( $html, '<akquise>' ), 'Output is escaped' );
+	check( str_contains( $html, 'kaltakquise' ) && str_contains( $html, '0,0 %' ), 'Visit-only campaign is visible' );
+	check( str_contains( $html, 'keine Deduplizierung' ), 'Counting semantics are visible' );
+	check( strpos( $html, 'Nach Quelle und Kampagne' ) < strpos( $html, 'Nach Formular' ), 'Campaign overview comes first' );
+} );
+run_case( 'campaign ratio handles zero, missing labels and values above 100 percent', static function () {
+	$GLOBALS['visit_context']['manage_options'] = true;
+	$GLOBALS['wpdb']->campaign_rows = [
+		[ 'utm_source' => 'akquise', 'utm_campaign' => 'kaltakquise', 'visits' => '1', 'inquiries' => '1' ],
+		[ 'utm_source' => '', 'utm_campaign' => '', 'visits' => '0', 'inquiries' => '1' ],
+		[ 'utm_source' => 'akquise', 'utm_campaign' => 'ausschreibung', 'visits' => '1', 'inquiries' => '2' ],
+	];
+	$GLOBALS['wpdb']->summary_rows = [ [ 'form' => 'whitelabel', 'utm_source' => 'akquise', 'total' => '3' ] ];
+	ob_start();
+	hu_render_inquiry_events_admin_page();
+	$html = ob_get_clean();
+	check( str_contains( $html, '100,0 %' ) && str_contains( $html, '200,0 %' ) && str_contains( $html, '>–</td>' ), 'Ratio is not capped or divided by zero' );
+	check( str_contains( $html, 'ohne utm_source' ) && str_contains( $html, 'ohne utm_campaign' ), 'Empty labels are explained' );
+	check( str_contains( $html, 'White-Label' ) && str_contains( $html, 'Gesamt' ), 'Existing form summary remains visible' );
+} );
+run_case( 'overview requires manage_options', static function () {
+	ob_start();
+	hu_render_inquiry_events_admin_page();
+	check( '' === ob_get_clean(), 'No output for unprivileged users' );
+} );
+// Constants cannot be reset between cases; keep the REST exclusion last.
+run_case( 'REST requests are never visits', static function () {
+	define( 'REST_REQUEST', true );
+	$_GET = [ 'utm_source' => 'akquise' ];
+	hu_record_acquisition_visit();
+	check( ! rows(), 'REST excluded even for HTML GET with a campaign' );
 } );
 
 echo "Inquiry event log passed; the database write itself is not exercised.\n";

@@ -1,6 +1,6 @@
 # Privacy
 
-Stand: 2026-10-18. Technische Sicht auf die Datenverarbeitung im Theme. Die
+Stand: 2026-10-29. Technische Sicht auf die Datenverarbeitung im Theme. Die
 rechtliche Fassung für Besucher steht in `blocksy-child/page-datenschutz.php`;
 Änderungen an Formularen, Speicherung oder Drittanbietern müssen dort
 nachgezogen werden.
@@ -15,8 +15,9 @@ nachgezogen werden.
 - Speicher im Browser braucht nach § 25 TDDDG eine Einwilligung, sofern er
   nicht unbedingt erforderlich ist, egal ob Cookie oder Web-Speicher. Neue
   Funktionen mit Browser-Speicher deshalb nur mit Consent-Weg planen.
-- Anfrage-Herkunft wird ohne Einwilligung erst beim Absenden aus der
-  Formularseite gelesen (siehe Herkunft).
+- Formular-Herkunft wird ohne Einwilligung erst beim Absenden aus der
+  Formularseite gelesen (siehe Herkunft). Davon getrennt zählt der Server
+  Kampagnenaufrufe mit `utm_source` in der URL als `besuch` (siehe unten).
 - Koko Analytics läuft als Plugin (admin-owned), live mit Tracking-Methode
   `fingerprint` (`"method":"fingerprint","use_cookie":false`, v2.5.3). Das
   Inline-Skript liest User-Agent (Bot-Filter), externen Referrer und
@@ -74,7 +75,7 @@ gelesen, verschiebt und löscht nichts. Mail-Inhalte und Zugangsdaten gelangen
 nicht ins Log. Das IMAP-Passwort und das Monitor-Geheimnis liegen als
 GitHub-Secrets; der Job läuft nur auf `main`.
 
-## Anfrage-Protokoll `anfrage_gesendet`
+## Anfrage- und Besuchsprotokoll
 
 `inc/inquiry-events.php` schreibt je erfolgreich verarbeiteter Anfrage eine
 Zeile in `<prefix>hu_inquiry_events`: `event` (`anfrage_gesendet`), `form`
@@ -94,6 +95,47 @@ Ein Schreibfehler bricht nie eine Anfrage ab. Die Zeilen sind einzelne
 Ereignisse ohne Personenbezug; eine automatische Löschung gibt es nicht. Die
 Admin-Seite „Anfrage-Eingänge“ (unter dem CRM-Menü, `manage_options`) zeigt die
 letzten 90 Tage als Anzahl je Formular und `utm_source`.
+
+### Kampagnenaufrufe `besuch`
+
+Die gleiche Datei schreibt über `template_redirect` zusätzlich `event=besuch`
+mit leerem `form`, aktuellem Seitenpfad ohne Query/Fragment, `utm_source`,
+`utm_campaign` und UTC-Zeitpunkt in dieselbe Tabelle. Die bestehenden
+Token-Grenzen gelten unverändert. Nur Frontend-GETs mit nicht leerem,
+bereinigtem `utm_source` und explizitem `Accept: text/html` zählen. Admin,
+REST, Feed, Preview und Nutzer mit `manage_options` sind ausgeschlossen.
+Der User-Agent wird nur flüchtig gegen
+`bot|crawl|spider|preview|fetch|scan|monitor|curl|python|headless` geprüft,
+ergänzt um `googleimageproxy|safelinks`, nicht gespeichert. `HEAD` und
+Anfragen ohne HTML-Accept zählen nicht.
+Die Filter reduzieren Mail-Link-Scanner; Scanner mit normalen Browser-Headern
+lassen sich damit nicht sicher erkennen.
+
+Es gibt keinen zusätzlichen Browser-Request, Cookie, Browser-Speicher,
+IP-Hash, Referrer oder Besucher-/Sitzungskennung. Es zählen Aufrufe, keine
+Personen oder eindeutigen Klicks; Neuladen zählt erneut. Der Anfrage-Monitor
+wird für `besuch` nicht aufgerufen. Aufbewahrung wie bei den Anfragezeilen:
+keine automatische Löschung, Auswertung der letzten 90 Tage.
+
+Die Admin-Seite zeigt oberhalb der unveränderten Formularübersicht eine
+Gruppierung nach `utm_source × utm_campaign`: Besuche, Anfragen und
+`Anfragen/Besuche` als Prozentwert. Bei null Besuchen steht „–“. Es werden
+nur `besuch` und `anfrage_gesendet` einbezogen, keine Monitor-Testanfragen.
+Das Verhältnis verknüpft keine Besucher mit Anfragen und kann über 100 %
+liegen; historische Anfragen haben keine rückwirkend gezählten Besuche.
+Die Besucherinformation steht in `page-datenschutz.php`.
+
+**Betriebsvoraussetzung:** Der vorgeschaltete Host-/Varnish-Cache muss URLs
+mit `utm_source` bis PHP durchlassen. Das Theme setzt für gezählte Aufrufe
+`DONOTCACHEPAGE` und `nocache_headers()` auch für gefilterte Scanner-GETs,
+kann aber einen Cache-Treffer vor
+WordPress nicht verhindern. Live am 29.10.2026 vor diesem Change geprüft:
+Die Beispiel-URL `/whitelabel-retainer/?utm_source=akquise&utm_campaign=kaltakquise`
+lieferte `x-varnish-cache: HIT`, `age: 37` und
+`x-cacheable: YES:QUERY-STRING:UTM-PARAMETERS`. Vor produktiver Auswertung
+im Hosting alle Requests mit `utm_source` vom Seitencache ausnehmen und
+bestehende Einträge leeren; danach zwei normale Browseraufrufe und die
+Datenbank prüfen. Ohne diese Ausnahme wird die Besuchszahl unvollständig.
 
 ## Terminbuchung über Cal.com
 
