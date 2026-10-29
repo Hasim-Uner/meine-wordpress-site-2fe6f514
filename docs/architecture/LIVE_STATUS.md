@@ -1108,3 +1108,27 @@ und Conversion vor das Energie-Dossier; die Chronik bleibt chronologisch.
 
 Live-Verifikation und CI gehören zur Abnahme dieses Änderungspakets; dieser
 Abschnitt beschreibt bis dahin den Repository-Stand.
+
+
+## Artikel-Konsistenz — 30.10.2026
+
+- `/wordpress-wartung-kosten/` bleibt der informationelle Query-Owner.
+  Die identische veröffentlichte Dublette `/wordpress-wartung-kosten-2/`
+  erhält eine permanente Weiterleitung auf den Owner und steht in der
+  zentralen Sitemap-Ausschlussliste. WordPress-Beitrag 15832 wird als
+  Entwurf erhalten; Beitrag 15831 bleibt veröffentlicht.
+- `/technisches-seo-performance-fundament/`: H1 und Article-Headline
+  stammen aus derselben zentralen Identität; die Description folgt dem
+  aktuellen Meta-Text. Die Kosten pro Anfrage stammen aus dem Proof-Kanon.
+  Der erreichte Wert ist kein Durchschnitt oder isolierter SEO-Effekt.
+- `/wordpress-ttfb-google-ads-ladezeit/`: Der Zahlenfall wird anonym
+  bezeichnet. Die korrigierten Seed-Metadaten entsprechen der bereits
+  überarbeiteten fachlichen Fassung. Keine Seed-Version erhöht, keine
+  pauschale Wiederveröffentlichung redaktioneller Artikel.
+- Generische SEO-/CWV-Links führen zur eigenen technischen SEO-Leistung;
+  der lokale Agenturpfad bleibt bestehen.
+
+Abnahme: `npm run test:permalinks` prüft den Redirect-Vertrag, die
+Sitemap-Auswahl und das gerenderte H1/Article-/Proof-Ergebnis zusätzlich zu
+den bestehenden Autoren-Permalinktests. Live-Abnahme und Deploymentbeleg
+werden im bestehenden Notion-Prüfbericht nachgetragen.

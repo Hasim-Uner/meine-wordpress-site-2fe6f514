@@ -16,7 +16,7 @@
     "test:forms": "playwright test --config scripts/tests/forms.config.cjs",
     "test:intake": "php scripts/tests/intake-endpoints.php && php scripts/tests/solar-events.php && php scripts/tests/inquiry-events.php && php scripts/tests/anfrage-monitor.php && php scripts/tests/calcom-webhook.php",
     "test:chat": "php scripts/tests/chat-assistant-unit.php && php scripts/tests/chat-assistant-conversation-unit.php",
-    "test:permalinks": "php scripts/tests/author-permalink-redirect.php",
+    "test:permalinks": "php scripts/tests/author-permalink-redirect.php && php scripts/tests/seo-article-consistency.php",
     "test:solar-consolidation": "php scripts/tests/solar-consolidation.php",
     "test:provisioning": "php scripts/tests/page-provisioning.php && npm run test:retirement",
     "test:pricing": "php scripts/tests/tracking-ladder.php",

@@ -20,7 +20,10 @@ require __DIR__ . '/navigation-harness.php';
 $slug   = $argv[1] ?? 'checkfox-solar-waermepumpe-einordnung';
 $sheets = array_filter( explode( ',', $argv[2] ?? '' ) );
 $template = 'technisches-seo-performance-fundament' === $slug ? 'page-seo-cornerstone.php' : 'template-parts/single-reader.php';
-if ( 'page-seo-cornerstone.php' === $template ) { require_once __DIR__ . '/glossary-links-harness.php'; }
+if ( 'page-seo-cornerstone.php' === $template ) {
+	require_once __DIR__ . '/glossary-links-harness.php';
+	require_once get_stylesheet_directory() . '/inc/seo-meta.php';
+}
 
 $GLOBALS['nav_test'] = [
 	'path'     => '/blog/' . $slug . '/',

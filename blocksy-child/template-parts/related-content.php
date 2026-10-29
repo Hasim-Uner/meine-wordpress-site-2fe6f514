@@ -69,12 +69,12 @@ if ( 'post' === $related_type && is_singular( 'post' ) && ! empty( $category_ids
 		],
 		'sichtbarkeit-daten-conversion' => [
 			'label' => __( 'Technisches SEO ansehen', 'blocksy-child' ),
-			'url'   => function_exists( 'nexus_get_primary_public_url' ) ? nexus_get_primary_public_url( 'seo', home_url( '/wordpress-agentur-hannover/#zusammenarbeit' ) ) : home_url( '/wordpress-agentur-hannover/#zusammenarbeit' ),
+			'url'   => function_exists( 'nexus_get_primary_public_url' ) ? nexus_get_primary_public_url( 'seo', home_url( '/technisches-seo-wordpress/' ) ) : home_url( '/technisches-seo-wordpress/' ),
 			'text'  => __( 'Passender Service-Einstieg:', 'blocksy-child' ),
 		],
 		'seo' => [
 			'label' => __( 'Technisches SEO', 'blocksy-child' ),
-			'url'   => function_exists( 'nexus_get_primary_public_url' ) ? nexus_get_primary_public_url( 'seo', home_url( '/wordpress-agentur-hannover/#zusammenarbeit' ) ) : home_url( '/wordpress-agentur-hannover/#zusammenarbeit' ),
+			'url'   => function_exists( 'nexus_get_primary_public_url' ) ? nexus_get_primary_public_url( 'seo', home_url( '/technisches-seo-wordpress/' ) ) : home_url( '/technisches-seo-wordpress/' ),
 			'text'  => __( 'Passender Service-Einstieg:', 'blocksy-child' ),
 		],
 		'tracking' => [
@@ -89,7 +89,7 @@ if ( 'post' === $related_type && is_singular( 'post' ) && ! empty( $category_ids
 		],
 		'wordpress-performance' => [
 			'label' => __( 'Core Web Vitals', 'blocksy-child' ),
-			'url'   => function_exists( 'nexus_get_primary_public_url' ) ? nexus_get_primary_public_url( 'cwv', home_url( '/wordpress-agentur-hannover/#zusammenarbeit' ) ) : home_url( '/wordpress-agentur-hannover/#zusammenarbeit' ),
+			'url'   => function_exists( 'nexus_get_primary_public_url' ) ? nexus_get_primary_public_url( 'cwv', home_url( '/technisches-seo-wordpress/#pruefumfang' ) ) : home_url( '/technisches-seo-wordpress/#pruefumfang' ),
 			'text'  => __( 'Wenn Ladezeit und technische Reibung im Vordergrund stehen:', 'blocksy-child' ),
 		],
 		'wordpress-growth-agentur' => [
