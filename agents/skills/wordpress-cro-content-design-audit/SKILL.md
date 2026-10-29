@@ -58,6 +58,7 @@ Review in this order. Do not skip to design polish before the copy diagnosis is 
    - What is the mechanism?
    - What is the next step?
    - What is the strongest proof visible before scroll?
+   - Message match: for each main inflow (ad, acquisition mail, post, query) does the H1 continue that exact promise in its words, not a generic version? A break here caps everything downstream.
 2. `Buyer language`
    - Replace internal/system metaphors when they hide concrete pain.
    - Prefer Geschäftsführer-/Vertriebsleiter language over marketing-department language.
@@ -79,6 +80,14 @@ Review in this order. Do not skip to design polish before the copy diagnosis is 
    - Reduce duplicate framing, ornamental metaphors, repeated claims, and unclear gateways.
 8. `Measurement readiness`
    - Check whether key CTAs, qualifiers, accordions, proof links, sticky CTAs, and form handoffs have stable tracking hooks.
+   - Attribution survives to the lead: the conversion fires once per real submission, and the click ID (`gclid`, `gbraid`/`wbraid`, `fbclid`, `msclkid`) reaches the CRM payload even when the visitor changes pages before submitting. Check it: land with `?gclid=TEST123`, click to the form route, submit, check the lead. Click IDs belong to the CRM attribution contract, never to analytics parameters (`agents/skills/revenue-learning-loop/references/measurement-contract.md`).
+
+## Evidence Limits
+
+- State the data first: inflow with a sample ad/mail, sessions and inquiries for the last 14–30 days, device split. Name what was missing.
+- Below roughly 1,000 sessions or 30 inquiries in the window, rank by first-principles friction and say the data cannot separate a real problem from noise.
+- Never promise a percentage lift for a single change; give direction and rank.
+- If the problem sits upstream (audience, offer, inflow), say so and stop — a page rebuild does not repair a broken offer.
 
 ## Hard Rules
 
@@ -108,6 +117,7 @@ Return a brutal, prioritized CRO/copy report:
 - `Manual WordPress tasks` — editor-owned copy or CMS work
 - `Measurement tasks` — tracking events, segments, or funnel checks
 - `Do not touch` — elements that already support positioning and should stay
+- `Could not check` — missing inputs and what they limit
 
 For each finding include:
 
