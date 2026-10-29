@@ -101,6 +101,30 @@ function hu_get_blog_archive_description() {
 }
 
 /**
+ * Identify each blog archive page without copying request/tracking parameters.
+ *
+ * @return string
+ */
+function hu_get_blog_archive_canonical_url() {
+	global $wp_rewrite;
+
+	$blog_page_id = (int) get_option( 'page_for_posts' );
+	$blog_url     = $blog_page_id ? get_permalink( $blog_page_id ) : false;
+	$blog_url     = $blog_url ? $blog_url : home_url( '/blog/' );
+	$paged        = max( 1, (int) get_query_var( 'paged', 1 ) );
+
+	if ( 1 === $paged ) {
+		return $blog_url;
+	}
+
+	if ( ! $wp_rewrite->using_permalinks() ) {
+		return add_query_arg( 'paged', $paged, $blog_url );
+	}
+
+	return user_trailingslashit( trailingslashit( $blog_url ) . $wp_rewrite->pagination_base . '/' . $paged, 'paged' );
+}
+
+/**
  * Return SEO defaults for public category archives.
  *
  * @return array<string, array<string, string>>
@@ -1321,7 +1345,7 @@ function hu_get_seo_meta() {
 	} elseif ( is_home() ) {
 		$meta['og_title']    = hu_get_blog_archive_title();
 		$meta['description'] = hu_get_blog_archive_description();
-		$meta['canonical']   = get_permalink( get_option( 'page_for_posts' ) );
+		$meta['canonical']   = hu_get_blog_archive_canonical_url();
 
 	} elseif ( hu_is_contact_offer_page() ) {
 		$meta['og_title']    = hu_get_contact_offer_title();

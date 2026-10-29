@@ -1132,3 +1132,26 @@ Abnahme: `npm run test:permalinks` prüft den Redirect-Vertrag, die
 Sitemap-Auswahl und das gerenderte H1/Article-/Proof-Ergebnis zusätzlich zu
 den bestehenden Autoren-Permalinktests. Live-Abnahme und Deploymentbeleg
 werden im bestehenden Notion-Prüfbericht nachgetragen.
+
+## Blog-Pagination und Kontextlinks — 30.10.2026
+
+- Jede Blog-Folgeseite erhält ihre eigene saubere Canonical-URL.
+  `hu_get_blog_archive_canonical_url()` liefert dieselbe Identität für
+  Canonical, Open Graph und CollectionPage-/ItemList-Schema. Die erste
+  Blogseite bleibt auf `/blog/`; Kampagnenparameter gehören nicht in die
+  Identität. WordPress-Pagination, Unterverzeichnis, Index-Permalinks und
+  einfache Query-Permalinks werden berücksichtigt.
+- Der SEO-Leitartikel verweist beim Thema Kampagnen-Zielseite auf das
+  Landingpage-Angebot. Der Relaunch-Artikel verlinkt im Kostenabschnitt den
+  Website-Grundumfang. Der Artikel über fehlende Anfragen unterscheidet
+  den vollständigen Neuaufbau und die einzelne Angebotsseite mit zwei
+  passenden Produktlinks. Bestehende Hauptaktionen bleiben erhalten.
+- Die beiden redaktionellen Artikel werden nach dem Deploy per exakter
+  WordPress-Textänderung mit ihren Quellenassets abgeglichen. Keine
+  Seed-Version wird erhöht; kein bestehender Beitrag wird neu erzeugt.
+
+Abnahme: `npm run test:permalinks` enthält neun Pagination-Fälle mit dem
+echten Meta-Renderer und Schema-Erzeuger. Live-Nachweis für Blogseite 1/2,
+Parameter und Kontextlinks sowie CI-/Deploymentbelege stehen im bestehenden
+Notion-Prüfbericht. Hier wird der Repository-Vertrag beschrieben, keine
+Ranking- oder Anfragewirkung behauptet. HTML-Guide: `html`, Abschnitt 1.

@@ -218,8 +218,7 @@ function hu_get_blog_archive_collection_schema() {
     $posts = isset( $wp_query->posts ) && is_array( $wp_query->posts ) ? $wp_query->posts : [];
 
     if ( is_home() ) {
-        $blog_page_id = (int) get_option( 'page_for_posts' );
-        $page_url     = $blog_page_id ? get_permalink( $blog_page_id ) : home_url( '/blog/' );
+        $page_url     = hu_get_blog_archive_canonical_url();
         $page_name    = function_exists( 'hu_get_blog_archive_title' ) ? hu_get_blog_archive_title() : 'Blog';
         $description  = function_exists( 'hu_get_blog_archive_description' ) ? hu_get_blog_archive_description() : get_bloginfo( 'description' );
     } else {
@@ -290,7 +289,7 @@ function hu_get_blog_archive_collection_schema() {
     $collection = [
         '@context'    => 'https://schema.org',
         '@type'       => 'CollectionPage',
-        '@id'         => trailingslashit( $page_url ) . '#collection',
+        '@id'         => $page_url . '#collection',
         'url'         => $page_url,
         'name'        => $page_name,
         'headline'    => $page_name,
@@ -300,7 +299,7 @@ function hu_get_blog_archive_collection_schema() {
         'publisher'   => [ '@id' => home_url( '/#organization' ) ],
         'mainEntity'  => [
             '@type'           => 'ItemList',
-            '@id'             => trailingslashit( $page_url ) . '#itemlist',
+            '@id'             => $page_url . '#itemlist',
             'name'            => $page_name,
             'itemListOrder'   => is_home() ? 'https://schema.org/ItemListUnordered' : 'https://schema.org/ItemListOrderDescending',
             'numberOfItems'   => count( $list_items ),

@@ -78,6 +78,9 @@ function content_url( $path = '' ) { return 'https://hasimuener.de/wp-content' .
 function get_stylesheet_directory() { return dirname( __DIR__, 2 ) . '/blocksy-child'; }
 function get_stylesheet_directory_uri() { return 'https://hasimuener.de/wp-content/themes/blocksy-child'; }
 function trailingslashit( $value ) { return rtrim( (string) $value, '/\\' ) . '/'; }
+function user_trailingslashit( $value, $type = '' ) {
+	return str_ends_with( (string) get_option( 'permalink_structure', '' ), '/' ) ? trailingslashit( $value ) : rtrim( (string) $value, '/' );
+}
 function untrailingslashit( $value ) { return rtrim( (string) $value, '/\\' ); }
 function wp_parse_url( $url, $component = -1 ) { return -1 === $component ? parse_url( (string) $url ) : parse_url( (string) $url, $component ); }
 function add_query_arg( $args, $value_or_url, $url = null ) {
@@ -121,7 +124,8 @@ function absint( $value ) { return abs( (int) $value ); }
 function wp_unslash( $value ) { return $value; }
 function wp_strip_all_tags( $value ) { return trim( strip_tags( (string) $value ) ); }
 function wp_get_theme() { return new class { public function get( $key ) { return '1.0'; } }; }
-function get_option( $option, $default = false ) { return 'blog_charset' === $option ? 'UTF-8' : $default; }
+function get_option( $option, $default = false ) { return $GLOBALS['nav_test_options'][ $option ] ?? ( 'blog_charset' === $option ? 'UTF-8' : $default ); }
+function get_query_var( $key, $default = '' ) { return $GLOBALS['nav_test_query_vars'][ $key ] ?? $default; }
 function get_bloginfo( $key = '' ) { return 'Haşim Üner'; }
 function get_page_by_path( ...$args ) { return null; }
 function get_permalink( ...$args ) {
@@ -139,7 +143,7 @@ function is_feed() { return $GLOBALS['glossary_fixture_feed'] ?? false; }
 function wp_is_json_request() { return false; }
 function wp_doing_ajax() { return false; }
 function is_front_page() { return ! empty( $GLOBALS['nav_test']['front'] ); }
-function is_home() { return false; }
+function is_home() { return ! empty( $GLOBALS['nav_test']['posts_index'] ); }
 function is_archive() { return false; }
 function is_singular( $type = '' ) {
 	if ( ! empty( $GLOBALS['nav_test']['post'] ) ) {
