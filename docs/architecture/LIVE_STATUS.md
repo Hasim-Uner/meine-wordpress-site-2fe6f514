@@ -178,9 +178,12 @@ Contract und Abnahme: `CHAT_ASSISTANT.md`.
   URL im ruhigeren Verzeichnis unter „Spezialisierung & Wissen“. Die direkte
   Marktcheck-Tür ist dort entfallen. Auf Startseite, Kontakt, Conversion und
   Referenzübersicht entfällt das Register zugunsten des jeweiligen Abschlusses.
-  Das Verzeichnis führt Leistungen (einschließlich des breiten Tracking-Angebots
-  und Server-Side-Fachseite), Referenzen und Person, Spezialisierung und Wissen
-  sowie Rechtliches. Bestehende Solar- und Tracking-Anfragewege bleiben aktiv.
+  Das Verzeichnis führt seit 2026-10-30 vier Gruppen: Website & WordPress
+  (einschließlich `/wordpress-wartung/`, vorher ohne seitenweiten Link),
+  Messung & Conversion, Belege & Person, Spezialisierung & Wissen.
+  Impressum und Datenschutz stehen in der Schlusszeile neben
+  „© Jahr Haşim Üner · WordPress-Entwickler“. Die Kontaktzeile heißt
+  „Kontakt“. Bestehende Solar- und Tracking-Anfragewege bleiben aktiv.
 - 404: dieselben Wege wie der Kopf plus Startseite und Blog; kein Marktcheck.
 - Prüfung: `scripts/tests/navigation-contract.php` (Contract, Ziele,
   aria-current, bekannte Routen) und `scripts/tests/navigation.spec.cjs`

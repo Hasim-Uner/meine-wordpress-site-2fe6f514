@@ -352,13 +352,16 @@ test('reader: the article path hides below 560 px, the door stays', async ({ pag
   await expect(rowDoor(page)).toBeVisible();
 });
 
-for (const [width, columns] of [[390, 2], [1280, 4]]) {
+// Phones get one column: two 160-px columns broke nearly every label and offset the right column.
+for (const [width, columns] of [[390, 1], [600, 2], [1280, 4]]) {
   test(`footer ${width}: grouped directory in ${columns} columns`, async ({ page }) => {
     await open(page, 'imprint', { width, height: 900 });
     const directory = page.getByRole('navigation', { name: 'Weitere Seiten' });
     await expect(directory.getByRole('list')).toHaveCount(4);
-    await expect(directory.getByRole('list', { name: 'Leistungen' }).getByRole('link')).toHaveText(['Conversion-Tracking', 'Server-Side Tracking', 'Performance Marketing', 'WordPress Agentur Hannover', 'Landingpage erstellen lassen', 'Conversion-Optimierung', 'WordPress-Website erstellen lassen', 'WordPress-Übernahme & Weiterentwicklung', 'Technisches SEO für WordPress']);
-    await expect(directory.getByRole('link', { name: 'Impressum' })).toHaveAttribute('aria-current', 'page');
+    await expect(directory.getByRole('list', { name: 'Website & WordPress' }).getByRole('link')).toHaveText(['WordPress-Website erstellen lassen', 'Landingpage erstellen lassen', 'WordPress-Übernahme & Weiterentwicklung', 'WordPress-Wartung', 'Technisches SEO für WordPress', 'WordPress Agentur Hannover']);
+    await expect(directory.getByRole('list', { name: 'Messung & Conversion' }).getByRole('link')).toHaveText(['Conversion-Tracking', 'Server-Side Tracking', 'Conversion-Optimierung', 'Performance Marketing']);
+    await expect(directory.getByRole('link', { name: 'Impressum' })).toHaveCount(0);
+    await expect(page.getByRole('navigation', { name: 'Rechtliches' }).getByRole('link', { name: 'Impressum' })).toHaveAttribute('aria-current', 'page');
     const tracks = await directory.evaluate(el => getComputedStyle(el).gridTemplateColumns.split(' ').length);
     expect(tracks).toBe(columns);
     expect(await noHorizontalScroll(page)).toBe(true);

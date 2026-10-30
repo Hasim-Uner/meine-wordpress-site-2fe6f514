@@ -1436,8 +1436,8 @@ body.nx-custom-header-active {
 
 .fuss .direkt .was,
 .fuss .verzeichnis .was {
-  font-size: var(--mono-s);
-  letter-spacing: 0.14em;
+  font-size: var(--mono-m);
+  letter-spacing: 0.12em;
   text-transform: uppercase;
   color: var(--matt);
 }
@@ -1460,14 +1460,17 @@ body.nx-custom-header-active {
   text-decoration-color: var(--stempel);
 }
 
-/* Verzeichnis: vier kleine Gruppen (Leistungen, Belege & Person, Wissen,
-   Rechtliches), jede mit leiser Mono-Beschriftung. Bleibt so leise wie die
-   fruehere Einzelzeile, ordnet aber, statt die lokale Agentur-Seite neben
-   das Impressum zu stellen. */
+/* Verzeichnis: vier Gruppen (Website & WordPress, Messung & Conversion,
+   Belege & Person, Spezialisierung & Wissen). Zwei Ebenen, klar getrennt:
+   Die Gruppenbeschriftung ist Etikett (Mono, Versalien, --matt), der Link
+   ist Inhalt (Textschrift, Satzschreibung, --grau). Versalien-Mono bei 11 px
+   fuer siebzehn Links machte Etikett und Link ununterscheidbar und brach
+   lange Bezeichnungen um. Die erste Spalte traegt die laengsten
+   Bezeichnungen und bekommt mehr Breite. */
 .fuss .verzeichnis {
   display: grid;
-  grid-template-columns: repeat(4, minmax(0, 1fr));
-  gap: var(--s3) var(--s4);
+  grid-template-columns: minmax(0, 1.4fr) repeat(3, minmax(0, 1fr));
+  gap: var(--s3);
   padding-block: var(--s3);
   border-top: 1px solid var(--haar);
 }
@@ -1488,10 +1491,9 @@ body.nx-custom-header-active {
 
 .fuss .verzeichnis a {
   display: inline-block;
-  font-family: var(--mono);
-  font-size: var(--mono-m);
-  letter-spacing: 0.1em;
-  text-transform: uppercase;
+  font-family: var(--serif);
+  font-size: 0.94rem;
+  line-height: 1.35;
   color: var(--grau);
   text-decoration: none;
   padding-block: var(--s0);
@@ -1513,19 +1515,39 @@ body.nx-custom-header-active {
   text-align: right;
 }
 
+/* Im Fuss liest man die Absenderangaben als Beleg (Anschrift, Antwortzeit),
+   nicht als Randnotiz eines Dokuments: Werte eine Stufe groesser als im
+   Dokumentprotokoll, Etiketten auf der Stufe der uebrigen Fuss-Etiketten. */
+.fuss .absender .protokoll .z {
+  align-items: baseline;
+  font-size: var(--mono-l);
+}
+
+.fuss .absender .protokoll .z span { font-size: var(--mono-m); }
+
+/* Schlusszeile: Name und Rolle links, rechts Rechtliches und LinkedIn.
+   Impressum und Datenschutz stehen, wo sie gesucht werden. */
 .fuss .schluss {
   display: flex;
   flex-wrap: wrap;
   align-items: center;
-  justify-content: space-between;
   gap: var(--s2);
   margin-top: var(--s3);
   font-family: var(--mono);
-  font-size: var(--mono-s);
+  font-size: var(--mono-m);
   letter-spacing: 0.1em;
   text-transform: uppercase;
   color: var(--matt);
 }
+
+.fuss .schluss .recht {
+  display: flex;
+  gap: var(--s2);
+  margin-left: auto;
+}
+
+.fuss .schluss .recht a { text-decoration: none; }
+.fuss .schluss .recht a[aria-current="page"] { color: var(--tinte); }
 
 .fuss .schluss a {
   display: inline-flex;
@@ -1548,9 +1570,18 @@ body.nx-custom-header-active {
 @media (max-width: 760px) {
   .fuss .absender { grid-template-columns: minmax(0, 1fr); }
   .fuss .verzeichnis { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .fuss .schluss .recht { margin-left: 0; }
+  .fuss .schluss .profil { margin-left: auto; }
   .fuss .weg { grid-template-columns: minmax(0, 1fr); }
   .fuss .weg.ist-hier .satz,
   .fuss .weg.ist-hier .tueren { padding-left: var(--s1); }
+}
+
+/* Telefon: eine Spalte. Zwei Spalten von 160 px brachen fast jede
+   Bezeichnung und zwei Etiketten um, die Links der rechten Spalte standen
+   dadurch versetzt. Untereinander bleibt jeder Eintrag eine Zeile. */
+@media (max-width: 520px) {
+  .fuss .verzeichnis { grid-template-columns: minmax(0, 1fr); }
 }
 
 /* ══ Schmale Schirme: Randspalten aufloesen ═══════════════════ */

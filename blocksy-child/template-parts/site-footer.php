@@ -8,8 +8,9 @@
  *
  * Zwei Lautstaerken bleiben. Laut ist das Tuerregister: drei Wege mit ihrem
  * Selbstauskunftssatz, darunter je Tuer eine Zeile mit Bezeichnung, Betrag und
- * Pfeil. Leise sind das gruppierte Verzeichnis (Leistungen, Belege & Person,
- * Wissen, Rechtliches) und die Absenderzeile. Wege kommen aus
+ * Pfeil. Leise sind Kontaktzeile, das gruppierte Verzeichnis (Website &
+ * WordPress, Messung & Conversion, Belege & Person, Spezialisierung & Wissen),
+ * die Absenderzeile und die Schlusszeile mit Rechtlichem. Wege kommen aus
  * hu_get_site_footer_navigation_contract() (inc/commercial-routing.php), Tueren
  * aus hu_funnel_doors() (inc/funnel-doors.php) — dieselben wie im Kopf. Dieses
  * Template entscheidet nur, was auf der aktuellen Route erscheint.
@@ -63,10 +64,23 @@ $contact_email = function_exists( 'hu_get_contact_email' ) ? hu_get_contact_emai
 $phone_link    = function_exists( 'hu_get_contact_phone' ) ? hu_get_contact_phone( 'link' ) : '';
 $phone_display = function_exists( 'hu_get_contact_phone' ) ? hu_get_contact_phone( 'display' ) : '';
 
+$request_path = function_exists( 'nexus_get_current_request_path' ) ? nexus_get_current_request_path() : '';
+$is_here      = static function ( $url ) use ( $request_path ) {
+	if ( '' === $request_path || '' !== (string) wp_parse_url( (string) $url, PHP_URL_FRAGMENT ) ) {
+		return false;
+	}
+
+	$path = (string) wp_parse_url( (string) $url, PHP_URL_PATH );
+
+	return '' !== $path && trailingslashit( $path ) === $request_path;
+};
+
 /*
- * Direktzeile: drei Wege, kein Formularzwang. "Kontaktformular" statt
- * "Direktkontakt" — wer nicht mailen will, sucht ein Formular und findet
- * es neben Adresse und Nummer statt in einer Linkspalte.
+ * Kontaktzeile: drei Wege, kein Formularzwang. Das Etikett heisst
+ * "Kontakt", nicht "Lieber direkt": Auf Startseite, Kontaktseite und den
+ * Money Pages ohne Register fehlte dem "lieber" der Bezug, und ein Formular
+ * ist kein direkter Weg. "Kontakt" ist zugleich das Wort, nach dem im Fuss
+ * gesucht wird.
  */
 $direct = [
 	[
@@ -92,26 +106,19 @@ $direct[] = [
 
 /*
  * Verzeichnis: breit genug fuer Crawl- und Orientierungswege, aber deutlich
- * leiser als die drei kommerziellen Entscheidungen. Vier kleine Gruppen statt
- * einer Zeile, in der die lokale Agentur-Seite neben dem Impressum stand. Die
- * lokale Agentur-Seite bleibt bewusst hier statt im Header: Sie besitzt
- * lokale WordPress-Queries, ist aber kein globaler Geschaeftspfad.
+ * leiser als die drei kommerziellen Entscheidungen. Vier Gruppen: die
+ * Fachseiten getrennt nach Kaufanlass (Website & WordPress, Messung &
+ * Conversion), Belege & Person, Spezialisierung & Wissen. Rechtliches steht
+ * nicht hier, sondern in der Schlusszeile neben dem Copyright. Die lokale
+ * Agentur-Seite bleibt bewusst hier statt im Header: Sie besitzt lokale
+ * WordPress-Queries, ist aber kein globaler Geschaeftspfad.
  *
  * Ein Eintrag, der auf die aufgerufene Seite zeigt, bleibt stehen (die
  * Gruppen sollen auf jeder Seite gleich aussehen), traegt aber
  * aria-current="page".
  */
-$directory    = (array) ( $footer_contract['directory'] ?? [] );
-$request_path = function_exists( 'nexus_get_current_request_path' ) ? nexus_get_current_request_path() : '';
-$is_here      = static function ( $url ) use ( $request_path ) {
-	if ( '' === $request_path || '' !== (string) wp_parse_url( (string) $url, PHP_URL_FRAGMENT ) ) {
-		return false;
-	}
-
-	$path = (string) wp_parse_url( (string) $url, PHP_URL_PATH );
-
-	return '' !== $path && trailingslashit( $path ) === $request_path;
-};
+$directory = (array) ( $footer_contract['directory'] ?? [] );
+$legal     = (array) ( $footer_contract['legal'] ?? [] );
 
 /*
  * Auf der Seite, auf der die Tuer liegt, zeigt sie auf den Anker der Seite
@@ -130,7 +137,12 @@ $door_href = static function ( $url ) use ( $request_path ) {
 };
 
 /*
- * Absenderzeile, zwei Spalten, eine Zeile je Angabe. Die Antwortzeit kommt
+ * Absenderzeile, zwei Spalten, eine Zeile je Angabe. Links der Ort (Sitz,
+ * Vor-Ort-Radius, Arbeitsweise), rechts das Verfahren (Antwort, Messung).
+ * "Vor Ort" statt "Region": Das Label wiederholte den Wert ("Region Region
+ * Hannover"), und es entspricht dem Vor-Ort-Radius im Schema
+ * (inc/org-schema.php), waehrend "remote in DACH" direkt darunter steht.
+ * Die Antwortzeit kommt
  * aus dem Messaging-Canon, damit sie nicht ein weiteres Mal irgendwo hart
  * steht und beim naechsten Wechsel gegen /kontakt/ auseinanderlaeuft.
  *
@@ -144,35 +156,34 @@ $door_href = static function ( $url ) use ( $request_path ) {
  */
 $response_value = function_exists( 'hu_response_promise' ) ? hu_response_promise( 'value' ) : '';
 
-$sender_left = [];
+$sender_left = [
+	[
+		'label'   => 'Sitz',
+		'value'   => 'Warschauer Str. 5, 30982 Pattensen',
+		'address' => true,
+	],
+	[
+		'label' => 'Vor Ort',
+		'value' => 'Region Hannover',
+	],
+	[
+		'label' => 'Arbeitsweise',
+		'value' => 'remote in DACH, 1:1',
+	],
+];
+
+$sender_right = [];
 
 if ( '' !== $response_value ) {
-	$sender_left[] = [
+	$sender_right[] = [
 		'label' => 'Antwort',
 		'value' => $response_value,
 	];
 }
 
-$sender_left[] = [
-	'label'   => 'Sitz',
-	'value'   => 'Warschauer Str. 5, 30982 Pattensen',
-	'address' => true,
-];
-
-$sender_left[] = [
-	'label' => 'Region',
-	'value' => 'Region Hannover',
-];
-
-$sender_right = [
-	[
-		'label' => 'Arbeitsweise',
-		'value' => 'remote in DACH, 1:1',
-	],
-	[
-		'label' => 'Messung',
-		'value' => 'ohne Cookie-Banner',
-	],
+$sender_right[] = [
+	'label' => 'Messung',
+	'value' => 'ohne Cookie-Banner',
 ];
 
 ?>
@@ -228,10 +239,11 @@ $sender_right = [
 		<?php endif; ?>
 
 		<p class="direkt">
-			<span class="was">Lieber direkt</span>
+			<span class="was">Kontakt</span>
 			<?php foreach ( $direct as $entry ) : ?>
 				<a
 					href="<?php echo esc_url( (string) $entry['url'], [ 'http', 'https', 'mailto', 'tel' ] ); ?>"
+					<?php echo $is_here( $entry['url'] ) ? ' aria-current="page"' : ''; // raw-ok -- static attribute. ?>
 					data-track-action="<?php echo esc_attr( (string) $entry['track'] ); ?>"
 					data-track-category="lead_gen"
 					data-track-section="footer"
@@ -276,10 +288,33 @@ $sender_right = [
 			<?php endforeach; ?>
 		</div>
 
+		<?php
+		/*
+		 * Schlusszeile: Name mit Rolle (dieselbe Rolle wie in Titel und Schema
+		 * der Ueber-Seite, docs/standards/BRAND_AND_COPY.md), daneben
+		 * Rechtliches und LinkedIn. Impressum und Datenschutz stehen dort, wo
+		 * sie gesucht werden, und belegen keine eigene Verzeichnisspalte.
+		 */
+		?>
 		<div class="schluss">
-			<span><?php echo esc_html( sprintf( '© %s Haşim Üner', $current_year ) ); ?></span>
+			<span><?php echo esc_html( sprintf( '© %s Haşim Üner · WordPress-Entwickler', $current_year ) ); ?></span>
+
+			<?php if ( ! empty( $legal ) ) : ?>
+				<nav class="recht" aria-label="Rechtliches">
+					<?php foreach ( $legal as $link ) : ?>
+						<a
+							href="<?php echo esc_url( (string) $link['url'] ); ?>"
+							<?php echo $is_here( $link['url'] ) ? ' aria-current="page"' : ''; // raw-ok -- static attribute. ?>
+							data-track-action="<?php echo esc_attr( (string) $link['track'] ); ?>"
+							data-track-category="<?php echo esc_attr( (string) $link['category'] ); ?>"
+							data-track-section="footer"
+						><?php echo esc_html( (string) $link['label'] ); ?></a>
+					<?php endforeach; ?>
+				</nav>
+			<?php endif; ?>
 
 			<a
+				class="profil"
 				href="https://www.linkedin.com/in/hasim-uener/"
 				aria-label="LinkedIn-Profil"
 				rel="me noopener noreferrer"
