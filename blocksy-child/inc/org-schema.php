@@ -1412,34 +1412,36 @@ function hu_output_schema()
         'wordpress-wartung' => hu_get_wordpress_maintenance_service_definition(),
         'technisches-seo-wordpress' => hu_get_wordpress_technical_seo_service_definition(),
 
+        // Schema == sichtbare Seite: Beschreibung und Angebotskatalog folgen
+        // page-wordpress-agentur.php. Jedes Angebot verweist auf den
+        // Service-Knoten seiner eigenen Angebotsseite; Preise stehen dort
+        // (aus dem Kanon) und werden hier nicht dupliziert.
         'wordpress-agentur-hannover' => [
-            'name'        => 'WordPress Agentur Hannover',
-            'description' => 'WordPress Agentur in Hannover für B2B-Unternehmen: technisches SEO, laufende Betreuung, Tracking, Conversion und Angebotsseiten als ein verbundenes System mit kontrollierter Weiterentwicklung.',
-            'serviceType' => 'WordPress Agentur',
-            'serviceOutput' => 'Steuerbares WordPress-System mit Angebotsseiten, technischem SEO, laufender Betreuung, Datenebene, KPI-Klarheit und vollen Zugängen',
+            'name'          => 'WordPress Agentur Hannover',
+            'description'   => 'WordPress Agentur in Hannover: Websites, Relaunches und Landingpages mit technischem SEO und Tracking. Ein Ansprechpartner plant, baut und prüft selbst.',
+            'serviceType'   => 'WordPress-Entwicklung',
+            'serviceOutput' => 'WordPress-Website mit technischem SEO, Messung und geprüfter Anfragestrecke; Hosting, Tag Manager und Zugänge laufen auf den Namen des Kunden',
             'hasOfferCatalog' => [
                 '@type'           => 'OfferCatalog',
-                'name'            => 'Leistungsbereiche der WordPress Agentur Hannover',
-                'itemListElement' => [
+                'name'            => 'Leistungen der WordPress Agentur Hannover',
+                'itemListElement' => array_map(
+                    static function ( $item ) {
+                        return [
+                            '@type'       => 'Offer',
+                            'name'        => $item[1],
+                            'url'         => hu_get_commercial_route( $item[0] ),
+                            'itemOffered' => [ '@id' => home_url( '/' . $item[2] . '/#service' ) ],
+                        ];
+                    },
                     [
-                        '@type'       => 'Offer',
-                        'name'        => 'Technisches SEO und Tracking',
-                        'description' => 'WordPress, technisches SEO, Tracking und Conversion in der richtigen Reihenfolge als verbundenes Anfragesystem.',
-                        'url'         => home_url('/wordpress-agentur-hannover/#zusammenarbeit'),
-                    ],
-                    [
-                        '@type'       => 'Offer',
-                        'name'        => 'Anfragesystem-Methode',
-                        'description' => 'Strategie, technisches Fundament, Messbarkeit, Sichtbarkeit, Conversion und Weiterentwicklung als zusammenhängende Methode.',
-                        'url'         => home_url('/wordpress-agentur-hannover/#zusammenarbeit'),
-                    ],
-                    [
-                        '@type'       => 'Offer',
-                        'name'        => 'Laufende WordPress-Betreuung in Hannover',
-                        'description' => 'Planbare technische Pflege und kontrollierte Weiterentwicklung für vorab geprüfte WordPress-Systeme im Rahmen eines Weiterentwicklungs-Retainers.',
-                        'url'         => home_url('/wordpress-agentur-hannover/#zusammenarbeit'),
-                    ],
-                ],
+                        [ 'website', 'WordPress-Website erstellen lassen', 'wordpress-website-erstellen-lassen' ],
+                        [ 'takeover', 'Bestehende Website übernehmen', 'wordpress-website-uebernehmen' ],
+                        [ 'technical_seo', 'Technisches SEO für WordPress', 'technisches-seo-wordpress' ],
+                        [ 'tracking_setup', 'Conversion-Tracking einrichten lassen', 'ga4-tracking-setup' ],
+                        [ 'conversion', 'Conversion-Optimierung für B2B', 'conversion-optimierung' ],
+                        [ 'maintenance', 'WordPress-Wartung mit Anfrage-Test', 'wordpress-wartung' ],
+                    ]
+                ),
             ],
         ],
 
@@ -1772,7 +1774,8 @@ function hu_output_schema()
                 // Aktualitaets- und Bildsignale bleiben erhalten, haengen aber am
                 // korrekten Typ statt am entfernten Article-Node.
                 $agentur_published_date = get_post_time( DATE_W3C, true, $post_id );
-                $agentur_modified_date  = get_post_modified_time( DATE_W3C, true, $post_id );
+                // Inhalt lebt im Template, nicht im Beitrag: das spätere Datum zählt.
+                $agentur_modified_date  = hu_get_template_page_modified_time( $post_id, get_stylesheet_directory() . '/page-wordpress-agentur.php' );
 
                 if ( $agentur_published_date ) {
                     $agentur_webpage['datePublished'] = $agentur_published_date;
