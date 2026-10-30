@@ -668,7 +668,9 @@ Der Solar-Weg steht als „Solar & Wärmepumpe“ im Verzeichnis unter
 Türregister enthält nur Projekt, Tracking und Agenturen. Der Kopf zeigt den
 Marktcheck weiterhin ausschließlich im Energie-Kontext.
 
-Darunter die Direktzeile, ebenfalls `lead_gen`:
+Darunter die Kontaktzeile (Etikett „Kontakt“, seit 2026-10-30; vorher „Lieber
+direkt“, das ohne Register darüber keinen Bezug hatte), ebenfalls `lead_gen`.
+Auf `/kontakt/` trägt „Kontaktformular“ `aria-current="page"`:
 
 | Direct path | Destination | Event |
 |---|---|---|
@@ -676,27 +678,43 @@ Darunter die Direktzeile, ebenfalls `lead_gen`:
 | Telefon | `tel:` the canonical number | `cta_footer_tel` |
 | Kontaktformular | `/kontakt/` | `cta_footer_form` |
 
-Darunter das Verzeichnis in vier leisen Gruppen. Es führt, was der Kopf nicht
-führt: Fachseiten mit eigener Query-Ownership, Belege, Wissen, Rechtliches.
-Ein Eintrag, der die aufgerufene Seite ist, trägt `aria-current="page"`.
+Darunter das Verzeichnis in vier leisen Gruppen (seit 2026-10-30). Es führt,
+was der Kopf nicht führt: Fachseiten mit eigener Query-Ownership, getrennt nach
+Kaufanlass, dazu Belege, Spezialisierung und Wissen. Ein Eintrag, der die
+aufgerufene Seite ist, trägt `aria-current="page"`. Gruppenetiketten sind Mono-
+Versalien, Links stehen in der Textschrift in Satzschreibung.
 
 | Gruppe | Link | Destination | Event | Category |
 |---|---|---|---|---|
-| Leistungen | Conversion-Tracking | `/ga4-tracking-setup/` | `cta_footer_nav_tracking` | `navigation` |
-| Leistungen | Server-Side Tracking | `/server-side-tracking-b2b/` | `cta_footer_nav_server_side_tracking` | `navigation` |
-| Leistungen | Performance Marketing | `/performance-marketing/` | `cta_footer_nav_performance_marketing` | `navigation` |
-| Leistungen | WordPress Agentur Hannover | `/wordpress-agentur-hannover/` | `cta_footer_nav_agentur_local` | `navigation` |
-| Leistungen | Landingpage erstellen lassen | `/landingpage-erstellen-lassen/` | `cta_footer_nav_landingpage` | `navigation` |
-| Leistungen | Conversion-Optimierung | `/conversion-optimierung/` | `cta_footer_nav_conversion` | `navigation` |
-| Leistungen | WordPress-Website erstellen lassen | `/wordpress-website-erstellen-lassen/` | `cta_footer_nav_website_offer` | `navigation` |
+| Website & WordPress | WordPress-Website erstellen lassen | `/wordpress-website-erstellen-lassen/` | `cta_footer_nav_website_offer` | `navigation` |
+| Website & WordPress | Landingpage erstellen lassen | `/landingpage-erstellen-lassen/` | `cta_footer_nav_landingpage` | `navigation` |
+| Website & WordPress | WordPress-Übernahme & Weiterentwicklung | `/wordpress-website-uebernehmen/` | `cta_footer_nav_takeover` | `navigation` |
+| Website & WordPress | WordPress-Wartung | `/wordpress-wartung/` | `cta_footer_nav_maintenance` | `navigation` |
+| Website & WordPress | Technisches SEO für WordPress | `/technisches-seo-wordpress/` | `cta_footer_nav_technical_seo` | `navigation` |
+| Website & WordPress | WordPress Agentur Hannover | `/wordpress-agentur-hannover/` | `cta_footer_nav_agentur_local` | `navigation` |
+| Messung & Conversion | Conversion-Tracking | `/ga4-tracking-setup/` | `cta_footer_nav_tracking` | `navigation` |
+| Messung & Conversion | Server-Side Tracking | `/server-side-tracking-b2b/` | `cta_footer_nav_server_side_tracking` | `navigation` |
+| Messung & Conversion | Conversion-Optimierung | `/conversion-optimierung/` | `cta_footer_nav_conversion` | `navigation` |
+| Messung & Conversion | Performance Marketing | `/performance-marketing/` | `cta_footer_nav_performance_marketing` | `navigation` |
 | Belege & Person | Referenzen | `/referenzen/` | `cta_footer_nav_references` | `trust` |
 | Belege & Person | Solar-Fallstudie | `/case-study-solar-leadgenerierung/` | `cta_footer_nav_case_study_proof` | `trust` |
 | Belege & Person | Über mich | `/hasim-uener/` | `cta_footer_nav_about` | `navigation` |
 | Spezialisierung & Wissen | Solar & Wärmepumpe | `/solar-waermepumpen-leadgenerierung/` | `cta_footer_nav_energy` | `navigation` |
 | Spezialisierung & Wissen | Blog | `/blog/` | `cta_footer_nav_insights` | `navigation` |
 | Spezialisierung & Wissen | Glossar | `/glossar/` | `cta_footer_nav_glossary` | `navigation` |
-| Rechtliches | Impressum | `/impressum/` | `cta_footer_nav_imprint` | `navigation` |
-| Rechtliches | Datenschutz | `/datenschutz/` | `cta_footer_nav_privacy` | `navigation` |
+
+Rechtliches steht seit 2026-10-30 nicht mehr als Verzeichnisgruppe, sondern im
+Contract-Schlüssel `legal` und in der Schlusszeile neben „© Jahr Haşim Üner ·
+WordPress-Entwickler“ und LinkedIn (`nav.recht`, `aria-label="Rechtliches"`).
+`hu_get_site_footer_directory_urls()` zählt beide Listen für das SEO Cockpit.
+
+| Ort | Link | Destination | Event | Category |
+|---|---|---|---|---|
+| Schlusszeile | Impressum | `/impressum/` | `cta_footer_nav_imprint` | `navigation` |
+| Schlusszeile | Datenschutz | `/datenschutz/` | `cta_footer_nav_privacy` | `navigation` |
+
+Neu seit 2026-10-30: `cta_footer_nav_maintenance` für `/wordpress-wartung/`.
+Die Seite hatte bis dahin keinen seitenweiten Link (weder Kopf noch Fuß).
 
 Neu seit 2026-09-25: `cta_footer_nav_server_side_tracking` und
 `cta_footer_nav_performance_marketing`. Die Server-Side-Seite verlor mit dem

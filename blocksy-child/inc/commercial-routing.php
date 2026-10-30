@@ -342,15 +342,18 @@ function hu_get_primary_navigation_contract() {
  * Return the repo-owned footer navigation contract.
  *
  * Das Tuerregister fuehrt direkte Projekte, Tracking und Agenturen.
- * Die ruhigere Verzeichnis-Navigation fuehrt zusaetzlich Referenzen, Person,
- * Fachseiten, Solar als Spezialisierung, Wissen und Rechtliches. Betraege,
- * Ziel und Tracking-Actions der Anfragetuer kommen aus hu_funnel_doors().
- * Der Solar-Marktcheck bleibt auf den Energie-Kontext begrenzt.
+ * Die ruhigere Verzeichnis-Navigation fuehrt die Fachseiten in zwei Gruppen
+ * nach Kaufanlass (Website & WordPress, Messung & Conversion — der Descriptor
+ * der Domain), dazu Belege & Person sowie Solar als Spezialisierung neben dem
+ * Wissen. Rechtliches steht getrennt unter `legal` und erscheint in der
+ * Schlusszeile neben dem Copyright, wo es gesucht wird. Betraege, Ziel und
+ * Tracking-Actions der Anfragetuer kommen aus hu_funnel_doors(). Der
+ * Solar-Marktcheck bleibt auf den Energie-Kontext begrenzt.
  *
  * template-parts/site-footer.php rendert diese Struktur, das SEO Cockpit
- * zaehlt sie als seitenweite Linkquelle.
+ * zaehlt Verzeichnis und Rechtliches als seitenweite Linkquelle.
  *
- * @return array{routes: array<int, array<string, mixed>>, directory: array<int, array<string, mixed>>}
+ * @return array{routes: array<int, array<string, mixed>>, directory: array<int, array<string, mixed>>, legal: array<int, array<string, string>>}
  */
 function hu_get_site_footer_navigation_contract() {
 	$routes = hu_get_commercial_route_map();
@@ -382,8 +385,50 @@ function hu_get_site_footer_navigation_contract() {
 		],
 		'directory' => [
 			[
-				'key'   => 'leistungen',
-				'title' => __( 'Leistungen', 'blocksy-child' ),
+				'key'   => 'website',
+				'title' => __( 'Website & WordPress', 'blocksy-child' ),
+				'items' => [
+					[
+						'label'    => __( 'WordPress-Website erstellen lassen', 'blocksy-child' ),
+						'url'      => $routes['website'],
+						'track'    => 'cta_footer_nav_website_offer',
+						'category' => 'navigation',
+					],
+					[
+						'label'    => __( 'Landingpage erstellen lassen', 'blocksy-child' ),
+						'url'      => $routes['landingpage'],
+						'track'    => 'cta_footer_nav_landingpage',
+						'category' => 'navigation',
+					],
+					[
+						'label'    => __( 'WordPress-Übernahme & Weiterentwicklung', 'blocksy-child' ),
+						'url'      => $routes['takeover'],
+						'track'    => 'cta_footer_nav_takeover',
+						'category' => 'navigation',
+					],
+					[
+						'label'    => __( 'WordPress-Wartung', 'blocksy-child' ),
+						'url'      => $routes['maintenance'],
+						'track'    => 'cta_footer_nav_maintenance',
+						'category' => 'navigation',
+					],
+					[
+						'label'    => __( 'Technisches SEO für WordPress', 'blocksy-child' ),
+						'url'      => $routes['technical_seo'],
+						'track'    => 'cta_footer_nav_technical_seo',
+						'category' => 'navigation',
+					],
+					[
+						'label'    => __( 'WordPress Agentur Hannover', 'blocksy-child' ),
+						'url'      => $routes['agentur_local'],
+						'track'    => 'cta_footer_nav_agentur_local',
+						'category' => 'navigation',
+					],
+				],
+			],
+			[
+				'key'   => 'messung',
+				'title' => __( 'Messung & Conversion', 'blocksy-child' ),
 				'items' => [
 					[
 						'label'    => __( 'Conversion-Tracking', 'blocksy-child' ),
@@ -398,45 +443,15 @@ function hu_get_site_footer_navigation_contract() {
 						'category' => 'navigation',
 					],
 					[
-						'label'    => __( 'Performance Marketing', 'blocksy-child' ),
-						'url'      => $urls['performance_marketing'] ?? home_url( '/performance-marketing/' ),
-						'track'    => 'cta_footer_nav_performance_marketing',
-						'category' => 'navigation',
-					],
-					[
-						'label'    => __( 'WordPress Agentur Hannover', 'blocksy-child' ),
-						'url'      => $routes['agentur_local'],
-						'track'    => 'cta_footer_nav_agentur_local',
-						'category' => 'navigation',
-					],
-					[
-						'label'    => __( 'Landingpage erstellen lassen', 'blocksy-child' ),
-						'url'      => $routes['landingpage'],
-						'track'    => 'cta_footer_nav_landingpage',
-						'category' => 'navigation',
-					],
-					[
 						'label'    => __( 'Conversion-Optimierung', 'blocksy-child' ),
 						'url'      => $routes['conversion'],
 						'track'    => 'cta_footer_nav_conversion',
 						'category' => 'navigation',
 					],
 					[
-						'label'    => __( 'WordPress-Website erstellen lassen', 'blocksy-child' ),
-						'url'      => $routes['website'],
-						'track'    => 'cta_footer_nav_website_offer',
-						'category' => 'navigation',
-					],
-					[
-						'label'    => __( 'WordPress-Übernahme & Weiterentwicklung', 'blocksy-child' ),
-						'url'      => $routes['takeover'],
-						'track'    => 'cta_footer_nav_takeover',
-						'category' => 'navigation',
-					],
-					[
-						'label'    => __( 'Technisches SEO für WordPress', 'blocksy-child' ),
-						'url'      => $routes['technical_seo'],
-						'track'    => 'cta_footer_nav_technical_seo',
+						'label'    => __( 'Performance Marketing', 'blocksy-child' ),
+						'url'      => $urls['performance_marketing'] ?? home_url( '/performance-marketing/' ),
+						'track'    => 'cta_footer_nav_performance_marketing',
 						'category' => 'navigation',
 					],
 				],
@@ -489,23 +504,19 @@ function hu_get_site_footer_navigation_contract() {
 					],
 				],
 			],
+		],
+		'legal'     => [
 			[
-				'key'   => 'rechtliches',
-				'title' => __( 'Rechtliches', 'blocksy-child' ),
-				'items' => [
-					[
-						'label'    => __( 'Impressum', 'blocksy-child' ),
-						'url'      => $urls['impressum'] ?? home_url( '/impressum/' ),
-						'track'    => 'cta_footer_nav_imprint',
-						'category' => 'navigation',
-					],
-					[
-						'label'    => __( 'Datenschutz', 'blocksy-child' ),
-						'url'      => $urls['datenschutz'] ?? home_url( '/datenschutz/' ),
-						'track'    => 'cta_footer_nav_privacy',
-						'category' => 'navigation',
-					],
-				],
+				'label'    => __( 'Impressum', 'blocksy-child' ),
+				'url'      => $urls['impressum'] ?? home_url( '/impressum/' ),
+				'track'    => 'cta_footer_nav_imprint',
+				'category' => 'navigation',
+			],
+			[
+				'label'    => __( 'Datenschutz', 'blocksy-child' ),
+				'url'      => $urls['datenschutz'] ?? home_url( '/datenschutz/' ),
+				'track'    => 'cta_footer_nav_privacy',
+				'category' => 'navigation',
 			],
 		],
 	];
@@ -534,17 +545,23 @@ function hu_get_site_footer_door_urls() {
 }
 
 /**
- * Return every URL of the footer directory, in rendered order.
+ * Return every URL of the footer directory and its legal line, in rendered order.
  *
  * @return array<int, string>
  */
 function hu_get_site_footer_directory_urls() {
 	$urls = [];
 
-	foreach ( hu_get_site_footer_navigation_contract()['directory'] as $group ) {
+	$contract = hu_get_site_footer_navigation_contract();
+
+	foreach ( $contract['directory'] as $group ) {
 		foreach ( (array) ( $group['items'] ?? [] ) as $item ) {
 			$urls[] = (string) ( $item['url'] ?? '' );
 		}
+	}
+
+	foreach ( (array) ( $contract['legal'] ?? [] ) as $item ) {
+		$urls[] = (string) ( $item['url'] ?? '' );
 	}
 
 	return array_values( array_filter( $urls ) );

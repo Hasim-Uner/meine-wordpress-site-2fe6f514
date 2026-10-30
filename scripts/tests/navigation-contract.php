@@ -95,7 +95,9 @@ nav_check( [ 'freelancer', 'tracking', 'whitelabel' ] === array_column( $footer[
 nav_check( [ [ 'projekt' ], [ 'tracking' ], [ 'aufgabe' ] ] === array_column( $footer['routes'], 'doors' ), 'footer main ways cover services and agencies' );
 nav_check( ! array_key_exists( 'picks', $footer ), 'footer contract no longer carries landing-page picks' );
 nav_check( count( hu_get_site_footer_door_urls() ) === count( array_unique( hu_get_site_footer_door_urls() ) ) && 0 < count( hu_get_site_footer_door_urls() ), 'footer door URLs are listed once for the SEO cockpit' );
-nav_check( [ 'Leistungen', 'Belege & Person', 'Spezialisierung & Wissen', 'Rechtliches' ] === array_column( $footer['directory'], 'title' ), 'footer directory has four groups' );
+nav_check( [ 'Website & WordPress', 'Messung & Conversion', 'Belege & Person', 'Spezialisierung & Wissen' ] === array_column( $footer['directory'], 'title' ), 'footer directory has four groups, services split by buying occasion' );
+nav_check( [ 'Impressum', 'Datenschutz' ] === array_column( (array) ( $footer['legal'] ?? [] ), 'label' ), 'legal links sit in the closing line, not in the directory' );
+nav_check( count( hu_get_site_footer_directory_urls() ) === count( array_merge( ...array_column( $footer['directory'], 'items' ) ) ) + count( $footer['legal'] ), 'SEO cockpit counts directory and legal links as sitewide footer links' );
 
 $directory_items = array_merge( ...array_column( $footer['directory'], 'items' ) );
 $by_label        = array_column( $directory_items, 'url', 'label' );
@@ -104,6 +106,7 @@ nav_check( ( $by_label['Conversion-Tracking'] ?? '' ) === $routes['tracking_setu
 nav_check( ( $by_label['Referenzen'] ?? '' ) === $routes['references'], 'footer links the reference overview' );
 nav_check( ( $by_label['WordPress-Übernahme & Weiterentwicklung'] ?? '' ) === $routes['takeover'], 'footer links the dedicated takeover offer' );
 nav_check( ( $by_label['Technisches SEO für WordPress'] ?? '' ) === $routes['technical_seo'], 'footer links the technical SEO service' );
+nav_check( ( $by_label['WordPress-Wartung'] ?? '' ) === $routes['maintenance'], 'footer gives the maintenance offer its sitewide link' );
 nav_check( ( $by_label['Server-Side Tracking'] ?? '' ) === $routes['tracking_b2b'], 'specialist page keeps a sitewide link with its exact name' );
 nav_check( '/performance-marketing/' === nav_path( $by_label['Performance Marketing'] ?? '' ), 'Performance Marketing query owner is linked sitewide' );
 
@@ -239,12 +242,13 @@ foreach ( hu_get_solar_cluster_link_map() as $slug => $cluster_page ) {
 
 nav_test_use_context( 'imprint' );
 
-$tracks = array_merge(
+$footer_link_items = array_merge( $directory_items, (array) ( $footer['legal'] ?? [] ) );
+$tracks            = array_merge(
 	array_column( hu_get_primary_navigation_contract(), 'track' ),
-	array_column( $directory_items, 'track' )
+	array_column( $footer_link_items, 'track' )
 );
 nav_check( ! in_array( '', $tracks, true ), 'every header and footer item carries a tracking action' );
-nav_check( count( array_column( $directory_items, 'track' ) ) === count( array_unique( array_column( $directory_items, 'track' ) ) ), 'footer directory tracking actions are unique' );
+nav_check( count( array_column( $footer_link_items, 'track' ) ) === count( array_unique( array_column( $footer_link_items, 'track' ) ) ), 'footer directory and legal tracking actions are unique' );
 
 // --- 2. Rendered surfaces per context ------------------------------------------
 
@@ -313,7 +317,12 @@ foreach ( nav_test_contexts() as $context => $definition ) {
 	$row         = nav_links( $header_html, '//nav[@aria-label="Hauptnavigation"]//a' );
 	$sheet       = nav_links( $header_html, '//div[@data-leiste-blatt]//nav//a' );
 	$trail       = nav_links( $header_html, '//nav[@class="pfad"]//a' );
-	$footer_nav  = nav_links( $footer_html, '//nav[@class="verzeichnis"]//a' );
+	$footer_nav  = array_merge(
+		nav_links( $footer_html, '//nav[@class="verzeichnis"]//a' ),
+		nav_links( $footer_html, '//nav[@class="recht"]//a' )
+	);
+	nav_check( 2 === count( nav_links( $footer_html, '//div[@class="schluss"]/nav[@aria-label="Rechtliches"]//a' ) ), "{$context}: Impressum and Datenschutz sit in the closing line" );
+	nav_check( 'Kontakt' === trim( (string) nav_dom( $footer_html )->query( '//p[@class="direkt"]/span[@class="was"]' )->item( 0 )->textContent ), "{$context}: contact line is labelled Kontakt" );
 	$header_x    = nav_dom( $header_html );
 	$doors_html  = nav_links( $header_html, '//a[contains(concat(" ", @class, " "), " tuer ")]' );
 	$header_el   = $header_x->query( '//header' )->item( 0 );
