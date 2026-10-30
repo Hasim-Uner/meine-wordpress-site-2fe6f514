@@ -1,13 +1,14 @@
 <?php
 /**
  * Template Name: WordPress Agentur Hannover
- * Description: Lokale Seite für den Agentur-Intent: Leistung und prüfbare Projekte zuerst, danach die Entscheidungshilfe klassische Agentur oder direkte Umsetzung.
+ * Description: Lokale Seite für den Agentur-Intent: Belege und Leistungen zuerst, danach die Entscheidungshilfe größere Agentur oder direkte Umsetzung.
  *
  * Die Startseite besitzt den direkten WordPress-/Freelancer-Kaufintent.
- * Diese URL beantwortet bewusst die lokale Agentur-Suche: Sie zeigt zuerst,
- * was umgesetzt wird und woran man es prüfen kann, und erklärt erst danach,
- * wann eine größere Agentur die bessere Wahl ist. Keine zweite allgemeine
- * Money Page.
+ * Diese URL beantwortet bewusst die lokale Agentur-Suche: erst Belege und
+ * Leistungen, dann ein einziger Vergleich, wann eine größere Agentur besser
+ * passt. Keine zweite allgemeine Money Page.
+ *
+ * Copy-Regel der Route: kurze Sätze, Punkt statt Gedankenstrich-Kette.
  *
  * @package Blocksy_Child
  */
@@ -23,7 +24,7 @@ add_filter( 'hu_forced_singular_seo_map', function ( $map ) {
 
 	$map['wordpress-agentur-hannover'] = [
 		'title'       => 'WordPress Agentur Hannover: Website, SEO & Tracking | Haşim Üner',
-		'description' => 'WordPress Agentur Hannover: Websites, Relaunches und Landingpages mit technischem SEO und Tracking – geplant und gebaut von einem Ansprechpartner.',
+		'description' => 'WordPress Agentur Hannover: Websites, Relaunches und Landingpages mit technischem SEO und Tracking. Geplant und gebaut von einem Ansprechpartner.',
 	];
 
 	return $map;
@@ -69,7 +70,6 @@ add_action( 'wp_body_open', function () {
 	$items = [
 		[ 'id' => 'belege', 'label' => 'Beleg' ],
 		[ 'id' => 'zusammenarbeit', 'label' => 'Leistung' ],
-		[ 'id' => 'entscheidung', 'label' => 'Prinzip' ],
 		[ 'id' => 'technik', 'label' => 'Vergleich' ],
 		[ 'id' => 'hannover', 'label' => 'Hannover' ],
 		[ 'id' => 'faq', 'label' => 'FAQ' ],
@@ -92,13 +92,10 @@ add_action( 'wp_body_open', function () {
 // statt jede Anfrage als „Bestehende Website weiterentwickeln“ abzulegen.
 $contact_url    = hu_get_navigation_project_request_url();
 $website_url    = hu_get_commercial_route( 'website', home_url( '/wordpress-website-erstellen-lassen/' ) );
-$tracking_url   = hu_get_commercial_route( 'tracking_setup', home_url( '/ga4-tracking-setup/' ) );
-$conversion_url = hu_get_commercial_route( 'conversion', home_url( '/conversion-optimierung/' ) );
-$maintenance_url = hu_get_commercial_route( 'maintenance', home_url( '/wordpress-wartung/' ) );
-$references_url = home_url( '/referenzen/' );
+$references_url = hu_get_commercial_route( 'references', home_url( '/referenzen/' ) );
 $case_url       = nexus_get_results_url();
 $response       = hu_response_promise( 'compact' );
-$faqs         = function_exists( 'nexus_get_agentur_faq_items' ) ? nexus_get_agentur_faq_items() : [];
+$faqs           = function_exists( 'nexus_get_agentur_faq_items' ) ? nexus_get_agentur_faq_items() : [];
 
 // Öffentlich prüfbare Projekte. Beschreibungen folgen /referenzen/ – dort
 // steht der eigene Beitrag je Projekt. Keine Zahlen ohne Beleg.
@@ -106,7 +103,7 @@ $projects = [
 	[
 		'url'    => 'https://civaka-azad.org/',
 		'name'   => 'civaka-azad.org',
-		'kind'   => 'Redaktionelle WordPress-Website',
+		'kind'   => 'Redaktionelle Website',
 		'detail' => 'Informationsarchitektur, Navigation und Archive für einen großen Inhaltsbestand.',
 		'track'  => 'agentur_proof_project_civaka_azad',
 	],
@@ -114,8 +111,55 @@ $projects = [
 		'url'    => 'https://kurdischer-rat.org/',
 		'name'   => 'kurdischer-rat.org',
 		'kind'   => 'Organisationswebsite',
-		'detail' => 'Klare Informationshierarchie und ein versionierter Ablauf für kontrollierte Veröffentlichungen.',
+		'detail' => 'Klare Hierarchie. Veröffentlichung über einen versionierten, kontrollierten Ablauf.',
 		'track'  => 'agentur_proof_project_kurdischer_rat',
+	],
+];
+
+// Leistungen = Angebotsseiten. Eine Karte pro Ausgangslage; Umfang und Preis
+// stehen auf der Zielseite, nicht hier.
+$services = [
+	[
+		'key'    => 'website',
+		'label'  => 'Neu',
+		'title'  => 'WordPress-Website erstellen lassen',
+		'detail' => 'Neubau oder Relaunch. Der Preis steht vor dem Start fest.',
+		'track'  => 'agentur_to_website_offer',
+	],
+	[
+		'key'    => 'takeover',
+		'label'  => 'Bestand',
+		'title'  => 'Bestehende Website übernehmen',
+		'detail' => 'Erst geprüft, dann weiterentwickelt. Auch fremde Installationen.',
+		'track'  => 'agentur_to_takeover_offer',
+	],
+	[
+		'key'    => 'technical_seo',
+		'label'  => 'Sichtbarkeit',
+		'title'  => 'Technisches SEO für WordPress',
+		'detail' => 'Seitenrollen, Canonicals, Schema, Weiterleitungen.',
+		'track'  => 'agentur_to_technical_seo_offer',
+	],
+	[
+		'key'    => 'tracking_setup',
+		'label'  => 'Messung',
+		'title'  => 'Conversion-Tracking einrichten lassen',
+		'detail' => 'Woher jede Anfrage kommt. GA4 und Tag Manager.',
+		'track'  => 'agentur_to_tracking_offer',
+	],
+	[
+		'key'    => 'conversion',
+		'label'  => 'Wirkung',
+		'title'  => 'Conversion-Optimierung für B2B',
+		'detail' => 'Besucher sind da. Passende Anfragen fehlen.',
+		'track'  => 'agentur_to_conversion_offer',
+	],
+	[
+		'key'    => 'maintenance',
+		'label'  => 'Betrieb',
+		'title'  => 'WordPress-Wartung mit Anfrage-Test',
+		'detail' => 'Jeden Monat geprüft: Kommen Anfragen an?',
+		'track'  => 'agentur_to_maintenance_offer',
 	],
 ];
 
@@ -126,10 +170,10 @@ get_header();
 	<header class="kopfteil" data-track-section="agentur_hero">
 		<div class="blatt">
 			<p class="gegenstand">WordPress Agentur Hannover · ein Ansprechpartner</p>
-			<h1>WordPress Agentur Hannover – mit einem Ansprechpartner, der selbst baut.</h1>
+			<h1>WordPress Agentur Hannover. Ein Ansprechpartner, der selbst baut.</h1>
 			<p class="aufriss">
-				<span class="erst">Websites, Relaunches und Landingpages mit WordPress – mit technischem SEO, sauberem Tracking und einer geprüften Anfragestrecke.</span>
-				Sie sprechen vom ersten Gespräch bis zum Livegang mit derselben Person: Ich plane, baue und prüfe selbst – ohne Übergabe zwischen Account-Management und Umsetzung.
+				<span class="erst">Websites, Relaunches und Landingpages mit WordPress.</span>
+				Technisches SEO und Messung sind von Anfang an drin. Sie sprechen immer mit der Person, die baut.
 			</p>
 
 			<div class="ausgang">
@@ -144,16 +188,7 @@ get_header();
 				<span>Kosten pro qualifizierter Anfrage · dokumentierter B2B-Fall</span>
 			</a>
 
-			<p class="mono"><?php echo esc_html( $response ); ?> · Sitz in Pattensen bei Hannover · Umsetzung DACH-weit</p>
-
-			<div class="meta" aria-label="Arbeitsmodell im Überblick">
-				<dl>
-					<div><dt>Verantwortung</dt><dd>Strategie + Umsetzung</dd></div>
-					<div><dt>System</dt><dd>WordPress · SEO · Tracking · CRO</dd></div>
-					<div><dt>Arbeitsweg</dt><dd>direkt mit dem Entwickler</dd></div>
-					<div><dt>Region</dt><dd>Hannover · remote im DACH-Raum</dd></div>
-				</dl>
-			</div>
+			<p class="mono"><?php echo esc_html( $response ); ?> · Pattensen bei Hannover · DACH-weit</p>
 		</div>
 	</header>
 
@@ -171,7 +206,7 @@ get_header();
 					<div class="proof-messung__text">
 						<p class="mono">Kosten pro qualifizierter Anfrage</p>
 						<h2>Beleg vor Behauptung.</h2>
-						<p>Im dokumentierten B2B-Fall wurde nicht ein einzelner WordPress-Baustein optimiert, sondern die gesamte Strecke: Zielseiten, Vorqualifizierung, Tracking und Übergabe an den Vertrieb. Die Zahl vergleicht zwei Anfragequellen im selben Betrieb und ist keine Erfolgszusage für andere Projekte.</p>
+						<p>Ein B2B-Fall, die ganze Strecke: Zielseiten, Vorqualifizierung, Tracking, Übergabe an den Vertrieb. Verglichen werden zwei Anfragequellen im selben Betrieb. Keine Erfolgszusage für Ihr Projekt.</p>
 					</div>
 				</div>
 
@@ -184,14 +219,14 @@ get_header();
 						</a>
 					<?php endforeach; ?>
 					<a class="beleg-link" href="<?php echo esc_url( $references_url ); ?>" data-track-action="agentur_proof_references" data-track-category="proof">
-						<span>WordPress · öffentlich prüfbar</span>
-						<strong>Alle Projekte mit meinem Beitrag</strong>
-						<em>Reale URLs statt Logo-Wand.</em>
+						<span>Öffentlich prüfbar</span>
+						<strong>Alle Projekte</strong>
+						<em>Mit meinem Beitrag je Projekt. Reale URLs statt Logo-Wand.</em>
 					</a>
 					<a class="beleg-link" href="<?php echo esc_url( $case_url ); ?>" data-track-action="agentur_proof_case" data-track-category="proof">
-						<span>Dokumentierter B2B-Fall</span>
-						<strong>Methodik und Zahlen im Zusammenhang lesen</strong>
-						<em>Keine isolierte WordPress-Erfolgsbehauptung.</em>
+						<span>Dokumentierter Fall</span>
+						<strong>Methodik und Zahlen</strong>
+						<em>Die −<?php echo esc_html( (string) HU_E3_CPL_REDUCTION_PERCENT ); ?> % im Zusammenhang.</em>
 					</a>
 				</div>
 			</div>
@@ -204,125 +239,54 @@ get_header();
 				<div class="kapitel" aria-hidden="true"><span class="nr">02</span><span class="titel">Leistung</span><span class="strich"></span></div>
 			</div>
 
-			<div class="haupt">
+			<div class="voll">
 				<p class="mono stempelfarbe">Leistungen</p>
-				<h2 class="kopf">Was ich für Unternehmen in Hannover umsetze.</h2>
-				<p class="vorspann">Vier Disziplinen, die auf einer B2B-Website zusammenhängen. Sie werden gemeinsam entschieden und von derselben Person umgesetzt – deshalb geht zwischen Planung, Bau und Messung kein Kontext verloren.</p>
+				<h2 class="kopf">Was ich für Unternehmen in Hannover baue.</h2>
+				<p class="vorspann">Sechs Ausgangslagen, eine Seite je Angebot. Umfang und Preis stehen dort.</p>
 
-				<div class="verantwortung-grid">
-					<div><span>01</span><h3>WordPress</h3><p>Architektur, Entwicklung, Relaunch, Performance und saubere Übergabe.</p></div>
-					<div><span>02</span><h3>Technisches SEO</h3><p>Suchintention, Seitenrollen, interne Verlinkung, Titles, Canonicals, Schema und Weiterleitungen.</p></div>
-					<div><span>03</span><h3>Tracking</h3><p>Messplan, GA4, Tag Manager und die Herkunft einer Anfrage – nur soweit das Projekt es braucht.</p></div>
-					<div><span>04</span><h3>Conversion</h3><p>Angebotslogik, Anfragepfad, Formulare und Übergabe an Vertrieb oder CRM.</p></div>
-				</div>
-
-				<div class="route-intro">
-					<p class="mono stempelfarbe">Konkrete Angebote</p>
-					<h3>Umfang und Preis stehen auf der jeweiligen Angebotsseite.</h3>
-				</div>
-
-				<nav class="route-grid" aria-label="Passende Leistungen">
-					<a href="<?php echo esc_url( $website_url ); ?>" data-track-action="agentur_to_website_offer" data-track-category="internal_link">
-						<span>Website</span>
-						<strong>WordPress-Website erstellen lassen</strong>
-						<small>Neubau oder Relaunch, Umfang und Preis vor dem Start klären.</small>
-					</a>
-					<a href="<?php echo esc_url( $tracking_url ); ?>" data-track-action="agentur_to_tracking_offer" data-track-category="internal_link">
-						<span>Messung</span>
-						<strong>Conversion Tracking einrichten lassen</strong>
-						<small>Wenn Anfragen kommen, aber Herkunft und Qualität nicht sauber messbar sind.</small>
-					</a>
-					<a href="<?php echo esc_url( $conversion_url ); ?>" data-track-action="agentur_to_conversion_offer" data-track-category="internal_link">
-						<span>Wirkung</span>
-						<strong>Conversion-Optimierung für B2B</strong>
-						<small>Wenn bereits Besucher da sind, aber zu wenige passende Anfragen entstehen.</small>
-					</a>
-					<a href="<?php echo esc_url( $maintenance_url ); ?>" data-track-action="agentur_to_maintenance_offer" data-track-category="internal_link">
-						<span>Betrieb</span>
-						<strong>WordPress-Wartung mit Anfrage-Test</strong>
-						<small>Wenn die Website läuft und jeden Monat geprüft sein soll, ob Anfragen ankommen.</small>
-					</a>
+				<nav class="route-grid" aria-label="Leistungen">
+					<?php foreach ( $services as $service ) : ?>
+						<a href="<?php echo esc_url( hu_get_commercial_route( $service['key'] ) ); ?>" data-track-action="<?php echo esc_attr( $service['track'] ); ?>" data-track-category="internal_link">
+							<span><?php echo esc_html( $service['label'] ); ?></span>
+							<strong><?php echo esc_html( $service['title'] ); ?></strong>
+							<small><?php echo esc_html( $service['detail'] ); ?></small>
+						</a>
+					<?php endforeach; ?>
 				</nav>
 
 				<div class="ausgang">
 					<a class="tun" href="<?php echo esc_url( $contact_url ); ?>" data-track-action="cta_agentur_collaboration_project" data-track-category="lead_gen">Projekt einordnen <span class="pf" aria-hidden="true">→</span></a>
 				</div>
 			</div>
-
-			<aside class="marg">
-				<p class="note"><span class="label">Nicht passend</span>Große E-Commerce-Plattformen, reine Design-Relaunches ohne technischen Zweck, permanente 24/7-Bereitschaft oder Projekte, die gleichzeitig mehrere volle Spezialistenteams benötigen.</p>
-			</aside>
-		</div>
-	</section>
-
-	<section id="entscheidung" data-track-section="agentur_decision">
-		<div class="blatt reihe">
-			<div class="spalte-links">
-				<div class="kapitel" aria-hidden="true"><span class="nr">03</span><span class="titel">Prinzip</span><span class="strich"></span></div>
-			</div>
-
-			<div class="haupt">
-				<p class="mono stempelfarbe">Der Unterschied ist strukturell</p>
-				<h2 class="kopf">Das Problem ist selten die Teamgröße. Es sind die Übergaben.</h2>
-				<p class="vorspann">Eine Agentur kann mehr Rollen parallel bereitstellen. Das ist wertvoll, wenn ein Projekt genau diese Kapazität braucht. Bei einer B2B-Website hängen WordPress, technische SEO, Messung und Conversion aber eng zusammen. Jede zusätzliche Übergabe ist dann eine Stelle, an der Kontext verloren gehen kann.</p>
-
-				<div class="modellvergleich" aria-label="Vergleich der Verantwortungswege">
-					<article class="modellpfad modellpfad--agentur">
-						<p class="mono stempelfarbe">Klassische Struktur</p>
-						<h3>Mehr Kapazität, mehr Schnittstellen.</h3>
-						<div class="modellpfad__linie" aria-label="Typischer Agenturweg">
-							<span class="modellpfad__schritt">Unternehmen</span>
-							<span class="modellpfad__schritt">Projektleitung</span>
-							<span class="modellpfad__schritt">Fachteams</span>
-							<span class="modellpfad__schritt">Übergabe</span>
-						</div>
-						<p>Sinnvoll bei großen Rollouts, festen Vertretungsmodellen, SLA-Anforderungen oder mehreren Disziplinen, die wirklich gleichzeitig arbeiten müssen.</p>
-					</article>
-
-					<article class="modellpfad modellpfad--direkt">
-						<p class="mono stempelfarbe">Direkte Verantwortung</p>
-						<h3>Weniger Übergaben, ein gemeinsamer Kontext.</h3>
-						<div class="modellpfad__linie" aria-label="Direkter Verantwortungsweg">
-							<span class="modellpfad__schritt">Unternehmen</span>
-							<span class="modellpfad__schritt">Haşim</span>
-							<span class="modellpfad__schritt">Website + Daten</span>
-							<span class="modellpfad__schritt">Weiterentwicklung</span>
-						</div>
-						<p>Strategische Entscheidung, technische Umsetzung und spätere Auswertung bleiben bei derselben Person. Das verkürzt nicht nur Kommunikation, sondern hält Ursache und Wirkung näher zusammen.</p>
-					</article>
-				</div>
-			</div>
-
-			<aside class="marg">
-				<p class="note"><span class="label">Kein Anti-Agentur-Pitch</span>Wenn Ihr Projekt 24/7-Bereitschaft, Vertretung oder mehrere Teams parallel braucht, ist eine größere Agentur strukturell die bessere Wahl.</p>
-			</aside>
 		</div>
 	</section>
 
 	<section id="technik" data-track-section="agentur_comparison">
 		<div class="blatt reihe">
 			<div class="spalte-links">
-				<div class="kapitel" aria-hidden="true"><span class="nr">04</span><span class="titel">Vergleich</span><span class="strich"></span></div>
+				<div class="kapitel" aria-hidden="true"><span class="nr">03</span><span class="titel">Vergleich</span><span class="strich"></span></div>
 			</div>
 
 			<div class="voll">
 				<div class="tafel">
-					<p class="mono stempelfarbe">Entscheidungsmatrix</p>
-					<h2 class="kopf">Wann ist eine WordPress-Agentur besser – und wann direkte Umsetzung?</h2>
-					<p class="vorspann">Die richtige Wahl hängt nicht am Etikett. Sie hängt daran, welche Organisationsform das Risiko Ihres Projekts tatsächlich reduziert.</p>
+					<p class="mono stempelfarbe">Größere Agentur oder direkt</p>
+					<h2 class="kopf">Nicht das Etikett entscheidet. Ihr Projekt entscheidet.</h2>
+					<p class="vorspann">Jede Übergabe kostet Kontext. Manche Projekte brauchen trotzdem ein großes Team. So sehen Sie, welches Modell Ihr Risiko senkt.</p>
 
-					<div class="vergleich" role="table" aria-label="Vergleich klassische Agentur und direkte Umsetzung">
+					<div class="vergleich" role="table" aria-label="Vergleich größere Agentur und direkte Umsetzung">
 						<div class="vergleich-zeile vergleich-kopf" role="row">
 							<div role="columnheader">Anforderung</div>
-							<strong role="columnheader">Klassische Agentur</strong>
+							<strong role="columnheader">Größere Agentur</strong>
 							<strong role="columnheader">Direkt mit Haşim Üner</strong>
 						</div>
-						<div class="vergleich-zeile" role="row"><div role="rowheader">Viele Rollen gleichzeitig</div><div role="cell">stärker bei großen parallelen Teams</div><div role="cell">bewusst begrenzter Scope</div></div>
-						<div class="vergleich-zeile" role="row"><div role="rowheader">Vertretung / SLA</div><div role="cell">geeigneter für feste Vertretung und 24/7-Anforderungen</div><div role="cell">keine 24/7-Bereitschaft, keine austauschbare Vertretung</div></div>
-						<div class="vergleich-zeile" role="row"><div role="rowheader">Entscheidungsweg</div><div role="cell">Projektleitung und Fachteam können getrennt sein</div><div role="cell"><strong>Entscheidung und Umsetzung in einem Gespräch</strong></div></div>
-						<div class="vergleich-zeile" role="row"><div role="rowheader">WordPress + SEO + Tracking + CRO</div><div role="cell">Qualität hängt von Teamstruktur und Handoffs ab</div><div role="cell"><strong>ein gemeinsamer technischer Kontext</strong></div></div>
-						<div class="vergleich-zeile" role="row"><div role="rowheader">Typischer Fit</div><div role="cell">großer Rollout, mehrere Gewerke, Beschaffungsprozess</div><div role="cell"><strong>B2B-Website, Relaunch, Landingpage, technische Weiterentwicklung</strong></div></div>
+						<div class="vergleich-zeile" role="row"><div role="rowheader">Viele Rollen gleichzeitig</div><div role="cell">stark mit parallelen Teams</div><div role="cell">bewusst begrenzter Umfang</div></div>
+						<div class="vergleich-zeile" role="row"><div role="rowheader">Vertretung, SLA, 24/7</div><div role="cell">feste Vertretung möglich</div><div role="cell">keine 24/7-Bereitschaft, keine Vertretung</div></div>
+						<div class="vergleich-zeile" role="row"><div role="rowheader">Entscheidungsweg</div><div role="cell">Projektleitung und Fachteam getrennt</div><div role="cell"><strong>Entscheidung und Umsetzung in einem Gespräch</strong></div></div>
+						<div class="vergleich-zeile" role="row"><div role="rowheader">WordPress, SEO, Tracking, CRO</div><div role="cell">hängt an Übergaben</div><div role="cell"><strong>ein gemeinsamer technischer Kontext</strong></div></div>
+						<div class="vergleich-zeile" role="row"><div role="rowheader">Typischer Fit</div><div role="cell">großer Rollout, Ausschreibung, mehrere Gewerke</div><div role="cell"><strong>B2B-Website, Relaunch, Landingpage, Weiterentwicklung</strong></div></div>
 					</div>
+
+					<p class="vergleich-grenze"><span class="mono stempelfarbe">Nicht passend</span> Große Shops, reine Design-Relaunches, 24/7-Bereitschaft, mehrere volle Teams parallel. Dafür ist eine größere Agentur die bessere Wahl.</p>
 				</div>
 			</div>
 		</div>
@@ -331,18 +295,18 @@ get_header();
 	<section id="hannover" data-track-section="agentur_local">
 		<div class="blatt reihe">
 			<div class="spalte-links">
-				<div class="kapitel" aria-hidden="true"><span class="nr">05</span><span class="titel">Hannover</span><span class="strich"></span></div>
+				<div class="kapitel" aria-hidden="true"><span class="nr">04</span><span class="titel">Hannover</span><span class="strich"></span></div>
 			</div>
 
 			<div class="haupt">
-				<p class="mono stempelfarbe">Lokal erreichbar, nicht lokal begrenzt</p>
-				<h2 class="kopf">WordPress in Hannover: persönlich erreichbar, digital ohne Reibungsverlust.</h2>
-				<p class="vorspann">Mein Sitz ist in Pattensen bei Hannover. Persönliche Reviews und Workshops sind in der Region nach Vereinbarung möglich – auch in Hildesheim, Braunschweig, Wolfsburg und Celle. Entwicklung, QA, Tracking und laufende Abstimmung funktionieren ebenso remote im gesamten DACH-Raum.</p>
+				<p class="mono stempelfarbe">Lokal erreichbar</p>
+				<h2 class="kopf">Vor Ort, wenn es hilft. Remote, wenn es reicht.</h2>
+				<p class="vorspann">Sitz in Pattensen bei Hannover. Workshops und Reviews vor Ort nach Vereinbarung, auch in Hildesheim, Braunschweig, Wolfsburg und Celle. Entwicklung, Tracking und Abstimmung laufen remote, im ganzen DACH-Raum.</p>
 
 				<dl class="lokal-zeile">
 					<div><dt>Sitz</dt><dd>Pattensen bei Hannover</dd></div>
-					<div><dt>Persönlich</dt><dd>Region Hannover und Niedersachsen nach Vereinbarung</dd></div>
-					<div><dt>Umsetzung</dt><dd>remote in Deutschland, Österreich und der Schweiz</dd></div>
+					<div><dt>Vor Ort</dt><dd>Region Hannover und Niedersachsen</dd></div>
+					<div><dt>Remote</dt><dd>Deutschland, Österreich, Schweiz</dd></div>
 				</dl>
 			</div>
 		</div>
@@ -351,16 +315,17 @@ get_header();
 	<section id="faq" data-track-section="agentur_faq">
 		<div class="blatt reihe">
 			<div class="spalte-links">
-				<div class="kapitel" aria-hidden="true"><span class="nr">06</span><span class="titel">FAQ</span><span class="strich"></span></div>
+				<div class="kapitel" aria-hidden="true"><span class="nr">05</span><span class="titel">FAQ</span><span class="strich"></span></div>
 			</div>
 
 			<div class="haupt">
 				<p class="mono stempelfarbe">Vor der Entscheidung</p>
-				<h2 class="kopf leise">Häufige Fragen zur WordPress-Zusammenarbeit in Hannover.</h2>
+				<h2 class="kopf leise">Fragen zur WordPress Agentur in Hannover.</h2>
 
 				<?php if ( ! empty( $faqs ) ) : ?>
-					<div class="fragen">
-						<?php foreach ( $faqs as $item ) : ?>
+					<?php // name= öffnet immer nur eine Antwort; data-faq-group ist der JS-Rückfall in nexus-core.js. ?>
+					<div class="fragen" data-faq-group>
+						<?php foreach ( $faqs as $index => $item ) : ?>
 							<?php
 							$question = isset( $item['question'] ) ? (string) $item['question'] : '';
 							$answer   = isset( $item['answer'] ) ? (string) $item['answer'] : '';
@@ -368,8 +333,8 @@ get_header();
 								continue;
 							}
 							?>
-							<details>
-								<summary><?php echo esc_html( $question ); ?></summary>
+							<details name="agentur-faq">
+								<summary data-track-action="agentur_faq_open" data-track-label="<?php echo esc_attr( (string) ( $index + 1 ) ); ?>" data-track-category="engagement" data-track-section="agentur_faq"><?php echo esc_html( $question ); ?></summary>
 								<div class="huelle"><div><p class="antwort"><?php echo esc_html( $answer ); ?></p></div></div>
 							</details>
 						<?php endforeach; ?>
@@ -387,13 +352,13 @@ get_header();
 						<div class="haupt">
 							<p class="mono stempelfarbe">Nächster Schritt</p>
 							<h2>Nicht die größte Struktur gewinnt. Die passende.</h2>
-							<p class="aufriss">Beschreiben Sie kurz Website, Ziel und aktuellen Engpass. Ich ordne ein, ob direkte Zusammenarbeit sinnvoll ist – und sage ebenso klar, wenn Ihr Projekt mit einem größeren Team besser aufgehoben ist.</p>
+							<p class="aufriss">Drei Angaben reichen: Website, Ziel, Engpass. Sie bekommen eine klare Einordnung. Auch ein Nein, wenn ein größeres Team besser passt.</p>
 							<div class="ausgang">
 								<a class="tun" href="<?php echo esc_url( $contact_url ); ?>" data-track-action="cta_agentur_final_project" data-track-category="lead_gen">Projekt einordnen <span class="pf" aria-hidden="true">→</span></a>
 							</div>
 						</div>
 						<aside class="marg">
-							<p class="note"><span class="label">Ausgang</span>Direkter Scope, Verweis auf die passende Produktseite oder ein klares Nein. Kein Pflicht-Relaunch und kein Standard-Pitch.</p>
+							<p class="note"><span class="label">Ausgang</span>Umfang, passende Angebotsseite oder ein klares Nein. Kein Pflicht-Relaunch.</p>
 						</aside>
 					</div>
 				</div>

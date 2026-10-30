@@ -664,35 +664,31 @@ function nexus_get_agentur_faq_items() {
 	return [
 		[
 			'question' => 'Welche WordPress Agentur in Hannover passt für B2B-Projekte?',
-			'answer'   => 'Das hängt weniger von der Größe des Anbieters als vom Arbeitsmodell ab. Brauchen Sie mehrere Teams parallel, feste Vertretung oder SLA-Strukturen, ist eine größere Agentur im Vorteil. Wenn WordPress, technisches SEO, Tracking und Conversion eng zusammengehören sollen, kann ein direkter Verantwortungsweg sinnvoller sein.',
+			'answer'   => 'Das entscheidet das Arbeitsmodell, nicht die Größe. Brauchen Sie mehrere Teams parallel, feste Vertretung oder ein SLA, nehmen Sie eine größere Agentur. Gehören WordPress, SEO, Tracking und Conversion zusammen, spart ein direkter Ansprechpartner Übergaben.',
 		],
 		[
-			'question' => 'Was ist der Unterschied zwischen einer klassischen WordPress-Agentur und direkter Zusammenarbeit?',
-			'answer'   => 'In einer klassischen Agentur laufen Beratung, Projektleitung und Umsetzung häufig über mehrere Rollen. Bei der direkten Zusammenarbeit bleiben Entscheidung, technische Umsetzung und spätere Auswertung bei derselben Person. Das reduziert Übergaben, ersetzt aber kein großes Team, wenn mehrere Disziplinen gleichzeitig volle Kapazität brauchen.',
-		],
-		[
-			'question' => 'Bieten Sie WordPress SEO in Hannover an?',
-			'answer'   => 'Ja, mit technischem Schwerpunkt: Suchintention und Seitenrollen, interne Verlinkung, Title und Canonical, strukturierte Daten, Performance sowie Weiterleitungen bei Relaunches. Content-Produktion oder Linkkauf sind kein pauschales Zusatzpaket; zuerst wird geprüft, welcher technische oder strukturelle Hebel tatsächlich fehlt.',
+			'question' => 'Was kostet eine WordPress-Website?',
+			'answer'   => sprintf( '%1$s Festpreis für Grundsystem und erste Hauptseite. Weitere Seiten ab %2$s netto, je nach Seitentyp. Umfang, Preis und Zeitrahmen stehen fest, bevor es losgeht.', hu_freelancer_website_price( true ), hu_format_eur( HU_WEBSITE_PAGE_UTILITY ) ),
 		],
 		[
 			'question' => 'Erstellen Sie komplette WordPress-Websites oder optimieren Sie nur bestehende Seiten?',
-			'answer'   => 'Beides. Möglich sind neue WordPress-Websites, Relaunches, Landingpages und die technische Weiterentwicklung bestehender Systeme. Bei einem Neubau oder Relaunch werden Umfang, Preis und Zeitrahmen vor dem Start festgelegt; bei bestehenden Seiten beginnt die Arbeit mit dem konkreten Engpass.',
+			'answer'   => 'Beides. Neubau, Relaunch, Landingpage oder Weiterentwicklung. Bestehende Seiten prüfe ich zuerst und setze beim Engpass an.',
 		],
 		[
-			'question' => 'Arbeiten Sie nur mit Unternehmen aus Hannover?',
-			'answer'   => 'Nein. Der Sitz ist Pattensen bei Hannover, persönliche Termine sind in der Region nach Vereinbarung möglich. Entwicklung, Reviews, Tracking und Abstimmung funktionieren remote im gesamten DACH-Raum.',
+			'question' => 'Bieten Sie WordPress SEO in Hannover an?',
+			'answer'   => 'Ja, technisch: Seitenrollen, interne Verlinkung, Title, Canonical, strukturierte Daten, Ladezeit und Weiterleitungen beim Relaunch. Texte und Linkaufbau gibt es nicht als Pauschalpaket. Erst wird geprüft, welcher Hebel fehlt.',
 		],
 		[
-			'question' => 'Wann ist eine klassische Agentur die bessere Wahl?',
-			'answer'   => 'Wenn Sie 24/7-Bereitschaft, feste Vertretung, große E-Commerce-Teams, viele parallel laufende Fachdisziplinen oder formale Beschaffungsprozesse mit mehreren Rollen brauchen. Diese Anforderungen löst ein größeres Team strukturell besser.',
-		],
-		[
-			'question' => 'Brauche ich für bessere Conversion automatisch einen Relaunch?',
-			'answer'   => 'Nein. Ein Relaunch ist nur sinnvoll, wenn die bestehende Struktur den nächsten Schritt technisch oder inhaltlich blockiert. Häufig reichen klarere Angebotsführung, bessere Messung, ein anderes Formular oder gezielte technische Korrekturen.',
+			'question' => 'Brauche ich für mehr Anfragen einen Relaunch?',
+			'answer'   => 'Selten. Ein Relaunch lohnt sich nur, wenn die alte Struktur den nächsten Schritt blockiert. Oft reichen ein klareres Angebot, bessere Messung oder ein anderes Formular.',
 		],
 		[
 			'question' => 'Bieten Sie WordPress-Wartung in Hannover an?',
-			'answer'   => sprintf( 'Ja, als feste Wartung für %1$s netto im Monat, für WooCommerce-Shops %2$s. Neben Updates und Backups prüft jeden Monat eine echte Testanfrage, ob Anfragen ankommen. Bei einem Ausfall reagiere ich %3$s; eine 24/7-Bereitschaft und ein Vertretungsteam gibt es nicht. Vor dem Start steht der Übernahme-Check.', hu_maintenance_price(), hu_maintenance_price( true ), hu_maintenance_outage_promise() ),
+			'answer'   => sprintf( 'Ja. %1$s netto im Monat, für WooCommerce-Shops %2$s. Updates, Backups und jeden Monat eine echte Testanfrage. Bei Ausfall reagiere ich %3$s. Keine 24/7-Bereitschaft, kein Vertretungsteam. Davor steht der Übernahme-Check.', hu_maintenance_price(), hu_maintenance_price( true ), hu_maintenance_outage_promise() ),
+		],
+		[
+			'question' => 'Arbeiten Sie nur für Unternehmen aus Hannover?',
+			'answer'   => 'Nein. Vor Ort in der Region Hannover nach Vereinbarung, sonst remote im ganzen DACH-Raum.',
 		],
 	];
 }
