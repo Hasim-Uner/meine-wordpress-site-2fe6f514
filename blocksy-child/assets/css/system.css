@@ -763,6 +763,165 @@ body.nx-custom-header-active {
   }
 }
 
+/* ══ Messleiter: Tracking in vier Stufen ══════════════════════
+   template-parts/tracking-ladder.php. Auskunft, keine Paketwahl: keine
+   Schaltflaeche je Stufe. Zeile = Nummer, Bezeichnung mit Umfang und
+   Einsatzfall, Preis mit Lieferzeit (Mono, tabellarische Ziffern). Die
+   Stufe der Seite traegt dieselbe 3-px-Kante wie das Fussregister. */
+
+.doku .messleiter {
+  margin-top: var(--s4);
+  border-top: 1px solid var(--strich);
+}
+
+.doku .messleiter-kopf {
+  display: grid;
+  gap: var(--s1);
+  padding-block: var(--s2) var(--s1);
+  max-width: 62ch;
+}
+
+.doku .messleiter-kopf h3 {
+  font-family: var(--serif-display);
+  font-size: var(--grad-h2-leise);
+  line-height: 1.15;
+  letter-spacing: -0.015em;
+}
+
+.doku .messleiter-kopf p:last-child { color: var(--grau); }
+
+.doku .messleiter-stufen {
+  margin: var(--s1) 0 0;
+  padding: 0;
+  list-style: none;
+  border-bottom: 1px solid var(--haar);
+}
+
+.doku .messleiter .stufe {
+  position: relative;
+  display: grid;
+  grid-template-columns: 2.5rem minmax(0, 1fr) minmax(7.5rem, auto);
+  align-items: start;
+  gap: var(--s1) var(--s3);
+  padding-block: var(--s2);
+  border-top: 1px solid var(--haar);
+}
+
+.doku .messleiter .stufe .nr {
+  font-family: var(--mono);
+  font-size: var(--mono-l);
+  font-variant-numeric: tabular-nums;
+  color: var(--matt);
+  padding-top: 0.2rem;
+}
+
+.doku .messleiter .was { display: grid; gap: var(--s0); min-width: 0; }
+
+.doku .messleiter .name {
+  font-size: var(--grad-text);
+  font-weight: 600;
+  line-height: 1.3;
+}
+
+.doku .messleiter .name a {
+  color: var(--tinte);
+  text-decoration: underline;
+  text-decoration-color: var(--haar);
+  text-decoration-thickness: 1px;
+  text-underline-offset: 3px;
+  transition: color var(--t-norm) var(--ease-weich), text-decoration-color var(--t-norm) var(--ease-weich);
+}
+
+.doku .messleiter .name a:hover {
+  color: var(--stempel);
+  text-decoration-color: var(--stempel);
+}
+
+.doku .messleiter .hier {
+  display: inline-block;
+  margin-left: var(--s1);
+  font-family: var(--mono);
+  font-size: var(--mono-s);
+  font-weight: 400;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--stempel);
+  vertical-align: 0.15em;
+}
+
+.doku .messleiter .umfang {
+  font-family: var(--mono);
+  font-size: var(--mono-m);
+  letter-spacing: 0.04em;
+  color: var(--matt);
+}
+
+.doku .messleiter .wann {
+  max-width: 58ch;
+  color: var(--grau);
+  font-size: var(--grad-klein);
+  line-height: 1.5;
+}
+
+.doku .messleiter .preis {
+  display: grid;
+  justify-items: end;
+  gap: var(--s0);
+  text-align: right;
+}
+
+.doku .messleiter .preis b {
+  font-family: var(--mono);
+  font-weight: 400;
+  font-variant-numeric: tabular-nums;
+  font-size: clamp(1rem, 0.95rem + 0.3vw, 1.15rem);
+  white-space: nowrap;
+}
+
+.doku .messleiter .preis span {
+  font-family: var(--mono);
+  font-size: var(--mono-s);
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--matt);
+  white-space: nowrap;
+}
+
+.doku .messleiter .stufe.ist-hier::before {
+  content: "";
+  position: absolute;
+  top: -1px;
+  bottom: 0;
+  left: 0;
+  width: 3px;
+  background: var(--stempel);
+}
+
+.doku .messleiter .stufe.ist-hier .nr { padding-left: var(--s1); color: var(--stempel); }
+
+.doku .messleiter-fuss {
+  padding-top: var(--s2);
+  color: var(--grau);
+  font-size: var(--grad-klein);
+  max-width: 70ch;
+}
+
+@media (max-width: 640px) {
+  .doku .messleiter .stufe {
+    grid-template-columns: 2rem minmax(0, 1fr);
+  }
+
+  .doku .messleiter .preis {
+    grid-column: 2;
+    justify-items: start;
+    text-align: left;
+    grid-auto-flow: column;
+    justify-content: start;
+    align-items: baseline;
+    gap: var(--s1);
+  }
+}
+
 /* ══ Pruefen-Tabelle ══════════════════════════════════════════
    Mehrspaltige Aufstellung (Station, Befund, Beispielfall). Die Huelle
    .tabelle ist ein eigener Scrollkontext: unter etwa 38rem scrollt die

@@ -56,9 +56,11 @@ function nexus_get_service_cluster_page_data() {
 				[
 					'question' => 'Was kostet das?',
 					'answer'   => sprintf(
-						'Die Messung beginnt mit %1$s für %2$s netto. Server-Side Tracking und Meta CAPI erweitern den Umfang bei Bedarf und werden vorab angeboten. Zielseite und Kampagnenbetreuung richten sich nach dem Umfang; Scope und Preis stehen vor dem Start schriftlich fest. Beschreiben Sie kurz die Ausgangslage, dann kommt eine konkrete Einschätzung zurück.',
+						'Die Messung beginnt mit %1$s für %2$s netto. Braucht Ihr Setup mehr, kosten die Stufen darüber: %3$s. Eine Landingpage zum Festpreis kostet %4$s netto. Die Kampagnenbetreuung richtet sich nach dem Umfang; Scope und Preis stehen vor dem Start schriftlich fest. Beschreiben Sie kurz die Ausgangslage, dann kommt eine konkrete Einschätzung zurück.',
 						hu_tracking_product_ladder()['measurement']['name'],
-						hu_tracking_price( 'measurement', 'setup' )
+						hu_tracking_price( 'measurement', 'setup' ),
+						hu_tracking_ladder_display( 2 ),
+						hu_landingpage_price()
 					),
 				],
 				[

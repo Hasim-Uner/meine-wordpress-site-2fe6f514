@@ -121,6 +121,45 @@
   color: var(--grau);
 }
 
+/* Beleg: ein Vorher-nachher-Wert aus dem dokumentierten Fall, mit seiner
+   Einordnung direkt darunter. Dasselbe Muster wie der Befund auf
+   /conversion-optimierung/: Zahl in --stempel, Satz daneben. */
+.sst-product-page .sst-beleg {
+  display: grid;
+  grid-template-columns: auto minmax(0, 1fr);
+  gap: var(--s3);
+  align-items: baseline;
+  margin-top: var(--s4);
+  padding-top: var(--s3);
+  border-top: 1px solid var(--strich);
+}
+
+.sst-product-page .sst-beleg__zahl {
+  font-size: clamp(2.6rem, 1.5rem + 5vw, 4.25rem);
+  font-weight: 500;
+  line-height: 1;
+  letter-spacing: -0.02em;
+  color: var(--stempel);
+  white-space: nowrap;
+}
+
+.sst-product-page .sst-beleg p { max-width: 54ch; }
+.sst-product-page .sst-beleg p + p { margin-top: var(--s1); }
+
+.sst-product-page .sst-beleg__grenze {
+  font-family: var(--mono);
+  font-size: var(--mono-m);
+  line-height: 1.6;
+  color: var(--matt);
+}
+
+@media (max-width: 640px) {
+  .sst-product-page .sst-beleg {
+    grid-template-columns: minmax(0, 1fr);
+    gap: var(--s1);
+  }
+}
+
 .sst-product-page .sst-product-contract {
   display: grid;
   grid-template-columns: minmax(0, 1.5fr) minmax(0, 1fr);

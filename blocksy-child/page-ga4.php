@@ -20,10 +20,14 @@ add_filter( 'hu_forced_singular_seo_map', function ( $map ) {
 	}
 
 	$map['ga4-tracking-setup'] = [
-		'title'       => 'Conversion Tracking einrichten lassen | GA4, GTM & Consent',
+		// Der Betrag steht im Title, weil er die Kaufentscheidung trägt und im
+		// Snippet sonst keiner der Wettbewerber einen nennt. Alle Beträge aus dem Kanon.
+		'title'       => sprintf( 'Conversion Tracking einrichten lassen: GA4 & Ads für %s', hu_tracking_price( 'measurement', 'setup' ) ),
 		'description' => sprintf(
-			'Conversion Tracking für B2B-Websites: GA4, GTM, Consent Mode und Google Ads zum Festpreis von %s netto. Server-Side, Meta CAPI und CRM bei Bedarf separat vereinbart.',
-			hu_tracking_price( 'measurement', 'setup' )
+			'Conversion Tracking für B2B-Websites: GA4, GTM, Consent Mode und Google Ads, mit Testfällen geprüft und dokumentiert. Festpreis %1$s netto; Server-Side %2$s, mit Meta CAPI %3$s.',
+			hu_tracking_price( 'measurement', 'setup' ),
+			hu_tracking_price( 'standard', 'setup' ),
+			hu_tracking_price( 'pro', 'setup' )
 		),
 	];
 
@@ -105,15 +109,17 @@ $contact_url = function_exists( 'hu_get_contact_intake_url' )
 		home_url( '/kontakt/' )
 	);
 
-$server_side_url = home_url( '/server-side-tracking-b2b/' );
 $results_url     = function_exists( 'nexus_get_primary_public_url' )
 	? nexus_get_primary_public_url( 'results', home_url( '/case-study-solar-leadgenerierung/' ) )
 	: home_url( '/case-study-solar-leadgenerierung/' );
 $response_label  = hu_response_promise( 'compact' );
 
 // Der Kanon bleibt die Quelle für Umfang, Preis und Lieferzeit.
-// Sichtbar ist ein Grundprodukt; zusätzliche Systeme werden erst nach
-// Bestandsaufnahme vereinbart und sind keine Auswahl aus einer Paketleiter.
+// Verkauft wird ein Grundprodukt mit einem Abschluss. Die Stufen darüber
+// zeigt die Messleiter (template-parts/tracking-ladder.php) als Auskunft
+// mit Festpreis, nicht als Paketwahl: Welche Stufe passt, klärt die
+// Bestandsaufnahme. Vorher stand hier "separat angeboten", während das FAQ
+// derselben Seite die Beträge nannte.
 $ladder        = hu_tracking_product_ladder();
 $entry         = $ladder['measurement'];
 $feature_notes = [
@@ -150,7 +156,7 @@ get_header();
 					<div><dt>Umsetzung</dt><dd><?php echo esc_html( $entry['weeks'] ); ?></dd></div>
 					<div><dt>Übergabe</dt><dd>Messplan, Tests und Dokumentation</dd></div>
 				</dl>
-				<p class="ga4-product-brief__terms">Server-Side, Meta und CRM sind separat vereinbarte Erweiterungen. Externe Dienste und Lizenzen werden vor dem Start ausgewiesen.</p>
+				<p class="ga4-product-brief__terms">Server-Side, Meta und CRM sind eigene Stufen mit vorab festem Preis, <a class="satzlink" href="#messleiter" data-track-action="tracking_brief_to_ladder" data-track-category="navigation">alle vier im Überblick</a>. Externe Dienste und Lizenzen werden vor dem Start ausgewiesen.</p>
 			</aside>
 		</div>
 	</header>
@@ -206,12 +212,23 @@ get_header();
 						<div class="ausgang"><a class="tun" href="<?php echo esc_url( $contact_url ); ?>" data-track-action="cta_tracking_project" data-track-category="lead_gen">Tracking anfragen <span class="pf" aria-hidden="true">→</span></a></div>
 					</div>
 					<div class="ga4-product-contract__extension">
-						<h3>Wenn Ihr Setup mehr braucht.</h3>
-						<p>Ein Server-Endpunkt, Meta CAPI oder CRM-Status als Rücksignal werden nach der Bestandsaufnahme separat angeboten. Sie sind im Grundpreis nicht enthalten.</p>
-						<p>Bei Server-Side kommen laufende Hostingkosten hinzu; bei externen Consent-Tools oder Diensten gegebenenfalls Lizenzen. Laufende Betreuung ist optional. Umfang, Gesamtpreis und laufende Kosten stehen vor einer Beauftragung fest.</p>
-						<a class="satzlink" href="<?php echo esc_url( $server_side_url ); ?>" data-track-action="tracking_offer_server_side" data-track-category="navigation">Server-Side: Umfang und Kostenbedingungen →</a>
+						<h3>Was zusätzlich anfallen kann.</h3>
+						<p>Im Grundprodukt nichts Laufendes: kein Server, kein Hosting. Nutzen Sie ein kostenpflichtiges Consent-Tool, bleibt dessen Lizenz bei Ihnen; das steht vor dem Start im Angebot.</p>
+						<p>Braucht Ihr Setup mehr, sind Server-Side, Meta CAPI und die Übergabe ins CRM eigene Stufen, deren Preis vor dem Start feststeht.</p>
+						<a class="satzlink" href="#messleiter" data-track-action="tracking_offer_ladder" data-track-category="navigation">Die vier Stufen mit Preis ↓</a>
 					</div>
 				</div>
+				<?php
+				get_template_part(
+					'template-parts/tracking-ladder',
+					null,
+					[
+						'current'        => 'measurement',
+						'heading'        => 'Wenn die Messung im Browser nicht reicht.',
+						'track_category' => 'navigation',
+					]
+				);
+				?>
 			</div>
 		</div>
 	</section>

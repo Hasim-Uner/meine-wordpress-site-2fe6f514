@@ -481,7 +481,11 @@ Projektabschluss und ruhiger Agentur-Zweitweg, zentrale Metadaten und
   Budget, mit eigenem Weg für Performance-Agenturen zu White-Label. Titel,
   Beschreibung und FAQ kommen aus `nexus_get_service_cluster_page_data()`,
   Service-Schema aus `inc/org-schema.php`. Query-Owner für
-  `performance marketing b2b`.
+  `performance marketing b2b`. Seit 2026-10-30 mit der Messleiter
+  (`template-parts/tracking-ladder.php`) im Abschnitt Umfang, Landingpage-
+  Festpreis aus `hu_landingpage_price()` statt „nach Umfang“, und der zweite
+  Belegverweis führt auf `/referenzen/` (`perf_proof_references`) statt ein
+  zweites Mal auf die Fallstudie.
 - **`/landingpage-erstellen-lassen/`** (`page-landingpage-erstellen-lassen.php`,
   Gutachten-Layout wie `/performance-marketing/`, seit 2026-09-26): Festpreis-
   Angebot Landingpage für Direktkunden. Preis aus `hu_landingpage_price()`,
@@ -516,7 +520,10 @@ Projektabschluss und ruhiger Agentur-Zweitweg, zentrale Metadaten und
   Marginalie in Abschnitt 3, die Vorqualifizierung nur Station 05 und eine
   Preiszeile. Beleg ist allein der PV-Fall (kein Firmenname, keine Region), die
   Referenzliste entfällt. Layout aus `system.css` plus Delta
-  `assets/css/conversion-optimierung.css`. FAQ (drei Fragen) und FAQPage-Schema
+  `assets/css/conversion-optimierung.css`. Seit 2026-10-30 trägt die H1 den
+  Query-Begriff, der Beleg folgt den Stationen der Strecke (nur Stationen mit
+  Kanon-Aussage: Landingpages, Vorqualifizierung, 95 % CRM-Erfassung mit
+  Rücksignal, 15 % Abschlussquote) statt eines Portalvergleichs. FAQ (fünf Fragen, neu: Kosten und „kein Conversion-Problem“) und FAQPage-Schema
   aus `nexus_get_conversion_faq_items()`, Service mit Offer (Betrag, netto in der
   Beschreibung) in `inc/org-schema.php`, Title/Description in `inc/seo-meta.php`.
   CTAs auf `/kontakt/?type=analysis&focus=conversion`, alle Tracking-Werte mit
@@ -624,9 +631,12 @@ Projektabschluss und ruhiger Agentur-Zweitweg, zentrale Metadaten und
   `hu_tracking_product_ladder()['measurement']`; `#stufe-1` bleibt als Anker.
   Abnahmeprotokoll und Testzustände stehen sichtbar, Technik und Ablauf in
   nativen `details`. Meta-Description, FAQ (`hu_tracking_setup_faq_items()`)
-  und Service-Offer folgen derselben Grundprodukt-Logik. Server-Side, Meta CAPI
-  und CRM-Rücksignale sind Erweiterungen nach Bestandsaufnahme; Gesamtpreis,
-  Tool-/Hostingkosten und optionale Betreuung werden vorab benannt.
+  und Service-Offer folgen derselben Grundprodukt-Logik. Seit 2026-10-30
+  zeigt die Messleiter (`template-parts/tracking-ladder.php`) unter dem
+  Angebot alle vier Stufen mit Festpreis, diese Stufe markiert; sie ist
+  Auskunft, keine Paketwahl. Vorher hieß es sichtbar „separat angeboten“,
+  während das FAQ dieselben Beträge nannte. Das Service-Schema trägt die vier
+  Stufen als Offers aus `hu_tracking_ladder_offers()`. Title mit Festpreis.
   CTAs auf `/kontakt/?type=project&focus=tracking`.
   Query-Owner für `conversion tracking einrichten lassen`. Ziel des Kopfpunkts „Tracking“, des
   Tracking-Wegs im Fuß und der Station „Messung“ der Startseite (Route
@@ -636,8 +646,13 @@ Projektabschluss und ruhiger Agentur-Zweitweg, zentrale Metadaten und
   (`contact-request`, `type=project`, `focus=tracking`). Ein Produkt mit fünf
   Bausteinen und einem Gesamtpreis aus dem Kanon-Eintrag `standard` ersetzt
   die Paketwahl. Browser-Messbasis, Server-GTM, eigene Subdomain, Enhanced
-  Conversions und Paralleltest sind abgegrenzt; Meta CAPI und CRM-Rücksignale
-  separat. Server-Hosting bleibt zusätzlich, Tracking Care optional.
+  Conversions und Paralleltest sind abgegrenzt; Meta CAPI und CRM-Rücksignal
+  stehen seit 2026-10-30 als Stufen 3 und 4 mit Preis in der Messleiter
+  (vorher „separat kalkuliert“), Service-Offers für Stufen 2–4 aus
+  `hu_tracking_ladder_offers()`. Beleg ist `hu_e3_metric( 'sst_effect' )` mit
+  seiner Einordnung (Vorher-nachher, kein Paralleltest, gemeinsam mit der
+  CRM-Anbindung live). Der Solar-Marktcheck-Abzweig (`cta_marktcheck_branch`)
+  ist entfallen. Server-Hosting bleibt zusätzlich, Tracking Care optional.
   Technik, Ablauf, laufende Betreuung und Zugangsgrenzen stehen in nativen
   `details`. `cta_package_standard` führt zum Formular; der Grundprodukt-Verweis
   `cta_package_to_measurement` bleibt auf `/ga4-tracking-setup/#stufe-1`.

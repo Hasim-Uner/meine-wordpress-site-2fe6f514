@@ -67,12 +67,13 @@ $contact_url     = hu_get_commercial_route( 'project_request' );
 $tracking_url    = nexus_get_page_url( [ 'ga4-tracking-setup' ], home_url( '/ga4-tracking-setup/' ) );
 $sst_url         = hu_get_commercial_route( 'tracking_b2b' );
 $funnel_url      = hu_get_commercial_route( 'landingpage' );
-$results_url     = hu_get_commercial_route( 'results' );
+$references_url  = hu_get_commercial_route( 'references' );
 $whitelabel_url  = hu_get_commercial_route( 'whitelabel' );
 $wl_task_url     = add_query_arg( [ 'type' => 'whitelabel', 'case' => 'aufgabe' ], $whitelabel_url ) . '#aufgabe';
 $response        = hu_response_promise( 'compact' );
 $response_window = hu_response_promise( 'window' );
 $tracking_price  = hu_tracking_price( 'measurement', 'setup' ); // Einstieg der Tracking-Leiter.
+$landing_price   = hu_landingpage_price(); // Zielseite zum Festpreis, nicht "nach Umfang".
 $e3_canon        = hu_e3_canon();
 $case_url        = $e3_canon['url'];
 $case_label      = $e3_canon['case_label_accusative'] ?? HU_E3_CASE_LABEL_ACCUSATIVE;
@@ -166,9 +167,19 @@ get_header();
 					<div class="z"><span>Dazu</span><b>Rücksignale aus dem CRM, wenn Leadqualität statt Formularanzahl zählen soll</b></div>
 					<div class="z"><span>Nicht dazu</span><b>Mediaplanung für große Multi-Markt-Budgets, Kreativproduktion für Bewegtbild, Marktplatz-Werbung</b></div>
 				</div>
+				<?php
+				get_template_part(
+					'template-parts/tracking-ladder',
+					null,
+					[
+						'heading'        => 'Was die Messung kostet, Stufe für Stufe.',
+						'track_category' => 'navigation',
+					]
+				);
+				?>
 			</div>
 			<aside class="marg">
-				<p class="note"><span class="label">Preis</span><b>Messung ab <?php echo esc_html( $tracking_price ); ?> netto.</b> Zielseite und Kampagnenbetreuung nach Umfang, vor dem Start schriftlich festgelegt.</p>
+				<p class="note"><span class="label">Preis</span><b>Messung ab <?php echo esc_html( $tracking_price ); ?>, Landingpage <?php echo esc_html( $landing_price ); ?>.</b> Beides Festpreise, netto. Kampagnenbetreuung nach Umfang, vor dem Start schriftlich festgelegt.</p>
 				<p class="note"><span class="label">Konten</span>Werbekonten, Tag Manager und Website bleiben bei Ihnen. Übergeben werden Messplan, Prüfprotokoll und Dokumentation.</p>
 			</aside>
 		</div>
@@ -196,7 +207,7 @@ get_header();
 				</p>
 				<div class="ausgang">
 					<a class="textlink" href="<?php echo esc_url( $case_url ); ?>" data-track-action="perf_proof_case" data-track-category="proof" data-track-section="perf_proof">Fallstudie und Herleitung ansehen</a>
-					<a class="textlink" href="<?php echo esc_url( $results_url ); ?>" data-track-action="perf_proof_results" data-track-category="proof" data-track-section="perf_proof">Weitere Arbeiten und Ergebnisse</a>
+					<a class="textlink" href="<?php echo esc_url( $references_url ); ?>" data-track-action="perf_proof_references" data-track-category="proof" data-track-section="perf_proof">Weitere Projekte und Referenzen</a>
 				</div>
 			</div>
 			<aside class="marg"><p class="note"><span class="label">Übertragbar?</span>Das hängt an Marktgröße, Angebot und Wettbewerb. Die Fallstudie legt die Herleitung offen, statt die Zahl allein zu zeigen.</p></aside>
