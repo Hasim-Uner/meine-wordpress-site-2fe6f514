@@ -1,12 +1,13 @@
 <?php
 /**
  * Template Name: WordPress Agentur Hannover
- * Description: Lokale Vergleichs- und Entscheidungsseite fuer Unternehmen, die zwischen Agentur und direkter WordPress-Umsetzung waehlen.
+ * Description: Lokale Seite für den Agentur-Intent: Leistung und prüfbare Projekte zuerst, danach die Entscheidungshilfe klassische Agentur oder direkte Umsetzung.
  *
  * Die Startseite besitzt den direkten WordPress-/Freelancer-Kaufintent.
- * Diese URL beantwortet bewusst die lokale Agentur-Suche und hilft bei der
- * Wahl des passenden Arbeitsmodells, ohne eine zweite allgemeine Money Page
- * aufzubauen.
+ * Diese URL beantwortet bewusst die lokale Agentur-Suche: Sie zeigt zuerst,
+ * was umgesetzt wird und woran man es prüfen kann, und erklärt erst danach,
+ * wann eine größere Agentur die bessere Wahl ist. Keine zweite allgemeine
+ * Money Page.
  *
  * @package Blocksy_Child
  */
@@ -21,8 +22,8 @@ add_filter( 'hu_forced_singular_seo_map', function ( $map ) {
 	}
 
 	$map['wordpress-agentur-hannover'] = [
-		'title'       => 'WordPress Agentur Hannover: direkte Umsetzung | Haşim Üner',
-		'description' => 'WordPress Agentur Hannover gesucht? Direkte B2B-Umsetzung für WordPress, technisches SEO, Tracking und Conversion – ohne unnötige Übergaben.',
+		'title'       => 'WordPress Agentur Hannover: Website, SEO & Tracking | Haşim Üner',
+		'description' => 'WordPress Agentur Hannover: Websites, Relaunches und Landingpages mit technischem SEO und Tracking – geplant und gebaut von einem Ansprechpartner.',
 	];
 
 	return $map;
@@ -66,10 +67,10 @@ add_action( 'wp_body_open', function () {
 
 add_action( 'wp_body_open', function () {
 	$items = [
-		[ 'id' => 'entscheidung', 'label' => 'Prinzip' ],
 		[ 'id' => 'belege', 'label' => 'Beleg' ],
-		[ 'id' => 'technik', 'label' => 'Vergleich' ],
 		[ 'id' => 'zusammenarbeit', 'label' => 'Leistung' ],
+		[ 'id' => 'entscheidung', 'label' => 'Prinzip' ],
+		[ 'id' => 'technik', 'label' => 'Vergleich' ],
 		[ 'id' => 'hannover', 'label' => 'Hannover' ],
 		[ 'id' => 'faq', 'label' => 'FAQ' ],
 	];
@@ -94,10 +95,29 @@ $website_url    = hu_get_commercial_route( 'website', home_url( '/wordpress-webs
 $tracking_url   = hu_get_commercial_route( 'tracking_setup', home_url( '/ga4-tracking-setup/' ) );
 $conversion_url = hu_get_commercial_route( 'conversion', home_url( '/conversion-optimierung/' ) );
 $maintenance_url = hu_get_commercial_route( 'maintenance', home_url( '/wordpress-wartung/' ) );
-$references_url = home_url( '/#referenzen' );
+$references_url = home_url( '/referenzen/' );
 $case_url       = nexus_get_results_url();
 $response       = hu_response_promise( 'compact' );
 $faqs         = function_exists( 'nexus_get_agentur_faq_items' ) ? nexus_get_agentur_faq_items() : [];
+
+// Öffentlich prüfbare Projekte. Beschreibungen folgen /referenzen/ – dort
+// steht der eigene Beitrag je Projekt. Keine Zahlen ohne Beleg.
+$projects = [
+	[
+		'url'    => 'https://civaka-azad.org/',
+		'name'   => 'civaka-azad.org',
+		'kind'   => 'Redaktionelle WordPress-Website',
+		'detail' => 'Informationsarchitektur, Navigation und Archive für einen großen Inhaltsbestand.',
+		'track'  => 'agentur_proof_project_civaka_azad',
+	],
+	[
+		'url'    => 'https://kurdischer-rat.org/',
+		'name'   => 'kurdischer-rat.org',
+		'kind'   => 'Organisationswebsite',
+		'detail' => 'Klare Informationshierarchie und ein versionierter Ablauf für kontrollierte Veröffentlichungen.',
+		'track'  => 'agentur_proof_project_kurdischer_rat',
+	],
+];
 
 get_header();
 ?>
@@ -105,11 +125,11 @@ get_header();
 <div class="site-main doku agentur-decision" data-track-page="wordpress_agentur_hannover_decision">
 	<header class="kopfteil" data-track-section="agentur_hero">
 		<div class="blatt">
-			<p class="gegenstand">WordPress Agentur Hannover · direkte Expertenverantwortung</p>
-			<h1>WordPress Agentur Hannover – oder brauchen Sie jemanden, der es selbst umsetzt?</h1>
+			<p class="gegenstand">WordPress Agentur Hannover · ein Ansprechpartner</p>
+			<h1>WordPress Agentur Hannover – mit einem Ansprechpartner, der selbst baut.</h1>
 			<p class="aufriss">
-				<span class="erst">Sie suchen eine WordPress Agentur in Hannover. Vielleicht brauchen Sie aber kein größeres Team, sondern einen Verantwortlichen, der Strategie und Umsetzung zusammenhält.</span>
-				Ich verbinde WordPress, technisches SEO, Tracking und Conversion in einer Verantwortung. Sie sprechen mit der Person, die entscheidet, baut, prüft und die Wirkung danach wieder einordnet – ohne Übergabe zwischen Account-Management und Umsetzung.
+				<span class="erst">Websites, Relaunches und Landingpages mit WordPress – mit technischem SEO, sauberem Tracking und einer geprüften Anfragestrecke.</span>
+				Sie sprechen vom ersten Gespräch bis zum Livegang mit derselben Person: Ich plane, baue und prüfe selbst – ohne Übergabe zwischen Account-Management und Umsetzung.
 			</p>
 
 			<div class="ausgang">
@@ -137,10 +157,108 @@ get_header();
 		</div>
 	</header>
 
+	<section id="belege" data-track-section="agentur_proof">
+		<div class="blatt reihe">
+			<div class="spalte-links">
+				<div class="kapitel" aria-hidden="true"><span class="nr">01</span><span class="titel">Beleg</span><span class="strich"></span></div>
+			</div>
+
+			<div class="voll">
+				<div class="proof-messung">
+					<div class="proof-messung__zahl" aria-label="<?php echo esc_attr( HU_E3_CPL_REDUCTION_PERCENT . ' Prozent weniger Kosten pro qualifizierter Anfrage' ); ?>">
+						<span>−<?php echo esc_html( (string) HU_E3_CPL_REDUCTION_PERCENT ); ?></span><small>%</small>
+					</div>
+					<div class="proof-messung__text">
+						<p class="mono">Kosten pro qualifizierter Anfrage</p>
+						<h2>Beleg vor Behauptung.</h2>
+						<p>Im dokumentierten B2B-Fall wurde nicht ein einzelner WordPress-Baustein optimiert, sondern die gesamte Strecke: Zielseiten, Vorqualifizierung, Tracking und Übergabe an den Vertrieb. Die Zahl vergleicht zwei Anfragequellen im selben Betrieb und ist keine Erfolgszusage für andere Projekte.</p>
+					</div>
+				</div>
+
+				<div class="beleg-links">
+					<?php foreach ( $projects as $project ) : ?>
+						<a class="beleg-link" href="<?php echo esc_url( $project['url'] ); ?>" data-track-action="<?php echo esc_attr( $project['track'] ); ?>" data-track-category="proof">
+							<span><?php echo esc_html( $project['kind'] ); ?></span>
+							<strong><?php echo esc_html( $project['name'] ); ?></strong>
+							<em><?php echo esc_html( $project['detail'] ); ?></em>
+						</a>
+					<?php endforeach; ?>
+					<a class="beleg-link" href="<?php echo esc_url( $references_url ); ?>" data-track-action="agentur_proof_references" data-track-category="proof">
+						<span>WordPress · öffentlich prüfbar</span>
+						<strong>Alle Projekte mit meinem Beitrag</strong>
+						<em>Reale URLs statt Logo-Wand.</em>
+					</a>
+					<a class="beleg-link" href="<?php echo esc_url( $case_url ); ?>" data-track-action="agentur_proof_case" data-track-category="proof">
+						<span>Dokumentierter B2B-Fall</span>
+						<strong>Methodik und Zahlen im Zusammenhang lesen</strong>
+						<em>Keine isolierte WordPress-Erfolgsbehauptung.</em>
+					</a>
+				</div>
+			</div>
+		</div>
+	</section>
+
+	<section id="zusammenarbeit" data-track-section="agentur_collaboration">
+		<div class="blatt reihe">
+			<div class="spalte-links">
+				<div class="kapitel" aria-hidden="true"><span class="nr">02</span><span class="titel">Leistung</span><span class="strich"></span></div>
+			</div>
+
+			<div class="haupt">
+				<p class="mono stempelfarbe">Leistungen</p>
+				<h2 class="kopf">Was ich für Unternehmen in Hannover umsetze.</h2>
+				<p class="vorspann">Vier Disziplinen, die auf einer B2B-Website zusammenhängen. Sie werden gemeinsam entschieden und von derselben Person umgesetzt – deshalb geht zwischen Planung, Bau und Messung kein Kontext verloren.</p>
+
+				<div class="verantwortung-grid">
+					<div><span>01</span><h3>WordPress</h3><p>Architektur, Entwicklung, Relaunch, Performance und saubere Übergabe.</p></div>
+					<div><span>02</span><h3>Technisches SEO</h3><p>Suchintention, Seitenrollen, interne Verlinkung, Titles, Canonicals, Schema und Weiterleitungen.</p></div>
+					<div><span>03</span><h3>Tracking</h3><p>Messplan, GA4, Tag Manager und die Herkunft einer Anfrage – nur soweit das Projekt es braucht.</p></div>
+					<div><span>04</span><h3>Conversion</h3><p>Angebotslogik, Anfragepfad, Formulare und Übergabe an Vertrieb oder CRM.</p></div>
+				</div>
+
+				<div class="route-intro">
+					<p class="mono stempelfarbe">Konkrete Angebote</p>
+					<h3>Umfang und Preis stehen auf der jeweiligen Angebotsseite.</h3>
+				</div>
+
+				<nav class="route-grid" aria-label="Passende Leistungen">
+					<a href="<?php echo esc_url( $website_url ); ?>" data-track-action="agentur_to_website_offer" data-track-category="internal_link">
+						<span>Website</span>
+						<strong>WordPress-Website erstellen lassen</strong>
+						<small>Neubau oder Relaunch, Umfang und Preis vor dem Start klären.</small>
+					</a>
+					<a href="<?php echo esc_url( $tracking_url ); ?>" data-track-action="agentur_to_tracking_offer" data-track-category="internal_link">
+						<span>Messung</span>
+						<strong>Conversion Tracking einrichten lassen</strong>
+						<small>Wenn Anfragen kommen, aber Herkunft und Qualität nicht sauber messbar sind.</small>
+					</a>
+					<a href="<?php echo esc_url( $conversion_url ); ?>" data-track-action="agentur_to_conversion_offer" data-track-category="internal_link">
+						<span>Wirkung</span>
+						<strong>Conversion-Optimierung für B2B</strong>
+						<small>Wenn bereits Besucher da sind, aber zu wenige passende Anfragen entstehen.</small>
+					</a>
+					<a href="<?php echo esc_url( $maintenance_url ); ?>" data-track-action="agentur_to_maintenance_offer" data-track-category="internal_link">
+						<span>Betrieb</span>
+						<strong>WordPress-Wartung mit Anfrage-Test</strong>
+						<small>Wenn die Website läuft und jeden Monat geprüft sein soll, ob Anfragen ankommen.</small>
+					</a>
+				</nav>
+
+				<div class="ausgang">
+					<a class="tun" href="<?php echo esc_url( $contact_url ); ?>" data-track-action="cta_agentur_collaboration_project" data-track-category="lead_gen">Projekt einordnen <span class="pf" aria-hidden="true">→</span></a>
+				</div>
+			</div>
+
+			<aside class="marg">
+				<p class="note"><span class="label">Nicht passend</span>Große E-Commerce-Plattformen, reine Design-Relaunches ohne technischen Zweck, permanente 24/7-Bereitschaft oder Projekte, die gleichzeitig mehrere volle Spezialistenteams benötigen.</p>
+			</aside>
+		</div>
+	</section>
+
 	<section id="entscheidung" data-track-section="agentur_decision">
 		<div class="blatt reihe">
 			<div class="spalte-links">
-				<div class="kapitel" aria-hidden="true"><span class="nr">01</span><span class="titel">Prinzip</span><span class="strich"></span></div>
+				<div class="kapitel" aria-hidden="true"><span class="nr">03</span><span class="titel">Prinzip</span><span class="strich"></span></div>
 			</div>
 
 			<div class="haupt">
@@ -181,44 +299,10 @@ get_header();
 		</div>
 	</section>
 
-	<section id="belege" data-track-section="agentur_proof">
-		<div class="blatt reihe">
-			<div class="spalte-links">
-				<div class="kapitel" aria-hidden="true"><span class="nr">02</span><span class="titel">Beleg</span><span class="strich"></span></div>
-			</div>
-
-			<div class="voll">
-				<div class="proof-messung">
-					<div class="proof-messung__zahl" aria-label="<?php echo esc_attr( HU_E3_CPL_REDUCTION_PERCENT . ' Prozent weniger Kosten pro qualifizierter Anfrage' ); ?>">
-						<span>−<?php echo esc_html( (string) HU_E3_CPL_REDUCTION_PERCENT ); ?></span><small>%</small>
-					</div>
-					<div class="proof-messung__text">
-						<p class="mono">Kosten pro qualifizierter Anfrage</p>
-						<h2>Beleg vor Behauptung.</h2>
-						<p>Im dokumentierten B2B-Fall wurde nicht ein einzelner WordPress-Baustein optimiert, sondern die gesamte Strecke: Zielseiten, Vorqualifizierung, Tracking und Übergabe an den Vertrieb. Die Zahl vergleicht zwei Anfragequellen im selben Betrieb und ist keine Erfolgszusage für andere Projekte.</p>
-					</div>
-				</div>
-
-				<div class="beleg-links">
-					<a class="beleg-link" href="<?php echo esc_url( $references_url ); ?>" data-track-action="agentur_proof_references" data-track-category="proof">
-						<span>WordPress · öffentlich prüfbar</span>
-						<strong>Websites ansehen, an denen ich gebaut habe</strong>
-						<em>Reale URLs statt Logo-Wand.</em>
-					</a>
-					<a class="beleg-link" href="<?php echo esc_url( $case_url ); ?>" data-track-action="agentur_proof_case" data-track-category="proof">
-						<span>Dokumentierter B2B-Fall</span>
-						<strong>Methodik und Zahlen im Zusammenhang lesen</strong>
-						<em>Keine isolierte WordPress-Erfolgsbehauptung.</em>
-					</a>
-				</div>
-			</div>
-		</div>
-	</section>
-
 	<section id="technik" data-track-section="agentur_comparison">
 		<div class="blatt reihe">
 			<div class="spalte-links">
-				<div class="kapitel" aria-hidden="true"><span class="nr">03</span><span class="titel">Vergleich</span><span class="strich"></span></div>
+				<div class="kapitel" aria-hidden="true"><span class="nr">04</span><span class="titel">Vergleich</span><span class="strich"></span></div>
 			</div>
 
 			<div class="voll">
@@ -241,63 +325,6 @@ get_header();
 					</div>
 				</div>
 			</div>
-		</div>
-	</section>
-
-	<section id="zusammenarbeit" data-track-section="agentur_collaboration">
-		<div class="blatt reihe">
-			<div class="spalte-links">
-				<div class="kapitel" aria-hidden="true"><span class="nr">04</span><span class="titel">Leistung</span><span class="strich"></span></div>
-			</div>
-
-			<div class="haupt">
-				<p class="mono stempelfarbe">Warum direkte Zusammenarbeit?</p>
-				<h2 class="kopf">Eine Person verantwortet den Zusammenhang.</h2>
-				<p class="vorspann">Der Mehrwert entsteht nicht dadurch, dass eine Person „alles kann“. Er entsteht dort, wo Entscheidungen aus mehreren Disziplinen dieselbe Website betreffen und deshalb gemeinsam getroffen werden sollten.</p>
-
-				<div class="verantwortung-grid">
-					<div><span>01</span><h3>WordPress</h3><p>Architektur, Entwicklung, Relaunch, Performance und saubere Übergabe.</p></div>
-					<div><span>02</span><h3>Technisches SEO</h3><p>Suchintention, Seitenrollen, interne Verlinkung, Titles, Canonicals, Schema und Weiterleitungen.</p></div>
-					<div><span>03</span><h3>Tracking</h3><p>Messplan, GA4, Tag Manager und die Herkunft einer Anfrage – nur soweit das Projekt es braucht.</p></div>
-					<div><span>04</span><h3>Conversion</h3><p>Angebotslogik, Anfragepfad, Formulare und Übergabe an Vertrieb oder CRM.</p></div>
-				</div>
-
-				<div class="route-intro">
-					<p class="mono stempelfarbe">Der passende nächste Owner</p>
-					<h3>Die Agentur-Seite entscheidet. Die Produktseiten konkretisieren.</h3>
-				</div>
-
-				<nav class="route-grid" aria-label="Passende Leistungen">
-					<a href="<?php echo esc_url( $website_url ); ?>" data-track-action="agentur_to_website_offer" data-track-category="internal_link">
-						<span>Website</span>
-						<strong>WordPress-Website erstellen lassen</strong>
-						<small>Neubau oder Relaunch, Umfang und Preis vor dem Start klären.</small>
-					</a>
-					<a href="<?php echo esc_url( $tracking_url ); ?>" data-track-action="agentur_to_tracking_offer" data-track-category="internal_link">
-						<span>Messung</span>
-						<strong>Conversion Tracking einrichten lassen</strong>
-						<small>Wenn Anfragen kommen, aber Herkunft und Qualität nicht sauber messbar sind.</small>
-					</a>
-					<a href="<?php echo esc_url( $conversion_url ); ?>" data-track-action="agentur_to_conversion_offer" data-track-category="internal_link">
-						<span>Wirkung</span>
-						<strong>Conversion-Optimierung für B2B</strong>
-						<small>Wenn bereits Besucher da sind, aber zu wenige passende Anfragen entstehen.</small>
-					</a>
-					<a href="<?php echo esc_url( $maintenance_url ); ?>" data-track-action="agentur_to_maintenance_offer" data-track-category="internal_link">
-						<span>Betrieb</span>
-						<strong>WordPress-Wartung mit Anfrage-Test</strong>
-						<small>Wenn die Website läuft und jeden Monat geprüft sein soll, ob Anfragen ankommen.</small>
-					</a>
-				</nav>
-
-				<div class="ausgang">
-					<a class="tun" href="<?php echo esc_url( $contact_url ); ?>" data-track-action="cta_agentur_collaboration_project" data-track-category="lead_gen">Projekt einordnen <span class="pf" aria-hidden="true">→</span></a>
-				</div>
-			</div>
-
-			<aside class="marg">
-				<p class="note"><span class="label">Nicht passend</span>Große E-Commerce-Plattformen, reine Design-Relaunches ohne technischen Zweck, permanente 24/7-Bereitschaft oder Projekte, die gleichzeitig mehrere volle Spezialistenteams benötigen.</p>
-			</aside>
 		</div>
 	</section>
 

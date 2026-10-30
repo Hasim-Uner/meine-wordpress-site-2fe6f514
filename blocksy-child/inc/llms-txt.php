@@ -169,7 +169,7 @@ function nexus_get_llms_txt_sections() {
 				[
 					'label'       => 'WordPress Agentur Hannover',
 					'url'         => $urls['agentur'] ?? home_url( '/wordpress-agentur-hannover/' ),
-					'description' => 'Lokale Entscheidungsseite für den Agentur-Intent: klassische Agentur oder direkte Verantwortung; führt passend zu Website, Tracking und Conversion weiter.',
+					'description' => 'Lokale Seite für den Agentur-Intent: WordPress-Leistungen mit einem Ansprechpartner und öffentlich prüfbare Projekte, danach die Entscheidung klassische Agentur oder direkte Verantwortung; führt passend zu Website, Tracking und Conversion weiter.',
 				],
 				[
 					'label'       => 'White-Label für Agenturen',
