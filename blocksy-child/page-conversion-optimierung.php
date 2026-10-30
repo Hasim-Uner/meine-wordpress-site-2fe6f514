@@ -9,6 +9,10 @@
  * Dutzend Anfragen im Monat, sondern ein Befund der Strecke vom Besuch bis zur
  * Rückmeldung im Vertrieb.
  *
+ * Seit 2026-10-30: H1 trägt den Query-Begriff, der Beleg in Abschnitt 5
+ * folgt den Stationen aus Abschnitt 2 (nur Stationen mit Kanon-Aussage)
+ * statt eines Portalvergleichs, und das FAQ hat fünf statt drei Fragen.
+ *
  * Aufbau (Verdichtung 2026-10): Kopf, sechs Abschnitte, Abschluss. Die
  * Kernaussage „Drei von sechs Stationen liegen hinter dem Formular“ trägt
  * Abschnitt 2 als eigene Grafik (HTML/CSS, geordnete Liste); alles andere
@@ -124,6 +128,8 @@ $cpl_before    = $fest( hu_e3_metric( 'cpl_before' ) );
 $cpl_after     = $fest( hu_e3_metric( 'cpl_after' ) );
 $lead_count    = hu_e3_metric( 'lead_count' );
 $case_months   = hu_pricing_count_word( (int) hu_e3_metric( 'timeframe', 'value' ) );
+$crm_share     = $fest( hu_e3_metric( 'crm_capture_share' ) );
+$close_rate    = $fest( hu_e3_metric( 'sales_conversion' ) );
 $page_url      = get_permalink() ? get_permalink() : home_url( '/conversion-optimierung/' );
 $psi_url       = 'https://pagespeed.web.dev/analysis?url=' . rawurlencode( $page_url );
 $faq_items     = nexus_get_conversion_faq_items();
@@ -167,7 +173,7 @@ get_header();
 				<div class="spalte-links"><div class="kapitel" aria-hidden="true"><span class="nr">§</span><span class="titel">Anfragen</span><span class="strich"></span></div></div>
 				<div class="haupt">
 					<p class="mono kicker">Für B2B-Websites mit Besuchern, aber zu wenig passenden Anfragen</p>
-					<h1>Mehr passende Anfragen aus dem Traffic, den Sie schon haben.</h1>
+					<h1>Conversion-Optimierung für B2B: mehr passende Anfragen aus dem Traffic, den Sie schon haben.</h1>
 					<p class="aufriss">Ich prüfe die ganze Strecke vom ersten Klick bis zum Rückruf. Sie bekommen schriftlich, wo Anfragen verloren gehen, und drei Hebel, sortiert nach Aufwand.</p>
 
 					<div class="ausgang">
@@ -292,19 +298,29 @@ get_header();
 		<div class="blatt reihe">
 			<div class="spalte-links"><div class="kapitel" aria-hidden="true"><span class="nr">5</span><span class="titel">Beleg</span><span class="strich"></span></div></div>
 			<div class="haupt">
-				<h2 class="kopf" id="h-beleg">Portal-Anfragen und eigener Anfrageweg im Vergleich.</h2>
+				<h2 class="kopf" id="h-beleg">Ein Fall, Station für Station.</h2>
 				<p class="fall-zahl"><span class="von"><span class="nur-vorlesen">Gekaufte Portal-Anfrage vorher: </span><?php echo esc_html( $cpl_before ); ?></span><span class="bis"><span class="nur-vorlesen"><?php echo esc_html( $e3_canon['timeline']['result_label'] ); ?>: </span><?php echo esc_html( $cpl_after ); ?></span><span class="einh">pro Anfrage</span></p>
 				<p><?php
 					echo esc_html(
 						sprintf(
-							'Ein %1$s in DACH kaufte seine Anfragen bei Portalen. Im Projekt wurden Landingpages, Kampagnen, Vorqualifizierung, Tracking und CRM verbunden. In %2$s Monaten entstanden insgesamt %3$s Anfragen. Die Abschlussquote in der Fallstudie bezieht sich auf die vorqualifizierten CRM-Leads.',
+							'Ein %1$s in DACH kaufte seine Anfragen bei Portalen. Umgebaut wurde nicht eine Seite, sondern die Strecke. In %2$s Monaten entstanden insgesamt %3$s Anfragen, vor allem über Meta Ads, die Google-Suche und Google Ads. An den Stationen von oben:',
 							$case_label,
 							$case_months,
 							$lead_count
 						)
 					);
 				?></p>
-				<p><?php echo esc_html( $e3_canon['timeline']['compact'] ); ?> Vergleich zweier Anfragequellen, kein Durchschnitt über den gesamten Zeitraum und kein isolierter Effekt der Conversion-Optimierung.</p>
+				<?php
+				// Nur Stationen, zu denen der Kanon eine Aussage trägt. Zur
+				// Rückmeldung (Station 06) gibt es keine, also steht sie nicht da.
+				?>
+				<div class="protokoll posten" aria-label="Der Fall nach Stationen">
+					<div class="z"><span>01–02 · Einstieg, Angebot</span><b>Eigene Landingpages und Formulare, abgestimmt mit der Geschäftsführung.</b></div>
+					<div class="z"><span>03 · Formular</span><b>Die Formulare fragten nach Solar, Wärmepumpe oder Kombination und sortierten damit vor.</b></div>
+					<div class="z"><span>04 · Messung</span><b><?php echo esc_html( sprintf( '%s der Anfragen kamen mit Produktinteresse und Herkunft im CRM an. Qualifizierte Anfragen und Abschlüsse gingen als Signal zurück an die Werbekonten.', $crm_share ) ); ?></b></div>
+					<div class="z"><span>05 · Einordnung</span><b><?php echo esc_html( sprintf( 'Unter den vorqualifizierten CRM-Leads lag die Abschlussquote bei rund %s; daran hatte der Vertrieb einen wesentlichen Anteil.', $close_rate ) ); ?></b></div>
+				</div>
+				<p class="fall-grenze"><?php echo esc_html( $e3_canon['timeline']['compact'] ); ?> Vergleich zweier Anfragequellen, kein Durchschnitt über den gesamten Zeitraum und kein isolierter Effekt der Conversion-Optimierung.</p>
 				<p><a class="textlink" href="<?php echo esc_url( $case_url ); ?>" data-track-action="cro_offer_proof_case" data-track-category="proof" data-track-section="cro_offer_proof">Fallstudie mit Herleitung</a></p>
 				<p><a class="textlink" href="<?php echo esc_url( $contact_url ); ?>" data-track-action="cro_offer_proof_analysis" data-track-category="lead_gen" data-track-section="cro_offer_proof">Analyse Ihres Anfragewegs anfragen</a> · <?php echo esc_html( $analysis_price ); ?> netto, bei Umsetzung angerechnet.</p>
 			</div>

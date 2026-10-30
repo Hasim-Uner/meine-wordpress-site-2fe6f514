@@ -1567,11 +1567,14 @@ function hu_output_schema()
             'serviceOutput' => 'Klarere Angebotsseiten, bessere Anfragequalität und belastbarere Leadpfade auf B2B-WordPress-Websites'
         ],
 
+        // Seit 2026-10-30 mit den vier Stufen der Messleiter als Offers, aus
+        // demselben Kanon wie die sichtbare Leiter (hu_tracking_product_ladder()).
         'ga4-tracking-setup' => [
-            'name'        => 'GA4 Tracking Setup für B2B-WordPress-Websites',
-            'description' => 'Conversion-Tracking für eine WordPress-Website mit Messplan, GA4, GTM, Consent-Anbindung, Google Ads und bis zu drei Haupt-Conversions. Server-Side, Meta CAPI und CRM-Rücksignale werden bei Bedarf gesondert vereinbart.',
+            'name'        => 'Conversion Tracking einrichten lassen',
+            'description' => 'Conversion-Tracking für eine WordPress-Website mit Messplan, GA4, GTM, Consent-Anbindung, Google Ads und bis zu drei Haupt-Conversions. Server-Side, Meta Conversion API und CRM-Rücksignal als eigene Stufen mit vorab festem Preis.',
             'serviceType' => 'GA4 Tracking Setup & Conversion Tracking',
-            'serviceOutput' => 'Geprüfte Haupt-Conversions im Browser mit Messplan, Abnahmeprotokoll und Übergabe in den eigenen Konten'
+            'serviceOutput' => 'Geprüfte Haupt-Conversions im Browser mit Messplan, Abnahmeprotokoll und Übergabe in den eigenen Konten',
+            'offers'      => function_exists( 'hu_tracking_ladder_offers' ) ? hu_tracking_ladder_offers() : [],
         ],
 
         // Festpreis aus dem Kanon (HU_LANDINGPAGE_PRICE); Service und

@@ -149,22 +149,22 @@ function nexus_get_llms_txt_sections() {
 				[
 					'label'       => 'Conversion-Optimierung für B2B',
 					'url'         => $urls['conversion'] ?? home_url( '/conversion-optimierung/' ),
-					'description' => 'Conversion-Optimierung für B2B-Websites mit wenig Traffic: schriftlicher Befund der Strecke vom Besuch bis zur Rückmeldung im Vertrieb, danach Umsetzung zu festen Preisen. Einstieg ist die Anfragesystem-Analyse, ohne A/B-Tests.',
+					'description' => sprintf( 'Conversion-Optimierung für B2B-Websites mit wenig Traffic: schriftlicher Befund der Strecke vom Besuch bis zur Rückmeldung im Vertrieb, danach Umsetzung zu festen Preisen. Einstieg ist die Anfragesystem-Analyse für %1$s netto in %2$d Werktagen, bei Umsetzung angerechnet, ohne A/B-Tests.', function_exists( 'hu_analysis_price' ) ? hu_analysis_price() : '', function_exists( 'hu_diagnose_canon' ) ? (int) hu_diagnose_canon()['primary_days'] : 0 ),
 				],
 				[
 					'label'       => 'Conversion Tracking einrichten lassen',
 					'url'         => $urls['tracking'] ?? home_url( '/ga4-tracking-setup/' ),
-					'description' => 'Das Tracking-Angebot: GA4, Google Tag Manager, Consent Mode und Google Ads als abgegrenztes Setup mit Messplan und Abnahmeprotokoll. Server-Side, Meta CAPI und CRM kommen nur nach technischem Bedarf dazu.',
+					'description' => sprintf( 'Das Tracking-Angebot: GA4, Google Tag Manager, Consent Mode und Google Ads als abgegrenztes Setup mit Messplan und Abnahmeprotokoll. Vier Stufen mit Festpreis: %s; welche Stufe passt, klärt die Bestandsaufnahme.', function_exists( 'hu_tracking_ladder_display' ) ? hu_tracking_ladder_display( 1 ) : '' ),
 				],
 				[
 					'label'       => 'Server-Side Tracking einrichten lassen',
 					'url'         => $urls['solar_tracking'] ?? home_url( '/server-side-tracking-b2b/' ),
-					'description' => 'Fachseite für eine Server-Messstrecke mit Browser-Messbasis, Server-GTM, eigener Subdomain, Enhanced Conversions und Paralleltest. Meta CAPI und CRM-Rücksignale werden separat vereinbart; Hostingkosten und optionale Betreuung stehen vorab fest. Direkter Tracking-Projektpfad.',
+					'description' => sprintf( 'Fachseite für eine Server-Messstrecke mit Browser-Messbasis, Server-GTM, eigener Subdomain, Enhanced Conversions und Paralleltest: %s; Server-Hosting separat, Betreuung optional. Dokumentierter Fall: Kosten pro Anfrage drei bis vier Tage nach dem Livegang von Server-Side Tracking und CRM-Anbindung %s niedriger (Vorher-nachher-Vergleich, kein Paralleltest). Direkter Tracking-Projektpfad.', function_exists( 'hu_tracking_ladder_display' ) ? hu_tracking_ladder_display( 2 ) : '', function_exists( 'hu_e3_metric' ) ? hu_e3_metric( 'sst_effect' ) : '' ),
 				],
 				[
 					'label'       => 'Performance Marketing für B2B',
 					'url'         => $urls['performance_marketing'] ?? home_url( '/performance-marketing/' ),
-					'description' => 'Bezahlte Nachfrage über Google Ads und Meta in fester Reihenfolge: erst Conversion-Messung, dann Zielseite, dann Budget. Performance-Agenturen werden zu White-Label weitergeführt.',
+					'description' => sprintf( 'Bezahlte Nachfrage über Google Ads und Meta in fester Reihenfolge: erst Conversion-Messung (ab %1$s netto), dann Zielseite (Landingpage %2$s netto), dann Budget. Performance-Agenturen werden zu White-Label weitergeführt.', function_exists( 'hu_tracking_price' ) ? hu_tracking_price( 'measurement', 'setup' ) : '', function_exists( 'hu_landingpage_price' ) ? hu_landingpage_price() : '' ),
 				],
 				[
 					'label'       => 'WordPress Agentur Hannover',

@@ -327,6 +327,16 @@
 
 /* ══ 5 Beleg: Kosten pro Anfrage vorher und nachher ═══════════ */
 
+.cro-offer-page #beleg .protokoll.posten { margin-top: var(--s2); }
+
+.cro-offer-page .fall-grenze {
+  margin-top: var(--s2);
+  max-width: 62ch;
+  color: var(--grau);
+  font-size: var(--grad-klein);
+  line-height: 1.6;
+}
+
 .cro-offer-page .fall-zahl {
   display: flex;
   flex-wrap: wrap;

@@ -474,6 +474,51 @@ function hu_tracking_product_ladder() {
 }
 
 /**
+ * Return the tracking ladder as schema.org Offers.
+ *
+ * Eine Quelle für sichtbare Leiter und strukturierte Daten. Stufe 4 hat
+ * einen Mindestpreis und steht deshalb als priceSpecification.minPrice.
+ *
+ * @return array<int, array<string, mixed>>
+ */
+function hu_tracking_ladder_offers() {
+	$urls = [
+		'measurement' => home_url( '/ga4-tracking-setup/#angebot' ),
+		'standard'    => home_url( '/server-side-tracking-b2b/#pakete' ),
+		'pro'         => home_url( '/server-side-tracking-b2b/#messleiter' ),
+		'individual'  => home_url( '/ga4-tracking-setup/#messleiter' ),
+	];
+	$offers = [];
+
+	foreach ( hu_tracking_product_ladder() as $key => $product ) {
+		$value = (int) hu_tracking_price( $key, 'setup', 'value' );
+		$offer = [
+			'@type'         => 'Offer',
+			'name'          => (string) $product['name'],
+			'description'   => (string) $product['scope'],
+			'priceCurrency' => 'EUR',
+			'url'           => $urls[ $key ] ?? home_url( '/ga4-tracking-setup/' ),
+		];
+
+		if ( 'individual' === $key ) {
+			$offer['priceSpecification'] = [
+				'@type'                 => 'PriceSpecification',
+				'minPrice'              => $value,
+				'priceCurrency'         => 'EUR',
+				'valueAddedTaxIncluded' => false,
+			];
+		} else {
+			$offer['price']                 = $value;
+			$offer['valueAddedTaxIncluded'] = false;
+		}
+
+		$offers[] = $offer;
+	}
+
+	return $offers;
+}
+
+/**
  * Display the tracking ladder, or part of it, as one phrase.
  *
  * Ein Satzbaustein wie hu_freelancer_retainer_display(): keine Oberflaeche

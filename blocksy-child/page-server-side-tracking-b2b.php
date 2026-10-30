@@ -8,8 +8,12 @@
  *              nexus/v1/contact-request mit type=project und focus=tracking
  *              in den bestehenden Kontakt-Intake schreibt.
  *              Begründung: Die Seite erhält laut GSC-Export ausschließlich
- *              generische Tracking-Queries ohne Solar-Bezug. Der Marktcheck
- *              bleibt als Textlink für Solar-/SHK-Betriebe erhalten.
+ *              generische Tracking-Queries ohne Solar-Bezug. Seit 2026-10-30
+ *              kein Marktcheck-Abzweig mehr: Er gehört zum Energie-Kontext.
+ *              Preise der Stufen darüber zeigt die Messleiter
+ *              (template-parts/tracking-ladder.php), der Beleg ist der
+ *              Server-Side-Effekt aus hu_e3_metric( 'sst_effect' ) mit
+ *              seiner Einordnung.
  *
  * @package Blocksy_Child
  */
@@ -22,13 +26,9 @@ if ( ! defined( 'ABSPATH' ) ) {
 $page_url        = home_url( '/server-side-tracking-b2b/' );
 $ga4_setup_url   = home_url( '/ga4-tracking-setup/' );
 $gtm_guide_url   = home_url( '/server-side-tracking-gtm/' );
-$solar_money_url = function_exists( 'nexus_get_energy_systems_url' )
-	? nexus_get_energy_systems_url()
-	: home_url( '/solar-waermepumpen-leadgenerierung/' );
 $e3_case_url     = function_exists( 'hu_e3_canon' )
 	? (string) ( hu_e3_canon()['url'] ?? home_url( '/case-study-solar-leadgenerierung/' ) )
 	: home_url( '/case-study-solar-leadgenerierung/' );
-$marktcheck_url  = trailingslashit( $solar_money_url ) . '#marktcheck';
 $privacy_url     = function_exists( 'nexus_get_page_url' )
 	? nexus_get_page_url( [ 'datenschutz' ], home_url( '/datenschutz/' ) )
 	: home_url( '/datenschutz/' );
@@ -45,6 +45,14 @@ $standard_care_price  = hu_tracking_price( 'standard', 'care' );
 $standard_terms       = hu_tracking_package_detail( 'standard', 'terms' );
 $standard_minutes     = hu_tracking_package_detail( 'standard', 'included_minutes' );
 $delivery_window      = $server_product['weeks'];
+$meta_product         = $ladder['pro'];
+$crm_product          = $ladder['individual'];
+
+// ── Beleg: ein Vorher-nachher-Wert aus dem dokumentierten Fall ─
+// Der Kanon verlangt, die Einordnung immer mitzufuehren: kein Paralleltest,
+// und im Fall gingen Server-Side und CRM-Anbindung gemeinsam live.
+$sst_effect = function_exists( 'hu_e3_metric' ) ? hu_e3_metric( 'sst_effect' ) : '';
+$case_label = function_exists( 'hu_e3_canon' ) ? (string) ( hu_e3_canon()['case_label_accusative'] ?? '' ) : '';
 
 // ── Formular-Registries (bestehender Kontakt-Intake) ──────────
 $ad_platform_options = function_exists( 'nexus_get_contact_ad_platform_options' )
@@ -67,7 +75,7 @@ $tracking_focus_types = isset( $focus_options['tracking']['types'] )
 $setup_items = [
 	[ 't' => 'Messplan, GA4, GTM und Google Ads', 's' => 'Die browserseitige Messbasis ist enthalten. Haupt-Conversions, Parameter und das Verhalten je Consent-Zustand werden schriftlich festgelegt.' ],
 	[ 't' => 'Eigener Server-Endpunkt', 's' => 'Server-GTM auf Ihrer Tracking-Subdomain und in Ihren Konten. Hosting wird separat abgerechnet und bleibt in Ihrer Verfügung.' ],
-	[ 't' => 'Enhanced Conversions nach Datenlage', 's' => 'Die Umsetzung hängt davon ab, was Formular und Consent tragen. Meta CAPI und CRM-Rücksignale werden bei Bedarf separat angeboten.' ],
+	[ 't' => 'Enhanced Conversions nach Datenlage', 's' => 'Die Umsetzung hängt davon ab, was Formular und Consent tragen. Meta CAPI und das Rücksignal aus dem CRM sind eigene Stufen darüber.' ],
 	[ 't' => 'Paralleltest vor der Umschaltung', 's' => 'Neue und bisherige Messung werden auf fehlende und doppelte Events geprüft. Unterschiede und bekannte Grenzen stehen im Protokoll.' ],
 	[ 't' => 'Versionen und Übergabe', 's' => 'Sie erhalten GTM-Versionen, Messplan, Testprotokoll und die Dokumentation des Datenflusses. Zugänge und Konten bleiben bei Ihnen.' ],
 ];
@@ -79,6 +87,14 @@ $faq = [
 		'answer'   => 'Server-Side Tracking macht den Datenfluss kontrollierbarer: Messsignale laufen zunächst an einen eigenen Endpunkt und werden von dort gezielt an GA4, Google Ads oder Meta weitergegeben. Das kann fehlende oder doppelte Events reduzieren und die Zuordnung stabilisieren. Es erzeugt aber keine zusätzliche Nachfrage und ersetzt weder ein gutes Angebot noch funktionierende Kampagnen.',
 	],
 	[
+		'question' => 'Brauche ich eine Server-Side-Tracking-Agentur oder einen spezialisierten Freelancer?',
+		'answer'   => 'Für die Qualität des Setups ist weniger die Unternehmensform entscheidend als die Person, die Messkonzept, Server-GTM, Consent, Deduplizierung und Tests tatsächlich verantwortet. Als spezialisierter Freelancer plane und implementiere ich die Messstrecke selbst — ohne Übergabe zwischen Vertrieb, Projektmanagement und Technik. Für größere Setups mit mehreren Märkten, Shops oder komplexen Datenpipelines wird der Umfang vorab klar abgegrenzt.',
+	],
+	[
+		'question' => 'Was kostet Server-Side Tracking?',
+		'answer'   => sprintf( 'Der serverseitige Grundumfang kostet %1$s netto einmalig, inklusive browserseitiger Messbasis. Mit Meta Conversion API und Deduplizierung sind es %2$s netto, mit Rücksignal aus dem CRM %3$s netto. Server-Hosting kommt separat über Ihr Konto hinzu. Laufende Betreuung ist optional: für den Grundumfang %4$s netto, %5$s. Reicht Messung im Browser, kostet Conversion-Tracking %6$s netto.', $standard_setup_price, $meta_product['price'], $crm_product['price'], $standard_care_price, $standard_terms, $ladder['measurement']['price'] ),
+	],
+	[
 		'question' => 'Was ist der Unterschied zwischen Client-Side und Server-Side Tracking?',
 		'answer'   => 'Client-Side bedeutet: der Browser des Besuchers sendet die Daten selbst an GA4, Google Ads oder Meta. Das ist einfach einzurichten, hängt aber von Browsereinstellungen, Erweiterungen und Skript-Laufzeiten ab. Server-Side bedeutet: der Browser sendet an einen eigenen Endpunkt, dieser verteilt weiter. In der Praxis ist meist ein hybrides Setup sinnvoll — beide Wege parallel, mit Deduplizierung, damit nichts doppelt gezählt wird.',
 	],
@@ -88,19 +104,13 @@ $faq = [
 	],
 	[
 		'question' => 'Funktioniert das mit WordPress und meinen Werbeplattformen?',
-		'answer'   => 'WordPress ist ein häufiger Ausgangspunkt. Der serverseitige Grundumfang umfasst die Messbasis mit GA4 und Google Ads, Server-GTM auf eigener Subdomain, Enhanced Conversions nach Datenlage sowie den Paralleltest. Meta CAPI, zusätzliche Events, Shops und CRM-Rücksignale werden nach technischer Aufnahme separat vereinbart.',
+		'answer'   => sprintf( 'WordPress ist ein häufiger Ausgangspunkt. Der serverseitige Grundumfang umfasst die Messbasis mit GA4 und Google Ads, Server-GTM auf eigener Subdomain, Enhanced Conversions nach Datenlage sowie den Paralleltest. Mit Meta Conversion API und Deduplizierung kostet das Setup %1$s netto, mit Rücksignal aus dem CRM %2$s netto. Shops und zusätzliche Events werden nach technischer Aufnahme abgegrenzt.', $meta_product['price'], $crm_product['price'] ),
 	],
 	[
-		'question' => 'Wie viele Conversions kommen zusätzlich an?',
-		'answer'   => 'Eine seriöse Prozentzahl lässt sich vor dem Paralleltest nicht nennen. Das Ergebnis hängt vom bestehenden Setup, Browsermix, Consent-Verhalten und der bisherigen Event-Qualität ab. Deshalb läuft die neue Messung zunächst neben der alten. Entscheidend ist die nachvollziehbare Differenz in Ihren eigenen Konten — nicht eine pauschale Erfolgszahl.',
-	],
-	[
-		'question' => 'Brauche ich eine Server-Side-Tracking-Agentur oder einen spezialisierten Freelancer?',
-		'answer'   => 'Für die Qualität des Setups ist weniger die Unternehmensform entscheidend als die Person, die Messkonzept, Server-GTM, Consent, Deduplizierung und Tests tatsächlich verantwortet. Als spezialisierter Freelancer plane und implementiere ich die Messstrecke selbst — ohne Übergabe zwischen Vertrieb, Projektmanagement und Technik. Für größere Setups mit mehreren Märkten, Shops oder komplexen Datenpipelines wird der Umfang vorab klar abgegrenzt.',
-	],
-	[
-		'question' => 'Was kostet Server-Side Tracking?',
-		'answer'   => sprintf( 'Der beschriebene serverseitige Grundumfang kostet %1$s netto einmalig, inklusive browserseitiger Messbasis. Server-Hosting kommt separat hinzu. Meta CAPI, CRM-Rücksignale, weitere Systeme und größere Event-Umfänge werden vor Beauftragung zusätzlich kalkuliert. Laufende Betreuung ist optional: für den Grundumfang %2$s netto, %3$s. Reicht ein Setup im Browser, beginnt Conversion-Tracking bei %4$s netto.', $standard_setup_price, $standard_care_price, $standard_terms, $ladder['measurement']['price'] ),
+		'question' => 'Was bringt Server-Side Tracking messbar?',
+		'answer'   => '' !== $sst_effect
+			? sprintf( 'Eine Zusage lässt sich vor dem Paralleltest nicht machen; das Ergebnis hängt von Setup, Browsermix, Consent-Verhalten und der bisherigen Event-Qualität ab. Im dokumentierten Fall eines %1$s lagen die Kosten pro Anfrage drei bis vier Tage nach dem Livegang von Server-Side Tracking und CRM-Anbindung %2$s niedriger, bei durchgehend laufenden Kampagnen. Das war ein Vorher-nachher-Vergleich, kein Paralleltest, und nicht der Server allein. Deshalb läuft die neue Messung heute zuerst neben der alten, und entscheidend ist die Differenz in Ihren eigenen Konten.', $case_label, $sst_effect )
+			: 'Eine seriöse Prozentzahl lässt sich vor dem Paralleltest nicht nennen. Das Ergebnis hängt vom bestehenden Setup, Browsermix, Consent-Verhalten und der bisherigen Event-Qualität ab. Deshalb läuft die neue Messung zunächst neben der alten. Entscheidend ist die nachvollziehbare Differenz in Ihren eigenen Konten — nicht eine pauschale Erfolgszahl.',
 	],
 	[
 		'question' => 'Wie lange dauert die Einrichtung?',
@@ -123,26 +133,18 @@ $author_person = function_exists( 'hu_get_canonical_author_person' )
 
 // BreadcrumbList und WebPage kommen zentral aus inc/org-schema.php.
 
-$service_offers = [
-	[
-		'@type'                 => 'Offer',
-		'name'                  => 'Conversion-Tracking mit Server-Side-Messstrecke',
-		'description'           => 'Der beschriebene serverseitige Grundumfang inklusive browserseitiger Messbasis. Hosting und bedarfsabhängige Erweiterungen separat.',
-		'price'                 => hu_tracking_price( 'standard', 'setup', 'value' ),
-		'priceCurrency'         => 'EUR',
-		'valueAddedTaxIncluded' => false,
-		'url'                   => trailingslashit( $page_url ) . '#pakete',
-	],
-];
+// Die Stufen 2 bis 4 der Messleiter, aus derselben Quelle wie die sichtbare
+// Leiter und das Service-Schema von /ga4-tracking-setup/.
+$service_offers = array_values( array_slice( hu_tracking_ladder_offers(), 1 ) );
 
 $service_schema = [
 	'@context'    => 'https://schema.org',
 	'@type'       => 'Service',
 	'@id'         => trailingslashit( $page_url ) . '#service',
-	'name'        => 'Conversion-Tracking mit Server-Side-Messstrecke',
+	'name'        => 'Server-Side Tracking einrichten lassen',
 	'serviceType' => 'Server-Side Tagging: Server-GTM, GA4 und Google Ads über eine eigene Tracking-Subdomain',
 	'url'         => $page_url,
-	'description' => 'Einrichtung und Paralleltest von Server-Side Tracking: Server-GTM auf eigener Tracking-Subdomain, GA4, Google Ads und dokumentierte Übergabe. Meta CAPI, CRM-Rücksignale und laufende Kontrolle werden separat vereinbart. Hosting und Konten bleiben beim Kunden.',
+	'description' => 'Einrichtung und Paralleltest von Server-Side Tracking: Server-GTM auf eigener Tracking-Subdomain, GA4, Google Ads und dokumentierte Übergabe. Meta Conversion API und CRM-Rücksignal als eigene Stufen mit vorab festem Preis, laufende Kontrolle optional. Hosting und Konten bleiben beim Kunden.',
 	'provider'    => [ '@id' => home_url( '/#organization' ) ],
 	'author'      => $author_person,
 	'areaServed'  => [
@@ -188,7 +190,7 @@ get_header();
 	<header class="kopfteil" id="hero" data-track-section="hero">
 		<div class="blatt sst-product-hero">
 			<div>
-				<p class="gegenstand">Das Tracking-Produkt · serverseitiger Scope</p>
+				<p class="gegenstand">Server-Side Tracking · GA4 · Google Ads · Meta</p>
 				<h1 id="hu-sst-hero-title">Server-Side Tracking einrichten lassen. Mit Paralleltest in Ihren Konten.</h1>
 				<p class="aufriss">Ich richte eine eigene Server-Messstrecke für GA4 und Google Ads ein und prüfe sie gegen die bisherige Messung. Für Unternehmen mit laufenden Kampagnen und klaren Conversion-Zielen.</p>
 				<div class="ausgang">
@@ -201,7 +203,7 @@ get_header();
 				<p class="mono stempelfarbe">Inklusive browserseitiger Messbasis</p>
 				<p class="sst-product-price"><?php echo esc_html( $standard_setup_price ); ?><small>netto · einmalig für den beschriebenen Scope</small></p>
 				<dl><div><dt>Umsetzung</dt><dd><?php echo esc_html( $delivery_window ); ?></dd></div><div><dt>Abnahme</dt><dd>Paralleltest und Protokoll</dd></div><div><dt>Eigentum</dt><dd>Konten und Container bei Ihnen</dd></div></dl>
-				<p>Server-Hosting zusätzlich. Meta CAPI, CRM und laufende Betreuung werden separat vereinbart.</p>
+				<p><?php echo esc_html( sprintf( 'Server-Hosting zusätzlich. Mit Meta CAPI %1$s, bis ins CRM %2$s.', $meta_product['price'], $crm_product['price'] ) ); ?> <a class="satzlink" href="#messleiter" data-track-action="sst_brief_to_ladder" data-track-category="server_side_tracking_b2b">Alle Stufen</a></p>
 			</aside>
 		</div>
 	</header>
@@ -233,7 +235,18 @@ get_header();
 				<h2 class="kopf">Dasselbe Ereignis. Zwei Messwege. Ein Protokoll.</h2>
 				<p class="vorspann">Vor der Umschaltung vergleiche ich den bestehenden Browserweg und den neuen Serverweg in Ihren Konten. Die Prüfung hält fest, welche Signale ankommen, fehlen oder doppelt gezählt werden.</p>
 				<div class="sst-product-protocol"><p class="mono">Beispielstruktur · kein Kundenprotokoll</p><div class="protokoll"><div class="z"><span>Ereignis</span><b>Auslöser · Parameter · Consent-Zustand</b></div><div class="z"><span>Vergleich</span><b>Browser-Signal · Server-Signal · Abweichung</b></div><div class="z"><span>Übergabe</span><b>Messplan · Prüfergebnis · bekannte Grenzen</b></div></div></div>
-				<p class="sst-product-evidence"><a class="satzlink" href="<?php echo esc_url( $e3_case_url ); ?>" data-track-action="internal_sst_solar_case" data-track-category="internal_link" data-track-section="acceptance">Arbeitsbeleg: Tracking in einer vollständigen B2B-Anfragestrecke →</a><span>Die Fallzahlen stammen aus dem Zusammenspiel von Kampagnen, Landingpages, Tracking und Vertrieb.</span></p>
+				<?php if ( '' !== $sst_effect ) : ?>
+					<div class="sst-beleg">
+						<p class="sst-beleg__zahl"><?php echo esc_html( $sst_effect ); ?></p>
+						<div>
+							<p><?php echo esc_html( sprintf( 'niedrigere Kosten pro Anfrage, drei bis vier Tage nachdem Server-Side Tracking und die CRM-Anbindung live gingen. Bei durchgehend laufenden Kampagnen, im dokumentierten Fall eines %s.', $case_label ) ); ?></p>
+							<p class="sst-beleg__grenze">Ein Vorher-nachher-Vergleich, kein Paralleltest, und nicht der Server allein. Genau deshalb prüfe ich heute parallel, bevor umgeschaltet wird.</p>
+							<p><a class="satzlink" href="<?php echo esc_url( $e3_case_url ); ?>" data-track-action="internal_sst_solar_case" data-track-category="internal_link" data-track-section="acceptance">Fallstudie mit Verlauf →</a></p>
+						</div>
+					</div>
+				<?php else : ?>
+					<p class="sst-product-evidence"><a class="satzlink" href="<?php echo esc_url( $e3_case_url ); ?>" data-track-action="internal_sst_solar_case" data-track-category="internal_link" data-track-section="acceptance">Arbeitsbeleg: Tracking in einer vollständigen B2B-Anfragestrecke →</a><span>Die Fallzahlen stammen aus dem Zusammenspiel von Kampagnen, Landingpages, Tracking und Vertrieb.</span></p>
+				<?php endif; ?>
 			</div>
 			<aside class="marg"><p class="note"><span class="label">Bekannte Grenzen</span>Server-Side ersetzt keine Einwilligung und liefert keine vollständige Attribution. Unterschiede in Zählweise und Zeitfenstern werden erklärt.</p></aside>
 		</div>
@@ -244,8 +257,20 @@ get_header();
 			<div class="spalte-links"><div class="kapitel" aria-hidden="true"><span class="nr">03</span><span class="titel">Preis &amp; Rahmen</span><span class="strich"></span></div></div>
 			<div class="voll"><div class="tafel sst-product-contract">
 				<div><p class="mono stempelfarbe">Ein Festpreis für den beschriebenen Scope</p><h2>Server-Messstrecke für <?php echo esc_html( $standard_setup_price ); ?> netto.</h2><p class="aufriss">Der Gesamtpreis enthält die browserseitige Messbasis und die fünf serverseitigen Lieferbausteine. Die vereinbarten Systeme, Formulare, Events und Consent-Grenzen stehen vor Projektstart schriftlich fest.</p><div class="ausgang"><a class="tun" href="<?php echo esc_url( $form_anchor ); ?>" data-track-action="cta_package_standard" data-track-category="server_side_tracking_b2b" data-track-section="pakete"><?php echo esc_html( $setup_cta_label ); ?> <span aria-hidden="true">→</span></a></div></div>
-				<div class="sst-product-contract__costs"><h3>Zusätzliche Kosten vorab klären.</h3><p>Server-Hosting wird direkt über Ihr Konto abgerechnet. Meta CAPI, CRM-Rücksignale, zusätzliche Plattformen und größere Event-Umfänge werden nach Bestandsaufnahme separat kalkuliert.</p><p>Laufende Betreuung ist optional: <?php echo esc_html( $standard_care_price ); ?> netto für den Grundumfang, <?php echo esc_html( $standard_terms ); ?>. Größere Setups erhalten einen eigenen Prüfumfang und Preis.</p><p>Reicht Messung im Browser, kostet das <a class="satzlink" href="<?php echo esc_url( $ga4_setup_url ); ?>" data-track-action="internal_ga4_setup" data-track-category="internal_link">Tracking-Grundprodukt <?php echo esc_html( $ladder['measurement']['price'] ); ?> netto</a>.</p></div>
-			</div></div>
+				<div class="sst-product-contract__costs"><h3>Zusätzliche Kosten vorab klären.</h3><p>Server-Hosting wird direkt über Ihr Konto abgerechnet. Meta CAPI und das Rücksignal aus dem CRM sind eigene Stufen mit vorab festem Preis, siehe unten. Zusätzliche Plattformen und größere Event-Umfänge kalkuliere ich nach der Bestandsaufnahme.</p><p>Laufende Betreuung ist optional: <?php echo esc_html( $standard_care_price ); ?> netto für den Grundumfang, <?php echo esc_html( $standard_terms ); ?>. Größere Setups erhalten einen eigenen Prüfumfang und Preis.</p><p>Reicht Messung im Browser, kostet das <a class="satzlink" href="<?php echo esc_url( $ga4_setup_url ); ?>" data-track-action="internal_ga4_setup" data-track-category="internal_link">Tracking-Grundprodukt <?php echo esc_html( $ladder['measurement']['price'] ); ?> netto</a>.</p></div>
+			</div>
+			<?php
+			get_template_part(
+				'template-parts/tracking-ladder',
+				null,
+				[
+					'current'        => 'standard',
+					'heading'        => 'Wo dieses Setup in der Leiter steht.',
+					'track_category' => 'server_side_tracking_b2b',
+				]
+			);
+			?>
+			</div>
 		</div>
 	</section>
 
@@ -259,7 +284,7 @@ get_header();
 					<details id="unterschied"><summary>Wie Client-Side und Server-Side zusammenspielen</summary><div class="huelle"><div><p>Browserseitig gehen Signale direkt an Analyse- und Werbeplattformen. Serverseitig laufen sie zunächst an Ihren eigenen Endpunkt und werden von dort nach definierten Regeln weitergegeben. Die Wege werden gemeinsam geprüft.</p><p>Das vorhandene Consent-System steuert die vereinbarten Signale. Server-Side Tracking ersetzt die rechtliche Bewertung des Datenflusses nicht.</p><p><a class="satzlink" href="<?php echo esc_url( $gtm_guide_url ); ?>" data-track-action="internal_sst_gtm" data-track-category="internal_link">Technische Vertiefung: Server-Side Tracking mit GTM →</a></p></div></div></details>
 					<details id="ablauf"><summary>Von der Bestandsaufnahme zur Abnahme</summary><div class="huelle"><div><ol><li>Bestehende Messung, Systeme und Abweichungen aufnehmen.</li><li>Ziele, Umfang, Preis und Verantwortlichkeiten schriftlich klären.</li><li>Server-GTM und Subdomain in Ihren Konten einrichten.</li><li>Neue und bisherige Messung parallel prüfen.</li><li>Versionen, Protokoll und Dokumentation übergeben.</li></ol><p>Geplant sind <?php echo esc_html( $delivery_window ); ?> ab Bereitstellung der vereinbarten Zugänge. DNS-Freigaben und Abstimmung der Ziele beeinflussen den Start.</p></div></div></details>
 					<details id="care"><summary>Was die optionale laufende Betreuung umfasst</summary><div class="huelle"><div><p>Für den serverseitigen Grundumfang: monatlicher Funktionstest der Haupt-Conversions und <?php echo esc_html( $standard_minutes ); ?> Minuten kleinere Korrekturen. Geprüft werden GA4, Werbeplattformen, Subdomain und Consent-Signale; Auffälligkeiten werden dokumentiert.</p><p>Neue Plattformen, CRM-Integrationen, umfangreiche Website-Umbauten und ein Wechsel des Consent-Tools sind zusätzliche Projekte. Umfang und Preis werden vorher vereinbart.</p></div></div></details>
-					<details id="sicherheit"><summary>Konten, Zugänge und technische Datenschutzgrenzen</summary><div class="huelle"><div><p>Ihre Konten und Container bleiben getrennt und in Ihrer Verfügung. Zugriff wird auf die Arbeit begrenzt; GTM-Versionen und Datenflüsse werden dokumentiert. Zugangsdaten gehören nicht ins öffentliche Formular.</p><p>Das Setup verarbeitet nur die vereinbarten Daten. Ein Server garantiert keine rechtliche Konformität; die Bewertung Ihres konkreten Datenflusses bleibt separat.</p><p>Sie betreiben Solar oder SHK und brauchen eine gesamte Anfragestrecke? <a class="satzlink" href="<?php echo esc_url( $marktcheck_url ); ?>" data-track-action="cta_marktcheck_branch" data-track-category="server_side_tracking_b2b">Zum branchenspezifischen Marktcheck →</a></p></div></div></details>
+					<details id="sicherheit"><summary>Konten, Zugänge und technische Datenschutzgrenzen</summary><div class="huelle"><div><p>Ihre Konten und Container bleiben getrennt und in Ihrer Verfügung. Zugriff wird auf die Arbeit begrenzt; GTM-Versionen und Datenflüsse werden dokumentiert. Zugangsdaten gehören nicht ins öffentliche Formular.</p><p>Das Setup verarbeitet nur die vereinbarten Daten. Ein Server garantiert keine rechtliche Konformität; die Bewertung Ihres konkreten Datenflusses bleibt separat.</p></div></div></details>
 				</div>
 			</div>
 		</div>

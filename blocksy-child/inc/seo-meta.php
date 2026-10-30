@@ -349,12 +349,14 @@ function hu_get_forced_singular_seo_map() {
 				'title'       => 'Conversion-Optimierung B2B: mehr Anfragen | Haşim Üner',
 				'description' => sprintf( 'Conversion-Optimierung für B2B-Websites mit wenig Traffic: schriftlicher Befund der Anfragestrecke in %d Werktagen, danach Umsetzung zu festen Preisen.', (int) hu_diagnose_canon()['primary_days'] ),
 			],
-			// "Consent" statt "CAPI" im Title haelt das Signal fuer die vier
-			// DSGVO-Queries, die diese Seite laut docs/seo/query-ownership.csv
-			// besitzt. CAPI steht dafuer in der Description.
+			// Seit 2026-10-30: Title auf die Kaufformulierung ("einrichten
+			// lassen") plus Festpreis, weil die Search Console vor allem
+			// Einrichtungs-, Kosten- und Anbieter-Queries zeigt ("server side
+			// tracking agentur", "… einrichtung", "… kosten"). Die Description
+			// trägt Anbieterform, Consent und die nächste Stufe.
 			'server-side-tracking-b2b' => [
-				'title'       => 'Server-Side Tracking für B2B-Anfragen | GA4 & Google Ads',
-				'description' => sprintf( 'Server-Side Tracking für GA4 und Google Ads: Messbasis, Server-GTM, Consent und Paralleltest. Setup %s netto, Hosting extra. Meta CAPI separat.', $tracking_setup_price ),
+				'title'       => sprintf( 'Server-Side Tracking einrichten lassen | %s Festpreis', $tracking_setup_price ),
+				'description' => sprintf( 'Server-Side Tracking vom spezialisierten Freelancer: Server-GTM, GA4, Google Ads, Consent und Paralleltest in Ihren Konten. %1$s netto, mit Meta CAPI %2$s.', $tracking_setup_price, hu_tracking_price( 'pro', 'setup' ) ),
 			],
 			// Informationaler Supporting-Artikel. Der Kaufintent und die Anbieter-
 			// Queries bleiben beim Owner /server-side-tracking-b2b/.

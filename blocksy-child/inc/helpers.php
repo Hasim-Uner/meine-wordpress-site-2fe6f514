@@ -767,15 +767,33 @@ function nexus_get_website_faq_items() {
  * Return the FAQ set for the conversion offer /conversion-optimierung/.
  *
  * Shared between the page template and the FAQPage node in inc/org-schema.php.
- * Drei Fragen, wortgleich mit dem Prototyp der Verdichtung: Traffic, WordPress,
- * KI. Die Abgrenzung zur Landingpage und die Anrechnung der Analyse stehen
- * an anderer Stelle der Seite (Abschnitt 4), "Warum kein A/B-Test" als
- * Marginalie in Abschnitt 3. Kein Betrag steht in den Antworten.
+ * Fünf Fragen seit 2026-10-30: Kosten und "kein Conversion-Problem" kamen
+ * dazu, weil genau diese Fragen in Suche und KI-Antworten gestellt werden
+ * und die Seite sie sonst nur verstreut beantwortet. Beträge kommen aus dem
+ * Kanon. "Warum kein A/B-Test" bleibt Marginalie in Abschnitt 3.
  *
  * @return array<int, array{key: string, question: string, answer: string}>
  */
 function nexus_get_conversion_faq_items() {
+	$analysis_days = function_exists( 'hu_diagnose_canon' ) ? (int) hu_diagnose_canon()['primary_days'] : 0;
+
 	return [
+		[
+			'key'      => 'kosten',
+			'question' => 'Was kostet Conversion-Optimierung?',
+			'answer'   => sprintf(
+				'Der Einstieg ist die Anfragesystem-Analyse zum Festpreis von %1$s netto, fertig in %2$d Werktagen. Sie wird angerechnet, wenn Sie danach umsetzen lassen. Die Umsetzung hat feste Preise: eine Landingpage %3$s, Conversion-Tracking %4$s, beides netto. Umgesetzt wird nur, was im Befund steht.',
+				hu_analysis_price(),
+				$analysis_days,
+				hu_landingpage_price(),
+				hu_tracking_price( 'measurement', 'setup' )
+			),
+		],
+		[
+			'key'      => 'kein-problem',
+			'question' => 'Was, wenn meine Website gar kein Conversion-Problem hat?',
+			'answer'   => 'Dann steht genau das im Befund. Ist das Angebot zu teuer, die Zielgruppe falsch oder kommt schlicht zu wenig Besuch, nützt eine umgebaute Seite wenig. Der Befund sagt dann, wo die Ursache liegt und was ich ausdrücklich nicht empfehle.',
+		],
 		[
 			'key'      => 'traffic',
 			'question' => 'Wie viel Traffic braucht meine Seite?',

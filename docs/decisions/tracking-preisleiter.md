@@ -34,6 +34,22 @@ Name, Umfang, Preis und Lieferzeit stehen einmal in `hu_tracking_product_ladder(
 
 Tracking Care bleibt an die Server-Side-Stufen gebunden. Stufe 1 hat keinen eigenen Server, also keine Infrastruktur, die laufend zu prüfen wäre.
 
+### Nachtrag 2026-10-30: eine sichtbare Leiter
+
+Nach der Vereinfachung vom 2026-10-09 zeigte keine Seite die Leiter mehr
+vollständig. Die Aussagen liefen auseinander: `/ga4-tracking-setup/` nannte
+im FAQ 1.290 €, 1.900 € und ab 3.500 €, sichtbar aber „separat angeboten“;
+`/server-side-tracking-b2b/` schrieb zu Meta CAPI und CRM „separat
+kalkuliert“, `/performance-marketing/` „vorab angeboten“.
+
+Seitdem rendert `template-parts/tracking-ladder.php` die vier Stufen aus
+`hu_tracking_product_ladder()` auf `/ga4-tracking-setup/` (Stufe 1 markiert),
+`/server-side-tracking-b2b/` (Stufe 2 markiert) und `/performance-marketing/`
+(ohne Markierung). Die Leiter ist Auskunft, keine Paketwahl: keine
+Schaltfläche je Stufe, jede Seite behält ihren einen Abschluss. Dieselbe
+Quelle speist `hu_tracking_ladder_offers()` für das Service-Schema und die
+Einträge in `llms.txt`.
+
 ## Herleitung der 890 €
 
 Veröffentlichte Festpreise im DACH-Markt, abgerufen am 2026-09-26:
