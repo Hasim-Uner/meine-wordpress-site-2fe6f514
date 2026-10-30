@@ -46,65 +46,6 @@
   max-width: 42rem;
 }
 
-.agentur-decision .modellvergleich {
-  display: grid;
-  grid-template-columns: repeat(2, minmax(0, 1fr));
-  gap: var(--s2);
-  margin-top: var(--s4);
-}
-
-.agentur-decision .modellpfad {
-  position: relative;
-  padding: var(--s3);
-  border: 1px solid var(--haar);
-  background: var(--zone);
-}
-
-.agentur-decision .modellpfad--direkt {
-  border-color: var(--strich);
-  box-shadow: inset 3px 0 0 var(--stempel);
-}
-
-.agentur-decision .modellpfad h3 {
-  margin: var(--s0) 0 var(--s2);
-}
-
-.agentur-decision .modellpfad > p:last-child {
-  margin-bottom: 0;
-}
-
-.agentur-decision .modellpfad__linie {
-  display: grid;
-  gap: 0;
-  margin: var(--s3) 0;
-  border-top: 1px solid var(--strich);
-}
-
-.agentur-decision .modellpfad__schritt {
-  position: relative;
-  display: grid;
-  grid-template-columns: 2rem minmax(0, 1fr);
-  align-items: center;
-  min-height: 3.1rem;
-  border-bottom: 1px solid var(--haar);
-  font-family: var(--mono);
-  font-size: var(--mono-m);
-}
-
-.agentur-decision .modellpfad__schritt::before {
-  content: "";
-  width: .55rem;
-  height: .55rem;
-  border: 1px solid var(--strich);
-  border-radius: 50%;
-  background: var(--papier);
-}
-
-.agentur-decision .modellpfad--direkt .modellpfad__schritt::before {
-  border-color: var(--stempel);
-  background: var(--stempel);
-}
-
 .agentur-decision .proof-messung {
   display: grid;
   grid-template-columns: minmax(12rem, .7fr) minmax(0, 1.3fr);
@@ -220,48 +161,9 @@
   color: var(--tinte);
 }
 
-.agentur-decision .verantwortung-grid {
-  display: grid;
-  grid-template-columns: repeat(2, minmax(0, 1fr));
-  margin-top: var(--s3);
-  border-top: 1px solid var(--strich);
-  border-left: 1px solid var(--haar);
-}
-
-.agentur-decision .verantwortung-grid > div {
-  min-height: 12rem;
-  padding: var(--s3);
-  border-right: 1px solid var(--haar);
-  border-bottom: 1px solid var(--haar);
-}
-
-.agentur-decision .verantwortung-grid span {
-  font-family: var(--mono);
-  font-size: var(--mono-s);
-  color: var(--stempel);
-}
-
-.agentur-decision .verantwortung-grid h3 {
-  margin: var(--s1) 0;
-}
-
-.agentur-decision .verantwortung-grid p {
-  margin-bottom: 0;
-}
-
-.agentur-decision .route-intro {
-  margin-top: var(--s5);
-  padding-top: var(--s3);
-  border-top: 1px solid var(--strich);
-}
-
-.agentur-decision .route-intro h3 {
-  margin: var(--s0) 0 0;
-}
-
 .agentur-decision .route-grid {
   display: grid;
-  grid-template-columns: repeat(2, minmax(0, 1fr));
+  grid-template-columns: repeat(3, minmax(0, 1fr));
   gap: var(--s1);
   margin-top: var(--s3);
 }
@@ -291,6 +193,16 @@
   color: var(--matt);
   font-size: inherit;
   line-height: inherit;
+}
+
+.agentur-decision .vergleich-grenze {
+  max-width: 46rem;
+  margin: var(--s3) 0 0;
+}
+
+.agentur-decision .vergleich-grenze .mono {
+  display: block;
+  margin-bottom: var(--s0);
 }
 
 .agentur-decision .lokal-zeile {
@@ -350,7 +262,7 @@
 
 @media (max-width: 980px) {
   .agentur-decision .route-grid {
-    grid-template-columns: 1fr;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
   }
 
   .agentur-decision .route-grid a {
@@ -363,9 +275,8 @@
     display: none;
   }
 
-  .agentur-decision .modellvergleich,
   .agentur-decision .beleg-links,
-  .agentur-decision .verantwortung-grid,
+  .agentur-decision .route-grid,
   .agentur-decision .lokal-zeile,
   .agentur-decision .proof-messung {
     grid-template-columns: 1fr;
@@ -385,16 +296,6 @@
     color: var(--stempel);
     text-transform: uppercase;
     letter-spacing: .07em;
-  }
-
-  .agentur-decision .verantwortung-grid {
-    border-left: 0;
-  }
-
-  .agentur-decision .verantwortung-grid > div {
-    min-height: auto;
-    padding-inline: 0;
-    border-right: 0;
   }
 
   .agentur-decision .agentur-proofline {
