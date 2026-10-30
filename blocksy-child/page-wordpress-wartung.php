@@ -273,9 +273,9 @@ get_header();
 			<div class="spalte-links"><div class="kapitel" aria-hidden="true"><span class="nr">06</span><span class="titel">Fragen</span><span class="strich"></span></div></div>
 			<div class="haupt">
 				<h2 class="kopf leise" id="wartung-fragen-titel">WordPress-Wartung: Kosten, Umfang, Grenzen.</h2>
-				<div class="fragen">
+				<div class="fragen" data-faq-group>
 					<?php foreach ( $faq as $item ) : ?>
-						<details><summary><?php echo esc_html( $item['question'] ); ?></summary><div class="huelle"><div><p class="antwort"><?php echo esc_html( $item['answer'] ); ?></p></div></div></details>
+						<details name="wartung-faq"><summary><?php echo esc_html( $item['question'] ); ?></summary><div class="huelle"><div><p class="antwort"><?php echo esc_html( $item['answer'] ); ?></p></div></div></details>
 					<?php endforeach; ?>
 				</div>
 			</div>
