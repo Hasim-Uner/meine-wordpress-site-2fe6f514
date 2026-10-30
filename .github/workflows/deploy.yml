@@ -38,6 +38,7 @@ concurrency:
   cancel-in-progress: false
 
 permissions:
+  checks: read
   contents: read
   pull-requests: read
 
@@ -287,6 +288,15 @@ jobs:
 
       - name: Stamp theme deployment
         run: git rev-parse HEAD > "$BUILD_OUTPUT_DIR/.nexus-deploy-sha"
+
+      - name: Stamp deployment proof
+        # Pruefstand der Startseite: Pull Request und Prueflaeufe dieses Stands.
+        # Ohne Antwort der API bleibt die Datei weg; die Seite zeigt dann nur
+        # Commit und Zeitpunkt aus dem Marker. Der Deploy laeuft in jedem Fall.
+        continue-on-error: true
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: python3 scripts/stamp-deploy-proof.py "$BUILD_OUTPUT_DIR/.nexus-deploy-proof.json"
 
       - name: Prepare SSH
         env:

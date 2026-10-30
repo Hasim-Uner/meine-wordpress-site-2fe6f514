@@ -598,50 +598,12 @@
   color: var(--matt);
 }
 
-/* Startseite: Der Pruefstand steht als schmaler Streifen hinter den
-   Arbeiten, ohne Tafel und ohne Kacheln. Kopf: Ueberschrift und Satz
-   nebeneinander. Drei Spalten mit Haarlinie oben; Icon und Marke in
-   einer Zeile, der Link direkt unter dem Satz, kein Leerraum bis zum
-   Kachelrand. Die Tafel (.tafel) bleibt der White-Label-Seite. */
+/* Pruefstand-Kopf: Ueberschrift und Satz nebeneinander. Die Startseite
+   traegt darunter das Livegang-Protokoll (Abschnitt "06 Pruefstand" am
+   Dateiende), die White-Label-Seite ihre drei Pruefungen. */
 .st .st-pruefstand__kopf {
   display: grid;
   gap: var(--s2);
-}
-
-.st .st-pruefstand--leise .st-vorspann { margin-top: 0; }
-.st .st-pruefstand--leise .st-pruefungen { margin-top: var(--s4); gap: 0 var(--s4); }
-
-.st .st-pruefstand--leise .st-pruefungen li {
-  display: grid;
-  grid-template-columns: auto minmax(0, 1fr);
-  align-content: start;
-  align-items: center;
-  column-gap: var(--s1);
-  padding: var(--s2) 0 var(--s3);
-  border: 0;
-  border-top: 1px solid var(--haar);
-  border-radius: 0;
-  background: transparent;
-}
-
-.st .st-pruefstand--leise .st-pruefungen li:hover {
-  border-color: var(--haar);
-  transform: none;
-}
-
-.st .st-pruefstand--leise .st-pruefungen__icon { margin-bottom: 0; }
-
-.st .st-pruefstand--leise .st-pruefungen__text,
-.st .st-pruefstand--leise .st-pruefungen__messung,
-.st .st-pruefstand--leise .st-pruefungen__klein,
-.st .st-pruefstand--leise .st-pruefungen .st-link {
-  grid-column: 1 / -1;
-}
-
-.st .st-pruefstand--leise .st-pruefungen .st-link {
-  justify-self: start;
-  margin-top: 0;
-  padding-top: var(--s1);
 }
 
 @media (min-width: 1024px) {
@@ -1281,6 +1243,9 @@
 .st[data-st-final] .st-angebot__preis small { display: block; margin-top: var(--s0); font-family: var(--serif); font-size: var(--grad-klein); font-weight: 400; line-height: 1.45; letter-spacing: 0; color: var(--grau); }
 .st[data-st-final] .st-angebot__wege { display: flex; flex-direction: column; align-items: flex-start; margin-top: var(--s1); }
 .st[data-st-final] .st-angebot__wege .st-link { font-size: 0.88rem; }
+/* Sechs Angebote, sechs stille Buttons: gefuellt ist auf der Seite nur
+   "Projekt anfragen". Die Preisspalte ist schmal, der Text darf umbrechen. */
+.st[data-st-final] .st-angebot__wege .tun { width: 100%; min-height: 44px; justify-content: space-between; padding-inline: var(--s2); font-size: 0.88rem; white-space: normal; }
 .st[data-st-final] .st-weiter { display: flex; flex-wrap: wrap; align-items: baseline; gap: var(--s2) var(--s4); padding-block: var(--s3); border-bottom: 1px solid var(--haar); font-size: 0.97rem; }
 .st[data-st-final] .st-weiter > p { flex: 1 1 30ch; }
 .st[data-st-final] .st-preisnotiz { margin-top: var(--s3); font-size: var(--grad-klein); color: var(--matt); }
@@ -1300,7 +1265,8 @@
 .st[data-st-final] .st-schluss .st-anfrage__h2 { max-inline-size: 26ch; }
 .st[data-st-final] .st-einstiege { gap: var(--s3); }
 .st[data-st-final] .st-einstieg { padding: var(--s3); border: 1px solid var(--haar); border-radius: var(--r1); }
-.st[data-st-final] .st-einstieg:first-child { border-color: var(--tinte); }
+/* Hauptziel traegt den dunklen Rahmen, die Ersteinschaetzung bleibt Haarlinie. */
+.st[data-st-final] .st-einstieg--haupt { border-color: var(--tinte); }
 .st[data-st-final] .st-einstieg .tun { max-width: 100%; font-size: 0.9rem; white-space: normal; }
 .st[data-st-final] .st-danach { grid-area: danach; border-top: 1px solid var(--haar); padding-top: var(--s3); }
 .st[data-st-final] .st-danach .st-klein-label { display: block; margin-bottom: var(--s1); }
@@ -1313,7 +1279,7 @@
   .st[data-st-final] .st-eignung { grid-template-columns: repeat(2, minmax(0, 1fr)); }
 }
 @media (min-width: 1024px) {
-  .st[data-st-final] .st-belege { grid-column: 1 / -1; grid-row: 3; display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: var(--s3); padding-top: var(--s3); }
+  .st[data-st-final] .st-belege { grid-column: 1 / -1; grid-row: 3; display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: var(--s3); padding-top: var(--s3); }
   .st[data-st-final] .st-belege a { grid-template-columns: auto minmax(0, 1fr); gap: var(--s1); padding: 0; border: 0; }
   .st[data-st-final] .st-belege__text { font-size: 0.85rem; }
   .st[data-st-final] .st-belege__zahl { font-family: var(--serif-display); font-size: 1.8rem; }
@@ -1377,6 +1343,9 @@
 .st .st-hero--messflaeche .st-messzeile:nth-child(4) .st-messwort { transition-delay: 210ms; }
 .st-wort--quelle { position: relative; }
 .st-quelle__fuell { position: absolute; inset: 0; opacity: 0; pointer-events: none; }
+/* Die Fuellung ist Generated Content: "was funktioniert." steht so nur
+   einmal im Text der H1, fuer Suchmaschinen, Kopieren und Vorlesen. */
+.st-quelle__fuell::before { content: attr(data-text); }
 @supports (-webkit-text-stroke: 1px currentColor) {
   [data-st-hero-bereit] .st-quelle__kontur { color: transparent; -webkit-text-stroke: 1.5px var(--matt); }
   [data-st-hero-bereit].is-assigned .st-quelle__fuell { opacity: 1; transition: opacity 350ms var(--ease-aus); }
@@ -1388,7 +1357,9 @@
 /* One quiet case link below the main action at every width. */
 .st[data-st-final] .st-hero--messflaeche .st-hero__beleg { margin: var(--s1) 0 0; font-size: .9375rem; }
 .st[data-st-final] .st-hero--messflaeche .st-hero__beleg .st-link { display: inline-block; padding-block: .75rem; }
-.st[data-st-final] .st-erstcheck { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: var(--s4); padding: var(--s3); margin-top: var(--s4); }
+/* Auffangnetz, keine Tafel: Haarlinie auf Papier, damit es nicht lauter
+   steht als die Angebote darueber. */
+.st[data-st-final] .st-erstcheck { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: var(--s4); padding: var(--s3); margin-top: var(--s4); background: var(--papier); border: 1px solid var(--haar); border-radius: var(--r1); }
 .st[data-st-final] .st-erstcheck .st-h3 { margin-top: var(--s1); }
 .st[data-st-final] .st-erstcheck p + p, .st[data-st-final] .st-erstcheck .st-h3 + p { margin-top: var(--s2); }
 .st[data-st-final] .st-erstcheck .tun { margin-block: var(--s2); }
@@ -1400,6 +1371,8 @@
 .st[data-st-final] .st-hero--messflaeche .st-belege a { grid-template-columns: auto minmax(0, 1fr); gap: var(--s2); padding: 0; border: 0; align-items: center; min-height: 44px; }
 .st[data-st-final] .st-hero--messflaeche .st-belege__zahl { font-family: var(--serif-display); font-size: 1.8rem; }
 .st[data-st-final] .st-hero--messflaeche .st-belege__text { font-size: .85rem; }
+/* Pruefstand-Beleg: Zaehlerstand aus dem Deploy, deshalb Mono statt Display. */
+.st[data-st-final] .st-hero--messflaeche .st-belege__zahl--mono { font-family: var(--mono); font-size: 1.45rem; letter-spacing: -.02em; }
 
 /* Etikett: Positionen werden nach fonts.ready und resize gemessen.
    Unterhalb der H1 bleibt der Platz waehrend der Choreografie reserviert. */
@@ -1429,6 +1402,11 @@
 .st-spur__wert[data-st-wert="herkunft"] { max-width: 100%; overflow: hidden; white-space: nowrap; text-overflow: ellipsis; }
 .st-spur__wert.st-messwert { color: var(--stempel); }
 .st-spur__einheit { display: block; margin-top: .15rem; font-family: var(--mono); font-size: .65rem; text-transform: uppercase; color: var(--matt); }
+/* Einordnung des Messwerts: Googles Schwelle fuer eine gute LCP. Die Zeile
+   steht von Anfang an im Fluss und wird erst neben einer echten LCP
+   sichtbar; ein spaetes Einblenden wuerde die Spur verschieben. */
+.st-spur__grenze { display: block; margin-top: .15rem; font-family: var(--mono); font-size: .65rem; text-transform: uppercase; color: var(--matt); }
+[data-st-lcp-grenze]:not([data-st-an]) { visibility: hidden; }
 .st-spur__station.is-reached .st-spur__punkt { background: var(--stempel); border-color: var(--stempel); }
 .st-spur__station--spaeter a { opacity: .65; transition: opacity var(--t-norm) var(--ease-aus); }
 .st .st-spur__klammer { position: relative; margin: var(--s2) 0 0 50%; padding-top: var(--s1); border-top: 1px dashed var(--haar); max-width: 46ch; font-size: .82rem; line-height: 1.5; color: var(--grau); }
@@ -1454,7 +1432,7 @@
   .st-spur__station--spaeter a:hover, .st-spur__station--spaeter a:focus-visible { opacity: 1; }
 }
 @media (min-width: 768px) {
-  .st[data-st-final] .st-hero--messflaeche .st-belege { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+  .st[data-st-final] .st-hero--messflaeche .st-belege { grid-template-columns: repeat(2, minmax(0, 1fr)); }
   .st[data-st-final] .st-hero--messflaeche .st-belege a { grid-template-columns: minmax(0, 1fr); }
 }
 @media (min-width: 1100px) {
@@ -1487,7 +1465,7 @@
   .st-spur__station { padding: 0 0 var(--s2); }
   .st-spur__station a { grid-template-columns: 11px auto minmax(0, 1fr); column-gap: var(--s1); min-height: 44px; }
   .st-spur__punkt { grid-column: auto; align-self: center; }
-  .st-spur__wert, .st-spur__einheit { margin-left: calc(11px + var(--s1)); }
+  .st-spur__wert, .st-spur__einheit, .st-spur__grenze { margin-left: calc(11px + var(--s1)); }
   .st .st-spur__klammer { margin: var(--s0) 0 0 calc(11px + var(--s1)); }
   .st-spur__hier { display: none; }
 }
@@ -1506,7 +1484,9 @@
 /* Ersteinschaetzung als URL-Feld (Erstcheck-Tafel und Abschlusskarte).
    Farben aus currentColor, damit das Feld auf Papier und Tafel lesbar bleibt. */
 .st[data-st-final] .st-urlform { margin-block: var(--s2); }
-.st[data-st-final] .st-urlform__label { display: block; font-family: var(--mono); font-size: var(--mono-s); font-weight: 500; letter-spacing: .06em; text-transform: uppercase; margin-bottom: var(--s0); }
+/* Farbe ausdruecklich: Ohne sie erbte das Label live eine fremde
+   Label-Farbe (gelb auf Papier, kaum lesbar). --grau wie jedes Klein-Label. */
+.st[data-st-final] .st-urlform__label { display: block; font-family: var(--mono); font-size: var(--mono-s); font-weight: 500; letter-spacing: .06em; text-transform: uppercase; color: var(--grau); margin-bottom: var(--s0); }
 .st[data-st-final] .st-urlform__zeile { display: flex; flex-wrap: wrap; gap: var(--s1); align-items: stretch; }
 .st[data-st-final] .st-urlform__feld {
   flex: 1 1 14rem;
@@ -1522,3 +1502,45 @@
 .st[data-st-final] .st-urlform__feld::placeholder { color: color-mix(in srgb, currentColor 55%, transparent); }
 .st[data-st-final] .st-urlform__feld:focus-visible { outline: 2px solid var(--stempel); outline-offset: 2px; }
 .st[data-st-final] .st-urlform .tun { margin: 0; cursor: pointer; }
+
+/* ══ 06 Pruefstand: zweite Messflaeche ═══════════════════════════
+   Dasselbe Instrument wie im Hero, gemessen wird hier der Weg dieser
+   Seite: Aenderung, Pruefungen, Freigabe, Livegang, Ihr Aufruf. Die Werte
+   von 01 bis 04 schreibt der Deploy (nexus_get_deploy_proof()), 05 misst
+   der Browser. Alle Stationen sind erreicht, die letzte ist der Besucher.
+   Keine Bewegung: Der Block ist Beleg, kein Effekt. */
+.st[data-st-final] .st-pruefstand.st-messflaeche { padding-top: var(--st-kopf); padding-bottom: var(--st-kopf); }
+.st[data-st-final] .st-pruefstand .st-vorspann { margin-top: 0; }
+.st-livegang { margin-top: var(--s4); padding-top: var(--s2); border-top: 1px solid var(--haar); }
+.st .st-livegang .st-protokoll__kopf { flex-wrap: wrap; padding-bottom: 0; border: 0; letter-spacing: .06em; }
+.st-livegang__quelle { display: inline-flex; align-items: center; gap: var(--s0); color: var(--matt); }
+.st-livegang__quelle::before { content: ""; width: 7px; height: 7px; border-radius: 50%; background: var(--stempel); }
+.st-livegang__stationen { position: relative; display: grid; grid-template-columns: repeat(5, minmax(0, 1fr)); list-style: none; margin: var(--s4) 0 0; padding: 0; }
+/* Linie vom ersten bis zum fuenften Punkt: vier von fuenf Spalten. */
+.st-livegang__stationen::before { content: ""; position: absolute; left: 5.5px; top: 4.5px; width: 80%; height: 2px; background: var(--stempel); }
+.st-livegang__station { position: relative; min-width: 0; padding-right: var(--s2); }
+.st-livegang__punkt { position: relative; display: block; width: 11px; height: 11px; border-radius: 50%; background: var(--stempel); }
+.st-livegang__station--sie .st-livegang__punkt { box-shadow: 0 0 0 4px color-mix(in srgb, var(--stempel) 18%, transparent), 0 0 22px 2px color-mix(in srgb, var(--stempel) 55%, transparent); }
+.st .st-livegang__name { display: flex; align-items: baseline; gap: var(--s0); margin: var(--s2) 0 0; font-family: var(--serif-display); font-size: clamp(1.0625rem, 1.4vw, 1.25rem); font-weight: 500; line-height: 1.2; letter-spacing: -.02em; color: var(--tinte); }
+.st .st-livegang__station--sie .st-livegang__name { color: var(--stempel); }
+.st-livegang__nr { font-family: var(--mono); font-size: .7rem; letter-spacing: 0; color: var(--matt); }
+.st .st-livegang__wert { margin: var(--s1) 0 0; font-family: var(--mono); font-size: .84rem; line-height: 1.4; color: var(--tinte); font-variant-numeric: tabular-nums; overflow-wrap: anywhere; }
+.st .st-livegang__wert.st-messwert { color: var(--stempel); white-space: normal; }
+.st-livegang__einheit { display: block; margin-top: .15rem; font-family: var(--mono); font-size: .65rem; text-transform: uppercase; color: var(--matt); }
+.st .st-livegang__notiz { margin: var(--s0) 0 0; font-size: .82rem; line-height: 1.45; color: var(--grau); }
+.st .st-livegang__station .st-link { display: inline-block; margin-top: var(--s1); padding-block: var(--s0); font-size: .84rem; }
+.st .st-livegang__fuss { margin-top: var(--s3); max-width: 80ch; font-size: .82rem; line-height: 1.5; color: var(--grau); }
+.st[data-st-final] .st-pruefstand .st-referenzen { margin-top: var(--s5); padding-top: var(--s3); border-top: 1px solid var(--haar); }
+@media (max-width: 767px) {
+  /* Senkrecht wie die Hero-Spur: Punkt links, Linie je Station bis zur
+     naechsten, Inhalt daneben. */
+  .st-livegang__stationen { grid-template-columns: minmax(0, 1fr); margin-top: var(--s3); }
+  .st-livegang__stationen::before { display: none; }
+  .st-livegang__station { display: grid; grid-template-columns: 11px minmax(0, 1fr); column-gap: var(--s2); padding: 0 0 var(--s3); }
+  .st-livegang__station::before { content: ""; position: absolute; left: 4.5px; top: 0; bottom: 0; width: 2px; background: var(--stempel); }
+  .st-livegang__station:first-child::before { top: .45rem; }
+  .st-livegang__station:last-child::before { bottom: auto; height: .45rem; }
+  .st-livegang__punkt { grid-row: 1; margin-top: .45rem; }
+  .st-livegang__station > :not(.st-livegang__punkt) { grid-column: 2; }
+  .st .st-livegang__name { grid-row: 1; margin-top: 0; }
+}
