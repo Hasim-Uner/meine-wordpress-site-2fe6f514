@@ -64,7 +64,7 @@ function hu_get_final_cut_authority_nodes() : array {
 		],
 		'agentur_local' => [
 			'label'       => 'WordPress Agentur Hannover',
-			'description' => 'Lokale Entscheidungsseite: klassische Agentur oder direkter technischer Umsetzungspartner.',
+			'description' => 'Lokale Agentur-Seite: WordPress mit einem Ansprechpartner, prüfbare Projekte, danach Agentur oder direkte Umsetzung.',
 			'url'         => $routes['agentur_local'] ?? home_url( '/wordpress-agentur-hannover/' ),
 			'role'        => 'Lokal',
 		],
