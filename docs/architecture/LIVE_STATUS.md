@@ -338,7 +338,23 @@ Projektabschluss und ruhiger Agentur-Zweitweg, zentrale Metadaten und
   Query-Owner für `wordpress freelancer` und `wordpress freelancer hannover`.
   Die bestehende Strecke (`assets/css/startseite-strecke.css/.js`) hat acht
   Abschnitte: Klick, Angebote (`#angebote`, mit Preisen), Strecke, Fall,
-  Prüfstand, Übergabe, Fragen, Anfrage.
+  Übergabe, Prüfstand, Fragen, Anfrage (Reihenfolge seit 2026-10-30).
+  CTA-Hierarchie seit 2026-10-30: gefüllt ist nur „Projekt anfragen“ (Hero,
+  Abschluss); die sechs Angebots-Buttons, Fall-CTA und alle
+  Ersteinschätzungs-Buttons sind still (`.tun.still`). Im Abschluss steht die
+  Projektanfrage zuerst mit dunklem Rahmen (`.st-einstieg--haupt`), die
+  Ersteinschätzung unter den Preisen ist eine Haarlinienkarte statt Tafel.
+  Belegleiste im Hero: Fallwert und Prüfstand-Zähler (`home_proof_strip_pruefstand`);
+  der Preisbeleg entfällt, der Preis steht nur im Kicker.
+  Prüfstand (`#pruefstand`) ist seit 2026-10-30 die zweite dunkle Messfläche:
+  Protokoll „Diese Website“ mit fünf Stationen (Änderung, Prüfungen, Freigabe,
+  Livegang, Ihr Aufruf). Commit, Prüfläufe, PR und Zeitpunkt liest
+  `nexus_get_deploy_proof()` aus `.nexus-deploy-sha` und
+  `.nexus-deploy-proof.json`; beide schreibt `deploy.yml`
+  (`scripts/stamp-deploy-proof.py`, `continue-on-error`). Fehlt die Datei,
+  stehen dort die Regeln statt Zahlen. Neben der LCP steht Googles Schwelle
+  „gut bis 2,5 s“, nur bei echter LCP; die Zeile ist reserviert, damit die
+  Spur nicht springt.
   Hero und Startseiten-Kopf sind seit dem Umbau zur Messfläche dunkel; die
   gemeinsamen Flächen-, Raster- und Maskenregeln mit White-Label liegen einmal
   in `startseite-strecke.css`. Vier H1-Zeilen zeigen dieselbe Aussage; die Quelle
@@ -359,10 +375,11 @@ Projektabschluss und ruhiger Agentur-Zweitweg, zentrale Metadaten und
   Der dokumentierte Fall (`#arbeiten`, `#systemprojekt`) folgt auf die Strecke:
   heller Hintergrund, Drei-Phasen-Verlauf aus dem E3-Kanon und eine dunkle
   Messtafel mit maßstäblichen CPL-Balken. Diese wachsen einmal beim Sichtkontakt
-  ausschließlich per Transform. Der Prüfstand enthält Code, CI, PageSpeed mit
-  dem lokal gemessenen LCP und die Referenzen (`#referenzen`). Unter fünf
-  Angeboten (`#angebote`, alle Schema-Anker erhalten) stehen Weiterentwicklung,
-  Hosting-Hinweis und eine bedingte Ersteinschätzungs-Tafel: Website-URL/Ziel,
+  ausschließlich per Transform. Der Prüfstand enthält das Livegang-Protokoll,
+  PageSpeed mit dem lokal gemessenen LCP und die Referenzen (`#referenzen`).
+  Unter sechs Angeboten (`#angebote`, alle Schema-Anker erhalten; Kleingedrucktes
+  steht im Preishinweis oder auf der Detailseite) stehen Weiterentwicklung,
+  Hosting-Hinweis und eine bedingte Ersteinschätzungs-Karte: Website-URL/Ziel,
   schriftliche Befunde beziehungsweise Absage und Antwortzeit aus dem Kanon.
   Landingpage-Anfragen tragen `focus=landingpage`. Tracking erscheint als
   Grundprodukt; Server-Side, Meta und CRM sind bedarfsabhängige Erweiterungen.
@@ -372,7 +389,9 @@ Projektabschluss und ruhiger Agentur-Zweitweg, zentrale Metadaten und
   Eigentum, Ausfall-Einwand, Projektablauf und die Nebenwege zu White-Label und
   Solar/Wärmepumpe. Fünf sichtbare FAQ teilen ihr Array mit dem FAQPage-Schema.
   Der Abschluss (`#anfrage`, `#kontakt`) bleibt hell und enthält zwei Einstiege,
-  die nächsten Schritte und das Portrait. Dunkel sind Hero-Messfläche und Messtafel.
+  die nächsten Schritte und das Portrait. Dunkel sind Hero-Messfläche,
+  Messtafel und Prüfstand. Die gefüllte Zeile „was funktioniert.“ der H1 ist
+  Generated Content (`data-text`), damit der Satz nur einmal im Text steht.
   Die Messlinie liegt in der linken Rinne und folgt
   einer Lesekante bei 45 % der Fensterhöhe; am Seitenende ist alles erreicht.
   Ohne JavaScript bleiben Stationen und FAQ bedienbar, das Protokoll bleibt leer.

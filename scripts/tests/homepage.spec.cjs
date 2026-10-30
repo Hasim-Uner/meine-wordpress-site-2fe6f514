@@ -24,7 +24,7 @@ async function open(page, { width = 1440, height = 900, off = false, search = ''
   // Native assertions wait for their DOM and actual stylesheet instead.
   if (awaitFonts) await page.evaluate(() => document.fonts.ready);
 }
-const sections = ['klick', 'angebote', 'strecke', 'arbeiten', 'pruefstand', 'uebergabe', 'fragen', 'anfrage'];
+const sections = ['klick', 'angebote', 'strecke', 'arbeiten', 'uebergabe', 'pruefstand', 'fragen', 'anfrage'];
 
 for (const width of [360, 768, 1024, 1440]) {
   test(`homepage ${width}: complete route, gutter, keyboard and proportional proof`, async ({ page }) => {
@@ -47,6 +47,17 @@ for (const width of [360, 768, 1024, 1440]) {
     await expect(page.locator('.fuss .register')).toHaveCount(0);
     await expect(page.locator('.fuss .verzeichnis')).toHaveCount(1);
     await expect(page.locator('[data-st-wert="herkunft"]')).toHaveText('Direkt aufgerufen');
+    // One filled action: offers and the assessment stay quiet, the project request leads.
+    await expect(page.locator('#angebote .tun:not(.still)')).toHaveCount(0);
+    await expect(page.locator('#angebote .st-angebot .tun.still')).toHaveCount(6);
+    await expect(page.locator('#anfrage .st-einstieg').first()).toHaveClass(/st-einstieg--haupt/);
+    await expect(page.locator('#anfrage .st-einstieg--haupt .tun:not(.still)')).toHaveText('Projekt anfragen →');
+    // The H1 carries its last line once; the filled copy is generated content.
+    expect((await page.locator('#st-h1').textContent()).split('was funktioniert').length - 1).toBe(1);
+    // Pruefstand: second instrument, dark, five stations, the last one is the visitor.
+    await expect(page.locator('#pruefstand.tafel .st-livegang__station')).toHaveCount(5);
+    await expect(page.locator('#pruefstand .st-livegang__station--sie')).toHaveCount(1);
+    await expect(page.locator('#klick .st-belege li')).toHaveCount(2);
     expect(await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth)).toBe(true);
     const overflow = await page.locator('[data-st-final] *').evaluateAll(els => els.filter(el => {
       const r = el.getBoundingClientRect();
@@ -74,6 +85,8 @@ for (const width of [360, 768, 1024, 1440]) {
     await expect(page.locator('[data-st-wert="abschnitte"]')).toHaveText(`${sections.length} von ${sections.length}`);
     await expect(page.locator('[data-st-wert="tiefe"]')).toHaveText('100 %');
     await expect(page.locator('[data-st-ende-zeit]')).toBeVisible();
+    await expect(page.locator('#klick [data-st-lcp-grenze]')).toBeVisible();
+    await expect(page.locator('#pruefstand [data-st-lcp-kopie]')).not.toHaveText('…');
     await expect.poll(() => page.locator('#anfrage img').evaluate(el => el.naturalWidth)).toBeGreaterThan(0);
     expect(errors).toEqual([]);
     if (width === 360 || width === 1440) {
@@ -302,7 +315,10 @@ test('homepage instrument: reduced motion and navigation fallback show immediate
   await page.addInitScript(() => { window.PerformanceObserver = undefined; });
   await open(page);
   await expect(page.locator('[data-st-signal]')).toHaveClass(/is-here/);
-  await expect(page.locator('[data-st-lcp-label]')).toHaveText('Ladezeit (Seite geladen)');
+  await expect(page.locator('[data-st-lcp-label]')).toHaveText(['Ladezeit (Seite geladen)', 'Ladezeit (Seite geladen)']);
+  // Google's LCP threshold belongs to an LCP only, not to a load-event time.
+  await expect(page.locator('[data-st-lcp-grenze]')).toHaveCount(2);
+  for (const grenze of await page.locator('[data-st-lcp-grenze]').all()) await expect(grenze).toBeHidden();
   await expect(page.locator('[data-st-wert="lcp"]')).not.toHaveText('…');
   expect(await page.locator('[data-st-signal]').evaluate(el => el.getAnimations().length)).toBe(0);
   expect(await page.locator('[data-st-etikett]').evaluate(el => el.getAnimations().length)).toBe(0);

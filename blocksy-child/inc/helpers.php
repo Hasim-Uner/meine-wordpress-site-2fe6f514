@@ -1227,6 +1227,66 @@ function nexus_get_deploy_marker_sha() {
 }
 
 /**
+ * Read what the production deploy recorded about the live revision.
+ *
+ * deploy.yml legt neben .nexus-deploy-sha die Datei .nexus-deploy-proof.json
+ * ab: Zeitpunkt, Pull Request und das Ergebnis seiner Prueflaeufe. Fehlt sie
+ * oder gehoert sie zu einem anderen Stand, bleiben diese Felder leer; Commit
+ * und Zeitpunkt kommen dann nur aus dem Marker. Geschaetzt wird nichts.
+ *
+ * @param string $dir Theme directory; defaults to the active child theme.
+ * @return array{sha:string,deployed_at:int,pr:int,checks_passed:int,checks_total:int}
+ */
+function nexus_get_deploy_proof( $dir = '' ) {
+	$dir   = trailingslashit( '' !== $dir ? $dir : get_stylesheet_directory() );
+	$proof = [
+		'sha'           => '',
+		'deployed_at'   => 0,
+		'pr'            => 0,
+		'checks_passed' => 0,
+		'checks_total'  => 0,
+	];
+
+	$marker = $dir . '.nexus-deploy-sha';
+	if ( ! is_readable( $marker ) ) {
+		return $proof;
+	}
+
+	$sha = strtolower( trim( (string) file_get_contents( $marker ) ) );
+	if ( ! preg_match( '/^[a-f0-9]{7,40}$/', $sha ) ) {
+		return $proof;
+	}
+
+	$proof['sha']         = $sha;
+	$proof['deployed_at'] = (int) filemtime( $marker );
+
+	$file = $dir . '.nexus-deploy-proof.json';
+	$data = is_readable( $file ) ? json_decode( (string) file_get_contents( $file ), true ) : null;
+	if ( ! is_array( $data ) || ( $data['sha'] ?? '' ) !== $sha ) {
+		return $proof;
+	}
+
+	$deployed = isset( $data['deployed_at'] ) ? strtotime( (string) $data['deployed_at'] ) : false;
+	if ( false !== $deployed && $deployed > 0 ) {
+		$proof['deployed_at'] = (int) $deployed;
+	}
+
+	$pr = (int) ( $data['pull_request'] ?? 0 );
+	if ( $pr > 0 ) {
+		$proof['pr'] = $pr;
+	}
+
+	$passed = (int) ( $data['checks']['passed'] ?? 0 );
+	$total  = (int) ( $data['checks']['total'] ?? 0 );
+	if ( $total > 0 && $passed >= 0 && $passed <= $total ) {
+		$proof['checks_passed'] = $passed;
+		$proof['checks_total']  = $total;
+	}
+
+	return $proof;
+}
+
+/**
  * Return the revision stamp that page provisioning has to match.
  *
  * @return string

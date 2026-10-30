@@ -127,6 +127,10 @@
     var lcpWert = 0;
     var lcpFertig = false;
     var lcpKopien = root.querySelectorAll('[data-st-lcp-kopie]');
+    /* Googles Schwelle fuer eine gute LCP steht nur neben einer echten LCP,
+       nicht neben der Ladezeit aus Navigation Timing. Ihre Zeile ist von
+       Anfang an reserviert (visibility), damit die Spur nicht springt. */
+    var lcpGrenzen = root.querySelectorAll('[data-st-lcp-grenze]');
 
     function zeigeLadezeit(ms, abschliessen) {
         lcpWert = ms;
@@ -136,6 +140,9 @@
             var huelle = el.closest('[data-st-nur-js]');
             if (huelle) huelle.hidden = false;
         });
+        if (kannLcp) {
+            Array.prototype.forEach.call(lcpGrenzen, function (el) { el.setAttribute('data-st-an', ''); });
+        }
         if (abschliessen && !lcpFertig) {
             lcpFertig = true;
             sage('Ladezeit dieses Aufrufs: ' + sekunden(ms).replace(' s', ' Sekunden') + '.');
@@ -151,7 +158,9 @@
         lcpBeobachter = new PerformanceObserver(function (liste) {
             var eintraege = liste.getEntries();
             var letzter = eintraege[eintraege.length - 1];
-            if (letzter) zeigeLadezeit(letzter.startTime, false);
+            // Nach dem Abschluss bleibt der Wert stehen: Spaeter nachgeladene
+            // Bilder sind keine Ladezeit dieses Aufrufs mehr.
+            if (letzter && !lcpFertig) zeigeLadezeit(letzter.startTime, false);
         });
         lcpBeobachter.observe({ type: 'largest-contentful-paint', buffered: true });
     } catch (e) { kannLcp = false; }
@@ -171,8 +180,9 @@
         if (document.readyState === 'complete') nachLaden();
         else window.addEventListener('load', nachLaden, { once: true });
     } else {
-        var label = protokoll && protokoll.querySelector('[data-st-lcp-label]');
-        if (label) label.textContent = 'Ladezeit (Seite geladen)';
+        Array.prototype.forEach.call(root.querySelectorAll('[data-st-lcp-label]'), function (label) {
+            label.textContent = 'Ladezeit (Seite geladen)';
+        });
         var ausNavigation = function () {
             var nav = performance.getEntriesByType && performance.getEntriesByType('navigation')[0];
             var ms = nav && nav.loadEventEnd ? nav.loadEventEnd : 0;

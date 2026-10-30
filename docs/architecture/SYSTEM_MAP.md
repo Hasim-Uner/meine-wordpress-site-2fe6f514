@@ -259,6 +259,7 @@ Risiko:
 - Blog / SEO -> interne Verlinkung -> Service-Seiten / Audit -> Leadflow
 - WordPress-Editor -> Theme-Struktur -> Live-Seiten
 - `npm run check` / GitHub Actions CI → gemeinsame Prüfauswahl (`scripts/check.py`) → bei Runtime-Änderungen Build-Paket aus `blocksy-child/` → erfolgreicher main-Lauf → GitHub Actions Deploy → Live-Theme
+- GitHub Actions Deploy → GitHub-API (PR des Commits, Check-Runs seines Heads; `scripts/stamp-deploy-proof.py`, Rechte `checks: read`) → `.nexus-deploy-proof.json` neben `.nexus-deploy-sha` im Theme → `nexus_get_deploy_proof()` → Prüfstand der Startseite. Fällt die API aus, fehlt nur die Datei; der Deploy läuft weiter.
 
 ## Kritische Abhaengigkeiten
 
