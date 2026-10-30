@@ -266,9 +266,9 @@ get_header();
 	</section>
 
 	<section id="faq" data-track-section="faq">
-		<div class="blatt reihe"><div class="spalte-links"><div class="kapitel" aria-hidden="true"><span class="nr">05</span><span class="titel">Fragen</span><span class="strich"></span></div></div><div class="haupt"><h2 class="kopf leise">Server-Side Tracking: Technik, Kosten und Grenzen.</h2><div class="fragen">
+		<div class="blatt reihe"><div class="spalte-links"><div class="kapitel" aria-hidden="true"><span class="nr">05</span><span class="titel">Fragen</span><span class="strich"></span></div></div><div class="haupt"><h2 class="kopf leise">Server-Side Tracking: Technik, Kosten und Grenzen.</h2><div class="fragen" data-faq-group>
 			<?php foreach ( $faq as $item ) : ?>
-				<details><summary><?php echo esc_html( $item['question'] ); ?></summary><div class="huelle"><div><p class="antwort"><?php echo esc_html( $item['answer'] ); ?></p></div></div></details>
+				<details name="sst-faq"><summary><?php echo esc_html( $item['question'] ); ?></summary><div class="huelle"><div><p class="antwort"><?php echo esc_html( $item['answer'] ); ?></p></div></div></details>
 			<?php endforeach; ?>
 		</div></div></div>
 	</section>

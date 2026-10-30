@@ -245,14 +245,14 @@ get_header();
 			<div class="haupt">
 				<h2 class="kopf leise">Was vor dem Auftrag noch wichtig ist.</h2>
 				<?php if ( ! empty( $faq_items ) ) : ?>
-					<div class="fragen">
+					<div class="fragen" data-faq-group>
 						<?php foreach ( $faq_items as $item ) : ?>
 							<?php
 							$question = isset( $item['question'] ) ? (string) $item['question'] : '';
 							$answer   = isset( $item['answer'] ) ? (string) $item['answer'] : '';
 							if ( '' === $question || '' === $answer ) { continue; }
 							?>
-							<details><summary><?php echo esc_html( $question ); ?></summary><div class="huelle"><div><p class="antwort"><?php echo esc_html( $answer ); ?></p></div></div></details>
+							<details name="ga4-faq"><summary><?php echo esc_html( $question ); ?></summary><div class="huelle"><div><p class="antwort"><?php echo esc_html( $answer ); ?></p></div></div></details>
 						<?php endforeach; ?>
 					</div>
 				<?php endif; ?>
