@@ -183,6 +183,7 @@ if ( is_singular( 'post' ) ) {
 				</ul>
 				<p>Wenn <?php echo nexus_glossary_link( 'lcp', 'LCP' ); ?>, <?php echo nexus_glossary_link( 'inp', 'INP' ); ?> und <?php echo nexus_glossary_link( 'cls', 'CLS' ); ?> stabil im guten Bereich liegen, ist ein technischer Teil der Nutzungserfahrung sauber. Ob dadurch weniger Absprünge, bessere Conversion oder bessere Kampagnenwerte entstehen, muss jedoch auf der konkreten Seite gemessen werden.</p>
 				<p>Wenn Ihr Ziel niedrigere Akquisekosten sind, prüfen Sie deshalb nicht nur Targeting und Gebot, sondern auch Ladeverhalten, Relevanz, Formularweg und Messqualität der Landingpage.</p>
+				<p>Für eine eigene Kampagnen-Zielseite beschreibt das Angebot <a href="<?php echo esc_url( hu_get_commercial_route( 'landingpage' ) ); ?>">Landingpage mit Text und Formular</a> den Umfang und die Voraussetzungen der Umsetzung.</p>
 
 				<h2 id="seo-sea">SEO und SEA Zusammenspiel: Zwei Kanäle, ein System</h2>
 				<p>Das klassische Silodenken trennt organische Sichtbarkeit und Paid Traffic organisatorisch. Nutzer verhalten sich jedoch kanalunabhängig. Sie vergleichen, springen, kommen wieder, wechseln Endgeräte und treffen Entscheidungen in Wellen.</p>
