@@ -57,6 +57,7 @@ $modules = [
 	'calcom-webhook.php', // Cal.com-Buchungen per Webhook ins CRM, mit Quelle und interner Mail
 	'chat-assistant/chat-assistant.php', // KI-Assistent: off / preview (nur Admins) / live
 	'inquiry-events.php', // Serverseitiges Protokoll anfrage_gesendet (Formular, Quelle, Zeitpunkt) und Admin-Übersicht
+	'campaign-shortlinks.php', // Kurzlinks /partner/ und /zusammenarbeit/ für Akquise-Mails, 302 mit UTM auf /whitelabel-retainer/
 	'wordpress-wartung.php', // Wartungsangebot: Route-Erkennung und Fragen für Template und Schema
 	'anfrage-monitor.php', // Täglicher Anfrage-Test: Marker im Kontakt-Handler, Ergebnis/Status-REST, Route /anfrage-monitor/
 	'system-diagnose-page.php', // Deutsche Analyse-Route plus Legacy-Redirect
