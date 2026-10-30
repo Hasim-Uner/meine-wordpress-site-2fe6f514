@@ -173,6 +173,9 @@ rule	chat-prompt-adresse	[[:alnum:]._%+-]+@[[:alnum:].-]+\.[[:alpha:]]{2,}	^bloc
 rule	chat-prompt-zahl	(^|[^[:alnum:]_])[0-9]+([.,][0-9]+)?([^[:alnum:]_]|$)	^blocksy-child/inc/chat-assistant/systemprompt\.md:	Keine numerischen Literale im Systemprompt; Fakten kommen aus dem Kanon.
 # Der Kanon fuehrt die Werte und muss die abgeloesten benennen duerfen.
 ignore	blocksy-child/inc/canon/**	Kanon-Dateien. Einzige inhaltliche Ausnahme.
+# Erzeugter Snapshot, keine zweite Faktenquelle: crawler-signals erzwingt
+# die exakte Gleichheit mit dem PHP-Renderer und seinen Kanon-Gettern.
+ignore	llms.txt	Generierter Routenindex; Regeneration und Gleichheitspruefung in scripts/lint-entity-crawler-signals.php.
 # Historische Aufzeichnungen. Sie nachtraeglich auf den Kanon umzuschreiben
 # wuerde den Beleg zerstoeren, den sie sind. Nichts davon wird ausgeliefert.
 ignore	CHANGELOG.md	Append-only-Historie. Eintraege beschreiben vergangene Staende.

@@ -8,6 +8,9 @@ HEAD_REF="${2:-}"
 PATHS=(
   "."
   ":(exclude)blocksy-child/inc/canon/**"
+  # Generierter Snapshot: crawler-signals prueft die exakte Gleichheit mit
+  # dem PHP-Renderer, der Preise, Fristen und Kennzahlen aus dem Kanon liest.
+  ":(exclude)llms.txt"
   ":(exclude)blocksy-child/energie-fahrplan/dist/**"
   ":(exclude)blocksy-child/energie-fahrplan/package-lock.json"
   ":(exclude)scripts/lint-canon-drift.sh"
