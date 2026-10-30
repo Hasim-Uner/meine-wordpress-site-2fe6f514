@@ -6,7 +6,9 @@ cd "$ROOT"
 # The checklist must render the contract, not a hand-kept list.
 output="$(bash agents/skills/navigation-migration/scripts/print-checklist.sh)"
 grep -q '^- Referenzen -> /referenzen/ \[nav_header_results\]$' <<<"$output"
-grep -q '^- Leistungen: Conversion-Tracking /ga4-tracking-setup/.*Server-Side Tracking /server-side-tracking-b2b/' <<<"$output"
+grep -q '^- Website & WordPress: .*WordPress-Wartung /wordpress-wartung/' <<<"$output"
+grep -q '^- Messung & Conversion: Conversion-Tracking /ga4-tracking-setup/.*Server-Side Tracking /server-side-tracking-b2b/' <<<"$output"
+grep -q '^- Impressum /impressum/, Datenschutz /datenschutz/$' <<<"$output"
 grep -q '^- Spezialisierung & Wissen: Solar & Wärmepumpe /solar-waermepumpen-leadgenerierung/' <<<"$output"
 if grep -Eq 'ergebnisse/' <<<"$output"; then
   echo 'checklist lists a retired target' >&2

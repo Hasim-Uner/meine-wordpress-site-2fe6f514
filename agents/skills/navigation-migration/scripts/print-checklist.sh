@@ -32,6 +32,10 @@ foreach ( $footer["directory"] as $group ) {
 		return $item["label"] . " " . $path( $item["url"] );
 	}, $group["items"] ) ) );
 }
+echo "\nFooter closing line (Rechtliches):\n";
+printf( "- %s\n", implode( ", ", array_map( static function ( $item ) use ( $path ) {
+	return $item["label"] . " " . $path( $item["url"] );
+}, (array) ( $footer["legal"] ?? [] ) ) ) );
 '
 
 cat <<'EOF'
