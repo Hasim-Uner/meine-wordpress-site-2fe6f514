@@ -33,13 +33,13 @@ async function setup(page, { fail = false, delayed = false } = {}) {
       <style>body{margin:0}main{min-height:2600px;padding:24px}#contact{margin-top:1800px}footer.fuss{min-height:400px;padding:24px}</style>
       </head><body><main><h1>WordPress-Projekte</h1><section id="contact"><h2>Projekt anfragen</h2>
       <label>E-Mail<input id="contact-email" type="email"></label></section></main>
-      <footer class="fuss" role="contentinfo">Kontakt</footer>${facade}</body></html>` });
+      <footer class="fuss" role="contentinfo">Kontakt <a href="/kontakt/" data-hu-chat-open>KI-Assistent fragen</a></footer>${facade}</body></html>` });
   });
   await page.goto('https://hasimuener.de/');
   return { requests, release: () => release?.() };
 }
 
-test('round launcher opens the full chat only at the footer, once and without interrupting a form', async ({ page }) => {
+test('footer never auto-opens the chat; the launcher steps aside and the footer entry opens it', async ({ page }) => {
   const { requests } = await setup(page);
   const launcher = page.getByRole('button', { name: 'KI-Assistent öffnen', exact: true });
   await expect(launcher).toHaveCSS('border-radius', '50%');
@@ -47,23 +47,22 @@ test('round launcher opens the full chat only at the footer, once and without in
   const circle = await launcher.boundingBox();
   expect(circle.width).toBe(56);
   expect(circle.height).toBe(56);
-  await page.evaluate(() => scrollTo(0, document.documentElement.scrollHeight * .78 - innerHeight));
-  await expect(page.locator('#hu-chat-bar')).toHaveCount(0);
-  await page.locator('#contact-email').focus();
   await page.locator('footer').scrollIntoViewIfNeeded();
+  await expect(launcher).toBeHidden();
   await expect(page.locator('#hu-chat-bar')).toHaveCount(0);
-  await expect(page.locator('#contact-email')).toBeFocused();
   expect(requests).toEqual([]);
-  await page.locator('#contact-email').evaluate(input => input.blur());
+  const entry = page.getByRole('link', { name: 'KI-Assistent fragen' });
+  await entry.click();
   await expect(page.locator('#hu-chat-bar')).toBeVisible();
-  await expect(page.locator('.hu-chat__hint')).toHaveCount(0);
-  await expect(page.locator('.hu-chat__input')).not.toBeFocused();
+  await expect(page).toHaveURL('https://hasimuener.de/');
+  await expect(page.locator('.hu-chat__input')).toBeFocused();
   expect(requests.some(url => url.includes('/wp-json/'))).toBe(false);
-  await page.getByRole('button', { name: 'KI-Assistent einklappen' }).click();
+  await page.locator('.hu-chat__input').press('Escape');
   await expect(page.locator('#hu-chat-bar')).toBeHidden();
-  await page.reload();
-  await page.locator('footer').scrollIntoViewIfNeeded();
-  await expect(page.locator('#hu-chat-bar')).toHaveCount(0);
+  await expect(entry).toBeFocused();
+  await expect(launcher).toBeHidden();
+  await page.evaluate(() => scrollTo(0, 0));
+  await expect(launcher).toBeVisible();
 });
 
 for (const viewport of [{ width: 1440, height: 900 }, { width: 390, height: 844 }, { width: 320, height: 568 }, { width: 844, height: 390 }]) {

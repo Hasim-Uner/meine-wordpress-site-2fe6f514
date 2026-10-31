@@ -22,15 +22,14 @@ Alle übrigen Konstanten und Prüfungen gelten unverändert (Abschnitt
   (`--s1` statt `--s2` Abstand unten), weiterhin über Sticky-CTA und Safe Area.
   Ohne JavaScript bleibt es verborgen. Hover und Fokus können die Oberfläche
   vorladen, lösen aber keine KI-Anfrage aus.
-- **Auslöser:** Klick öffnet jederzeit. Sobald der echte Footer sichtbar ist,
-  öffnet sich das vollständige schwarze Fenster einmal je Sitzung automatisch,
-  ohne Fokuswechsel und ohne mobile Tastatur. Aktive Formulare werden nicht
-  unterbrochen. Nach dem Laden werden Footer-Sichtbarkeit, Fokus und ein
-  zwischenzeitlicher manueller Klick erneut geprüft. `sessionStorage`
-  (`hu-chat-footer-v2`, als `autoKey` an den Controller übergeben) merkt Öffnen
-  und Einklappen; Neuladen öffnet danach nicht erneut automatisch. Der alte
-  Schlüssel der Hinweisbox wird für diese ausdrücklich gewünschte Interaktion
-  nicht wiederverwendet. Ohne IntersectionObserver bleibt der manuelle Zugang.
+- **Auslöser:** Der runde Knopf und der Einstieg „KI-Assistent fragen“ in der
+  Kontaktzeile des Footers (`[data-hu-chat-open]`, ein echter Link aufs
+  Kontaktformular, per Skript zum Chat erweitert) öffnen das Fenster. Es gibt
+  kein automatisches Aufklappen mehr (seit 2026-10-31): Das Fenster verdeckte
+  am Fuss die Verzeichnislinks. Solange der Footer sichtbar ist, tritt der
+  runde Knopf zurück (`.is-docked`, per IntersectionObserver); ohne Observer
+  bleibt er sichtbar. Beim Schließen kehrt der Fokus zum auslösenden Element
+  zurück.
 - **Gestaltung:** NEXUS, neutrales Schwarz ohne Braunanteil (`.tafel--chat`),
   dezente graue Konturen und Orange für Aktionen. Hochformat rechts unten,
   maximal 380 px breit, in der Unterhaltung maximal 600 px hoch. Die verfügbare

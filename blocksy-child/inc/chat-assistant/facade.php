@@ -1,7 +1,8 @@
 <?php
 /**
- * Chat facade: one inline button in the footer, no network request before the
- * first click or visible footer. Hover/focus can preload chat-assistant.css
+ * Chat facade: a round launcher plus the footer entry ([data-hu-chat-open]),
+ * no network request before the first click. While the footer is visible the
+ * launcher steps aside so it never covers footer links. Hover/focus can preload chat-assistant.css
  * and the chat-assistant.js module. Visitors in `preview` mode: administrators
  * only; `live`: everyone.
  */
@@ -84,7 +85,6 @@ function hu_chat_render_facade(): void {
 		'booking'  => array_values( array_unique( hu_chat_booking_urls() ) ),
 		'contact'  => hu_get_contact_email(),
 		'preview'  => 'preview' === hu_chat_config()['mode'],
-		'autoKey'  => 'hu-chat-footer-v2',
 	];
 	?>
 <div class="hu-chat" hidden data-hu-chat="<?php echo esc_attr( wp_json_encode( $config, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE ) ); ?>">
@@ -94,7 +94,8 @@ function hu_chat_render_facade(): void {
 </div>
 <style>
 .hu-chat{position:fixed;right:max(var(--s2),env(safe-area-inset-right));bottom:calc(max(var(--s1),env(safe-area-inset-bottom)) + max(var(--hu-sticky-cta-h,0px),var(--hu-chat-keyboard,0px)));z-index:9001;font-family:var(--serif)}
-.hu-chat__orb.tafel{position:relative;display:grid;place-items:center;width:56px;height:56px;padding:0;border:1px solid var(--haar);border-radius:50%;color:var(--tinte);cursor:pointer;box-shadow:0 12px 28px -12px color-mix(in srgb,var(--papier) 80%,transparent);transition:transform var(--t-norm,.2s) var(--ease-aus,ease),border-color var(--t-norm,.2s) ease}
+.hu-chat__orb.tafel{position:relative;display:grid;place-items:center;width:56px;height:56px;padding:0;border:1px solid var(--haar);border-radius:50%;color:var(--tinte);cursor:pointer;box-shadow:0 12px 28px -12px color-mix(in srgb,var(--papier) 80%,transparent);transition:transform var(--t-norm,.2s) var(--ease-aus,ease),border-color var(--t-norm,.2s) ease,opacity var(--t-norm,.2s) ease,visibility var(--t-norm,.2s)}
+.hu-chat.is-docked:not(.is-open) .hu-chat__orb{opacity:0;visibility:hidden;transform:translateY(8px)}
 .hu-chat__orb svg{flex:none;color:var(--stempel)}
 .hu-chat__orb:hover{transform:translateY(-2px);border-color:var(--grau)}
 .hu-chat button:focus-visible{outline:2px solid var(--stempel);outline-offset:4px}
@@ -103,19 +104,17 @@ function hu_chat_render_facade(): void {
 @media print{.hu-chat{display:none}}
 </style>
 <script>
-(()=>{const root=document.querySelector('[data-hu-chat]');if(!root)return;const cfg=JSON.parse(root.dataset.huChat);root.hidden=false;const orb=root.querySelector('.hu-chat__orb');const KEY=cfg.autoKey;let loading;
-const seen=()=>{try{return sessionStorage.getItem(KEY)}catch(e){return '1'}};const mark=()=>{try{sessionStorage.setItem(KEY,'1')}catch(e){}};
+(()=>{const root=document.querySelector('[data-hu-chat]');if(!root)return;const cfg=JSON.parse(root.dataset.huChat);root.hidden=false;const orb=root.querySelector('.hu-chat__orb');let loading;
 const load=()=>loading||(loading=new Promise((ok,fail)=>{const l=document.createElement('link');l.rel='stylesheet';l.href=cfg.css;l.onload=ok;l.onerror=fail;document.head.appendChild(l)}).then(()=>import(cfg.js)).then(m=>m.mount(root,cfg)).catch(e=>{loading=null;throw e}));
 const warm=()=>{load().catch(()=>{})};orb.addEventListener('pointerenter',warm,{once:true});orb.addEventListener('focus',warm,{once:true});
-const open=()=>{mark();load().then(c=>c.open()).catch(()=>{location.href='mailto:'+cfg.contact})};
-orb.addEventListener('click',open);
-// Open the full window at the actual footer once, without moving focus.
+const open=from=>{load().then(c=>c.open({returnTo:from})).catch(()=>{location.href=from.href||'mailto:'+cfg.contact})};
+orb.addEventListener('click',()=>open(orb));
+// Footer entry: a real link to the form, enhanced into the chat.
+document.querySelectorAll('[data-hu-chat-open]').forEach(link=>{link.addEventListener('pointerenter',warm,{once:true});link.addEventListener('focus',warm,{once:true});link.addEventListener('click',e=>{e.preventDefault();open(link)})});
+// The launcher steps aside while the footer is visible; it never opens the chat on its own.
 const footer=document.querySelector('footer.fuss, #colophon, footer[role="contentinfo"]');
-if(seen()||!footer||!('IntersectionObserver' in window))return;let footerVisible=false;let opening=false;
-const editing=()=>document.activeElement?.closest('input,textarea,select,[contenteditable="true"]');
-const offer=()=>{if(!footerVisible||seen()||opening||root.classList.contains('is-open')||editing())return;opening=true;load().then(c=>{if(footerVisible&&!seen()&&!editing()&&!root.classList.contains('is-open')){mark();c.open({auto:true})}}).catch(()=>{}).finally(()=>{opening=false})};
-const observer=new IntersectionObserver(entries=>{footerVisible=entries.some(entry=>entry.isIntersecting);if(footerVisible)offer()});
-observer.observe(footer);document.addEventListener('focusout',()=>requestAnimationFrame(offer));})();
+if(!footer||!('IntersectionObserver' in window))return;
+new IntersectionObserver(entries=>{root.classList.toggle('is-docked',entries.some(entry=>entry.isIntersecting))}).observe(footer);})();
 </script>
 	<?php
 }

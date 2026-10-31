@@ -677,6 +677,12 @@ Auf `/kontakt/` trägt „Kontaktformular“ `aria-current="page"`:
 | E-Mail | `mailto:` the canonical address | `cta_footer_mail` |
 | Telefon | `tel:` the canonical number | `cta_footer_tel` |
 | Kontaktformular | `/kontakt/` | `cta_footer_form` |
+| LinkedIn (Profil, neuer Tab, `rel="me"`) | `https://www.linkedin.com/in/hasim-uener/` | `cta_footer_linkedin` (Category `trust`) |
+| KI-Assistent fragen (nur wenn der Assistent auf der Route freigegeben ist) | Chat öffnen; ohne Skript `/kontakt/` | `chat_open` (Category `engagement`, Section `footer`) |
+
+Seit 2026-10-31 stehen LinkedIn und der KI-Assistent in der Kontaktzeile;
+das LinkedIn-Zeichen in der Schlusszeile entfällt, und der Chat klappt am Fuss
+nicht mehr automatisch auf (Details `docs/architecture/CHAT_ASSISTANT.md`).
 
 Darunter das Verzeichnis in vier leisen Gruppen (seit 2026-10-30). Es führt,
 was der Kopf nicht führt: Fachseiten mit eigener Query-Ownership, getrennt nach

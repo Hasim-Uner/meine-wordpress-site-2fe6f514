@@ -403,6 +403,7 @@ class Chat {
 		if (!this.bar.hidden) return this;
 		this.typeGreeting();
 		this.cyclePlaceholder();
+		this.returnTo = opts.returnTo || this.orb;
 		this.bar.hidden = false;
 		this.bar.classList.toggle('is-auto', !!opts.auto);
 		this.root.classList.add('is-open');
@@ -418,12 +419,11 @@ class Chat {
 		this.bar.hidden = true;
 		this.root.classList.remove('is-open');
 		this.orb.setAttribute('aria-expanded', 'false');
-		try {
-			window.sessionStorage.setItem(this.cfg.autoKey || 'hu-chat-auto', '1');
-		} catch (error) {
-			/* ignore */
-		}
-		if (hadFocus) this.orb.focus();
+		if (!hadFocus) return;
+		// Back to whatever opened the chat; the launcher may be hidden at the footer.
+		const target = this.returnTo && this.returnTo.isConnected ? this.returnTo : this.orb;
+		target.focus();
+		if (document.activeElement !== target) this.orb.focus();
 	}
 
 	reset() {

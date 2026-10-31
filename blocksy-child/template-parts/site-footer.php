@@ -105,6 +105,19 @@ $direct[] = [
 ];
 
 /*
+ * LinkedIn steht als Kontaktweg in derselben Zeile, nicht als Zeichen in der
+ * Schlusszeile: Das Profil ist Beleg und Kanal zugleich. Der KI-Assistent
+ * bekommt hier seinen festen Einstieg; der runde Schwebeknopf blendet aus,
+ * solange der Fuss sichtbar ist, damit nichts die Links verdeckt. Ohne
+ * freigegebenen Assistenten (Modus, Route) erscheint der Einstieg nicht.
+ */
+$linkedin_url = 'https://www.linkedin.com/in/hasim-uener/';
+$chat_ready   = function_exists( 'hu_chat_visitor_allowed' )
+	&& function_exists( 'hu_chat_facade_allowed_here' )
+	&& hu_chat_visitor_allowed()
+	&& hu_chat_facade_allowed_here();
+
+/*
  * Verzeichnis: breit genug fuer Crawl- und Orientierungswege, aber deutlich
  * leiser als die drei kommerziellen Entscheidungen. Vier Gruppen: die
  * Fachseiten getrennt nach Kaufanlass (Website & WordPress, Messung &
@@ -249,6 +262,25 @@ $sender_right[] = [
 					data-track-section="footer"
 				><?php echo esc_html( (string) $entry['label'] ); ?></a>
 			<?php endforeach; ?>
+			<a
+				class="profil"
+				href="<?php echo esc_url( $linkedin_url ); ?>"
+				rel="me noopener noreferrer"
+				target="_blank"
+				data-track-action="cta_footer_linkedin"
+				data-track-category="trust"
+				data-track-section="footer"
+			><svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M20.5 2h-17A1.5 1.5 0 0 0 2 3.5v17A1.5 1.5 0 0 0 3.5 22h17a1.5 1.5 0 0 0 1.5-1.5v-17A1.5 1.5 0 0 0 20.5 2zM8 19H5v-9h3zM6.5 8.25A1.75 1.75 0 1 1 8.3 6.5a1.78 1.78 0 0 1-1.8 1.75zM19 19h-3v-4.74c0-1.42-.6-1.93-1.38-1.93A1.74 1.74 0 0 0 13 14.19V19h-3v-9h2.9v1.3a3.11 3.11 0 0 1 2.7-1.4c1.55 0 3.36.86 3.36 3.66z"/></svg>LinkedIn</a>
+			<?php if ( $chat_ready ) : ?>
+				<a
+					class="frag"
+					href="<?php echo esc_url( $form_url ); ?>"
+					data-hu-chat-open
+					data-track-action="chat_open"
+					data-track-category="engagement"
+					data-track-section="footer"
+				><span class="punkt" aria-hidden="true"></span>KI-Assistent fragen</a>
+			<?php endif; ?>
 		</p>
 
 		<nav class="verzeichnis" aria-label="Weitere Seiten">
@@ -292,7 +324,7 @@ $sender_right[] = [
 		/*
 		 * Schlusszeile: Name mit Rolle (dieselbe Rolle wie in Titel und Schema
 		 * der Ueber-Seite, docs/standards/BRAND_AND_COPY.md), daneben
-		 * Rechtliches und LinkedIn. Impressum und Datenschutz stehen dort, wo
+		 * Rechtliches. Impressum und Datenschutz stehen dort, wo
 		 * sie gesucht werden, und belegen keine eigene Verzeichnisspalte.
 		 */
 		?>
@@ -312,16 +344,6 @@ $sender_right[] = [
 					<?php endforeach; ?>
 				</nav>
 			<?php endif; ?>
-
-			<a
-				class="profil"
-				href="https://www.linkedin.com/in/hasim-uener/"
-				aria-label="LinkedIn-Profil"
-				rel="me noopener noreferrer"
-				target="_blank"
-			>
-				<svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M20.5 2h-17A1.5 1.5 0 0 0 2 3.5v17A1.5 1.5 0 0 0 3.5 22h17a1.5 1.5 0 0 0 1.5-1.5v-17A1.5 1.5 0 0 0 20.5 2zM8 19H5v-9h3zM6.5 8.25A1.75 1.75 0 1 1 8.3 6.5a1.78 1.78 0 0 1-1.8 1.75zM19 19h-3v-4.74c0-1.42-.6-1.93-1.38-1.93A1.74 1.74 0 0 0 13 14.19V19h-3v-9h2.9v1.3a3.11 3.11 0 0 1 2.7-1.4c1.55 0 3.36.86 3.36 3.66z"/></svg>
-			</a>
 		</div>
 	</div>
 </footer>
