@@ -686,11 +686,11 @@ Versalien, Links stehen in der Textschrift in Satzschreibung.
 
 | Gruppe | Link | Destination | Event | Category |
 |---|---|---|---|---|
-| Website & WordPress | WordPress-Website erstellen lassen | `/wordpress-website-erstellen-lassen/` | `cta_footer_nav_website_offer` | `navigation` |
-| Website & WordPress | Landingpage erstellen lassen | `/landingpage-erstellen-lassen/` | `cta_footer_nav_landingpage` | `navigation` |
-| Website & WordPress | WordPress-Übernahme & Weiterentwicklung | `/wordpress-website-uebernehmen/` | `cta_footer_nav_takeover` | `navigation` |
+| Website & WordPress | WordPress-Website | `/wordpress-website-erstellen-lassen/` | `cta_footer_nav_website_offer` | `navigation` |
+| Website & WordPress | Landingpage | `/landingpage-erstellen-lassen/` | `cta_footer_nav_landingpage` | `navigation` |
+| Website & WordPress | Übernahme & Weiterentwicklung | `/wordpress-website-uebernehmen/` | `cta_footer_nav_takeover` | `navigation` |
 | Website & WordPress | WordPress-Wartung | `/wordpress-wartung/` | `cta_footer_nav_maintenance` | `navigation` |
-| Website & WordPress | Technisches SEO für WordPress | `/technisches-seo-wordpress/` | `cta_footer_nav_technical_seo` | `navigation` |
+| Website & WordPress | Technisches SEO | `/technisches-seo-wordpress/` | `cta_footer_nav_technical_seo` | `navigation` |
 | Website & WordPress | WordPress Agentur Hannover | `/wordpress-agentur-hannover/` | `cta_footer_nav_agentur_local` | `navigation` |
 | Messung & Conversion | Conversion-Tracking | `/ga4-tracking-setup/` | `cta_footer_nav_tracking` | `navigation` |
 | Messung & Conversion | Server-Side Tracking | `/server-side-tracking-b2b/` | `cta_footer_nav_server_side_tracking` | `navigation` |

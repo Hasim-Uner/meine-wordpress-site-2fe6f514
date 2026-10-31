@@ -389,19 +389,19 @@ function hu_get_site_footer_navigation_contract() {
 				'title' => __( 'Website & WordPress', 'blocksy-child' ),
 				'items' => [
 					[
-						'label'    => __( 'WordPress-Website erstellen lassen', 'blocksy-child' ),
+						'label'    => __( 'WordPress-Website', 'blocksy-child' ),
 						'url'      => $routes['website'],
 						'track'    => 'cta_footer_nav_website_offer',
 						'category' => 'navigation',
 					],
 					[
-						'label'    => __( 'Landingpage erstellen lassen', 'blocksy-child' ),
+						'label'    => __( 'Landingpage', 'blocksy-child' ),
 						'url'      => $routes['landingpage'],
 						'track'    => 'cta_footer_nav_landingpage',
 						'category' => 'navigation',
 					],
 					[
-						'label'    => __( 'WordPress-Übernahme & Weiterentwicklung', 'blocksy-child' ),
+						'label'    => __( 'Übernahme & Weiterentwicklung', 'blocksy-child' ),
 						'url'      => $routes['takeover'],
 						'track'    => 'cta_footer_nav_takeover',
 						'category' => 'navigation',
@@ -413,7 +413,7 @@ function hu_get_site_footer_navigation_contract() {
 						'category' => 'navigation',
 					],
 					[
-						'label'    => __( 'Technisches SEO für WordPress', 'blocksy-child' ),
+						'label'    => __( 'Technisches SEO', 'blocksy-child' ),
 						'url'      => $routes['technical_seo'],
 						'track'    => 'cta_footer_nav_technical_seo',
 						'category' => 'navigation',
