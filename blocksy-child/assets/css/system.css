@@ -1619,6 +1619,54 @@ body.nx-custom-header-active {
   text-decoration-color: var(--stempel);
 }
 
+.fuss .direkt .profil {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--s0);
+}
+
+.fuss .direkt .profil svg {
+  flex: none;
+  width: 1em;
+  height: 1em;
+  fill: currentColor;
+}
+
+/* Fester Einstieg in den KI-Assistenten: einziges gefuelltes Element der
+   Zeile, rechts abgesetzt. Ersetzt das automatische Aufklappen am Fuss. */
+.fuss .direkt .frag {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--s1);
+  margin-left: auto;
+  padding: var(--s1) var(--s2);
+  border-radius: var(--r1);
+  background: var(--tinte);
+  color: var(--papier);
+  font-family: var(--serif);
+  text-decoration: none;
+  transition: background-color var(--t-norm) var(--ease-weich);
+}
+
+.fuss .direkt .frag:hover {
+  background: var(--stempel);
+  color: var(--papier);
+}
+
+.fuss .direkt .frag:focus-visible {
+  outline: 2px solid var(--stempel);
+  outline-offset: 3px;
+}
+
+.fuss .direkt .frag .punkt {
+  width: 0.45em;
+  height: 0.45em;
+  border-radius: 50%;
+  background: var(--stempel);
+}
+
+.fuss .direkt .frag:hover .punkt { background: var(--papier); }
+
 /* Verzeichnis: vier Gruppen (Website & WordPress, Messung & Conversion,
    Belege & Person, Spezialisierung & Wissen). Zwei Ebenen, klar getrennt:
    Die Gruppenbeschriftung ist Etikett (Mono, Versalien, --matt), der Link
@@ -1684,7 +1732,7 @@ body.nx-custom-header-active {
 
 .fuss .absender .protokoll .z span { font-size: var(--mono-m); }
 
-/* Schlusszeile: Name und Rolle links, rechts Rechtliches und LinkedIn.
+/* Schlusszeile: Name und Rolle links, rechts Rechtliches.
    Impressum und Datenschutz stehen, wo sie gesucht werden. */
 .fuss .schluss {
   display: flex;
@@ -1711,8 +1759,8 @@ body.nx-custom-header-active {
 .fuss .schluss a {
   display: inline-flex;
   color: var(--matt);
-  /* Das Zeichen misst 17 px; der Innenabstand traegt es ueber die
-     Mindestgroesse eines Ziels. */
+  /* Der Innenabstand traegt die kurzen Links ueber die Mindestgroesse
+     eines Ziels. */
   padding: var(--s0);
   margin: calc(var(--s0) * -1);
   transition: color var(--t-norm) var(--ease-weich);
@@ -1720,17 +1768,11 @@ body.nx-custom-header-active {
 
 .fuss .schluss a:hover { color: var(--stempel); }
 
-.fuss .schluss svg {
-  width: 17px;
-  height: 17px;
-  fill: currentColor;
-}
-
 @media (max-width: 760px) {
   .fuss .absender { grid-template-columns: minmax(0, 1fr); }
   .fuss .verzeichnis { grid-template-columns: repeat(2, minmax(0, 1fr)); }
   .fuss .schluss .recht { margin-left: 0; }
-  .fuss .schluss .profil { margin-left: auto; }
+  .fuss .direkt .frag { flex-basis: 100%; justify-content: center; margin-left: 0; }
   .fuss .weg { grid-template-columns: minmax(0, 1fr); }
   .fuss .weg.ist-hier .satz,
   .fuss .weg.ist-hier .tueren { padding-left: var(--s1); }
