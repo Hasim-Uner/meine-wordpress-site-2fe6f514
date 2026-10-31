@@ -358,7 +358,7 @@ for (const [width, columns] of [[390, 1], [600, 2], [1280, 4]]) {
     await open(page, 'imprint', { width, height: 900 });
     const directory = page.getByRole('navigation', { name: 'Weitere Seiten' });
     await expect(directory.getByRole('list')).toHaveCount(4);
-    await expect(directory.getByRole('list', { name: 'Website & WordPress' }).getByRole('link')).toHaveText(['WordPress-Website erstellen lassen', 'Landingpage erstellen lassen', 'WordPress-Übernahme & Weiterentwicklung', 'WordPress-Wartung', 'Technisches SEO für WordPress', 'WordPress Agentur Hannover']);
+    await expect(directory.getByRole('list', { name: 'Website & WordPress' }).getByRole('link')).toHaveText(['WordPress-Website', 'Landingpage', 'Übernahme & Weiterentwicklung', 'WordPress-Wartung', 'Technisches SEO', 'WordPress Agentur Hannover']);
     await expect(directory.getByRole('list', { name: 'Messung & Conversion' }).getByRole('link')).toHaveText(['Conversion-Tracking', 'Server-Side Tracking', 'Conversion-Optimierung', 'Performance Marketing']);
     await expect(directory.getByRole('link', { name: 'Impressum' })).toHaveCount(0);
     await expect(page.getByRole('navigation', { name: 'Rechtliches' }).getByRole('link', { name: 'Impressum' })).toHaveAttribute('aria-current', 'page');
