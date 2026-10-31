@@ -742,6 +742,14 @@ Projektabschluss und ruhiger Agentur-Zweitweg, zentrale Metadaten und
   Zusammenarbeit), Title „Über mich: Haşim Üner | WordPress-Entwickler“,
   sichtbarer Breadcrumb „Über mich“.
 - **Blog:** `/blog/` (`home.php`) und vier Dossiers unter `/category/`:
+  Der Blog-Einstieg beginnt mit „WordPress, Tracking und Conversion aus der
+  Praxis.“, Einleitung und direkter Themenwahl; die Zusammenarbeit folgt
+  nach den Artikeln. Blog und Kategoriearchive verwenden dieselbe
+  `template-parts/blog-card.php`: echtes Beitragsbild vollständig sichtbar,
+  vollständiger Titel, Veröffentlichungsdatum, Lesezeit und Auszug. Ein
+  bildloser Beitrag erhält eine dekorative Themenfläche, kein vorgetäuschtes
+  Beitragsbild. WordPress-Loop, Sortierung, Pagination und Ziele bleiben
+  erhalten. Repo-Stand; Gegenprüfung und Produktionsverifikation offen.
   `leadgenerierung`, `wordpress-performance`, `tracking`, `cro`. Alte
   Kategorien leiten per 301 auf das passende Dossier. Beiträge rendern über
   `template-parts/single-reader.php`; die Kontextbrücke richtet sich nach dem
