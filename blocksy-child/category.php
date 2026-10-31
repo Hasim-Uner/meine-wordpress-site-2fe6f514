@@ -101,7 +101,7 @@ $category_cta = $is_energy_category
 
 <div class="site-main doku blog-category" data-track-section="category_archive">
 	<header class="blatt kopfteil blog-category__kopf" aria-labelledby="category-archive-heading" data-track-section="category_archive_hero">
-		<p class="gegenstand">Werkstatt / Kategorie</p>
+		<p class="gegenstand">Wissen / Thema</p>
 		<h1 id="category-archive-heading"><?php echo esc_html( $current_term_label ); ?></h1>
 		<p class="aufriss">
 			<?php
@@ -170,38 +170,14 @@ $category_cta = $is_energy_category
 					</nav>
 				<?php endif; ?>
 
-				<div class="blog-category__list">
+				<div class="blog-category__list blog-card-grid">
 					<?php if ( have_posts() ) : ?>
-						<?php $article_index = 0; ?>
-						<?php while ( have_posts() ) : ?>
-							<?php
+						<?php
+						while ( have_posts() ) :
 							the_post();
-							$article_index++;
-							$post_id          = get_the_ID();
-							$post_categories  = get_the_category( $post_id );
-							$primary_category = ! empty( $post_categories ) && ! is_wp_error( $post_categories ) ? $post_categories[0] : null;
-							$reading_time     = function_exists( 'nexus_get_reading_time' ) ? (int) nexus_get_reading_time( $post_id ) : 0;
-							$excerpt          = wp_strip_all_tags( get_the_excerpt() );
-							$excerpt          = $excerpt ? wp_trim_words( $excerpt, 30, '…' ) : '';
-							?>
-							<article class="blog-category__item">
-								<a href="<?php echo esc_url( get_permalink() ); ?>" aria-labelledby="category-post-<?php echo esc_attr( (string) $post_id ); ?>">
-									<span class="blog-category__index"><?php echo esc_html( sprintf( '%02d', $article_index ) ); ?></span>
-									<span class="blog-category__body">
-										<span class="blog-category__meta">
-											<?php if ( $primary_category instanceof WP_Term ) : ?>
-												<span><?php echo esc_html( function_exists( 'hu_get_public_category_label' ) ? hu_get_public_category_label( $primary_category ) : $primary_category->name ); ?></span>
-											<?php endif; ?>
-											<time datetime="<?php echo esc_attr( get_the_date( 'c' ) ); ?>"><?php echo esc_html( get_the_date( 'd. M Y' ) ); ?></time>
-											<?php if ( $reading_time > 0 ) : ?><span><?php echo esc_html( sprintf( '%d Min.', $reading_time ) ); ?></span><?php endif; ?>
-										</span>
-										<h3 id="category-post-<?php echo esc_attr( (string) $post_id ); ?>"><?php echo esc_html( get_the_title() ); ?></h3>
-										<?php if ( '' !== $excerpt ) : ?><span class="blog-category__excerpt"><?php echo esc_html( $excerpt ); ?></span><?php endif; ?>
-									</span>
-									<span class="blog-category__arrow" aria-hidden="true">→</span>
-								</a>
-							</article>
-						<?php endwhile; ?>
+							get_template_part( 'template-parts/blog-card' );
+						endwhile;
+						?>
 					<?php else : ?>
 						<p class="blog-category__empty"><?php esc_html_e( 'In dieser Kategorie sind aktuell keine Beiträge veröffentlicht.', 'blocksy-child' ); ?></p>
 					<?php endif; ?>
