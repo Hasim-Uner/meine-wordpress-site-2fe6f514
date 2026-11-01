@@ -153,6 +153,7 @@ function is_singular( $type = '' ) {
 }
 function get_queried_object_id() { return 1; }
 function get_post_field( $field, $post = null ) {
+	if ( 'post_content' === $field ) { return $GLOBALS['article_test']['source'] ?? ''; }
 	return 'post_name' === $field ? (string) ( $GLOBALS['nav_test']['post']['slug'] ?? '' ) : '';
 }
 function get_the_category( $post = null ) {
@@ -181,7 +182,7 @@ function get_template_part( $slug, $name = null, $args = [] ) {
 	if ( 'template-parts/breadcrumb' === $slug ) {
 		return;
 	}
-	require get_stylesheet_directory() . '/' . $slug . '.php';
+	require get_stylesheet_directory() . '/' . $slug . ( $name ? '-' . $name : '' ) . '.php';
 }
 
 // hu_get_site_wordmark_text() lives in inc/theme-setup.php, which this harness does not load.

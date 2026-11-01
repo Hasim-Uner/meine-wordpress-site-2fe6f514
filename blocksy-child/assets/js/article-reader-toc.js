@@ -96,7 +96,7 @@
     }
     function initKapitelskala(aside, shell, tocList, content) {
         var media = window.matchMedia ? window.matchMedia(MOBIL) : null;
-        var ruhig = !!(window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches);
+        var bewegung = window.matchMedia ? window.matchMedia('(prefers-reduced-motion: reduce)') : null;
         var kopfleiste = document.querySelector('[data-leiste]');
 
         var kapitel = [];
@@ -190,6 +190,7 @@
                     });
                     huelle.appendChild(unter);
                     li.appendChild(huelle);
+                    k.huelle = huelle;
                 }
 
                 liste.appendChild(li);
@@ -222,7 +223,7 @@
                 if (!ziel) return;
                 e.preventDefault();
                 setzeOffen(false);
-                ziel.scrollIntoView({ behavior: ruhig ? 'auto' : 'smooth', block: 'start' });
+                ziel.scrollIntoView({ behavior: bewegung && bewegung.matches ? 'instant' : 'smooth', block: 'start' });
                 if (window.history && window.history.replaceState) {
                     window.history.replaceState(null, '', '#' + ziel.id);
                 }
@@ -254,6 +255,16 @@
             leiste.setAttribute('aria-expanded', offen ? 'true' : 'false');
         }
 
+        // Visually collapsed subsections must also leave the tab order and
+        // accessibility tree. Never hide a focused link while reading scrolls.
+        function unterpunkteAbgleichen() {
+            kapitel.forEach(function (k, i) {
+                if (!k.huelle) return;
+                var verborgen = istMobil() || (i !== aktivIndex && !k.huelle.contains(document.activeElement));
+                k.huelle.hidden = verborgen;
+            });
+        }
+
         var oben = 0;
 
         function messen() {
@@ -263,6 +274,7 @@
             }
             document.documentElement.style.setProperty('--hu-toc-oben', oben + 'px');
             if (!gebaut) return;
+            unterpunkteAbgleichen();
             kapitel.forEach(function (k) {
                 k.y = k.h.getBoundingClientRect().top + window.scrollY;
                 k.unter.forEach(function (u) { u.y = u.h.getBoundingClientRect().top + window.scrollY; });
@@ -299,6 +311,7 @@
                 leisteNr.textContent = neu >= 0 ? zweistellig(neu + 1) + ' / ' + zweistellig(kapitel.length) : zweistellig(kapitel.length) + ' Kapitel';
                 leisteTitel.textContent = neu >= 0 ? kapitel[i].titel : 'Inhalt';
                 if (!istMobil()) sichtbarHalten(kapitel[i].li);
+                unterpunkteAbgleichen();
             }
 
             if (neuUnter !== aktivUnter) {
@@ -334,6 +347,9 @@
         function starten() {
             if (gebaut || !bauen()) return;
             messen();
+            liste.addEventListener('focusout', function () {
+                window.requestAnimationFrame(unterpunkteAbgleichen);
+            });
             window.addEventListener('scroll', vormerken, { passive: true });
             window.addEventListener('resize', messen, { passive: true });
             window.addEventListener('load', messen, { once: true });

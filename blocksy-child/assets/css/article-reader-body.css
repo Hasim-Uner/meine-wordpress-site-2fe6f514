@@ -144,9 +144,9 @@
 	max-inline-size: 16ch;
 	margin: 0;
 	font-family: var(--serif-display);
-	font-size: clamp(2.8rem, 2rem + 4vw, 6.2rem);
+	font-size: clamp(2.8rem, 2rem + 4vw, 5rem);
 	font-weight: 480;
-	line-height: 0.96;
+	line-height: 1.02;
 	letter-spacing: -0.045em;
 	color: var(--tinte);
 	text-wrap: balance;
@@ -212,6 +212,7 @@
 
 .nexus-article-reader-header ~ .nexus-single-container .nexus-hero-image {
 	min-block-size: 0;
+	aspect-ratio: auto;
 	border: 0;
 	border-radius: 0;
 	background: var(--zone);
@@ -227,7 +228,7 @@
 	inline-size: 100%;
 	block-size: auto;
 	min-block-size: 0;
-	object-fit: cover;
+	object-fit: contain;
 }
 
 /* ── Kontextbrücke: lineare Prüfschicht statt CTA-Karte ─────── */
@@ -1492,6 +1493,11 @@ html:not(.hu-js) .nexus-article-reader-header ~ .nexus-single-container .nexus-r
 }
 
 @media (max-width: 720px) {
+	/* The fixed circle otherwise covers calculator values and reading text. */
+	.nexus-article-reader-header ~ .nexus-back-to-top {
+		display: none;
+	}
+
 	.nexus-article-reader-header ~ .nexus-single-container {
 		padding-top: var(--s4);
 	}
@@ -1504,12 +1510,12 @@ html:not(.hu-js) .nexus-article-reader-header ~ .nexus-single-container .nexus-r
 	}
 
 	.nexus-article-reader-header ~ .nexus-single-container .nexus-title {
-		font-size: clamp(2.35rem, 12vw, 4.2rem);
+		font-size: clamp(2.25rem, 10vw, 2.625rem);
 	}
 
 	.nexus-article-reader-header ~ .nexus-single-container .nexus-article-content {
-		font-size: 1rem;
-		line-height: 1.72;
+		font-size: 1.125rem;
+		line-height: 1.7;
 	}
 
 	.nexus-article-reader-header ~ .nexus-single-container .nexus-article-content p {
