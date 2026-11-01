@@ -1,4 +1,4 @@
-# BD-READER@2026-11-01-v1 · Wartung und Relaunch
+# BD-READER@2026-11-01-v2 · Wartung und Relaunch
 
 Die beiden neuesten fachlich passenden Referenzartikel behalten ihre Inhalte,
 eigenen Bilder, Rechner, Abbildungen, Prüflisten und Anfrageziele. Der gemeinsame
@@ -52,6 +52,12 @@ Bild-Fixture ist nur ein Testwert. Keine Newsletter-/Kontaktanfrage abgesendet.
 Die statische Lesbarkeit ohne JS ist geprüft; der allgemeine TOC wird weiterhin
 per JS aufgebaut und ist ohne JS nicht als Navigation verfügbar.
 
+Revision 2: Die erste CI fand beim bestehenden technischen SEO-Fachartikel
+eine zu schmale Desktop-Titelspalte: Mit kleinerer H1 schrumpfte auch die
+16ch-Begrenzung. Der gemeinsame Hero nutzt jetzt bis 20ch innerhalb seiner
+vorhandenen 1100-px-Fläche. Die bestehende Layoutprüfung bleibt unverändert;
+Wartung/Relaunch Desktop und die betroffene SEO-Ansicht wurden erneut geprüft.
+
 Frontend-Guides: `modern-web-guidance` **accessibility** (Focus/Tab-Reihenfolge)
 und **responsive-table** (semantische Tabellen, mobile Beziehungen erhalten).
 Bestehende mobile Tabellenvarianten bleiben inhaltlich unverändert.
@@ -61,6 +67,7 @@ Bestehende mobile Tabellenvarianten bleiben inhaltlich unverändert.
 | Wartung | Relaunch |
 | --- | --- |
 | ![Wartung Hero, mobil](wartung-390-hero.png) | ![Relaunch Hero, mobil](relaunch-390-hero.png) |
+| ![Wartung Hero, Desktop](wartung-1440-hero.png) | ![Relaunch Hero, Desktop](relaunch-1440-hero.png) |
 | ![Wartung Reader, mobil](wartung-390.png) | ![Relaunch Reader, mobil](relaunch-390.png) |
 | ![Wartung Reader, Desktop](wartung-1440.png) | ![Relaunch Reader, Desktop](relaunch-1440.png) |
 

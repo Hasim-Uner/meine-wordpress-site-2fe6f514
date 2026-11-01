@@ -775,7 +775,7 @@ Projektabschluss und ruhiger Agentur-Zweitweg, zentrale Metadaten und
   Buttons, FAQ und Autor verwenden lesbare Kontraste. Die Agentic-Coding-Route,
   gemeinsame Reader-Dateien, URL, Anfrageziele und Schema bleiben unverändert.
   Repo-Stand; Produktionsverifikation erfolgt nach Veröffentlichung.
-- **Reader-Paket BD-READER@2026-11-01-v1**: gemeinsame H1 bis 80 px,
+- **Reader-Paket BD-READER@2026-11-01-v2**: gemeinsame H1 bis 80 px,
   mobil 36–42 px, mobiler Fließtext 18 px. Kategorie bleibt im Lesepfad
   und als Kicker, ohne zweites Kategorie-Badge in der Metazeile. Cover nutzt
   sein natürliches Seitenverhältnis und `sizes` passend zur maximal 1100 px

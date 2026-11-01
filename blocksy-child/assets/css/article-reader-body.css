@@ -141,7 +141,7 @@
 }
 
 .nexus-article-reader-header ~ .nexus-single-container .nexus-title {
-	max-inline-size: 16ch;
+	max-inline-size: 20ch;
 	margin: 0;
 	font-family: var(--serif-display);
 	font-size: clamp(2.8rem, 2rem + 4vw, 5rem);
