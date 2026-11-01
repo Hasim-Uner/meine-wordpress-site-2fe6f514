@@ -49,6 +49,12 @@ $GLOBALS['article_test'] = [
 	'served'  => false,
 ];
 
+// The two reviewed reader references use their actual versioned content,
+// shortcode callbacks, canon and modules instead of an empty article double.
+if ( in_array( $slug, [ 'wordpress-wartung-kosten', 'website-relaunch', 'wordpress-projekte-auslagern', 'b2b-landingpage-optimieren' ], true ) ) {
+	require __DIR__ . '/article-editorial-fixture.php';
+}
+
 foreach ( [ 'wp_enqueue_style', 'wp_enqueue_script', 'get_header', 'get_footer', 'the_post_thumbnail', 'comments_template' ] as $noop ) {
 	if ( ! function_exists( $noop ) ) {
 		eval( "function {$noop}() {}" ); // phpcs:ignore Squiz.PHP.Eval.Discouraged -- test double.
@@ -65,14 +71,14 @@ $doubles = [
 	'have_posts'            => static function () { return ! $GLOBALS['article_test']['served']; },
 	'the_post'              => static function () { $GLOBALS['article_test']['served'] = true; },
 	'get_the_ID'            => static function () { return 1; },
-	'has_post_thumbnail'    => static function () { return false; },
+	'has_post_thumbnail'    => static function () { return ! empty( $GLOBALS['article_test']['image'] ); },
 	'get_the_title'         => static function () { return $GLOBALS['article_test']['title']; },
 	'get_the_excerpt'       => static function () { return $GLOBALS['article_test']['excerpt']; },
 	'the_title'             => static function () { echo $GLOBALS['article_test']['title']; },
 	'the_excerpt'           => static function () { echo $GLOBALS['article_test']['excerpt']; },
 	'get_the_content'       => static function () { return $GLOBALS['article_test']['content']; },
 	'the_content'           => static function () { echo $GLOBALS['article_test']['content']; }, // phpcs:ignore
-	'get_the_date'          => static function () { return '1. September 2026'; },
+	'get_the_date'          => static function () { return $GLOBALS['article_test']['date'] ?? '1. September 2026'; },
 	'get_the_modified_date' => static function () { return '1. September 2026'; },
 	'get_the_author'        => static function () { return 'Haşim Üner'; },
 	'the_author'            => static function () { echo 'Haşim Üner'; },
@@ -124,5 +130,8 @@ $body = (string) ob_get_clean();
 <body class="single single-post nx-custom-header-active">
 <?php echo $body; // phpcs:ignore -- rendered template. ?>
 <?php echo nav_test_render( 'template-parts/site-footer.php' ); // phpcs:ignore -- rendered template. ?>
+<?php foreach ( $GLOBALS['article_test']['scripts'] ?? [] as $script ) : ?>
+<script src="<?php echo esc_attr( $theme . '/assets/js/' . $script . '.js' ); ?>"></script>
+<?php endforeach; ?>
 </body>
 </html>

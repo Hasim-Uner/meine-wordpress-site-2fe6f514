@@ -141,12 +141,12 @@
 }
 
 .nexus-article-reader-header ~ .nexus-single-container .nexus-title {
-	max-inline-size: 16ch;
+	max-inline-size: 20ch;
 	margin: 0;
 	font-family: var(--serif-display);
-	font-size: clamp(2.8rem, 2rem + 4vw, 6.2rem);
+	font-size: clamp(2.8rem, 2rem + 4vw, 5rem);
 	font-weight: 480;
-	line-height: 0.96;
+	line-height: 1.02;
 	letter-spacing: -0.045em;
 	color: var(--tinte);
 	text-wrap: balance;
@@ -212,6 +212,7 @@
 
 .nexus-article-reader-header ~ .nexus-single-container .nexus-hero-image {
 	min-block-size: 0;
+	aspect-ratio: auto;
 	border: 0;
 	border-radius: 0;
 	background: var(--zone);
@@ -227,7 +228,7 @@
 	inline-size: 100%;
 	block-size: auto;
 	min-block-size: 0;
-	object-fit: cover;
+	object-fit: contain;
 }
 
 /* ── Kontextbrücke: lineare Prüfschicht statt CTA-Karte ─────── */
@@ -425,6 +426,7 @@
 
 .nexus-article-reader-header ~ .nexus-single-container .nexus-article-content {
 	inline-size: 100%;
+	min-inline-size: 0;
 	max-inline-size: var(--satz);
 	margin-inline: auto;
 	padding: 0;
@@ -565,6 +567,112 @@
 	text-align: left;
 }
 
+/* ── Inhaltliche Agenturmodule bleiben Teil des gemeinsamen Readers ──
+   Die alte Seitenskin wird dequeuet; Prozess und Rollen brauchen ihre eigene
+   Inhaltsdarstellung. Guide: responsive-design. Ohne Container Queries bleibt
+   die vollständige vertikale Reihenfolge als Fallback erhalten. */
+
+.nexus-article-reader-header ~ .nexus-single-container .nexus-article-content .agency-outsourcing-article {
+	container-type: inline-size;
+}
+
+.nexus-article-reader-header ~ .nexus-single-container .nexus-article-content :is(.agency-delivery-flow, .agency-control-model) {
+	padding: 0;
+	border: 0;
+	background: transparent;
+}
+
+.nexus-article-reader-header ~ .nexus-single-container .nexus-article-content :is(.agency-delivery-flow, .agency-control-model) figcaption {
+	margin: 0 0 var(--s2);
+	font-family: var(--serif);
+	font-size: 1rem;
+	color: var(--grau);
+}
+
+.nexus-article-reader-header ~ .nexus-single-container .nexus-article-content .agency-delivery-flow__track {
+	display: grid;
+	grid-template-columns: minmax(0, 1fr);
+	gap: var(--s2);
+	margin: 0;
+	padding: 0;
+	list-style: decimal inside;
+}
+
+.nexus-article-reader-header ~ .nexus-single-container .nexus-article-content .agency-delivery-flow__track > li {
+	min-inline-size: 0;
+	margin: 0;
+	padding: var(--s2) 0 0;
+	border-top: 1px solid var(--haar);
+	overflow-wrap: anywhere;
+}
+
+/* Keep the native ordered-list semantics; the authored 01–09 are visible. */
+.nexus-article-reader-header ~ .nexus-single-container .nexus-article-content .agency-delivery-flow__track > li::marker {
+	font-size: 0;
+}
+
+.nexus-article-reader-header ~ .nexus-single-container .nexus-article-content .agency-delivery-flow__track > li > span,
+.nexus-article-reader-header ~ .nexus-single-container .nexus-article-content .agency-control-model__eyebrow {
+	display: block;
+	margin: 0 0 var(--s1);
+	font-family: var(--mono);
+	font-size: var(--mono-m);
+	color: var(--stempel);
+}
+
+.nexus-article-reader-header ~ .nexus-single-container .nexus-article-content .agency-delivery-flow__track > li > strong,
+.nexus-article-reader-header ~ .nexus-single-container .nexus-article-content .agency-control-model__grid strong {
+	display: block;
+	margin: 0 0 var(--s1);
+	font-size: 1.05rem;
+	line-height: 1.4;
+	color: var(--tinte);
+}
+
+.nexus-article-reader-header ~ .nexus-single-container .nexus-article-content .agency-delivery-flow__track > li > small,
+.nexus-article-reader-header ~ .nexus-single-container .nexus-article-content .agency-control-model__grid p {
+	display: block;
+	margin: 0;
+	font-size: 1rem;
+	line-height: 1.6;
+	color: var(--grau);
+}
+
+.nexus-article-reader-header ~ .nexus-single-container .nexus-article-content .agency-control-model__grid {
+	display: grid;
+	grid-template-columns: minmax(0, 1fr);
+	gap: var(--s2);
+}
+
+.nexus-article-reader-header ~ .nexus-single-container .nexus-article-content .agency-control-model__grid > section {
+	min-inline-size: 0;
+	padding: var(--s2) 0 0;
+	border-top: 1px solid var(--haar);
+	overflow-wrap: anywhere;
+}
+
+/* The document order already explains the handover; arrows add no information. */
+.nexus-article-reader-header ~ .nexus-single-container .nexus-article-content .agency-control-model__bridge {
+	display: none;
+}
+
+.nexus-article-reader-header ~ .nexus-single-container .nexus-article-content .agency-risk-matrix {
+	max-inline-size: 100%;
+	overflow-x: auto;
+}
+
+.nexus-article-reader-header ~ .nexus-single-container .nexus-article-content .agency-risk-matrix:focus-visible {
+	outline: 2px solid var(--stempel);
+	outline-offset: 3px;
+}
+
+@container (min-width: 34rem) {
+	.nexus-article-reader-header ~ .nexus-single-container .nexus-article-content .agency-delivery-flow__track,
+	.nexus-article-reader-header ~ .nexus-single-container .nexus-article-content .agency-control-model__grid {
+		grid-template-columns: repeat(3, minmax(0, 1fr));
+	}
+}
+
 .nexus-article-reader-header ~ .nexus-single-container .nexus-article-content table {
 	margin: var(--s4) 0;
 	border: 0;
@@ -572,6 +680,19 @@
 	border-bottom: 1px solid var(--strich);
 	border-radius: 0;
 	background: transparent;
+}
+
+.nexus-article-reader-header ~ .nexus-single-container .nexus-article-content > table {
+	display: block;
+	inline-size: 100%;
+	max-inline-size: 100%;
+	min-inline-size: 0;
+	overflow-x: auto;
+}
+
+.nexus-article-reader-header ~ .nexus-single-container .nexus-article-content > table:focus-visible {
+	outline: 2px solid var(--stempel);
+	outline-offset: 3px;
 }
 
 .nexus-article-reader-header ~ .nexus-single-container .nexus-article-content th,
@@ -1471,6 +1592,20 @@ html:not(.hu-js) .nexus-article-reader-header ~ .nexus-single-container .nexus-r
 	}
 }
 
+/* Visible cue for horizontally scrollable data on narrow screens. */
+@media (max-width: 767px) {
+	.nexus-article-reader-header ~ .nexus-single-container .nexus-article-content > table::before {
+		content: "Seitlich scrollen";
+		display: block;
+		position: sticky;
+		inset-inline-start: 0;
+		margin-bottom: var(--s1);
+		font-family: var(--mono);
+		font-size: var(--mono-s);
+		color: var(--matt);
+	}
+}
+
 /* ── Responsive ──────────────────────────────────────────────── */
 
 @media (max-width: 980px) {
@@ -1492,6 +1627,11 @@ html:not(.hu-js) .nexus-article-reader-header ~ .nexus-single-container .nexus-r
 }
 
 @media (max-width: 720px) {
+	/* The fixed circle otherwise covers calculator values and reading text. */
+	.nexus-article-reader-header ~ .nexus-back-to-top {
+		display: none;
+	}
+
 	.nexus-article-reader-header ~ .nexus-single-container {
 		padding-top: var(--s4);
 	}
@@ -1504,12 +1644,12 @@ html:not(.hu-js) .nexus-article-reader-header ~ .nexus-single-container .nexus-r
 	}
 
 	.nexus-article-reader-header ~ .nexus-single-container .nexus-title {
-		font-size: clamp(2.35rem, 12vw, 4.2rem);
+		font-size: clamp(2.25rem, 10vw, 2.625rem);
 	}
 
 	.nexus-article-reader-header ~ .nexus-single-container .nexus-article-content {
-		font-size: 1rem;
-		line-height: 1.72;
+		font-size: 1.125rem;
+		line-height: 1.7;
 	}
 
 	.nexus-article-reader-header ~ .nexus-single-container .nexus-article-content p {

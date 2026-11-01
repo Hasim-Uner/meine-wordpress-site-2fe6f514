@@ -215,9 +215,6 @@ get_template_part( 'template-parts/blog-header' );
 		<header class="nexus-article-hero nexus-article-hero--editorial<?php echo esc_attr( $is_design_aesthetics ? ' hu-design-hero' : '' ); ?>" data-track-section="article_hero" aria-labelledby="nexus-article-title">
 			<div class="nexus-hero-content">
 				<div class="nexus-meta-top">
-					<?php if ( $primary_cat instanceof WP_Term && $category_url ) : ?>
-						<a class="nexus-hero-category" href="<?php echo esc_url( $category_url ); ?>"><?php echo esc_html( function_exists( 'hu_get_public_category_label' ) ? hu_get_public_category_label( $primary_cat ) : $primary_cat->name ); ?></a>
-					<?php endif; ?>
 					<span class="nexus-date"><?php echo esc_html( get_the_date( 'd. M Y' ) ); ?></span>
 					<?php if ( $reading_time > 0 ) : ?><span class="nexus-reading-time"><?php echo esc_html( sprintf( '%d Min. Lesezeit', $reading_time ) ); ?></span><?php endif; ?>
 				</div>
@@ -277,7 +274,7 @@ get_template_part( 'template-parts/blog-header' );
 		<figure class="nexus-article-cover nexus-reveal" data-track-section="article_cover">
 			<div class="nexus-hero-image<?php echo esc_attr( $has_hero_image ? '' : ' nexus-hero-image--generated' ); ?>">
 				<?php if ( $has_hero_image ) : ?>
-					<?php the_post_thumbnail( 'full', [ 'loading' => 'eager', 'fetchpriority' => 'high', 'decoding' => 'async', 'sizes' => '(max-width: 900px) 100vw, 50vw' ] ); ?>
+					<?php the_post_thumbnail( 'full', [ 'loading' => 'eager', 'fetchpriority' => 'high', 'decoding' => 'async', 'sizes' => '(max-width: 720px) calc(100vw - 2.2rem), (max-width: 1156px) calc(100vw - 3.5rem), 1100px' ] ); ?>
 				<?php else : ?>
 					<?php get_template_part( 'template-parts/post-title-visual', null, [ 'post_id' => $post_id, 'variant' => 'hero' ] ); ?>
 				<?php endif; ?>

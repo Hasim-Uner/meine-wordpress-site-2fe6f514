@@ -342,7 +342,10 @@
 	transition: grid-template-rows var(--t-norm) var(--ease-aus);
 }
 
-.hu-toc__kapitel.is-aktiv > .hu-toc__unter-huelle {
+.hu-toc__unter-huelle[hidden] { display: none; }
+
+.hu-toc__kapitel.is-aktiv > .hu-toc__unter-huelle,
+.hu-toc__kapitel:focus-within > .hu-toc__unter-huelle {
 	grid-template-rows: 1fr;
 }
 
@@ -501,6 +504,8 @@
 		max-height: min(70vh, 34rem);
 		z-index: 1;
 		padding-bottom: var(--s2);
+		overflow-y: auto;
+		overscroll-behavior: contain;
 	}
 
 	.hu-toc.is-offen .hu-toc__skala {
@@ -511,6 +516,7 @@
 
 	.single-post .nexus-single-container .nexus-reader-toc.hu-toc-aside .hu-toc a.hu-toc__link {
 		padding-block: 0.62rem;
+		min-height: 44px;
 		font-size: 0.95rem;
 	}
 

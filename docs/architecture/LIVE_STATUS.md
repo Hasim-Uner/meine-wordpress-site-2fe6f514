@@ -775,6 +775,18 @@ Projektabschluss und ruhiger Agentur-Zweitweg, zentrale Metadaten und
   Buttons, FAQ und Autor verwenden lesbare Kontraste. Die Agentic-Coding-Route,
   gemeinsame Reader-Dateien, URL, Anfrageziele und Schema bleiben unverändert.
   Repo-Stand; Produktionsverifikation erfolgt nach Veröffentlichung.
+- **Reader-Paket BD-READER@2026-11-01-v2**: gemeinsame H1 bis 80 px,
+  mobil 36–42 px, mobiler Fließtext 18 px. Kategorie bleibt im Lesepfad
+  und als Kicker, ohne zweites Kategorie-Badge in der Metazeile. Cover nutzt
+  sein natürliches Seitenverhältnis und `sizes` passend zur maximal 1100 px
+  breiten Fläche. Die Kapitelskala nimmt eingeklappte Unterpunkte auch aus
+  Tab-Reihenfolge und Accessibility-Baum; fokussierte Unterpunkte bleiben
+  bis zum Verlassen erreichbar. Reduced Motion wird beim Sprung aktuell
+  abgefragt, mobile Kapitel haben mindestens 44 px Zielfläche und das
+  geöffnete Blatt kann intern scrollen. Validiert mit Wartung und Relaunch
+  bei 390/1440 px, inklusive ihrer Inhaltsmodule. Repo-/Fixture-Nachweis,
+  kein Veröffentlichungsbeleg und keine Abnahme aller übrigen Artikel.
+  Details: `docs/briefings/blog-reader/README.md`.
 - **Artikel-Bausteine** (`inc/editorial-bausteine.php`): Shortcodes
   `[hu_kurz]`, `[hu_notiz]`, `[hu_abb]`, `[hu_fall]`, `[hu_pruefliste]`,
   `[hu_abschluss]`, `[hu_quellen]` und Klassen für reines HTML. CSS und JS
