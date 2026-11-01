@@ -120,7 +120,7 @@
 
 @media (max-width: 980px) {
 	.single-post .nexus-single-container .nexus-post-layout {
-		grid-template-columns: 1fr !important;
+		grid-template-columns: minmax(0, 1fr) !important;
 		gap: var(--s3) !important;
 	}
 
