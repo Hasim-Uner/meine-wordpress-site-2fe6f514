@@ -4,7 +4,8 @@
  *
  * The article body remains editor-owned. This migration only removes the
  * unsupported hard conversion-rate promise from the title/SEO metadata and
- * aligns the post with the canonical Conversion dossier.
+ * aligns the post with the canonical Conversion dossier. A separately guarded
+ * migration supplies the reader excerpt only when no editor excerpt exists.
  *
  * @package Blocksy_Child
  */
@@ -116,3 +117,44 @@ function hu_maybe_refresh_landingpage_article_metadata() : void {
 	update_option( $option_key, $version, false );
 }
 add_action( 'init', 'hu_maybe_refresh_landingpage_article_metadata', 44 );
+
+/**
+ * Supply a concise introduction only while the editor excerpt is empty.
+ * No article body, title, taxonomy or editor-written excerpt is replaced.
+ *
+ * @return string
+ */
+function hu_landingpage_article_reader_excerpt() : string {
+	return 'Eine B2B-Landingpage muss Angebot, Belege und nächsten Schritt verständlich verbinden. Dieser Artikel zeigt, wie Sie Struktur, Formulare und Messung gemeinsam prüfen und gezielt verbessern.';
+}
+
+/** @return void */
+function hu_maybe_set_landingpage_article_reader_excerpt() : void {
+	if ( wp_installing() || wp_doing_ajax() || wp_doing_cron() ) {
+		return;
+	}
+
+	$option_key = 'hu_landingpage_article_reader_excerpt_version';
+	$version    = '2026-11-01-1';
+	if ( (string) get_option( $option_key, '' ) === $version || ! function_exists( 'hu_article_content_hygiene_find_post_id' ) ) {
+		return;
+	}
+
+	$post_id = hu_article_content_hygiene_find_post_id( 'b2b-landingpage-optimieren' );
+	if ( $post_id <= 0 ) {
+		return;
+	}
+
+	if ( '' === trim( (string) get_post_field( 'post_excerpt', $post_id ) ) ) {
+		$result = wp_update_post(
+			wp_slash( [ 'ID' => $post_id, 'post_excerpt' => hu_landingpage_article_reader_excerpt() ] ),
+			true
+		);
+		if ( is_wp_error( $result ) || ! $result ) {
+			return;
+		}
+	}
+
+	update_option( $option_key, $version, false );
+}
+add_action( 'init', 'hu_maybe_set_landingpage_article_reader_excerpt', 45 );

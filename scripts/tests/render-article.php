@@ -51,7 +51,7 @@ $GLOBALS['article_test'] = [
 
 // The two reviewed reader references use their actual versioned content,
 // shortcode callbacks, canon and modules instead of an empty article double.
-if ( in_array( $slug, [ 'wordpress-wartung-kosten', 'website-relaunch' ], true ) ) {
+if ( in_array( $slug, [ 'wordpress-wartung-kosten', 'website-relaunch', 'wordpress-projekte-auslagern', 'b2b-landingpage-optimieren' ], true ) ) {
 	require __DIR__ . '/article-editorial-fixture.php';
 }
 

@@ -23,6 +23,7 @@
 
     function initEditorialLayer() {
         prepareReaderEngagement();
+        initReaderTables();
         initProgressBar();
         initShareRail();
         initBackToTop();
@@ -36,6 +37,21 @@
         document.addEventListener('DOMContentLoaded', initEditorialLayer);
     } else {
         initEditorialLayer();
+    }
+
+    // Keep native table/header semantics; add keyboard access to the scroll
+    // area. CSS constrains its width even when JavaScript is unavailable.
+    function initReaderTables() {
+        if (!isReaderArticle()) return;
+        document.querySelectorAll('.nexus-article-content > table').forEach(function (table) {
+            if (!table.hasAttribute('tabindex')) table.tabIndex = 0;
+            if (!table.caption && !table.hasAttribute('aria-label') && !table.hasAttribute('aria-labelledby')) {
+                var headings = Array.from(table.querySelectorAll('thead th')).map(function (cell) {
+                    return cell.textContent.trim();
+                }).join(', ');
+                table.setAttribute('aria-label', headings ? 'Tabelle: ' + headings : 'Artikeltabelle');
+            }
+        });
     }
 
     function isReaderArticle() {

@@ -1,5 +1,5 @@
 <?php
-/** WordPress boundary for the two real editorial seed articles, never live data. */
+/** WordPress boundary for editorial seed articles and a dated live layout snapshot, never live data. */
 function add_shortcode( $tag, $callback ) { $GLOBALS['article_shortcodes'][ $tag ] = $callback; }
 function shortcode_atts( $defaults, $atts, $name = '' ) { return array_merge( $defaults, (array) $atts ); }
 function wp_parse_args( $args, $defaults = [] ) { return array_merge( $defaults, (array) $args ); }
@@ -18,13 +18,38 @@ function do_shortcode( $content ) {
 	}, $content );
 }
 function the_post_thumbnail( $size = '', $attrs = [] ) {
-	echo '<img width="2400" height="1260" src="' . esc_url( get_stylesheet_directory_uri() . '/assets/img/blog/' . $GLOBALS['article_test']['image'] ) . '" alt="' . esc_attr( $GLOBALS['article_test']['title'] ) . '"';
+	$image = $GLOBALS['article_test'];
+	$src = $image['image_src'] ?? get_stylesheet_directory_uri() . '/assets/img/blog/' . $image['image'];
+	echo '<img width="' . (int) ( $image['image_width'] ?? 2400 ) . '" height="' . (int) ( $image['image_height'] ?? 1260 ) . '" src="' . esc_url( $src ) . '" alt="' . esc_attr( $GLOBALS['article_test']['title'] ) . '"';
 	foreach ( $attrs as $key => $value ) { echo ' ' . esc_attr( $key ) . '="' . esc_attr( $value ) . '"'; }
 	echo '>';
 }
 foreach ( [ 'canon/market-canon', 'shortcodes', 'editorial-bausteine', 'wartung-rechner', 'article-website-relaunch' ] as $module ) {
 	require_once get_stylesheet_directory() . '/inc/' . $module . '.php';
 }
+if ( in_array( $slug, [ 'wordpress-projekte-auslagern', 'b2b-landingpage-optimieren' ], true ) ) {
+	$agency = 'wordpress-projekte-auslagern' === $slug;
+	require_once get_stylesheet_directory() . '/inc/article-agency-outsourcing.php';
+	require_once get_stylesheet_directory() . '/inc/article-content-hygiene-landingpage.php';
+	$source = file_get_contents( $agency
+		? get_stylesheet_directory() . '/assets/content/blog/wordpress-projekte-auslagern.html'
+		: __DIR__ . '/../../docs/briefings/blog-agency-landingpage/landingpage-live-2026-11-01.html' );
+	$GLOBALS['article_test'] = [
+		'title' => $agency ? 'WordPress-Projekte auslagern: Klare Prozesse für Agenturen und Freelancer' : 'B2B-Landingpage optimieren: Struktur, Proof und CTA systematisch verbessern',
+		'excerpt' => $agency ? 'WordPress-Projekte extern umsetzen lassen: So organisieren Agenturen Scope, Handoff, Staging, QA, Tracking, Deployment und Handover mit Freelancern.' : hu_landingpage_article_reader_excerpt(),
+		'content' => $source,
+		'image' => true,
+		'image_src' => 'https://hasimuener.de/__article_fixture__/' . ( $agency ? 'agency' : 'landing' ) . '-cover.png',
+		'image_width' => $agency ? 1672 : 1200,
+		'image_height' => $agency ? 941 : 1200,
+		'served' => false,
+		'scripts' => [ 'leiste', 'nexus-core', 'single-editorial', 'article-reader-toc' ],
+	];
+	$GLOBALS['nav_test']['path'] = '/' . $slug . '/';
+	$GLOBALS['nav_test']['post']['categories'] = [ $agency ? 'wordpress-performance' : 'cro' ];
+	return;
+}
+
 $wartung = 'wordpress-wartung-kosten' === $slug;
 $seed_path = get_stylesheet_directory() . '/inc/article-' . ( $wartung ? 'wordpress-wartung-kosten' : 'website-relaunch' ) . '.php';
 $seed = file_get_contents( $seed_path );
