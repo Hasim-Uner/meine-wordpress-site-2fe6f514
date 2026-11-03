@@ -23,7 +23,7 @@ add_filter( 'hu_forced_singular_seo_map', function ( $map ) {
 	}
 
 	$map['wordpress-agentur-hannover'] = [
-		'title'       => 'WordPress Agentur Hannover: Website, SEO & Tracking | Haşim Üner',
+		'title'       => 'WordPress Agentur Hannover: Websites, SEO & Tracking',
 		'description' => 'WordPress Agentur Hannover: Websites, Relaunches und Landingpages mit technischem SEO und Tracking. Geplant und gebaut von einem Ansprechpartner.',
 	];
 

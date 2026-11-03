@@ -31,7 +31,7 @@ for (const width of [360, 768, 1024, 1440]) {
     const errors = [];
     page.on('pageerror', e => errors.push(e.message));
     await open(page, { width });
-    await expect(page).toHaveTitle('WordPress Freelancer: Website, Tracking, Anfragen · Haşim Üner');
+    await expect(page).toHaveTitle('WordPress Freelancer: Websites & Tracking | Haşim Üner');
     expect(await page.locator('[data-st-abschnitt]').evaluateAll(els => els.map(el => el.id))).toEqual(sections);
     await expect(page.locator('#klick [data-track-category="lead_gen"]')).toHaveCount(1);
     await expect(page.locator('#klick .tun')).toHaveAttribute('href', 'https://hasimuener.de/kontakt/?type=project');

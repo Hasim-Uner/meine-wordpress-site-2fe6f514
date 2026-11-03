@@ -56,7 +56,7 @@ function hu_get_homepage_title() {
 	// Rolle und Leistung vorn; Hannover bleibt in Metazeile, FAQ und Schema.
 	return (string) apply_filters(
 		'hu_homepage_seo_title',
-		'WordPress Freelancer: Website, Tracking, Anfragen · Haşim Üner'
+		'WordPress Freelancer: Websites & Tracking | Haşim Üner'
 	);
 }
 
@@ -265,11 +265,11 @@ function hu_get_forced_singular_seo_map() {
 				'description' => sprintf( 'Bestehende WordPress-Website übernehmen und weiterentwickeln: Übernahme-Check für %s netto mit schriftlichem Befund, Prioritäten und Festpreis.', hu_freelancer_takeover_check_price() ),
 			],
 			'wordpress-wartung' => [
-				'title'       => sprintf( 'WordPress-Wartung, die prüft, ob Anfragen ankommen | %s/Monat', hu_maintenance_price() ),
+				'title'       => sprintf( 'WordPress-Wartung mit Formularprüfung | %s/Monat', hu_maintenance_price() ),
 				'description' => sprintf( 'WordPress-Wartung für %1$s netto im Monat: Updates, Backups und monatlich eine echte Testanfrage. Reaktion bei Ausfall in %2$s, %3$s.', hu_maintenance_price(), hu_maintenance_outage_promise( 'short' ), hu_maintenance_outage_promise( 'window' ) ),
 			],
 			'technisches-seo-wordpress' => [
-				'title'       => 'Technisches SEO für WordPress: Befund & Korrektur | Haşim Üner',
+				'title'       => 'Technisches WordPress-SEO: Befund & Korrektur | Haşim Üner',
 				'description' => sprintf( 'Technisches SEO für bestehende WordPress-Websites: SEO-Befund für %s netto zu Indexierung, Vorlagen und Ladezeit, danach Korrekturen zum Festpreis.', hu_seo_finding_price() ),
 			],
 			'referenzen' => [
@@ -356,7 +356,7 @@ function hu_get_forced_singular_seo_map() {
 			// trägt Anbieterform, Consent und die nächste Stufe.
 			'server-side-tracking-b2b' => [
 				'title'       => sprintf( 'Server-Side Tracking einrichten lassen | %s Festpreis', $tracking_setup_price ),
-				'description' => sprintf( 'Server-Side Tracking vom spezialisierten Freelancer: Server-GTM, GA4, Google Ads, Consent und Paralleltest in Ihren Konten. %1$s netto, mit Meta CAPI %2$s.', $tracking_setup_price, hu_tracking_price( 'pro', 'setup' ) ),
+				'description' => sprintf( 'Server-Side Tracking mit Server-GTM, GA4, Google Ads, Consent und Paralleltest. Setup ab %1$s netto, mit Meta CAPI %2$s.', $tracking_setup_price, hu_tracking_price( 'pro', 'setup' ) ),
 			],
 			// Informationaler Supporting-Artikel. Der Kaufintent und die Anbieter-
 			// Queries bleiben beim Owner /server-side-tracking-b2b/.
@@ -417,8 +417,8 @@ function hu_get_forced_singular_seo_map() {
 			// ist Teil des Lieferumfangs (Leistungsfeld Weiterentwicklung), Content-
 			// und Link-SEO nicht; deshalb "technisches SEO", nicht "SEO".
 			'whitelabel-retainer' => [
-				'title'       => 'White-Label WordPress, technisches SEO & Tracking für Agenturen',
-				'description' => sprintf( 'WordPress-Umsetzung, technisches SEO, Tracking und CRM-Anbindung unter eurem Namen, mit Abnahmeprotokoll. Test-Sprint %1$s, Antwort %2$s.', hu_whitelabel_price( 'test_sprint' ), hu_response_promise_short() ),
+				'title'       => 'White-Label WordPress & Tracking für Agenturen',
+				'description' => sprintf( 'White-Label für Agenturen: WordPress, technisches SEO, Tracking und CRM unter eurem Namen. Test-Sprint %1$s, Antwort %2$s.', hu_whitelabel_price( 'test_sprint' ), hu_response_promise_short() ),
 			],
 			// Die Stack-Seite trug „White-Label“ in Title UND Description und
 			// zielte damit auf dasselbe Signal wie /whitelabel-retainer/. Zwei
@@ -690,7 +690,7 @@ function hu_is_seo_cornerstone_article() {
 function hu_get_seo_cornerstone_identity() {
 	return [
 		'headline'    => 'Technisches SEO für B2B: Performance, Tracking und Landingpages',
-		'title'       => 'Technisches SEO für B2B: Performance, Tracking & Landingpages',
+		'title'       => 'Technisches B2B-SEO: Ladezeit, Tracking & Landingpages',
 		'description' => 'Technisches SEO im B2B: Crawlability, Core Web Vitals, Landingpage-Erfahrung und Tracking gemeinsam prüfen — ohne direkte SEO-zu-CPC-Versprechen.',
 	];
 }

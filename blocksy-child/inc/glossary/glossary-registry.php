@@ -15,7 +15,7 @@ if ( ! defined( 'ABSPATH' ) ) {
  * @return string
  */
 function nexus_get_glossary_registry_version() {
-	return '2026-10-03-glossary-v9-independent-terms';
+	return '2026-11-03-glossary-v10-seo-titles';
 }
 
 /**
