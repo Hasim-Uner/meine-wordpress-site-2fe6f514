@@ -755,6 +755,21 @@
                 }
             });
 
+            // Nur den bekannten GBP-Einstieg übernehmen. Die Kontakt-URL bleibt
+            // unmarkiert, damit der interne Klick keinen zweiten Besuch zählt.
+            if (!payload.ads_source && !payload.utm_medium && !payload.utm_campaign && document.referrer) {
+                var previousPage = new URL(document.referrer);
+                if (previousPage.origin === window.location.origin &&
+                    previousPage.pathname === '/wordpress-agentur-hannover/' &&
+                    previousPage.searchParams.get('utm_source') === 'google' &&
+                    previousPage.searchParams.get('utm_medium') === 'organic' &&
+                    previousPage.searchParams.get('utm_campaign') === 'google_business_profile') {
+                    payload.ads_source = 'google';
+                    payload.utm_medium = 'organic';
+                    payload.utm_campaign = 'google_business_profile';
+                }
+            }
+
             return payload;
         }
 

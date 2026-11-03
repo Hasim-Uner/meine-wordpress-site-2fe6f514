@@ -91,11 +91,11 @@ const fixtures = {
   },
 };
 
-async function setup(page, kind) {
+async function setup(page, kind, { url = 'https://example.test/kontakt/?utm_source=fixture', referer } = {}) {
   const fixture = fixtures[kind];
   // No real server, cookies, CRM or mail: every network attempt is intercepted.
   await page.route('**/*', route => route.fulfill({ contentType: 'text/html', body: '<html></html>' }));
-  await page.goto('https://example.test/kontakt/?utm_source=fixture');
+  await page.goto(url, { referer });
   await page.setContent('<style>.is-hidden,[hidden]{display:none!important}</style>' + fixture.html);
   await page.clock.install();
   await page.evaluate(() => {
@@ -154,6 +154,23 @@ async function submit(page, fixture) {
   await page.click(fixture.button);
   await expect.poll(() => page.evaluate(() => window.requests.length)).toBe(1);
   await expect(page.locator(fixture.button)).toBeDisabled();
+}
+
+const gbpLandingPath = '/wordpress-agentur-hannover/?utm_source=google&utm_medium=organic&utm_campaign=google_business_profile';
+const contactUrl = 'https://example.test/kontakt/';
+
+for (const [label, url, refererOrigin, expected] of [
+  ['keeps the GBP campaign', contactUrl, 'https://example.test', { ads_source: 'google', utm_medium: 'organic', utm_campaign: 'google_business_profile' }],
+  ['preserves explicit attribution', contactUrl + '?utm_source=direct&utm_campaign=explicit', 'https://example.test', { ads_source: 'direct', utm_campaign: 'explicit' }],
+  ['ignores external referrers', contactUrl, 'https://elsewhere.test', { ads_source: '', utm_campaign: '' }],
+]) {
+  test(`contact ${label}`, async ({ page }) => {
+    const fixture = await setup(page, 'contact', { url, referer: refererOrigin + gbpLandingPath });
+    await submit(page, fixture);
+    const payload = await page.evaluate(() => JSON.parse(window.requests[0].options.body));
+    expect(payload).toMatchObject(expected);
+    expect(page.url()).toBe(url);
+  });
 }
 
 const malformed = [
