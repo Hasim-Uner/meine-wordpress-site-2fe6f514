@@ -205,6 +205,13 @@ utm-Parameter und Klick-IDs aus ihrer URL (`utm_source`, `utm_term`,
 Einstieg (`entry_page_url`), sonst bleibt der Einstieg leer. Das SEO-Cockpit
 fällt dann auf Vorseite und Formularseite zurück.
 
+Beim direkten Wechsel von der Hannover-Seite zum Kontaktformular übernimmt
+`assets/js/contact.js` beim Absenden die feste Kampagne `google_business_profile`
+aus der Vorseiten-URL derselben Domain, sofern das Formular noch keine
+Kampagnenquelle, kein Medium und keinen Kampagnennamen hat. Der Query-String der
+Vorseite wird nicht übertragen. Die Kontakt-URL bleibt ohne Kampagnenparameter,
+damit der Wechsel keinen zweiten Kampagnenaufruf zählt.
+
 Die Sitzungs-Herkunft über mehrere Seiten (erster Einstieg, Kampagne vom
 ersten Aufruf) steht im `sessionStorage` und ist nur aktiv, wenn
 `window.huConsent = { attribution: true }` gesetzt ist. Ein Consent-Tool setzt
