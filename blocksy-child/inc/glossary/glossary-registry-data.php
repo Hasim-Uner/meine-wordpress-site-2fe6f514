@@ -38,7 +38,7 @@ return [
 			],
 		],
 		'related_terms'      => [ 'render-blockierende-ressourcen', 'usability', 'cls' ],
-		'seo_title'          => 'INP: Definition, gute Werte und typische Bremsen | Haşim Üner',
+		'seo_title'          => 'INP: Definition, gute Werte und Ursachen | Haşim Üner',
 		'seo_description'      => 'Wie schnell reagiert eine Website auf einen Klick, ein Tippen oder eine Tastatureingabe? Verständlich erklärt mit Beispiel und typischen Fehlern.',
 		'example'              => [
 			'text' => 'Sie tippen auf „Menü“. Die Navigation öffnet sich erst nach einer halben Sekunde. Diese Verzögerung fließt in den INP ein. Gemessen wird bis zur nächsten Bildausgabe, nicht bis zum Abschluss einer späteren Serverantwort.',
@@ -94,7 +94,7 @@ return [
 			],
 		],
 		'related_terms'    => [ 'lazy-loading', 'render-blockierende-ressourcen', 'ttfb' ],
-		'seo_title'        => 'LCP: Definition, gute Werte und typische Bremsen | Haşim Üner',
+		'seo_title'        => 'LCP: Definition, gute Werte und Ursachen | Haşim Üner',
 		'seo_description'      => 'Wann erscheint der größte sichtbare Inhalt beim Öffnen einer Seite? Verständlich erklärt mit Beispiel und typischen Fehlern.',
 		'example'              => [
 			'text' => 'Oben auf einer Angebotsseite steht ein großes Foto. Die Navigation ist sofort sichtbar, das Foto erscheint erst nach vier Sekunden. Ist dieses Foto das größte relevante Element im sichtbaren Bereich, liegt der LCP ungefähr bei vier Sekunden.',
@@ -150,7 +150,7 @@ return [
 			],
 		],
 		'related_terms'    => [ 'responsive-design', 'lazy-loading', 'lcp' ],
-		'seo_title'        => 'CLS: Definition, gute Werte und typische Ursachen | Haşim Üner',
+		'seo_title'        => 'CLS: Definition, gute Werte und Ursachen | Haşim Üner',
 		'seo_description'      => 'Wie stark springen Inhalte während des Seitenbesuchs unerwartet hin und her? Verständlich erklärt mit Beispiel und typischen Fehlern.',
 		'example'              => [
 			'text' => 'Sie wollen auf „Angebot anfragen“ tippen. Darüber lädt nachträglich ein Bild ohne reservierten Platz. Der Button rutscht nach unten und Ihr Finger trifft einen anderen Link. Solche unerwarteten Verschiebungen erhöhen den CLS.',

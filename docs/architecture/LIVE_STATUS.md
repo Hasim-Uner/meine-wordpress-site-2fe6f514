@@ -337,7 +337,7 @@ Projektabschluss und ruhiger Agentur-Zweitweg, zentrale Metadaten und
 
 - **`/`** (`front-page.php`): Money Page für direkte WordPress-Projekte.
   Schichtenfolge am 2026-10-09 umgesetzt und auf der normalen Live-URL geprüft.
-  Title „WordPress Freelancer: Website, Tracking, Anfragen · Haşim Üner“,
+  Title „WordPress Freelancer: Websites & Tracking | Haşim Üner“,
   Query-Owner für `wordpress freelancer` und `wordpress freelancer hannover`.
   Die bestehende Strecke (`assets/css/startseite-strecke.css/.js`) hat acht
   Abschnitte: Klick, Angebote (`#angebote`, mit Preisen), Strecke, Fall,

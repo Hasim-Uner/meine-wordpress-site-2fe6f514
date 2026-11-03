@@ -66,6 +66,27 @@ function hu_enqueue_design_aesthetics_article_assets() : void {
 }
 add_action( 'wp_enqueue_scripts', 'hu_enqueue_design_aesthetics_article_assets', 110 );
 
+const HU_DESIGN_AESTHETICS_SEO_TITLE = 'Design ist mehr als Ästhetik: Funktion und Wirkung';
+
+/**
+ * Replace the previous repo-owned SEO title without changing the article body.
+ *
+ * @return void
+ */
+function hu_maybe_update_design_aesthetics_seo_title() : void {
+	if ( ! hu_is_design_aesthetics_article() ) {
+		return;
+	}
+
+	$post_id   = get_queried_object_id();
+	$old_title = 'Design ist mehr als Ästhetik: Funktion, Wirkung und Entscheidungsarchitektur';
+
+	if ( $old_title === get_post_meta( $post_id, 'seo_title', true ) ) {
+		update_post_meta( $post_id, 'seo_title', HU_DESIGN_AESTHETICS_SEO_TITLE, $old_title );
+	}
+}
+add_action( 'wp', 'hu_maybe_update_design_aesthetics_seo_title' );
+
 /**
  * Keep the essay in the conversion / inquiry architecture cluster rather than
  * the lead-economy cluster. This affects breadcrumb and related-post context.
@@ -121,7 +142,7 @@ function hu_maybe_refresh_design_aesthetics_article() : void {
 
 	// Already on the reviewed body: still finish SEO metadata / taxonomy sync.
 	if ( false !== strpos( $current_content, $new_marker ) ) {
-		update_post_meta( $post_id, 'seo_title', 'Design ist mehr als Ästhetik: Funktion, Wirkung und Entscheidungsarchitektur' );
+		update_post_meta( $post_id, 'seo_title', HU_DESIGN_AESTHETICS_SEO_TITLE );
 		update_post_meta( $post_id, '_seo_title', 'field_seo_title' );
 		update_post_meta( $post_id, 'seo_description', 'Warum gutes Design Ästhetik und Funktionalität verbindet: Wirkung, Wahrnehmung, UX, Entscheidungsarchitektur, Conversion und Dark Patterns erklärt.' );
 		update_post_meta( $post_id, '_seo_description', 'field_seo_description' );
@@ -174,7 +195,7 @@ function hu_maybe_refresh_design_aesthetics_article() : void {
 		return;
 	}
 
-	update_post_meta( $post_id, 'seo_title', 'Design ist mehr als Ästhetik: Funktion, Wirkung und Entscheidungsarchitektur' );
+	update_post_meta( $post_id, 'seo_title', HU_DESIGN_AESTHETICS_SEO_TITLE );
 	update_post_meta( $post_id, '_seo_title', 'field_seo_title' );
 	update_post_meta(
 		$post_id,
