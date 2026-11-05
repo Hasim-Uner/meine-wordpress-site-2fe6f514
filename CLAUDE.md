@@ -14,11 +14,21 @@ intended change and validation; add manual WordPress/admin follow-ups and risk
 when they apply. Then follow the `AGENTS.md` sections Context discipline,
 WordPress/runtime rules, Product boundaries, Validation and Git / deploy.
 
-## Claude Code hook
+## Claude Code hooks
 
-`scripts/claude-main-branch-reminder.sh` reports unpublished commits and work
-left on a branch. Treat it as a reminder of the shared Git/deploy policy in
-`AGENTS.md`, not as authorization to commit, push, merge, or deploy.
+Registered in `.claude/settings.json`; tests live in
+`agents/skills/agent-system-maintenance/tests/test_claude_hooks.py`.
+
+- `scripts/claude-guardrails.py` (PreToolUse) asks before edits to
+  `.github/workflows/deploy.yml` or edits that remove `data-track-*` hooks, and
+  runs `lint:architecture` plus `lint:php` before `git push`, denying it on failure.
+- `scripts/claude-rule-router.py` (UserPromptSubmit) flags durable rules in a
+  prompt; after the task, ask where to store them per `AGENTS.md` Update triggers.
+- `scripts/claude-main-branch-reminder.sh` (Stop) reports unpublished commits and
+  work left on a branch.
+
+Hooks are reminders of the `AGENTS.md` policy, not authorization to commit,
+push, merge, or deploy, and not a security boundary.
 
 ## Arbeitsweise & Token-Budget
 
