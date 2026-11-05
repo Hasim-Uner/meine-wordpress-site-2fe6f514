@@ -1,11 +1,11 @@
 name: Anfrage-Monitor
 
-# Taeglich eine echte Testanfrage ueber das Kontaktformular, Postfachpruefung per IMAP,
+# Woechentlich (montags) eine echte Testanfrage ueber das Kontaktformular, Postfachpruefung per IMAP,
 # Meldung an /wp-json/nexus/v1/monitor/result. Schlaegt der Lauf fehl, schickt GitHub
 # die uebliche Mail zu fehlgeschlagenen Workflows. Einrichtung: docs/briefings/anfrage-monitor/stufe-1b-runner.md
 on:
   schedule:
-    - cron: '17 4 * * *' # 06:17 Berlin im Sommer, 05:17 im Winter
+    - cron: '17 4 * * 1' # montags 06:17 Berlin im Sommer, 05:17 im Winter
   workflow_dispatch:
 
 concurrency:

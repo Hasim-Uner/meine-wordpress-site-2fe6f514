@@ -2,7 +2,7 @@
 /**
  * Virtuelle Route /anfrage-monitor/ (inc/anfrage-monitor.php).
  *
- * Zeigt oeffentlich, ob die taegliche Testanfrage ankommt. Serverseitig
+ * Zeigt oeffentlich, ob die woechentliche Testanfrage ankommt. Serverseitig
  * gerendert, ohne JavaScript, ohne personenbezogene Daten.
  *
  * @package Blocksy_Child
@@ -63,7 +63,7 @@ if ( $hu_mon_enabled ) {
 		<header class="anfrage-monitor__kopf">
 			<p class="anfrage-monitor__kicker">Anfrage-Monitor · hasimuener.de</p>
 			<h1>Kommen Anfragen über diese Website an?</h1>
-			<p class="anfrage-monitor__lead">Jeden Morgen läuft eine echte Testanfrage durch das Kontaktformular dieser Website. Geprüft wird, ob sie ankommt: im Postfach, im CRM und im Anfrageprotokoll.</p>
+			<p class="anfrage-monitor__lead">Jeden Montagmorgen läuft eine echte Testanfrage durch das Kontaktformular dieser Website. Geprüft wird, ob sie ankommt: im Postfach, im CRM und im Anfrageprotokoll.</p>
 		</header>
 
 		<?php if ( ! $hu_mon_enabled ) : ?>
@@ -110,7 +110,7 @@ if ( $hu_mon_enabled ) {
 		<?php endif; ?>
 
 		<section class="anfrage-monitor__pruefung" aria-labelledby="anfrage-monitor-pruefung">
-			<h2 id="anfrage-monitor-pruefung">Was jeden Morgen geprüft wird</h2>
+			<h2 id="anfrage-monitor-pruefung">Was jeden Montag geprüft wird</h2>
 			<ol class="anfrage-monitor__schritte">
 				<?php foreach ( [ 'pageLoad', 'formSubmit', 'uiSuccess', 'crmStored', 'eventRecorded', 'mailAdmin', 'mailConfirmation' ] as $check ) : ?>
 					<li><?php echo esc_html( hu_monitor_check_label( $check ) ); ?></li>

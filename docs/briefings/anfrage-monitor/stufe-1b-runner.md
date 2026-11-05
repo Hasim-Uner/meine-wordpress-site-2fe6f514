@@ -5,7 +5,7 @@ Voraussetzung: Stufe 1 (`stufe-1-wordpress.md`) ist live und `HU_MONITOR_TOKEN` 
 
 ## Was läuft
 
-Ein geplanter GitHub-Actions-Workflow (`.github/workflows/anfrage-monitor.yml`, täglich 04:17 UTC, also 06:17 Berlin im Sommer und 05:17 im Winter) startet `scripts/monitor/anfrage_monitor.py`:
+Ein geplanter GitHub-Actions-Workflow (`.github/workflows/anfrage-monitor.yml`, montags 04:17 UTC, also 06:17 Berlin im Sommer und 05:17 im Winter) startet `scripts/monitor/anfrage_monitor.py`:
 
 1. Headless-Chromium öffnet `/kontakt/` und füllt das Formular wie eine Person aus. Name „Anfrage-Monitor“, Absender `kontakt@hasimuener.de`, Nachricht mit dem Hinweis auf eine automatische Testanfrage, Einwilligung gesetzt.
 2. Beim Absenden ergänzt eine Browser-Route `monitor_token` und `monitor_run_id` im Request. Das Geheimnis steht nie im DOM der Seite.
@@ -53,7 +53,7 @@ GitHub meldet „Run failed: Anfrage-Monitor“. Im Log stehen nur Prüfnamen, W
 | `mailConfirmation` | Die Bestätigung an den Absender fehlt, die interne Mail ist da. |
 | `crmStored` / `eventRecorded` | WordPress hat Kontakt oder Protokollzeile nicht geschrieben: CRM oder Anfrage-Protokoll prüfen. |
 
-Läuft der Monitor selbst nicht mehr, springt die Ampel nach 26 Stunden auf Gelb („Letzter Testlauf ist älter als ein Tag“). Dann Actions öffnen: Bei öffentlichen Repositories deaktiviert GitHub Zeitpläne nach 60 Tagen ohne Aktivität, der Workflow lässt sich dort wieder einschalten.
+Läuft der Monitor selbst nicht mehr, springt die Ampel nach 170 Stunden (eine Woche plus zwei Stunden) auf Gelb („Letzter Testlauf ist älter als eine Woche“). Dann Actions öffnen: Bei öffentlichen Repositories deaktiviert GitHub Zeitpläne nach 60 Tagen ohne Aktivität, der Workflow lässt sich dort wieder einschalten.
 
 Meldet das Log „Ergebnis abgelehnt: HTTP 401“, stimmt das Secret `HU_MONITOR_TOKEN` nicht mit der Konstante überein. Bei „IMAP-Abfrage fehlgeschlagen“ sind Benutzer, Passwort oder Host falsch.
 

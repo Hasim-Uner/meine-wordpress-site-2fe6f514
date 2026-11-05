@@ -59,7 +59,7 @@ $modules = [
 	'inquiry-events.php', // Serverseitiges Protokoll anfrage_gesendet (Formular, Quelle, Zeitpunkt) und Admin-Übersicht
 	'campaign-shortlinks.php', // Kurzlinks /partner/ und /zusammenarbeit/ für Akquise-Mails, 302 mit UTM auf /whitelabel-retainer/
 	'wordpress-wartung.php', // Wartungsangebot: Route-Erkennung und Fragen für Template und Schema
-	'anfrage-monitor.php', // Täglicher Anfrage-Test: Marker im Kontakt-Handler, Ergebnis/Status-REST, Route /anfrage-monitor/
+	'anfrage-monitor.php', // Wöchentlicher Anfrage-Test: Marker im Kontakt-Handler, Ergebnis/Status-REST, Route /anfrage-monitor/
 	'system-diagnose-page.php', // Deutsche Analyse-Route plus Legacy-Redirect
 	'analysis-intake.php', // REST-Endpoint der früheren Analyse; standardmäßig aus (HU_FEATURE_READINESS_SUBMIT)
 	'blog-notify.php',    // Blog-Benachrichtigungen, DOI und Artikel-Mails

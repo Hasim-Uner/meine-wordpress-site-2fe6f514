@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Anfrage-Monitor Runner: sendet taeglich eine echte Testanfrage ueber das Kontaktformular.
+"""Anfrage-Monitor Runner: sendet woechentlich (montags) eine echte Testanfrage ueber das Kontaktformular.
 
 Ablauf:
   1. Chromium (Playwright) oeffnet <site>/kontakt/ und fuellt das sichtbare Formular.
@@ -184,7 +184,7 @@ class BrowserOutcome:
 def message_text(run_id: str) -> str:
     return (
         f"Automatische Testanfrage des Anfrage-Monitors ({run_id}). "
-        "Sie wird täglich ausgelöst und braucht keine Antwort."
+        "Sie wird wöchentlich ausgelöst und braucht keine Antwort."
     )
 
 

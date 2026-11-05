@@ -5,7 +5,7 @@ Primary skill: `wordpress-growth-architecture` · Local context: `blocksy-child/
 
 ## Ziel
 
-hasimuener.de prüft sich jeden Tag selbst: Eine echte Testanfrage läuft durch das Kontaktformular, und eine öffentliche Ampel unter `/anfrage-monitor/` zeigt, ob Anfragen ankommen. Die Seite ist der Beweis für das neue Wartungsangebot (`/wordpress-wartung/`, eigener PR später). Dieser PR baut nur den WordPress-Teil. Den täglichen Browser-Test und die Postfach-Prüfung übernimmt ein geplanter GitHub-Actions-Workflow (Stufe 1b, `stufe-1b-runner.md`).
+hasimuener.de prüft sich jede Woche selbst: Eine echte Testanfrage läuft durch das Kontaktformular, und eine öffentliche Ampel unter `/anfrage-monitor/` zeigt, ob Anfragen ankommen. Die Seite ist der Beweis für das neue Wartungsangebot (`/wordpress-wartung/`, eigener PR später). Dieser PR baut nur den WordPress-Teil. Den wöchentlichen Browser-Test und die Postfach-Prüfung übernimmt ein geplanter GitHub-Actions-Workflow (Stufe 1b, `stufe-1b-runner.md`).
 
 ## Befund im Repo (Ausgangslage)
 
