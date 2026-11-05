@@ -16,8 +16,9 @@ Use the local context already selected under `AGENTS.md`; do not load another.
 - For funnel/CTA changes read `docs/architecture/CONVERSION_ROUTING.md`.
 - Full funnel audit: run `bash agents/skills/offer-funnel-intelligence/scripts/scan-offer-funnel.sh`,
   then read [diagnosis](references/diagnosis.md) and [scoring-rubric](references/scoring-rubric.md).
-  Treat RED findings as P0 blockers. Show all ten scores; below 60/100 recommends
-  pausing paid traffic until P0s are fixed. This does not authorize external changes.
+  Treat RED findings as P0 blockers. Show all ten scores; below 60/100 (heuristic, no
+  proven conversion effect) recommends pausing paid traffic until P0s are fixed.
+  This does not authorize external changes.
 - Focused offer questions: inspect only the relevant diagnosis dimensions and files.
 - Use [report](references/report.md) for the full report and implementation handoff.
 

@@ -113,19 +113,48 @@ printf '%s\n' "$scan_files" | while IFS= read -r tpl; do
 done
 
 # --- 3. Find hub pages and their inbound count ---
-header "Hub Page Inbound Links"
+#
+# Hubs kommen aus der Quelle, nicht aus einer Kopie: llms.txt, Abschnitt
+# "## Primaere Einstiege" (Links der Form `](/pfad/)`, Query und Anker
+# abgeschnitten, Duplikate entfernt). Optional per Argument ueberschreiben:
+#   link-map.sh /pfad-a/ /pfad-b/
+header "Hub Page Inbound Links (Heuristik)"
 
-hubs=(
-  "/solar-waermepumpen-leadgenerierung/"
-  "/case-study-solar-leadgenerierung/"
-  "/ergebnisse/"
-  "/blog/"
-  "/wordpress-agentur-hannover/"
-  "/uber-mich/"
-)
+LLMS_FILE="llms.txt"
+
+read_hubs_from_llms() {
+  [[ -f "$LLMS_FILE" ]] || return 0
+  awk '/^## /{ in_sec = ($0 ~ /^## Prim.+ Einstiege$/) } in_sec' "$LLMS_FILE" \
+    | grep -oE '\]\(/[^)#?]*' \
+    | sed 's/^](//' \
+    | awk '!seen[$0]++' || true
+}
+
+hubs=()
+if (( $# > 0 )); then
+  hubs=("$@")
+  echo "  Hubs: aus Argumenten"
+else
+  while IFS= read -r h; do
+    [[ -n "$h" ]] && hubs+=("$h")
+  done < <(read_hubs_from_llms)
+  echo "  Hubs: $LLMS_FILE, Abschnitt \"Primaere Einstiege\""
+fi
+
+if (( ${#hubs[@]} == 0 )); then
+  echo "  Keine Hubs gefunden. llms.txt pruefen oder Pfade als Argumente uebergeben." >&2
+  exit 1
+fi
+
+echo "  Schwellen sind Faustwerte, kein SEO-Gesetz: <3 Templates ✗, <5 △."
 
 for hub in "${hubs[@]}"; do
-  matches="$(rg -l -F "$hub" "$THEME" -g '*.php' 2>/dev/null || true)"
+  if [[ "$hub" == "/" ]]; then
+    # Startseite: "/" als Teilstring wuerde jede Datei treffen.
+    matches="$(rg -l -e "home_url\(\s*('/?')?\s*\)" -e 'href="/"' "$THEME" -g '*.php' 2>/dev/null || true)"
+  else
+    matches="$(rg -l -F "$hub" "$THEME" -g '*.php' 2>/dev/null || true)"
+  fi
   count="$(printf '%s\n' "$matches" | count_lines)"
   if (( count < 3 )); then
     icon="✗"

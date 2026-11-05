@@ -18,19 +18,16 @@ The script scans all PHP templates for internal links and prints a link matrix.
 ## What It Finds
 
 1. **Orphan pages** — templates with no incoming links from other templates
-2. **Hub gaps** — high-value pages (Marktcheck, E3, ergebnisse, blog, agentur) not linked from enough places
+2. **Hub gaps** — hubs read from `llms.txt` (`## Primäre Einstiege`) that few templates link to; pass paths as arguments to override
 3. **Broken internal links** — `home_url()` calls pointing to slugs without a matching template
 4. **Over-linked pages** — pages with too many outbound links diluting equity
 5. **Anchor text quality** — generic "hier klicken" vs descriptive anchors
 
-## Link Priority Tiers
+## Link Priority
 
-| Tier | Pages | Min inbound links |
-|------|-------|--------------------|
-| 1 | /solar-waermepumpen-leadgenerierung/ | 8+ |
-| 2 | /case-study-solar-leadgenerierung/, /ergebnisse/, /blog/, /wordpress-agentur-hannover/ | 5+ |
-| 3 | Service pages, cornerstone content | 3+ |
-| 4 | Glossary terms, blog posts | 1+ |
+Do not hard-code routes or tiers here. Read each route's role and intent from `docs/architecture/CONVERSION_ROUTING.md` and `llms.txt` (retired routes such as `/ergebnisse/` are not link targets). Keep money pages separated by intent: direct WordPress at `/`, agency at `/whitelabel-retainer/`, energy at `/solar-waermepumpen-leadgenerierung/`. No global Solar priority.
+
+Minimum inbound links are a rule of thumb and starting value, not an SEO law: money pages 5+, hubs 3+, everything else 1+. `link-map.sh` applies the same heuristic (<3 ✗, <5 △).
 
 ## Deliver
 

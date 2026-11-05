@@ -76,16 +76,20 @@ Review in this order. Do not skip to design polish before the copy diagnosis is 
 6. `Objection handling`
    - Answer: cost, timeline, risk, handoff, data ownership, no lock-in, existing website, qualification, and what happens after submission.
 7. `Friction and scan path`
-   - A busy buyer must understand the page in 20 seconds.
+   - Heuristic: a busy buyer should understand the page in about 20 seconds.
    - Reduce duplicate framing, ornamental metaphors, repeated claims, and unclear gateways.
 8. `Measurement readiness`
    - Check whether key CTAs, qualifiers, accordions, proof links, sticky CTAs, and form handoffs have stable tracking hooks.
-   - Attribution survives to the lead: the conversion fires once per real submission, and the click ID (`gclid`, `gbraid`/`wbraid`, `fbclid`, `msclkid`) reaches the CRM payload even when the visitor changes pages before submitting. Check it: land with `?gclid=TEST123`, click to the form route, submit, check the lead. Click IDs belong to the CRM attribution contract, never to analytics parameters (`agents/skills/revenue-learning-loop/references/measurement-contract.md`).
+   - Attribution survives to the lead: the conversion fires once per real submission. Check the click ID (`gclid`, `gbraid`/`wbraid`, `fbclid`, `msclkid`) as three separate cases; source of truth is `docs/architecture/PRIVACY.md` section "Herkunft":
+     - (a) Direct load of the form page with `?gclid=TEST123`, submit, check the lead: the click ID must be in the lead payload.
+     - (b) Navigation via a previous page without consent: a missing click ID is documented behavior (NexusCore reads the form page URL only at submit), not a finding.
+     - (c) Cross-page attribution: assess only if the consent flag is active per PRIVACY.md; session attribution is prepared but not active without it.
+   - Click IDs belong to the CRM attribution contract, never to analytics parameters (`agents/skills/revenue-learning-loop/references/measurement-contract.md`).
 
 ## Evidence Limits
 
 - State the data first: inflow with a sample ad/mail, sessions and inquiries for the last 14–30 days, device split. Name what was missing.
-- Below roughly 1,000 sessions or 30 inquiries in the window, rank by first-principles friction and say the data cannot separate a real problem from noise.
+- Rule of thumb, not a statistical threshold: below roughly 1,000 sessions or 30 inquiries in the window, rank by first-principles friction and say the data cannot separate a real problem from noise. The data needed depends on the specific criterion.
 - Never promise a percentage lift for a single change; give direction and rank.
 - If the problem sits upstream (audience, offer, inflow), say so and stop — a page rebuild does not repair a broken offer.
 

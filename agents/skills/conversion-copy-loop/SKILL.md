@@ -1,6 +1,6 @@
 ---
 name: conversion-copy-loop
-description: Copy einer Route iterativ verbessern, bis messbare Gates grün sind — Kritik, Fix, Nachmessung in Runden statt in einem Durchgang. Use für Aufträge, die einen Zielzustand statt einer Einschätzung verlangen, etwa "verbessere /x/ bis es sitzt", "überarbeite die Money Page, bis die Gates grün sind", "iteriere über den Hero". Nicht für eine einmalige Bewertung ohne Änderung (route-conversion-review), nicht für einen einzelnen Textauftrag (seo-conversion-copywriting).
+description: Copy einer Route iterativ verbessern, bis messbare Gates grün sind — Kritik, Fix, Nachmessung in Runden. Use für Aufträge mit Zielzustand, etwa "verbessere /x/ bis es sitzt", "überarbeite die Money Page, bis die Gates grün sind". Nicht für eine einmalige Bewertung (route-conversion-review), nicht für einzelne Hero- oder Satzänderungen (seo-conversion-copywriting).
 ---
 
 # Conversion Copy Loop
