@@ -14,7 +14,7 @@ Output format per dimension:
   Evidence: <route/file/section + quote, or "Assumption">
   Gap: <what is missing or wrong>
   Confidence: <high|medium|low; what was not checked>
-  Move: <Fix, Test or Stop + one concrete change>
+  Move: <Fix, Experiment or Stop + one concrete change>
 ```
 
 ---

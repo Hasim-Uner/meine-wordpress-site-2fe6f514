@@ -7,7 +7,7 @@ Every finding has four parts. The installed `flow` skill uses the same contract.
 1. **Finding** — what is wrong and where (route/file/section).
 2. **Evidence** — quote (≤15 words), measured value or `file:line`. Without it, label the finding `Assumption`.
 3. **Limit** — confidence `high`/`medium`/`low` and what was not checked or measured.
-4. **Decision** — `Fix` (concrete change), `Test` ("If X, then Y, measured by Z") or `Stop` (the bottleneck sits upstream in offer, audience or inflow; propose no page fixes below it).
+4. **Decision** — `Fix` (concrete change), `Experiment` ("If X, then Y, measured by Z") or `Stop` (the bottleneck sits upstream in offer, audience or inflow; propose no page fixes below it).
 
 The verdict is the bottleneck: the weakest dimension or a RED finding. The total never averages it away.
 Scores are orientation, not measurements; never translate them into a promised conversion lift.
@@ -33,6 +33,6 @@ For every recommendation include:
 - current issue with evidence, or `Assumption`
 - confidence and what was not checked
 - business consequence
-- decision (`Fix`, `Test` or `Stop`) and the proposed change
+- decision (`Fix`, `Experiment` or `Stop`) and the proposed change
 - priority: `P0`, `P1`, `P2`
 - whether it is `Repo`, `Manual WP`, `Sales`, or `Tracking`
