@@ -11,9 +11,10 @@ Output format per dimension:
 
 ```
 <dimension>: <score>/10
-  Evidence: <route/file/section + quote>
+  Evidence: <route/file/section + quote, or "Assumption">
   Gap: <what is missing or wrong>
-  Move: <one concrete change>
+  Confidence: <high|medium|low; what was not checked>
+  Move: <Fix, Test or Stop + one concrete change>
 ```
 
 ---
@@ -112,6 +113,8 @@ Killer signal (auto -5): a response-time promise that delivery cannot reliably k
 ---
 
 ## Total
+
+The total is orientation. The verdict names the weakest dimension as the bottleneck (see the diagnosis contract in [report](report.md)); a high total never cancels a RED finding or a very weak dimension.
 
 - 90–100: Closeable demand machine. Optimize CPL.
 - 75–89: Strong. Fix P1s.
