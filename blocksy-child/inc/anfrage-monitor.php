@@ -1,6 +1,6 @@
 <?php
 /**
- * Anfrage-Monitor: prueft taeglich, ob Anfragen ueber diese Website ankommen.
+ * Anfrage-Monitor: prueft woechentlich (montags), ob Anfragen ueber diese Website ankommen.
  *
  * Ein geplanter GitHub-Actions-Lauf (scripts/monitor/anfrage_monitor.py)
  * sendet einmal am Tag eine echte Testanfrage ueber das Kontaktformular im
@@ -37,7 +37,7 @@ const HU_MONITOR_MAX_RUNS = 90;
 const HU_MONITOR_HISTORY = 30;
 
 /** Ab diesem Alter des letzten Laufs gilt der Monitor selbst als ausgefallen. */
-const HU_MONITOR_STALE_HOURS = 26;
+const HU_MONITOR_STALE_HOURS = 170; // Woechentlicher Lauf plus zwei Stunden Puffer.
 
 /** Ereignisname der Testanfragen im Protokoll `hu_inquiry_events`. */
 const HU_MONITOR_EVENT_NAME = 'monitor_test';
@@ -410,7 +410,7 @@ function hu_monitor_status_inquiries( array $runs, $now ) {
 	}
 
 	if ( $age > HU_MONITOR_STALE_HOURS * HOUR_IN_SECONDS ) {
-		return [ 'state' => 'warn', 'label' => 'Letzter Testlauf ist älter als ein Tag', 'at' => (string) $last['startedAt'], 'failedAt' => null ];
+		return [ 'state' => 'warn', 'label' => 'Letzter Testlauf ist älter als eine Woche', 'at' => (string) $last['startedAt'], 'failedAt' => null ];
 	}
 
 	return [ 'state' => 'ok', 'label' => 'Testanfrage angekommen', 'at' => (string) $last['startedAt'], 'failedAt' => null ];

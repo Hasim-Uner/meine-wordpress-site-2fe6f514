@@ -115,7 +115,8 @@ run_case( 'status: inquiries light', static function () {
 	check( 'none' === hu_monitor_status( $now )['anfragen']['state'], 'No run yet' );
 	hu_monitor_store_run( [ 'runId' => 'run-a1b2c3d4', 'startedAt' => gmdate( 'c', $now - 3600 ), 'ok' => true, 'failedAt' => null, 'checks' => [], 'durationsMs' => [] ] );
 	check( 'ok' === hu_monitor_status( $now )['anfragen']['state'], 'Fresh ok run' );
-	check( 'warn' === hu_monitor_status( $now + 30 * 3600 )['anfragen']['state'], 'Stale run warns' );
+	check( 'ok' === hu_monitor_status( $now + 6 * 24 * 3600 )['anfragen']['state'], 'Run within the weekly cycle stays ok' );
+	check( 'warn' === hu_monitor_status( $now + 8 * 24 * 3600 )['anfragen']['state'], 'Stale run warns after a week' );
 	hu_monitor_store_run( [ 'runId' => 'run-e5f6g7h8', 'startedAt' => gmdate( 'c', $now - 60 ), 'ok' => false, 'failedAt' => 'mailAdmin', 'checks' => [], 'durationsMs' => [] ] );
 	$s = hu_monitor_status( $now );
 	check( 'fail' === $s['anfragen']['state'] && 'mailAdmin' === $s['anfragen']['failedAt'], 'Latest failure wins' );
