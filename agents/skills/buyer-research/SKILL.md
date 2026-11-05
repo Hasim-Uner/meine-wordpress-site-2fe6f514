@@ -51,9 +51,9 @@ the server with WP-CLI; it writes sensitive raw material only to `.ai/memory/`.
    `direct_voc` entries may enter `VOICE_OF_CUSTOMER.md`. A paraphrased direct
    interaction is `direct_note`, remains a hypothesis, and is never rebuilt as
    a quote. Update the canon only when the task explicitly authorizes it.
-8. **Hand off** — offer/funnel implications go to `offer-funnel-intelligence`;
-   page copy goes to `seo-conversion-copywriting`; competitor page structure
-   goes to `copy-anatomy`; query demand goes to `seo-agent`.
+8. **Hand off** — return the synthesis to the primary skill `conversion-copy`,
+   which chooses the next step. Offer/funnel implications may be named as a
+   hand-off to the primary skill `offer-funnel-intelligence`.
 
 ## Hard Rules
 

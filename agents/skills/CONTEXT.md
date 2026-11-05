@@ -24,20 +24,7 @@ Hard rules:
 
 ## Primary routing
 
-| Primary skill | Use for |
-| --- | --- |
-| `agent-system-maintenance` | Agent instructions, skills, context efficiency, routing benchmarks and skill test integration |
-| `frontend-system` | Frontend HTML/CSS/JS, accessibility, browser APIs, visual system, UI craft, motion |
-| `seo-intelligence` | SEO triage, live QA, canonical/indexing checks, ranking drift, internal links |
-| `seo-cockpit-dev` | SEO Cockpit modules, queues, GSC/Koko integration, diagnostics |
-| `editorial-seo` | Blog index, categories, articles, cornerstone/pillar content, editorial internal linking |
-| `conversion-copy` | Buyer research, competitor teardown, German conversion copy, iterative copy refinement |
-| `offer-funnel-intelligence` | Offer logic, proof, qualification, Marktcheck, funnel economics, retired-offer boundary |
-| `conversion-architecture` | Page CRO, route-wide conversion review, paid/campaign landing pages |
-| `wordpress-growth-architecture` | Forms, lead routing, REST, CRM and WordPress growth plumbing |
-| `performance-marketing` | Broad SEO/CRO/tracking audits and Core Web Vitals/page-speed diagnosis |
-| `deploy-qa` | Pre-deploy smoke, registry release QA, navigation migration, release gates |
-| `revenue-learning-loop` | Post-release measurement, qualified/progressed/won evidence, keep/revert decisions |
+Primary routes: see `AGENTS.md` Skill routing. This file only holds the delegation below.
 
 ## Internal delegation map
 

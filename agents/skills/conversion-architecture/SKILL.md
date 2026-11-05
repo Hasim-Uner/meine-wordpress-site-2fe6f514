@@ -11,7 +11,7 @@ Delegate:
 - Page critique/CRO/content design → `wordpress-cro-content-design-audit`
 - Full vertical route review → `route-conversion-review`
 - New paid/campaign page → `landing-page-builder`
-- Homepage proof instrumentation → `homepage-proof-monitoring`
+- Only the historical 2026-03-11 homepage proof cohort → `homepage-proof-monitoring`; current post-release measurement → hand off to `revenue-learning-loop`
 
 Hard rules:
 - Offer/funnel economics belong to `offer-funnel-intelligence`.

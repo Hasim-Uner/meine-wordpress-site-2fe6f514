@@ -1,6 +1,6 @@
 # Offer Funnel Scoring Rubric
 
-Score each of the ten dimensions from 0 to 10. Use the anchors. Do not invent half-points without a reason. A funnel below 60/100 is leaking money; below 40/100 it is preventing qualified inquiries.
+Score each of the ten dimensions from 0 to 10. Use the anchors. Do not invent half-points without a reason. Heuristic cut-offs, not proven conversion effects: a funnel below 60/100 likely leaks money; below 40/100 it likely prevents qualified inquiries.
 
 Scope: the anchors are phrased for energy acquisition routes. On every other route, take audience, role and
 primary CTA from `docs/architecture/CONVERSION_ROUTING.md` and `docs/standards/BRAND_AND_COPY.md` and read the

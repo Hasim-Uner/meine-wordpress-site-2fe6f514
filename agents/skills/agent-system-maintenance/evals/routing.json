@@ -200,6 +200,36 @@
     ]
   },
   {
+    "id": "hero-line",
+    "prompt": "Formuliere nur die Hero-Headline der Startseite neu. Der Rest der Seite bleibt unverändert.",
+    "primary_skill": "conversion-copy",
+    "context": "blocksy-child/CONTEXT.md",
+    "rubric": [
+      "No copy loop; treat it as a single text task.",
+      "Preserve CTA target and tracking hooks."
+    ]
+  },
+  {
+    "id": "copy-loop-gates",
+    "prompt": "Überarbeite die Copy einer Route iterativ, bis die Gates grün sind.",
+    "primary_skill": "conversion-copy",
+    "context": "blocksy-child/CONTEXT.md",
+    "rubric": [
+      "Measure round 0 before changing copy.",
+      "Respect the round limit; report instead of looping past it."
+    ]
+  },
+  {
+    "id": "current-proof-release",
+    "prompt": "Bewerte die Wirkung des Proof-Releases der letzten Woche auf qualifizierte Anfragen.",
+    "primary_skill": "revenue-learning-loop",
+    "context": "docs/CONTEXT.md",
+    "rubric": [
+      "Do not use the historical 2026-03-11 homepage proof adapter.",
+      "No causal claim or automatic revert."
+    ]
+  },
+  {
     "id": "no-repo",
     "prompt": "Wie viel ist 17 mal 8? Dafür brauchst du keine Dateien. ",
     "primary_skill": null,

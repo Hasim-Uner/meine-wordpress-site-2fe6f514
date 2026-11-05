@@ -34,5 +34,5 @@ Default URL: `https://hasimuener.de/`. The script runs a PageSpeed Insights API 
 ## Deliver
 
 - Prioritized fix list with file paths and line numbers
-- Before/after metric estimates
+- Before/after metrics as measured values with a named run (tool, device/profile); without a measurement, label them explicitly as unverified estimates
 - Files touched and rationale for each change

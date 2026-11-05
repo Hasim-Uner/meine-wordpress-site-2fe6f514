@@ -61,6 +61,8 @@ def delegation_map(root=ROOT):
 
 
 ROUTING_TABLE = re.compile(r'(?im)^#{1,6}\s*routing table\b|^\|[^\n]*\broute to\b')
+# `-> `skill`` style hand-off; a path such as `skill/references/x.md` does not match.
+SPECIALIST_HANDOFF = re.compile(r'(?:→|->|goes to|hand off to)\s*`([a-z0-9-]+)`(?!/)')
 SKILL_PATH = re.compile(r'agents/skills/([a-z0-9-]+)/')
 PATH_SOURCES = ['AGENTS.md', 'CLAUDE.md', 'agents/skills', 'scripts', '.github/workflows']
 
@@ -94,6 +96,10 @@ def specialist_errors(primary, root=ROOT):
             errors.append(f'{name}: frontmatter name must match directory')
         if ROUTING_TABLE.search(text):
             errors.append(f'{name}: specialists must not route; move routing to the primary')
+        for target in sorted(set(SPECIALIST_HANDOFF.findall(text))):
+            if target != name and target in names and target not in primary:
+                errors.append(f'{name}: specialists must not hand off to specialist {target}; '
+                              f'cite its criteria file path or return to the owning primary')
         for document in [path, *sorted((path.parent / 'references').glob('*.md'))]:
             errors.extend(f'{document.relative_to(root)}: {e}' for e in broken_links(document, root))
     for source in PATH_SOURCES:
