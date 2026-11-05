@@ -303,7 +303,7 @@ get_header();
 			<div class="hu-b2b__proof" aria-labelledby="hu-b2b-proof-title">
 				<div class="hu-b2b__proof-head">
 					<p class="hu-b2b__kicker">Beleggrenze</p>
-					<h2 id="hu-b2b-proof-title">Was der PV-Referenzfall belegt — und was nicht.</h2>
+					<h2 id="hu-b2b-proof-title">Was der PV-Referenzfall belegt. Und was nicht.</h2>
 				</div>
 				<dl class="hu-b2b__proof-grid" aria-label="Einordnung des verlinkten PV-Referenzfalls">
 					<div><dt>belegt</dt><dd>Aufbau eines eigenen Anfragewegs</dd></div>

@@ -210,6 +210,8 @@ den Absender benennt, muss beides zusammenpassen.
 - Technik und Marketing zusammen erklären, nicht als künstlich getrennte Disziplinen
 - Proof vor Behauptung
 - Kein Rollen-Claim, der mehr verspricht als Website und Leistungen tatsächlich abbilden
+- Keine Gedankenstriche (`–`, `—`) in Headlines. Stattdessen Punkt, Doppelpunkt
+  oder zwei kurze Sätze. Bindestriche in Komposita wie `PV-Anfragen` bleiben erlaubt.
 
 ## Preferred Terms
 
