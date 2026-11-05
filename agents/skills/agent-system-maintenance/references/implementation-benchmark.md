@@ -1,6 +1,6 @@
 # Five implementation tasks
 
-This complements the 21 routing cases. The five repair tasks exercise existing
+This complements the routing cases. The five repair tasks exercise existing
 motion, form, permalink, navigation and pricing contracts. Their defects are
 deliberately seeded in disposable copies; they are not findings in production.
 

@@ -19,7 +19,7 @@ oder ein benannter Grund den Loop stoppt.
 ## First Command
 
 ```bash
-bash agents/skills/conversion-copy-loop/scripts/gate-check.sh /waermepumpen-leads/
+bash agents/skills/conversion-copy-loop/scripts/gate-check.sh /<route>/   # Platzhalter, z. B. /waermepumpen-leads/
 ```
 
 Exit 0 heißt: kein ROT. Exit 1 heißt: weitere Runde. Das ist das Loop-Signal —
@@ -27,11 +27,16 @@ nicht die eigene Einschätzung, ob der Text jetzt gut ist.
 
 ## Ablauf
 
+Kriterien werden gelesen, nicht als neue Skill-Route geladen:
+
 ```
 Runde 0   gate-check.sh                        Ausgangsstand, wird protokolliert
-          offer-funnel-intelligence            Angebotslogik tragfähig?
-Runde n   wordpress-cro-content-design-audit   Kritik: P0 / P1 / P2
-          seo-conversion-copywriting           nur die P0 beheben
+          Kriterien: agents/skills/offer-funnel-intelligence/references/diagnosis.md
+                                               Angebotslogik tragfähig?
+Runde n   Kriterien: agents/skills/wordpress-cro-content-design-audit/SKILL.md
+                                               Kritik: P0 / P1 / P2
+          Kriterien: agents/skills/seo-conversion-copywriting/SKILL.md
+                                               nur die P0 beheben
           gate-check.sh                        nachmessen
           Stop-Bedingung?  ja -> Report   nein -> Runde n+1
 ```
@@ -39,8 +44,10 @@ Runde n   wordpress-cro-content-design-audit   Kritik: P0 / P1 / P2
 Runde 0 ist nicht optional. Ohne Ausgangsstand ist am Ende nicht belegbar, dass
 sich etwas verbessert hat — und ein Rückschritt fällt nicht auf.
 
-Findet `offer-funnel-intelligence` einen P0 in der Angebotslogik, endet der Loop
-dort. Eine unklare Angebotslogik lässt sich nicht durch Text reparieren; wer es
+Findet die Angebotsdiagnose einen P0 in der Angebotslogik, endet der Loop dort
+und meldet an den Primärskill `conversion-copy` (der ggf. an
+`offer-funnel-intelligence` übergibt). Eine unklare Angebotslogik lässt sich
+nicht durch Text reparieren; wer es
 versucht, poliert die falsche Ebene.
 
 ## Stop-Bedingung

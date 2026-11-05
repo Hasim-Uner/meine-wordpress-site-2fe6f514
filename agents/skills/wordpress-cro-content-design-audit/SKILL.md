@@ -17,6 +17,20 @@ Use this skill when the task is not only visual polish. The job is to decide whe
 
 ## First Command
 
+Single route (default): resolve route to template first, then search only there.
+
+```bash
+# 1. Route from llms.txt or the task; the resolver prints "Template:" (wrappers/aliases resolved)
+bash agents/skills/route-conversion-review/scripts/review-route.sh /<route>/ | rg -m1 '^Template:'   # e.g. /whitelabel-retainer/
+# 2. Template parts that template includes (calls can span lines)
+rg -n -A2 "get_template_part" blocksy-child/page-<slug>.php        # or blocksy-child/front-page.php
+# 3. Targeted search: that template and the template-parts named in step 2 only
+rg -n "Projekt anfragen|White-Label|Marktcheck|Anfrage|Projekt prüfen|E3|CPL|qualifiziert|Tracking|Conversion|Kontakt" \
+  blocksy-child/page-<slug>.php blocksy-child/template-parts/<part>.php llms.txt
+```
+
+Full audit (multiple pages): only when the task asks for several routes or a site-wide sweep.
+
 ```bash
 rg -n "Projekt anfragen|White-Label|Marktcheck|Anfrage|Projekt prüfen|E3|CPL|qualifiziert|Tracking|Conversion|Kontakt" \
   blocksy-child/front-page.php \

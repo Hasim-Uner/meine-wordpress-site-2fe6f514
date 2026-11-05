@@ -6,8 +6,8 @@ description: Vollprüfung einer einzelnen Route auf hasimuener.de in fester Reih
 # Route Conversion Review
 
 Eine Route, alle Ebenen, immer dieselbe Reihenfolge. Der Skill bewertet nicht
-selbst — er sammelt Evidenz und ruft die Fachskills in der Reihenfolge auf, in
-der ihre Befunde aufeinander aufbauen.
+selbst — er sammelt Evidenz und liest die Kriterien der Fachskills in der
+Reihenfolge, in der ihre Befunde aufeinander aufbauen.
 
 ## Abgrenzung
 
@@ -26,7 +26,7 @@ der ihre Befunde aufeinander aufbauen.
 ## First Command
 
 ```bash
-bash agents/skills/route-conversion-review/scripts/review-route.sh /whitelabel-retainer/
+bash agents/skills/route-conversion-review/scripts/review-route.sh /<route>/   # Platzhalter, z. B. /whitelabel-retainer/
 ```
 
 Das Skript löst die Route auf, listet Überschriften, CTAs, Proof-Referenzen,
@@ -50,14 +50,16 @@ Skript bereits ab.
 ## Reihenfolge der Linsen
 
 Nicht umsortieren. Jede Stufe setzt die vorherige voraus. Jede Linse liest die
-Kriterien direkt aus der genannten Datei; es wird nicht weitergeroutet.
+Kriterien direkt aus der genannten Datei. Kriterien lesen, nicht als neue
+Skill-Route laden. Arbeit außerhalb des Befunds geht an den zuständigen
+Primärskill (`conversion-architecture`).
 
-1. `Angebot / Funnel` → `offer-funnel-intelligence/references/diagnosis.md`
-2. `CRO / CTA- und Proof-Hierarchie` → `wordpress-cro-content-design-audit`
-3. `Copy` → `seo-conversion-copywriting`
-4. `SEO` → `seo-live-qa` (Canonical/Index/Redirect) und `docs/seo/query-ownership.csv`
-5. `Interne Links` → `internal-linking-audit`
-6. `Speed` → `page-speed-audit`
+1. `Angebot / Funnel` → `agents/skills/offer-funnel-intelligence/references/diagnosis.md`
+2. `CRO / CTA- und Proof-Hierarchie` → `agents/skills/wordpress-cro-content-design-audit/SKILL.md`, Abschnitt „Deep Audit Lenses“
+3. `Copy` → `agents/skills/seo-conversion-copywriting/SKILL.md`, Abschnitte A (Harte Regeln) und C (Prüfung vor Abschluss)
+4. `SEO` → `agents/skills/seo-live-qa/SKILL.md` (Canonical/Index/Redirect) und `docs/seo/query-ownership.csv`
+5. `Interne Links` → `agents/skills/internal-linking-audit/SKILL.md`
+6. `Speed` → `agents/skills/page-speed-audit/SKILL.md`, Abschnitt „Audit Scope“
 
 Angebot steht vor Copy, weil sich eine unklare Angebotslogik nicht durch Text
 reparieren lässt. Wer bei Stufe 1 einen P0 findet, schreibt keine Copy-Vorschläge

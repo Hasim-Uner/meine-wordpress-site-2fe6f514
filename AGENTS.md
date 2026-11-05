@@ -38,10 +38,10 @@ Primary routes:
 - `agent-system-maintenance` — agent instructions, skill routing, context efficiency, skill tests.
 - `frontend-system` — HTML, CSS, JS, accessibility, browser APIs, UI craft, motion.
 - `seo-intelligence` — SEO triage, live QA, drift, internal links.
-- `seo-cockpit-dev` — SEO Cockpit implementation and diagnostics.
-- `editorial-seo` — blog/archive/article UX and cornerstone content.
+- `seo-cockpit-dev` — SEO Cockpit implementation and diagnostics (modules, queues, GSC/Koko integration).
+- `editorial-seo` — blog/archive/article UX, cornerstone content and editorial internal links.
 - `conversion-copy` — buyer research, teardown, sales copy, iterative copy improvement.
-- `offer-funnel-intelligence` — offer, proof, qualification, Marktcheck, funnel economics.
+- `offer-funnel-intelligence` — offer, proof, qualification, Marktcheck, funnel economics, retired-offer boundary.
 - `conversion-architecture` — page CRO, route review, campaign landing pages.
 - `wordpress-growth-architecture` — forms, lead routing, REST, CRM.
 - `performance-marketing` — cross-site SEO/CRO/tracking audit and Core Web Vitals.
