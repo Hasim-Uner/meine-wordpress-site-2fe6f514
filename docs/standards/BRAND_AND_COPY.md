@@ -280,6 +280,7 @@ Regeln:
 - Copy dieser Route: kurze Sätze, Punkt statt Gedankenstrich-Kette. Ein Gedanke pro Satz.
 - Benachbarte Kategoriebegriffe nicht wahllos ergänzen. Der Versuch mit `Webdesign-Agentur`, `Internetagentur` und `Webagentur` verschlechterte 2026 die Money-Query ohne belegten Zusatznutzen.
 - Regressionen auf dieser Route prüft `agents/skills/seo-drift/scripts/drift-report.sh`.
+- Plan 07.11.2026: Ein kurzer WooCommerce-Abschnitt bedient ausschließlich bestehende Shops: Tracking, Checkout-Conversion und Wartung. Keine Shop-Neubauten und keine neue Shop-Route. Anfrage über den bestehenden Fokus `implementation_scope`. Die alte Freelancer-URL bleibt bei ihrer vorhandenen 301 auf `/`; Agentur- und Freelancer-Query-Owner bleiben getrennt.
 
 ## Route: WordPress Freelancer Hannover
 

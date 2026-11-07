@@ -671,11 +671,16 @@ Projektabschluss und ruhiger Agentur-Zweitweg, zentrale Metadaten und
   `--stempel`; die Sticky-CTA-Leiste ist eine `.tafel`.
 - **`/wordpress-agentur-hannover/`** (`page-wordpress-agentur.php`):
   Entscheidungsseite „Agentur oder direkte Umsetzung“ mit den Ankern
-  `#entscheidung`, `#technik`, `#zusammenarbeit`, `#belege`, `#hannover`, `#faq`,
+  `#technik`, `#zusammenarbeit`, `#belege`, `#woocommerce`, `#hannover`, `#faq`,
   `#anfrage`. CTAs seit 2026-09-26 auf die Projektanfrage ohne Vorauswahl;
   Belege: öffentliche Referenzen (`/#referenzen`) und die Fallstudie. Hält die lokalen Agentur-, SEO- und Wartungs-Queries; die
   URL-Karte führt „Technisches SEO“, „Wartung“ und „Methode“ auf
   `#zusammenarbeit`.
+  Plan 07.11.2026 ergänzt ausschließlich Bestands-WooCommerce: Tracking,
+  Checkout-Conversion und Wartung, kein Shop-Neubau. Leistungskarte und
+  Service-Katalog führen zum selben Abschnitt. Sein konkreter CTA verwendet
+  den bestehenden Fokus `implementation_scope`; allgemeine CTAs bleiben offen.
+  Die alte Freelancer-URL bleibt bei der vorhandenen 301 auf `/`.
 - **`/solar-waermepumpen-leadgenerierung/`**
   (`page-solar-waermepumpen-leadgenerierung.php`, `anfragestrecke.css` unter
   `.strecke-doc`): Energie-Money-Page mit kurzem Kaufpfad: Einstieg → ein

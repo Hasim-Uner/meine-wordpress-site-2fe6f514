@@ -296,6 +296,10 @@ if ( isset( $_GET['ausgangslage'] ) && function_exists( 'hu_contact_situation_op
 					<input id="contact-company-website" type="text" name="company_website" tabindex="-1" autocomplete="off">
 				</div>
 
+				<input type="hidden" name="landing_page_url" value="">
+				<input type="hidden" name="entry_page_url" value="">
+				<input type="hidden" name="previous_internal_url" value="">
+				<input type="hidden" name="referrer_url" value="">
 				<input type="hidden" name="ads_source" id="ads_source" value="">
 				<input type="hidden" name="ads_keyword" id="ads_keyword" value="">
 				<input type="hidden" name="utm_medium" id="utm_medium" value="">

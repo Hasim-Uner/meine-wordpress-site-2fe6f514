@@ -212,6 +212,15 @@ Kampagnenquelle, kein Medium und keinen Kampagnennamen hat. Der Query-String der
 Vorseite wird nicht übertragen. Die Kontakt-URL bleibt ohne Kampagnenparameter,
 damit der Wechsel keinen zweiten Kampagnenaufruf zählt.
 
+Seit Plan 07.11.2026 sind die Herkunftsfelder im Kontakt-HTML zunächst leer.
+Erst beim Absenden werden Formularseite, bekannter Einstieg beziehungsweise
+interne Vorseite, bereinigter Referrer und aktuelle URL-Kampagne eingetragen.
+`utm_source` verwendet weiterhin den bestehenden Transport-/CRM-Namen
+`ads_source`; keine zweite Quelle oder neue Kennung. Auch ein erneuter Versuch
+liest die dann aktuelle URL, statt alte versteckte Werte weiterzuverwenden.
+Ohne Sitzungsspeicherung lässt sich der erste Einstieg vor einer internen
+Vorseite nicht zuverlässig bestimmen; `entry_page_url` bleibt dann bewusst leer.
+
 Die Sitzungs-Herkunft über mehrere Seiten (erster Einstieg, Kampagne vom
 ersten Aufruf) steht im `sessionStorage` und ist nur aktiv, wenn
 `window.huConsent = { attribution: true }` gesetzt ist. Ein Consent-Tool setzt

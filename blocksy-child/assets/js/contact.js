@@ -62,8 +62,8 @@
             return;
         }
 
-        // ── Attribution: direct URL param capture (no sessionStorage) ──
-        var urlParams = new URLSearchParams(window.location.search);
+        // Herkunft bleibt bis zum Absenden leer. utm_source behält den
+        // bestehenden Transportnamen ads_source für CRM und interne Mail.
         var paramMap = {
             'utm_source': 'ads_source',
             'ads_source': 'ads_source',
@@ -74,16 +74,6 @@
             'gclid': 'gclid',
             'matchtype': 'matchtype'
         };
-
-        Object.keys(paramMap).forEach(function (urlKey) {
-            var val = urlParams.get(urlKey);
-            if (val) {
-                var field = form.querySelector('#' + paramMap[urlKey]);
-                if (field) {
-                    field.value = val;
-                }
-            }
-        });
 
         // ── Auto-scroll to form when type/focus is in URL ──
         if (document.querySelector('[data-contact-autoscroll]')) {
@@ -717,6 +707,25 @@
         }
 
         function getPayload() {
+            var urlParams = new URLSearchParams(window.location.search);
+            var attributionFields = ['landing_page_url', 'entry_page_url', 'previous_internal_url', 'referrer_url', 'ads_source', 'ads_keyword', 'utm_medium', 'utm_campaign', 'gclid', 'matchtype'];
+
+            // Bei Wiederholung aktuelle Werte ermitteln, keine alten Angaben
+            // eines fehlgeschlagenen Versuchs oder gecachten Markups übernehmen.
+            attributionFields.forEach(function (key) {
+                var field = form.elements.namedItem(key);
+                if (field) {
+                    field.value = '';
+                }
+            });
+            Object.keys(paramMap).forEach(function (urlKey) {
+                var value = urlParams.get(urlKey);
+                var field = form.elements.namedItem(paramMap[urlKey]);
+                if (value && field) {
+                    field.value = value;
+                }
+            });
+
             var formData = new window.FormData(form);
             var payload = {};
 
@@ -724,11 +733,18 @@
                 payload[key] = typeof value === 'string' ? value.trim() : value;
             });
 
-            return mergeSessionAttribution(payload);
+            payload = mergeSessionAttribution(payload);
+            attributionFields.forEach(function (key) {
+                var field = form.elements.namedItem(key);
+                if (field) {
+                    field.value = payload[key] || '';
+                }
+            });
+            return payload;
         }
 
         // Herkunft ergaenzen (NexusCore). Parameter in der URL dieser Seite
-        // stehen schon in den versteckten Feldern und haben Vorrang. Ohne
+        // wurden gerade in die versteckten Felder gelesen und haben Vorrang. Ohne
         // Einwilligung kennt NexusCore nur diese Seite und ihre Vorseite; erst
         // mit Einwilligung liefert die Sitzung, womit der Besuch begonnen hat.
         function mergeSessionAttribution(payload) {

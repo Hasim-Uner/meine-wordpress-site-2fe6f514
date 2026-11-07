@@ -1418,13 +1418,13 @@ function hu_output_schema()
         // (aus dem Kanon) und werden hier nicht dupliziert.
         'wordpress-agentur-hannover' => [
             'name'          => 'WordPress Agentur Hannover',
-            'description'   => 'WordPress Agentur in Hannover: Websites, Relaunches und Landingpages mit technischem SEO und Tracking. Ein Ansprechpartner plant, baut und prüft selbst.',
-            'serviceType'   => 'WordPress-Entwicklung',
-            'serviceOutput' => 'WordPress-Website mit technischem SEO, Messung und geprüfter Anfragestrecke; Hosting, Tag Manager und Zugänge laufen auf den Namen des Kunden',
+            'description'   => 'WordPress Agentur in Hannover: Websites, Relaunches und Landingpages mit technischem SEO und Tracking. Tracking, Checkout-Conversion und Wartung für bestehende WooCommerce-Shops. Ein Ansprechpartner plant, baut und prüft selbst.',
+            'serviceType'   => 'WordPress-Entwicklung und Optimierung bestehender WooCommerce-Shops',
+            'serviceOutput' => 'WordPress-Website mit technischem SEO, Messung und geprüfter Anfragestrecke; bei bestehenden WooCommerce-Shops: Tracking, Checkout-Conversion und Wartung; Hosting, Tag Manager und Zugänge laufen auf den Namen des Kunden',
             'hasOfferCatalog' => [
                 '@type'           => 'OfferCatalog',
                 'name'            => 'Leistungen der WordPress Agentur Hannover',
-                'itemListElement' => array_map(
+                'itemListElement' => array_merge( array_map(
                     static function ( $item ) {
                         return [
                             '@type'       => 'Offer',
@@ -1441,7 +1441,20 @@ function hu_output_schema()
                         [ 'conversion', 'Conversion-Optimierung für B2B', 'conversion-optimierung' ],
                         [ 'maintenance', 'WordPress-Wartung mit Anfrage-Test', 'wordpress-wartung' ],
                     ]
-                ),
+                ), [
+                    [
+                        '@type'       => 'Offer',
+                        'name'        => 'WooCommerce-Bestandsoptimierung',
+                        'url'         => home_url( '/wordpress-agentur-hannover/#woocommerce' ),
+                        'itemOffered' => [
+                            '@type'       => 'Service',
+                            '@id'         => home_url( '/wordpress-agentur-hannover/#woocommerce' ),
+                            'name'        => 'WooCommerce-Bestandsoptimierung',
+                            'description' => 'Tracking, Checkout-Conversion und Wartung bestehender WooCommerce-Shops. Keine Shop-Neubauten.',
+                            'provider'    => [ '@id' => home_url( '/#organization' ) ],
+                        ],
+                    ],
+                ] ),
             ],
         ],
 

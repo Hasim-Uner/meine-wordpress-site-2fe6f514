@@ -37,6 +37,13 @@ A page can remain the canonical SEO destination for its query while its CTA rout
 | `/ergebnisse/` | Retired proof hub (since 2026-09-25) | 301 to `/case-study-solar-leadgenerierung/`; excluded from sitemap and `llms.txt` | none | Menu item „Referenzen“ → `/referenzen/`; route `results` → case study |
 | `/case-study-solar-leadgenerierung/` | Proof for all routes (homepage, menu, tracking, agency, Anfragestrecke offer); since 2026-10-23 a competence case with the scroll-driven Messgerät | Evidence page | `Projekt anfragen` in header door (`projekt`), hero (`case_hero_to_step1` → `#schritt1`) and sticky bar (`cta_sticky_case_study_project`). Schritt 1 asks the case form's own question; each answer links to `/kontakt/?type=project&focus=anfragestrecke&ausgangslage=…` (`case_step1_zu_wenige`, `case_step1_falsche`, `case_step1_herkunft`), and `/kontakt/` prefills the message with the answer (`hu_contact_situation_options()`). Without preselection: `cta_case_study_to_project` | Offer rows with fixed prices (`#angebot`, `case_meter_to_offer` from the meter); Solar/Wärmepumpe: quiet Marktcheck link (`cta_case_study_to_diagnostic_request`); methodology links (`cta_case_study_deeper_link`) |
 
+Hannover-Cluster, Plan 2026-11-07: Der neue Abschnitt `#woocommerce` beschreibt
+Tracking, Checkout-Conversion und Wartung bestehender WooCommerce-Shops.
+Nur dessen konkrete Anfrage führt über `hu_get_contact_intake_url()` zu
+`/kontakt/?type=project&focus=implementation_scope`. Die bestehenden allgemeinen
+CTAs behalten ihren offenen Fokus. Keine Shop-Neubauten, neue Shop-Route oder
+Änderung der vorhandenen Freelancer-301 nach `/`.
+
 ## Glossar: erst erklären, dann Projektbezug
 
 `/glossar/` führt über alphabetische Begriffe auf vorhandene Detail- oder

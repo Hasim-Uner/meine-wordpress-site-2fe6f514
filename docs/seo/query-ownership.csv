@@ -36,8 +36,8 @@
 #   Server-Side-Tracking-Terme                    -> /server-side-tracking-b2b/
 #   Conversion-Tracking-/GA4-Setup-Kaufintent    -> /ga4-tracking-setup/ (2026-09-26)
 #
-# Die Trennung der Agentur- und Freelancer-Route ist in
-# docs/decisions/wordpress-freelancer-hannover.md belegt. "wordpress seo hannover"
+# Die Trennung und die bestehende 301 der alten Freelancer-URL sind in
+# docs/decisions/homepage-freelancer-konsolidierung.md belegt. "wordpress seo hannover"
 # und "wordpress wartung hannover" bleiben auf der Agentur-Money-Page (nationale
 # Wartungs-Queries ohne Ort seit 2026-10-24: /wordpress-wartung/); die alten
 # Spezial-Slugs liefern 410 Gone. Tracking-Queries laufen nicht in lokale
@@ -107,8 +107,9 @@ aroundhome kosten fuer handwerker;/aroundhome-solar-einordnung/;commercial;owned
 aroundhome solaranlage;/aroundhome-solar-einordnung/;commercial;owned;gsc-export-28d-2026-07-30.csv (Pos. 13,4, 8 Impr.);aroundhome
 wattfox leads kaufen;/wattfox-solar-leads-einordnung/;commercial;owned;gsc-export-28d-2026-07-30.csv (Pos. 18,0, 2 Impr. auf /solar-leads-kaufen-alternative/) — Anbieter-Query bleibt beim Anbieterartikel;wattfox|solar leads kaufen
 # Ortsqualifizierte WordPress-Queries. Agentur- und Freelancer-Intent werden
-# seit 2026-08-16 getrennt; "woocommerce agentur hannover" steht bewusst in
-# keyword-exclusions.csv.
+# seit 2026-08-16 getrennt. WooCommerce seit Plan 2026-11-07 nur für bestehende
+# Shops (Tracking, Checkout-Conversion, Wartung), keine Shop-Neubauten.
+woocommerce agentur hannover;/wordpress-agentur-hannover/;local;owned;docs/decisions/hannover-cluster-2026-11-07.md — bestehende WooCommerce-Shops, keine Shop-Neubauten;wordpress freelancer hannover|wordpress agentur hannover
 wordpress agenturen hannover;/wordpress-agentur-hannover/;local;owned;gsc-export-28d-2026-07-30.csv (Pos. 28,8, 4 Impr.) — Plural-Variante;wordpress agentur hannover|wordpress freelancer hannover
 agentur wordpress hannover;/wordpress-agentur-hannover/;local;owned;gsc-export-28d-2026-07-30.csv (Pos. 31,5, 6 Impr.) — Wortstellungs-Variante;wordpress agentur hannover|wordpress freelancer hannover
 wordpress agentur niedersachsen;/wordpress-agentur-hannover/;local;owned;gsc-export-28d-2026-07-30.csv (Pos. 61,9, 17 Impr.) — Bundesland-Variante des lokalen Ankers;wordpress agentur hannover
