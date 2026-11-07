@@ -318,6 +318,30 @@ run_case( 'contact consent, attribution, source and repeated activity', static f
 	check( get_post_meta( 1, '_nexus_contact_ads_source' ) === 'fixture', 'Attribution retained' );
 	check( get_post_meta( 1, '_nexus_contact_referrer_url' ) === 'https://referrer.test/path', 'Referrer query removed' );
 } );
+run_case( 'Hannover origin fields reach CRM and notification without URL query data', static function () use ( $contact ) {
+	$origin = [
+		'landing_page_url' => 'https://example.test/kontakt/?type=project&private=discard',
+		'entry_page_url' => 'https://example.test/wordpress-agentur-hannover/?private=discard#woocommerce',
+		'previous_internal_url' => 'https://example.test/wordpress-agentur-hannover/?private=discard',
+		'referrer_url' => 'https://referrer.test/article?private=discard#fragment',
+		'ads_source' => 'linkedin', 'utm_medium' => 'organic', 'utm_campaign' => 'hannover',
+	];
+	$r = call_intake( 'contact', array_merge( $contact, [ 'focus' => 'implementation_scope' ], $origin ) );
+	check( 201 === $r->status && true === $r->data['ok'], 'Origin-bearing test inquiry accepted' );
+	check( 'project_request' === get_post_meta( 1, '_nexus_contact_source' ), 'Existing source contract retained' );
+	check( 'https://example.test/kontakt/' === get_post_meta( 1, '_nexus_contact_landing_page_url' ), 'Form URL stored without query' );
+	check( 'https://example.test/wordpress-agentur-hannover/' === get_post_meta( 1, '_nexus_contact_entry_page_url' ), 'Entry URL stored without query or fragment' );
+	check( 'https://example.test/wordpress-agentur-hannover/' === get_post_meta( 1, '_nexus_contact_previous_page_url' ), 'Known internal page retained' );
+	check( 'https://referrer.test/article' === get_post_meta( 1, '_nexus_contact_referrer_url' ), 'External referrer reduced to origin and path' );
+	foreach ( [ 'ads_source' => 'linkedin', 'utm_medium' => 'organic', 'utm_campaign' => 'hannover' ] as $key => $value ) {
+		check( $value === get_post_meta( 1, '_nexus_contact_' . $key ), $key . ' persisted' );
+	}
+	$internal = implode( '\n', array_column( $GLOBALS['intake_test']['mails'], 'body' ) );
+	foreach ( [ 'Einstiegsseite', 'Referrer', 'linkedin', 'organic', 'hannover' ] as $value ) {
+		check( str_contains( $internal, $value ), $value . ' present in built notification' );
+	}
+	check( ! str_contains( $internal, 'private=discard' ), 'Unrelated URL query data excluded from mail' );
+} );
 run_case( 'SST details survive a later landingpage enquiry in the inquiry history', static function () use ( $contact ) {
 	$sst = $contact + [
 		'form_origin' => 'sst',

@@ -140,7 +140,7 @@ async function setup(page, kind, { url = 'https://example.test/kontakt/?utm_sour
 
 async function values(page, fixture) {
   return page.locator(fixture.form).evaluate(form => [...form.elements]
-    .filter(control => control.name)
+    .filter(control => control.name && control.type !== 'hidden')
     .map(control => [control.name, control.value, control.checked]));
 }
 
@@ -158,6 +158,51 @@ async function submit(page, fixture) {
 
 const gbpLandingPath = '/wordpress-agentur-hannover/?utm_source=google&utm_medium=organic&utm_campaign=google_business_profile';
 const contactUrl = 'https://example.test/kontakt/';
+
+test('contact reads origin fields only on submit and keeps attribution out of storage', async ({ page, context }) => {
+  const url = contactUrl + '?type=project&focus=tracking&utm_source=linkedin&utm_medium=organic&utm_campaign=hannover';
+  const fixture = await setup(page, 'contact', { url, referer: 'https://referrer.test/article?private=discard#fragment' });
+  for (const name of ['landing_page_url', 'entry_page_url', 'previous_internal_url', 'referrer_url', 'ads_source', 'utm_medium', 'utm_campaign']) {
+    await expect(page.locator(`[name="${name}"]`)).toHaveValue('');
+  }
+  expect(await page.evaluate(() => window.requests.length)).toBe(0);
+  expect(await page.evaluate(() => [localStorage.length, sessionStorage.length])).toEqual([0, 0]);
+
+  await submit(page, fixture);
+  const payload = await page.evaluate(() => JSON.parse(window.requests[0].options.body));
+  expect(payload).toMatchObject({
+    landing_page_url: contactUrl, entry_page_url: contactUrl, previous_internal_url: '',
+    referrer_url: 'https://referrer.test/article', ads_source: 'linkedin', utm_medium: 'organic', utm_campaign: 'hannover',
+    request_type: 'project', focus: 'tracking', consent: '1',
+  });
+  expect(JSON.stringify(payload)).not.toContain('private=');
+  await expect(page.locator('[name="utm_campaign"]')).toHaveValue('hannover');
+  expect(await page.evaluate(() => [localStorage.length, sessionStorage.length])).toEqual([0, 0]);
+  expect(await context.cookies()).toEqual([]);
+  expect(page.url()).toBe(url);
+});
+
+test('contact retains the known internal page without inventing an earlier entry', async ({ page }) => {
+  const fixture = await setup(page, 'contact', { url: contactUrl, referer: 'https://example.test/wordpress-agentur-hannover/?private=discard#woocommerce' });
+  await submit(page, fixture);
+  const payload = await page.evaluate(() => JSON.parse(window.requests[0].options.body));
+  expect(payload).toMatchObject({
+    entry_page_url: '', previous_internal_url: 'https://example.test/wordpress-agentur-hannover/',
+    referrer_url: 'https://example.test/wordpress-agentur-hannover/',
+  });
+});
+
+test('contact refreshes campaign fields on retry after the URL changes', async ({ page }) => {
+  const fixture = await setup(page, 'contact', { url: contactUrl + '?utm_source=old&utm_medium=cpc&utm_campaign=old' });
+  await submit(page, fixture);
+  await respond(page, 500, '{"ok":false}');
+  await expect(page.locator(fixture.button)).toBeEnabled();
+  await page.evaluate(() => history.replaceState(null, '', '/kontakt/?utm_source=current'));
+  await page.click(fixture.button);
+  await expect.poll(() => page.evaluate(() => window.requests.length)).toBe(2);
+  const payload = await page.evaluate(() => JSON.parse(window.requests[1].options.body));
+  expect(payload).toMatchObject({ ads_source: 'current', utm_medium: '', utm_campaign: '' });
+});
 
 for (const [label, url, refererOrigin, expected] of [
   ['keeps the GBP campaign', contactUrl, 'https://example.test', { ads_source: 'google', utm_medium: 'organic', utm_campaign: 'google_business_profile' }],

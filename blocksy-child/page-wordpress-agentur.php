@@ -70,6 +70,7 @@ add_action( 'wp_body_open', function () {
 	$items = [
 		[ 'id' => 'belege', 'label' => 'Beleg' ],
 		[ 'id' => 'zusammenarbeit', 'label' => 'Leistung' ],
+		[ 'id' => 'woocommerce', 'label' => 'WooCommerce' ],
 		[ 'id' => 'technik', 'label' => 'Vergleich' ],
 		[ 'id' => 'hannover', 'label' => 'Hannover' ],
 		[ 'id' => 'faq', 'label' => 'FAQ' ],
@@ -91,6 +92,7 @@ add_action( 'wp_body_open', function () {
 // Website oder einen Relaunch. Die Kontaktseite fragt das Vorhaben selbst ab,
 // statt jede Anfrage als „Bestehende Website weiterentwickeln“ abzulegen.
 $contact_url    = hu_get_navigation_project_request_url();
+$shop_contact_url = hu_get_contact_intake_url( 'project', 'implementation_scope' );
 $website_url    = hu_get_commercial_route( 'website', home_url( '/wordpress-website-erstellen-lassen/' ) );
 $references_url = hu_get_commercial_route( 'references', home_url( '/referenzen/' ) );
 $case_url       = nexus_get_results_url();
@@ -160,6 +162,13 @@ $services = [
 		'title'  => 'WordPress-Wartung mit Anfrage-Test',
 		'detail' => 'Jeden Monat geprüft: Kommen Anfragen an?',
 		'track'  => 'agentur_to_maintenance_offer',
+	],
+	[
+		'url'    => home_url( '/wordpress-agentur-hannover/#woocommerce' ),
+		'label'  => 'Bestehender Shop',
+		'title'  => 'WooCommerce-Shop optimieren',
+		'detail' => 'Tracking, Checkout-Conversion und Wartung bestehender Shops.',
+		'track'  => 'agentur_to_woocommerce_scope',
 	],
 ];
 
@@ -242,11 +251,11 @@ get_header();
 			<div class="voll">
 				<p class="mono stempelfarbe">Leistungen</p>
 				<h2 class="kopf">Was ich für Unternehmen in Hannover baue.</h2>
-				<p class="vorspann">Sechs Ausgangslagen, eine Seite je Angebot. Umfang und Preis stehen dort.</p>
+				<p class="vorspann">Wählen Sie die passende Ausgangslage. Details stehen beim jeweiligen Angebot.</p>
 
 				<nav class="route-grid" aria-label="Leistungen">
 					<?php foreach ( $services as $service ) : ?>
-						<a href="<?php echo esc_url( hu_get_commercial_route( $service['key'] ) ); ?>" data-track-action="<?php echo esc_attr( $service['track'] ); ?>" data-track-category="internal_link">
+						<a href="<?php echo esc_url( $service['url'] ?? hu_get_commercial_route( $service['key'] ) ); ?>" data-track-action="<?php echo esc_attr( $service['track'] ); ?>" data-track-category="internal_link">
 							<span><?php echo esc_html( $service['label'] ); ?></span>
 							<strong><?php echo esc_html( $service['title'] ); ?></strong>
 							<small><?php echo esc_html( $service['detail'] ); ?></small>
@@ -261,10 +270,28 @@ get_header();
 		</div>
 	</section>
 
+	<section id="woocommerce" data-track-section="agentur_woocommerce">
+		<div class="blatt reihe">
+			<div class="spalte-links">
+				<div class="kapitel" aria-hidden="true"><span class="nr">03</span><span class="titel">WooCommerce</span><span class="strich"></span></div>
+			</div>
+
+			<div class="haupt">
+				<p class="mono stempelfarbe">Arbeit am Bestand</p>
+				<h2 class="kopf">Bestehende WooCommerce-Shops weiterentwickeln.</h2>
+				<p class="vorspann">Ihr Shop läuft bereits. Ich prüfe, ob Käufe korrekt gemessen werden, behebe technische Hürden in Warenkorb und Checkout und übernehme die Wartung. Änderungen werden vor dem Livegang auf Staging geprüft.</p>
+				<p>Shop-Neubauten und große Shop-Projekte gehören nicht zu diesem Angebot. Den Umfang klären wir anhand Ihres bestehenden Shops, seiner Plugins und Schnittstellen.</p>
+				<div class="ausgang">
+					<a class="tun" href="<?php echo esc_url( $shop_contact_url ); ?>" data-track-action="cta_agentur_woocommerce_project" data-track-category="lead_gen">Bestehenden Shop prüfen lassen <span class="pf" aria-hidden="true">→</span></a>
+				</div>
+			</div>
+		</div>
+	</section>
+
 	<section id="technik" data-track-section="agentur_comparison">
 		<div class="blatt reihe">
 			<div class="spalte-links">
-				<div class="kapitel" aria-hidden="true"><span class="nr">03</span><span class="titel">Vergleich</span><span class="strich"></span></div>
+				<div class="kapitel" aria-hidden="true"><span class="nr">04</span><span class="titel">Vergleich</span><span class="strich"></span></div>
 			</div>
 
 			<div class="voll">
@@ -295,7 +322,7 @@ get_header();
 	<section id="hannover" data-track-section="agentur_local">
 		<div class="blatt reihe">
 			<div class="spalte-links">
-				<div class="kapitel" aria-hidden="true"><span class="nr">04</span><span class="titel">Hannover</span><span class="strich"></span></div>
+				<div class="kapitel" aria-hidden="true"><span class="nr">05</span><span class="titel">Hannover</span><span class="strich"></span></div>
 			</div>
 
 			<div class="haupt">
@@ -315,7 +342,7 @@ get_header();
 	<section id="faq" data-track-section="agentur_faq">
 		<div class="blatt reihe">
 			<div class="spalte-links">
-				<div class="kapitel" aria-hidden="true"><span class="nr">05</span><span class="titel">FAQ</span><span class="strich"></span></div>
+				<div class="kapitel" aria-hidden="true"><span class="nr">06</span><span class="titel">FAQ</span><span class="strich"></span></div>
 			</div>
 
 			<div class="haupt">
