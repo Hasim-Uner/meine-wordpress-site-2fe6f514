@@ -14,7 +14,8 @@ Use the local context already selected under `AGENTS.md`; do not load another.
 - For buyer claims, read `docs/standards/VOICE_OF_CUSTOMER.md`; delegate to
   `buyer-research` when direct evidence is thin. Label proxy evidence and inference.
 - For funnel/CTA changes read `docs/architecture/CONVERSION_ROUTING.md`.
-- Full funnel audit: run `bash agents/skills/offer-funnel-intelligence/scripts/scan-offer-funnel.sh`,
+- Full funnel audit: run `bash agents/skills/offer-funnel-intelligence/scripts/scan-offer-funnel.sh`
+  (summary and traffic light; `--lines <path>` for one route's matches),
   then read [diagnosis](references/diagnosis.md) and [scoring-rubric](references/scoring-rubric.md).
   Treat RED findings as P0 blockers. Lead with the bottleneck (weakest dimension), then
   show all ten scores; below 60/100 (heuristic, no proven conversion effect) recommends

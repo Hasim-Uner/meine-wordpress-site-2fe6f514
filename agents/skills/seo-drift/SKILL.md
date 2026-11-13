@@ -62,8 +62,9 @@ nicht her.
   dieselbe Regel wie in `gap-report.sh`.
 - Die Zuordnung Route → Template gehört `review-route.sh` samt Alias-Tabelle für
   Schatten-Wrapper. Hier wird sie gelesen, nicht kopiert.
-- Ein Cluster ist noch keine Ursache. Vor dem Fix die Route mit
-  `route-conversion-review` prüfen.
+- Ein Cluster ist noch keine Ursache. Die Routenprüfung vor dem Fix gehört dem
+  Primärskill `conversion-architecture`; den Befund an `seo-intelligence`
+  zurückgeben.
 
 ## Neue Periode
 

@@ -8,10 +8,13 @@ rg -n "home_url\\(|href=[\"']/" "$ROOT/blocksy-child/single.php" "$ROOT/blocksy-
   -g '*.php' \
   -g '!node_modules' -g '!.build' || true
 
-printf '\n%s\n' '== Versioned blog Markdown links =='
-rg -n "\\]\\(/|href=[\"']/" "$ROOT/blocksy-child/assets/content/blog" "$ROOT/content/blog-drafts" \
+# Only the link itself (anchor text and target): the surrounding paragraph is
+# prose, and a width cap would cut links that sit late in a long line.
+printf '\n%s\n' '== Versioned blog Markdown links (anchor and target only) =='
+rg -n -o "\\[[^\\]]*\\]\\(/[^)]*\\)|href=[\"']/[^\"']*[\"'][^>]*>[^<]{0,80}" "$ROOT/blocksy-child/assets/content/blog" "$ROOT/content/blog-drafts" \
   -g '*.md' -g '*.html' \
   -g '!node_modules' -g '!.build' || true
 
+# The route opens each llms.txt entry, so the description may be cut.
 printf '\n%s\n' '== Canonical route index excerpts =='
-rg -n "/blog/|/wordpress-agentur-hannover/|/solar-waermepumpen-leadgenerierung/|/case-study-solar-leadgenerierung/|/stack-|/server-side-tracking-b2b/" "$ROOT/llms.txt" || true
+rg -n --max-columns 200 --max-columns-preview "/blog/|/wordpress-agentur-hannover/|/solar-waermepumpen-leadgenerierung/|/case-study-solar-leadgenerierung/|/stack-|/server-side-tracking-b2b/" "$ROOT/llms.txt" || true

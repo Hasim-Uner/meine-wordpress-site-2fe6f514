@@ -24,7 +24,7 @@ Fuer die Frage „woran arbeiten wir als naechstes?" der Gap-Report:
 ```bash
 bash agents/skills/seo-agent/scripts/gap-report.sh          # neueste Periode, 28d
 bash agents/skills/seo-agent/scripts/gap-report.sh --7d      # 7-Tage-Snapshot
-bash agents/skills/seo-agent/scripts/gap-report.sh 2026-07 --md > /tmp/gap.md
+bash agents/skills/seo-agent/scripts/gap-report.sh 2026-07 --md > .ai/memory/gap.md
 ```
 
 Der Rang-Status kommt immer aus **einem** Snapshot: dem neuesten Export des

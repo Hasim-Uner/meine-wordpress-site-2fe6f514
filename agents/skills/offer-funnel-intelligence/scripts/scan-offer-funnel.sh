@@ -1,49 +1,98 @@
 #!/usr/bin/env bash
+# Offer/funnel evidence scan.
+#
+#   scan-offer-funnel.sh                  summary (hits per file) plus traffic light
+#   scan-offer-funnel.sh --lines PATH...  matching lines for those paths only
+#
+# The default stays a summary on purpose: line-level output over the whole theme
+# exceeds every host's tool-output window, and the verdict was lost with it.
 set -euo pipefail
 
 ROOT="$(git rev-parse --show-toplevel 2>/dev/null || pwd)"
 cd "$ROOT"
 
-COLD_ROUTES=(
-  blocksy-child/front-page.php
-  blocksy-child/page-b2b-solar-leads.php
-  blocksy-child/page-kunden-gewinnen-solarteure.php
-  blocksy-child/page-lead-funnel-solar.php
-  blocksy-child/page-cost-per-lead-photovoltaik.php
-  blocksy-child/page-eigene-leadgenerierung-vs-portale.php
-)
+SOURCE_PATTERN="Marktcheck|Anfrage-System|Anfrage-System-Analyse|Founding|Portal-Abhängigkeit|Leadkosten|Kosten pro Anfrage|qualifizierte Anfragen|Abschlussquote|Vorqualifizierung|E3|Retainer|WGOS|WordPress Growth Operating System|Growth Audit|Shopify|Antwortzeit|kostenlos|Projekt prüfen|Auswertung anfordern|Kontakt"
+CTA_PATTERN="data-track-action=|hu-btn|nx-btn|cta_|Marktcheck|Kontakt|prüfen|anfordern|ansehen|starten"
+RISK_PATTERN="WGOS|WordPress Growth Operating System|Growth Audit|Shopify|KI-Integration|Webdesign|WordPress-Agentur|WordPress Agentur|B2B-Generalist|Performance-Marketing-Agentur"
+LINE_WIDTH=240
+SUMMARY_LIMIT=15
+
+if [[ "${1:-}" == "--lines" ]]; then
+  shift
+  if [[ "$#" -eq 0 ]]; then
+    echo 'usage: scan-offer-funnel.sh --lines PATH...' >&2
+    exit 64
+  fi
+  printf '\n== Offer/Funnel source map (lines) ==\n'
+  rg -n --max-columns "$LINE_WIDTH" --max-columns-preview "$SOURCE_PATTERN" "$@" || true
+  printf '\n== CTA inventory (lines) ==\n'
+  rg -n --max-columns "$LINE_WIDTH" --max-columns-preview "$CTA_PATTERN" "$@" || true
+  exit 0
+fi
+if [[ "$#" -gt 0 ]]; then
+  echo 'usage: scan-offer-funnel.sh [--lines PATH...]' >&2
+  exit 64
+fi
+
+# Hits per file, strongest first; the tail is counted instead of printed.
+summarize() {
+  local pattern="$1"
+  shift
+  { rg -c --no-messages "$pattern" "$@" || true; } \
+    | sort -t: -k2,2nr -k1,1 \
+    | awk -F: -v limit="$SUMMARY_LIMIT" '
+        NR <= limit { printf "  %5d  %s\n", $2, $1 }
+        END { if (NR > limit) printf "  ... %d more files\n", NR - limit
+              if (NR == 0) print "  (none)" }'
+}
+
+# Energy acquisition routes come from llms.txt: the page that owns the
+# Marktcheck anchor plus the energy cluster section. Never keep a copy here.
+energy_routes() {
+  [[ -f llms.txt ]] || return 0
+  {
+    rg -o --no-messages '\]\((/[^)#?]*)#marktcheck\)' -r '$1' llms.txt || true
+    awk '/^## /{ on = (index($0, "## Solar- und Wärmepumpen-Cluster") == 1) } on' llms.txt \
+      | { rg -o '\]\((/[^)#?]+)' -r '$1' || true; }
+  } | awk '!seen[$0]++'
+}
 
 EXISTING_COLD_ROUTES=()
-for f in "${COLD_ROUTES[@]}"; do
-  if [[ -f "$f" ]]; then
-    EXISTING_COLD_ROUTES+=("$f")
+UNRESOLVED_ROUTES=()
+[[ -f blocksy-child/front-page.php ]] && EXISTING_COLD_ROUTES+=(blocksy-child/front-page.php)
+while IFS= read -r route; do
+  slug="${route#/}"
+  slug="${slug%/}"
+  [[ -n "$slug" ]] || continue
+  if [[ -f "blocksy-child/page-${slug}.php" ]]; then
+    EXISTING_COLD_ROUTES+=("blocksy-child/page-${slug}.php")
+  else
+    UNRESOLVED_ROUTES+=("$route")
   fi
-done
+done < <(energy_routes)
 
-printf '\n== Offer/Funnel source map ==\n'
-rg -n \
-  "Marktcheck|Anfrage-System|Anfrage-System-Analyse|Founding|Portal-Abhängigkeit|Leadkosten|Kosten pro Anfrage|qualifizierte Anfragen|Abschlussquote|Vorqualifizierung|E3|Retainer|WGOS|WordPress Growth Operating System|Growth Audit|Shopify|Antwortzeit|kostenlos|Projekt prüfen|Auswertung anfordern|Kontakt" \
+printf '\n== Offer/Funnel source map (hits per file) ==\n'
+summarize "$SOURCE_PATTERN" \
   AGENTS.md \
   llms.txt \
   docs/standards/BRAND_AND_COPY.md \
   blocksy-child/front-page.php \
   blocksy-child/page-*.php \
   blocksy-child/template-parts \
-  blocksy-child/inc \
-  2>/dev/null || true
+  blocksy-child/inc
 
-printf '\n== CTA inventory ==\n'
-rg -n \
-  "data-track-action=|hu-btn|nx-btn|cta_|Marktcheck|Kontakt|prüfen|anfordern|ansehen|starten" \
+printf '\n== CTA inventory (hits per file) ==\n'
+summarize "$CTA_PATTERN" \
   blocksy-child/front-page.php \
   blocksy-child/page-*.php \
   blocksy-child/template-parts \
-  blocksy-child/inc \
-  2>/dev/null || true
+  blocksy-child/inc
+
+printf '\nLine detail for one route or partial: scan-offer-funnel.sh --lines <path>...\n'
 
 printf '\n== Public-positioning risk terms ==\n'
-rg -n \
-  "WGOS|WordPress Growth Operating System|Growth Audit|Shopify|KI-Integration|Webdesign|WordPress-Agentur|WordPress Agentur|B2B-Generalist|Performance-Marketing-Agentur" \
+rg -n --max-columns "$LINE_WIDTH" --max-columns-preview \
+  "$RISK_PATTERN" \
   blocksy-child/front-page.php \
   blocksy-child/page-*.php \
   blocksy-child/template-parts \
@@ -72,6 +121,11 @@ count_hits() {
 red=()
 amber=()
 green=()
+
+# 0. The energy list must not vanish silently when llms.txt is restructured.
+if (( ${#EXISTING_COLD_ROUTES[@]} + ${#UNRESOLVED_ROUTES[@]} <= 1 )); then
+  amber+=("No energy routes read from llms.txt — check the Marktcheck anchor and the cluster heading before trusting this verdict")
+fi
 
 # 1. WGOS in cold-route hero copy
 wgos_cold=0
@@ -160,6 +214,12 @@ printf 'Cold routes inspected: %d\n' "${#EXISTING_COLD_ROUTES[@]}"
 for f in "${EXISTING_COLD_ROUTES[@]}"; do
   printf '  - %s\n' "$f"
 done
+if [[ "${#UNRESOLVED_ROUTES[@]}" -gt 0 ]]; then
+  printf 'Not inspected (no page-<slug>.php; editor-owned or carried by another template):\n'
+  for route in "${UNRESOLVED_ROUTES[@]}"; do
+    printf '  - %s\n' "$route"
+  done
+fi
 
 printf '\nRED (P0):\n'
 if [[ "${#red[@]}" -eq 0 ]]; then

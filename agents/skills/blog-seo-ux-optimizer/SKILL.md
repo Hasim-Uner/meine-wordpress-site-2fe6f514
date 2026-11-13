@@ -14,6 +14,8 @@ sh agents/skills/blog-seo-ux-optimizer/scripts/blog-scan.sh
 sh agents/skills/blog-seo-ux-optimizer/scripts/blog-link-map.sh
 ```
 
+`blog-scan.sh` prints hits per file; open one surface with `--lines <path>`.
+
 ## Required Context
 
 - Read `docs/standards/BRAND_AND_COPY.md`; do not duplicate its copy rules.
