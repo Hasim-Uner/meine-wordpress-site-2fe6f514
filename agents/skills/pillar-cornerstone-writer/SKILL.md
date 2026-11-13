@@ -43,9 +43,9 @@ Tabellen und Listen), nicht mit eigenem Artikel-CSS. Vor dem Schreiben lesen:
 ## AEO — Antwortbare Abschnitte
 
 Das Theme erzeugt FAQPage-Schema aus Überschriften, die auf `?` enden
-(`inc/org-schema.php:369-380`, Opt-in per SCF-Feld `enable_faq_schema`). Wer dafür
-schreibt, muss wissen, wie der Parser arbeitet — sonst entsteht leeres oder
-aufgeblähtes Schema.
+(`hu_extract_faq_schema_entities_from_content()` in `inc/org-schema.php`,
+Opt-in per SCF-Feld `enable_faq_schema`). Wer dafür schreibt, muss wissen, wie
+der Parser arbeitet — sonst entsteht leeres oder aufgeblähtes Schema.
 
 Vor dem Schreiben lesen: `references/aeo-answer-patterns.md`. Die vier Regeln, die
 am häufigsten verletzt werden:

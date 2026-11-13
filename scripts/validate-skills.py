@@ -48,6 +48,21 @@ def broken_links(path, root=ROOT):
     return errors
 
 
+LINE_REFERENCE = re.compile(r'([\w./-]+\.(?:php|js|mjs|css|py|sh|md)):\d+')
+
+
+def line_references(path, root=ROOT):
+    """Line numbers into repo files rot with the next edit; cite a function or section."""
+    bases = (root, root / 'blocksy-child', root / 'blocksy-child/inc', path.parent)
+    return [f'line reference {target}:N goes stale; cite the function or section name'
+            for target in sorted(set(LINE_REFERENCE.findall(path.read_text())))
+            if any((base / target).is_file() for base in bases)]
+
+
+def document_errors(path, root=ROOT):
+    return broken_links(path, root) + line_references(path, root)
+
+
 def delegation_map(root=ROOT):
     """Parse the primary -> specialist table in agents/skills/CONTEXT.md."""
     text = (root / 'agents/skills/CONTEXT.md').read_text()
@@ -83,6 +98,14 @@ def specialist_errors(primary, root=ROOT):
                 errors.append(f'{owner}: delegate {name} does not exist')
             elif name in primary:
                 errors.append(f'{owner}: delegate {name} is a primary; hand off instead')
+    for owner in primary:
+        entry = skills_dir / owner / 'SKILL.md'
+        if not entry.is_file():
+            continue
+        named = set(re.findall(r'`([a-z0-9-]+)`', entry.read_text())) & (names - set(primary))
+        for name in sorted(named - set(mapping.get(owner, []))):
+            errors.append(f'{owner}: names specialist {name} that its CONTEXT.md delegation row '
+                          f'does not list')
     for name in sorted(names - set(primary)):
         path = skills_dir / name / 'SKILL.md'
         if not path.is_file():
@@ -101,7 +124,7 @@ def specialist_errors(primary, root=ROOT):
                 errors.append(f'{name}: specialists must not hand off to specialist {target}; '
                               f'cite its criteria file path or return to the owning primary')
         for document in [path, *sorted((path.parent / 'references').glob('*.md'))]:
-            errors.extend(f'{document.relative_to(root)}: {e}' for e in broken_links(document, root))
+            errors.extend(f'{document.relative_to(root)}: {e}' for e in document_errors(document, root))
     for source in PATH_SOURCES:
         base = root / source
         files = [base] if base.is_file() else [
@@ -130,7 +153,7 @@ def main():
         errors.extend(f'{name}: {e}' for e in issues)
         references = path.parent / 'references'
         for document in [path, *sorted(references.glob('*.md'))]:
-            errors.extend(f'{document.relative_to(ROOT)}: {e}' for e in broken_links(document))
+            errors.extend(f'{document.relative_to(ROOT)}: {e}' for e in document_errors(document))
     workflow = (ROOT / '.github/workflows/ci.yml').read_text()
     for event, following in [('pull_request', 'workflow_dispatch')]:
         event_start = re.search(rf'^  {event}:', workflow, re.M)

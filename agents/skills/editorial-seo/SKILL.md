@@ -10,7 +10,8 @@ Trigger: blog index, categories, single posts, author/related content, pillar/co
 Delegate:
 - Existing blog/archive/article optimization → `blog-seo-ux-optimizer`
 - New pillar/cornerstone publishing package → `pillar-cornerstone-writer`
-- Link-graph-only diagnosis may additionally use internal `internal-linking-audit`
+- Link-graph-only diagnosis → `internal-linking-audit`
+- Standards for an included template/CSS edit → `modern-web-guidance`
 
 Hard rules:
 - Preserve query ownership.

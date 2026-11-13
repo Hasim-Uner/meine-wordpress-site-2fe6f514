@@ -60,6 +60,48 @@ class SpecialistHandoffTests(unittest.TestCase):
         self.assertEqual(self.errors_for(body), [])
 
 
+class PrimaryDelegationTests(unittest.TestCase):
+    def errors_for(self, owner_body):
+        context = CONTEXT.replace('| `owner` | `alpha`, `beta` |',
+                                  '| `owner` | `alpha` |\n| `other` | `beta` |')
+        with tempfile.TemporaryDirectory() as tmp:
+            root = Path(tmp)
+            skills = root / 'agents/skills'
+            for name, body in {'owner': owner_body, 'other': 'Primary.', 'alpha': 'Works alone.',
+                               'beta': 'Works alone.'}.items():
+                (skills / name).mkdir(parents=True)
+                (skills / name / 'SKILL.md').write_text(skill(name, body))
+            (skills / 'CONTEXT.md').write_text(context)
+            errors, _ = validator.specialist_errors(['owner', 'other'], root=root)
+            return errors
+
+    def test_primary_may_name_its_row_and_other_primaries(self):
+        self.assertEqual(self.errors_for('Delegate → `alpha`; copy → hand off to `other`.'), [])
+
+    def test_primary_naming_a_foreign_specialist_fails(self):
+        errors = self.errors_for('Link graph may use `beta`.')
+        self.assertEqual(errors, ['owner: names specialist beta that its CONTEXT.md delegation row '
+                                  'does not list'])
+
+
+class LineReferenceTests(unittest.TestCase):
+    def test_only_references_into_repo_files_fail(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            root = Path(tmp)
+            (root / 'blocksy-child/inc').mkdir(parents=True)
+            (root / 'blocksy-child/inc/schema.php').write_text('<?php\n')
+            document = root / 'doc.md'
+            # The joins keep these fixtures from reading as line references in this file.
+            document.write_text('\n'.join([
+                'Parser: `inc/schema.php' + ':12-40`, again `schema.php' + ':7`.',
+                'Upstream example `src/dropdown.css' + ':14` and http://localhost' + ':8080 stay legal.',
+                'Function names such as `hu_parse()` in `inc/schema.php` stay legal.',
+            ]))
+            errors = validator.line_references(document, root)
+        self.assertEqual(len(errors), 2)
+        self.assertTrue(all('goes stale' in e for e in errors))
+
+
 class RepositoryTests(unittest.TestCase):
     def test_current_tree_has_no_specialist_handoffs(self):
         primary = [s for s in (ROOT / 'agents/skills/PRIMARY_SKILLS.txt').read_text().splitlines()

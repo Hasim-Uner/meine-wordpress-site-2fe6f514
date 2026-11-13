@@ -13,16 +13,17 @@ Skill trennt beides: er nimmt das Gerüst mit und lässt den Text liegen.
 - Eigene Routen bewertet `route-conversion-review`.
 - Copy schreibt `seo-conversion-copywriting` — dieser Skill liefert ihm nur
   das Strukturvorbild.
-- Reine SEO-Wettbewerbsanalyse (Rankings, Keywords, Sichtbarkeit) gehört zu
-  `seo-agent`.
+- Reine SEO-Wettbewerbsanalyse (Rankings, Keywords, Sichtbarkeit) gehört zum
+  Primärskill `seo-intelligence`.
 
 ## Load First
 
 1. `docs/standards/BRAND_AND_COPY.md` — sonst lässt sich nicht beurteilen, was
    übertragbar ist und was an der Positionierung scheitert
-2. `seo-research/2026-07/data/competitors.md` — Kandidaten und Einordnung
+2. Die neueste `seo-research/<periode>/data/competitors.md` — Kandidaten und
+   Einordnung (`rg --files seo-research -g competitors.md`)
 
-Quelle holen per WebFetch, oder der Nutzer fügt die Copy ein.
+Quelle über den Web-Abruf des Hosts holen, oder der Nutzer fügt die Copy ein.
 
 ## Harte Regel
 

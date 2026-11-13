@@ -18,7 +18,9 @@ Hard rules:
 - Never edit skill content through discovery symlinks.
 - Keep `SKILL.md` short: trigger, delegation, first command/check, hard rules, deliverable.
 - Put repeatable mechanics in scripts instead of prose. Scripts read runtime facts (routes, redirects, slugs) from their source; never copy them.
-- Specialists do not route: no routing tables, no dispatcher chains. Out-of-scope work goes back to the owning primary. `npm run lint:skills` enforces ownership and this rule.
+- A documented first command prints a summary that fits a tool-output window; line-level detail is opt-in per path (`--lines`). `test_first_command_budget.py` enforces the size.
+- Cite functions or sections, never `file:line`; line numbers go stale with the next edit.
+- Specialists do not route: no routing tables, no dispatcher chains. Out-of-scope work goes back to the owning primary. `npm run lint:skills` enforces ownership, this rule and that a primary names only specialists from its row below.
 - Do not duplicate brand/copy/CTA/SEO ownership rules; reference canonical docs.
 - Large references/guides are opt-in, never default context.
 
@@ -34,7 +36,7 @@ Primary routes: see `AGENTS.md` Skill routing. This file only holds the delegati
 | `frontend-system` | `b2b-design-system`, `modern-web-guidance`, `emil-design-eng`, `animate`, `review-animations`, `improve-animations` |
 | `seo-intelligence` | `seo-agent`, `seo-live-qa`, `seo-drift`, `internal-linking-audit` |
 | `seo-cockpit-dev` | no mandatory delegate |
-| `editorial-seo` | `blog-seo-ux-optimizer`, `pillar-cornerstone-writer` |
+| `editorial-seo` | `blog-seo-ux-optimizer`, `pillar-cornerstone-writer`; `internal-linking-audit`, `modern-web-guidance` when the subtask needs them |
 | `conversion-copy` | `buyer-research`, `seo-conversion-copywriting`, `conversion-copy-loop`, `copy-anatomy` |
 | `offer-funnel-intelligence` | `buyer-research`, `modern-web-guidance` when the subtask needs them |
 | `conversion-architecture` | `wordpress-cro-content-design-audit`, `route-conversion-review`, `landing-page-builder`, `homepage-proof-monitoring` |
