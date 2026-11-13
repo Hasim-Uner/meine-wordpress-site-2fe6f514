@@ -199,7 +199,7 @@ $offers = [
 		'price'   => sprintf( 'ab %s', $website_price ),
 		'situation' => 'Sie brauchen eine neue Website oder einen Relaunch.',
 		'price_note' => 'netto · ' . $fest( hu_freelancer_website_scope_display() ),
-		'text'    => 'Neubau oder Relaunch auf WordPress, gebaut auf einer Testumgebung und erst nach Ihrer Abnahme live. Beim Relaunch bekommt jede alte URL eine Weiterleitung, damit bestehende Links und Suchergebnisse weiter ankommen.',
+		'text'    => 'Neubau oder Relaunch auf WordPress, gebaut auf einer Testumgebung und erst nach Ihrer Abnahme live. Beim Relaunch bekommt jede alte URL eine Weiterleitung, damit bestehende Links und Suchergebnisse weiter ankommen. Ihre fertigen Texte pflege ich ein; Texterstellung kommt auf Wunsch dazu.',
 		'request' => $project_link( 'website' ),
 		'hook'    => 'home_offer_relaunch',
 		'cta'     => 'Website-Projekt anfragen',
@@ -213,7 +213,7 @@ $offers = [
 		'price'   => $landing_price,
 		'situation' => 'Sie haben ein Angebot, aber keine Seite, die dafür anfragt.',
 		'price_note' => 'netto · Festpreis',
-		'text'    => 'Eine Seite für ein Angebot, mit Konzept, Text, Anfrageformular und verfügbarem Herkunftskontext. Sie geben zweimal frei: den Text und die fertige Seite.',
+		'text'    => 'Eine Seite für ein Angebot, mit Konzept, Anfrageformular und verfügbarem Herkunftskontext. Anders als bei der Website schreibe ich hier den Text: Sie liefern die Fakten und geben zweimal frei, den Text und die fertige Seite.',
 		'request' => $project_link( 'landingpage' ),
 		'hook'    => 'home_offer_landingpage',
 		'cta'     => 'Landingpage anfragen',
@@ -275,6 +275,16 @@ $offers = [
 		'cta'     => 'Übernahme-Check anfragen',
 		'detail'  => [ 'url' => $routes['takeover'], 'hook' => 'home_offer_takeover_detail' ],
 	],
+];
+
+/*
+ * Zwei Ausgangslagen statt einer flachen Liste: Wer neu baut, vergleicht
+ * 01 bis 03; wessen Website schon steht, findet 04 bis 06. Reihenfolge,
+ * Nummern, Anker und Hooks der Zeilen bleiben unveraendert.
+ */
+$offer_groups = [
+	[ 'id' => 'angebote-neu', 'label' => 'Sie brauchen etwas Neues · Website, Landingpage, Anfragestrecke', 'items' => array_slice( $offers, 0, 3 ) ],
+	[ 'id' => 'angebote-bestand', 'label' => 'Ihre Website steht schon · prüfen, messen, übernehmen', 'items' => array_slice( $offers, 3 ) ],
 ];
 
 $handover = [
@@ -413,7 +423,10 @@ get_header();
 			<h2 class="st-h2" id="angebote-h">Was es kostet, steht hier. <span class="st-leise">Der Einstieg richtet sich nach Ihrer Ausgangslage.</span></h2>
 			<p class="st-vorspann">Alle Preise netto. Umfang und Endpreis stehen vor dem Start schriftlich fest. Was danach dazukommt, kommt nur mit Ihrer Zustimmung dazu.</p>
 			<div class="st-angebote">
-				<?php foreach ( $offers as $offer ) : ?>
+				<?php foreach ( $offer_groups as $offer_group ) : ?>
+				<div class="st-angebotsgruppe" role="group" aria-labelledby="<?php echo esc_attr( $offer_group['id'] ); ?>-h">
+					<p class="st-klein-label st-angebotsgruppe__kopf" id="<?php echo esc_attr( $offer_group['id'] ); ?>-h"><?php echo esc_html( $offer_group['label'] ); ?></p>
+				<?php foreach ( $offer_group['items'] as $offer ) : ?>
 					<article class="st-angebot" id="<?php echo esc_attr( $offer['id'] ); ?>" aria-labelledby="<?php echo esc_attr( $offer['id'] ); ?>-h">
 						<span class="st-angebot__nr st-klein-label" aria-hidden="true"><?php echo esc_html( $offer['nr'] ); ?></span>
 						<div class="st-angebot__kopf"><h3 class="st-angebot__titel" id="<?php echo esc_attr( $offer['id'] ); ?>-h"><?php echo esc_html( $offer['title'] ); ?></h3><p class="st-angebot__lage"><?php echo esc_html( $offer['situation'] ); ?></p></div>
@@ -424,6 +437,8 @@ get_header();
 							<?php if ( ! empty( $offer['detail']['label'] ) ) : ?><a class="st-link" href="<?php echo esc_url( $offer['detail']['url'] ); ?>" data-track-action="<?php echo esc_attr( $offer['detail']['hook'] ); ?>" data-track-category="proof" data-track-section="angebote"><?php echo esc_html( $offer['detail']['label'] ); ?> <span aria-hidden="true">→</span></a><?php else : ?><a class="st-link" href="<?php echo esc_url( $offer['detail']['url'] ); ?>" data-track-action="<?php echo esc_attr( $offer['detail']['hook'] ); ?>" data-track-category="navigation" data-track-section="angebote">Umfang im Detail <span aria-hidden="true">→</span><span class="nur-vorlesen"> zu <?php echo esc_html( $offer['title'] ); ?></span></a><?php endif; ?></p>
 						</div>
 					</article>
+				<?php endforeach; ?>
+				</div>
 				<?php endforeach; ?>
 			</div>
 			<div class="st-weiter"><p><strong>Weiterentwicklung nach dem Projekt.</strong> <?php echo esc_html( $retainer ); ?> im Monat, monatlich kündbar. Eine Voraussetzung ist das nicht.</p><a class="st-link" href="#uebergabe" data-track-action="home_offer_retainer_more" data-track-category="navigation" data-track-section="angebote">Was Sie ohnehin behalten <span aria-hidden="true">↓</span></a></div>

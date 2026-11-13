@@ -145,6 +145,16 @@ Stationsöffnungen. Sechs Wochen ab dem tatsächlichen Livegang auswerten:
   allein belegen keinen zusätzlichen Umsatz; Vorher/Nachher ist bei
   verändertem Traffic kein kausaler Nachweis.
 
+### Preisblock in zwei Ausgangslagen (Repo 2026-11-13)
+
+Die sechs Angebotszeilen stehen unter zwei Marken (neu bauen 01–03,
+bestehende Website 04–06); Website- und Landingpage-Zeile nennen den
+Textumfang. Hooks, Ziele und die Ersteinschätzungs-Tafel bleiben gleich.
+Empfehlung: erst nach dem Versuchsende am 2026-11-20 mergen, damit die letzte
+Versuchswoche nicht mit einer Preisblock-Änderung vermischt wird. Den
+tatsächlichen Livegang hier nachtragen; `home_offer_*`-Klicks davor und danach
+getrennt auswerten.
+
 Livegang und Ende der Beobachtung werden nach dem erfolgreichen Deploy
 notiert. Die `data-track-*`-Hooks sind vorhanden; die lokale Messfläche
 sendet keine Ereignisse. Vor der Auswertung prüfen, ob das bestehende

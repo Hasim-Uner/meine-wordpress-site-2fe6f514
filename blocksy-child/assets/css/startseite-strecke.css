@@ -1233,6 +1233,10 @@
 .st[data-st-final] .st-referenzen__liste li { display: grid; gap: var(--s0) var(--s4); padding-block: var(--s2); }
 .st[data-st-final] .st-referenzen__name { margin: 0; }
 .st[data-st-final] .st-angebote { margin-top: var(--s4); }
+/* Zwei Ausgangslagen: die Marke traegt den Stempel, die zweite Gruppe beginnt
+   wieder auf der Tintenlinie, damit der Wechsel ohne Ueberschrift lesbar ist. */
+.st[data-st-final] .st-angebotsgruppe__kopf { padding-block: var(--s2); border-bottom: 1px solid var(--haar); color: var(--stempel); }
+.st[data-st-final] .st-angebotsgruppe + .st-angebotsgruppe { margin-top: var(--s4); border-top: 1px solid var(--tinte); }
 .st[data-st-final] .st-angebot { grid-template-columns: 2rem minmax(0, 1fr); gap: var(--s2); padding-block: var(--s3); }
 .st[data-st-final] .st-angebot__titel { margin: 0; font-size: 1.4rem; }
 .st[data-st-final] .st-angebot__lage { margin-top: var(--s1); font-size: 0.86rem; line-height: 1.45; color: var(--grau); }

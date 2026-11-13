@@ -380,6 +380,12 @@ Projektabschluss und ruhiger Agentur-Zweitweg, zentrale Metadaten und
   Messtafel mit maßstäblichen CPL-Balken. Diese wachsen einmal beim Sichtkontakt
   ausschließlich per Transform. Der Prüfstand enthält das Livegang-Protokoll,
   PageSpeed mit dem lokal gemessenen LCP und die Referenzen (`#referenzen`).
+  Seit 2026-11-13 stehen die sechs Angebote in zwei Ausgangslagen
+  (`#angebote-neu-h`: 01–03 neu bauen; `#angebote-bestand-h`: 04–06 bestehende
+  Website prüfen, messen, übernehmen). Reihenfolge, Nummern, Anker und Hooks
+  bleiben gleich. Website- und Landingpage-Zeile nennen den Textumfang (Website:
+  fertige Texte, Texterstellung optional; Landingpage: Text enthalten), damit der
+  höhere Landingpage-Festpreis neben „ab“ beim Website-Einstieg erklärt ist.
   Unter sechs Angeboten (`#angebote`, alle Schema-Anker erhalten; Kleingedrucktes
   steht im Preishinweis oder auf der Detailseite) stehen Weiterentwicklung,
   Hosting-Hinweis und eine bedingte Ersteinschätzungs-Karte: Website-URL/Ziel,
