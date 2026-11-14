@@ -37,9 +37,8 @@ async function choosePreset(page, pages) {
   await page.locator(`[data-website-scenario="${pages}"]`).click();
 }
 
-async function setComposition(page, { utility = 0, standard = 0, sales = 0 }) {
+async function setComposition(page, { standard = 0, sales = 0 }) {
   await choosePreset(page, 1);
-  for (let i = 0; i < utility; i++) await page.locator('#utility-plus').click();
   for (let i = 0; i < standard; i++) await page.locator('#standard-plus').click();
   for (let i = 0; i < sales; i++) await page.locator('#sales-plus').click();
 }
@@ -127,8 +126,7 @@ for (const width of [320, 360, 768, 1440]) {
     await expect(page.locator('#beleg')).not.toContainText(/150\s*€|22\s*€|85\s*%|1[.,]750|15\s*%/);
 
     await expect(page.locator('.aw-szenario')).toHaveCount(3);
-    await expect(page.locator('#gesamt')).toHaveText(euro(3090));
-    await expect(page.locator('#utility-pages')).toHaveText('0');
+    await expect(page.locator('#gesamt')).toHaveText(euro(2790));
     await expect(page.locator('#standard-pages')).toHaveText('1');
     await expect(page.locator('#sales-pages')).toHaveText('1');
     await expect(page.locator('#texte')).not.toBeChecked();
@@ -136,12 +134,12 @@ for (const width of [320, 360, 768, 1440]) {
     await page.locator('[data-website-scenario="1"]').focus();
     await page.keyboard.press('Enter');
     await expect(page.locator('#gesamt')).toHaveText(euro(1900));
-    for (const id of ['utility-minus','standard-minus','sales-minus']) await expect(page.locator('#' + id)).toBeDisabled();
+    for (const id of ['standard-minus','sales-minus']) await expect(page.locator('#' + id)).toBeDisabled();
 
     await page.locator('#standard-plus').focus();
     await page.keyboard.press('Space');
     await expect(page.locator('#standard-pages')).toHaveText('1');
-    await expect(page.locator('#gesamt')).toHaveText(euro(2300));
+    await expect(page.locator('#gesamt')).toHaveText(euro(2200));
     await expect(page.locator('#bauzeit')).toHaveText(workingDays(3));
 
     expect(errors).toEqual([]);
@@ -164,7 +162,7 @@ test('presets, project-wide tracking and CTA contract agree with PHP canon', asy
   const scenarios = [
     { pages:1, utility:0, standard:0, sales:0 },
     { pages:3, utility:0, standard:1, sales:1 },
-    { pages:5, utility:1, standard:1, sales:2 },
+    { pages:5, utility:0, standard:2, sales:2 },
   ];
 
   for (const scenario of scenarios) {
@@ -207,22 +205,22 @@ test('presets, project-wide tracking and CTA contract agree with PHP canon', asy
 
 test('manual page types reach ten pages and price each type independently', async ({ page }) => {
   await open(page);
-  await setComposition(page, { utility:2, standard:3, sales:4 });
-  await expect(page.locator('#utility-pages')).toHaveText('2');
-  await expect(page.locator('#standard-pages')).toHaveText('3');
+  await setComposition(page, { standard:5, sales:4 });
+  await expect(page.locator('[data-page-row]')).toHaveCount(2);
+  await expect(page.locator('#standard-pages')).toHaveText('5');
   await expect(page.locator('#sales-pages')).toHaveText('4');
 
-  for (const id of ['utility-plus','standard-plus','sales-plus']) await expect(page.locator('#' + id)).toBeDisabled();
+  for (const id of ['standard-plus','sales-plus']) await expect(page.locator('#' + id)).toBeDisabled();
 
   const quote = canonicalQuotes([{
     seiten:10, art:'neubau', tracking:0, texte:0,
-    utility_pages:2, standard_pages:3, sales_pages:4,
+    utility_pages:0, standard_pages:5, sales_pages:4,
   }])[0];
   await expect(page.locator('#gesamt')).toHaveText(euro(quote.price));
   await expect(page.locator('#bauzeit')).toHaveText(workingDays(quote.days));
 
   const params = Object.fromEntries(new URL(await page.locator('#cta-angebot').getAttribute('href')).searchParams);
-  expect(params).toMatchObject({ seiten:'10', kurz:'2', standard:'3', leistung:'4', texte:'0' });
+  expect(params).toMatchObject({ seiten:'10', kurz:'0', standard:'5', leistung:'4', texte:'0' });
 });
 
 test('copywriting is priced by selected page type instead of being free', async ({ page }) => {
@@ -235,15 +233,15 @@ test('copywriting is priced by selected page type instead of being free', async 
 
   await choosePreset(page, 3);
   await expect(page.locator('#text-option-preis')).toHaveText('+' + euro(730));
-  await expect(page.locator('#gesamt')).toHaveText(euro(3820));
+  await expect(page.locator('#gesamt')).toHaveText(euro(3520));
 
   await choosePreset(page, 5);
-  await expect(page.locator('#text-option-preis')).toHaveText('+' + euro(1070));
-  await expect(page.locator('#gesamt')).toHaveText(euro(5250));
+  await expect(page.locator('#text-option-preis')).toHaveText('+' + euro(1170));
+  await expect(page.locator('#gesamt')).toHaveText(euro(4850));
   await expect(page.locator('#tage-texts')).toHaveText(workingDays(2));
 
   await page.locator('#texte').uncheck();
-  await expect(page.locator('#gesamt')).toHaveText(euro(4180));
+  await expect(page.locator('#gesamt')).toHaveText(euro(3680));
   await expect(page.locator('#auswahl-texte')).toHaveText('Eigene Texte');
 });
 
@@ -257,7 +255,7 @@ test('screendesign counts layouts; tracking and CRM remain project modules', asy
 
   const quote = canonicalQuotes([{
     seiten:5, art:'neubau', tracking:1, texte:0, design:'neu', design_layouts:2, crm:1,
-    utility_pages:1, standard_pages:1, sales_pages:2,
+    utility_pages:0, standard_pages:2, sales_pages:2,
   }])[0];
   await expect(page.locator('#gesamt')).toHaveText(euro(quote.price));
   await expect(page.locator('#betrag-design')).toHaveText(euro(940));
@@ -266,10 +264,10 @@ test('screendesign counts layouts; tracking and CRM remain project modules', asy
   await page.locator('#sales-plus').click();
   const six = canonicalQuotes([{
     seiten:6, art:'neubau', tracking:1, texte:0, design:'neu', design_layouts:2, crm:1,
-    utility_pages:1, standard_pages:1, sales_pages:3,
+    utility_pages:0, standard_pages:2, sales_pages:3,
   }])[0];
   await expect(page.locator('#gesamt')).toHaveText(euro(six.price));
-  expect(six.price - quote.price).toBe(790);
+  expect(six.price - quote.price).toBe(590);
 });
 
 test('product -> contact -> REST -> CRM keeps typed scope and recalculates server-side', async ({ page }) => {
@@ -287,10 +285,10 @@ test('product -> contact -> REST -> CRM keeps typed scope and recalculates serve
   await page.setContent('<style>.is-hidden,[hidden]{display:none!important}</style>' + html);
 
   await expect(page.locator('[name="focus"]')).toHaveValue('website');
-  await expect(page.locator('[name="kurz"]')).toHaveValue('1');
-  await expect(page.locator('[name="standard"]')).toHaveValue('1');
+  await expect(page.locator('[name="kurz"]')).toHaveValue('0');
+  await expect(page.locator('[name="standard"]')).toHaveValue('2');
   await expect(page.locator('[name="leistung"]')).toHaveValue('2');
-  await expect(page.locator('[data-website-scope]')).toContainText('5 Seiten · Relaunch · Tracking dazu · 7.000 € netto · mindestens ' + workingDays(14));
+  await expect(page.locator('[data-website-scope]')).toContainText('5 Seiten · Relaunch · Tracking dazu · 6.500 € netto · mindestens ' + workingDays(14));
 
   let response;
   await page.route('**/wp-json/nexus/v1/contact-request', async route => {
@@ -314,8 +312,8 @@ test('product -> contact -> REST -> CRM keeps typed scope and recalculates serve
   expect(response.status).toBe(201);
   const meta = response.meta['1'];
   expect(meta._nexus_contact_website_pages).toBe(5);
-  expect(meta._nexus_contact_website_pages_utility).toBe(1);
-  expect(meta._nexus_contact_website_pages_standard).toBe(1);
+  expect(meta._nexus_contact_website_pages_utility).toBe(0);
+  expect(meta._nexus_contact_website_pages_standard).toBe(2);
   expect(meta._nexus_contact_website_pages_sales).toBe(2);
   expect(meta._nexus_contact_website_texts).toBe(0);
   expect(meta._nexus_contact_website_screendesign).toBe(1);
@@ -324,14 +322,14 @@ test('product -> contact -> REST -> CRM keeps typed scope and recalculates serve
   expect(meta._nexus_contact_website_preparation_days).toBe(2.5);
   expect(meta._nexus_contact_website_implementation_days).toBe(11);
   expect(meta._nexus_contact_website_duration_open).toBe(1);
-  expect(meta._nexus_contact_website_price).toBe(7000);
-  expect(meta._nexus_contact_website_page_price).toBe(2280);
+  expect(meta._nexus_contact_website_price).toBe(6500);
+  expect(meta._nexus_contact_website_page_price).toBe(1780);
   expect(meta._nexus_contact_website_text_price).toBe(0);
   expect(meta._nexus_contact_website_design_price).toBe(940);
 
   expect(response.mails).toHaveLength(2);
   for (const mail of response.mails) {
-    expect(mail.body).toContain('7.000');
+    expect(mail.body).toContain('6.500');
     expect(mail.body).toContain('Freigegebene Texte vorhanden');
     expect(mail.body).toContain('CRM-Anbindung Standard');
     expect(mail.body).toContain('Zusätzlich: individuelles Daten-Dashboard nach Angebot');
@@ -346,7 +344,7 @@ test('no JavaScript keeps a valid static three-page offer', async ({ browser }) 
   await expect(page.locator('#leiste')).toBeHidden();
   await expect(page.locator('.aw-szenario')).toHaveCount(3);
   expect(await page.locator('[data-website-controls]').evaluateAll(els => els.every(el => getComputedStyle(el).display === 'none'))).toBe(true);
-  await expect(page.locator('#gesamt')).toHaveText(euro(3090));
+  await expect(page.locator('#gesamt')).toHaveText(euro(2790));
   await expect(page.locator('#unterschied .aw-ebene')).toHaveCount(5);
   expect(await page.locator('#unterschied .aw-ebene').evaluateAll(els => els.every(el => getComputedStyle(el).opacity === '1'))).toBe(true);
 
@@ -430,7 +428,7 @@ test('WebMCP quotes match PHP canon and prepare the existing inquiry path withou
   expect(actual.results[1].price_excludes).toContain('Individuelles Daten-Dashboard');
   expect(actual.results[1].scope_review).toHaveLength(2);
   expect(actual.results[3].scope_review).toHaveLength(1);
-  await expect(page.locator('#gesamt')).toHaveText(euro(3090));
+  await expect(page.locator('#gesamt')).toHaveText(euro(2790));
   expect(await page.locator('#cta-angebot').getAttribute('href')).toBe(initialCta);
   expect(page.url()).toBe(initialUrl);
   expect(requests).toEqual([]);
@@ -463,7 +461,7 @@ test('WebMCP validates types and cross-field limits before quoting', async ({ pa
   }
   expect(results.at(-2).error).toBe('too_many_pages');
   expect(results.at(-1).error).toBe('too_many_layouts');
-  await expect(page.locator('#gesamt')).toHaveText(euro(3090));
+  await expect(page.locator('#gesamt')).toHaveText(euro(2790));
 });
 
 for (const mode of ['absent', 'throws', 'rejects']) {
@@ -475,7 +473,7 @@ for (const mode of ['absent', 'throws', 'rejects']) {
     await choosePreset(page, 1);
     await expect(page.locator('#gesamt')).toHaveText(euro(1900));
     await page.locator('#standard-plus').click();
-    await expect(page.locator('#gesamt')).toHaveText(euro(2300));
+    await expect(page.locator('#gesamt')).toHaveText(euro(2200));
     expect(errors).toEqual([]);
   });
 }

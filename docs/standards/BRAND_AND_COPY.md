@@ -389,8 +389,8 @@ Produktname: **Die Anfrage-Website**. Erweiterbares Grundprodukt aus Custom Code
 ohne Pagebuilder, mit Gutenberg/ACF für pflegbare Inhalte, GitHub-Versionierung
 und KI-gestützter Umsetzung mit Qualitätsprüfung. Preise ausschließlich aus
 `inc/canon/pricing-canon.php`: Grundpreis für Grundsystem und erste Hauptseite;
-weitere Seiten nach Aufgabe als kurze Seite, Standardseite oder
-Leistungs-/Verkaufsseite. Conversion-Tracking aus der Messung-Stufe ist optional
+weitere Seiten nach Aufgabe als Standardseite oder
+Leistungs-/Verkaufsseite (zwei Seitentypen seit 14.11.2026). Conversion-Tracking aus der Messung-Stufe ist optional
 und wird projektweit berechnet. Seit der Preispräzisierung vom 06.10.2026 ist
 diese Produktformel der öffentliche Preisanker. Ein Stundensatz wird auf der
 Produktseite nicht daneben gestellt und der Konfigurator bleibt eine
@@ -442,7 +442,7 @@ funktionierendes Formular ist noch kein Conversion-Tracking.
 
 Rechner bis zehn Inhaltsseiten. Preise und Zeitfaktoren liegen in
 `hu_website_calculator_rules()`. Grundsystem und erste Hauptseite bilden die
-Basis; zusätzliche kurze Seiten, Standardseiten und Leistungs-/Verkaufsseiten
+Basis; zusätzliche Standardseiten und Leistungs-/Verkaufsseiten
 haben eigene Preis- und Zeitbeiträge. Tracking und Standard-CRM werden je
 Projekt gerechnet, nicht pro URL; Relaunch besitzt einen eigenen Zeitbeitrag.
 Texterstellung ist optional und folgt dem gewählten Seitentyp. Fertige,
@@ -473,7 +473,7 @@ Flow-Durchgang 05.10.2026, Scope-Präzisierung 06.10.2026: Diese
 Produktseite spricht Unternehmen und Selbstständige an, auch wenn ihre eigenen
 Kunden Privatpersonen sind. Die Umfangswahl ist einmal im Konfigurator
 integriert. Grundsystem und erste Hauptseite sind die Basis; zusätzliche Seiten
-werden als kurze Seite, Standardseite oder Leistungs-/Verkaufsseite gewählt.
+werden als Standardseite oder Leistungs-/Verkaufsseite gewählt.
 Die drei sichtbaren Vorlagen setzen nur passende Typmischungen und bleiben
 jederzeit manuell veränderbar. Ein Inhaltsabschnitt ist keine zusätzliche
 Seite. Shop und Buchung bleiben separat.

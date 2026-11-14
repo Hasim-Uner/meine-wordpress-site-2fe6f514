@@ -1646,7 +1646,6 @@ function hu_output_schema()
                     'priceCurrency' => 'EUR',
                     'priceSpecification' => [
                         [ '@type' => 'UnitPriceSpecification', 'price' => HU_FREELANCER_WEBSITE_MIN, 'priceCurrency' => 'EUR', 'valueAddedTaxIncluded' => false, 'description' => 'Grundsystem und erste Hauptseite' ],
-                        [ '@type' => 'UnitPriceSpecification', 'price' => HU_WEBSITE_PAGE_UTILITY, 'priceCurrency' => 'EUR', 'valueAddedTaxIncluded' => false, 'description' => 'zusätzliche kurze Seite' ],
                         [ '@type' => 'UnitPriceSpecification', 'price' => HU_WEBSITE_PAGE_STANDARD, 'priceCurrency' => 'EUR', 'valueAddedTaxIncluded' => false, 'description' => 'zusätzliche Standardseite' ],
                         [ '@type' => 'UnitPriceSpecification', 'price' => HU_WEBSITE_PAGE_SALES, 'priceCurrency' => 'EUR', 'valueAddedTaxIncluded' => false, 'description' => 'zusätzliche Leistungs- oder Verkaufsseite' ],
                     ],
