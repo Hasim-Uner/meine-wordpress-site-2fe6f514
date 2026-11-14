@@ -254,19 +254,50 @@
             });
         });
     });
-    var qualitySection = $('#unterschied');
-    if (qualitySection && !media.matches && window.IntersectionObserver) {
-        root.classList.add('aw-motion-ready');
-        var qualityObserver = new IntersectionObserver(function (entries, observer) {
+    // Abschnitt 01: Die Schicht des Textes, der gerade gelesen wird, leuchtet im Modell.
+    var anatomy = $('[data-aw-anatomie]');
+    if (anatomy && window.IntersectionObserver) {
+        var stage = anatomy.querySelector('.aw-anatomie-buehne');
+        var layers = $$('[data-aw-ebene]');
+        var layerNumber = $('#aw-ebene-nr'), layerName = $('#aw-ebene-name');
+        var showLayer = function (layer) {
+            stage.dataset.aktiv = layer.dataset.awEbene;
+            layers.forEach(function (other) { other.classList.toggle('ist-aktiv', other === layer); });
+            if (layerNumber) layerNumber.textContent = '0' + layer.dataset.awEbene;
+            if (layerName) layerName.textContent = layer.dataset.awName;
+            layerNumber.nextElementSibling.textContent = '/ 0' + layers.length;
+        };
+        anatomy.classList.add('aw-anatomie-live');
+        var layerObserver = new IntersectionObserver(function (entries) {
+            entries.forEach(function (entry) { if (entry.isIntersecting) showLayer(entry.target); });
+        }, { rootMargin: '-52% 0px -40% 0px' });
+        layers.forEach(function (layer) { layerObserver.observe(layer); });
+        var openObserver = new IntersectionObserver(function (entries, observer) {
             entries.forEach(function (entry) {
                 if (!entry.isIntersecting) return;
-                entry.target.classList.add('is-visible');
-                observer.unobserve(entry.target);
+                anatomy.classList.add('ist-offen');
+                observer.disconnect();
             });
-        }, { threshold: 0.22 });
-        qualityObserver.observe(qualitySection);
-    } else if (qualitySection) {
-        qualitySection.classList.add('is-visible');
+        }, { rootMargin: '0px 0px -30% 0px' });
+        openObserver.observe(stage);
+    }
+    // Hero: das Modell folgt dem Zeiger leicht. Nur mit Maus und ohne reduzierte Bewegung.
+    var heroModel = $('.aw-modell--hero'), heroSection = $('#hero');
+    if (heroModel && heroSection && !media.matches && window.matchMedia('(hover: hover) and (pointer: fine)').matches) {
+        var tiltFrame = 0;
+        heroSection.addEventListener('pointermove', function (event) {
+            if (tiltFrame) return;
+            tiltFrame = requestAnimationFrame(function () {
+                tiltFrame = 0;
+                var box = heroSection.getBoundingClientRect();
+                heroModel.style.setProperty('--aw-tx', ((event.clientX - box.left) / box.width - .5).toFixed(3));
+                heroModel.style.setProperty('--aw-ty', ((event.clientY - box.top) / box.height - .5).toFixed(3));
+            });
+        });
+        heroSection.addEventListener('pointerleave', function () {
+            heroModel.style.removeProperty('--aw-tx');
+            heroModel.style.removeProperty('--aw-ty');
+        });
     }
     if (media.addEventListener) media.addEventListener('change', cancelMotion);
     calculate();
