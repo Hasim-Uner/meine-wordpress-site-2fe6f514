@@ -165,15 +165,19 @@ get_header();
 				<h2 class="kopf">Sie bekommen ein Protokoll, das sich nachprüfen lässt.</h2>
 				<p class="vorspann">Für die vereinbarten Conversions werden Auslöser, Consent-Zustand, erwartetes Signal und Prüfergebnis festgehalten. Bekannte Grenzen stehen mit in der Übergabe.</p>
 				<div class="hu-tracking-proof-ledger" aria-label="Beispielstruktur der technischen Abnahme">
-					<p class="hu-tracking-proof-ledger__eyebrow">Beispielstruktur · kein Kundenprotokoll</p>
+					<p class="hu-tracking-proof-ledger__eyebrow">Muster-Abnahme · erwartete Prüfergebnisse</p>
 					<div class="protokoll">
-						<div class="z"><span>Erfolgreiche Anfrage</span><b>Ein definierter Conversion-Vorgang</b></div>
-						<div class="z"><span>Fehlgeschlagener Versand</span><b>Keine Erfolgs-Conversion</b></div>
-						<div class="z"><span>Consent-Zustände</span><b>Der vereinbarte Datenfluss wird geprüft</b></div>
+						<div class="z"><span>Formular erfolgreich angenommen</span><b>Das vereinbarte Conversion-Ereignis wird einmal ausgelöst.</b></div>
+						<div class="z"><span>Formular technisch abgewiesen</span><b>Es wird keine erfolgreiche Anfrage gezählt.</b></div>
+						<div class="z"><span>Einwilligung erteilt oder abgelehnt</span><b>Consent-Signale und Tag-Verhalten entsprechen der vereinbarten Konfiguration.</b></div>
 						<div class="z"><span>Übergabe</span><b>Messplan · QA-Protokoll · GTM-Versionen</b></div>
 					</div>
 				</div>
-				<p class="ga4-product-evidence"><a class="satzlink" href="<?php echo esc_url( $results_url ); ?>" data-track-action="tracking_acceptance_case" data-track-category="navigation">Arbeitsbeleg: Tracking und CRM im dokumentierten B2B-Fall →</a><span>Das Ergebnis dieses Falls entstand aus mehreren Maßnahmen gemeinsam; es ist keine Zusage für ein Tracking-Setup.</span></p>
+				<div class="ga4-product-evidence">
+					<h3>Praxisfall: Anfragen bis ins CRM messen</h3>
+					<p>Für einen mittelständischen Betrieb habe ich Formular, Tracking und Vertrieb verbunden. Im CRM war erkennbar, woher eine Anfrage kam. Qualifizierte Anfragen und Abschlüsse gingen als Signale zurück an die Werbekonten. Das war Teil eines größeren Projekts mit serverseitiger Messung und CRM-Anbindung.</p>
+					<p><a class="satzlink" href="<?php echo esc_url( $results_url . '#rueckmeldung' ); ?>" data-track-action="tracking_acceptance_case" data-track-category="navigation">Datenfluss im anonymisierten Praxisfall ansehen →</a></p>
+				</div>
 			</div>
 			<aside class="marg"><p class="note"><span class="label">Konten und Eigentum</span>GTM, GA4 und Werbekonten bleiben bei Ihnen. Die Dokumentation erklärt das Setup auch dem nächsten Entwickler.</p></aside>
 		</div>

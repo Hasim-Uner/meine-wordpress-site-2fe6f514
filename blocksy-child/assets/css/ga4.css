@@ -62,7 +62,7 @@
 }
 
 .ga4-page .ga4-product-brief__terms,
-.ga4-page .ga4-product-evidence span {
+.ga4-page .ga4-product-evidence p {
   font-size: var(--grad-klein);
   line-height: 1.6;
   color: var(--grau);
@@ -103,8 +103,7 @@
   margin-top: var(--s3);
 }
 
-.ga4-page .ga4-product-evidence span {
-  display: block;
+.ga4-page .ga4-product-evidence p {
   margin-top: var(--s1);
 }
 

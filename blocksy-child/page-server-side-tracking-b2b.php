@@ -49,8 +49,8 @@ $meta_product         = $ladder['pro'];
 $crm_product          = $ladder['individual'];
 
 // ── Beleg: ein Vorher-nachher-Wert aus dem dokumentierten Fall ─
-// Der Kanon verlangt, die Einordnung immer mitzufuehren: kein Paralleltest,
-// und im Fall gingen Server-Side und CRM-Anbindung gemeinsam live.
+// Die Fallstudie ordnet den Wert dem Livegang der serverseitigen Messung zu.
+// Der Vorher-nachher-Vergleich isoliert deren Anteil am Ergebnis nicht.
 $sst_effect = function_exists( 'hu_e3_metric' ) ? hu_e3_metric( 'sst_effect' ) : '';
 $case_label = function_exists( 'hu_e3_canon' ) ? (string) ( hu_e3_canon()['case_label_genitive'] ?? '' ) : '';
 
@@ -109,7 +109,7 @@ $faq = [
 	[
 		'question' => 'Was bringt Server-Side Tracking messbar?',
 		'answer'   => '' !== $sst_effect
-			? sprintf( 'Eine Zusage lässt sich vor dem Paralleltest nicht machen; das Ergebnis hängt von Setup, Browsermix, Consent-Verhalten und der bisherigen Event-Qualität ab. Im dokumentierten Fall eines %1$s lagen die Kosten pro Anfrage drei bis vier Tage nach dem Livegang von Server-Side Tracking und CRM-Anbindung %2$s niedriger, bei durchgehend laufenden Kampagnen. Das war ein Vorher-nachher-Vergleich, kein Paralleltest, und nicht der Server allein. Deshalb läuft die neue Messung heute zuerst neben der alten, und entscheidend ist die Differenz in Ihren eigenen Konten.', $case_label, $sst_effect )
+			? sprintf( 'Das Ergebnis hängt von Setup, Browsermix, Consent-Verhalten und bisheriger Event-Qualität ab. Im dokumentierten Fall eines %1$s lagen die Kosten pro Anfrage drei bis vier Tage nach dem Livegang der serverseitigen Messung %2$s niedriger, während die Kampagnen weiterliefen. Der Vorher-nachher-Vergleich zeigt den Verlauf des Projekts. Den technischen Unterschied für Ihr Setup prüfe ich im Paralleltest in Ihren eigenen Konten.', $case_label, $sst_effect )
 			: 'Eine seriöse Prozentzahl lässt sich vor dem Paralleltest nicht nennen. Das Ergebnis hängt vom bestehenden Setup, Browsermix, Consent-Verhalten und der bisherigen Event-Qualität ab. Deshalb läuft die neue Messung zunächst neben der alten. Entscheidend ist die nachvollziehbare Differenz in Ihren eigenen Konten — nicht eine pauschale Erfolgszahl.',
 	],
 	[
@@ -234,18 +234,26 @@ get_header();
 				<p class="mono stempelfarbe">Prüfbarer Lieferbeleg</p>
 				<h2 class="kopf">Dasselbe Ereignis. Zwei Messwege. Ein Protokoll.</h2>
 				<p class="vorspann">Vor der Umschaltung vergleiche ich den bestehenden Browserweg und den neuen Serverweg in Ihren Konten. Die Prüfung hält fest, welche Signale ankommen, fehlen oder doppelt gezählt werden.</p>
-				<div class="sst-product-protocol"><p class="mono">Beispielstruktur · kein Kundenprotokoll</p><div class="protokoll"><div class="z"><span>Ereignis</span><b>Auslöser · Parameter · Consent-Zustand</b></div><div class="z"><span>Vergleich</span><b>Browser-Signal · Server-Signal · Abweichung</b></div><div class="z"><span>Übergabe</span><b>Messplan · Prüfergebnis · bekannte Grenzen</b></div></div></div>
+				<div class="sst-product-protocol">
+					<p class="mono">Muster-Paralleltest · Prüfschritte für eine Testanfrage</p>
+					<div class="protokoll">
+						<div class="z"><span>Testanfrage auslösen</span><b>Auslöser, Parameter und Consent-Zustand festhalten.</b></div>
+						<div class="z"><span>Messwege vergleichen</span><b>In den Zielsystemen prüfen, ob das vereinbarte Signal ankommt, fehlt oder doppelt gezählt wird.</b></div>
+						<div class="z"><span>Umschaltung vorbereiten</span><b>Abweichungen, Prüfergebnis und bekannte Grenzen dokumentieren.</b></div>
+					</div>
+				</div>
 				<?php if ( '' !== $sst_effect ) : ?>
 					<div class="sst-beleg">
 						<p class="sst-beleg__zahl"><?php echo esc_html( $sst_effect ); ?></p>
 						<div>
-							<p><?php echo esc_html( sprintf( 'niedrigere Kosten pro Anfrage, drei bis vier Tage nachdem Server-Side Tracking und die CRM-Anbindung live gingen. Bei durchgehend laufenden Kampagnen, im dokumentierten Fall eines %s.', $case_label ) ); ?></p>
-							<p class="sst-beleg__grenze">Ein Vorher-nachher-Vergleich, kein Paralleltest, und nicht der Server allein. Genau deshalb prüfe ich heute parallel, bevor umgeschaltet wird.</p>
-							<p><a class="satzlink" href="<?php echo esc_url( $e3_case_url ); ?>" data-track-action="internal_sst_solar_case" data-track-category="internal_link" data-track-section="acceptance">Fallstudie mit Verlauf →</a></p>
+							<p><?php echo esc_html( sprintf( 'niedrigere Kosten pro Anfrage drei bis vier Tage nach dem Livegang der serverseitigen Messung. Die Kampagnen liefen durch. Das ist der beobachtete Verlauf im Projekt eines %s.', $case_label ) ); ?></p>
+							<p>Ich habe im Projekt Browser- und Server-Tracking umgesetzt und Rückmeldungen zu qualifizierten Anfragen und Abschlüssen aus dem CRM an die Werbekonten übertragen.</p>
+							<p class="sst-beleg__grenze">Der Wert stammt aus einem Vorher-nachher-Vergleich. Der separate Anteil des Server-Trackings am Ergebnis wurde dabei nicht ermittelt.</p>
+							<p><a class="satzlink" href="<?php echo esc_url( $e3_case_url . '#rueckmeldung' ); ?>" data-track-action="internal_sst_solar_case" data-track-category="internal_link" data-track-section="acceptance">Datenfluss und Verlauf im anonymisierten Praxisfall ansehen →</a></p>
 						</div>
 					</div>
 				<?php else : ?>
-					<p class="sst-product-evidence"><a class="satzlink" href="<?php echo esc_url( $e3_case_url ); ?>" data-track-action="internal_sst_solar_case" data-track-category="internal_link" data-track-section="acceptance">Arbeitsbeleg: Tracking in einer vollständigen B2B-Anfragestrecke →</a><span>Die Fallzahlen stammen aus dem Zusammenspiel von Kampagnen, Landingpages, Tracking und Vertrieb.</span></p>
+					<p class="sst-product-evidence"><a class="satzlink" href="<?php echo esc_url( $e3_case_url . '#rueckmeldung' ); ?>" data-track-action="internal_sst_solar_case" data-track-category="internal_link" data-track-section="acceptance">Datenfluss im anonymisierten Praxisfall ansehen →</a><span>Der Fall zeigt, wie Browser- und Server-Tracking mit Rückmeldungen aus dem CRM verbunden wurden.</span></p>
 				<?php endif; ?>
 			</div>
 			<aside class="marg"><p class="note"><span class="label">Bekannte Grenzen</span>Server-Side ersetzt keine Einwilligung und liefert keine vollständige Attribution. Unterschiede in Zählweise und Zeitfenstern werden erklärt.</p></aside>

@@ -154,12 +154,12 @@ function nexus_get_llms_txt_sections() {
 				[
 					'label'       => 'Conversion Tracking einrichten lassen',
 					'url'         => $urls['tracking'] ?? home_url( '/ga4-tracking-setup/' ),
-					'description' => sprintf( 'Das Tracking-Angebot: GA4, Google Tag Manager, Consent Mode und Google Ads als abgegrenztes Setup mit Messplan und Abnahmeprotokoll. Vier Stufen mit Festpreis: %s; welche Stufe passt, klärt die Bestandsaufnahme.', function_exists( 'hu_tracking_ladder_display' ) ? hu_tracking_ladder_display( 1 ) : '' ),
+					'description' => sprintf( 'Conversion-Tracking für B2B-Websites: GA4, Google Tag Manager, Consent Mode und Google Ads. Die Abnahme prüft erfolgreiche und fehlgeschlagene Formularübermittlungen sowie das Verhalten bei erteilter und abgelehnter Einwilligung. Übergabe mit Messplan, Abnahmeprotokoll und GTM-Versionen. Angebote und Preise: %s.', function_exists( 'hu_tracking_ladder_display' ) ? hu_tracking_ladder_display( 1 ) : '' ),
 				],
 				[
 					'label'       => 'Server-Side Tracking einrichten lassen',
 					'url'         => $urls['solar_tracking'] ?? home_url( '/server-side-tracking-b2b/' ),
-					'description' => sprintf( 'Fachseite für eine Server-Messstrecke mit Browser-Messbasis, Server-GTM, eigener Subdomain, Enhanced Conversions und Paralleltest: %s; Server-Hosting separat, Betreuung optional. Dokumentierter Fall: Kosten pro Anfrage drei bis vier Tage nach dem Livegang von Server-Side Tracking und CRM-Anbindung %s niedriger (Vorher-nachher-Vergleich, kein Paralleltest). Direkter Tracking-Projektpfad.', function_exists( 'hu_tracking_ladder_display' ) ? hu_tracking_ladder_display( 2 ) : '', function_exists( 'hu_e3_metric' ) ? hu_e3_metric( 'sst_effect' ) : '' ),
+					'description' => sprintf( 'Server-GTM auf eigener Subdomain mit Browser-Messbasis und Paralleltest vor der Umschaltung. Das Protokoll hält fehlende und doppelte Events fest. Angebote und Preise: %s; Server-Hosting separat, Betreuung optional. Anonymisierter Praxisfall: Kosten pro Anfrage drei bis vier Tage nach dem Livegang der serverseitigen Messung %s niedriger. Beobachteter Vorher-nachher-Vergleich bei laufenden Kampagnen.', function_exists( 'hu_tracking_ladder_display' ) ? hu_tracking_ladder_display( 2 ) : '', function_exists( 'hu_e3_metric' ) ? hu_e3_metric( 'sst_effect' ) : '' ),
 				],
 				[
 					'label'       => 'Performance Marketing für B2B',
@@ -188,9 +188,9 @@ function nexus_get_llms_txt_sections() {
 					'description' => 'Kompakte Projektfälle mit Ausgangslage, eigenem Beitrag und öffentlich prüfbarer Website. Die namentlichen Projektporträts enthalten keine vertraulichen Kennzahlen.',
 				],
 				[
-					'label'       => 'Solar Case Study',
+					'label'       => 'Anonymisierter Praxisfall zu Tracking und CRM',
 					'url'         => $urls['e3'] ?? home_url( '/case-study-solar-leadgenerierung/' ),
-					'description' => 'Proof-Case für Nachfrageaufbau, Vorqualifizierung, Tracking und Conversion.',
+					'description' => 'Für einen mittelständischen PV-Installationsbetrieb wurden Landingpages, Formular, Browser- und Server-Tracking sowie das CRM verbunden. Qualifizierte Anfragen und Abschlüsse gingen als Signale aus dem CRM zurück an die Werbekonten. Die Fallstudie beschreibt den Verlauf und die Grenzen der Auswertung.',
 				],
 				[
 					'label'       => 'Solar-Leads-Kosten: CPL und Kosten pro Auftrag',
