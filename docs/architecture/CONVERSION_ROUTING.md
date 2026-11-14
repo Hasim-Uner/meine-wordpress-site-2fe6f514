@@ -84,6 +84,7 @@ angeboten. Es gibt keine öffentliche Auswahl aus vier Preiskarten.
 | `/server-side-tracking-b2b/` | eine Server-Messstrecke mit fünf Bausteinen und einem Gesamtpreis einschließlich Browser-Messbasis; Meta/CRM und Hosting separat | eigenes Formular `#anfrage` (`cta_package_standard`); Verweis auf das Grundprodukt (`cta_package_to_measurement` → `/ga4-tracking-setup/#stufe-1`) |
 | `/performance-marketing/` | Einstiegspreis der Messung | `/kontakt/?type=project` |
 | `/whitelabel-retainer/`, Margenblock | Endkundenpreis von Stufe 2 neben dem Agenturpreis | Formular `#aufgabe` |
+| `/whitelabel-retainer/`, Margen-Rechner `#rechner` | Agenturpreise aus dem Kanon gegen den Kundenpreis, den die Agentur selbst einstellt; Startwert über dem Agenturpreis nur beim Server-Side-Setup (öffentlicher Endkundenpreis) | kein eigener CTA; Engagement-Hooks `whitelabel_calc_product`, `whitelabel_calc_price` |
 
 Optionale Tracking Care hängt nur an den serverseitigen Umfängen (intern
 Stufen 2 bis 4). Umfang, Gesamtpreis und laufende Kosten werden vor einer

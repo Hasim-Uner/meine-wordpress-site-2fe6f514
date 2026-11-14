@@ -87,6 +87,34 @@ for (const width of [360, 768, 1024, 1100, 1440]) {
   });
 }
 
+test('whitelabel: layer model mirrors the open field and the calculator uses canon prices', async ({ page }) => {
+  await open(page);
+  await finished(page);
+  const active = () => page.locator('[data-wl-platte].is-aktiv').evaluateAll(els => els.map(el => el.dataset.wlPlatte));
+  expect(await active()).toEqual(['0']);
+  await page.locator('#lieferfelder summary').nth(2).click();
+  expect(await active()).toEqual(['2']);
+  await page.locator('[data-wl-platte="1"]').dispatchEvent('click');
+  await expect(page.locator('#lieferfelder details[open]')).toHaveCount(1);
+  await expect(page.locator('#lieferfelder details').nth(1)).toHaveAttribute('open', '');
+  expect(await active()).toEqual(['1']);
+  await expect(page.locator('[data-wl-stack]')).toHaveAttribute('aria-hidden', 'true');
+
+  const calc = page.locator('[data-wl-rechner]');
+  await expect(calc).toBeVisible();
+  const number = async selector => Number((await calc.locator(selector).textContent()).replace(/\D/g, ''));
+  const tableAgency = Number((await page.locator('#marge .st-vergleich strong').nth(1).textContent()).replace(/\D/g, ''));
+  const tableRetail = Number((await page.locator('#marge .st-vergleich strong').nth(0).textContent()).replace(/\D/g, ''));
+  expect(await number('[data-wl-rechner-agentur]')).toBe(tableAgency);
+  expect(await number('[data-wl-rechner-preis]')).toBe(tableRetail);
+  expect(await number('[data-wl-rechner-marge]')).toBe(tableRetail - tableAgency);
+  await calc.locator('input[type="range"]').fill(String(tableAgency + 1000));
+  expect(await number('[data-wl-rechner-marge]')).toBe(1000);
+  await calc.locator('input[value="landingpage"]').check({ force: true });
+  expect(await number('[data-wl-rechner-marge]')).toBe(0);
+  expect(await number('[data-wl-rechner-preis]')).toBe(await number('[data-wl-rechner-agentur]'));
+});
+
 test('whitelabel: recheck reports a real cookie finding and malformed schema', async ({ page, context }) => {
   await open(page);
   await finished(page);
@@ -145,6 +173,7 @@ for (const width of [360, 1440]) {
     await expect(page.locator('[data-wl-status]')).toHaveText('Prüflauf braucht JavaScript. Es läuft keine Prüfung.');
     await expect(page.locator('.wl-stempel')).toBeHidden();
     await expect(page.locator('.wl-request__ohne-js')).toBeVisible();
+    await expect(page.locator('[data-wl-rechner]')).toBeHidden();
     await expect(page.locator('[data-wl-submit]')).toBeDisabled();
     await page.locator('#lieferfelder summary').nth(2).click();
     await expect(page.locator('#lieferfelder details').nth(2)).toHaveAttribute('open', '');

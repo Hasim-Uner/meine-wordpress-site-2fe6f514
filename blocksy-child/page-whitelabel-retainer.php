@@ -165,7 +165,7 @@ $protocol = [
 $services = [
 	[
 		'anlass' => 'Das Projekt ist verkauft, euer Team ist ausgelastet.',
-		'tags'   => 'WordPress · Templates · Landingpages · Ladezeit',
+		'tags'   => 'WordPress · Templates · Landingpages · Ladezeit · technisches SEO',
 		'title'  => 'Ich setze euren Entwurf in WordPress um.',
 		'text'   => 'Neue Templates, Landingpages und Erweiterungen, auch in bestehenden Installationen und mit eurem Page Builder. Begonnene Websites baue ich fertig. Ladezeit und technisches SEO behebe ich dort, wo sie im System entstehen.',
 		'abnahme' => 'Den Stand auf Staging, Seite für Seite gegen euren Entwurf und auf dem Handy geprüft.',
@@ -208,6 +208,43 @@ $entry_projects = [
 ];
 $margin_rows = hu_whitelabel_margin_rows();
 $hero_margin = $margin_rows ? reset( $margin_rows ) : null;
+
+/*
+ * Margen-Rechner: Die Agentur rechnet mit ihrem eigenen Kundenpreis. Alle
+ * Betraege kommen aus dem Preis-Kanon. Einen Startwert ueber dem Agenturpreis
+ * gibt es nur dort, wo ich fuer denselben Umfang einen oeffentlichen
+ * Endkundenpreis nenne (Server-Side-Setup); sonst beginnt der Regler bei
+ * meinem Preis, also bei null Marge.
+ */
+$calc_rows = [];
+foreach ( [ 'tracking_audit' => 'Tracking-Audit', 'server_side' => 'Server-Side-Setup', 'landingpage' => 'Landingpage' ] as $calc_key => $calc_name ) {
+	$calc_agency = (int) hu_whitelabel_price( $calc_key, 'value' );
+	if ( $calc_agency <= 0 ) {
+		continue;
+	}
+	$calc_start = $calc_agency;
+	if ( $hero_margin && $calc_key === $hero_margin['key'] ) {
+		$calc_start = (int) $hero_margin['retail_value'];
+	}
+	$calc_rows[] = [
+		'key'    => $calc_key,
+		'name'   => $calc_name,
+		'agency' => $calc_agency,
+		'start'  => $calc_start,
+		'public' => $calc_start > $calc_agency,
+	];
+}
+$calc_first = null;
+foreach ( $calc_rows as $calc_row ) {
+	if ( $calc_row['public'] ) {
+		$calc_first = $calc_row;
+		break;
+	}
+}
+if ( ! $calc_first && $calc_rows ) {
+	$calc_first = $calc_rows[0];
+}
+$gwa_url = 'https://www.gwa.de/ki-paper';
 $process = [
 	[ 'Aufgabe', 'Ihr schickt das Briefing. Ein NDA unterschreibe ich, bevor ich Kundendaten sehe. Danach bekommt ihr Rückfragen oder Aufwand und Preis.' ],
 	[ 'Umfang', 'Umfang, Festpreis, Termin und Abnahmekriterien stehen schriftlich fest, bevor ich anfange. Vertrag und Rechnung laufen über eure Agentur.' ],
@@ -279,18 +316,34 @@ $marke = static function ( $nr, $name ) {
 	<section class="st-abschnitt st-leistungen wl-leistungen" id="lieferfelder" aria-labelledby="lieferfelder-h" data-st-abschnitt="02" data-track-section="services">
 		<?php echo $marke( '02', 'Felder' ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?>
 		<div class="st-inhalt">
-			<h2 class="st-h2" id="lieferfelder-h">Euer Kunde will die Seite und die Zahlen. <span class="st-leiser">Meist kommen sie von zwei Dienstleistern.</span></h2>
-			<div class="st-stationen">
-				<?php foreach ( $services as $i => $service ) : ?>
-					<details class="st-station wl-feld" name="feld"<?php echo 0 === $i ? ' open' : ''; ?>>
-						<summary><span class="st-station__nr"><?php echo esc_html( sprintf( '%02d', $i + 1 ) ); ?></span><span class="st-station__name" id="leistung-<?php echo esc_attr( (string) ( $i + 1 ) ); ?>-h"><?php echo esc_html( $service_names[ $i ] ); ?></span><span class="st-station__teaser"><?php echo esc_html( $service['anlass'] ); ?></span></summary>
-						<div class="st-station__detail">
-							<div><p class="st-klein-label">Was ich liefere</p><p><?php echo nexus_glossary_explain_text( $service['text'], 'consent-mode' ); ?></p></div>
-							<div><p class="st-klein-label">Woran ihr abnehmt</p><p><?php echo esc_html( $service['abnahme'] ); ?></p></div>
-							<p class="st-station__beleg"><?php echo esc_html( $service_evidence[ $i ][0] ); ?> <a class="st-link" href="<?php echo esc_attr( $service_evidence[ $i ][1] ); ?>" data-track-action="<?php echo esc_attr( $service_evidence[ $i ][2] ); ?>" data-track-category="navigation" data-track-section="services"><?php echo esc_html( $service_evidence[ $i ][3] ); ?> <span aria-hidden="true">→</span></a></p>
-						</div>
-					</details>
-				<?php endforeach; ?>
+			<h2 class="st-h2" id="lieferfelder-h">Kreation holt euer Kunde gerade ins Haus. <span class="st-leiser">Die Technik dahinter nicht.</span></h2>
+			<p class="st-vorspann">80&nbsp;% der befragten Marketingentscheider planen, mehr Aufgaben inhouse umzusetzen, vor allem Research, Kreation und Werbemittel. Bei euch bleibt, was dort niemand bauen kann: die Seite, die Messung, der Weg ins CRM und der Nachweis, dass alles funktioniert.</p>
+			<p class="wl-quelle">Quelle: GWA KI-Whitepaper 2026, Befragung von 170 CEOs und CMOs mit dem Handelsblatt Research Institute. <a class="st-link" href="<?php echo esc_url( $gwa_url ); ?>" target="_blank" rel="noopener" data-track-action="whitelabel_source_gwa" data-track-category="proof" data-track-section="services">Zum Whitepaper&nbsp;<span aria-hidden="true">↗</span><span class="nur-vorlesen"> (öffnet in neuem Tab)</span></a></p>
+			<div class="wl-schichten">
+				<div class="wl-stack" aria-hidden="true" data-wl-stack>
+					<div class="wl-stack__szene" data-wl-szene>
+						<?php foreach ( $service_names as $i => $service_name ) : ?>
+							<div class="wl-platte wl-platte--<?php echo esc_attr( (string) ( $i + 1 ) ); ?><?php echo 0 === $i ? ' is-aktiv' : ''; ?>" style="--i:<?php echo esc_attr( (string) $i ); ?>" data-wl-platte="<?php echo esc_attr( (string) $i ); ?>" data-track-action="whitelabel_stack_layer" data-track-label="<?php echo esc_attr( $service_name ); ?>" data-track-category="engagement" data-track-section="services"><span class="wl-platte__nr"><?php echo esc_html( sprintf( '%02d', $i + 1 ) ); ?></span><span class="wl-platte__name"><?php echo esc_html( $service_name ); ?></span><span class="wl-platte__bild"></span><span class="wl-platte__puls"></span></div>
+						<?php endforeach; ?>
+					</div>
+					<p class="wl-stack__legende"><span class="wl-stack__punkt"></span>eine Anfrage, von der Seite bis ins CRM</p>
+				</div>
+				<div class="wl-schichten__felder">
+					<p class="wl-schichten__satz">Vier Schichten, meist von zwei oder drei Dienstleistern. Hier baut sie eine Person, und ihr nehmt jede einzeln ab.</p>
+					<div class="st-stationen">
+						<?php foreach ( $services as $i => $service ) : ?>
+							<details class="st-station wl-feld" name="feld" data-wl-feld="<?php echo esc_attr( (string) $i ); ?>"<?php echo 0 === $i ? ' open' : ''; ?>>
+								<summary><span class="st-station__nr"><?php echo esc_html( sprintf( '%02d', $i + 1 ) ); ?></span><span class="st-station__name" id="leistung-<?php echo esc_attr( (string) ( $i + 1 ) ); ?>-h"><?php echo esc_html( $service_names[ $i ] ); ?></span><span class="st-station__teaser"><?php echo esc_html( $service['anlass'] ); ?></span></summary>
+								<div class="st-station__detail">
+									<p class="st-klein-label wl-feld__tags"><?php echo esc_html( $liste( $service['tags'] ) ); ?></p>
+									<div><p class="st-klein-label">Was ich liefere</p><p><?php echo nexus_glossary_explain_text( $service['text'], 'consent-mode' ); ?></p></div>
+									<div><p class="st-klein-label">Woran ihr abnehmt</p><p><?php echo esc_html( $service['abnahme'] ); ?></p></div>
+									<p class="st-station__beleg"><?php echo esc_html( $service_evidence[ $i ][0] ); ?> <a class="st-link" href="<?php echo esc_attr( $service_evidence[ $i ][1] ); ?>" data-track-action="<?php echo esc_attr( $service_evidence[ $i ][2] ); ?>" data-track-category="navigation" data-track-section="services"><?php echo esc_html( $service_evidence[ $i ][3] ); ?> <span aria-hidden="true">→</span></a></p>
+								</div>
+							</details>
+						<?php endforeach; ?>
+					</div>
+				</div>
 			</div>
 		</div>
 	</section>
@@ -385,6 +438,33 @@ $marke = static function ( $nr, $name ) {
 					<figcaption>Den Endkundenpreis nenne ich öffentlich auf meiner Seite zum <a href="<?php echo esc_url( $tracking_b2b_url ); ?>" data-track-action="whitelabel_margin_reference" data-track-category="proof" data-track-section="entry">Server-Side Tracking</a>. Verglichen wird nur, was denselben Umfang hat. Was ihr eurem Kunden berechnet, legt ihr fest.</figcaption>
 				</figure>
 			<?php endforeach; ?>
+			<?php if ( $calc_first ) : ?>
+				<div class="wl-rechner" id="rechner" role="group" aria-labelledby="rechner-h" data-wl-rechner hidden>
+					<div class="wl-rechner__kopf">
+						<h3 class="st-h3" id="rechner-h">Rechnet es mit eurem eigenen Preis nach.</h3>
+						<p>Wählt die Leistung und zieht den Regler auf den Betrag, den ihr eurem Kunden berechnet.</p>
+					</div>
+					<fieldset class="wl-rechner__wahl">
+						<legend class="st-klein-label">Leistung</legend>
+						<?php foreach ( $calc_rows as $calc_row ) : ?>
+							<label for="wl-rechner-<?php echo esc_attr( $calc_row['key'] ); ?>"><input type="radio" id="wl-rechner-<?php echo esc_attr( $calc_row['key'] ); ?>" name="wl-rechner-leistung" value="<?php echo esc_attr( $calc_row['key'] ); ?>" data-agentur="<?php echo esc_attr( (string) $calc_row['agency'] ); ?>" data-start="<?php echo esc_attr( (string) $calc_row['start'] ); ?>"<?php echo $calc_row['public'] ? ' data-oeffentlich' : ''; ?><?php checked( $calc_row['key'], $calc_first['key'] ); ?> data-track-action="whitelabel_calc_product" data-track-label="<?php echo esc_attr( $calc_row['key'] ); ?>" data-track-category="engagement" data-track-section="entry"><span><?php echo esc_html( $calc_row['name'] ); ?></span></label>
+						<?php endforeach; ?>
+					</fieldset>
+					<div class="wl-rechner__regler">
+						<label for="wl-rechner-preis">Euer Preis an den Kunden, netto</label>
+						<output for="wl-rechner-preis" data-wl-rechner-preis><?php echo esc_html( $fest( hu_format_eur( $calc_first['start'] ) ) ); ?></output>
+						<input type="range" id="wl-rechner-preis" min="<?php echo esc_attr( (string) $calc_first['agency'] ); ?>" max="<?php echo esc_attr( (string) ( (int) ceil( $calc_first['agency'] * 3 / 100 ) * 100 ) ); ?>" step="10" value="<?php echo esc_attr( (string) $calc_first['start'] ); ?>" aria-describedby="wl-rechner-hinweis">
+						<p class="wl-rechner__hinweis" id="wl-rechner-hinweis" data-wl-rechner-hinweis>Startwert: mein öffentlicher Endkundenpreis für denselben Umfang.</p>
+					</div>
+					<div class="wl-rechner__balken" aria-hidden="true"><i data-wl-rechner-balken></i></div>
+					<dl class="wl-rechner__ergebnis" aria-live="polite">
+						<div><dt>Mein Agenturpreis, ab</dt><dd data-wl-rechner-agentur><?php echo esc_html( $fest( hu_format_eur( $calc_first['agency'] ) ) ); ?></dd></div>
+						<div class="wl-rechner__marge"><dt>Bleibt bei euch</dt><dd data-wl-rechner-marge><?php echo esc_html( $fest( hu_format_eur( $calc_first['start'] - $calc_first['agency'] ) ) ); ?></dd></div>
+						<div><dt>Anteil an eurem Preis</dt><dd data-wl-rechner-anteil><?php echo esc_html( $fest( (string) (int) round( ( $calc_first['start'] - $calc_first['agency'] ) / $calc_first['start'] * 100 ) . ' %' ) ); ?></dd></div>
+					</dl>
+					<p class="wl-rechner__notiz">Gerechnet mit dem Ab-Preis; den festen Betrag nenne ich, sobald der Umfang geklärt ist. Eure Projektleitung ist nicht eingerechnet. Die Rechnung läuft in eurem Browser, nichts wird gesendet.</p>
+				</div>
+			<?php endif; ?>
 			<div class="st-folge"><p>Noch in der Angebotsphase? Ich sage euch, ob es machbar ist und was es kostet, bevor ihr zusagt. Kostenlos.</p><a class="tun" href="<?php echo esc_url( $wl_form_offer_url ); ?>" data-wl-form-link data-track-action="cta_whitelabel_offers_assessment" data-track-category="lead_gen" data-track-section="entry">Vorhaben einschätzen lassen <span class="pf" aria-hidden="true">→</span></a></div>
 		</div>
 	</section>
