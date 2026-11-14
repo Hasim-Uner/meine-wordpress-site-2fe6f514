@@ -565,7 +565,20 @@ Projektabschluss und ruhiger Agentur-Zweitweg, zentrale Metadaten und
   Monitor eingerichtet ist. Ortsbezogene Wartungs-Queries bleiben auf
   `/wordpress-agentur-hannover/`; `/wordpress-wartung-hannover/` bleibt 410.
 - **`/wordpress-website-erstellen-lassen/`** (`page-wordpress-website-erstellen-lassen.php`,
-  Die Anfrage-Website, finale Gestaltung 06.10.2026): Frühe Qualitätsgründe
+  Die Anfrage-Website, finale Gestaltung 06.10.2026, Produktmodell 14.11.2026):
+  Hero und Abschnitt 01 zeigen dasselbe Produktmodell aus fünf Schichten
+  (Oberfläche, Technisches SEO, Anfrage-Strecke, Basis-Daten-Cockpit, Eigentum)
+  als CSS-3D-Körper ohne Bibliothek und ohne Bilddatei; das Modell ist
+  dekorativ (`aria-hidden`), die Aussagen stehen als Text daneben. Abschnitt 01
+  auf dunkler Tafel: beim Scrollen leuchtet die Schicht des gelesenen Textes,
+  die Schichten darüber werden zur Umrisslinie; ohne JavaScript bleibt das
+  Modell geöffnet und alle Texte voll lesbar, Reduced Motion schaltet nur
+  Zustände ohne Animation. Die drei Prinzipkarten, Cockpit-Kasten, Ergebnisband
+  und Modulband sind darin aufgegangen. Abschnitt 01 endet mit dem Sprung zum
+  Konfigurator (`website_offer_system_to_scope`). Unter dem Abschluss-CTA
+  stehen vier Zusagen: Festpreis vor Auftrag, Einmalpreis, Übergabe auf Ihren
+  Namen, 30 Tage Fehlerbehebung. Abschnittsfolge, CTA-Ziele, Rechner, FAQ und
+  Schema unverändert. Frühe Qualitätsgründe
   mit Prüflinks, Kapitelziele und reale Projekte vor dem Konfigurator.
   E3 als erste große Referenz, die zwei weiteren auf Desktop nebeneinander.
   Gut lesbare Haupt- und sekundäre Buttons mit Hover-, Fokus- und Touch-Zuständen.

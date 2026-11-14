@@ -1189,23 +1189,7 @@
   font-weight:600;
   letter-spacing:-.01em;
 }
-.anfrage-website .aw-modulband {
-  display:grid;
-  grid-template-columns:repeat(4,minmax(0,1fr));
-  margin-top:var(--s0);
-  border-block:1px solid var(--haar);
-}
-.anfrage-website .aw-modulband span {
-  padding:7px 4px;
-  text-align:center;
-  color:var(--grau);
-  font:var(--mono-s) var(--mono);
-  letter-spacing:.08em;
-  text-transform:uppercase;
-}
-.anfrage-website .aw-modulband span + span {
-  border-left:1px solid var(--haar);
-}
+
 .anfrage-website .aw-produktmeta {
   display:grid;
   grid-template-columns:repeat(2,minmax(0,1fr));
@@ -1290,362 +1274,386 @@
 /* CRO cut: one proof, one calculator, three differentiators. */
 .anfrage-website .aw-projekte--fokus { grid-template-columns: minmax(0, 1fr); }
 .anfrage-website .aw-projekte--fokus .aw-projekt { max-width: none; }
-.anfrage-website #unterschied {
+
+/* Produktmodell: fünf Schichten als CSS-3D-Körper, ohne Bibliothek und ohne Bilddatei.
+   Maße hängen an --a (Kantenlänge), damit Schriftgröße und Zoom die Geometrie nicht verschieben. */
+.anfrage-website .aw-modell {
+  --a:clamp(128px,34vw,224px);
+  --gap:calc(var(--a) * .15);
+  --dicke:calc(var(--a) * .04);
+  --zmax:calc(var(--a) * .74);
+  --aw-flaeche:color-mix(in srgb,var(--zone) 72%,var(--papier));
+  --aw-kante:color-mix(in srgb,var(--tinte) 24%,var(--papier));
+  --aw-seite1:color-mix(in srgb,var(--tinte) 14%,var(--papier));
+  --aw-seite2:color-mix(in srgb,var(--tinte) 28%,var(--papier));
+  --aw-strich:color-mix(in srgb,var(--tinte) 24%,var(--papier));
   position:relative;
+  flex:none;
+  width:calc(var(--a) * 1.46);
+  height:calc(var(--a) * .95 + var(--zmax) * .83);
+  margin-inline:auto;
+  pointer-events:none;
+}
+.anfrage-website .aw-stapel {
+  position:absolute;
+  left:50%;
+  top:calc(var(--zmax) * .83 - var(--a) * .06);
+  width:var(--a);
+  height:var(--a);
+  margin-left:calc(var(--a) / -2);
+  transform-style:preserve-3d;
+  transform:rotateX(calc(56deg - var(--aw-ty,0) * 7deg)) rotateZ(calc(-45deg + var(--aw-tx,0) * 12deg));
+  transition:transform var(--t-gross) var(--ease-aus);
+}
+.anfrage-website .aw-schicht {
+  position:absolute;
+  inset:0;
+  transform-style:preserve-3d;
+  transform:translateZ(calc(var(--i) * var(--gap) + var(--aw-hub,0px)));
+  transition:transform var(--t-gross) var(--ease-aus);
+}
+.anfrage-website .aw-schicht :is(.f,.k1,.k2) {
+  position:absolute;
+  transition:opacity var(--t-gross) var(--ease-aus),background-color var(--t-gross) var(--ease-aus),border-color var(--t-gross) var(--ease-aus),box-shadow var(--t-gross) var(--ease-aus);
+}
+.anfrage-website .aw-schicht .f {
+  inset:0;
   overflow:hidden;
-  margin-top:var(--s6);
-  padding-block:var(--s6);
-  border-block:1px solid var(--haar);
-  background:color-mix(in srgb,var(--zone) 42%,var(--papier));
-  color:var(--tinte);
+  background:var(--aw-flaeche);
+  border:1px solid var(--aw-kante);
 }
-.anfrage-website #unterschied::before {
-  content:"";
+.anfrage-website .aw-schicht .f > * {
+  transition:opacity var(--t-gross) var(--ease-aus);
+}
+.anfrage-website .aw-schicht .k1 {
+  left:0;
+  top:100%;
+  width:100%;
+  height:var(--dicke);
+  background:var(--aw-seite1);
+  transform-origin:top;
+  transform:rotateX(-90deg);
+}
+.anfrage-website .aw-schicht .k2 {
+  right:100%;
+  top:0;
+  width:var(--dicke);
+  height:100%;
+  background:var(--aw-seite2);
+  transform-origin:right;
+  transform:rotateY(-90deg);
+}
+.anfrage-website .aw-schatten {
   position:absolute;
-  inset:0 auto 0 0;
-  width:3px;
-  background:linear-gradient(180deg,var(--stempel),color-mix(in srgb,var(--stempel) 16%,transparent) 62%,transparent);
-  pointer-events:none;
+  inset:6%;
+  background:color-mix(in srgb,var(--tinte) 34%,transparent);
+  filter:blur(calc(var(--a) * .09));
+  transform:translateZ(calc(var(--a) * -.16));
+  opacity:.5;
 }
-.anfrage-website #unterschied::after {
-  content:"";
+.anfrage-website .aw-etikett {
   position:absolute;
-  width:32rem;
-  height:32rem;
-  right:-18rem;
-  top:-15rem;
-  border-radius:50%;
-  background:color-mix(in srgb,var(--stempel) 7%,transparent);
-  filter:blur(74px);
-  pointer-events:none;
-}
-.anfrage-website #unterschied .wrap {
-  position:relative;
-  z-index:1;
-}
-.anfrage-website #unterschied .lead {
-  max-width:50ch;
+  left:21%;
+  bottom:4.5%;
+  font:500 max(7px,calc(var(--a) * .047))/1 var(--mono);
+  letter-spacing:.1em;
+  text-transform:uppercase;
+  white-space:nowrap;
   color:var(--grau);
 }
-.anfrage-website .aw-prinzipien {
-  display:grid;
-  grid-template-columns:repeat(3,minmax(0,1fr));
-  gap:0;
-  margin-top:var(--s5);
-  border-block:1px solid var(--haar);
+.anfrage-website .aw-schicht--seite { --aw-flaeche:var(--papier); }
+.anfrage-website .aw-schicht--seite .aw-etikett { color:var(--stempel); }
+
+/* Miniatur je Schicht: zeigt, was in der Schicht steckt. */
+.anfrage-website .aw-schicht .ui {
+  position:absolute;
+  inset:9% 9% 23% 21%;
+  display:flex;
+  flex-direction:column;
+  gap:7%;
 }
-.anfrage-website .aw-prinzipien article {
+.anfrage-website .aw-schicht .ui :is(i,b) {
+  display:block;
+  flex:none;
+  font-style:normal;
+}
+.anfrage-website .ui--seite .n {
+  height:5%;
+  background:linear-gradient(90deg,var(--aw-strich) 0 22%,transparent 22% 68%,var(--aw-strich) 68% 76%,transparent 76% 80%,var(--aw-strich) 80% 88%,transparent 88% 92%,var(--stempel) 92%);
+}
+.anfrage-website .ui--seite .h { width:84%; height:11%; background:var(--tinte); }
+.anfrage-website .ui--seite .h--2 { width:58%; background:var(--stempel); }
+.anfrage-website .ui--seite .p { width:70%; height:4%; background:var(--aw-strich); }
+.anfrage-website .ui--seite b { width:42%; height:15%; margin-top:auto; background:var(--stempel); }
+.anfrage-website .ui--seo .such { position:relative; height:17%; border:1px solid var(--aw-strich); border-radius:var(--r1); }
+.anfrage-website .ui--seo .such::after { content:""; position:absolute; left:6%; top:50%; width:8%; aspect-ratio:1; border:1px solid var(--stempel); border-radius:50%; transform:translateY(-50%); }
+.anfrage-website .ui--seo .r { width:80%; height:5%; background:var(--aw-strich); }
+.anfrage-website .ui--seo .r--1 { width:60%; height:9%; background:var(--stempel); }
+.anfrage-website .ui--seo .r--3 { width:48%; }
+.anfrage-website .ui--anfrage .feld { height:17%; border:1px solid var(--aw-strich); }
+.anfrage-website .ui--anfrage b { width:48%; height:17%; background:var(--stempel); }
+.anfrage-website .ui--anfrage .ok { position:absolute; right:0; bottom:0; width:17%; aspect-ratio:1; background:var(--stempel); border-radius:50%; }
+.anfrage-website .aw-schicht .ui--daten { flex-direction:row; align-items:flex-end; gap:6%; border-bottom:1px solid var(--aw-strich); }
+.anfrage-website .aw-schicht .ui--daten i { flex:1; height:28%; background:var(--aw-strich); }
+.anfrage-website .aw-schicht .ui--daten i:nth-child(2) { height:46%; }
+.anfrage-website .aw-schicht .ui--daten i:nth-child(3) { height:38%; }
+.anfrage-website .aw-schicht .ui--daten i:nth-child(4) { height:66%; }
+.anfrage-website .aw-schicht .ui--daten i:nth-child(5) { height:90%; background:var(--stempel); }
+.anfrage-website .aw-schicht .ui--eigentum { flex-flow:row wrap; align-content:center; gap:7% 6%; }
+.anfrage-website .aw-schicht .ui--eigentum i {
+  width:47%;
+  padding:5% 4%;
+  border:1px solid var(--aw-strich);
+  font:500 max(6px,calc(var(--a) * .044))/1 var(--mono);
+  letter-spacing:.08em;
+  text-transform:uppercase;
+  white-space:nowrap;
+  overflow:hidden;
+  color:var(--grau);
+}
+
+/* Hero: geschlossenes Modell über der Preiskarte. */
+.anfrage-website .aw-hero-objekt {
+  display:grid;
+  justify-items:center;
+  gap:var(--s3);
+}
+.anfrage-website .aw-hero-objekt .aw-produktkarte {
+  width:100%;
+  max-width:23rem;
+}
+.anfrage-website .aw-modell--hero .aw-schicht--eigentum {
+  --aw-flaeche:var(--tinte);
+  --aw-kante:var(--tinte);
+  --aw-seite1:color-mix(in srgb,var(--tinte) 82%,var(--papier));
+  --aw-seite2:color-mix(in srgb,var(--tinte) 92%,var(--stempel));
+}
+.anfrage-website .aw-modell--hero .aw-schicht--eigentum .aw-etikett { color:var(--papier); }
+.anfrage-website .aw-hero-objekt .betrag { font-size:clamp(2.5rem,2rem + 2vw,3.25rem); }
+.anfrage-website .aw-hero-objekt .aw-produktzeit { margin-top:var(--s1); }
+@media (min-width:980px) {
+  .anfrage-website .aw-hero-objekt { gap:0; }
+  .anfrage-website .aw-hero-objekt .aw-modell { --a:clamp(200px,17vw,250px); }
+  .anfrage-website .aw-hero-objekt .aw-produktkarte { padding:var(--s2) var(--s3); }
+  .anfrage-website .hero { padding-block:var(--s2) var(--s5); }
+}
+@media (prefers-reduced-motion:no-preference) {
+  .anfrage-website .aw-modell--hero .aw-schicht {
+    animation:aw-landen 1.2s var(--ease-aus) backwards,aw-schweben 7s ease-in-out infinite;
+    animation-delay:calc(var(--i) * 70ms),calc(1.5s + var(--i) * .3s);
+  }
+  @keyframes aw-landen {
+    from { transform:translateZ(calc(var(--i) * var(--gap) * 2.4 + var(--a) * .16)); }
+  }
+  @keyframes aw-schweben {
+    50% { transform:translateZ(calc(var(--i) * var(--gap) * 1.2)); }
+  }
+}
+
+/* Abschnitt 01: das Modell öffnet sich, jede Schicht wird einzeln erklärt. */
+.anfrage-website #unterschied {
   position:relative;
+  margin-top:var(--s6);
+  padding-block:var(--s6);
+  overflow:clip;
+  border-block:1px solid var(--haar);
+  background:var(--papier);
+  color:var(--tinte);
+}
+.anfrage-website .aw-anatomie-kopf { max-width:46rem; }
+.anfrage-website .aw-anatomie-kopf .mono { color:var(--stempel); }
+.anfrage-website .aw-anatomie-kopf h2 { margin-top:var(--s2); }
+.anfrage-website .aw-anatomie-kopf .lead { max-width:58ch; margin-top:var(--s2); color:var(--grau); }
+.anfrage-website .aw-anatomie-raster {
   display:grid;
-  grid-template-rows:auto auto auto auto 1fr;
-  min-width:0;
-  min-height:18rem;
-  padding:var(--s3);
-  border-right:1px solid var(--haar);
+  grid-template-columns:minmax(0,1fr);
+  gap:var(--s2);
+  margin-top:var(--s4);
+}
+.anfrage-website .aw-anatomie-buehne {
+  position:sticky;
+  top:var(--leiste-h,52px);
+  z-index:2;
+  display:grid;
+  justify-items:center;
+  gap:var(--s1);
+  padding-block:var(--s2);
+  background:var(--papier);
+  border-bottom:1px solid var(--haar);
+  box-shadow:0 0 0 100vmax var(--papier);
+  clip-path:inset(0 -100vmax);
+}
+.anfrage-website .aw-modell--buehne {
+  --a:clamp(96px,24vw,236px);
+  --gap:calc(var(--a) * .3);
+  --zmax:calc(var(--a) * 1.3);
+  --aw-flaeche:color-mix(in srgb,var(--tinte) 7%,var(--papier));
+}
+.anfrage-website .aw-modell--buehne .aw-schicht--seite { --aw-flaeche:color-mix(in srgb,var(--tinte) 12%,var(--papier)); }
+.anfrage-website .aw-anatomie-live:not(.ist-offen) .aw-modell--buehne { --gap:calc(var(--a) * .08); }
+.anfrage-website .aw-anatomie-zaehler {
+  display:flex;
+  flex-wrap:wrap;
+  align-items:baseline;
+  justify-content:center;
+  gap:var(--s0) var(--s1);
+  color:var(--grau);
+}
+.anfrage-website .aw-anatomie-zaehler b { font:600 var(--grad-h2-leise)/1 var(--serif-display); color:var(--tinte); font-variant-numeric:tabular-nums; letter-spacing:0; }
+.anfrage-website .aw-anatomie-zaehler em { font-style:normal; color:var(--stempel); }
+
+/* Aktive Schicht leuchtet, die Schichten darüber werden zur Umrisslinie. */
+.anfrage-website :is([data-aktiv="2"] .aw-schicht:nth-child(-n+1),[data-aktiv="3"] .aw-schicht:nth-child(-n+2),[data-aktiv="4"] .aw-schicht:nth-child(-n+3),[data-aktiv="5"] .aw-schicht:nth-child(-n+4)) {
+  --aw-hub:calc(var(--a) * .1);
+}
+.anfrage-website :is([data-aktiv="2"] .aw-schicht:nth-child(-n+1),[data-aktiv="3"] .aw-schicht:nth-child(-n+2),[data-aktiv="4"] .aw-schicht:nth-child(-n+3),[data-aktiv="5"] .aw-schicht:nth-child(-n+4)) .f {
   background:transparent;
-  transition:
-    opacity var(--t-gross) var(--ease-aus),
-    transform var(--t-gross) var(--ease-aus),
-    background-color var(--t-norm) var(--ease-weich);
+  border-style:dashed;
+  border-color:color-mix(in srgb,var(--tinte) 26%,transparent);
 }
-.anfrage-website .aw-prinzipien article:first-child {
-  padding-left:0;
+.anfrage-website :is([data-aktiv="2"] .aw-schicht:nth-child(-n+1),[data-aktiv="3"] .aw-schicht:nth-child(-n+2),[data-aktiv="4"] .aw-schicht:nth-child(-n+3),[data-aktiv="5"] .aw-schicht:nth-child(-n+4)) :is(.f > *,.k1,.k2) {
+  opacity:0;
 }
-.anfrage-website .aw-prinzipien article:last-child {
-  padding-right:0;
-  border-right:0;
+.anfrage-website :is([data-aktiv="1"] .aw-schicht:nth-child(1),[data-aktiv="2"] .aw-schicht:nth-child(2),[data-aktiv="3"] .aw-schicht:nth-child(3),[data-aktiv="4"] .aw-schicht:nth-child(4),[data-aktiv="5"] .aw-schicht:nth-child(5)) {
+  --aw-strich:color-mix(in srgb,var(--tinte) 62%,var(--papier));
+  --aw-seite1:color-mix(in srgb,var(--stempel) 72%,var(--papier));
+  --aw-seite2:color-mix(in srgb,var(--stempel) 46%,var(--papier));
 }
-.anfrage-website .aw-prinzipien article::before {
+.anfrage-website :is([data-aktiv="1"] .aw-schicht:nth-child(1),[data-aktiv="2"] .aw-schicht:nth-child(2),[data-aktiv="3"] .aw-schicht:nth-child(3),[data-aktiv="4"] .aw-schicht:nth-child(4),[data-aktiv="5"] .aw-schicht:nth-child(5)) .f {
+  background:color-mix(in srgb,var(--stempel) 17%,var(--papier));
+  border-color:var(--stempel);
+  box-shadow:0 0 calc(var(--a) * .3) color-mix(in srgb,var(--stempel) 50%,transparent);
+}
+.anfrage-website :is([data-aktiv="1"] .aw-schicht:nth-child(1),[data-aktiv="2"] .aw-schicht:nth-child(2),[data-aktiv="3"] .aw-schicht:nth-child(3),[data-aktiv="4"] .aw-schicht:nth-child(4),[data-aktiv="5"] .aw-schicht:nth-child(5)) :is(.aw-etikett,.ui--eigentum i) {
+  color:var(--tinte);
+}
+
+.anfrage-website .aw-ebenen {
+  margin:0;
+  padding:0;
+  list-style:none;
+}
+.anfrage-website .aw-ebene {
+  position:relative;
+  padding:var(--s4) 0 var(--s4) var(--s3);
+  border-left:1px solid var(--haar);
+  transition:opacity var(--t-gross) var(--ease-aus);
+}
+.anfrage-website .aw-ebene::before {
   content:"";
   position:absolute;
-  left:var(--s3);
-  top:-1px;
-  width:2.6rem;
-  height:2px;
+  inset:0 auto 0 -1px;
+  width:2px;
   background:var(--stempel);
-  transform:scaleX(.45);
-  transform-origin:left;
-  transition:transform 520ms var(--ease-aus);
+  transform:scaleY(0);
+  transform-origin:top;
+  transition:transform var(--t-gross) var(--ease-aus);
 }
-.anfrage-website .aw-prinzipien article:first-child::before {
-  left:0;
-}
-.anfrage-website .aw-prinzip-kopf {
+.anfrage-website .aw-anatomie-live .aw-ebene { opacity:.56; }
+.anfrage-website .aw-anatomie-live .aw-ebene.ist-aktiv { opacity:1; }
+.anfrage-website .aw-ebene.ist-aktiv::before { transform:scaleY(1); }
+.anfrage-website .aw-ebene-kopf {
   display:flex;
   flex-wrap:wrap;
   align-items:baseline;
   justify-content:space-between;
-  gap:var(--s1);
+  gap:var(--s0) var(--s2);
 }
-.anfrage-website .aw-prinzipien .mono {
-  color:var(--stempel);
-}
-.anfrage-website .aw-prinzip-phase {
-  color:var(--matt);
+.anfrage-website .aw-ebene-kopf .mono { color:var(--stempel); }
+.anfrage-website .aw-ebene-phase {
   font:var(--mono-s) var(--mono);
-  letter-spacing:.05em;
+  letter-spacing:.1em;
   text-transform:uppercase;
-}
-.anfrage-website .aw-prinzipien h3 {
-  margin-top:var(--s3);
-  max-width:17ch;
-  color:var(--tinte);
-  font-size:clamp(1.35rem,1.12rem + .65vw,1.75rem);
-  line-height:1.16;
-  letter-spacing:-.035em;
-}
-.anfrage-website .aw-prinzipien p {
-  margin-top:var(--s2);
-  max-width:34ch;
   color:var(--grau);
-  font-size:var(--grad-klein);
-  line-height:1.62;
 }
-.anfrage-website .aw-prinzip-signal {
-  display:flex;
-  align-items:center;
-  gap:7px;
-  min-height:34px;
-  margin-top:var(--s3);
-  padding:0;
-}
-.anfrage-website .aw-prinzip-signal span {
-  flex:0 0 auto;
-  color:var(--matt);
-  font:var(--mono-s) var(--mono);
-  letter-spacing:.045em;
-  text-transform:uppercase;
-}
-.anfrage-website .aw-prinzip-signal i {
-  position:relative;
-  flex:1 1 auto;
-  min-width:10px;
-  height:1px;
-  overflow:hidden;
-  background:var(--haar);
-}
-.anfrage-website .aw-prinzip-signal i::after {
-  content:"";
-  position:absolute;
-  inset:0;
-  background:var(--stempel);
-  transform:scaleX(0);
-  transform-origin:left;
-  transition:transform 620ms var(--ease-aus);
-}
-.anfrage-website .aw-prinzip-signal--besitz {
-  display:grid;
-  grid-template-columns:repeat(3,minmax(0,1fr));
-  gap:6px;
-}
-.anfrage-website .aw-prinzip-signal--besitz span {
-  min-width:0;
-  padding:6px 5px;
-  text-align:center;
-  border:1px solid color-mix(in srgb,var(--stempel) 28%,var(--haar));
+.anfrage-website .aw-ebene h3 {
+  max-width:20ch;
+  margin-top:var(--s2);
+  font:600 clamp(1.4rem,1.1rem + 1.2vw,2rem)/1.12 var(--serif-display);
+  letter-spacing:-.01em;
   color:var(--tinte);
-  background:var(--papier);
 }
-.anfrage-website .aw-prinzip-output {
+.anfrage-website .aw-ebene > p {
+  max-width:46ch;
+  margin-top:var(--s2);
+  color:var(--grau);
+}
+.anfrage-website .aw-ebene-output {
   display:flex;
   flex-wrap:wrap;
-  align-self:end;
-  gap:6px var(--s2);
-  margin:var(--s3) 0 0;
-  padding:var(--s2) 0 0;
+  gap:var(--s0) var(--s3);
+  margin:var(--s2) 0 0;
+  padding:0;
   list-style:none;
-  border-top:1px solid var(--haar);
-  color:var(--tinte);
-  font-size:var(--grad-klein);
-}
-.anfrage-website .aw-prinzip-output li::before {
-  content:"↳";
-  margin-right:7px;
-  color:var(--stempel);
-}
-.anfrage-website .aw-ergebnisband {
-  display:grid;
-  grid-template-columns:minmax(8rem,.72fr) repeat(3,minmax(0,1fr));
-  gap:0;
-  align-items:stretch;
-  margin-top:var(--s4);
-  padding:0;
-  border:0;
-  border-radius:var(--r1);
-  overflow:hidden;
-}
-.anfrage-website .aw-ergebnisband > * {
-  display:flex;
-  align-items:center;
-  min-height:82px;
-  padding:var(--s2) var(--s3);
-}
-.anfrage-website .aw-ergebnisband .mono {
-  color:var(--stempel);
-  white-space:nowrap;
-}
-.anfrage-website .aw-ergebnisband strong {
-  gap:var(--s1);
-  border-left:1px solid var(--haar);
-  color:var(--tinte);
-  font-size:var(--grad-klein);
-  font-weight:500;
-}
-.anfrage-website .aw-ergebnisband strong span {
-  color:var(--stempel);
-  font:var(--mono-s) var(--mono);
-  letter-spacing:.06em;
-}
-.anfrage-website.aw-motion-ready #unterschied .aw-prinzipien article {
-  opacity:0;
-  transform:translateY(14px);
-}
-.anfrage-website.aw-motion-ready #unterschied.is-visible .aw-prinzipien article {
-  opacity:1;
-  transform:translateY(0);
-  transition-delay:calc(var(--aw-i) * 80ms);
-}
-.anfrage-website.aw-motion-ready #unterschied.is-visible .aw-prinzipien article::before {
-  transform:scaleX(1);
-  transition-delay:calc(110ms + var(--aw-i) * 85ms);
-}
-.anfrage-website.aw-motion-ready #unterschied.is-visible .aw-prinzip-signal i::after {
-  transform:scaleX(1);
-  transition-delay:calc(260ms + var(--aw-i) * 95ms);
-}
-.anfrage-website #unterschied .aw-pruefung {
-  margin-top:var(--s3);
-  border-top:0;
-}
-.anfrage-website #unterschied .aw-pruefung p,
-.anfrage-website #unterschied .aw-pruefung strong {
-  color:var(--tinte);
-}
-.anfrage-website #unterschied .aw-pruefung .btn--sekundaer {
-  background:var(--papier);
-}
-
-
-/* System USP: visibility -> request -> data. */
-.anfrage-website .aw-system-flow {
-  display:flex;
-  flex-wrap:wrap;
-  align-items:center;
-  gap:8px;
-  margin-top:var(--s4);
-  color:var(--tinte);
   font:var(--mono-m) var(--mono);
-  letter-spacing:.045em;
-  text-transform:uppercase;
-}
-.anfrage-website .aw-system-flow span {
-  padding:8px 10px;
-  border:1px solid var(--haar);
-  background:var(--papier);
-}
-.anfrage-website .aw-system-flow i {
-  color:var(--stempel);
-  font-style:normal;
-}
-.anfrage-website .aw-cockpit {
-  margin-top:var(--s4);
-  border:1px solid color-mix(in srgb,var(--stempel) 28%,var(--haar));
-  background:
-    linear-gradient(135deg,color-mix(in srgb,var(--stempel) 7%,transparent),transparent 45%),
-    var(--papier);
-}
-.anfrage-website .aw-cockpit-kopf {
-  display:flex;
-  align-items:flex-start;
-  justify-content:space-between;
-  gap:var(--s3);
-  padding:var(--s3);
-  border-bottom:1px solid var(--haar);
-}
-.anfrage-website .aw-cockpit-kopf > div {
-  display:grid;
-  gap:6px;
-  min-width:0;
-}
-.anfrage-website .aw-cockpit-kopf strong {
-  max-width:34ch;
-  font-size:clamp(1.15rem,1.03rem + .4vw,1.45rem);
-  line-height:1.2;
-  letter-spacing:-.025em;
-}
-.anfrage-website .aw-cockpit-kopf .aw-status {
-  flex:0 0 auto;
-  background:var(--tinte);
-  color:var(--papier);
-}
-.anfrage-website .aw-cockpit-grid {
-  display:grid;
-  grid-template-columns:repeat(3,minmax(0,1fr));
-}
-.anfrage-website .aw-cockpit-grid > div {
-  display:grid;
-  gap:7px;
-  min-width:0;
-  padding:var(--s3);
-  border-right:1px solid var(--haar);
-}
-.anfrage-website .aw-cockpit-grid > div:last-child {
-  border-right:0;
-}
-.anfrage-website .aw-cockpit-grid b {
+  letter-spacing:.04em;
   color:var(--tinte);
-  font-size:var(--grad-text);
-  font-weight:600;
 }
-.anfrage-website .aw-cockpit-grid small,
-.anfrage-website .aw-cockpit-note {
-  color:var(--grau);
-  font-size:var(--grad-klein);
-  line-height:1.55;
-}
-.anfrage-website .aw-cockpit-note {
-  margin:0;
-  padding:var(--s2) var(--s3);
-  border-top:1px solid var(--haar);
-}
-.anfrage-website .aw-besitz-note {
-  display:flex;
-  flex-wrap:wrap;
-  justify-content:space-between;
-  gap:8px var(--s3);
+.anfrage-website .aw-ebene-output li::before { content:"↳"; margin-right:var(--s0); color:var(--stempel); }
+.anfrage-website .aw-ebene > .aw-ebene-note {
   margin-top:var(--s2);
-  padding:var(--s2) 0;
-  border-bottom:1px solid var(--haar);
-  color:var(--grau);
+  padding-top:var(--s1);
+  border-top:1px solid var(--haar);
   font-size:var(--grad-klein);
 }
-.anfrage-website .aw-besitz-note strong {
-  color:var(--tinte);
-}
-@media (max-width:759.98px) {
-  .anfrage-website .aw-system-flow {
-    gap:6px;
+.anfrage-website #unterschied .aw-pruefung { border-top-color:var(--haar); }
+.anfrage-website #unterschied .aw-pruefung p { color:var(--grau); }
+.anfrage-website #unterschied .aw-pruefung .aktion { margin-top:0; }
+
+@media (min-width:980px) {
+  .anfrage-website #unterschied {
+    background:
+      radial-gradient(60rem 34rem at 18% 46%,color-mix(in srgb,var(--stempel) 11%,transparent),transparent 70%),
+      var(--papier);
   }
-  .anfrage-website .aw-system-flow span {
-    padding:7px 8px;
+  .anfrage-website .aw-anatomie-raster {
+    grid-template-columns:minmax(0,.9fr) minmax(0,1fr);
+    align-items:start;
+    gap:var(--s5);
   }
-  .anfrage-website .aw-cockpit-kopf {
-    display:grid;
-  }
-  .anfrage-website .aw-cockpit-kopf .aw-status {
-    justify-self:start;
-  }
-  .anfrage-website .aw-cockpit-grid {
-    grid-template-columns:minmax(0,1fr);
-  }
-  .anfrage-website .aw-cockpit-grid > div {
-    border-right:0;
-    border-bottom:1px solid var(--haar);
-  }
-  .anfrage-website .aw-cockpit-grid > div:last-child {
+  .anfrage-website .aw-anatomie-buehne {
+    top:max(5rem,calc(50vh - 19rem));
+    padding-block:var(--s3);
+    background:transparent;
     border-bottom:0;
+    box-shadow:none;
+    clip-path:none;
+  }
+  .anfrage-website .aw-anatomie-buehne::before {
+    content:"";
+    position:absolute;
+    inset:0;
+    z-index:-1;
+    background-image:linear-gradient(var(--haar) 1px,transparent 1px),linear-gradient(90deg,var(--haar) 1px,transparent 1px);
+    background-size:2rem 2rem;
+    mask-image:radial-gradient(closest-side,var(--tinte) 30%,transparent);
+    opacity:.7;
+  }
+  .anfrage-website .aw-ebene {
+    display:flex;
+    flex-direction:column;
+    justify-content:center;
+    min-height:46vh;
+    padding-left:var(--s4);
   }
 }
+
+/* Zusagen unter dem Abschluss-CTA. */
+.anfrage-website .aw-zusagen {
+  grid-column:1 / -1;
+  display:grid;
+  grid-template-columns:repeat(auto-fit,minmax(min(100%,13rem),1fr));
+  gap:var(--s2) var(--s3);
+  margin:0;
+  padding:var(--s3) 0 0;
+  border-top:1px solid var(--haar);
+  list-style:none;
+}
+.anfrage-website .aw-zusagen li { display:grid; align-content:start; gap:var(--s0); }
+.anfrage-website .aw-zusagen strong { color:var(--tinte); }
+.anfrage-website .aw-zusagen strong::before { content:"✓"; margin-right:var(--s0); color:var(--stempel); }
+.anfrage-website .aw-zusagen span { font-size:var(--grad-klein); color:var(--grau); }
+
 
 .anfrage-website .aw-lieferumfang-kompakt {
   margin-top:var(--s4);
@@ -1734,68 +1742,13 @@
 .anfrage-website .aw-zeit-komponenten { margin-top: var(--s3); }
 .anfrage-website .aw-zeit-komponenten .aw-zeit-details { margin: 0; padding: 0 0 var(--s3); border-bottom: 0; }
 @media (max-width: 899.98px) {
-  .anfrage-website .aw-prinzipien,
-  .anfrage-website .aw-erweiterungen-grid {
+    .anfrage-website .aw-erweiterungen-grid {
     grid-template-columns:minmax(0,1fr);
   }
-  .anfrage-website .aw-prinzipien {
-    border-bottom:0;
-  }
-  .anfrage-website .aw-prinzipien article,
-  .anfrage-website .aw-prinzipien article:first-child,
-  .anfrage-website .aw-prinzipien article:last-child {
-    min-height:0;
-    padding:var(--s3) 0 var(--s4);
-    border-right:0;
-    border-bottom:1px solid var(--haar);
-  }
-  .anfrage-website .aw-prinzipien article::before,
-  .anfrage-website .aw-prinzipien article:first-child::before {
-    left:0;
-  }
-  .anfrage-website .aw-prinzipien h3,
-  .anfrage-website .aw-prinzipien p {
-    max-width:42ch;
-  }
-  .anfrage-website .aw-ergebnisband {
-    grid-template-columns:minmax(0,1fr);
-  }
-  .anfrage-website .aw-ergebnisband > * {
-    min-height:0;
-    padding:var(--s2) var(--s3);
-  }
-  .anfrage-website .aw-ergebnisband strong {
-    border-left:0;
-    border-top:1px solid var(--haar);
-  }
+
 }
 @media (max-width: 719.98px) {
-  .anfrage-website #unterschied {
-    padding-block:var(--s5);
-  }
-  .anfrage-website .aw-prinzip-signal:not(.aw-prinzip-signal--besitz) {
-    display:grid;
-    grid-template-columns:repeat(3,minmax(0,1fr));
-    gap:var(--s1);
-  }
-  .anfrage-website .aw-prinzip-signal:not(.aw-prinzip-signal--besitz) i {
-    display:none;
-  }
-  .anfrage-website .aw-prinzip-signal span {
-    min-width:0;
-    overflow-wrap:anywhere;
-    font-size:.56rem;
-    letter-spacing:.03em;
-  }
-  .anfrage-website .aw-prinzip-signal--besitz {
-    grid-template-columns:repeat(3,minmax(0,1fr));
-  }
-  .anfrage-website .aw-prinzip-signal--besitz span,
-  .anfrage-website .aw-modulband span,
-  .anfrage-website .aw-ergebnisband strong {
-    min-width:0;
-    overflow-wrap:anywhere;
-  }
+
   .anfrage-website .aw-produkt-kopf {
     align-items:flex-start;
   }
@@ -1803,16 +1756,7 @@
     max-width:100%;
     white-space:normal;
   }
-  .anfrage-website .aw-modulband {
-    grid-template-columns:repeat(2,minmax(0,1fr));
-  }
-  .anfrage-website .aw-modulband span:nth-child(3) {
-    border-left:0;
-    border-top:1px solid var(--haar);
-  }
-  .anfrage-website .aw-modulband span:nth-child(4) {
-    border-top:1px solid var(--haar);
-  }
+
   .anfrage-website .aw-produktmeta {
     grid-template-columns:minmax(0,1fr);
   }

@@ -69,26 +69,46 @@ for (const width of [320, 360, 768, 1440]) {
     await expect(page.locator('#qualitaet, #durch, #m-anfragen, #m-klassisch')).toHaveCount(0);
     await expect(page.locator('.aw-kapitel a')).toHaveCount(3);
     await expect(page.locator('.aw-produktkarte')).toBeVisible();
-    await expect(page.locator('.aw-modulband span')).toHaveCount(4);
-    await expect(page.locator('#unterschied .aw-prinzipien article')).toHaveCount(3);
-    await expect(page.locator('#unterschied .aw-ergebnisband')).toContainText('Website → Anfrage');
-    await expect(page.locator('#unterschied .aw-cockpit')).toContainText('Basis-Daten-Cockpit');
-    await expect(page.locator('#unterschied .aw-besitz-note')).toContainText('Und es bleibt Ihr System.');
+    await expect(page.locator('.aw-hero-objekt .aw-modell--hero .aw-schicht')).toHaveCount(5);
+    await expect(page.locator('#unterschied .aw-modell--buehne .aw-schicht')).toHaveCount(5);
+    await expect(page.locator('.aw-modell')).toHaveCount(2);
+    expect(await page.locator('.aw-modell').evaluateAll(els => els.every(el => el.getAttribute('aria-hidden') === 'true'))).toBe(true);
+    await expect(page.locator('#unterschied .aw-ebene')).toHaveCount(5);
+    await expect(page.locator('#unterschied .aw-ebene h3')).toHaveText([
+      'Die Seite, die Ihr Angebot erklärt.',
+      'Technisches SEO ist Teil des Produkts.',
+      'Der Anfrageweg wird als Strecke gebaut.',
+      'Sie sehen, was aus Sichtbarkeit wird.',
+      'Und es bleibt Ihr System.',
+    ]);
+    await expect(page.locator('#unterschied .aw-ebene').nth(3)).toContainText('Basis-Daten-Cockpit');
+    await expect(page.locator('#unterschied .aw-ebene').nth(3)).toContainText('ohne GA4-Pflicht');
+    await expect(page.locator('#unterschied .aw-pruefung a[href="#angebot"]')).toHaveAttribute('data-track-action', 'website_offer_system_to_scope');
+    await expect(page.locator('#anfrage .aw-zusagen li')).toHaveCount(4);
+
+    // Scrolling to a layer lights it in the model and names it in the counter.
+    await page.locator('[data-aw-ebene="3"]').evaluate(el => {
+      const rect = el.getBoundingClientRect();
+      scrollTo(0, scrollY + rect.top + rect.height / 2 - innerHeight * .56);
+    });
+    await expect(page.locator('.aw-anatomie-buehne')).toHaveAttribute('data-aktiv', '3');
+    await expect(page.locator('[data-aw-ebene="3"]')).toHaveClass(/ist-aktiv/);
+    await expect(page.locator('#aw-ebene-name')).toHaveText('Anfrage-Strecke');
+    await expect(page.locator('#aw-ebene-nr')).toHaveText('03');
+    await page.evaluate(() => scrollTo(0, 0));
 
     const premiumUi = await page.evaluate(() => {
       const card = document.querySelector('.aw-produktkarte');
       const price = card.querySelector('.betrag');
-      const principle = document.querySelector('#unterschied .aw-prinzipien h3');
-      const resultBand = document.querySelector('#unterschied .aw-ergebnisband');
-      const resultText = resultBand.querySelector('strong');
+      const system = document.querySelector('#unterschied');
+      const layerTitle = system.querySelector('.aw-ebene h3');
       const included = document.querySelector('.aw-lieferumfang-kompakt .aw-status');
       return {
         cardBackground: getComputedStyle(card).backgroundColor,
         cardColor: getComputedStyle(card).color,
         priceColor: getComputedStyle(price).color,
-        principleColor: getComputedStyle(principle).color,
-        resultBandBackground: getComputedStyle(resultBand).backgroundColor,
-        resultTextColor: getComputedStyle(resultText).color,
+        systemBackground: getComputedStyle(system).backgroundColor,
+        layerTitleColor: getComputedStyle(layerTitle).color,
         includedBackground: getComputedStyle(included).backgroundColor,
         includedColor: getComputedStyle(included).color,
         cardHeight: card.getBoundingClientRect().height,
@@ -97,9 +117,8 @@ for (const width of [320, 360, 768, 1440]) {
     expect(premiumUi.cardBackground).toBe('rgb(23, 20, 15)');
     expect(premiumUi.cardColor).toBe('rgb(244, 241, 236)');
     expect(premiumUi.priceColor).toBe('rgb(244, 241, 236)');
-    expect(premiumUi.principleColor).toBe('rgb(23, 20, 18)');
-    expect(premiumUi.resultBandBackground).toBe('rgb(23, 20, 15)');
-    expect(premiumUi.resultTextColor).toBe('rgb(244, 241, 236)');
+    expect(premiumUi.systemBackground).toBe('rgb(23, 20, 15)');
+    expect(premiumUi.layerTitleColor).toBe('rgb(244, 241, 236)');
     expect(premiumUi.includedBackground).toBe('rgb(23, 20, 18)');
     expect(premiumUi.includedColor).toBe('rgb(255, 255, 255)');
     if (width === 1440) expect(premiumUi.cardHeight).toBeLessThan(540);
@@ -328,6 +347,8 @@ test('no JavaScript keeps a valid static three-page offer', async ({ browser }) 
   await expect(page.locator('.aw-szenario')).toHaveCount(3);
   expect(await page.locator('[data-website-controls]').evaluateAll(els => els.every(el => getComputedStyle(el).display === 'none'))).toBe(true);
   await expect(page.locator('#gesamt')).toHaveText(euro(3090));
+  await expect(page.locator('#unterschied .aw-ebene')).toHaveCount(5);
+  expect(await page.locator('#unterschied .aw-ebene').evaluateAll(els => els.every(el => getComputedStyle(el).opacity === '1'))).toBe(true);
 
   const url = new URL(await page.locator('#cta-angebot').getAttribute('href'));
   expect(Object.fromEntries(url.searchParams)).toMatchObject({
@@ -364,6 +385,8 @@ async function captureWebsiteTool(page, mode = 'available') {
 test('WebMCP quotes match PHP canon and prepare the existing inquiry path without side effects', async ({ page }) => {
   await captureWebsiteTool(page);
   await open(page);
+  // open() scrolls to the calculator; let the lazy reference image finish before counting tool requests.
+  await page.waitForLoadState('networkidle');
   const requests = [];
   page.on('request', request => requests.push(request.url()));
   const initialUrl = page.url();

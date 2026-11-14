@@ -27,6 +27,37 @@ $scenarios = [
     [ 'pages' => 3, 'utility' => 0, 'standard' => 1, 'sales' => 1, 'title' => 'Unternehmen', 'example' => 'Hauptseite + Leistung + Über uns', 'purpose' => 'Ein Angebot verkaufen und das Unternehmen separat erklären.' ],
     [ 'pages' => 5, 'utility' => 1, 'standard' => 1, 'sales' => 2, 'title' => 'Leistungswebsite', 'example' => 'Hauptseite + 2 Leistungen + Über uns + Kontakt', 'purpose' => 'Mehrere Leistungen mit eigener Such- und Verkaufslogik.' ],
 ];
+// Produktmodell: fünf Schichten als CSS-3D-Körper. Rein dekorativ; die Inhalte
+// stehen als Text in Abschnitt 01. Hero und Abschnitt 01 zeigen dasselbe Modell.
+$layers = [
+    [ 'key' => 'seite', 'label' => 'Oberfläche', 'phase' => 'was Besucher sehen', 'title' => 'Die Seite, die Ihr Angebot erklärt.', 'text' => 'Custom Code ohne Pagebuilder, für Handy und Desktop gebaut. Jede Seite wird nach ihrer Aufgabe gegliedert: Angebot, Preis, Beleg.', 'output' => [ 'Basisgestaltung inklusive', 'Inhalte im Editor pflegbar' ] ],
+    [ 'key' => 'seo', 'label' => 'Technisches SEO', 'phase' => 'vor dem Besuch', 'title' => 'Technisches SEO ist Teil des Produkts.', 'text' => 'Saubere Struktur, schnelle Auslieferung, strukturierte Daten und Search Console werden nicht nachträglich angeklebt.', 'output' => [ 'technische SEO-Basis', 'Search Console' ] ],
+    [ 'key' => 'anfrage', 'label' => 'Anfrage-Strecke', 'phase' => 'im Besuch', 'title' => 'Der Anfrageweg wird als Strecke gebaut.', 'text' => 'Formular, Speicherung, Bestätigung, Versand und Danke-Seite werden zusammen entwickelt und vor der Abnahme getestet.', 'output' => [ 'geprüfte Zustände', 'gespeicherte Anfragen' ] ],
+    [ 'key' => 'daten', 'label' => 'Basis-Daten-Cockpit', 'phase' => 'nach dem Besuch', 'title' => 'Sie sehen, was aus Sichtbarkeit wird.', 'text' => 'Das Basis-Daten-Cockpit führt Search-Console-Signale und gespeicherte Website-Anfragen zusammen, ohne GA4-Pflicht im Grundprodukt.', 'output' => [ 'Klicks & Impressionen', 'Anfragen & Top-Landingpages' ], 'note' => 'Grundprodukt: Search Console + gespeicherte Formularanfragen. GA4, Google Ads, Meta, CRM-Daten und individuelle Attribution bleiben optionale Tracking- bzw. Dashboard-Erweiterungen.' ],
+    [ 'key' => 'eigentum', 'label' => 'Eigentum', 'phase' => 'dauerhaft', 'title' => 'Und es bleibt Ihr System.', 'text' => 'Domain, Hosting, Code, Zugänge und Daten werden auf Ihren Namen eingerichtet und dokumentiert übergeben.', 'output' => [ 'kein Website-Abo', 'keine Pflichtlizenzen im Grundprodukt' ] ],
+];
+$layer_ui = [
+    'seite'    => '<span class="ui ui--seite"><i class="n"></i><i class="h"></i><i class="h h--2"></i><i class="p"></i><b></b></span>',
+    'seo'      => '<span class="ui ui--seo"><i class="such"></i><i class="r r--1"></i><i class="r"></i><i class="r r--3"></i></span>',
+    'anfrage'  => '<span class="ui ui--anfrage"><i class="feld"></i><i class="feld"></i><b></b><i class="ok"></i></span>',
+    'daten'    => '<span class="ui ui--daten"><i></i><i></i><i></i><i></i><i></i></span>',
+    'eigentum' => '<span class="ui ui--eigentum"><i>Domain</i><i>Hosting</i><i>Code</i><i>Daten</i></span>',
+];
+$model = static function ( $variant ) use ( $layers, $layer_ui ) {
+    $count = count( $layers );
+    echo '<div class="aw-modell aw-modell--' . esc_attr( $variant ) . '" aria-hidden="true"><div class="aw-stapel">';
+    foreach ( $layers as $index => $layer ) {
+        printf(
+            '<div class="aw-schicht aw-schicht--%1$s" style="--i:%2$d"><div class="f">%3$s<span class="aw-etikett">%4$02d %5$s</span></div><i class="k1"></i><i class="k2"></i></div>',
+            esc_attr( $layer['key'] ),
+            $count - 1 - $index,
+            $layer_ui[ $layer['key'] ], // Statisches Markup aus dieser Datei.
+            $index + 1,
+            esc_html( $layer['label'] )
+        );
+    }
+    echo '<div class="aw-schatten"></div></div></div>';
+};
 get_header();
 ?>
 <div id="website-content" class="doku anfrage-website" data-track-page="website_offer" data-website-product data-website-rules="<?php echo esc_attr( wp_json_encode( $rules ) ); ?>">
@@ -46,22 +77,23 @@ get_header();
         </div>
         <p class="mikro">Antwort <?php echo esc_html( hu_response_promise( 'window' ) ); ?>, mit Rückfragen oder einem Festpreis-Angebot.</p>
       </div>
-      <aside class="formel tafel aw-produktkarte" aria-label="Grundprodukt und Einstiegspreis">
-        <div class="aw-produkt-kopf"><span class="mono">Die Anfrage-Website</span><span class="aw-status"><i aria-hidden="true"></i>Erweiterbar</span></div>
-        <div class="aw-preis-lockup">
-          <p class="mono">Festpreis ab</p>
-          <p class="betrag"><?php echo esc_html( $eur( HU_FREELANCER_WEBSITE_MIN ) ); ?><small>netto</small></p>
-          <p class="aw-produktkern">Grundsystem + erste Hauptseite</p>
-        </div>
-        <div class="aw-modulband" aria-label="Das Grundsystem verbindet SEO, Anfrage, Daten und Eigentum"><span>SEO</span><span>Anfrage</span><span>Daten</span><span>Eigentum</span></div>
-        <div class="aw-produktmeta" aria-label="Preis- und Zeitrahmen">
-          <div><span class="mono">Weitere Seiten</span><strong>ab <?php echo esc_html( $eur( HU_WEBSITE_PAGE_UTILITY ) ); ?></strong></div>
-          <div><span class="mono">Basis-Umsetzung</span><strong><?php echo esc_html( $days( hu_website_quote( 1 )['components']['implementation'] ) ); ?>*</strong></div>
-        </div>
-        <p class="aw-produktzeit" id="hero-bauzeit">Ihre Auswahl: <?php echo esc_html( $days( $quote['days'] ) ); ?> geplant.</p>
-        <p class="aw-produktnote">* bei fertigen, freigegebenen Inhalten</p>
-        <a class="aw-produkt-cta" href="#angebot" data-track-action="website_offer_to_angebot" data-track-category="navigation">Produkt konfigurieren <span aria-hidden="true">→</span></a>
-      </aside>
+      <div class="aw-hero-objekt">
+        <?php $model( 'hero' ); ?>
+        <aside class="formel tafel aw-produktkarte" aria-label="Grundprodukt und Einstiegspreis">
+          <div class="aw-preis-lockup">
+            <p class="mono">Festpreis ab</p>
+            <p class="betrag"><?php echo esc_html( $eur( HU_FREELANCER_WEBSITE_MIN ) ); ?><small>netto</small></p>
+            <p class="aw-produktkern">Grundsystem + erste Hauptseite</p>
+          </div>
+          <div class="aw-produktmeta" aria-label="Preis- und Zeitrahmen">
+            <div><span class="mono">Weitere Seiten</span><strong>ab <?php echo esc_html( $eur( HU_WEBSITE_PAGE_UTILITY ) ); ?></strong></div>
+            <div><span class="mono">Basis-Umsetzung</span><strong><?php echo esc_html( $days( hu_website_quote( 1 )['components']['implementation'] ) ); ?>*</strong></div>
+          </div>
+          <p class="aw-produktzeit" id="hero-bauzeit">Ihre Auswahl: <?php echo esc_html( $days( $quote['days'] ) ); ?> geplant.</p>
+          <p class="aw-produktnote">* bei fertigen, freigegebenen Inhalten</p>
+          <a class="aw-produkt-cta" href="#angebot" data-track-action="website_offer_to_angebot" data-track-category="navigation">Produkt konfigurieren <span aria-hidden="true">→</span></a>
+        </aside>
+      </div>
     </div>
   </section>
 
@@ -72,54 +104,38 @@ get_header();
     <a href="#beleg" data-track-action="website_offer_chapter_proof" data-track-category="navigation">Projektbeleg</a>
   </nav>
 
-  <section class="abschnitt aw-unterschied" id="unterschied" aria-labelledby="h-unterschied">
-    <div class="wrap raster">
-      <p class="nr"><b>01</b><span>System</span></p>
-      <div class="haupt breit">
+  <section class="abschnitt aw-unterschied aw-anatomie tafel" id="unterschied" aria-labelledby="h-unterschied" data-aw-anatomie>
+    <div class="wrap">
+      <div class="aw-anatomie-kopf">
+        <p class="mono">01 · Das System</p>
         <h2 id="h-unterschied">Eine Website muss mehr können als gut aussehen.</h2>
-        <p class="lead">Sie wird als zusammenhängende Strecke gebaut: gefunden werden, eine Anfrage ermöglichen und danach erkennen, was funktioniert.</p>
-
-        <div class="aw-system-flow" aria-label="Vom Suchergebnis bis zur Auswertung">
-          <span>Google</span><i aria-hidden="true">→</i><span>Website</span><i aria-hidden="true">→</i><span>Anfrage</span><i aria-hidden="true">→</i><span>Daten</span>
+        <p class="lead">Was Besucher sehen, ist nur die oberste Schicht. Die Anfrage-Website ist eine WordPress-Website zum Festpreis, bei der vier weitere Schichten mitgebaut werden: gefunden werden, eine Anfrage ermöglichen, erkennen, was funktioniert, und alles auf Ihren Namen.</p>
+      </div>
+      <div class="aw-anatomie-raster">
+        <div class="aw-anatomie-buehne" data-aktiv="0">
+          <?php $model( 'buehne' ); ?>
+          <p class="aw-anatomie-zaehler mono" aria-hidden="true"><b id="aw-ebene-nr">05</b><span>Schichten</span><em id="aw-ebene-name">ein System</em></p>
         </div>
-
-        <div class="aw-prinzipien" data-principles>
-          <article style="--aw-i:0">
-            <div class="aw-prinzip-kopf"><span class="mono">01 · Gefunden werden</span><span class="aw-prinzip-phase">vor dem Besuch</span></div>
-            <h3>Technisches SEO ist Teil des Produkts.</h3>
-            <p>Saubere Struktur, schnelle Auslieferung, strukturierte Daten und Search Console werden nicht nachträglich angeklebt.</p>
-            <div class="aw-prinzip-signal" aria-hidden="true"><span>Google</span><i></i><span>Suchergebnis</span><i></i><span>Landingpage</span></div>
-            <ul class="aw-prinzip-output"><li>technische SEO-Basis</li><li>Search Console</li></ul>
-          </article>
-          <article style="--aw-i:1">
-            <div class="aw-prinzip-kopf"><span class="mono">02 · Anfrage auslösen</span><span class="aw-prinzip-phase">im Besuch</span></div>
-            <h3>Der Anfrageweg wird als Strecke gebaut.</h3>
-            <p>Formular, Speicherung, Bestätigung, Versand und Danke-Seite werden zusammen entwickelt und vor der Abnahme getestet.</p>
-            <div class="aw-prinzip-signal" aria-hidden="true"><span>CTA</span><i></i><span>Formular</span><i></i><span>Bestätigung</span></div>
-            <ul class="aw-prinzip-output"><li>geprüfte Zustände</li><li>gespeicherte Anfragen</li></ul>
-          </article>
-          <article style="--aw-i:2">
-            <div class="aw-prinzip-kopf"><span class="mono">03 · Verstehen</span><span class="aw-prinzip-phase">nach dem Besuch</span></div>
-            <h3>Sie sehen, was aus Sichtbarkeit wird.</h3>
-            <p>Das Basis-Daten-Cockpit führt Search-Console-Signale und gespeicherte Website-Anfragen zusammen — ohne GA4-Pflicht im Grundprodukt.</p>
-            <div class="aw-prinzip-signal" aria-hidden="true"><span>Sichtbarkeit</span><i></i><span>Anfragen</span><i></i><span>Seiten</span></div>
-            <ul class="aw-prinzip-output"><li>Klicks &amp; Impressionen</li><li>Anfragen &amp; Top-Seiten</li></ul>
-          </article>
+        <ol class="aw-ebenen">
+<?php foreach ( $layers as $index => $layer ) : ?>
+          <li class="aw-ebene" data-aw-ebene="<?php echo esc_attr( (string) ( $index + 1 ) ); ?>" data-aw-name="<?php echo esc_attr( $layer['label'] ); ?>">
+            <div class="aw-ebene-kopf"><span class="mono"><?php echo esc_html( sprintf( '%02d · %s', $index + 1, $layer['label'] ) ); ?></span><span class="aw-ebene-phase"><?php echo esc_html( $layer['phase'] ); ?></span></div>
+            <h3><?php echo esc_html( $layer['title'] ); ?></h3>
+            <p><?php echo esc_html( $layer['text'] ); ?></p>
+            <ul class="aw-ebene-output"><?php foreach ( $layer['output'] as $output ) : ?><li><?php echo esc_html( $output ); ?></li><?php endforeach; ?></ul>
+<?php if ( ! empty( $layer['note'] ) ) : ?>
+            <p class="aw-ebene-note"><?php echo esc_html( $layer['note'] ); ?></p>
+<?php endif; ?>
+          </li>
+<?php endforeach; ?>
+        </ol>
+      </div>
+      <div class="aw-pruefung">
+        <p><strong>Vor der Abnahme:</strong> Mobile Darstellung, technische SEO-Basis, Anfrage-Strecke, Daten-Cockpit und Übergabe werden gemeinsam geprüft.</p>
+        <div class="aktion">
+          <a class="btn" href="#angebot" data-track-action="website_offer_system_to_scope" data-track-category="navigation" data-track-section="website_offer_system">Umfang und Preis wählen <span aria-hidden="true">→</span></a>
+          <a class="btn btn--sekundaer" href="#lieferumfang" data-track-action="website_offer_quality_checklist" data-track-category="navigation">Lieferumfang ansehen <span aria-hidden="true">→</span></a>
         </div>
-
-        <div class="aw-cockpit" aria-label="Leistungsumfang des Basis-Daten-Cockpits">
-          <div class="aw-cockpit-kopf"><div><span class="mono">Basis-Daten-Cockpit</span><strong>Die Website erklärt nicht nur. Sie liefert Rückmeldung.</strong></div><span class="aw-status"><i aria-hidden="true"></i>Inklusive</span></div>
-          <div class="aw-cockpit-grid">
-            <div><span class="mono">Search Console</span><b>Klicks · Impressionen</b><small>Welche Seiten und Suchanfragen Sichtbarkeit aufbauen.</small></div>
-            <div><span class="mono">WordPress</span><b>Anfragen · Verlauf</b><small>Welche Anfragen über die Website eingegangen und gespeichert wurden.</small></div>
-            <div><span class="mono">Seiten</span><b>Top-Landingpages</b><small>Wo Sichtbarkeit und Nachfrage auf der Website zusammenkommen.</small></div>
-          </div>
-          <p class="aw-cockpit-note">Grundprodukt: Search Console + gespeicherte Formularanfragen. GA4, Google Ads, Meta, CRM-Daten und individuelle Attribution bleiben optionale Tracking- bzw. Dashboard-Erweiterungen.</p>
-        </div>
-
-        <div class="aw-ergebnisband tafel"><span class="mono">Das System</span><strong><span>01</span>Google → Website</strong><strong><span>02</span>Website → Anfrage</strong><strong><span>03</span>Anfrage → Daten</strong></div>
-        <div class="aw-besitz-note"><strong>Und es bleibt Ihr System.</strong><span>Domain, Hosting, Code, Zugänge und Daten werden auf Ihren Namen eingerichtet und dokumentiert übergeben.</span></div>
-        <div class="aw-pruefung"><p><strong>Vor der Abnahme:</strong> Mobile Darstellung, technische SEO-Basis, Anfrage-Strecke, Daten-Cockpit und Übergabe werden gemeinsam geprüft.</p><a class="btn btn--sekundaer" href="#lieferumfang" data-track-action="website_offer_quality_checklist" data-track-category="navigation">Lieferumfang ansehen <span aria-hidden="true">→</span></a></div>
       </div>
     </div>
   </section>
@@ -394,6 +410,12 @@ get_header();
         <p class="mikro">Persönlich, <?php echo esc_html( hu_response_promise( 'window' ) ); ?>.</p>
         <p class="direkt mikro">Lieber direkt: <a href="<?php echo esc_url( hu_get_contact_mailto() ); ?>" data-track-action="website_offer_close_mail" data-track-category="lead_gen"><?php echo esc_html( hu_get_contact_email() ); ?></a> · <a href="<?php echo esc_url( hu_get_contact_phone( 'link' ) ); ?>" data-track-action="website_offer_close_tel" data-track-category="lead_gen"><?php echo esc_html( hu_get_contact_phone() ); ?></a></p>
       </div>
+      <ul class="aw-zusagen" aria-label="Zusagen zum Auftrag">
+        <li><strong>Festpreis vor Auftrag</strong><span>Preis und Starttermin werden bestätigt, bevor Sie beauftragen.</span></li>
+        <li><strong>Einmalpreis</strong><span>Kein Website-Abo, keine Pflichtwartung.</span></li>
+        <li><strong>Auf Ihren Namen</strong><span>Domain, Hosting, Konten und Code gehören Ihnen.</span></li>
+        <li><strong>30 Tage Fehlerbehebung</strong><span>Fehler nach dem Livegang behebe ich kostenlos.</span></li>
+      </ul>
     </div>
   </section>
 
