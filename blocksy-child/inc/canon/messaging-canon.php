@@ -534,7 +534,7 @@ function hu_align_tracking_product_schema_markup( $markup ) {
 					$name = isset( $service['name'] ) ? (string) $service['name'] : '';
 					$url  = isset( $service['url'] ) ? (string) $service['url'] : '';
 
-					if ( $advanced_url === $url || false !== stripos( $name, 'Server-Side Tracking' ) ) {
+					if ( $setup_url === $url || $advanced_url === $url || false !== stripos( $name, 'Server-Side Tracking' ) ) {
 						continue;
 					}
 

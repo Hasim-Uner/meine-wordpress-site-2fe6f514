@@ -14,26 +14,6 @@ if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
 
-add_filter( 'hu_forced_singular_seo_map', function ( $map ) {
-	if ( ! is_array( $map ) ) {
-		$map = [];
-	}
-
-	$map['ga4-tracking-setup'] = [
-		// Der Betrag steht im Title, weil er die Kaufentscheidung trägt und im
-		// Snippet sonst keiner der Wettbewerber einen nennt. Alle Beträge aus dem Kanon.
-		'title'       => sprintf( 'Conversion Tracking einrichten lassen: GA4 & Ads für %s', hu_tracking_price( 'measurement', 'setup' ) ),
-		'description' => sprintf(
-			'Conversion Tracking für B2B-Websites: GA4, GTM, Consent Mode und Google Ads, mit Testfällen geprüft und dokumentiert. Festpreis %1$s netto; Server-Side %2$s, mit Meta CAPI %3$s.',
-			hu_tracking_price( 'measurement', 'setup' ),
-			hu_tracking_price( 'standard', 'setup' ),
-			hu_tracking_price( 'pro', 'setup' )
-		),
-	];
-
-	return $map;
-}, 90 );
-
 add_filter( 'body_class', function ( $classes ) {
 	$classes[] = 'hu-wayfinding-active';
 	$classes[] = 'hu-wayfinding-tracking-setup';
@@ -140,7 +120,7 @@ get_header();
 			<div>
 				<p class="gegenstand">Conversion-Tracking · GA4 · Google Ads</p>
 				<h1>Conversion Tracking einrichten lassen. Damit klar ist, welche Anfrage zählt.</h1>
-				<p class="aufriss">Ich richte GA4, Google Tag Manager und Google Ads so ein, dass Ihre Haupt-Conversions definiert, an Ihr Consent-Tool angebunden und mit Testfällen geprüft sind. Für Ihre bestehende Website, mit Messplan und dokumentierter Übergabe.</p>
+				<p class="aufriss">Als Freelancer richte ich Conversion-Tracking für B2B-Websites ein. Ich definiere Ihre Haupt-Conversions, binde GA4, Google Tag Manager und Google Ads an Ihr Consent-Tool an und prüfe die Messung mit Testfällen. Sie erhalten einen Messplan und eine dokumentierte Übergabe.</p>
 				<div class="ausgang">
 					<a class="tun" href="<?php echo esc_url( $contact_url ); ?>" data-track-action="cta_tracking_project" data-track-category="lead_gen">Tracking anfragen <span class="pf" aria-hidden="true">→</span></a>
 					<a class="textlink" href="#umfang" data-track-action="tracking_hero_scope" data-track-category="navigation">Die fünf Lieferbausteine</a>

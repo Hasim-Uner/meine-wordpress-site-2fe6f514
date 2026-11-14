@@ -654,6 +654,21 @@ $catalog_urls = array_map(
 	$catalog_services
 );
 
+function wp_json_encode( $value, $flags = 0 ) { return json_encode( $value, $flags ); }
+$organization_markup = '<script type="application/ld+json">' . wp_json_encode( [
+	'@id'             => home_url( '/#organization' ),
+	'hasOfferCatalog' => $catalog,
+] ) . '</script>';
+$live_catalog_schema = json_decode( strip_tags( hu_align_tracking_product_schema_markup( $organization_markup ) ), true );
+$live_catalog_urls   = array_column( array_column( $live_catalog_schema['hasOfferCatalog']['itemListElement'] ?? [], 'itemOffered' ), 'url' );
+
+foreach ( [ '/ga4-tracking-setup/', '/server-side-tracking-b2b/' ] as $tracking_route ) {
+	hu_lint_assert(
+		1 === count( array_keys( $live_catalog_urls, home_url( $tracking_route ), true ) ),
+		"Final Organization OfferCatalog lists {$tracking_route} exactly once"
+	);
+}
+
 hu_lint_assert(
 	'WordPress-Website erstellen lassen' === ( $catalog_names[0] ?? '' ),
 	'OfferCatalog starts with the direct WordPress product, not the Energy specialization'

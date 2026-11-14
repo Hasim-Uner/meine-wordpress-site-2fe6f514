@@ -846,6 +846,21 @@ function hu_get_wordpress_technical_seo_service_definition() {
 }
 
 /**
+ * Return the shared WebPage and breadcrumb name for a tracking route.
+ *
+ * @param string $slug Page slug.
+ * @return string
+ */
+function hu_get_tracking_schema_page_name( $slug ) {
+    $names = [
+        'ga4-tracking-setup'       => 'Conversion Tracking einrichten lassen',
+        'server-side-tracking-b2b' => 'Server-Side Tracking einrichten lassen',
+    ];
+
+    return $names[ $slug ] ?? '';
+}
+
+/**
  * Build a generic WebPage node that anchors a singular view in the graph.
  *
  * Pages that already emit a dedicated WebPage subtype (ProfilePage, AboutPage,
@@ -857,7 +872,8 @@ function hu_get_wordpress_technical_seo_service_definition() {
  * @return array<string, mixed>|null
  */
 function hu_build_generic_webpage_schema( $post_id, $slug ) {
-    if ( ! $post_id ) {
+    $virtual_ga4 = ! $post_id && 'ga4-tracking-setup' === $slug;
+    if ( ! $post_id && ! $virtual_ga4 ) {
         return null;
     }
 
@@ -878,17 +894,18 @@ function hu_build_generic_webpage_schema( $post_id, $slug ) {
         return null;
     }
 
-    $permalink = get_permalink( $post_id );
+    $permalink = $virtual_ga4 ? home_url( '/ga4-tracking-setup/' ) : get_permalink( $post_id );
 
     if ( ! $permalink ) {
         return null;
     }
 
-    $base        = trailingslashit( $permalink );
-    $title       = get_the_title( $post_id );
-    $excerpt     = get_the_excerpt( $post_id );
-    $description = $excerpt ? wp_strip_all_tags( $excerpt ) : wp_strip_all_tags( $title );
-    $route_schema = [];
+    $base          = trailingslashit( $permalink );
+    $tracking_name = hu_get_tracking_schema_page_name( $slug );
+    $title         = '' !== $tracking_name ? $tracking_name : get_the_title( $post_id );
+    $excerpt       = $virtual_ga4 ? ( hu_get_forced_singular_seo()['description'] ?? '' ) : get_the_excerpt( $post_id );
+    $description   = $excerpt ? wp_strip_all_tags( $excerpt ) : wp_strip_all_tags( $title );
+    $route_schema  = [];
 
     // Die Homepage ist template-owned. Derselbe gefilterte Inhalt wie in
     // Title/Description verhindert veraltete Editor-Texte im WebPage-Knoten.
@@ -939,8 +956,8 @@ function hu_build_generic_webpage_schema( $post_id, $slug ) {
         $webpage['about'] = [ '@id' => home_url( '/#organization' ) ];
     }
 
-    $published = get_post_time( DATE_W3C, true, $post_id );
-    $modified  = get_post_modified_time( DATE_W3C, true, $post_id );
+    $published = $post_id ? get_post_time( DATE_W3C, true, $post_id ) : false;
+    $modified  = $post_id ? get_post_modified_time( DATE_W3C, true, $post_id ) : false;
 
     if ( ! empty( $route_schema['dateModified'] ) ) {
         $modified = $route_schema['dateModified'];
@@ -954,7 +971,7 @@ function hu_build_generic_webpage_schema( $post_id, $slug ) {
         $webpage['dateModified'] = $modified;
     }
 
-    $image = get_the_post_thumbnail_url( $post_id, 'full' );
+    $image = $post_id ? get_the_post_thumbnail_url( $post_id, 'full' ) : false;
 
     // Wo die Route eine Theme-Kachel mitbringt, ersetzt sie das Beitragsbild
     // wie im og:image (inc/seo-meta.php). Seiten ohne Beitragsbild bekommen
@@ -1652,6 +1669,7 @@ function hu_output_schema()
      * Viele deiner “Seiten” sind Posts (Insights). Daher NICHT nur is_page(),
      * sondern is_singular() (Pages + Posts + CPTs).
      */
+    $virtual_ga4 = false;
     if (is_singular() && !is_attachment()) {
 
         $post_id = get_queried_object_id();
@@ -1660,6 +1678,7 @@ function hu_output_schema()
         if (!$slug && function_exists('nexus_get_current_service_cluster_route_slug')) {
             $slug = nexus_get_current_service_cluster_route_slug();
         }
+        $virtual_ga4 = ! $post_id && 'ga4-tracking-setup' === $slug;
 
         if ( function_exists( 'nexus_is_glossary_hub_page' ) && nexus_is_glossary_hub_page() && function_exists( 'nexus_get_glossary_registry' ) ) {
             $term_set = [
@@ -2327,7 +2346,7 @@ function hu_output_schema()
         } elseif ( is_page() ) {
             // Pages with parent hierarchy
             $page_id   = get_queried_object_id();
-            $ancestors = array_reverse( get_post_ancestors( $page_id ) );
+            $ancestors = $page_id ? array_reverse( get_post_ancestors( $page_id ) ) : [];
             foreach ( $ancestors as $ancestor_id ) {
                 $breadcrumb_items[] = [
                     '@type'    => 'ListItem',
@@ -2336,13 +2355,17 @@ function hu_output_schema()
                     'item'     => get_permalink( $ancestor_id ),
                 ];
             }
+            $page_name = hu_get_tracking_schema_page_name( $virtual_ga4 ? 'ga4-tracking-setup' : (string) get_post_field( 'post_name', $page_id ) );
+            if ( '' === $page_name ) {
+                $page_name = function_exists( 'hu_is_e3_methodology_case_post' ) && hu_is_e3_methodology_case_post( $page_id )
+                    ? hu_get_e3_methodology_case_schema_name()
+                    : get_the_title();
+            }
             $breadcrumb_items[] = [
                 '@type'    => 'ListItem',
                 'position' => $bc_position++,
-                'name'     => function_exists( 'hu_is_e3_methodology_case_post' ) && hu_is_e3_methodology_case_post( $page_id )
-                    ? hu_get_e3_methodology_case_schema_name()
-                    : get_the_title(),
-                'item'     => get_permalink( $page_id ),
+                'name'     => $page_name,
+                'item'     => $virtual_ga4 ? home_url( '/ga4-tracking-setup/' ) : get_permalink( $page_id ),
             ];
 
         } elseif ( is_category() ) {
@@ -2377,8 +2400,8 @@ function hu_output_schema()
             // Stable @id so the generic WebPage node can reference this
             // breadcrumb on singular views.
             $bc_object_id = get_queried_object_id();
-            if ( is_singular() && $bc_object_id ) {
-                $bc_permalink = get_permalink( $bc_object_id );
+            if ( is_singular() && ( $bc_object_id || $virtual_ga4 ) ) {
+                $bc_permalink = $virtual_ga4 ? home_url( '/ga4-tracking-setup/' ) : get_permalink( $bc_object_id );
                 if ( $bc_permalink ) {
                     $breadcrumb_schema['@id'] = trailingslashit( $bc_permalink ) . '#breadcrumb';
                 }

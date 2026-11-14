@@ -52,7 +52,7 @@ $crm_product          = $ladder['individual'];
 // Der Kanon verlangt, die Einordnung immer mitzufuehren: kein Paralleltest,
 // und im Fall gingen Server-Side und CRM-Anbindung gemeinsam live.
 $sst_effect = function_exists( 'hu_e3_metric' ) ? hu_e3_metric( 'sst_effect' ) : '';
-$case_label = function_exists( 'hu_e3_canon' ) ? (string) ( hu_e3_canon()['case_label_accusative'] ?? '' ) : '';
+$case_label = function_exists( 'hu_e3_canon' ) ? (string) ( hu_e3_canon()['case_label_genitive'] ?? '' ) : '';
 
 // ── Formular-Registries (bestehender Kontakt-Intake) ──────────
 $ad_platform_options = function_exists( 'nexus_get_contact_ad_platform_options' )

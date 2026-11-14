@@ -349,6 +349,15 @@ function hu_get_forced_singular_seo_map() {
 				'title'       => 'Conversion-Optimierung B2B: mehr Anfragen | Haşim Üner',
 				'description' => sprintf( 'Conversion-Optimierung für B2B-Websites mit wenig Traffic: schriftlicher Befund der Anfragestrecke in %d Werktagen, danach Umsetzung zu festen Preisen.', (int) hu_diagnose_canon()['primary_days'] ),
 			],
+			'ga4-tracking-setup' => [
+				'title'       => sprintf( 'Conversion Tracking einrichten lassen: GA4 & Ads für %s', hu_tracking_price( 'measurement', 'setup' ) ),
+				'description' => sprintf(
+					'Conversion Tracking für B2B-Websites: GA4, GTM, Consent Mode und Google Ads, mit Testfällen geprüft und dokumentiert. Festpreis %1$s netto; Server-Side %2$s, mit Meta CAPI %3$s.',
+					hu_tracking_price( 'measurement', 'setup' ),
+					hu_tracking_price( 'standard', 'setup' ),
+					hu_tracking_price( 'pro', 'setup' )
+				),
+			],
 			// Seit 2026-10-30: Title auf die Kaufformulierung ("einrichten
 			// lassen") plus Festpreis, weil die Search Console vor allem
 			// Einrichtungs-, Kosten- und Anbieter-Queries zeigt ("server side
@@ -445,12 +454,15 @@ function hu_get_forced_singular_seo( $post_id = 0 ) {
 		$post_id = (int) get_queried_object_id();
 	}
 
-	if ( $post_id <= 0 ) {
+	$slug = $post_id > 0 ? (string) get_post_field( 'post_name', $post_id ) : '';
+	if ( $post_id <= 0 && function_exists( 'nexus_get_current_service_cluster_route_slug' ) ) {
+		$slug = nexus_get_current_service_cluster_route_slug();
+	}
+	if ( '' === $slug ) {
 		return [];
 	}
 
-	$slug = (string) get_post_field( 'post_name', $post_id );
-	$map  = hu_get_forced_singular_seo_map();
+	$map = hu_get_forced_singular_seo_map();
 
 	if ( empty( $map[ $slug ] ) || ! is_array( $map[ $slug ] ) ) {
 		return [];
@@ -1371,8 +1383,9 @@ function hu_get_seo_meta() {
 		$cluster_slug        = nexus_get_current_service_cluster_route_slug();
 		$cluster_defaults    = function_exists( 'nexus_get_service_cluster_page_seo_defaults' ) ? nexus_get_service_cluster_page_seo_defaults( $cluster_slug ) : null;
 		$cluster_page        = function_exists( 'nexus_get_service_cluster_page' ) ? nexus_get_service_cluster_page( $cluster_slug ) : null;
-		$meta['og_title']    = ! empty( $cluster_defaults['title'] ) ? (string) $cluster_defaults['title'] : '';
-		$meta['description'] = ! empty( $cluster_defaults['description'] ) ? (string) $cluster_defaults['description'] : '';
+		$forced_seo          = hu_get_forced_singular_seo();
+		$meta['og_title']    = ! empty( $forced_seo['title'] ) ? $forced_seo['title'] : (string) ( $cluster_defaults['title'] ?? '' );
+		$meta['description'] = ! empty( $forced_seo['description'] ) ? $forced_seo['description'] : (string) ( $cluster_defaults['description'] ?? '' );
 		$meta['canonical']   = home_url( '/' . $cluster_slug . '/' );
 
 		if ( empty( $meta['og_title'] ) && is_array( $cluster_page ) && ! empty( $cluster_page['title'] ) ) {
