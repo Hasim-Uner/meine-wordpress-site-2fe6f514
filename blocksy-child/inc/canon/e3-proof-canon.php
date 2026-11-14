@@ -14,6 +14,7 @@ define( 'HU_E3_CASE_LABEL', 'mittelständischer PV-Installationsbetrieb' );
 // wie display_dative bei den Metriken: die Beugung steht im Canon, damit sie
 // nicht als Literal in die Templates wandert.
 define( 'HU_E3_CASE_LABEL_ACCUSATIVE', 'mittelständischen PV-Installationsbetrieb' );
+define( 'HU_E3_CASE_LABEL_GENITIVE', 'mittelständischen PV-Installationsbetriebs' );
 define( 'HU_E3_CPL_BEFORE', 150 );
 define( 'HU_E3_CPL_AFTER', 22 );
 define( 'HU_E3_CPL_REDUCTION_PERCENT', 85 );
@@ -57,6 +58,7 @@ function hu_e3_canon() {
 	return [
 		'case_label'            => HU_E3_CASE_LABEL,
 		'case_label_accusative' => HU_E3_CASE_LABEL_ACCUSATIVE,
+		'case_label_genitive'   => HU_E3_CASE_LABEL_GENITIVE,
 		'url'        => home_url( '/case-study-solar-leadgenerierung/' ),
 		'cpl_reached_month' => $cpl_reached_month,
 		'cpl_reached_label' => sprintf( 'ab Monat %d', $cpl_reached_month ),

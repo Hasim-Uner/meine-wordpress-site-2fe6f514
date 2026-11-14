@@ -271,7 +271,7 @@ define( 'HU_TRACKING_DURATION_WEEKS_MAX', 3 );
  * @return array<string, mixed>
  */
 function hu_tracking_pricing_canon() {
-	$monthly_terms = 'Nettopreise, monatlich kündbar, Hosting separat';
+	$monthly_terms = 'monatlich kündbar, Hosting separat';
 
 	return [
 		'measurement' => [

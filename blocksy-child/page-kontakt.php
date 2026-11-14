@@ -149,6 +149,8 @@ if ( 'website' === $selected_focus ) {
 	$form_title = 'Zwei kurze Schritte zur Wartungsanfrage.';
 	$form_intro = 'Nennen Sie Ihre Website und wer sie bisher betreut. Ihre Anfrage ist unverbindlich; zuerst kommt der Übernahme-Check.';
 	$message_step_title = 'Welche Website soll gewartet werden?';
+} elseif ( 'tracking' === $selected_focus && 'project' === $selected_type ) {
+	$hero_title = 'Worum geht es bei Ihrem Tracking-Projekt?';
 } elseif ( 'seo' === $selected_focus && 'project' === $selected_type ) {
 	$hero_title = 'Technisches SEO für Ihre WordPress-Website.';
 	$form_title = 'Zwei kurze Schritte zu Ihrer SEO-Projektanfrage.';

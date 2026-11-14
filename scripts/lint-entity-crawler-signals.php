@@ -655,6 +655,11 @@ $catalog_urls = array_map(
 );
 
 hu_lint_assert(
+	1 === count( array_keys( $catalog_urls, home_url( '/ga4-tracking-setup/' ), true ) ),
+	'Organization OfferCatalog lists the Conversion Tracking route exactly once'
+);
+
+hu_lint_assert(
 	'WordPress-Website erstellen lassen' === ( $catalog_names[0] ?? '' ),
 	'OfferCatalog starts with the direct WordPress product, not the Energy specialization'
 );
