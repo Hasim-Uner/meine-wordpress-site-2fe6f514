@@ -25,7 +25,7 @@ $eur = static function ( $value ) { return str_replace( ' €', "\u{00A0}€", h
 $scenarios = [
     [ 'pages' => 1, 'utility' => 0, 'standard' => 0, 'sales' => 0, 'title' => 'Kompakt', 'example' => 'Eine Hauptseite', 'purpose' => 'Angebot, Beleg und Kontakt auf einer Seite.' ],
     [ 'pages' => 3, 'utility' => 0, 'standard' => 1, 'sales' => 1, 'title' => 'Unternehmen', 'example' => 'Hauptseite + Leistung + Über uns', 'purpose' => 'Ein Angebot verkaufen und das Unternehmen separat erklären.' ],
-    [ 'pages' => 5, 'utility' => 1, 'standard' => 1, 'sales' => 2, 'title' => 'Leistungswebsite', 'example' => 'Hauptseite + 2 Leistungen + Über uns + Kontakt', 'purpose' => 'Mehrere Leistungen mit eigener Such- und Verkaufslogik.' ],
+    [ 'pages' => 5, 'utility' => 0, 'standard' => 2, 'sales' => 2, 'title' => 'Leistungswebsite', 'example' => 'Hauptseite + 2 Leistungen + Über uns + Kontakt', 'purpose' => 'Mehrere Leistungen mit eigener Such- und Verkaufslogik.' ],
 ];
 // Produktmodell: fünf Schichten als CSS-3D-Körper. Rein dekorativ; die Inhalte
 // stehen als Text in Abschnitt 01. Hero und Abschnitt 01 zeigen dasselbe Modell.
@@ -53,7 +53,7 @@ $model = static function ( $variant ) use ( $layers, $layer_ui ) {
             $count - 1 - $index,
             $layer_ui[ $layer['key'] ], // Statisches Markup aus dieser Datei.
             $index + 1,
-            esc_html( $layer['label'] )
+            esc_html( 'daten' === $layer['key'] ? 'Daten-Cockpit' : $layer['label'] )
         );
     }
     echo '<div class="aw-schatten"></div></div></div>';
@@ -67,10 +67,10 @@ get_header();
     <div class="wrap">
       <div>
         <div class="produkt"><span class="marke-produkt">Die Anfrage-Website</span><span class="mono">WordPress · Neubau oder Relaunch</span></div>
-        <h1 id="h-hero">WordPress-Website erstellen lassen.<br><span class="hero-akzent">Gefunden werden. Anfragen erhalten.<br>Verstehen, was funktioniert.</span></h1>
-        <p class="aw-einstieg"><?php echo esc_html( $eur( HU_FREELANCER_WEBSITE_MIN ) ); ?> netto inkl. Grundsystem &amp; erster Hauptseite · weitere Seiten ab <?php echo esc_html( $eur( HU_WEBSITE_PAGE_UTILITY ) ); ?></p>
-        <p class="lead">Für Unternehmen und Selbstständige, die ihre Leistungen erklären und passende Anfragen erhalten möchten. Ich entwickle Website, technische SEO-Basis, Anfrage-Strecke und Daten-Cockpit als ein System. Ihre fertigen Texte pflege ich ein; Texterstellung können Sie dazunehmen.</p>
-        <ul class="aw-hero-checks" aria-label="Im Grundprodukt enthalten"><li>Technisches SEO</li><li>Geprüfte Anfrage-Strecke</li><li>Basis-Daten-Cockpit</li></ul>
+        <h1 id="h-hero">WordPress-Website erstellen lassen. <span class="hero-akzent"><span>Gefunden werden.</span> <span>Anfragen erhalten.</span> <span>Verstehen, was funktioniert.</span></span></h1>
+        <p class="aw-einstieg"><?php echo esc_html( $eur( HU_FREELANCER_WEBSITE_MIN ) ); ?> netto inkl. Grundsystem &amp; erster Hauptseite · weitere Seiten ab <?php echo esc_html( $eur( HU_WEBSITE_PAGE_STANDARD ) ); ?></p>
+        <p class="lead">Für Unternehmen und Selbstständige, die über ihre Website Anfragen gewinnen wollen. Website, technisches SEO, Anfrage-Strecke und Daten-Cockpit entstehen als ein System, zum Festpreis.</p>
+        <ul class="aw-hero-checks" aria-label="Zusagen zum Auftrag"><li>Festpreis vor Auftrag</li><li>Einmalpreis, kein Abo</li><li>Alles auf Ihren Namen</li></ul>
         <div class="aktion">
           <a class="btn" href="#angebot" data-track-action="website_offer_hero_configure" data-track-category="navigation" data-track-section="website_offer_hero">Website zusammenstellen <span aria-hidden="true">→</span></a>
           <a class="btn btn--sekundaer" href="#beleg" data-track-action="website_offer_to_beleg" data-track-category="navigation">Projekte ansehen <span aria-hidden="true">↓</span></a>
@@ -86,7 +86,7 @@ get_header();
             <p class="aw-produktkern">Grundsystem + erste Hauptseite</p>
           </div>
           <div class="aw-produktmeta" aria-label="Preis- und Zeitrahmen">
-            <div><span class="mono">Weitere Seiten</span><strong>ab <?php echo esc_html( $eur( HU_WEBSITE_PAGE_UTILITY ) ); ?></strong></div>
+            <div><span class="mono">Weitere Seiten</span><strong>ab <?php echo esc_html( $eur( HU_WEBSITE_PAGE_STANDARD ) ); ?></strong></div>
             <div><span class="mono">Basis-Umsetzung</span><strong><?php echo esc_html( $days( hu_website_quote( 1 )['components']['implementation'] ) ); ?>*</strong></div>
           </div>
           <p class="aw-produktzeit" id="hero-bauzeit">Ihre Auswahl: <?php echo esc_html( $days( $quote['days'] ) ); ?> geplant.</p>
@@ -187,8 +187,8 @@ get_header();
           <div class="aw-config-column">
             <fieldset class="aw-feld aw-umfang">
               <legend><span class="aw-schritt">01</span> Welche Seiten brauchen Sie?</legend>
-              <p class="aw-feld-intro">Grundsystem und erste Hauptseite sind enthalten. Ergänzen Sie weitere Seiten nach Aufgabe – nicht nach einer pauschalen Seitenzahl.</p>
-              <div id="beispiele" class="groessen" data-website-controls hidden role="group" aria-label="Website-Beispiele wählen">
+              <p class="aw-feld-intro">Starten Sie mit einer Vorlage oder fügen Sie Seiten einzeln hinzu. Der Preis rechnet sofort mit.</p>
+              <div id="beispiele" class="groessen" data-website-controls hidden role="group" aria-label="Vorlage wählen">
 <?php foreach ( $scenarios as $scenario ) :
     $example_quote = hu_website_quote( $scenario['pages'], 'neubau', false, [
         'utility_pages' => $scenario['utility'],
@@ -201,12 +201,13 @@ get_header();
 <?php endforeach; ?>
               </div>
               <div class="aw-seitentypen" data-website-controls hidden>
-                <div class="aw-seitenzeile" data-page-row="utility"><p>Kurze Seite<small>Kontakt, Standort, kurze Information · +<?php echo esc_html( $eur( HU_WEBSITE_PAGE_UTILITY ) ); ?></small></p><div class="stepper"><button type="button" id="utility-minus" data-page-type="utility" data-page-delta="-1" aria-label="Eine kurze Seite weniger">−</button><output id="utility-pages" aria-label="Kurze Seiten">0</output><button type="button" id="utility-plus" data-page-type="utility" data-page-delta="1" aria-label="Eine kurze Seite mehr">+</button></div></div>
-                <div class="aw-seitenzeile" data-page-row="standard"><p>Standardseite<small>Über uns, Team, Unternehmen · +<?php echo esc_html( $eur( HU_WEBSITE_PAGE_STANDARD ) ); ?></small></p><div class="stepper"><button type="button" id="standard-minus" data-page-type="standard" data-page-delta="-1" aria-label="Eine Standardseite weniger">−</button><output id="standard-pages" aria-label="Standardseiten">1</output><button type="button" id="standard-plus" data-page-type="standard" data-page-delta="1" aria-label="Eine Standardseite mehr">+</button></div></div>
-                <div class="aw-seitenzeile" data-page-row="sales"><p>Leistungs-/Verkaufsseite<small>Leistung, Angebot, Money Page · +<?php echo esc_html( $eur( HU_WEBSITE_PAGE_SALES ) ); ?></small></p><div class="stepper"><button type="button" id="sales-minus" data-page-type="sales" data-page-delta="-1" aria-label="Eine Leistungsseite weniger">−</button><output id="sales-pages" aria-label="Leistungsseiten">1</output><button type="button" id="sales-plus" data-page-type="sales" data-page-delta="1" aria-label="Eine Leistungsseite mehr">+</button></div></div>
+                <div class="aw-seitenzeile aw-seitenzeile--fix"><p>Grundsystem und Hauptseite<small>Technisches SEO, Anfrage-Strecke und Daten-Cockpit inklusive</small></p><span class="aw-fixpreis"><?php echo esc_html( $eur( HU_FREELANCER_WEBSITE_MIN ) ); ?><small>immer enthalten</small></span></div>
+                <div class="aw-seitenzeile" data-page-row="standard"><p id="standard-label">Weitere Seite<small>Über uns, Team, Kontakt, Standort · je <?php echo esc_html( $eur( HU_WEBSITE_PAGE_STANDARD ) ); ?></small></p><div class="stepper" role="group" aria-labelledby="standard-label"><button type="button" id="standard-minus" data-page-type="standard" data-page-delta="-1" aria-label="Eine weitere Seite weniger">−</button><output id="standard-pages" aria-label="Weitere Seiten">1</output><button type="button" id="standard-plus" data-page-type="standard" data-page-delta="1" aria-label="Eine weitere Seite mehr">+</button></div></div>
+                <div class="aw-seitenzeile" data-page-row="sales"><p id="sales-label">Leistungsseite<small>Eine Leistung oder ein Angebot, das verkaufen soll · je <?php echo esc_html( $eur( HU_WEBSITE_PAGE_SALES ) ); ?></small></p><div class="stepper" role="group" aria-labelledby="sales-label"><button type="button" id="sales-minus" data-page-type="sales" data-page-delta="-1" aria-label="Eine Leistungsseite weniger">−</button><output id="sales-pages" aria-label="Leistungsseiten">1</output><button type="button" id="sales-plus" data-page-type="sales" data-page-delta="1" aria-label="Eine Leistungsseite mehr">+</button></div></div>
               </div>
-              <p class="aw-hinweis">Die erste Hauptseite ist immer enthalten. Maximal <?php echo esc_html( (string) HU_WEBSITE_CALCULATOR_MAX ); ?> Inhaltsseiten im Rechner; Impressum, Datenschutz, Danke- und 404-Seite zählen nicht mit.</p>
-              <div class="art" data-website-controls hidden role="group" aria-label="Projektart"><button type="button" data-art="neubau" aria-pressed="true">Neubau</button><button type="button" data-art="relaunch" aria-pressed="false">Relaunch <small>+<?php echo esc_html( $days( $rules['days']['relaunch'] ) ); ?></small></button></div>
+              <p class="aw-hinweis">Bis zu <?php echo esc_html( (string) HU_WEBSITE_CALCULATOR_MAX ); ?> Inhaltsseiten im Rechner. Impressum, Datenschutz, Danke- und 404-Seite sind dabei und zählen nicht mit.</p>
+              <p class="aw-art-frage" id="art-frage">Neue Website oder bestehende ablösen?</p>
+              <div class="art" data-website-controls hidden role="group" aria-labelledby="art-frage"><button type="button" data-art="neubau" aria-pressed="true">Neubau</button><button type="button" data-art="relaunch" aria-pressed="false">Relaunch <small>bestehende Website ersetzen · +<?php echo esc_html( $days( $rules['days']['relaunch'] ) ); ?></small></button></div>
             </fieldset>
             <fieldset class="aw-feld aw-inhalte">
               <legend><span class="aw-schritt">02</span> Texte</legend>
@@ -244,12 +245,12 @@ get_header();
         <aside class="aw-zusammenfassung" aria-labelledby="h-auswahl">
           <div class="aw-summary-kopf"><span class="mono">Ihre Konfiguration</span><span class="aw-status">Einmalpreis</span></div>
           <h3 id="h-auswahl">Ihre Auswahl</h3>
-          <p class="aw-summary-sub" id="auswahl-art">3 Seiten · Neubau · 1 Standard · 1 Leistung</p>
+          <p class="aw-summary-sub" id="auswahl-art">3 Seiten · Neubau · davon 1 Leistungsseite</p>
           <p class="aw-summary-sub" id="auswahl-design">Basisdesign inklusive</p>
           <div class="summe">
             <p class="mono" id="preis-label">Ihr Einmalpreis</p>
             <p class="gesamt"><span id="gesamt"><?php echo esc_html( $eur( $quote['price'] ) ); ?></span><small>netto · zzgl. USt.</small></p>
-            <p class="rechnung" id="rechnung"><?php echo esc_html( hu_freelancer_website_price() . ' + ' . hu_format_eur( HU_WEBSITE_PAGE_STANDARD ) . ' Standard + ' . hu_format_eur( HU_WEBSITE_PAGE_SALES ) . ' Leistung' ); ?></p>
+            <p class="rechnung" id="rechnung"><?php echo esc_html( hu_freelancer_website_price() . ' + ' . hu_format_eur( HU_WEBSITE_PAGE_STANDARD ) . ' Seite + ' . hu_format_eur( HU_WEBSITE_PAGE_SALES ) . ' Leistungsseite' ); ?></p>
             <p id="angebot-hinweis" class="aw-angebot-hinweis" hidden></p>
             <div class="aw-zeitkalkulation"><span id="dauer-label">Produktionszeit</span><b id="bauzeit"><?php echo esc_html( $days( $quote['days'] ) ); ?></b><a href="#zeit" data-track-action="website_offer_to_zeit" data-track-category="navigation">Zeitbeiträge ansehen ↓</a></div>
             <a class="btn" id="cta-angebot" href="<?php echo esc_url( $contact_url ); ?>" data-website-cta="angebot" data-track-action="cta_website_offer_scope_project" data-track-category="lead_gen" data-track-section="website_offer_angebot">Weiter zur Anfrage <span aria-hidden="true">→</span></a>
@@ -261,8 +262,7 @@ get_header();
           <details class="aw-price-details"><summary>So setzt sich der Preis zusammen</summary>
           <dl class="aw-preispositionen">
             <div><dt>Grundsystem + erste Hauptseite</dt><dd><?php echo esc_html( $eur( HU_FREELANCER_WEBSITE_MIN ) ); ?></dd></div>
-            <div id="summary-utility" hidden><dt><span id="count-utility">0</span> kurze Seiten</dt><dd id="betrag-utility"><?php echo esc_html( $eur( 0 ) ); ?></dd></div>
-            <div id="summary-standard"><dt><span id="count-standard">1</span> Standardseite</dt><dd id="betrag-standard"><?php echo esc_html( $eur( HU_WEBSITE_PAGE_STANDARD ) ); ?></dd></div>
+            <div id="summary-standard"><dt><span id="count-standard">1</span> weitere Seite</dt><dd id="betrag-standard"><?php echo esc_html( $eur( HU_WEBSITE_PAGE_STANDARD ) ); ?></dd></div>
             <div id="summary-sales"><dt><span id="count-sales">1</span> Leistungsseite</dt><dd id="betrag-sales"><?php echo esc_html( $eur( HU_WEBSITE_PAGE_SALES ) ); ?></dd></div>
             <div id="summary-copy"><dt id="auswahl-texte">Eigene Texte</dt><dd id="betrag-texte"><?php echo esc_html( $eur( 0 ) ); ?></dd></div>
             <div id="summary-tracking" hidden><dt>Conversion-Tracking</dt><dd><?php echo esc_html( $eur( $rules['prices']['tracking'] ) ); ?></dd></div>
@@ -421,7 +421,7 @@ get_header();
 
 
 <div class="leiste-unten tafel" hidden inert id="leiste" aria-hidden="true">
-  <a class="aw-auswahl-edit" href="#angebot" data-track-action="website_offer_edit_scope" data-track-category="navigation">Auswahl ändern ↑</a><p><b id="leiste-text"><?php echo esc_html( '3 Seiten · Neubau · 1 Standard · 1 Leistung' ); ?></b><span id="leiste-preis"><?php echo esc_html( hu_format_eur( $quote['price'] ) . ' netto' ); ?></span></p>
+  <a class="aw-auswahl-edit" href="#angebot" data-track-action="website_offer_edit_scope" data-track-category="navigation">Auswahl ändern ↑</a><p><b id="leiste-text"><?php echo esc_html( '3 Seiten · Neubau · davon 1 Leistungsseite' ); ?></b><span id="leiste-preis"><?php echo esc_html( hu_format_eur( $quote['price'] ) . ' netto' ); ?></span></p>
   <a class="btn" id="cta-leiste" tabindex="-1" href="<?php echo esc_url( $contact_url ); ?>" data-website-cta="leiste" data-track-action="cta_website_offer_sticky_project" data-track-category="lead_gen" data-track-section="website_offer_leiste">Anfragen <span aria-hidden="true">→</span></a>
 </div>
 

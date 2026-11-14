@@ -18,9 +18,7 @@
     function scopeLabel(selection) {
         var config = selection || state, pages = totalPages(config);
         var parts = [pages + (pages === 1 ? ' Seite' : ' Seiten'), config.art === 'relaunch' ? 'Relaunch' : 'Neubau'];
-        if (config.utility) parts.push(config.utility + (config.utility === 1 ? ' kurze Seite' : ' kurze Seiten'));
-        if (config.standard) parts.push(config.standard + ' Standard');
-        if (config.sales) parts.push(config.sales + (config.sales === 1 ? ' Leistung' : ' Leistungen'));
+        if (config.sales) parts.push('davon ' + config.sales + (config.sales === 1 ? ' Leistungsseite' : ' Leistungsseiten'));
         return parts.join(' · ');
     }
     function prospectiveTextPrice(selection) {
@@ -130,7 +128,7 @@
         layoutSelect.value = state.designLayouts;
         var result = quote(), newDesign = state.design === 'neu', total = result.price, scope = scopeLabel();
 
-        ['utility', 'standard', 'sales'].forEach(function (key) {
+        ['standard', 'sales'].forEach(function (key) {
             $('#' + key + '-pages').textContent = state[key];
             $('#' + key + '-minus').disabled = state[key] <= 0;
             $('#' + key + '-plus').disabled = pages >= max;
@@ -141,9 +139,9 @@
 
         $('#gesamt').textContent = eur(total);
         var equation = [eur(base)];
-        if (state.utility) equation.push(state.utility + ' × ' + eur(rules.prices.page_utility) + ' kurz');
-        if (state.standard) equation.push(state.standard + ' × ' + eur(rules.prices.page_standard) + ' Standard');
-        if (state.sales) equation.push(state.sales + ' × ' + eur(rules.prices.page_sales) + ' Leistung');
+        if (state.utility) equation.push(state.utility + ' × ' + eur(rules.prices.page_utility) + ' Seite');
+        if (state.standard) equation.push(state.standard + ' × ' + eur(rules.prices.page_standard) + ' Seite');
+        if (state.sales) equation.push(state.sales + ' × ' + eur(rules.prices.page_sales) + ' Leistungsseite');
         if (state.texte) equation.push(eur(result.textPrice) + ' Texte');
         if (newDesign) equation.push(eur(result.designPrice) + ' Design');
         if (state.tracking) equation.push(eur(trackingPrice) + ' Tracking');
@@ -338,8 +336,8 @@
         var context = document.modelContext;
         if (!context || typeof context.registerTool !== 'function') return;
         var properties = {
-            utility_pages: { type: 'integer', minimum: 0, maximum: max - 1, default: 0, description: 'Zusätzliche kurze Seiten, etwa Kontakt. Die erste Hauptseite ist bereits enthalten.' },
-            standard_pages: { type: 'integer', minimum: 0, maximum: max - 1, default: 0, description: 'Zusätzliche Standardseiten, etwa Über uns oder Team.' },
+            utility_pages: { type: 'integer', minimum: 0, maximum: max - 1, default: 0, description: 'Veraltet: wird wie standard_pages berechnet. Neue Anfragen nutzen standard_pages.' },
+            standard_pages: { type: 'integer', minimum: 0, maximum: max - 1, default: 0, description: 'Weitere Seiten, etwa Über uns, Team oder Kontakt. Die erste Hauptseite ist bereits enthalten.' },
             sales_pages: { type: 'integer', minimum: 0, maximum: max - 1, default: 0, description: 'Zusätzliche Leistungs- oder Verkaufsseiten.' },
             art: { type: 'string', enum: ['neubau', 'relaunch'], default: 'neubau', description: 'Neue Website oder Relaunch einer bestehenden Website.' },
             texte: { type: 'boolean', default: false, description: 'Texte für die ausgewählten Seiten erstellen lassen.' },

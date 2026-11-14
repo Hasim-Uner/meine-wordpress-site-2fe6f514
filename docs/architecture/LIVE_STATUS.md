@@ -578,7 +578,13 @@ Projektabschluss und ruhiger Agentur-Zweitweg, zentrale Metadaten und
   Konfigurator (`website_offer_system_to_scope`). Unter dem Abschluss-CTA
   stehen vier Zusagen: Festpreis vor Auftrag, Einmalpreis, Übergabe auf Ihren
   Namen, 30 Tage Fehlerbehebung. Abschnittsfolge, CTA-Ziele, Rechner, FAQ und
-  Schema unverändert. Frühe Qualitätsgründe
+  Schema unverändert. Seit 14.11.2026 zwei öffentliche Seitentypen im Rechner
+  (weitere Seite, Leistungsseite; „kurze Seite“ bleibt als Eingabe gültig und
+  wird wie eine Standardseite gerechnet, Regelversion `2026-11-14.scope.v5`),
+  feste Zeile für Grundsystem und Hauptseite, eigene Frage für Neubau oder
+  Relaunch, Auswahlfelder unabhängig vom Farbschema des Browsers. Hero mit
+  kürzerer H1-Zeile, Unterzeile und drei Zusagen statt Leistungsliste;
+  Schichtbeschriftungen des Modells kontraststärker. Frühe Qualitätsgründe
   mit Prüflinks, Kapitelziele und reale Projekte vor dem Konfigurator.
   E3 als erste große Referenz, die zwei weiteren auf Desktop nebeneinander.
   Gut lesbare Haupt- und sekundäre Buttons mit Hover-, Fokus- und Touch-Zuständen.

@@ -111,3 +111,22 @@ Keine Änderung an Consent, Cache-Grenzen, Routing oder Deployment.
 Landingpage und Monatskontingente unverändert. Hypothese: klarer Umfang und
 sichtbare Gesamtkalkulation erhöhen Anfragen; prüfen nach acht Wochen oder
 300 Aufrufen laut `docs/experimente/anfrage-website.md`.
+
+## Nachtrag 14.11.2026: zwei Seitentypen
+
+Vom Betreiber bestätigt. Der Konfigurator kennt öffentlich nur noch zwei
+Seitentypen: weitere Seite (Standardseite) und Leistungsseite. Die Beträge
+stehen im Kanon (`HU_WEBSITE_PAGE_STANDARD`, `HU_WEBSITE_PAGE_SALES`); der
+Grundpreis bleibt unverändert.
+
+- Anlass: Drei Seiten lagen mit drei Seitentypen über 3.000 € netto und damit
+  über der Marktmitte, die `docs/decisions/preise-website-landingpage.md` am
+  26.09.2026 aus Wettbewerberpreisen abgeleitet hat. Drei Typen waren im
+  Rechner außerdem schwer zu unterscheiden.
+- „Kurze Seite“ bleibt als Eingabe gültig (alte Links, CRM-Feld
+  `_nexus_contact_website_pages_utility`, WebMCP `utility_pages`) und wird in
+  Preis, Texterstellung und Zeit wie eine Standardseite gerechnet.
+- Regelversion `2026-11-14.scope.v5`. Zeitbeiträge je Seitentyp unverändert.
+- Grenze: kein Käuferbeleg für die neue Schwelle; die Wirkung wird über die
+  Auswertung in `docs/experimente/anfrage-website.md` beobachtet.
+

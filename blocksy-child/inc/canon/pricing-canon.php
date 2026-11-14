@@ -551,14 +551,17 @@ function hu_tracking_ladder_display( $from_stage = 1 ) {
 // Diese Sätze sind keine öffentlichen Preisanker des Produktkonfigurators.
 define( 'HU_FREELANCER_WEBSITE_MIN', 1900 );
 define( 'HU_FREELANCER_WEBSITE_PAGES', 1 );
-define( 'HU_FREELANCER_WEBSITE_EXTRA_PAGE', 400 ); // Kompatibilität: Standard-Unterseite.
+define( 'HU_FREELANCER_WEBSITE_EXTRA_PAGE', 300 ); // Kompatibilität: Standard-Unterseite.
 define( 'HU_WEBSITE_CALCULATOR_MAX', 10 );
-define( 'HU_WEBSITE_PAGE_UTILITY', 300 );
-define( 'HU_WEBSITE_PAGE_STANDARD', 400 );
-define( 'HU_WEBSITE_PAGE_SALES', 790 );
+// Seit 14.11.2026 zwei öffentliche Seitentypen: Standardseite und Leistungsseite.
+// "Kurze Seite" bleibt als Eingabe gültig (alte Links, CRM-Felder, WebMCP) und
+// wird in Preis, Texten und Zeit wie eine Standardseite behandelt.
+define( 'HU_WEBSITE_PAGE_STANDARD', 300 );
+define( 'HU_WEBSITE_PAGE_UTILITY', HU_WEBSITE_PAGE_STANDARD );
+define( 'HU_WEBSITE_PAGE_SALES', 590 );
 define( 'HU_WEBSITE_COPY_BASE', 290 );
-define( 'HU_WEBSITE_COPY_UTILITY', 50 );
 define( 'HU_WEBSITE_COPY_STANDARD', 150 );
+define( 'HU_WEBSITE_COPY_UTILITY', HU_WEBSITE_COPY_STANDARD );
 define( 'HU_WEBSITE_COPY_SALES', 290 );
 define( 'HU_WEBSITE_DESIGN_FIRST', 690 );
 define( 'HU_WEBSITE_DESIGN_EXTRA', 250 );
@@ -578,13 +581,13 @@ function hu_website_scope_units() {
 	return [
 		'base' => [ 'price' => HU_FREELANCER_WEBSITE_MIN, 'hours' => 20, 'days' => 2 ],
 		'pages' => [
-			'utility'  => [ 'price' => HU_WEBSITE_PAGE_UTILITY, 'hours' => 3, 'days' => 0.5 ],
+			'utility'  => [ 'price' => HU_WEBSITE_PAGE_UTILITY, 'hours' => 4, 'days' => 0.5 ],
 			'standard' => [ 'price' => HU_WEBSITE_PAGE_STANDARD, 'hours' => 4, 'days' => 0.5 ],
 			'sales'    => [ 'price' => HU_WEBSITE_PAGE_SALES, 'hours' => 8, 'days' => 1 ],
 		],
 		'copy' => [
 			'base'     => [ 'price' => HU_WEBSITE_COPY_BASE, 'hours' => 3, 'days' => 0.5 ],
-			'utility'  => [ 'price' => HU_WEBSITE_COPY_UTILITY, 'hours' => 0.5, 'days' => 0.25 ],
+			'utility'  => [ 'price' => HU_WEBSITE_COPY_UTILITY, 'hours' => 1.5, 'days' => 0.25 ],
 			'standard' => [ 'price' => HU_WEBSITE_COPY_STANDARD, 'hours' => 1.5, 'days' => 0.25 ],
 			'sales'    => [ 'price' => HU_WEBSITE_COPY_SALES, 'hours' => 3, 'days' => 0.5 ],
 		],
@@ -599,7 +602,7 @@ function hu_website_calculator_rules() {
 	$units = hu_website_scope_units();
 
 	return [
-		'version' => '2026-10-06.scope.v4',
+		'version' => '2026-11-14.scope.v5',
 		'max_pages' => HU_WEBSITE_CALCULATOR_MAX,
 		'prices' => [
 			'base' => HU_FREELANCER_WEBSITE_MIN,
@@ -809,7 +812,7 @@ function hu_freelancer_website_extra_page_price( $with_net = false ) {
 function hu_freelancer_website_scope_display() {
 	return sprintf(
 		'Festpreis für Grundsystem und erste Hauptseite; weitere Seiten ab %s netto nach Seitentyp',
-		hu_format_eur( HU_WEBSITE_PAGE_UTILITY )
+		hu_format_eur( HU_WEBSITE_PAGE_STANDARD )
 	);
 }
 

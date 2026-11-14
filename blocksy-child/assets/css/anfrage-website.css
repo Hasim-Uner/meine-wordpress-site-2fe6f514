@@ -1265,7 +1265,7 @@
 .anfrage-website .aw-kapitel a { display: inline-flex; align-items: center; min-height: 44px; color: var(--tinte); font-size: var(--grad-klein); text-decoration-color: var(--haar); }
 .anfrage-website .aw-kapitel a:hover { text-decoration-color: var(--stempel); }
 .anfrage-website :is(#beleg, #angebot, #erweiterungen, #unterschied, #zeit, #fragen, #anfrage) { scroll-margin-top: calc(var(--leiste-h, 54px) + var(--s3)); }
-.anfrage-website .aw-referenzen .wrap { padding-bottom: var(--s5); }
+.anfrage-website .aw-referenzen .wrap { padding-bottom: 0; }
 .anfrage-website .aw-projekt .bild img { object-position: top; }
 .anfrage-website .aw-schema-label { margin-left: auto; font: var(--mono-m) var(--mono); color: var(--aw-muted); }
 .anfrage-website .aw-pruefung { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: var(--s2) var(--s3); margin-top: var(--s4); padding-top: var(--s3); border-top: 1px solid var(--haar); }
@@ -1279,11 +1279,11 @@
    Maße hängen an --a (Kantenlänge), damit Schriftgröße und Zoom die Geometrie nicht verschieben. */
 .anfrage-website .aw-modell {
   --a:clamp(128px,34vw,224px);
-  --gap:calc(var(--a) * .15);
+  --gap:calc(var(--a) * .17);
   --dicke:calc(var(--a) * .04);
-  --zmax:calc(var(--a) * .74);
-  --aw-flaeche:color-mix(in srgb,var(--zone) 72%,var(--papier));
-  --aw-kante:color-mix(in srgb,var(--tinte) 24%,var(--papier));
+  --zmax:calc(var(--a) * .84);
+  --aw-flaeche:var(--zone2);
+  --aw-kante:color-mix(in srgb,var(--tinte) 34%,var(--papier));
   --aw-seite1:color-mix(in srgb,var(--tinte) 14%,var(--papier));
   --aw-seite2:color-mix(in srgb,var(--tinte) 28%,var(--papier));
   --aw-strich:color-mix(in srgb,var(--tinte) 24%,var(--papier));
@@ -1353,13 +1353,13 @@
 }
 .anfrage-website .aw-etikett {
   position:absolute;
-  left:21%;
-  bottom:4.5%;
-  font:500 max(7px,calc(var(--a) * .047))/1 var(--mono);
-  letter-spacing:.1em;
+  left:19%;
+  bottom:4%;
+  font:600 max(8px,calc(var(--a) * .056))/1 var(--mono);
+  letter-spacing:.08em;
   text-transform:uppercase;
   white-space:nowrap;
-  color:var(--grau);
+  color:var(--tinte);
 }
 .anfrage-website .aw-schicht--seite { --aw-flaeche:var(--papier); }
 .anfrage-website .aw-schicht--seite .aw-etikett { color:var(--stempel); }
@@ -1413,15 +1413,53 @@
 }
 
 /* Hero: geschlossenes Modell über der Preiskarte. */
+.anfrage-website .hero h1 {
+  max-width:17ch;
+  font-size:var(--grad-h1);
+  line-height:1.02;
+  letter-spacing:-.025em;
+  text-wrap:balance;
+}
+.anfrage-website .hero .hero-akzent {
+  display:block;
+  margin-top:var(--s2);
+  font-size:clamp(1.2rem,.85rem + 1.1vw,1.6rem);
+  line-height:1.25;
+  letter-spacing:-.01em;
+  text-wrap:balance;
+}
+.anfrage-website .hero .hero-akzent span { display:inline-block; }
+.anfrage-website .hero .lead { max-width:52ch; margin-top:var(--s3); }
+.anfrage-website .hero .aw-hero-checks {
+  gap:var(--s0) var(--s3);
+  margin-top:var(--s3);
+  padding-top:var(--s2);
+  border-top:1px solid var(--haar);
+  color:var(--tinte);
+}
 .anfrage-website .aw-hero-objekt {
+  position:relative;
+  isolation:isolate;
   display:grid;
   justify-items:center;
   gap:var(--s3);
+}
+.anfrage-website .aw-hero-objekt::before {
+  content:"";
+  position:absolute;
+  inset:0 0 auto;
+  height:calc(var(--aw-hero-a,224px) * 1.9);
+  z-index:-1;
+  background-image:linear-gradient(var(--haar) 1px,transparent 1px),linear-gradient(90deg,var(--haar) 1px,transparent 1px);
+  background-size:2rem 2rem;
+  mask-image:radial-gradient(closest-side,var(--tinte) 20%,transparent);
+  pointer-events:none;
 }
 .anfrage-website .aw-hero-objekt .aw-produktkarte {
   width:100%;
   max-width:23rem;
 }
+.anfrage-website .aw-modell--hero .aw-schicht--seite { --aw-kante:var(--tinte); }
 .anfrage-website .aw-modell--hero .aw-schicht--eigentum {
   --aw-flaeche:var(--tinte);
   --aw-kante:var(--tinte);
@@ -1436,6 +1474,8 @@
   .anfrage-website .aw-hero-objekt .aw-modell { --a:clamp(200px,17vw,250px); }
   .anfrage-website .aw-hero-objekt .aw-produktkarte { padding:var(--s2) var(--s3); }
   .anfrage-website .hero { padding-block:var(--s2) var(--s5); }
+  .anfrage-website .hero .wrap { align-items:start; }
+  .anfrage-website .hero .wrap > div:first-child { padding-top:var(--s4); }
 }
 @media (prefers-reduced-motion:no-preference) {
   .anfrage-website .aw-modell--hero .aw-schicht {
@@ -1488,8 +1528,11 @@
   --gap:calc(var(--a) * .3);
   --zmax:calc(var(--a) * 1.3);
   --aw-flaeche:color-mix(in srgb,var(--tinte) 7%,var(--papier));
+  --aw-kante:color-mix(in srgb,var(--tinte) 24%,var(--papier));
 }
 .anfrage-website .aw-modell--buehne .aw-schicht--seite { --aw-flaeche:color-mix(in srgb,var(--tinte) 12%,var(--papier)); }
+.anfrage-website .aw-modell--buehne .aw-etikett { color:color-mix(in srgb,var(--tinte) 86%,var(--papier)); }
+.anfrage-website .aw-modell--buehne .aw-schicht--seite .aw-etikett { color:var(--stempel); }
 .anfrage-website .aw-anatomie-live:not(.ist-offen) .aw-modell--buehne { --gap:calc(var(--a) * .08); }
 .anfrage-website .aw-anatomie-zaehler {
   display:flex;
@@ -1963,3 +2006,47 @@
 .hu-website-offer-page .fuss .verzeichnis { grid-template-columns: repeat(auto-fit, minmax(min(100%, 9rem), 1fr)); }
 .hu-website-offer-page .fuss a { max-width: 100%; overflow-wrap: anywhere; }
 .hu-website-offer-page .fuss { overflow-wrap: anywhere; }
+
+/* Konfigurator: eindeutige Auswahlfelder, unabhängig vom Farbschema des Browsers. */
+.anfrage-website .aw-option input {
+  appearance:none;
+  flex:none;
+  display:grid;
+  place-content:center;
+  width:22px;
+  height:22px;
+  margin:var(--s0) 0 0;
+  background:var(--papier);
+  border:2px solid var(--matt);
+  border-radius:var(--r1);
+  cursor:pointer;
+}
+.anfrage-website .aw-option input[type="radio"] { border-radius:50%; }
+.anfrage-website .aw-option input::before {
+  content:"";
+  width:10px;
+  height:10px;
+  background:var(--papier);
+  transform:scale(0);
+}
+.anfrage-website .aw-option input[type="radio"]::before { border-radius:50%; }
+.anfrage-website .aw-option input[type="checkbox"]::before { clip-path:polygon(14% 52%,0 66%,40% 100%,100% 22%,86% 8%,38% 68%); width:12px; height:12px; }
+.anfrage-website .aw-option input:checked { background:var(--stempel); border-color:var(--stempel); }
+.anfrage-website .aw-option input:checked::before { transform:scale(1); }
+.anfrage-website .aw-option input:focus-visible { outline:2px solid var(--tinte); outline-offset:3px; }
+.anfrage-website .aw-option:has(input:checked) { background:color-mix(in srgb,var(--stempel) 5%,var(--papier)); border-color:var(--stempel); box-shadow:inset 0 0 0 1px var(--stempel); }
+@media (forced-colors:active) {
+  .anfrage-website .aw-option input { appearance:auto; }
+  .anfrage-website .aw-option input::before { display:none; }
+}
+.anfrage-website .aw-seitenzeile--fix { background:var(--zone); }
+.anfrage-website .aw-fixpreis { display:grid; justify-items:end; font:600 var(--grad-klein) var(--mono); font-variant-numeric:tabular-nums; color:var(--tinte); }
+.anfrage-website .aw-fixpreis small { margin-top:0; font:var(--mono-s) var(--mono); letter-spacing:.08em; text-transform:uppercase; color:var(--grau); }
+.anfrage-website .aw-seitentypen .aw-seitenzeile p { font-size:var(--grad-text); }
+.anfrage-website .stepper { border-color:var(--matt); }
+.anfrage-website .stepper button { font-size:1.25rem; font-weight:600; }
+.anfrage-website .stepper button:not(:disabled):hover { background:var(--tinte); color:var(--papier); }
+.anfrage-website .stepper output { min-width:2.75rem; font-size:var(--grad-text); font-weight:600; }
+.anfrage-website .aw-art-frage { margin-top:var(--s3); font-size:var(--grad-klein); font-weight:600; color:var(--tinte); }
+.anfrage-website .aw-art-frage + .art { margin-top:var(--s1); }
+.anfrage-website .art button small { color:var(--grau); }
