@@ -104,6 +104,102 @@
 		updateSticky();
 	}
 
+	// ─── 02 Schichtmodell: Platten spiegeln die offene Station ───
+	(function initStack() {
+		var stack = document.querySelector('[data-wl-stack]');
+		if (!stack) return;
+		var scene = stack.querySelector('[data-wl-szene]');
+		var plates = Array.from(stack.querySelectorAll('[data-wl-platte]'));
+		var fields = Array.from(document.querySelectorAll('[data-wl-feld]'));
+		var sync = function () {
+			var open = fields.findIndex(function (field) { return field.open; });
+			plates.forEach(function (plate, i) { plate.classList.toggle('is-aktiv', i === open); });
+		};
+		fields.forEach(function (field) { field.addEventListener('toggle', sync); });
+		plates.forEach(function (plate, i) {
+			plate.addEventListener('click', function () {
+				if (!fields[i]) return;
+				// Aeltere Browser ohne exklusive <details name> schliessen die uebrigen hier.
+				fields.forEach(function (field, j) { if (j !== i) field.open = false; });
+				fields[i].open = true;
+				sync();
+			});
+		});
+		sync();
+
+		// Leichte Neigung zum Zeiger, nur mit Maus und ohne reduzierte Bewegung.
+		var fine = window.matchMedia('(hover: hover) and (pointer: fine)');
+		var calm = window.matchMedia('(prefers-reduced-motion: reduce)');
+		if (!scene || !fine.matches || calm.matches) return;
+		var pending = false, px = 0, py = 0;
+		stack.addEventListener('pointermove', function (event) {
+			var rect = stack.getBoundingClientRect();
+			px = (event.clientX - rect.left) / rect.width - .5;
+			py = (event.clientY - rect.top) / rect.height - .5;
+			if (pending) return; pending = true;
+			requestAnimationFrame(function () {
+				pending = false;
+				scene.style.setProperty('--wl-kx', (py * -8).toFixed(2) + 'deg');
+				scene.style.setProperty('--wl-kz', (px * 10).toFixed(2) + 'deg');
+			});
+		});
+		stack.addEventListener('pointerleave', function () {
+			scene.style.removeProperty('--wl-kx');
+			scene.style.removeProperty('--wl-kz');
+		});
+	})();
+
+	// ─── 05 Margen-Rechner: rechnet lokal mit dem Kundenpreis der Agentur ───
+	(function initCalculator() {
+		var calc = document.querySelector('[data-wl-rechner]');
+		if (!calc) return;
+		var range = calc.querySelector('input[type="range"]');
+		var options = Array.from(calc.querySelectorAll('input[type="radio"]'));
+		var out = {
+			price: calc.querySelector('[data-wl-rechner-preis]'),
+			agency: calc.querySelector('[data-wl-rechner-agentur]'),
+			margin: calc.querySelector('[data-wl-rechner-marge]'),
+			share: calc.querySelector('[data-wl-rechner-anteil]'),
+			hint: calc.querySelector('[data-wl-rechner-hinweis]'),
+			bar: calc.querySelector('[data-wl-rechner-balken]')
+		};
+		if (!range || !options.length) return;
+		var eur = function (value) { return Math.round(value).toLocaleString('de-DE') + '\u00A0€'; };
+		var current = function () { return options.find(function (option) { return option.checked; }) || options[0]; };
+		var moved = false;
+		var render = function () {
+			var agency = Number(current().dataset.agentur);
+			var price = Math.max(Number(range.value), agency);
+			var margin = price - agency;
+			var share = price > 0 ? margin / price : 0;
+			out.price.textContent = eur(price);
+			out.agency.textContent = eur(agency);
+			out.margin.textContent = eur(margin);
+			out.share.textContent = Math.round(share * 100) + '\u00A0%';
+			out.bar.style.setProperty('--wl-marge', share.toFixed(4));
+			range.setAttribute('aria-valuetext', eur(price) + ', bleibt bei euch ' + eur(margin));
+		};
+		var choose = function () {
+			var option = current();
+			var agency = Number(option.dataset.agentur);
+			range.min = agency;
+			range.max = Math.ceil(agency * 3 / 100) * 100;
+			range.value = option.dataset.start;
+			out.hint.textContent = option.hasAttribute('data-oeffentlich')
+				? 'Startwert: mein öffentlicher Endkundenpreis für denselben Umfang.'
+				: 'Der Regler startet bei meinem Preis. Zieht ihn auf euren.';
+			render();
+		};
+		options.forEach(function (option) { option.addEventListener('change', choose); });
+		range.addEventListener('input', function () {
+			render();
+			if (moved) return; moved = true;
+			track('whitelabel_calc_price', { event_category: 'engagement', event_section: 'entry', event_label: current().value });
+		});
+		calc.hidden = false;
+		choose();
+	})();
+
 	// strecke-js-privat:start — local measurement only; the form is outside.
 	(function initLocalProtocol() {
 		var root = document.querySelector('.wl-page');

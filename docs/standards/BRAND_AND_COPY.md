@@ -80,6 +80,7 @@ Die Startseite ist zugleich Marke und direkte Freelancer-Money-Page. Sie überni
 - `/whitelabel-retainer/` = eigener Agentur-Einstieg
 - Zielgruppe: Performance-, Web-, SEO- und Full-Service-Agenturen mit Umsetzungsbedarf
 - Lieferfelder: WordPress (Landingpages, Ladezeit, technische SEO), Tracking, Anfragestrecken bis ins CRM, Barrierefreiheit (WCAG 2.1 AA); jede Leistung beginnt mit dem Anlass aus Sicht der Agentur
+- Einstieg in die Lieferfelder (seit 2026-11-14): Kunden holen Kreation ins Haus, die Technik dahinter bleibt Agenturleistung. Beleg ist das GWA KI-Whitepaper 2026 (80 % der befragten Marketingentscheider planen mehr Inhouse-Umsetzung), immer mit Quelle und Link; keine weiteren Marktzahlen ohne Quelle. Das Schichtmodell daneben ist Dekoration zu den vier Feldern, kein fünftes Angebot
 - Primärer nächster Schritt: Aufgabe beschreiben (Formular der Route) oder Erstprojekt mit klarem Scope; Zweitweg im Hero ist die Einschätzung vor der Zusage (`?case=angebotsphase`); Vormerken (`?case=vormerken`) und der 30-Minuten-Termin stehen nur neben dem Formular
 - Unterschied im ersten Bildschirm: WordPress-Seite und Messung aus einer Person, Festpreis und Termin stehen vor der Zusage der Agentur an ihren Kunden (H1: „Ich baue die WordPress-Seite und die Messung dazu. Festpreis und Termin stehen, bevor ihr zusagt.“). Unsichtbarkeit ist kein Versprechen der H1: Ob die Agentur mich im Hintergrund hält oder mit an den Tisch nimmt, entscheidet sie; das steht im Ablauf
 - Keine erfundenen Agentur-Referenzen; keine Akquise im Kundenstamm der Partner

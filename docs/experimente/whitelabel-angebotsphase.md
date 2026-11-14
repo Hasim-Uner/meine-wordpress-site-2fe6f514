@@ -31,3 +31,10 @@ kein horizontaler Überlauf und Testanfragen für alle drei Fälle mit korrektem
 `case` im tatsächlichen Posteingang/CRM. Lokale Browser-Tests fangen den
 REST-Versand ab; die PHP-Endpoint-Tests prüfen die Übergabe an CRM und Mail
 gegen Test-Doubles. Sie ersetzen diese Live-Abnahme nicht.
+
+## Änderung nach dem Messfenster
+
+2026-11-14: Abschnitt 02 bekommt das Schichtmodell und einen neuen Einstieg,
+Abschnitt 05 den Margen-Rechner. Hero, Reihenfolge der Stationen, CTA-Hooks
+und Formularvertrag sind unverändert. Fällt der Deploy dieser Änderung noch in
+das Sechs-Wochen-Fenster, endet die Auswertung am Vortag des Deploys.
