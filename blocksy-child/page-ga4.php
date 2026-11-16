@@ -118,7 +118,7 @@ get_header();
 	<header class="kopfteil" data-track-section="tracking_hero">
 		<div class="blatt ga4-product-hero">
 			<div>
-				<p class="gegenstand">Conversion-Tracking · GA4 · Google Ads</p>
+				<p class="gegenstand">Tracking-Freelancer für B2B · GA4 · GTM · Google Ads</p>
 				<h1>Conversion Tracking einrichten lassen. Damit klar ist, welche Anfrage zählt.</h1>
 				<p class="aufriss">Als Freelancer richte ich Conversion-Tracking für B2B-Websites ein. Ich definiere Ihre Haupt-Conversions, binde GA4, Google Tag Manager und Google Ads an Ihr Consent-Tool an und prüfe die Messung mit Testfällen. Sie erhalten einen Messplan und eine dokumentierte Übergabe.</p>
 				<div class="ausgang">

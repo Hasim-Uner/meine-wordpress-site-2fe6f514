@@ -151,6 +151,9 @@ if ( 'website' === $selected_focus ) {
 	$message_step_title = 'Welche Website soll gewartet werden?';
 } elseif ( 'tracking' === $selected_focus && 'project' === $selected_type ) {
 	$hero_title = 'Worum geht es bei Ihrem Tracking-Projekt?';
+	$form_title = 'Zwei kurze Schritte zu Ihrer Tracking-Anfrage.';
+	$form_intro = 'Beschreiben Sie kurz Ihre Website, genutzte Systeme (GA4, GTM, Ads) und Ihr Messziel. Ihre Anfrage ist unverbindlich.';
+	$message_step_title = 'Was soll gemessen oder bereinigt werden?';
 } elseif ( 'seo' === $selected_focus && 'project' === $selected_type ) {
 	$hero_title = 'Technisches SEO für Ihre WordPress-Website.';
 	$form_title = 'Zwei kurze Schritte zu Ihrer SEO-Projektanfrage.';

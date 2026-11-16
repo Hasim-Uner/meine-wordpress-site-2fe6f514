@@ -53,10 +53,10 @@ add_filter( 'document_title_parts', 'hu_document_title_overrides' );
  * @return string
  */
 function hu_get_homepage_title() {
-	// Rolle und Leistung vorn; Hannover bleibt in Metazeile, FAQ und Schema.
+	// Primärer Query-Owner "wordpress freelancer hannover" vorn im Title; H1 bleibt nutzenorientiert ohne Ortsnamen.
 	return (string) apply_filters(
 		'hu_homepage_seo_title',
-		'WordPress Freelancer: Websites & Tracking | Haşim Üner'
+		'WordPress Freelancer Hannover: Websites & Tracking | Haşim Üner'
 	);
 }
 
@@ -82,10 +82,12 @@ function hu_get_homepage_description() {
  * @return string
  */
 function hu_get_blog_archive_title() {
-	return (string) apply_filters(
-		'hu_blog_archive_seo_title',
-		'Blog: WordPress, Tracking, SEO & Conversion | Haşim Üner'
-	);
+	$paged = max( 1, (int) get_query_var( 'paged', 1 ) );
+	$title = $paged > 1
+		? sprintf( 'Blog — Seite %d: WordPress, Tracking, SEO & Conversion | Haşim Üner', $paged )
+		: 'Blog: WordPress, Tracking, SEO & Conversion | Haşim Üner';
+
+	return (string) apply_filters( 'hu_blog_archive_seo_title', $title, $paged );
 }
 
 /**
@@ -94,10 +96,12 @@ function hu_get_blog_archive_title() {
  * @return string
  */
 function hu_get_blog_archive_description() {
-	return (string) apply_filters(
-		'hu_blog_archive_seo_description',
-		'Analysen zu WordPress, technischem SEO, Tracking, Conversion und Leadökonomie. Dazu technische Praxis, Messmethoden und dokumentierte Projektarbeit.'
-	);
+	$paged       = max( 1, (int) get_query_var( 'paged', 1 ) );
+	$description = $paged > 1
+		? sprintf( 'Seite %d im Blog-Archiv: weitere Analysen zu WordPress, technischem SEO, Tracking, Conversion und dokumentierter Projektarbeit.', $paged )
+		: 'Analysen zu WordPress, technischem SEO, Tracking, Conversion und Leadökonomie. Dazu technische Praxis, Messmethoden und dokumentierte Projektarbeit.';
+
+	return (string) apply_filters( 'hu_blog_archive_seo_description', $description, $paged );
 }
 
 /**
@@ -352,11 +356,15 @@ function hu_get_forced_singular_seo_map() {
 			'ga4-tracking-setup' => [
 				'title'       => sprintf( 'Conversion Tracking einrichten lassen: GA4 & Ads für %s', hu_tracking_price( 'measurement', 'setup' ) ),
 				'description' => sprintf(
-					'Conversion Tracking für B2B-Websites: GA4, GTM, Consent Mode und Google Ads, mit Testfällen geprüft und dokumentiert. Festpreis %1$s netto; Server-Side %2$s, mit Meta CAPI %3$s.',
+					'Conversion Tracking für B2B-Websites vom Freelancer: GA4, GTM, Consent Mode und Google Ads, mit Testfällen geprüft und dokumentiert. Festpreis %1$s netto; Server-Side %2$s, mit Meta CAPI %3$s.',
 					hu_tracking_price( 'measurement', 'setup' ),
 					hu_tracking_price( 'standard', 'setup' ),
 					hu_tracking_price( 'pro', 'setup' )
 				),
+			],
+			'glossar' => [
+				'title'       => 'Glossar: WordPress, SEO & Tracking erklärt | Haşim Üner',
+				'description' => 'Glossar für WordPress, SEO, Tracking und Conversion: kurze Begriffserklärungen und Beispiele aus der Website-Praxis.',
 			],
 			// Seit 2026-10-30: Title auf die Kaufformulierung ("einrichten
 			// lassen") plus Festpreis, weil die Search Console vor allem
