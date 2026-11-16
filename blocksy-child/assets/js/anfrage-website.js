@@ -92,7 +92,7 @@
         $('#zeit-gesamt').textContent = duration + ' geplant';
         $('#zeit-umfang').textContent = 'Ihr Umfang: ' + scopeLabel();
         $('#bauzeit').textContent = duration;
-        $('#hero-bauzeit').textContent = 'Ihre Auswahl: ' + (state.dashboard ? 'mindestens ' : '') + days(result.days) + ' geplant.';
+        $('#hero-bauzeit').textContent = 'Konfigurator-Auswahl (' + totalPages(state) + (totalPages(state) === 1 ? ' Seite' : ' Seiten') + '): ' + (state.dashboard ? 'mindestens ' : '') + days(result.days) + ' geplant.';
         $('#dauer-label').textContent = state.dashboard ? 'Produktionszeit ohne Dashboard' : 'Produktionszeit';
         $('#zeit-aufteilung').textContent = 'Vorbereitung ' + days(parts.texts + parts.design) + ' · Umsetzung ' + days(parts.implementation + parts.tracking + parts.relaunch + parts.crm);
         $('#zeit-hinweis').textContent = 'Planung bis zum geprüften Abnahmestand. Ihre Freigabezeiten und der Starttermin kommen separat dazu.' + (state.dashboard ? ' Dashboard-Aufwand ist noch nicht enthalten.' : '') + (state.crm ? ' CRM-Standardumfang nach Systemprüfung bestätigen.' : '') + (state.design === 'vorhanden' ? ' Vorlagen vor Beauftragung prüfen.' : '');
