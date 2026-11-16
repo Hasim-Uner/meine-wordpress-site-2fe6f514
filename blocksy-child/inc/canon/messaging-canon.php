@@ -84,6 +84,9 @@ function hu_get_contact_mailto() {
 define( 'HU_CONTACT_PHONE', '+4917676596580' );
 define( 'HU_CONTACT_PHONE_DISPLAY', '0176 76596580' );
 
+// Oeffentliche USt-IdNr. fuer Impressum und Organization-Schema.
+define( 'HU_BUSINESS_VAT_ID', 'DE 304119810' );
+
 /**
  * Public phone number for visible contact paths.
  *

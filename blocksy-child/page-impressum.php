@@ -131,6 +131,7 @@ while ( have_posts() ) :
 							30982 Pattensen<br>
 							Deutschland
 						</p>
+						<p><strong>Umsatzsteuer-Identifikationsnummer:</strong> <?php echo esc_html( HU_BUSINESS_VAT_ID ); ?></p>
 						<p>
 							Die Namensangabe folgt der Schreibweise im Ausweisdokument.
 							Die Eigenschreibweise lautet Haşim Üner.
