@@ -849,8 +849,7 @@ get_header();
 							];
 							?>
 							<?php foreach ( $module_layouts as $layout_name => $layout ) : ?>
-								<svg class="modul-svg modul-svg--<?php echo esc_attr( $layout_name ); ?>" viewBox="0 0 <?php echo esc_attr( (string) $layout['w'] ); ?> <?php echo esc_attr( (string) $layout['h'] ); ?>" role="img" aria-labelledby="modul-<?php echo esc_attr( $layout_name ); ?>-title modul-<?php echo esc_attr( $layout_name ); ?>-desc" data-layout="<?php echo esc_attr( $layout_name ); ?>">
-									<title id="modul-<?php echo esc_attr( $layout_name ); ?>-title">Zwei Wege, ein Monatsbudget</title>
+								<svg class="modul-svg modul-svg--<?php echo esc_attr( $layout_name ); ?>" viewBox="0 0 <?php echo esc_attr( (string) $layout['w'] ); ?> <?php echo esc_attr( (string) $layout['h'] ); ?>" role="img" aria-label="Zwei Wege, ein Monatsbudget" aria-describedby="modul-<?php echo esc_attr( $layout_name ); ?>-desc" data-layout="<?php echo esc_attr( $layout_name ); ?>">
 									<desc id="modul-<?php echo esc_attr( $layout_name ); ?>-desc">Weg A kauft <?php echo esc_html( (string) $module_counts['a'][0] ); ?> Anfragen. Daraus werden <?php echo esc_html( $format_numeric_orders( $module_a_orders ) ); ?> zu <?php echo esc_html( $format_eur( $module_a_cpo ) ); ?> je Auftrag. Weg B gewinnt rund <?php echo esc_html( (string) $module_counts['b'][0] ); ?> eigene Anfragen. Daraus werden <?php echo esc_html( $format_numeric_orders( $module_b_orders ) ); ?> zu <?php echo esc_html( $format_eur( $module_b_cpo ) ); ?> je Auftrag einschließlich anteiligem Aufbau und Hosting.</desc>
 									<g class="modul-raster" aria-hidden="true">
 										<?php foreach ( $layout['xs'] as $station_index => $x ) : ?>

@@ -197,7 +197,7 @@ function nexus_maybe_ensure_glossary_hub_page() {
 		);
 	}
 
-	if ( in_array( trim( (string) get_post_meta( $page_id, 'seo_title', true ) ), [ '', 'Glossar für SEO, Tracking und CRO | Haşim Üner' ], true ) ) {
+	if ( in_array( trim( (string) get_post_meta( $page_id, 'seo_title', true ) ), [ '', 'Glossar für SEO, Tracking und CRO | Haşim Üner', 'Glossar fuer WordPress, SEO und Tracking | Haşim Üner' ], true ) ) {
 		update_post_meta( $page_id, 'seo_title', 'Glossar: WordPress, SEO & Tracking erklärt | Haşim Üner' );
 	}
 

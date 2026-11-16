@@ -291,7 +291,7 @@ Regeln:
 - Sekundär: `wordpress freelancer`; unterstützend `wordpress experte hannover`
 - Targetet nicht `wordpress agentur hannover`
 - Targetet keine White-Label-Queries
-- SEO-Titel: `WordPress Freelancer: Websites & Tracking | Haşim Üner`. Hannover und Pattensen stehen in Kicker, Person, FAQ und Schema, nicht in der H1
+- SEO-Titel: `WordPress Freelancer Hannover: Websites & Tracking | Haşim Üner`. Hannover steht im SEO-Titel sowie in Kicker, Person, FAQ und Schema, nicht in der H1
 - Die H1 benennt das Ergebnis oder das Problem des Lesers (mehr Anfragen und erkennen, was funktioniert), nicht die Leistung, und trägt keinen Ortsnamen
 - `WordPress Freelancer` darf auf dieser Route in SEO-Title, Metazeile und Rollenbeschreibung stehen
 - GitHub, versionierter Code, Staging, Review und kontrollierte Deployments dürfen als Workflow-/Qualitätsbeleg sichtbar erklärt werden

@@ -50,14 +50,20 @@ foreach ( $cases as [ $structure, $permalink, $paged, $pagination_base, $expecte
 	$dom = new DOMDocument();
 	$dom->loadHTML( '<!doctype html><html><head>' . $html . '</head><body></body></html>' );
 	$xpath      = new DOMXPath( $dom );
-	$canonicals = $xpath->query( '//link[@rel="canonical"]' );
-	$og_urls    = $xpath->query( '//meta[@property="og:url"]' );
-	$robots     = $xpath->query( '//meta[@name="robots"]' );
-	$schema     = hu_get_blog_archive_collection_schema();
+	$canonicals   = $xpath->query( '//link[@rel="canonical"]' );
+	$og_urls      = $xpath->query( '//meta[@property="og:url"]' );
+	$og_titles    = $xpath->query( '//meta[@property="og:title"]' );
+	$descriptions = $xpath->query( '//meta[@name="description"]' );
+	$robots       = $xpath->query( '//meta[@name="robots"]' );
+	$schema       = hu_get_blog_archive_collection_schema();
 
 	blog_pagination_check( 1 === $canonicals->length && $expected === $canonicals->item( 0 )->getAttribute( 'href' ), 'One clean self canonical: ' . $request );
 	blog_pagination_check( 1 === $og_urls->length && $expected === $og_urls->item( 0 )->getAttribute( 'content' ), 'Open Graph matches canonical: ' . $expected_path );
 	blog_pagination_check( 1 === $robots->length && 'index, follow, max-image-preview:large' === $robots->item( 0 )->getAttribute( 'content' ), 'Blog page remains indexable: ' . $expected_path );
+	if ( $paged > 1 ) {
+		blog_pagination_check( false !== strpos( $og_titles->item( 0 )->getAttribute( 'content' ), 'Seite ' . $paged ), 'Paginated blog title includes page number: ' . $expected_path );
+		blog_pagination_check( false !== strpos( $descriptions->item( 0 )->getAttribute( 'content' ), 'Seite ' . $paged ), 'Paginated blog description includes page number: ' . $expected_path );
+	}
 	blog_pagination_check( $expected === $schema['url'] && $expected . '#collection' === $schema['@id'] && $expected . '#itemlist' === $schema['mainEntity']['@id'], 'Collection and list IDs identify the same page: ' . $expected_path );
 }
 
