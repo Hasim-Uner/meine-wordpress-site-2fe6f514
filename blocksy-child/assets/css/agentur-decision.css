@@ -6,6 +6,26 @@
   position: relative;
 }
 
+.agentur-decision .agentur-person {
+  display: flex;
+  align-items: center;
+  gap: var(--s2);
+  margin-bottom: var(--s2);
+}
+
+.agentur-decision .agentur-person .gegenstand {
+  margin: 0;
+}
+
+.agentur-decision .agentur-person__portrait {
+  width: 3.25rem;
+  height: 3.25rem;
+  border-radius: 50%;
+  object-fit: cover;
+  border: 1px solid var(--strich);
+  flex-shrink: 0;
+}
+
 .agentur-decision .kopfteil .blatt::after {
   content: "";
   position: absolute;

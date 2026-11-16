@@ -178,7 +178,10 @@ get_header();
 <div class="site-main doku agentur-decision" data-track-page="wordpress_agentur_hannover_decision">
 	<header class="kopfteil" data-track-section="agentur_hero">
 		<div class="blatt">
-			<p class="gegenstand">WordPress Agentur Hannover · ein Ansprechpartner</p>
+			<div class="agentur-person">
+				<img class="agentur-person__portrait" src="<?php echo esc_url( get_stylesheet_directory_uri() . '/assets/img/hasim-freelancer-portrait-112.webp' ); ?>" width="56" height="56" alt="Haşim Üner, WordPress-Entwickler aus Pattensen bei Hannover" decoding="async">
+				<p class="gegenstand">WordPress Agentur Hannover · ein Ansprechpartner</p>
+			</div>
 			<h1>WordPress Agentur Hannover. Ein Ansprechpartner, der selbst baut.</h1>
 			<p class="aufriss">
 				<span class="erst">Websites, Relaunches und Landingpages mit WordPress.</span>

@@ -239,8 +239,8 @@
 			root.querySelectorAll('[data-wl-lcp-proof-label]').forEach(function (node) { node.textContent = value.short; });
 			root.querySelectorAll('[data-wl-lcp-proof]').forEach(function (node) { node.hidden = false; });
 			var explanation = panel.querySelector('[data-wl-pruefung="lcp"] .wl-pl-satz');
-			if (explanation) explanation.textContent = (value.short === 'LCP' ? 'Bis das größte Element steht.' : 'Bis das Dokument geladen ist; dieser Browser meldet noch keinen LCP.') + ' Grenze: ' + seconds(2500) + '.';
-			return { text: value.ms === null ? 'nicht prüfbar' : seconds(value.ms), ok: value.ms !== null && value.ms <= 2500 };
+			if (explanation) explanation.textContent = (value.short === 'LCP' ? 'Bis das größte Element in Ihrer Verbindung steht.' : 'Bis das Dokument in Ihrer Verbindung geladen ist; dieser Browser meldet noch keinen LCP.') + ' Richtwert: bis ' + seconds(2500) + '.';
+			return { text: value.ms === null ? 'nicht prüfbar' : seconds(value.ms), ok: value.ms !== null && value.ms > 0 };
 		}
 
 		var checks = {

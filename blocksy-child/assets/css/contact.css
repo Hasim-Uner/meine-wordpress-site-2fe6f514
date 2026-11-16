@@ -908,18 +908,32 @@
 
 @media (max-width: 640px) {
     .contact-page {
-        padding-top: var(--s4);
+        padding-top: var(--s3);
     }
 
     .contact-page__shell {
         padding-inline: 1rem;
-        gap: 2.25rem;
+        gap: var(--s3);
     }
 
     .contact-page .contact-title,
     .contact-page--scoped .contact-title {
         max-width: 100%;
-        font-size: clamp(2.25rem, 10.5vw, 3.3rem);
+        margin-top: 0.45rem;
+        font-size: clamp(1.9rem, 8.6vw, 2.65rem);
+    }
+
+    .contact-page .contact-after {
+        margin-top: 0.7rem;
+    }
+
+    .contact-page .contact-lead {
+        margin-top: 0.65rem;
+        font-size: 0.95rem;
+    }
+
+    .contact-page .contact-alternatives {
+        margin-top: 0.65rem;
     }
 
     .contact-page .contact-section-head__trust {

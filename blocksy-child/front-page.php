@@ -101,7 +101,8 @@ $deploy_clean  = $deploy['checks_total'] > 0 && $deploy['checks_passed'] === $de
 $deploy_checks = $deploy['checks_total'] > 0 ? sprintf( '%d von %d bestanden', $deploy['checks_passed'], $deploy['checks_total'] ) : '';
 $deploy_when   = $deploy['deployed_at'] > 0 ? (string) wp_date( 'd.m.Y · H:i', $deploy['deployed_at'] ) : '';
 // Google-Schwelle fuer eine gute LCP (web.dev/articles/lcp): 2,5 Sekunden.
-$lcp_grenze    = 'Google: gut bis 2,5 s';
+// Der angezeigte Wert haengt auch von der aktuellen Besucher-Verbindung ab.
+$lcp_grenze    = 'Ihre Verbindung · Richtwert bis 2,5 s';
 
 /*
  * Ersteinschaetzung als URL-Feld: Die Adresse geht per GET an /kontakt/,

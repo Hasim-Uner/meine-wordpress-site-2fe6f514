@@ -89,7 +89,7 @@ get_header();
             <div><span class="mono">Weitere Seiten</span><strong>ab <?php echo esc_html( $eur( HU_WEBSITE_PAGE_STANDARD ) ); ?></strong></div>
             <div><span class="mono">Basis-Umsetzung</span><strong><?php echo esc_html( $days( hu_website_quote( 1 )['components']['implementation'] ) ); ?>*</strong></div>
           </div>
-          <p class="aw-produktzeit" id="hero-bauzeit">Ihre Auswahl: <?php echo esc_html( $days( $quote['days'] ) ); ?> geplant.</p>
+          <p class="aw-produktzeit" id="hero-bauzeit">Konfigurator-Auswahl (<?php echo esc_html( (string) $quote['pages'] ); ?> Seiten): <?php echo esc_html( $days( $quote['days'] ) ); ?> geplant.</p>
           <p class="aw-produktnote">* bei fertigen, freigegebenen Inhalten</p>
           <a class="aw-produkt-cta" href="#angebot" data-track-action="website_offer_to_angebot" data-track-category="navigation">Produkt konfigurieren <span aria-hidden="true">→</span></a>
         </aside>
