@@ -290,7 +290,7 @@ $marke = static function ( $nr, $name ) {
 					<p class="st-hero__notiz">Auch in der Angebotsphase: Machbarkeit, Aufwand und Festpreis, kostenlos. <?php echo esc_html( $response_sentence ); ?></p>
 					<div class="st-hero__meta">
 						<img class="st-hero__portrait" src="<?php echo esc_url( $img_uri . 'hasim-freelancer-portrait-112.webp' ); ?>" width="48" height="48" alt="" decoding="async" fetchpriority="low" data-wl-mess="bild">
-						<p class="st-hero__person"><strong>Haşim Üner</strong> · Entwicklung, Tracking und Conversion<br><a class="st-link" href="<?php echo esc_url( $about_url ); ?>" data-track-action="whitelabel_about" data-track-category="trust" data-track-section="hero">Wer für euch arbeitet</a></p>
+						<p class="st-hero__person"><strong>Haşim Üner</strong> · Entwicklung, Tracking und Conversion <br><a class="st-link" href="<?php echo esc_url( $about_url ); ?>" data-track-action="whitelabel_about" data-track-category="trust" data-track-section="hero">Wer für euch arbeitet</a></p>
 					</div>
 				</div>
 				<aside class="wl-protokoll" id="protokoll" aria-labelledby="wl-protokoll-titel" data-wl-protokoll>
@@ -476,7 +476,7 @@ $marke = static function ( $nr, $name ) {
 				<div><h2 class="st-h2" id="absicherung-h">Eure Lieferung hängt nicht an mir. <span class="st-leiser">Das ist Absicht.</span></h2><p class="st-vorspann">Code und Setups liegen in euren Accounts, jeder Schritt ist dokumentiert, und der Stand auf Staging ist nachvollziehbar. Ein anderer Entwickler kann dort weitermachen, wo ich aufgehört habe.</p><div class="st-einwand"><p><strong>Und wenn du als Einzelner ausfällst?</strong> Dann sage ich es euch am selben Tag, nicht am Abgabetag.</p></div></div>
 				<ol class="wl-ablauf"><?php foreach ( $safeguards as $i => $step ) : ?><li class="wl-ablauf__station"><span class="wl-ablauf__nr"><?php echo esc_html( sprintf( '%02d', $i + 1 ) ); ?></span><p class="wl-ablauf__name"><?php echo esc_html( $step[0] ); ?></p><p class="wl-ablauf__text"><?php echo esc_html( $step[1] ); ?></p></li><?php endforeach; ?></ol>
 			</div>
-			<div class="st-eignung" id="eignung"><div><h3 class="st-h3">Wann ein anderer Partner besser passt.</h3><p>Lieber sage ich das hier als nach dem ersten Briefing.</p></div><ul><li><strong>Ihr wollt Stunden einkaufen, ohne dass der Umfang feststeht.</strong> Hier laufen Aufgaben zum Festpreis und Kontingente für definierte Aufgaben.</li><li><strong>Ihr sucht jemanden für die Website eures eigenen Unternehmens.</strong> Dafür gibt es einen eigenen Weg mit Endkundenpreisen.<br><a class="st-link" href="<?php echo esc_url( $wl_home_url ); ?>" data-track-action="nav_whitelabel_door_home" data-track-category="navigation" data-track-section="absicherung">Für Unternehmen <span aria-hidden="true">→</span></a></li></ul></div>
+			<div class="st-eignung" id="eignung"><div><h3 class="st-h3">Wann ein anderer Partner besser passt.</h3><p>Lieber sage ich das hier als nach dem ersten Briefing.</p></div><ul><li><strong>Ihr wollt Stunden einkaufen, ohne dass der Umfang feststeht.</strong> Hier laufen Aufgaben zum Festpreis und Kontingente für definierte Aufgaben.</li><li><strong>Ihr sucht jemanden für die Website eures eigenen Unternehmens.</strong> Dafür gibt es einen eigenen Weg mit Endkundenpreisen. <br><a class="st-link" href="<?php echo esc_url( $wl_home_url ); ?>" data-track-action="nav_whitelabel_door_home" data-track-category="navigation" data-track-section="absicherung">Für Unternehmen <span aria-hidden="true">→</span></a></li></ul></div>
 		</div>
 	</section>
 

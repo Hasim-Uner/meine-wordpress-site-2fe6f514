@@ -63,7 +63,7 @@
 .wl-scan { position: absolute; inset-inline: calc(50% - 50vw); top: 0; height: 1px; z-index: 2; opacity: 0; pointer-events: none; background: linear-gradient(90deg, transparent, var(--stempel) 50%, transparent); box-shadow: 0 0 18px 1px color-mix(in srgb, var(--stempel) 55%, transparent); }
 .wl-scan::before { content: ""; position: absolute; inset-inline: 0; bottom: 1px; height: 110px; background: linear-gradient(transparent, color-mix(in srgb, var(--stempel) 7%, transparent)); }
 .wl-messmarke, .wl-messrahmen { position: absolute; pointer-events: none; z-index: 2; }
-.wl-messmarke { padding-top: var(--s0); border-top: 1px solid color-mix(in srgb, var(--stempel) 65%, transparent); font-family: var(--mono); font-size: .65rem; line-height: 1.45; letter-spacing: .02em; text-transform: uppercase; opacity: 0; transform: translateY(4px); transition: transform var(--t-norm) var(--ease-weich), opacity var(--t-norm) var(--ease-aus); }
+.wl-messmarke { padding-top: var(--s0); border-top: 1px solid color-mix(in srgb, var(--stempel) 65%, transparent); font-family: var(--mono); font-size: .75rem; line-height: 1.45; letter-spacing: .02em; text-transform: uppercase; opacity: 0; transform: translateY(4px); transition: transform var(--t-norm) var(--ease-weich), opacity var(--t-norm) var(--ease-aus); }
 .wl-messmarke b, .wl-messmarke span { display: block; font-weight: 400; }
 .wl-messmarke b { color: var(--stempel); }
 .wl-messmarke span { color: var(--matt); }
@@ -124,7 +124,7 @@
 .wl-platte.is-aktiv { transform: translateZ(calc(var(--i) * var(--wl-luft) + 16px)); border-color: var(--stempel); background: color-mix(in srgb, var(--stempel) 10%, var(--papier)); }
 .wl-platte.is-aktiv::before, .wl-platte.is-aktiv::after { border-color: var(--stempel); background: var(--stempel); }
 .wl-platte__nr, .wl-platte__name { position: absolute; left: .7rem; font-family: var(--mono); text-transform: uppercase; letter-spacing: .06em; line-height: 1; }
-.wl-platte__nr { top: .7rem; font-size: .6rem; color: var(--matt); }
+.wl-platte__nr { top: .7rem; font-size: .75rem; color: var(--matt); }
 .wl-platte__name { bottom: .7rem; font-size: .78rem; font-weight: 500; }
 .wl-platte.is-aktiv .wl-platte__nr, .wl-platte.is-aktiv .wl-platte__name { color: var(--stempel); }
 /* Je Platte eine Strichzeichnung dessen, was dort gebaut wird. */
@@ -138,7 +138,7 @@
    nach oben nacheinander aufleuchtet. */
 .wl-platte__puls { position: absolute; left: .75rem; top: 50%; width: 9px; height: 9px; margin-top: -4px; border-radius: 50%; background: var(--stempel); opacity: .18; animation: wl-anfrage 4.4s var(--ease-weich) infinite; animation-delay: calc(var(--i) * .55s); }
 @keyframes wl-anfrage { 0%, 22%, 100% { opacity: .18; transform: scale(.7); box-shadow: 0 0 0 0 transparent; } 7% { opacity: 1; transform: scale(1.15); box-shadow: 0 0 0 7px color-mix(in srgb, var(--stempel) 22%, transparent); } }
-.wl-stack__legende { position: absolute; left: 0; bottom: 0; display: flex; gap: var(--s1); align-items: center; font-family: var(--mono); font-size: var(--mono-s); text-transform: uppercase; letter-spacing: .06em; color: var(--matt); }
+.wl-stack__legende { position: absolute; left: 0; bottom: 0; display: flex; gap: var(--s1); align-items: center; font-family: var(--mono); font-size: .75rem; text-transform: uppercase; letter-spacing: .06em; color: var(--matt); }
 .wl-stack__punkt { width: 8px; height: 8px; border-radius: 50%; background: var(--stempel); }
 @media (hover: hover) and (pointer: fine) { .wl-platte:not(.is-aktiv):hover { background: var(--zone); } }
 /* Beim Hereinscrollen ziehen sich die Schichten auseinander. Ohne

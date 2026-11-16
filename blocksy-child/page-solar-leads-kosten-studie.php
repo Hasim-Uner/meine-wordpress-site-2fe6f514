@@ -55,7 +55,7 @@ get_header();
 	<section class="hu-buy__band hu-buy__band--dark hu-buy__band--hero" data-nx-theme="dark" aria-labelledby="hu-study-title" data-track-section="hero">
 		<div class="hu-buy__container">
 			<p class="hu-buy__eyebrow">Für Photovoltaik- und Wärmepumpen-Betriebe</p>
-			<h1 class="hu-buy__h1" id="hu-study-title">Solar-Leads-Kosten.<br><em>Rechnen Sie bis zum Auftrag.</em></h1>
+			<h1 class="hu-buy__h1" id="hu-study-title">Solar-Leads-Kosten. <br><em>Rechnen Sie bis zum Auftrag.</em></h1>
 			<p class="hu-buy__lead">Der Preis pro Anfrage ist der Einstieg in die Rechnung. Für Ihre Kanalentscheidung zählen zusätzlich Vertriebszeit, Abschlussquote und die Kosten des gesamten Anfragewegs.</p>
 			<div class="hu-buy__actions">
 				<a class="hu-buy__button hu-buy__button--primary" href="#cpo" data-track-action="cta_cost_calculator" data-track-category="engagement" data-track-section="hero">Mit eigenen Zahlen rechnen <span aria-hidden="true">→</span></a>

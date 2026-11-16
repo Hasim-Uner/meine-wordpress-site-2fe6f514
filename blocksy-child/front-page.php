@@ -406,7 +406,7 @@ get_header();
 
 			<div class="st-hero__meta">
 				<img class="st-hero__portrait" src="<?php echo esc_url( $img_uri . 'hasim-freelancer-portrait-112.webp' ); ?>" width="56" height="56" alt="" decoding="async" fetchpriority="low">
-				<p class="st-hero__person"><strong>Haşim Üner</strong> · Entwicklung, Tracking und Conversion<br><a href="<?php echo esc_url( $about_url ); ?>" data-track-action="home_about" data-track-category="trust" data-track-section="hero">Wer hier für Sie arbeitet</a></p>
+				<p class="st-hero__person"><strong>Haşim Üner</strong> · Entwicklung, Tracking und Conversion <br><a href="<?php echo esc_url( $about_url ); ?>" data-track-action="home_about" data-track-category="trust" data-track-section="hero">Wer hier für Sie arbeitet</a></p>
 			</div>
 
 			<ul class="st-belege" aria-label="Belege">
@@ -536,9 +536,9 @@ get_header();
 			</div>
 			<div class="st-ablauf"><h3 class="st-h3">So läuft ein Projekt.</h3><ol><?php foreach ( $project_steps as $i => $step ) : ?><li><p class="st-klein-label">Schritt <?php echo esc_html( sprintf( '%02d', $i + 1 ) ); ?></p><h4><?php echo esc_html( $step[0] ); ?></h4><p><?php echo esc_html( $step[1] ); ?></p></li><?php endforeach; ?></ol></div>
 			<div class="st-eignung" id="eignung"><div><h3 class="st-h3">Drei Fälle mit eigenem Weg.</h3><p>Lieber sage ich das hier als nach dem ersten Gespräch.</p></div><ul>
-				<li><strong>Ihre Website läuft und soll laufend gewartet werden.</strong> Dafür gibt es ein festes Monatspaket mit Anfrage-Test und Reaktionszeit werktags, ohne Notdienst.<br><a class="st-link" href="<?php echo esc_url( $routes['maintenance'] ); ?>" data-track-action="home_door_maintenance" data-track-category="navigation" data-track-section="tueren">WordPress-Wartung <span aria-hidden="true">→</span></a></li>
-				<li><strong>Sie sind eine Agentur und geben die Arbeit unter Ihrem Namen weiter.</strong> Dafür gibt es einen eigenen Weg mit Agenturkonditionen.<br><a class="st-link" href="<?php echo esc_url( $whitelabel_url ); ?>" data-track-action="home_door_whitelabel" data-track-category="navigation" data-track-section="tueren">White-Label-Zusammenarbeit <span aria-hidden="true">→</span></a></li>
-				<li><strong>Sie betreiben einen Solar- oder Wärmepumpenbetrieb.</strong> Für diese Branche gibt es einen eigenen Anfrageweg mit Marktcheck.<br><a class="st-link" href="<?php echo esc_url( $energy_url ); ?>" data-track-action="home_door_energy" data-track-category="navigation" data-track-section="tueren">Solar &amp; Wärmepumpe <span aria-hidden="true">→</span></a></li>
+				<li><strong>Ihre Website läuft und soll laufend gewartet werden.</strong> Dafür gibt es ein festes Monatspaket mit Anfrage-Test und Reaktionszeit werktags, ohne Notdienst. <br><a class="st-link" href="<?php echo esc_url( $routes['maintenance'] ); ?>" data-track-action="home_door_maintenance" data-track-category="navigation" data-track-section="tueren">WordPress-Wartung <span aria-hidden="true">→</span></a></li>
+				<li><strong>Sie sind eine Agentur und geben die Arbeit unter Ihrem Namen weiter.</strong> Dafür gibt es einen eigenen Weg mit Agenturkonditionen. <br><a class="st-link" href="<?php echo esc_url( $whitelabel_url ); ?>" data-track-action="home_door_whitelabel" data-track-category="navigation" data-track-section="tueren">White-Label-Zusammenarbeit <span aria-hidden="true">→</span></a></li>
+				<li><strong>Sie betreiben einen Solar- oder Wärmepumpenbetrieb.</strong> Für diese Branche gibt es einen eigenen Anfrageweg mit Marktcheck. <br><a class="st-link" href="<?php echo esc_url( $energy_url ); ?>" data-track-action="home_door_energy" data-track-category="navigation" data-track-section="tueren">Solar &amp; Wärmepumpe <span aria-hidden="true">→</span></a></li>
 			</ul></div>
 		</div>
 	</section>
