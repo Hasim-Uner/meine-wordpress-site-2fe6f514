@@ -546,9 +546,7 @@ function hu_tracking_ladder_display( $from_stage = 1 ) {
 // kalkuliert. Das Grundprodukt trägt Systemkosten + erste Hauptseite.
 // Zusatzseiten, Texterstellung und Projektmodule sind getrennte Einheiten.
 // Öffentliche Festpreise bleiben gerundet; die internen Produktionsstunden
-// dokumentieren den Aufwand hinter den Einheiten. Direkte offene Stundenarbeit
-// wird mit 95 EUR/h kalkuliert, Agentur-/White-Label-Arbeit mit 70 EUR/h.
-// Diese Sätze sind keine öffentlichen Preisanker des Produktkonfigurators.
+// dokumentieren allein den Planungsaufwand hinter den Produkt-Einheiten.
 define( 'HU_FREELANCER_WEBSITE_MIN', 1900 );
 define( 'HU_FREELANCER_WEBSITE_PAGES', 1 );
 define( 'HU_FREELANCER_WEBSITE_EXTRA_PAGE', 300 ); // Kompatibilität: Standard-Unterseite.
@@ -1011,7 +1009,7 @@ define( 'HU_WHITELABEL_LANDINGPAGE_MIN', 1390 );
 // ein Endkunde — das bricht die 30-%-Regel, die auf jeder anderen Sprosse
 // dieser Leiter gilt.
 //
-// 840 seit 2026-10-16 (Agentursatz 70 € netto, 12 Stunden), davor 780 seit
+// 840 seit 2026-10-16 (12 Stunden Kontingent), davor 780 seit
 // 2026-09-25 und 1.000 bis dahin. Beide alten Betraege stehen als
 // wl-retainer-1000 und wl-retainer-780 in scripts/canon-forbidden-values.txt.
 //

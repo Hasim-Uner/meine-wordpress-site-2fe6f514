@@ -41,16 +41,9 @@ function hu_brand_alternate_names() {
 /**
  * Web presences of the natural person Haşim Üner.
  *
- * `sameAs` is an identity claim ("this node IS that presence"), not a topical
- * one. Everything listed here is a profile of the person and is reciprocally
- * verifiable: the ORCID record (given name "Haşim", family name "Üner",
- * Pattensen bei Hannover) lists hasimuener.org, the YouTube channel and the
- * personal GitHub account as its own researcher URLs, and the personal GitHub
- * profile links back to hasimuener.de.
- *
- * The publicist profiles (hasimuener.org, ORCID, X, YouTube) describe the same
- * person under a different subject focus. They belong on the Person node and
- * must NOT be copied onto the business nodes — see hu_business_same_as_urls().
+ * `sameAs` is an identity claim ("this node IS that presence") and matches the
+ * profiles visibly linked via rel="me" on /hasim-uener/: LinkedIn, the personal
+ * GitHub account (`Hasim-hannover`) and the publicist journal (`hasimuener.org`).
  *
  * GitHub: `Hasim-hannover` is the personal user account. `Hasim-Uner` is the
  * organization account that owns the production repositories and belongs to
@@ -63,10 +56,6 @@ function hu_person_same_as_urls() {
         'https://www.linkedin.com/in/hasim-uener/',
         'https://github.com/Hasim-hannover',
         'https://hasimuener.org/',
-        'https://www.facebook.com/hasim.uner',
-        'https://orcid.org/0009-0008-7500-2015',
-        'https://www.youtube.com/@Hasimuener',
-        'https://x.com/_0239983326111',
     ];
 }
 
