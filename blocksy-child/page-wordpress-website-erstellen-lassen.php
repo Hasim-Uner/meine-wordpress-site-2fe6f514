@@ -144,7 +144,7 @@ get_header();
     <div class="wrap">
       <div class="aw-referenzen-kopf">
         <p class="mono">02 · Ein reales Projekt</p>
-        <h2 id="h-beleg">Nicht nur Website.<br>Der Anfrageweg dahinter.</h2>
+        <h2 id="h-beleg">Nicht nur Website. <br>Der Anfrageweg dahinter.</h2>
         <p class="lead">E3 New Energy zeigt die Arbeit, die über Gestaltung hinausgeht: Landingpages, technisches SEO, Tracking und die Strecke bis ins CRM.</p>
       </div>
       <div class="aw-projekte aw-projekte--fokus">
@@ -180,7 +180,7 @@ get_header();
 
   <section class="abschnitt aw-konfigurator" id="angebot" aria-labelledby="h-angebot">
     <div class="wrap">
-      <div class="aw-config-heading"><div><p class="mono">03 · Preis &amp; Umfang</p><h2 id="h-angebot" tabindex="-1">Wie viel Website brauchen Sie?</h2></div><p>Basisgestaltung ist enthalten.<br><strong>Seitentypen, Texte und Extras werden getrennt kalkuliert.</strong></p></div>
+      <div class="aw-config-heading"><div><p class="mono">03 · Preis &amp; Umfang</p><h2 id="h-angebot" tabindex="-1">Wie viel Website brauchen Sie?</h2></div><p>Basisgestaltung ist enthalten. <br><strong>Seitentypen, Texte und Extras werden getrennt kalkuliert.</strong></p></div>
       <noscript><p class="mikro">Beispiel: drei Seiten, Neubau, fertige Texte, ohne Extras. Nennen Sie Seitentypen und gewünschten Umfang in der Anfrage.</p></noscript>
       <div class="aw-config-grid">
         <div class="aw-config-controls">

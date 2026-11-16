@@ -285,7 +285,7 @@ get_header();
 
 				<aside class="hu-b2b__gate" aria-labelledby="hu-b2b-gate-title">
 					<p class="hu-b2b__kicker">Vor dem Vertriebstermin</p>
-					<h2 id="hu-b2b-gate-title">Erst Substanz.<br>Dann Termin.</h2>
+					<h2 id="hu-b2b-gate-title">Erst Substanz. <br>Dann Termin.</h2>
 					<p class="hu-b2b__gate-intro">Vier Signale müssen vor einer Kalenderbuchung belastbar sein.</p>
 					<ol class="hu-b2b__gate-list">
 						<li><span>01</span><div><strong>Projektwert passt</strong><small>Eigene Schwelle: ab 50.000 €</small></div></li>

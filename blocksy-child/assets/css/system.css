@@ -254,6 +254,11 @@ body.nx-custom-header-active {
 .doku p { margin: 0; }
 .doku a { color: inherit; }
 
+.site-logo {
+  display: inline-block;
+  min-height: 24px;
+}
+
 .doku table {
   border-collapse: collapse;
   width: 100%;
@@ -716,7 +721,7 @@ body.nx-custom-header-active {
   padding-block: var(--s0);
   border-bottom: 1px solid var(--haar);
   font-family: var(--mono);
-  font-size: 0.64rem;
+  font-size: 0.75rem;
   letter-spacing: 0.03em;
 }
 
@@ -749,7 +754,7 @@ body.nx-custom-header-active {
 
 .doku .protokoll.posten .z span {
   font-family: var(--mono);
-  font-size: var(--mono-s);
+  font-size: 0.75rem;
   white-space: normal;
   padding-top: 0.3em;
 }
