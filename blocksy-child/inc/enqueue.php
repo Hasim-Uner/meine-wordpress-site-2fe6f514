@@ -353,6 +353,7 @@ function hu_enqueue_assets() {
 	// ── E1b) WordPress-Wartung ────────────────────────────────────
 	if ( $is_maintenance ) {
 		hu_enqueue_css( 'hu-wordpress-wartung-css', 'wordpress-wartung.css', [ 'nexus-system-css' ] );
+		hu_enqueue_js( 'hu-wordpress-wartung-js', 'wordpress-wartung.js', [] );
 	}
 
 	// ── E2) Kontakt ───────────────────────────────────────────────

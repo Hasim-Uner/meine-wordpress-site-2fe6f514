@@ -147,7 +147,7 @@ if ( 'website' === $selected_focus ) {
 } elseif ( 'wartung' === $selected_focus ) {
 	$hero_title = 'WordPress-Wartung mit Anfrage-Test.';
 	$form_title = 'Zwei kurze Schritte zur Wartungsanfrage.';
-	$form_intro = 'Nennen Sie Ihre Website und wer sie bisher betreut. Ihre Anfrage ist unverbindlich; zuerst kommt der Übernahme-Check.';
+	$form_intro = 'Nennen Sie Ihre Website und kurz, worauf ich bei der Wartung achten soll. Ich melde mich zu Ihrer Anfrage und zum möglichen Start.';
 	$message_step_title = 'Welche Website soll gewartet werden?';
 } elseif ( 'tracking' === $selected_focus && 'project' === $selected_type ) {
 	$hero_title = 'Worum geht es bei Ihrem Tracking-Projekt?';

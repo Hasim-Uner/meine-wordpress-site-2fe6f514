@@ -560,9 +560,12 @@ Projektabschluss und ruhiger Agentur-Zweitweg, zentrale Metadaten und
   Wartungs-Intent auf `system.css` plus `wordpress-wartung.css`. Preise und
   Zusagen aus `canon/pricing-canon.php` (`HU_MAINTENANCE_*`), Antwortzeit aus
   `hu_response_promise()`, Fragen aus `inc/wordpress-wartung.php` (zugleich
-  FAQPage-Quelle). Alle CTAs → `/kontakt/?type=project&focus=wartung`. Verlinkt
-  `/anfrage-monitor/` als Live-Beleg; zeigt dessen Status nur, wenn der
-  Monitor eingerichtet ist. Ortsbezogene Wartungs-Queries bleiben auf
+  FAQPage-Quelle). Anfrage-CTAs → `/kontakt/?type=project&focus=wartung`.
+  Der Einstieg zeigt den Anfrageweg als umschaltbares Beispiel, gefolgt von
+  Preisen für Website und WooCommerce, Ablauf und privatem Monatsbericht.
+  Den letzten Status des wöchentlichen Tests für hasimuener.de lädt die
+  Seite über die öffentliche Status-API und verlinkt `/anfrage-monitor/`.
+  Ortsbezogene Wartungs-Queries bleiben auf
   `/wordpress-agentur-hannover/`; `/wordpress-wartung-hannover/` bleibt 410.
 - **`/wordpress-website-erstellen-lassen/`** (`page-wordpress-website-erstellen-lassen.php`,
   Die Anfrage-Website, finale Gestaltung 06.10.2026, Produktmodell 14.11.2026):

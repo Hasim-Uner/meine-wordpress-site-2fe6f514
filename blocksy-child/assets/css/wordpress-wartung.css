@@ -1,356 +1,415 @@
-/* WordPress-Wartung: Deltas auf dem system.css-Kern.
-   Signatur ist das Messgeraet im Kopf (Graphit-Tafel): vier Zeilen
-   uebliche Wartung, darunter die drei Zeilen, die nur der Monatstest prueft.
-   Farbe traegt nur der Befund — Stoerungen in --stempel, alles andere
-   neutral. Keine Werte ausser Tokens. */
+/* Wartungsangebot auf den gemeinsamen Dokument- und Graphit-Tokens. */
 
-/* ── Kopf ─────────────────────────────────────────────────────── */
+.wartung .kopfteil {
+  padding-block: var(--s6) var(--s5);
+  border-bottom: 1px solid var(--haar);
+}
 
 .wartung .wartung-einstieg {
   display: grid;
-  grid-template-columns: minmax(0, 1.05fr) minmax(0, 1fr);
-  align-items: start;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 0.95fr);
+  align-items: center;
   gap: var(--s5);
 }
 
-.wartung .wartung-einstieg .meta dl { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+.wartung .wartung-einstieg h1 {
+  max-width: none;
+  font-weight: 650;
+  overflow-wrap: anywhere;
+}
 
-/* ── Monatstest (Graphit-Tafel) ───────────────────────────────── */
+.wartung .wartung-einstieg h1 span {
+  display: block;
+  max-width: 13ch;
+  color: var(--stempel);
+}
 
-.wartung .wartung-test { margin: 0; }
+.wartung .wartung-einstieg .aufriss { max-width: 43ch; }
 
-.wartung .wartung-test__kopf {
+.wartung .wartung-einstieg__preis {
   display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  gap: var(--s0) var(--s2);
+  margin-top: var(--s3);
+  font-size: var(--grad-klein);
+  color: var(--grau);
+}
+
+.wartung .wartung-einstieg__preis strong {
+  font-size: var(--grad-text);
+  color: var(--tinte);
+}
+
+.wartung .wartung-einstieg .ausgang { margin-top: var(--s2); }
+
+/* Anfrageweg: die Beschriftungen bleiben in beiden Beispielen lesbar. */
+
+.wartung .wartung-demo {
+  display: grid;
+  gap: var(--s2);
+  padding: var(--s3);
+}
+
+.wartung .wartung-demo__kopf {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
   justify-content: space-between;
-  gap: var(--s1);
+  gap: var(--s0) var(--s1);
   padding-bottom: var(--s2);
   border-bottom: 1px solid var(--haar);
 }
 
-.wartung .wartung-test__marke {
-  border: 1px solid var(--haar);
-  border-radius: var(--r1);
-  padding: 0 var(--s0);
+.wartung .wartung-demo__online {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--s0);
+  font-size: var(--grad-klein);
+  color: var(--tinte);
 }
 
-.wartung .wartung-test__zeilen {
-  list-style: none;
+.wartung .wartung-demo__online::before {
+  content: "";
+  width: var(--s0);
+  height: var(--s0);
+  border-radius: 50%;
+  background: currentColor;
+}
+
+.wartung .wartung-demo__wahl {
+  min-inline-size: 0;
   margin: 0;
   padding: 0;
-  font-family: var(--mono);
-  font-size: var(--mono-l);
+  border: 0;
 }
 
-.wartung .wartung-test__zeile {
+.wartung .wartung-demo__wahl legend {
+  padding: 0;
+  margin-bottom: var(--s1);
+  font-family: var(--serif-display);
+  font-size: var(--grad-h2-leise);
+  font-weight: 600;
+  line-height: 1.15;
+}
+
+.wartung .wartung-demo__optionen {
   display: grid;
-  grid-template-columns: 1.4rem minmax(0, 1fr) auto;
-  gap: var(--s1);
-  align-items: baseline;
-  padding-block: var(--s1);
-  border-bottom: 1px solid var(--haar);
-}
-
-.wartung .wartung-test__zeichen { color: var(--grau); }
-.wartung .wartung-test__wert { color: var(--grau); text-align: right; }
-
-.wartung .wartung-test__zeile[data-state="fail"] .wartung-test__zeichen,
-.wartung .wartung-test__zeile[data-state="fail"] .wartung-test__wert { color: var(--stempel); }
-
-.wartung .wartung-test__teiler {
-  padding: var(--s3) 0 var(--s0);
-  color: var(--matt);
-  font-size: var(--mono-s);
-}
-
-.wartung .wartung-test__ergebnis {
-  margin-top: var(--s3);
-  padding: var(--s2);
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: var(--s0);
+  padding: var(--s0);
   background: var(--zone);
   border: 1px solid var(--haar);
   border-radius: var(--r1);
+}
+
+.wartung .wartung-demo__optionen label {
+  display: grid;
+  place-items: center;
+  min-height: 44px;
+  padding: var(--s0);
+  color: var(--grau);
+  text-align: center;
+  font-size: var(--grad-klein);
+  line-height: 1.2;
+  font-weight: 600;
+  border: 1px solid transparent;
+  border-radius: var(--r1);
+  cursor: pointer;
+}
+
+.wartung .wartung-demo__optionen label:hover { color: var(--tinte); }
+
+.wartung #wartung-demo-fail:checked ~ .wartung-demo__optionen [for="wartung-demo-fail"],
+.wartung #wartung-demo-pass:checked ~ .wartung-demo__optionen [for="wartung-demo-pass"] {
+  background: var(--zone2);
+  border-color: var(--grau);
+  color: var(--tinte);
+}
+
+.wartung #wartung-demo-fail:focus-visible ~ .wartung-demo__optionen [for="wartung-demo-fail"],
+.wartung #wartung-demo-pass:focus-visible ~ .wartung-demo__optionen [for="wartung-demo-pass"] {
+  outline: 2px solid var(--stempel);
+  outline-offset: 2px;
+}
+
+.wartung .wartung-demo__szenario { display: none; }
+
+.wartung #wartung-demo-fail:checked ~ [data-scenario="fail"],
+.wartung #wartung-demo-pass:checked ~ [data-scenario="pass"] { display: block; }
+
+.wartung .wartung-demo__weg {
+  position: relative;
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: var(--s0);
+  margin: 0;
+  padding: var(--s3) 0 var(--s2);
+  list-style: none;
+}
+
+.wartung .wartung-demo__weg::before,
+.wartung .wartung-demo__weg::after {
+  content: "";
+  position: absolute;
+  inset: calc(var(--s3) + var(--s2)) calc(100% / 6) auto;
+  height: 1px;
+  background: var(--grau);
+}
+
+.wartung .wartung-demo__weg::after {
+  transform-origin: left;
+  background: var(--stempel);
+}
+
+.wartung [data-scenario="fail"] .wartung-demo__weg::after { inset-inline-end: 50%; }
+
+.wartung .wartung-demo__weg li {
+  z-index: 1;
+  display: grid;
+  justify-items: center;
+  align-content: start;
+  gap: var(--s0);
+  text-align: center;
+  line-height: 1.25;
+}
+
+.wartung .wartung-demo__weg li strong { font-size: var(--grad-klein); }
+
+.wartung .wartung-demo__knoten {
+  display: grid;
+  place-items: center;
+  width: calc(2 * var(--s2));
+  height: calc(2 * var(--s2));
+  margin-bottom: var(--s0);
+  border: 1px solid var(--grau);
+  border-radius: 50%;
+  background: var(--zone);
+  color: var(--tinte);
+  font-family: var(--mono);
+  font-weight: 600;
+}
+
+.wartung .wartung-demo__status {
+  font-size: var(--grad-klein);
+  color: var(--grau);
+  overflow-wrap: anywhere;
+}
+
+.wartung [data-state="fail"] .wartung-demo__knoten,
+.wartung [data-state="fail"] .wartung-demo__status {
+  border-color: var(--stempel);
+  color: var(--stempel);
+}
+
+.wartung [data-state="pending"] .wartung-demo__knoten { border-style: dashed; }
+
+.wartung .wartung-demo__befund {
+  display: grid;
+  gap: var(--s0);
+  min-height: 7em;
+  padding: var(--s2);
+  background: var(--zone);
+  border-left: 2px solid var(--grau);
+}
+
+.wartung [data-scenario="fail"] .wartung-demo__befund { border-left-color: var(--stempel); }
+.wartung .wartung-demo__befund p { color: var(--grau); font-size: var(--grad-klein); }
+
+@media (prefers-reduced-motion: no-preference) {
+  .wartung .wartung-demo__weg::after { animation: wartung-signal var(--t-gross) var(--ease-aus) both; }
+}
+
+@keyframes wartung-signal {
+  from { transform: scaleX(0); }
+  to { transform: scaleX(1); }
+}
+
+.wartung .wartung-monitor {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--s0) var(--s2);
+  padding: var(--s2);
+  border: 1px solid var(--haar);
+  border-top: 0;
+  font-size: var(--grad-klein);
+}
+
+.wartung .wartung-monitor__status {
+  color: var(--grau);
+  font-variant-numeric: tabular-nums;
+}
+
+.wartung .wartung-monitor__status[data-state="warn"],
+.wartung .wartung-monitor__status[data-state="fail"] { color: var(--stempel); }
+
+/* Angebot, Ablauf und Bericht. */
+
+.wartung .wartung-pakete,
+.wartung #bericht { background: var(--zone); }
+
+.wartung .wartung-pakete__raster,
+.wartung .wartung-pakete__details,
+.wartung .wartung-bericht,
+.wartung .wartung-zusage,
+.wartung .wartung-fragen,
+.wartung .wartung-abschluss {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  align-items: start;
+  gap: var(--s4);
+}
+
+.wartung .wartung-pakete__raster {
+  align-items: stretch;
+  gap: var(--s2);
+  margin-top: var(--s3);
+}
+
+.wartung .wartung-paket {
+  display: grid;
+  align-content: start;
+  gap: var(--s1);
+  padding: var(--s3);
+  border-top: 2px solid var(--stempel);
+  background: var(--papier);
+}
+
+.wartung .wartung-paket h3,
+.wartung .wartung-pakete__details h3,
+.wartung .wartung-schritte h3 { font-size: var(--grad-text); }
+
+.wartung .wartung-paket__preis {
+  display: flex;
+  align-items: baseline;
+  flex-wrap: wrap;
+  gap: var(--s0) var(--s1);
+  color: var(--grau);
+}
+
+.wartung .wartung-paket__preis strong {
+  font-family: var(--serif-display);
+  font-size: var(--grad-h2);
+  line-height: 1;
+  letter-spacing: -0.04em;
+  color: var(--tinte);
+}
+
+.wartung .wartung-pakete__details {
+  margin-top: var(--s3);
+  gap: var(--s2);
+}
+
+.wartung .wartung-pakete__details > div {
+  display: grid;
+  align-content: start;
+  gap: var(--s1);
+  padding: var(--s3);
+}
+
+.wartung .wartung-uebernahme {
+  border: 1px solid var(--haar);
+  border-radius: var(--r1);
+}
+
+.wartung .wartung-inhalt {
+  margin: 0;
+  padding-inline-start: var(--s2);
   display: grid;
   gap: var(--s0);
 }
 
-.wartung .wartung-test__ergebnis strong {
-  font-weight: 500;
-  font-size: 1.08rem;
-  letter-spacing: -0.01em;
-}
-
-.wartung .wartung-test__ergebnis span {
-  font-family: var(--mono);
-  font-size: var(--mono-m);
-  color: var(--grau);
-}
-
-/* Die Zeilen laufen einmal nacheinander ein, wie ein Pruefprotokoll, das
-   geschrieben wird. Nur opacity und transform; ohne Animation sofort
-   sichtbar. Reduzierte Bewegung schaltet system.css global ab. */
-@media (prefers-reduced-motion: no-preference) {
-  .wartung .wartung-test__zeile,
-  .wartung .wartung-test__ergebnis {
-    animation: wartung-zeile var(--t-gross) var(--ease-aus) both;
-    animation-delay: calc(var(--i, 0) * 280ms + 200ms);
-  }
-
-  .wartung .wartung-test__ergebnis { animation-delay: 2400ms; }
-}
-
-@keyframes wartung-zeile {
-  from { opacity: 0; transform: translateY(6px); }
-  to { opacity: 1; transform: none; }
-}
-
-/* ── 01 Bruchstellen ──────────────────────────────────────────── */
-
-.wartung .wartung-brueche {
-  list-style: none;
-  margin: var(--s4) 0 0;
-  padding: 0;
-  display: grid;
-  grid-template-columns: repeat(2, minmax(0, 1fr));
-  border-top: 1px solid var(--strich);
-}
-
-.wartung .wartung-brueche li {
-  display: grid;
-  grid-template-columns: 1.5rem minmax(0, 1fr);
-  gap: var(--s2);
-  padding: var(--s3) var(--s3) var(--s3) 0;
-  border-bottom: 1px solid var(--haar);
-}
-
-.wartung .wartung-brueche h3 {
-  font-size: 1.05rem;
-  font-weight: 500;
-  letter-spacing: -0.01em;
-}
-
-.wartung .wartung-brueche p {
-  margin-top: var(--s0);
-  color: var(--grau);
-}
-
-.wartung .wartung-caption {
-  caption-side: top;
-  text-align: left;
-  padding-bottom: var(--s1);
-  font-weight: 500;
-}
-
-.wartung .tabelle { margin-top: var(--s5); }
-.wartung .wartung-reaktion { min-width: 32rem; }
-
-/* ── 02 Ablauf ────────────────────────────────────────────────── */
+.wartung .wartung-uebernahme .ausgang { margin-top: var(--s1); }
 
 .wartung .wartung-schritte {
-  list-style: none;
-  margin: var(--s4) 0 0;
-  padding: 0;
   display: grid;
-  grid-template-columns: repeat(6, minmax(0, 1fr));
-  border-top: 1px solid var(--strich);
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: var(--s2);
+  margin: var(--s3) 0 0;
+  padding: 0;
+  list-style: none;
 }
 
 .wartung .wartung-schritte li {
   display: grid;
   align-content: start;
   gap: var(--s0);
-  padding: var(--s2) var(--s2) var(--s2) 0;
-}
-
-.wartung .wartung-schritte .zahl { color: var(--matt); font-size: var(--mono-l); }
-.wartung .wartung-schritte .ist-test .zahl { color: var(--stempel); }
-.wartung .wartung-schritte .ist-test { border-top: 2px solid var(--stempel); margin-top: -1px; } /* lint-css-spacing: allow -- die Markierung liegt auf der Kopflinie der Liste */
-
-.wartung .wartung-schritte h3 {
-  font-size: 1.02rem;
-  font-weight: 500;
-}
-
-.wartung .wartung-schritte p {
-  color: var(--grau);
-  font-size: 0.93rem;
-}
-
-/* ── 03 Bericht ───────────────────────────────────────────────── */
-
-.wartung .wartung-bericht {
-  margin-top: var(--s4);
   padding: var(--s3);
-  background: var(--zone);
   border: 1px solid var(--haar);
-  border-radius: var(--r1);
+  border-top: 2px solid var(--strich);
+}
+
+.wartung .wartung-schritte p,
+.wartung .wartung-zusage p:not(.vorspann) { color: var(--grau); }
+
+.wartung .wartung-zusage p + p { margin-top: var(--s1); }
+
+.wartung .wartung-bericht__beispiel {
   display: grid;
-  gap: var(--s0);
-}
-
-.wartung .wartung-bericht__kopf {
-  display: flex;
-  justify-content: space-between;
-  gap: var(--s1);
-  padding-bottom: var(--s2);
-  margin-bottom: var(--s2);
-  border-bottom: 1px solid var(--haar);
-}
-
-.wartung .wartung-bericht__antwort {
-  font-family: var(--serif-display);
-  font-size: var(--grad-h1);
-  line-height: 1;
-  letter-spacing: -0.03em;
-}
-
-.wartung .wartung-bericht__beleg {
-  color: var(--grau);
-  margin-bottom: var(--s2);
-}
-
-.wartung .wartung-live {
-  display: block;
-  margin-top: var(--s1);
-  font-family: var(--mono);
-  font-size: var(--mono-m);
-  font-weight: 500;
-}
-
-.wartung .wartung-live[data-state="warn"],
-.wartung .wartung-live[data-state="fail"] { color: var(--stempel); }
-
-/* ── 04 Preis ─────────────────────────────────────────────────── */
-
-.wartung .wartung-preis {
-  margin-top: var(--s4);
-  display: grid;
-  grid-template-columns: minmax(0, 1.15fr) minmax(0, 1fr);
-  gap: var(--s5);
-  align-items: start;
-}
-
-.wartung .wartung-preis__paket { display: grid; gap: var(--s3); }
-.wartung .wartung-preis__paket .ausgang { margin-top: 0; }
-.wartung .wartung-preis__paket .protokoll.posten .z { grid-template-columns: minmax(0, 7.5rem) minmax(0, 1fr); }
-
-.wartung .wartung-preis__betrag { display: grid; gap: var(--s0); }
-
-.wartung .wartung-preis__betrag .zahl {
-  font-family: var(--serif-display);
-  font-size: var(--grad-h1);
-  line-height: 1;
-  letter-spacing: -0.03em;
-}
-
-.wartung .wartung-preis__betrag small,
-.wartung .wartung-hinweis {
-  font-size: var(--grad-klein);
-  color: var(--grau);
-}
-
-.wartung .wartung-preis__rand { display: grid; gap: var(--s3); }
-
-.wartung .wartung-preis__rand > div {
-  display: grid;
-  justify-items: start;
-  gap: var(--s1);
-  padding-top: var(--s2);
-  border-top: 1px solid var(--haar);
-}
-
-.wartung .wartung-preis__rand h3 {
-  font-size: 1.2rem;
-  font-weight: 500;
-  letter-spacing: -0.01em;
-}
-
-.wartung .wartung-preis__rand p:not(.mono) { color: var(--grau); }
-
-.wartung .wartung-ohne {
-  border-top: 1px solid var(--haar);
-  padding-top: var(--s2);
-}
-
-.wartung .wartung-ohne summary {
-  cursor: pointer;
-  font-weight: 500;
-  min-height: 44px;
-  display: flex;
-  align-items: center;
-  transition: color var(--t-mikro) ease;
-}
-
-.wartung .wartung-ohne summary::-webkit-details-marker { display: none; }
-.wartung .wartung-ohne summary { list-style: none; justify-content: space-between; gap: var(--s2); }
-
-.wartung .wartung-ohne summary::after {
-  content: "+";
-  font-family: var(--mono);
-  color: var(--stempel);
-  transition: transform var(--t-norm) var(--ease-aus);
-}
-
-.wartung .wartung-ohne[open] summary::after { transform: rotate(45deg); }
-.wartung .wartung-ohne summary:hover { color: var(--stempel); }
-
-.wartung .wartung-ohne ul {
-  margin: var(--s1) 0 0;
-  padding-left: var(--s2);
-  display: grid;
-  gap: var(--s0);
-  color: var(--grau);
-}
-
-/* ── Abschluss ────────────────────────────────────────────────── */
-
-.wartung .wartung-abschluss {
-  display: grid;
-  grid-template-columns: minmax(0, 1.4fr) minmax(0, 1fr);
-  gap: var(--s5);
-  align-items: end;
-}
-
-.wartung .wartung-start {
-  list-style: none;
-  margin: var(--s3) 0 0;
-  padding: 0;
-  border-top: 1px solid var(--haar);
-}
-
-.wartung .wartung-start li {
-  display: grid;
-  grid-template-columns: 2.5rem minmax(0, 1fr);
-  gap: var(--s1);
-  padding-block: var(--s2);
-  border-bottom: 1px solid var(--haar);
-  color: var(--grau);
-}
-
-.wartung .wartung-start .zahl { color: var(--stempel); }
-.wartung .wartung-start b { color: var(--tinte); font-weight: 500; }
-
-.wartung .wartung-abschluss__aktion {
-  display: grid;
-  justify-items: start;
   gap: var(--s2);
+  padding: var(--s3);
+  background: var(--papier);
 }
 
-/* ── Schmale Schirme ──────────────────────────────────────────── */
+.wartung .wartung-bericht__ergebnis {
+  display: grid;
+  gap: var(--s0);
+  border-left: 2px solid var(--stempel);
+  padding-left: var(--s2);
+}
 
-@media (max-width: 1080px) {
+.wartung .wartung-bericht__ergebnis strong {
+  font-family: var(--serif-display);
+  font-size: var(--grad-h2-leise);
+  line-height: 1.15;
+}
+
+.wartung .wartung-bericht__daten { margin: 0; }
+
+.wartung .wartung-bericht__daten div {
+  display: grid;
+  grid-template-columns: minmax(0, 0.8fr) minmax(0, 1fr);
+  gap: var(--s0) var(--s1);
+  padding-block: var(--s1);
+  border-top: 1px solid var(--haar);
+}
+
+.wartung .wartung-bericht__daten dt,
+.wartung .wartung-klein { color: var(--grau); }
+
+.wartung .wartung-bericht__daten dd { margin: 0; font-weight: 600; }
+
+.wartung .wartung-fragen .fragen { margin-top: 0; }
+.wartung .wartung-abschluss { align-items: center; }
+.wartung .wartung-abschluss h2 { margin-bottom: var(--s1); }
+.wartung .wartung-abschluss__aktion { display: grid; justify-items: start; gap: var(--s0); }
+.wartung .wartung-klein { font-size: var(--grad-klein); }
+
+@media (max-width: 1050px) {
+  .wartung .wartung-einstieg h1 { font-size: var(--grad-h2); }
+}
+
+@media (max-width: 760px) {
   .wartung .wartung-einstieg,
-  .wartung .wartung-preis,
-  .wartung .wartung-abschluss { grid-template-columns: minmax(0, 1fr); }
+  .wartung .wartung-pakete__details,
+  .wartung .wartung-schritte,
+  .wartung .wartung-bericht,
+  .wartung .wartung-zusage,
+  .wartung .wartung-fragen,
+  .wartung .wartung-abschluss { grid-template-columns: minmax(0, 1fr); gap: var(--s2); }
 
-  .wartung .wartung-schritte { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+  .wartung .wartung-einstieg { gap: var(--s3); }
+  .wartung .wartung-einstieg h1 { font-size: var(--grad-h1); }
+  .wartung .wartung-pakete__details > div:first-child { padding: var(--s1) 0; }
 }
 
-@media (max-width: 720px) {
-  .wartung .wartung-einstieg .meta dl { grid-template-columns: minmax(0, 1fr); }
-  .wartung .wartung-einstieg .meta div { border-right: 0; }
-  .wartung .wartung-brueche { grid-template-columns: minmax(0, 1fr); }
-  .wartung .wartung-test__zeile { grid-template-columns: 1.4rem minmax(0, 1fr); row-gap: 0; }
-  .wartung .wartung-test__wert { grid-column: 2; text-align: left; }
-  .wartung .wartung-schritte { grid-template-columns: minmax(0, 1fr); }
-  .wartung .wartung-schritte li { grid-template-columns: 2.5rem minmax(0, 1fr); column-gap: var(--s1); }
-  .wartung .wartung-schritte li .zahl { grid-row: span 2; }
+@media (max-width: 560px) {
+  .wartung .wartung-pakete__raster { grid-template-columns: minmax(0, 1fr); }
+  .wartung .wartung-demo,
+  .wartung .wartung-paket,
+  .wartung .wartung-schritte li,
+  .wartung .wartung-bericht__beispiel,
+  .wartung .wartung-pakete__details > .wartung-uebernahme { padding: var(--s2); }
 }
