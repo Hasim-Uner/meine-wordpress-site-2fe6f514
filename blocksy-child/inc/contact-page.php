@@ -468,9 +468,9 @@ function nexus_get_contact_project_focus_copy() {
 			'submitLabel'        => 'Übernahme-Check anfragen',
 		],
 		'wartung' => [
-			'messageLabel'       => 'Website und wer sie heute betreut',
-			'messageHelp'        => sprintf( 'Welche Website soll gewartet werden, läuft ein Shop darauf, und wer kümmert sich bisher darum? Vor dem Start steht der Übernahme-Check für %s netto, angerechnet bei Buchung der Wartung. Bitte keine Passwörter eintragen.', hu_freelancer_takeover_check_price() ),
-			'messagePlaceholder' => 'Website: … · Shop: ja/nein · Bisherige Betreuung: …',
+			'messageLabel'       => 'Website-Adresse und Ihr Anliegen',
+			'messageHelp'        => sprintf( 'Ein kurzer Satz reicht. Läuft darauf ein WooCommerce-Shop, erwähnen Sie ihn bitte. Der Übernahme-Check für %s netto beginnt nach Beauftragung und wird bei Buchung der Wartung angerechnet. Bitte keine Zugangsdaten eintragen.', hu_freelancer_takeover_check_price() ),
+			'messagePlaceholder' => 'https://ihre-firma.de – Wir möchten Updates und Kontaktformular regelmäßig prüfen lassen.',
 			'submitLabel'        => 'Wartung anfragen',
 		],
 		'website' => [

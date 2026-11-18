@@ -269,8 +269,8 @@ function hu_get_forced_singular_seo_map() {
 				'description' => sprintf( 'Bestehende WordPress-Website übernehmen und weiterentwickeln: Übernahme-Check für %s netto mit schriftlichem Befund, Prioritäten und Festpreis.', hu_freelancer_takeover_check_price() ),
 			],
 			'wordpress-wartung' => [
-				'title'       => sprintf( 'WordPress-Wartung mit Formularprüfung | %s/Monat', hu_maintenance_price() ),
-				'description' => sprintf( 'WordPress-Wartung für %1$s netto im Monat: Updates, Backups und monatlich eine echte Testanfrage. Reaktion bei Ausfall in %2$s, %3$s.', hu_maintenance_price(), hu_maintenance_outage_promise( 'short' ), hu_maintenance_outage_promise( 'window' ) ),
+				'title'       => sprintf( 'WordPress-Wartung mit Anfrage-Test | ab %s/Monat', hu_maintenance_price() ),
+				'description' => sprintf( 'WordPress-Wartung ab %s netto im Monat. Mit Updates, Backups und echter Testanfrage inklusive Prüfung von Zustellung und Tracking. Monatlich kündbar.', hu_maintenance_price() ),
 			],
 			'technisches-seo-wordpress' => [
 				'title'       => 'Technisches WordPress-SEO: Befund & Korrektur | Haşim Üner',

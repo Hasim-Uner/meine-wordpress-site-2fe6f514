@@ -86,6 +86,7 @@ get_header();
 			<dl class="uebernahme-liste">
 				<div><dt>Ein abgegrenztes Projekt</dt><dd>Zum Beispiel eine Angebotsseite ergänzen, ein Formular verbessern, Ladezeitprobleme beheben oder Tracking anbinden. Aufgaben, Preis und Abnahme vereinbaren wir vor dem Start.</dd></div>
 				<div><dt>Ein planbares Monatskontingent</dt><dd><p><?php echo esc_html( $retainer ); ?> im Monat, monatlich kündbar. Wir priorisieren gemeinsam die nächsten Aufgaben.</p><p class="uebernahme-hinweis">Ohne Rufbereitschaft und ohne garantierte Reaktionszeiten. Ein laufender Vertrag ist keine Voraussetzung für den Check oder ein Einzelprojekt.</p></dd></div>
+				<div><dt>Laufende WordPress-Wartung</dt><dd><p>Für Updates, Backups und eine monatliche Prüfung von Formular, Zustellung und Messung gibt es die <a class="satzlink" href="<?php echo esc_url( $routes['maintenance'] ); ?>" data-track-action="takeover_to_maintenance" data-track-category="internal_link" data-track-section="takeover_development">WordPress-Wartung mit Anfrage-Test</a>.</p></dd></div>
 				<div><dt>Ein Relaunch, wenn er sinnvoll ist</dt><dd><p>Falls sich der Bestand nicht sinnvoll weiterführen lässt, klären wir einen Neuaufbau als eigenes Projekt.</p><a class="textlink" href="<?php echo esc_url( $routes['website'] ); ?>" data-track-action="takeover_to_website" data-track-category="navigation" data-track-section="takeover_development">Website- und Relaunch-Angebot ansehen <span aria-hidden="true">→</span></a></dd></div>
 			</dl>
 		</div>
