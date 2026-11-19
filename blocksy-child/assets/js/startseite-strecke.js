@@ -1,6 +1,6 @@
 /* Startseite: die Strecke.
  *
- * Fuenf Aufgaben, ein Skript:
+ * Sieben Aufgaben, ein Skript:
  * 1. Die Linie in der Randspalte fuellt sich beim Lesen (transform: scaleY,
  *    Update in requestAnimationFrame, Geometrie nur bei Groessenaenderung).
  *    Die Lesekante liegt bei 45 % der Fensterhoehe; am Ende ist alles erreicht.
@@ -11,9 +11,12 @@
  *    Blick ist.
  * 5. Auf Seiten mit data-st-einblenden blenden Bloecke unter dem ersten
  *    Bildschirm beim ersten Sichtkontakt ein.
+ * 6. Der Hero zeigt eine Herkunftszeile („Ihr Besuch kam über …"), nur
+ *    wenn document.referrer oder utm_source eine Quelle nennt.
+ * 7. Die Preise wechseln als Tabs zwischen Neubau und Bestand.
  *
- * Das Besuchsprotokoll im Hero (Herkunft, Abschnitte, Scrolltiefe, Klick,
- * Etikett und Signal) ist am 19.11.2026 entfallen.
+ * Das Besuchsprotokoll im Hero (Abschnitte, Scrolltiefe, Klick, Etikett und
+ * Signal) ist am 19.11.2026 entfallen; nur die Herkunft kam als Zeile zurueck.
  *
  * Harte Regel: Dieses Skript sendet nichts und speichert nichts. Kein
  * Netzwerkaufruf, kein Browser-Speicher, kein Cookie. Die Sperrliste in
@@ -116,6 +119,163 @@
         };
         if (document.readyState === 'complete') window.setTimeout(ausNavigation, 0);
         else window.addEventListener('load', function () { window.setTimeout(ausNavigation, 0); }, { once: true });
+    }
+
+    /* ── 6. Herkunftszeile im Hero ──────────────────────────── */
+
+    /* Eine Zeile unter den Sonderwegen, nur wenn eine Quelle erkannt wird.
+       Direktaufruf, leerer Verweis und die eigene Domain zeigen nichts.
+       Kampagnenparameter haben Vorrang vor dem Verweis. Nur Textausgabe:
+       auch untrusted Query-Werte werden weder HTML noch Link oder Anfrage.
+       Das Element entsteht erst hier: ohne Skript gibt es keine Zeile. */
+    var heroAktionen = root.querySelector('[data-st-hero] [data-st-aktionen]');
+    var QUELLEN = [
+        [/(^|\.)gemini\.google\.com$/, 'Gemini'],
+        [/(^|\.)google\.[a-z.]+$/, 'Google'],
+        [/(^|\.)bing\.com$/, 'Bing'],
+        [/(^|\.)duckduckgo\.com$/, 'DuckDuckGo'],
+        [/(^|\.)ecosia\.org$/, 'Ecosia'],
+        [/(^|\.)(linkedin\.com|lnkd\.in)$/, 'LinkedIn'],
+        [/(^|\.)(chatgpt\.com|openai\.com)$/, 'ChatGPT'],
+        [/(^|\.)perplexity\.ai$/, 'Perplexity']
+    ];
+
+    function quellName(wert) {
+        var klein = wert.toLowerCase();
+        var name = '';
+        QUELLEN.some(function (paar) {
+            // utm_source=chatgpt.com oder utm_source=linkedin: beides ist dieselbe Quelle.
+            if (!paar[0].test(klein) && paar[1].toLowerCase() !== klein) return false;
+            name = paar[1];
+            return true;
+        });
+        return name;
+    }
+
+    function herkunft() {
+        var parameter = new URLSearchParams(window.location.search);
+        var quelle = (parameter.get('utm_source') || '').trim();
+        if (quelle) {
+            var medium = (parameter.get('utm_medium') || '').trim();
+            return quellName(quelle) || 'Kampagne: ' + quelle + (medium ? ' / ' + medium : '');
+        }
+        var host = '';
+        try { host = document.referrer ? new URL(document.referrer).hostname.replace(/^www\./, '') : ''; } catch (e) {}
+        if (!host || host === window.location.hostname.replace(/^www\./, '')) return '';
+        return quellName(host) || host;
+    }
+
+    if (heroAktionen) {
+        var quelleText = herkunft().replace(/[\x00-\x1f\x7f]/g, ' ').replace(/\s+/g, ' ').trim();
+        if (quelleText) {
+            if (quelleText.length > 48) quelleText = quelleText.slice(0, 47) + '…';
+            var zeile = document.createElement('p');
+            var wert = document.createElement('span');
+            zeile.className = 'st-klein-label st-hero__herkunft';
+            wert.className = 'st-hero__quelle';
+            wert.textContent = quelleText;
+            zeile.appendChild(document.createTextNode('Ihr Besuch kam über '));
+            zeile.appendChild(wert);
+            zeile.appendChild(document.createTextNode(' · zugeordnet ohne Cookie'));
+            heroAktionen.appendChild(zeile);
+        }
+    }
+
+    /* ── 7. Ausgangslage: Neubau | Bestand als Tabs ─────────── */
+
+    /* WAI-ARIA Tabs mit automatischer Aktivierung: Pfeiltasten, Pos1, Ende.
+       Ohne Skript bleibt die Tableiste hidden und beide Gruppen stehen
+       untereinander. Die inaktive Gruppe bleibt im DOM, nur hidden. */
+    var ausgangslage = root.querySelector('[data-st-ausgangslage]');
+    var tabs = ausgangslage ? Array.prototype.slice.call(ausgangslage.querySelectorAll('[role="tab"]')) : [];
+    var tafeln = tabs.map(function (tab) { return document.getElementById(tab.getAttribute('aria-controls')); });
+    var hoehenAnimation;
+
+    function zeigeTab(index, optionen) {
+        optionen = optionen || {};
+        var vorher = ausgangslage.offsetHeight;
+        var schonAktiv = tabs[index].getAttribute('aria-selected') === 'true' && !tafeln[index].hidden;
+        tabs.forEach(function (tab, i) {
+            var an = i === index;
+            tab.setAttribute('aria-selected', an ? 'true' : 'false');
+            tab.tabIndex = an ? 0 : -1;
+            tafeln[i].hidden = !an;
+            tafeln[i].classList.remove('is-einblenden');
+        });
+        if (optionen.fokus) tabs[index].focus();
+        if (!optionen.animieren || schonAktiv || reduced.matches) return;
+        // Kurzer Crossfade der neuen Tafel (CSS) und eine weiche Hoehe, damit
+        // die Folgesektion nicht springt. Nur transform/opacity in CSS; die
+        // Hoehe laeuft einmal ueber die Web Animations API.
+        void tafeln[index].offsetWidth;
+        tafeln[index].classList.add('is-einblenden');
+        var nachher = ausgangslage.offsetHeight;
+        if (hoehenAnimation) hoehenAnimation.cancel();
+        if (ausgangslage.animate && vorher !== nachher) {
+            // Waehrend die Hoehe waechst, ragt die neue Tafel nicht in die Preisnotiz.
+            ausgangslage.style.overflow = 'hidden';
+            hoehenAnimation = ausgangslage.animate([{ height: vorher + 'px' }, { height: nachher + 'px' }],
+                { duration: 240, easing: 'cubic-bezier(0.22, 1, 0.36, 1)' });
+            var dieseAnimation = hoehenAnimation;
+            dieseAnimation.onfinish = dieseAnimation.oncancel = function () {
+                if (hoehenAnimation === dieseAnimation) ausgangslage.style.overflow = '';
+            };
+        }
+    }
+
+    function tafelVonZiel(hash) {
+        if (!hash || hash.length < 2) return -1;
+        var ziel;
+        try { ziel = document.getElementById(decodeURIComponent(hash.slice(1))); } catch (e) { return -1; }
+        if (!ziel) return -1;
+        for (var i = 0; i < tafeln.length; i++) {
+            if (tafeln[i] && tafeln[i].contains(ziel)) return i;
+        }
+        return -1;
+    }
+
+    // Ein Anker in eine verborgene Gruppe oeffnet erst ihren Tab, dann springt
+    // der Browser bzw. dieses Skript an das Ziel.
+    function oeffneTabFuerHash(hash, springen) {
+        var i = tafelVonZiel(hash);
+        if (i < 0 || !tafeln[i].hidden) return;
+        zeigeTab(i);
+        if (springen) {
+            var ziel = document.getElementById(decodeURIComponent(hash.slice(1)));
+            if (ziel) ziel.scrollIntoView({ block: 'start' });
+        }
+    }
+
+    if (ausgangslage && tabs.length === 2 && tafeln.every(Boolean)) {
+        tafeln.forEach(function (tafel, i) {
+            tafel.setAttribute('role', 'tabpanel');
+            tafel.setAttribute('aria-labelledby', tabs[i].id);
+        });
+        ausgangslage.querySelector('[role="tablist"]').hidden = false;
+        ausgangslage.setAttribute('data-st-tabs-an', '');
+        var start = tafelVonZiel(window.location.hash);
+        zeigeTab(start < 0 ? 0 : start);
+        if (start > 0) {
+            var startZiel = document.getElementById(decodeURIComponent(window.location.hash.slice(1)));
+            if (startZiel) window.requestAnimationFrame(function () { startZiel.scrollIntoView({ block: 'start' }); });
+        }
+
+        tabs.forEach(function (tab, i) {
+            tab.addEventListener('click', function () { zeigeTab(i, { animieren: true }); });
+            tab.addEventListener('keydown', function (event) {
+                var ziel = { ArrowRight: i + 1, ArrowLeft: i - 1, Home: 0, End: tabs.length - 1 }[event.key];
+                if (ziel === undefined) return;
+                event.preventDefault();
+                zeigeTab((ziel + tabs.length) % tabs.length, { animieren: true, fokus: true });
+            });
+        });
+        // Klick auf einen Seitenanker in die verborgene Gruppe: vor dem
+        // nativen Sprung umschalten, damit der Browser ein sichtbares Ziel hat.
+        document.addEventListener('click', function (event) {
+            var link = event.target.closest && event.target.closest('a[href^="#"]');
+            if (link) oeffneTabFuerHash(link.getAttribute('href'), false);
+        }, true);
+        window.addEventListener('hashchange', function () { oeffneTabFuerHash(window.location.hash, true); });
     }
 
     /* ── 3. Stationen ───────────────────────────────────────── */

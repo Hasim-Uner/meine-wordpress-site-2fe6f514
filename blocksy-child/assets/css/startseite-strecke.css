@@ -1233,6 +1233,30 @@
    wieder auf der Tintenlinie, damit der Wechsel ohne Ueberschrift lesbar ist. */
 .st[data-st-final] .st-angebotsgruppe__kopf { padding-block: var(--s2); border-bottom: 1px solid var(--haar); color: var(--stempel); }
 .st[data-st-final] .st-angebotsgruppe + .st-angebotsgruppe { margin-top: var(--s4); border-top: 1px solid var(--tinte); }
+/* Ausgangslage als Tabs (startseite-strecke.js setzt data-st-tabs-an).
+   Ohne Skript bleibt die Leiste hidden, beide Gruppen stehen untereinander.
+   Segment-Control: zwei gleich breite Felder, mindestens 44 px hoch. */
+.st[data-st-final] .st-ausgangslage { display: inline-grid; grid-auto-flow: column; grid-auto-columns: minmax(0, 1fr); gap: 3px; padding: 3px; margin-bottom: var(--s3); background: var(--papier); border: 1px solid var(--tinte); border-radius: var(--r1); }
+.st[data-st-final] .st-ausgangslage[hidden] { display: none; }
+.st[data-st-final] .st-ausgangslage__tab { min-height: 44px; padding: 0 var(--s3); font: inherit; font-family: var(--serif); font-size: .94rem; font-weight: 600; line-height: 1.2; color: var(--tinte); background: transparent; border: 0; border-radius: var(--r0); cursor: pointer; transition: background-color var(--t-norm) var(--ease-weich), color var(--t-norm) var(--ease-weich); }
+.st[data-st-final] .st-ausgangslage__tab:hover { background: color-mix(in srgb, var(--tinte) 8%, transparent); }
+.st[data-st-final] .st-ausgangslage__tab[aria-selected="true"] { color: var(--papier); background: var(--tinte); }
+.st[data-st-final] .st-ausgangslage__tab:focus-visible { outline: 2px solid var(--stempel); outline-offset: 2px; }
+/* Im Tab-Modus steht die Leiste ueber der Tintenlinie; jede Gruppe
+   beginnt auf ihr, auch die zweite. */
+.st[data-st-final] .st-angebote[data-st-tabs-an] { border-top: 0; }
+.st[data-st-final] [data-st-tabs-an] .st-angebotsgruppe,
+.st[data-st-final] [data-st-tabs-an] .st-angebotsgruppe + .st-angebotsgruppe { margin-top: 0; border-top: 1px solid var(--tinte); }
+.st[data-st-final] .st-angebotsgruppe.is-einblenden { animation: st-tafel-ein 220ms var(--ease-aus) both; }
+@keyframes st-tafel-ein { from { opacity: 0; transform: translateY(6px); } }
+@media (max-width: 767px) {
+  .st[data-st-final] .st-ausgangslage { display: grid; width: 100%; }
+  .st[data-st-final] .st-ausgangslage__tab { padding-inline: var(--s1); }
+}
+@media (prefers-reduced-motion: reduce) {
+  .st[data-st-final] .st-angebotsgruppe.is-einblenden { animation: none; }
+  .st[data-st-final] .st-ausgangslage__tab { transition: none; }
+}
 .st[data-st-final] .st-angebot { grid-template-columns: 2rem minmax(0, 1fr); gap: var(--s2); padding-block: var(--s3); }
 .st[data-st-final] .st-angebot__titel { margin: 0; font-size: 1.4rem; }
 .st[data-st-final] .st-angebot__lage { margin-top: var(--s1); font-size: 0.86rem; line-height: 1.45; color: var(--grau); }
@@ -1349,9 +1373,6 @@
 .st[data-st-final] .st-hero--messflaeche .st-hero__satz { margin: 0; max-inline-size: 46ch; font-size: clamp(1.0625rem, 1.35vw, 1.25rem); }
 .st[data-st-final] .st-hero--messflaeche .st-hero__ctas { margin: 0; }
 .st[data-st-final] .st-hero--messflaeche .st-hero__notiz { font-size: .875rem; }
-/* One quiet case link below the main action at every width. */
-.st[data-st-final] .st-hero--messflaeche .st-hero__beleg { margin: var(--s1) 0 0; font-size: .9375rem; }
-.st[data-st-final] .st-hero--messflaeche .st-hero__beleg .st-link { display: inline-block; padding-block: .75rem; }
 /* Drei Sonderwege als eine leise Zeile direkt unter den Aktionen.
    Ohne Trennpunkte: Beim Umbruch stuende sonst ein Punkt allein am Zeilenrand. */
 .st[data-st-final] .st-hero--messflaeche .st-hero__wege { display: flex; flex-wrap: wrap; align-items: baseline; column-gap: var(--s3); margin: var(--s1) 0 0; font-size: .9375rem; }
@@ -1380,8 +1401,56 @@
   .st[data-st-final] .st-hero--messflaeche .st-belege { grid-template-columns: repeat(2, minmax(0, 1fr)); }
   .st[data-st-final] .st-hero--messflaeche .st-belege a { grid-template-columns: minmax(0, 1fr); }
 }
+/* Herkunftszeile (startseite-strecke.js, nur bei erkannter Quelle): Mono-
+   Kleinschrift wie die Eyebrows. Absolut unter den Sonderwegen, damit das
+   spaete Einfuegen nichts verschiebt; der Abstand zum naechsten Block
+   ist dafuer reserviert (siehe unten). */
+.st[data-st-final] .st-hero--messflaeche .st-hero__aktionen { position: relative; }
+.st[data-st-final] .st-hero--messflaeche .st-hero__herkunft { position: absolute; top: 100%; left: 0; right: 0; margin: var(--s0) 0 0; font-size: .75rem; line-height: 1.5; letter-spacing: .04em; color: var(--grau); }
+.st[data-st-final] .st-hero--messflaeche .st-hero__quelle { color: var(--stempel); overflow-wrap: anywhere; }
 @media (min-width: 1100px) {
   .st[data-st-final] .st-hero--messflaeche .st-hero__unten { grid-template-columns: minmax(0, 1.1fr) minmax(0, 1fr); }
+  /* Portrait rechts neben der H1: Die H1 behaelt die volle Breite als
+     Container (cqi-Schriftgroesse), ihre laengste Zeile nimmt rund 63 %
+     davon ein. Das Portrait sitzt in der rechten Spalte darueber, oben
+     buendig mit der H1 und rechts buendig mit dem Preis. */
+  .st[data-st-final] .st-hero--messflaeche .st-inhalt { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 22%); column-gap: var(--s4); align-items: start; }
+  .st[data-st-final] .st-hero--messflaeche .st-hero__kopfzeile { grid-column: 1 / -1; grid-row: 1; }
+  .st[data-st-final] .st-hero--messflaeche .st-hero__titel { grid-column: 1 / -1; grid-row: 2; }
+  .st[data-st-final] .st-hero--messflaeche .st-hero__meta { position: relative; z-index: 1; grid-column: 2; grid-row: 2; display: flex; flex-direction: column; align-items: stretch; gap: var(--s1); margin: .35em 0 0; }
+  .st[data-st-final] .st-hero--messflaeche .st-hero__portrait { width: 100%; height: auto; }
+  .st[data-st-final] .st-hero--messflaeche .st-hero__person { font-size: .82rem; }
+  .st[data-st-final] .st-hero--messflaeche .st-hero__unten { grid-column: 1 / -1; grid-row: 3; }
+  .st[data-st-final] .st-hero--messflaeche .st-belege { grid-column: 1 / -1; grid-row: 4; margin-top: calc(var(--s4) + var(--s1)); }
+}
+/* Platz fuer bis zu drei Zeilen Herkunft, bevor das Portrait folgt. */
+@media (max-width: 1099px) {
+  .st[data-st-final] .st-hero--messflaeche .st-inhalt > .st-hero__meta { margin-top: calc(var(--s4) + var(--s2)); }
+}
+/* Unter 1100 px gestapelt: H1, Satz, Aktionen, Sonderwege, dann das
+   Portrait kompakt neben Name und Rolle. */
+@media (min-width: 768px) and (max-width: 1099px) {
+  .st[data-st-final] .st-hero--messflaeche .st-inhalt { display: flex; flex-direction: column; }
+  .st[data-st-final] .st-hero--messflaeche .st-hero__titel { order: 1; }
+  .st[data-st-final] .st-hero--messflaeche .st-hero__unten { order: 2; }
+  .st[data-st-final] .st-hero--messflaeche .st-inhalt > .st-hero__meta { order: 3; display: flex; }
+  .st[data-st-final] .st-hero--messflaeche .st-inhalt > .st-belege { order: 4; }
+}
+/* Auftritt: nur die Nebenelemente, gestaffelt um 60 ms. Die H1 ist das
+   LCP-Element und steht sofort; Portrait ohne Layout-Shift (feste Masse,
+   nur opacity und transform). */
+@keyframes st-hero-auftritt { from { opacity: 0; transform: translateY(10px); } }
+@media (prefers-reduced-motion: no-preference) {
+  .st[data-st-final] .st-hero--messflaeche .st-hero__satz,
+  .st[data-st-final] .st-hero--messflaeche .st-hero__ctas,
+  .st[data-st-final] .st-hero--messflaeche .st-hero__wege,
+  .st[data-st-final] .st-hero--messflaeche .st-hero__herkunft,
+  .st[data-st-final] .st-hero--messflaeche .st-hero__meta { animation: st-hero-auftritt 420ms var(--ease-aus) both; }
+  .st[data-st-final] .st-hero--messflaeche .st-hero__satz { animation-delay: 60ms; }
+  .st[data-st-final] .st-hero--messflaeche .st-hero__ctas { animation-delay: 120ms; }
+  .st[data-st-final] .st-hero--messflaeche .st-hero__wege { animation-delay: 180ms; }
+  .st[data-st-final] .st-hero--messflaeche .st-hero__herkunft { animation-delay: 240ms; }
+  .st[data-st-final] .st-hero--messflaeche .st-hero__meta { animation-delay: 240ms; }
 }
 @media (min-width: 1280px) {
   .st[data-st-final] .st-hero--messflaeche .st-belege a { grid-template-columns: auto minmax(0, 1fr); }

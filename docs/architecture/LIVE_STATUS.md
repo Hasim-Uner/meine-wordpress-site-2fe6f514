@@ -354,6 +354,20 @@ Projektabschluss und ruhiger Agentur-Zweitweg, zentrale Metadaten und
   Anfragestrecke für andere Branchen. Vier FAQ. `startseite-strecke.js` misst
   nur noch die Ladezeit für Station „Seite“ und Prüfstand; White-Label nutzt
   dasselbe Skript unverändert (Linie, Ende-Zeit).
+  **Nachtrag 2026-11-19 (Hero-Feinschliff, Branch
+  `claude/hero-feinschliff-2026-11-19`, live erst nach Merge):** Portrait ab
+  1100 px rechts neben der H1 (oben bündig, rechts bündig mit dem Preis), darunter
+  gestapelt nach den Sonderwegen. Der Link „−85 % Kosten pro Anfrage“ unter den
+  Aktionen entfällt; die −85-%-Kennzahl der Belege-Leiste führt jetzt selbst zur
+  Fallstudie (`home_hero_case_proof`, ersetzt `home_proof_strip_case` → `#arbeiten`).
+  Herkunftszeile „Ihr Besuch kam über {Quelle} · zugeordnet ohne Cookie“ unter den
+  Sonderwegen, nur bei erkannter Quelle (`utm_source` vor `document.referrer`;
+  direkt/eigene Domain: nichts), rein clientseitig, ohne JS kein Element.
+  Nebenelemente des Heros blenden gestaffelt ein (CSS, 420 ms, aus bei reduzierter
+  Bewegung); die H1 (LCP) steht sofort. Preise: „Neue Website“ | „Website steht
+  schon“ als WAI-ARIA-Tabs (`home_offers_tab_new`, `home_offers_tab_existing`),
+  Gruppen `#neubau` / `#bestand`; ohne JS beide untereinander. Anker in eine
+  Gruppe (`#bestand`, `#angebot-tracking` …) öffnen ihren Tab.
   Die bestehende Strecke (`assets/css/startseite-strecke.css/.js`) hat acht
   Abschnitte: Klick, Angebote (`#angebote`, mit Preisen), Strecke, Fall,
   Übergabe, Prüfstand, Fragen, Anfrage (Reihenfolge seit 2026-10-30).

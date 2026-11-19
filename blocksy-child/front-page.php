@@ -361,26 +361,26 @@ get_header();
 			<div class="st-hero__titel" data-st-titel>
 				<h1 class="st-hero__h1" id="st-h1"><span class="st-messzeile"><span class="st-messwort">Mehr Anfragen</span></span> <span class="st-messzeile"><span class="st-messwort">über Ihre Website.</span></span> <span class="st-messzeile st-leise"><span class="st-messwort">Und Sie sehen,</span></span> <span class="st-messzeile st-leise"><span class="st-messwort">was funktioniert.</span></span></h1>
 			</div>
+			<?php // Portrait: ab 1100 px rechts neben der H1, darunter gestapelt nach den Sonderwegen (CSS order). Feste width/height gegen Layout-Shift. ?>
+			<div class="st-hero__meta">
+				<img class="st-hero__portrait" src="<?php echo esc_url( $img_uri . 'hasim-freelancer-portrait-480x600.webp' ); ?>" width="480" height="600" alt="Haşim Üner, WordPress-Entwickler aus Pattensen bei Hannover" decoding="async" fetchpriority="high">
+				<p class="st-hero__person"><strong>Haşim Üner</strong> · Entwicklung, Tracking und Conversion <br><a href="<?php echo esc_url( $about_url ); ?>" data-track-action="home_about" data-track-category="trust" data-track-section="hero">Wer hier für Sie arbeitet</a></p>
+			</div>
 			<div class="st-hero__unten">
 				<p class="st-hero__satz">Ich entwickle Ihre WordPress-Website und den Weg zur Anfrage. Tracking und CRM ergänzen wir, wenn Ihr Projekt sie braucht. Sie arbeiten direkt mit mir, bis zur Übergabe.</p>
-				<div>
+				<?php // data-st-aktionen: startseite-strecke.js haengt hier die Herkunftszeile an, nur wenn eine Quelle erkannt wird. ?>
+				<div class="st-hero__aktionen" data-st-aktionen>
 					<div class="st-hero__ctas">
 						<a class="tun" href="<?php echo esc_url( $contact_url ); ?>" data-track-action="home_head_contact" data-track-category="lead_gen" data-track-section="hero">Projekt anfragen <span class="pf" aria-hidden="true">→</span></a>
 						<a class="st-link" href="#angebote" data-track-action="home_hero_prices" data-track-category="navigation" data-track-section="hero">Leistungsumfang &amp; Preise <span class="pf" aria-hidden="true">↓</span></a>
 					</div>
 					<p class="st-hero__wege"><?php foreach ( $special_ways as $way ) : ?><a class="st-link" href="<?php echo esc_url( $way['url'] ); ?>" data-track-action="<?php echo esc_attr( $way['hook'] ); ?>" data-track-category="navigation" data-track-section="hero"><?php echo esc_html( $way['label'] ); ?> <span aria-hidden="true">→</span></a><?php endforeach; ?></p>
-					<p class="st-hero__beleg"><a class="st-link" href="<?php echo esc_url( $e3_case_url ); ?>" data-track-action="home_hero_case_proof" data-track-category="proof" data-track-section="hero"><?php echo esc_html( $cpl_drop ); ?> Kosten pro Anfrage · dokumentierter B2B-Fall <span aria-hidden="true">→</span></a></p>
 				</div>
 			</div>
 
-			<?php // An der Stelle des früheren Besuchsprotokolls: das Portrait aus dem Abschluss, im Hero ohne Lazy-Load. ?>
-			<div class="st-hero__meta">
-				<img class="st-hero__portrait" src="<?php echo esc_url( $img_uri . 'hasim-freelancer-portrait-480x600.webp' ); ?>" width="480" height="600" alt="Haşim Üner, WordPress-Entwickler aus Pattensen bei Hannover" decoding="async" fetchpriority="high">
-				<p class="st-hero__person"><strong>Haşim Üner</strong> · Entwicklung, Tracking und Conversion <br><a href="<?php echo esc_url( $about_url ); ?>" data-track-action="home_about" data-track-category="trust" data-track-section="hero">Wer hier für Sie arbeitet</a></p>
-			</div>
-
+			<?php // Die Kennzahl selbst fuehrt zur Fallstudie (frueher ein eigener Link unter den Aktionen, Hook home_hero_case_proof). ?>
 			<ul class="st-belege" aria-label="Belege">
-				<li><a href="#arbeiten" data-track-action="home_proof_strip_case" data-track-category="proof" data-track-section="hero"><span class="st-belege__zahl st-belege__zahl--messwert"><?php echo $zahl( $cpl_drop ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- escaped inside the helper. ?></span> <span class="st-belege__text"><?php echo esc_html( hu_e3_metric( 'cpl_reduction', 'label' ) ); ?> in einem dokumentierten B2B-Fall</span></a></li>
+				<li><a href="<?php echo esc_url( $e3_case_url ); ?>" data-track-action="home_hero_case_proof" data-track-category="proof" data-track-section="hero"><span class="st-belege__zahl st-belege__zahl--messwert"><?php echo $zahl( $cpl_drop ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- escaped inside the helper. ?></span> <span class="st-belege__text"><?php echo esc_html( hu_e3_metric( 'cpl_reduction', 'label' ) ); ?> in einem dokumentierten B2B-Fall</span></a></li>
 				<li><a href="#pruefstand" data-track-action="home_proof_strip_pruefstand" data-track-category="proof" data-track-section="hero"><?php if ( $deploy_clean ) : ?><span class="st-belege__zahl st-belege__zahl--mono"><?php echo esc_html( $deploy['checks_passed'] . '/' . $deploy['checks_total'] ); ?></span> <span class="st-belege__text">Prüfläufe vor dem letzten Livegang bestanden, der Code liegt offen</span><?php else : ?><span class="st-belege__zahl st-belege__zahl--mono">Code</span> <span class="st-belege__text">liegt offen, jede Änderung wird vor dem Livegang geprüft</span><?php endif; ?></a></li>
 			</ul>
 		</div>
@@ -392,8 +392,21 @@ get_header();
 		<div class="st-inhalt">
 			<h2 class="st-h2" id="angebote-h">Was es kostet, steht hier. <span class="st-leise">Der Einstieg richtet sich nach Ihrer Ausgangslage.</span></h2>
 			<p class="st-vorspann">Alle Preise netto. Umfang und Endpreis stehen vor dem Start schriftlich fest. Was danach dazukommt, kommt nur mit Ihrer Zustimmung dazu.</p>
-			<div class="st-angebote">
-				<div class="st-angebotsgruppe" role="group" aria-labelledby="angebote-neu-h">
+			<?php
+			/*
+			 * Zwei Ausgangslagen als Tabs (seit 19.11.2026). Ohne JS stehen beide
+			 * Gruppen untereinander und die Tableiste bleibt hidden; startseite-strecke.js
+			 * macht daraus Tabs nach WAI-ARIA. Beide Gruppen bleiben im DOM, die
+			 * inaktive nur per hidden. Ein Anker in eine Gruppe (#bestand,
+			 * #angebot-tracking ...) oeffnet ihren Tab.
+			 */
+			?>
+			<div class="st-angebote" data-st-ausgangslage>
+				<div class="st-ausgangslage" role="tablist" aria-label="Ausgangslage" hidden>
+					<button type="button" class="st-ausgangslage__tab" role="tab" id="angebote-tab-neu" aria-controls="neubau" aria-selected="true" data-track-action="home_offers_tab_new" data-track-category="navigation" data-track-section="angebote">Neue Website</button>
+					<button type="button" class="st-ausgangslage__tab" role="tab" id="angebote-tab-bestand" aria-controls="bestand" aria-selected="false" tabindex="-1" data-track-action="home_offers_tab_existing" data-track-category="navigation" data-track-section="angebote">Website steht schon</button>
+				</div>
+				<div class="st-angebotsgruppe" id="neubau" role="group" aria-labelledby="angebote-neu-h" data-st-tab="angebote-tab-neu">
 					<p class="st-klein-label st-angebotsgruppe__kopf" id="angebote-neu-h">Sie brauchen etwas Neues · Website, Landingpage, Anfragestrecke</p>
 				<?php foreach ( $offers as $offer ) : ?>
 					<article class="st-angebot" id="<?php echo esc_attr( $offer['id'] ); ?>" aria-labelledby="<?php echo esc_attr( $offer['id'] ); ?>-h">
@@ -408,7 +421,7 @@ get_header();
 					</article>
 				<?php endforeach; ?>
 				</div>
-				<div class="st-angebotsgruppe" role="group" aria-labelledby="angebote-bestand-h">
+				<div class="st-angebotsgruppe" id="bestand" role="group" aria-labelledby="angebote-bestand-h" data-st-tab="angebote-tab-bestand">
 					<p class="st-klein-label st-angebotsgruppe__kopf" id="angebote-bestand-h">Ihre Website steht schon · prüfen, messen, übernehmen</p>
 					<ul class="st-angebotsliste">
 						<?php foreach ( $offer_lines as $line ) : ?>
