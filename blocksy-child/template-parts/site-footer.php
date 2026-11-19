@@ -55,6 +55,10 @@ $shows_register = function_exists( 'hu_footer_shows_register' )
 	? hu_footer_shows_register()
 	: ! ( function_exists( 'nexus_is_contact_page' ) && nexus_is_contact_page() );
 $register       = (array) ( $footer_contract['routes'] ?? [] );
+// Einzelne Wege kann eine Seite ausblenden (hu_footer_register_routes()).
+if ( function_exists( 'hu_footer_register_routes' ) ) {
+	$register = hu_footer_register_routes( $register );
+}
 $current_route  = (string) $funnel_context['route'];
 
 $contact_url = $routes['contact'] ?? ( $primary_urls['contact'] ?? nexus_get_contact_url() );

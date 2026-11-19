@@ -476,18 +476,12 @@
   }
 
   /* Erster Bildschirm bei 1280 x 800 und 1440 x 900: H1 ueber die Breite,
-     darunter links Byline, Satz und Buttons, rechts das Protokoll. */
+     darunter links Byline, Satz und Buttons. */
   .st .st-hero__h1 { grid-column: 1 / 12; }
 
   .st .st-hero__text {
     grid-column: 1 / 8;
     grid-row: 2;
-  }
-
-  .st .st-protokoll {
-    grid-column: 8 / -1;
-    grid-row: 2 / 4;
-    align-self: start;
   }
 
   .st .st-belege {
@@ -497,13 +491,8 @@
   }
 }
 
-/* Protokoll-Kopf und Ausfallhinweis; die Messwerte stehen auf der Bahn. */
+/* Protokoll-Kopf des Pruefstands. */
 .st .st-protokoll__kopf { display: flex; justify-content: space-between; gap: var(--s1); font-family: var(--mono); font-size: var(--mono-s); font-weight: 500; letter-spacing: .06em; text-transform: uppercase; color: var(--tinte); }
-.st .st-protokoll__status { display: inline-flex; align-items: center; gap: var(--s0); color: var(--matt); }
-.st .st-protokoll__status[hidden] { display: none; }
-.st .st-protokoll__status::before { content: ""; width: 7px; height: 7px; background: var(--stempel); border-radius: 50%; }
-.st .st-protokoll__ohne-js { display: block; margin-top: var(--s1); font-size: .82rem; color: var(--grau); }
-.st[data-st-bereit] .st-protokoll__ohne-js { display: none; }
 
 /* ══ 05 Pruefstand: die Tafel fuer den Beweis ═════════════════
    Oben rechts ein leiser Schimmer aus dem Stempel, auf der dunklen
@@ -1259,6 +1248,13 @@
 .st[data-st-final] .st-angebot__wege .tun { width: 100%; min-height: 44px; justify-content: space-between; padding-inline: var(--s2); font-size: 0.88rem; white-space: normal; }
 .st[data-st-final] .st-weiter { display: flex; flex-wrap: wrap; align-items: baseline; gap: var(--s2) var(--s4); padding-block: var(--s3); border-bottom: 1px solid var(--haar); font-size: 0.97rem; }
 .st[data-st-final] .st-weiter > p { flex: 1 1 30ch; }
+/* Bestand: eine Zeile je Leistung (Name, Kanonpreis, Unterseite) statt
+   Karten. Mobil untereinander, ab 768 px in drei Spalten. */
+.st[data-st-final] .st-angebotsliste { list-style: none; margin: 0; padding: 0; }
+.st[data-st-final] .st-angebotsliste li { display: grid; grid-template-columns: minmax(0, 1fr); gap: var(--s0) var(--s3); align-items: baseline; padding-block: var(--s2); border-bottom: 1px solid var(--haar); }
+.st[data-st-final] .st-angebotsliste__name { font-family: var(--serif-display); font-size: 1.15rem; font-weight: 500; line-height: 1.25; letter-spacing: -0.02em; }
+.st[data-st-final] .st-angebotsliste__preis { font-family: var(--mono); font-size: .875rem; font-variant-numeric: tabular-nums; color: var(--grau); }
+.st[data-st-final] .st-angebotsliste .st-link { justify-self: start; display: inline-block; padding-block: var(--s0); font-size: .88rem; }
 .st[data-st-final] .st-preisnotiz { margin-top: var(--s3); font-size: var(--grad-klein); color: var(--matt); }
 .st[data-st-final] .st-einwand { margin-top: var(--s3); padding-top: var(--s2); border-top: 1px solid var(--haar); font-size: 0.97rem; color: var(--grau); }
 .st[data-st-final] .st-einwand strong { color: var(--tinte); }
@@ -1272,7 +1268,7 @@
 .st[data-st-final] .st-eignung ul { list-style: none; margin: 0; padding: 0; border-top: 1px solid var(--haar); }
 .st[data-st-final] .st-eignung li { padding-block: var(--s2); border-bottom: 1px solid var(--haar); font-size: 0.97rem; color: var(--grau); }
 .st[data-st-final] .st-eignung li strong { display: block; color: var(--tinte); }
-.st[data-st-final] .st-schluss { padding: 0; grid-template-areas: "kopf" "wege" "danach" "bild"; }
+.st[data-st-final] .st-schluss { padding: 0; grid-template-areas: "kopf" "wege" "danach"; }
 .st[data-st-final] .st-schluss .st-anfrage__h2 { max-inline-size: 26ch; }
 .st[data-st-final] .st-einstiege { gap: var(--s3); }
 .st[data-st-final] .st-einstieg { padding: var(--s3); border: 1px solid var(--haar); border-radius: var(--r1); }
@@ -1282,12 +1278,12 @@
 .st[data-st-final] .st-danach { grid-area: danach; border-top: 1px solid var(--haar); padding-top: var(--s3); }
 .st[data-st-final] .st-danach .st-klein-label { display: block; margin-bottom: var(--s1); }
 .st[data-st-final] .st-einstiege > :only-child { grid-column: 1 / -1; }
-.st[data-st-final] .st-portrait { max-width: 14rem; width: 100%; }
 @media (min-width: 768px) {
   .st[data-st-final] .st-ablauf ol, .st[data-st-final] .st-danach { grid-template-columns: repeat(3, minmax(0, 1fr)); }
   .st[data-st-final] .st-referenzen__liste li { grid-template-columns: minmax(0, 15rem) minmax(0, 1fr); }
   .st[data-st-final] .st-referenzen__liste li > p:last-child { grid-column: 2; grid-row: 1 / span 2; align-self: center; margin: 0; }
   .st[data-st-final] .st-eignung { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .st[data-st-final] .st-angebotsliste li { grid-template-columns: minmax(0, 14rem) minmax(0, 1fr) auto; }
 }
 @media (min-width: 1024px) {
   .st[data-st-final] .st-belege { grid-column: 1 / -1; grid-row: 3; display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: var(--s3); padding-top: var(--s3); }
@@ -1297,11 +1293,8 @@
   .st[data-st-final] .st-fall { grid-template-columns: minmax(0, 0.92fr) minmax(0, 1.08fr); }
   .st[data-st-final] .st-angebot { grid-template-columns: 2rem minmax(0, 1.05fr) minmax(0, 1.35fr) minmax(0, 12rem); gap: var(--s3); }
   .st[data-st-final] .st-angebot__text, .st[data-st-final] .st-angebot__preise { grid-column: auto; }
-  .st[data-st-final] .st-schluss { grid-template-columns: minmax(0, 1fr) 10rem; grid-template-areas: "kopf bild" "wege wege" "danach danach"; }
-  .st[data-st-final] .st-schluss .st-portrait { align-self: start; }
-}
-@media (min-width: 1280px) {
-  .st[data-st-final] .st-schluss { grid-template-columns: minmax(0, 1fr) 14rem; grid-template-areas: "kopf bild" "wege bild" "danach bild"; }
+  /* Seit dem 19.11.2026 ohne Portrait-Spalte: das Bild steht im Hero. */
+  .st[data-st-final] .st-schluss { grid-template-columns: minmax(0, 1fr); grid-template-areas: "kopf" "wege" "danach"; }
 }
 @media (prefers-reduced-motion: reduce) {
   .st .st-station summary::after, .st[data-st-final][data-st-bereit] .st-balken i { transition: none !important; }
@@ -1340,10 +1333,10 @@
 }
 .st .st-messzeile { display: block; overflow: hidden; padding-bottom: .08em; margin-bottom: -.08em; }
 .st .st-messwort { display: inline-block; }
-.st .st-messflaeche:is([data-st-hero-bereit], [data-wl-enhanced]):not(.is-started) .st-messwort { transform: translateY(105%); }
+.st .st-messflaeche[data-wl-enhanced]:not(.is-started) .st-messwort { transform: translateY(105%); }
 .st .st-messflaeche.is-started .st-messwort { transform: translateY(0); transition: transform 900ms cubic-bezier(.16, 1, .3, 1); }
 
-/* 01 Homepage: der Besuch ist das Signal auf der Strecke. */
+/* 01 Homepage-Hero: H1, Aktionen, Sonderwege, Portrait. */
 .st[data-st-final] .st-hero--messflaeche .st-hero__kopfzeile { display: flex; flex-wrap: wrap; justify-content: space-between; align-items: baseline; gap: var(--s0) var(--s3); margin-bottom: var(--s3); }
 .st[data-st-final] .st-hero--messflaeche .st-klein-label { font-size: .75rem; letter-spacing: .06em; }
 .st[data-st-final] .st-hero--messflaeche .st-hero__preis { color: var(--stempel); min-height: 24px; }
@@ -1352,15 +1345,6 @@
 .st .st-hero--messflaeche .st-messzeile:nth-child(2) .st-messwort { transition-delay: 70ms; }
 .st .st-hero--messflaeche .st-messzeile:nth-child(3) .st-messwort { transition-delay: 140ms; }
 .st .st-hero--messflaeche .st-messzeile:nth-child(4) .st-messwort { transition-delay: 210ms; }
-.st-wort--quelle { position: relative; }
-.st-quelle__fuell { position: absolute; inset: 0; opacity: 0; pointer-events: none; }
-/* Die Fuellung ist Generated Content: "was funktioniert." steht so nur
-   einmal im Text der H1, fuer Suchmaschinen, Kopieren und Vorlesen. */
-.st-quelle__fuell::before { content: attr(data-text); }
-@supports (-webkit-text-stroke: 1px currentColor) {
-  [data-st-hero-bereit] .st-quelle__kontur { color: var(--matt); -webkit-text-stroke: 0; }
-  [data-st-hero-bereit].is-assigned .st-quelle__fuell { opacity: 1; transition: opacity 350ms var(--ease-aus); }
-}
 .st[data-st-final] .st-hero--messflaeche .st-hero__unten { display: grid; gap: var(--s3); align-items: end; margin-top: var(--s3); }
 .st[data-st-final] .st-hero--messflaeche .st-hero__satz { margin: 0; max-inline-size: 46ch; font-size: clamp(1.0625rem, 1.35vw, 1.25rem); }
 .st[data-st-final] .st-hero--messflaeche .st-hero__ctas { margin: 0; }
@@ -1368,6 +1352,10 @@
 /* One quiet case link below the main action at every width. */
 .st[data-st-final] .st-hero--messflaeche .st-hero__beleg { margin: var(--s1) 0 0; font-size: .9375rem; }
 .st[data-st-final] .st-hero--messflaeche .st-hero__beleg .st-link { display: inline-block; padding-block: .75rem; }
+/* Drei Sonderwege als eine leise Zeile direkt unter den Aktionen.
+   Ohne Trennpunkte: Beim Umbruch stuende sonst ein Punkt allein am Zeilenrand. */
+.st[data-st-final] .st-hero--messflaeche .st-hero__wege { display: flex; flex-wrap: wrap; align-items: baseline; column-gap: var(--s3); margin: var(--s1) 0 0; font-size: .9375rem; }
+.st[data-st-final] .st-hero--messflaeche .st-hero__wege .st-link { display: inline-block; padding-block: .5rem; white-space: nowrap; }
 /* Auffangnetz, keine Tafel: Haarlinie auf Papier, damit es nicht lauter
    steht als die Angebote darueber. */
 .st[data-st-final] .st-erstcheck { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: var(--s4); padding: var(--s3); margin-top: var(--s4); background: var(--papier); border: 1px solid var(--haar); border-radius: var(--r1); }
@@ -1377,7 +1365,10 @@
 @media (max-width: 767px) {
   .st[data-st-final] .st-erstcheck { grid-template-columns: minmax(0, 1fr); gap: var(--s3); }
 }
-.st[data-st-final] .st-hero--messflaeche .st-hero__meta { margin-top: var(--s4); }
+.st[data-st-final] .st-hero--messflaeche .st-hero__meta { align-items: flex-end; gap: var(--s3); margin-top: var(--s4); }
+/* Portrait an der Stelle des frueheren Besuchsprotokolls: dieselbe Datei
+   wie frueher im Abschluss, Seitenverhaeltnis aus width/height (4:5). */
+.st[data-st-final] .st-hero--messflaeche .st-hero__portrait { width: clamp(7.5rem, 18vw, 12rem); height: auto; border-radius: var(--r0); }
 .st[data-st-final] .st-hero--messflaeche .st-belege { display: grid; grid-template-columns: minmax(0, 1fr); gap: var(--s3); margin-top: var(--s4); padding-top: var(--s3); }
 .st[data-st-final] .st-hero--messflaeche .st-belege a { grid-template-columns: auto minmax(0, 1fr); gap: var(--s2); padding: 0; border: 0; align-items: center; min-height: 44px; }
 .st[data-st-final] .st-hero--messflaeche .st-belege__zahl { font-family: var(--serif-display); font-size: 1.8rem; }
@@ -1385,63 +1376,6 @@
 /* Pruefstand-Beleg: Zaehlerstand aus dem Deploy, deshalb Mono statt Display. */
 .st[data-st-final] .st-hero--messflaeche .st-belege__zahl--mono { font-family: var(--mono); font-size: 1.45rem; letter-spacing: -.02em; }
 
-/* Etikett: Positionen werden nach fonts.ready und resize gemessen.
-   Unterhalb der H1 bleibt der Platz waehrend der Choreografie reserviert. */
-.st-etikett { position: absolute; left: 0; top: 0; z-index: 2; display: flex; flex-direction: column; gap: var(--s0); max-width: 16.25rem; padding: var(--s1) var(--s2); border: 1px solid var(--stempel); border-radius: var(--r1); background: color-mix(in srgb, var(--stempel) 7%, var(--papier)); pointer-events: none; transform-origin: -30px 50%; opacity: 0; }
-.st-etikett[hidden], .st-spur__signal[hidden] { display: none; }
-.st-etikett::before { content: ""; position: absolute; right: 100%; top: 50%; width: 30px; height: 1px; background: var(--stempel); }
-.st-etikett__kopf, .st-etikett__fuss { font-family: var(--mono); font-size: .75rem; line-height: 1.6; letter-spacing: .06em; text-transform: uppercase; color: var(--matt); white-space: nowrap; }
-.st-etikett__wert { font-family: var(--serif-display); font-size: clamp(1.25rem, 1.8vw, 1.625rem); font-weight: 500; line-height: 1.1; letter-spacing: -.02em; color: var(--stempel); overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
-.st-etikett.is-hung { animation: st-etikett-schwingen 900ms cubic-bezier(.3, .7, .3, 1) both; }
-.st-etikett--unten { transform-origin: calc(100% - 28px) -26px; }
-.st-etikett--unten::before { right: 28px; top: auto; bottom: 100%; width: 1px; height: 26px; }
-@keyframes st-etikett-schwingen { from { opacity: 0; transform: rotate(-24deg) translateY(-6px); } 35% { opacity: 1; transform: rotate(7deg); } 60% { transform: rotate(-3deg); } 80% { transform: rotate(1.5deg); } to { opacity: 1; transform: rotate(-1deg); } }
-
-.st-spur { margin-top: var(--s4); padding-top: var(--s2); border-top: 1px solid var(--haar); }
-.st .st-spur .st-protokoll__kopf { padding-bottom: 0; border: 0; letter-spacing: .06em; }
-.st .st-spur .st-protokoll__status::before { animation: none; border-radius: 50%; }
-.st-spur__bahn { position: relative; margin-top: var(--s4); }
-.st-spur__linie { position: absolute; left: 5.5px; top: 5.5px; height: 1px; width: calc(500% / 6); background: var(--haar); }
-.st-spur__linie i { display: block; width: 100%; height: 2px; margin-top: -.5px; background: var(--stempel); transform-origin: left; transform: scaleX(0); }
-.st-spur__stationen { position: relative; display: grid; grid-template-columns: repeat(6, minmax(0, 1fr)); list-style: none; margin: 0; padding: 0; }
-.st-spur__station { min-width: 0; padding-right: var(--s1); }
-.st-spur__station a { display: grid; grid-template-columns: auto minmax(0, 1fr); column-gap: var(--s0); row-gap: var(--s1); align-items: baseline; text-decoration: none; min-height: 44px; }
-.st-spur__punkt { grid-column: 1 / -1; width: 11px; height: 11px; border-radius: 50%; background: var(--papier); border: 1px solid var(--matt); }
-.st-spur__nr { font-family: var(--mono); font-size: .75rem; color: var(--matt); }
-.st-spur__name { font-family: var(--serif-display); font-size: clamp(1.0625rem, 1.4vw, 1.25rem); font-weight: 500; letter-spacing: -.02em; color: var(--tinte); }
-.st-spur__wert { display: block; margin-top: var(--s0); font-family: var(--mono); font-size: .84rem; line-height: 1.4; color: var(--tinte); overflow-wrap: anywhere; font-variant-numeric: tabular-nums; min-height: 1.4em; }
-.st-spur__wert[data-st-wert="herkunft"] { max-width: 100%; overflow: hidden; white-space: nowrap; text-overflow: ellipsis; }
-.st-spur__wert.st-messwert { color: var(--stempel); }
-.st-spur__einheit { display: block; margin-top: .15rem; font-family: var(--mono); font-size: .75rem; text-transform: uppercase; color: var(--matt); }
-/* Einordnung des Messwerts: Googles Schwelle fuer eine gute LCP. Die Zeile
-   steht von Anfang an im Fluss und wird erst neben einer echten LCP
-   sichtbar; ein spaetes Einblenden wuerde die Spur verschieben. */
-.st-spur__grenze { display: block; margin-top: .15rem; font-family: var(--mono); font-size: .75rem; text-transform: uppercase; color: var(--matt); }
-[data-st-lcp-grenze]:not([data-st-an]) { visibility: hidden; }
-.st-spur__station.is-reached .st-spur__punkt { background: var(--stempel); border-color: var(--stempel); }
-.st-spur__station--spaeter a { opacity: .65; transition: opacity var(--t-norm) var(--ease-aus); }
-.st .st-spur__klammer { position: relative; margin: var(--s2) 0 0 50%; padding-top: var(--s1); border-top: 1px dashed var(--haar); max-width: 46ch; font-size: .82rem; line-height: 1.5; color: var(--grau); }
-.st-spur__klammer::before, .st-spur__klammer::after { content: ""; position: absolute; top: -6px; width: 1px; height: 6px; background: var(--haar); }
-.st-spur__klammer::before { left: 0; }
-.st-spur__klammer::after { right: 0; }
-.st-spur__signal { position: absolute; left: 0; top: 0; width: 13px; height: 13px; border-radius: 50%; background: var(--stempel); box-shadow: 0 0 0 4px color-mix(in srgb, var(--stempel) 18%, transparent), 0 0 22px 2px color-mix(in srgb, var(--stempel) 55%, transparent); z-index: 2; opacity: 0; pointer-events: none; }
-.st-spur__signal.is-visible { opacity: 1; transition: opacity 250ms var(--ease-aus); }
-.st-spur__signal::after { content: ""; position: absolute; inset: -1px; border-radius: 50%; border: 1px solid var(--stempel); opacity: 0; }
-.st-spur__signal.is-pulsing::after { animation: st-signal-ring 1200ms var(--ease-weich) 3; }
-@keyframes st-signal-ring { from { opacity: .9; transform: scale(1); } to { opacity: 0; transform: scale(3.4); } }
-.st-spur__hier { position: absolute; left: 50%; bottom: calc(100% + 12px); transform: translate(-50%, 4px); font-family: var(--mono); font-size: .75rem; letter-spacing: .08em; text-transform: uppercase; color: var(--stempel); white-space: nowrap; opacity: 0; transition: opacity 250ms var(--ease-aus), transform 300ms var(--ease-weich); }
-.st-spur__hier::after { content: ""; position: absolute; left: 50%; top: calc(100% + 3px); width: 1px; height: 6px; background: var(--stempel); }
-.st-spur__signal.is-here .st-spur__hier { opacity: 1; transform: translate(-50%, 0); }
-.st-spur__messung { display: flex; flex-wrap: wrap; gap: var(--s0) var(--s4); margin: var(--s3) 0 0; }
-.st-spur__messung > div { display: flex; gap: var(--s1); align-items: baseline; }
-.st-spur__messung dt { font-family: var(--mono); font-size: .75rem; letter-spacing: .06em; text-transform: uppercase; color: var(--matt); }
-.st-spur__messung dd { margin: 0; font-family: var(--mono); font-size: .875rem; font-variant-numeric: tabular-nums; }
-.st .st-spur__fuss { margin-top: var(--s1); max-width: 80ch; font-size: .82rem; line-height: 1.5; color: var(--grau); }
-.st .st-spur__fuss a { color: var(--tinte); white-space: nowrap; text-decoration: underline; text-underline-offset: .2em; }
-@media (hover: hover) and (pointer: fine) {
-  .st-spur__station a:hover .st-spur__name { color: var(--stempel); }
-  .st-spur__station--spaeter a:hover, .st-spur__station--spaeter a:focus-visible { opacity: 1; }
-}
 @media (min-width: 768px) {
   .st[data-st-final] .st-hero--messflaeche .st-belege { grid-template-columns: repeat(2, minmax(0, 1fr)); }
   .st[data-st-final] .st-hero--messflaeche .st-belege a { grid-template-columns: minmax(0, 1fr); }
@@ -1454,42 +1388,22 @@
 }
 @media (max-width: 767px) {
   .st[data-st-final] .st-hero--messflaeche .st-hero__h1 { font-size: clamp(2.5rem, 10.5vw, 3.625rem); font-size: clamp(2.5rem, 11.6cqi, 3.625rem); }
-  /* Erster Screen: Der Absatz folgt der H1 mit hoechstens --s2 Abstand. Das
-     Herkunftsetikett stand bisher im Fluss dazwischen (rund 145 px) und
-     rueckt jetzt hinter die Hauptaktion, direkt vor das Protokoll. Dafuer
-     gibt .st-hero__titel seine Box ab; die H1 misst ihre Schrift ohne
-     Container in vw. */
+  /* Erster Screen: Der Absatz folgt der H1 mit hoechstens --s2 Abstand.
+     Dafuer gibt .st-hero__titel seine Box ab; die H1 misst ihre Schrift
+     ohne Container in vw. */
   .st[data-st-final] .st-hero--messflaeche .st-inhalt { display: flex; flex-direction: column; }
   .st[data-st-final] .st-hero--messflaeche .st-hero__titel { display: contents; }
   .st[data-st-final] .st-hero--messflaeche .st-hero__h1 { order: 1; font-size: clamp(2.5rem, 10.5vw, 3.625rem); }
   .st[data-st-final] .st-hero--messflaeche .st-hero__unten { order: 2; margin-top: var(--s2); }
-  .st[data-st-final] .st-hero--messflaeche .st-etikett { order: 3; align-self: flex-start; }
-  .st[data-st-final] .st-hero--messflaeche .st-inhalt > .st-spur,
   .st[data-st-final] .st-hero--messflaeche .st-inhalt > .st-hero__meta,
   .st[data-st-final] .st-hero--messflaeche .st-inhalt > .st-belege { order: 4; }
-  .st-etikett { position: relative; left: auto !important; top: auto !important; margin-top: var(--s3); transform-origin: 30px 0; }
-  .st-etikett::before { display: none; }
-  .st-spur__bahn { margin-top: var(--s2); }
-  .st-spur__linie { width: 1px; height: calc(100% - 64px); }
-  .st-spur__linie i { width: 2px; height: 100%; margin: 0 0 0 -.5px; transform-origin: top; transform: scaleY(0); }
-  .st-spur__stationen { grid-template-columns: minmax(0, 1fr); }
-  .st-spur__station { padding: 0 0 var(--s2); }
-  .st-spur__station a { grid-template-columns: 11px auto minmax(0, 1fr); column-gap: var(--s1); min-height: 44px; }
-  .st-spur__punkt { grid-column: auto; align-self: center; }
-  .st-spur__wert, .st-spur__einheit, .st-spur__grenze { margin-left: calc(11px + var(--s1)); }
-  .st .st-spur__klammer { margin: var(--s0) 0 0 calc(11px + var(--s1)); }
-  .st-spur__hier { display: none; }
 }
 @media (prefers-reduced-motion: reduce) {
   .st .st-messflaeche .st-messwort { transform: none !important; transition: none !important; }
-  .st-etikett.is-hung { animation: none; opacity: 1; transform: none; }
-  .st-quelle__fuell, .st-spur__signal, .st-spur__hier, .st-spur__station--spaeter a { transition: none !important; }
-  .st-spur__signal.is-pulsing::after { animation: none; }
 }
 @media print {
-  .st .st-messflaeche::after, .st-etikett, .st-spur__signal { display: none; }
+  .st .st-messflaeche::after { display: none; }
   .st .st-messflaeche .st-messwort { transform: none !important; }
-  [data-st-hero-bereit] .st-quelle__kontur { color: var(--tinte); -webkit-text-stroke: 0; }
 }
 
 /* Ersteinschaetzung als URL-Feld (Erstcheck-Tafel und Abschlusskarte).
@@ -1537,6 +1451,10 @@
 .st-livegang__nr { font-family: var(--mono); font-size: .75rem; letter-spacing: 0; color: var(--matt); }
 .st .st-livegang__wert { margin: var(--s1) 0 0; font-family: var(--mono); font-size: .84rem; line-height: 1.4; color: var(--tinte); font-variant-numeric: tabular-nums; overflow-wrap: anywhere; }
 .st .st-livegang__wert.st-messwert { color: var(--stempel); white-space: normal; }
+/* Einordnung des Messwerts: Googles Schwelle fuer eine gute LCP. Die Zeile
+   steht von Anfang an im Fluss und wird erst neben einer echten LCP
+   sichtbar; ein spaetes Einblenden wuerde den Block verschieben. */
+[data-st-lcp-grenze]:not([data-st-an]) { visibility: hidden; }
 .st-livegang__einheit { display: block; margin-top: .15rem; font-family: var(--mono); font-size: .75rem; text-transform: uppercase; color: var(--matt); }
 .st .st-livegang__notiz { margin: var(--s0) 0 0; font-size: .82rem; line-height: 1.45; color: var(--grau); }
 .st .st-livegang__station .st-link { display: inline-block; margin-top: var(--s1); padding-block: var(--s0); font-size: .84rem; }

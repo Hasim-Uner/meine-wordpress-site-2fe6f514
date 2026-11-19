@@ -509,31 +509,39 @@ for (const [focus, label, help, submitLabel, focusLabel] of [
 
 }
 
-test('landingpage can also be chosen in the unscoped project intake', async ({ page }) => {
-  await page.route('**/*', route => route.fulfill({ contentType: 'text/html', body: contactHtml('project') }));
+test('unscoped project intake offers six Vorhaben and switches their copy', async ({ page }) => {
+  await page.route('**/*', route => route.fulfill({ contentType: 'text/html; charset=utf-8', body: contactHtml('project') }));
   await page.goto('https://example.test/kontakt/?type=project');
   await page.evaluate(() => { window.NexusContactConfig = { restEndpoint: '/wp-json/nexus/v1/contact-request' }; });
   for (const file of ['nexus-core.js', 'contact.js']) await page.addScriptTag({ path: js(file) });
-  await page.selectOption('[name="focus"]', 'landingpage');
+  expect(await page.locator('[name="focus"] option:not([value=""])').evaluateAll(els => els.map(el => [el.value, el.textContent]))).toEqual([
+    ['website', 'Website oder Relaunch'],
+    ['landingpage_anfragestrecke', 'Landingpage oder Anfragestrecke'],
+    ['tracking', 'Tracking und Messung'],
+    ['implementation_scope', 'Bestehende Website übernehmen, warten, weiterentwickeln'],
+    ['energy', 'Anfragesystem Solar und Wärmepumpe'],
+    ['analyse_sonstiges', 'Analyse oder etwas anderes'],
+  ]);
+  await page.selectOption('[name="focus"]', 'website');
   await expect(page.locator('[name="message"]')).toBeVisible();
-  await expect(page.locator('[data-contact-message-label]')).toHaveText('Angebot, Besucherquelle und Termin');
+  await expect(page.locator('[data-contact-message-label]')).toHaveText('Ihr Angebot und gewünschter Starttermin');
   await page.locator('[name="message"]').fill('Eine Landingpage für unsere Beratung, Besucher aus Google Ads.');
   await page.locator('[data-contact-next]').click();
-  await expect(page.locator('[data-contact-submit]')).toHaveText('Landingpage anfragen');
-  // Returning to the topic must replace the original product's copy and label.
+  await expect(page.locator('[data-contact-submit]')).toHaveText('Website-Projekt anfragen');
+  // Returning to the topic must replace the previous option's copy and label.
   for (const [focus, label, submitLabel] of [
+    ['landingpage_anfragestrecke', 'Kurzbeschreibung', 'Projekt anfragen'],
     ['tracking', 'Website, Messziel und aktuelles Setup', 'Tracking anfragen'],
-    ['takeover', 'Website und Anlass der Übernahme', 'Übernahme-Check anfragen'],
-    ['seo', 'Website, betroffene Seiten und beobachtetes Problem', 'SEO-Projekt anfragen'],
-    ['website', 'Ihr Angebot und gewünschter Starttermin', 'Website-Projekt anfragen'],
-    ['conversion', 'Kurzbeschreibung', 'Projekt anfragen'],
+    ['implementation_scope', 'Kurzbeschreibung', 'Projekt anfragen'],
+    ['energy', 'Zielgebiet, Anfragequellen und Start', 'Anfragesystem anfragen'],
+    ['analyse_sonstiges', 'Kurzbeschreibung', 'Projekt anfragen'],
   ]) {
     await page.locator('[data-contact-prev]').click();
     await page.locator('[data-contact-prev]').click();
     await page.selectOption('[name="focus"]', focus);
     await expect(page.locator('[name="message"]')).toBeVisible();
     await expect(page.locator('[data-contact-message-label]')).toHaveText(label);
-    if (focus !== 'takeover') await expect(page.locator('[data-contact-message-help]')).not.toContainText('Der Check kostet');
+    await expect(page.locator('[data-contact-message-help]')).not.toContainText('Der Check kostet');
     await expect(page.locator('[name="message"]')).toHaveValue('Eine Landingpage für unsere Beratung, Besucher aus Google Ads.');
     await page.locator('[data-contact-next]').click();
     await expect(page.locator('[data-contact-submit]')).toHaveText(submitLabel);

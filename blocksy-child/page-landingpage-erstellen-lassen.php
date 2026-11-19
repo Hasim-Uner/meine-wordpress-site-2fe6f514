@@ -85,6 +85,7 @@ $response_window = hu_response_promise( 'window' );
 $tracking_offer  = hu_tracking_product_ladder()['measurement'];
 $tracking_price  = $fest( $tracking_offer['price'] );
 $website_price   = $fest( hu_freelancer_website_price() );
+// Der Kanontext endet schon auf "netto"; kein zweites Suffix anhaengen.
 $retainer        = $fest( hu_freelancer_retainer_display() );
 
 $e3_canon   = hu_e3_canon();
@@ -287,7 +288,7 @@ get_header();
 					</details>
 					<details class="lp-details">
 						<summary>Nach dem Livegang weiterentwickeln</summary>
-						<p><?php echo esc_html( sprintf( 'Optionales Monatskontingent: %s netto, monatlich kündbar.', $retainer ) ); ?> Eine Voraussetzung für die Landingpage ist es nicht.</p>
+						<p><?php echo esc_html( sprintf( 'Optionales Monatskontingent: %s, monatlich kündbar.', $retainer ) ); ?> Eine Voraussetzung für die Landingpage ist es nicht.</p>
 					</details>
 				</div>
 			</div>

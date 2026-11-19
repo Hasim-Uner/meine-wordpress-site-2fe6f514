@@ -426,6 +426,21 @@ run_case( 'energy configuration validates all combinations and invalid inputs', 
 	check( ! is_wp_error( nexus_validate_contact_request_payload( array_merge( $contact, [ 'focus' => 'sofortkontakt' ] ) ) ), 'Sofortkontakt route is accepted' );
 } );
 
+run_case( 'six project Vorhaben cover every focus key and validate', static function () use ( $contact ) {
+	$groups  = nexus_get_contact_project_focus_groups();
+	$options = nexus_get_contact_focus_options( true );
+	check( 6 === count( $groups ), 'Project intake shows six Vorhaben' );
+	$members = array_merge( ...array_values( $groups ) );
+	check( count( $members ) === count( array_unique( $members ) ), 'Every focus key belongs to exactly one Vorhaben' );
+	$expected = array_diff( array_keys( $options ), [ hu_first_assessment_key() ] );
+	check( [] === array_diff( $expected, $members ) && [] === array_diff( $members, array_keys( $options ) ), 'Groups cover all registered focus keys' );
+	foreach ( array_keys( $groups ) as $group ) {
+		$v = nexus_validate_contact_request_payload( array_merge( $contact, [ 'focus' => $group ] ) );
+		check( ! is_wp_error( $v ) && $options[ $group ]['label'] === $v['focus_label'], 'Vorhaben ' . $group . ' validates as project with its visible label' );
+	}
+	check( 'landingpage_anfragestrecke' === nexus_get_contact_project_focus_group( 'anfragestrecke' ) && 'analyse_sonstiges' === nexus_get_contact_project_focus_group( 'seo' ), 'Earlier focus keys map to their Vorhaben' );
+} );
+
 run_case( 'website scope reaches actual endpoint, both mails and CRM', static function () use ( $contact ) {
 	// Legacy links without page-type counters remain valid: extras become standard pages.
 	$p = array_merge( $contact, [ 'focus' => 'website', 'seiten' => '5', 'art' => 'relaunch', 'tracking' => '1', 'website_price' => 1, 'website_weeks' => 1, 'website_days' => 1, 'website_calc_version' => 'forged' ] );

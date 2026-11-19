@@ -332,6 +332,10 @@ function nexus_get_contact_request_type_labels( $include_inactive = false ) {
  * @return array<string, array<string, mixed>>
  */
 function nexus_get_contact_focus_options( $include_inactive = false ) {
+	// Alle Schluessel bleiben gueltig (alte Links, zwischengespeicherte
+	// Formulare). Die Labels der sechs Gruppen-Schluessel aus
+	// nexus_get_contact_project_focus_groups() sind die sichtbaren Vorhaben;
+	// Mail, CRM und Aktivitaet tragen denselben Text.
 	$options = [
 		'audit_scope'      => [
 			'label' => 'Marktcheck / Erstdiagnose',
@@ -342,7 +346,7 @@ function nexus_get_contact_focus_options( $include_inactive = false ) {
 			'types' => [ 'analysis', 'project' ],
 		],
 		'implementation_scope' => [
-			'label' => 'Bestehende Website weiterentwickeln',
+			'label' => 'Bestehende Website übernehmen, warten, weiterentwickeln',
 			'types' => [ 'implementation', 'project' ],
 		],
 		'takeover' => [
@@ -382,7 +386,15 @@ function nexus_get_contact_focus_options( $include_inactive = false ) {
 			'types' => [ 'project' ],
 		],
 		'website' => [
-			'label' => 'Die Anfrage-Website · Neubau oder Relaunch',
+			'label' => 'Website oder Relaunch',
+			'types' => [ 'project' ],
+		],
+		'landingpage_anfragestrecke' => [
+			'label' => 'Landingpage oder Anfragestrecke',
+			'types' => [ 'project' ],
+		],
+		'analyse_sonstiges' => [
+			'label' => 'Analyse oder etwas anderes',
 			'types' => [ 'project' ],
 		],
 		'anfragestrecke' => [
@@ -390,7 +402,7 @@ function nexus_get_contact_focus_options( $include_inactive = false ) {
 			'types' => [ 'project' ],
 		],
 		'energy' => [
-			'label' => 'Anfragesystem für Solar und Wärmepumpe',
+			'label' => 'Anfragesystem Solar und Wärmepumpe',
 			'types' => [ 'project' ],
 		],
 		'sofortkontakt' => [
@@ -429,6 +441,45 @@ function nexus_get_contact_focus_options( $include_inactive = false ) {
 	}
 
 	return $options;
+}
+
+/**
+ * Die sechs sichtbaren Vorhaben der Projektanfrage (seit 19.11.2026).
+ *
+ * Schluessel ist der Fokus, den die Option sendet, wenn sie in der Liste
+ * gewaehlt wird; sein Label in nexus_get_contact_focus_options() ist der
+ * sichtbare Text. `members` sind alle frueheren Fokus-Schluessel, die diese
+ * Option vorauswaehlen (?focus=…). Jeder Schluessel aus
+ * nexus_get_contact_focus_options() steht in genau einer Gruppe, die
+ * Ersteinschaetzung ausgenommen (eigener Typ, eigenes Formular).
+ *
+ * @return array<string, string[]> Gruppen-Schluessel => Mitglieder.
+ */
+function nexus_get_contact_project_focus_groups() {
+	return [
+		'website'                    => [ 'website', 'relaunch' ],
+		'landingpage_anfragestrecke' => [ 'landingpage_anfragestrecke', 'landingpage', 'anfragestrecke' ],
+		'tracking'                   => [ 'tracking' ],
+		'implementation_scope'       => [ 'implementation_scope', 'takeover', 'wartung', 'ongoing_scope', 'support', 'existing_client' ],
+		'energy'                     => [ 'energy', 'sofortkontakt' ],
+		'analyse_sonstiges'          => [ 'analyse_sonstiges', 'followup_scope', 'conversion', 'seo', 'performance', 'website_strategy', 'audit_scope', 'question', 'cooperation' ],
+	];
+}
+
+/**
+ * Gruppe eines Fokus-Schluessels in der Projektanfrage.
+ *
+ * @param string $focus Fokus-Schluessel, auch ein frueherer.
+ * @return string Gruppen-Schluessel oder '' fuer unbekannt.
+ */
+function nexus_get_contact_project_focus_group( $focus ) {
+	foreach ( nexus_get_contact_project_focus_groups() as $group => $members ) {
+		if ( in_array( (string) $focus, $members, true ) ) {
+			return $group;
+		}
+	}
+
+	return '';
 }
 
 /**

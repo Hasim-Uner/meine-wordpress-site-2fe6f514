@@ -25,19 +25,25 @@ $contact_email        = function_exists( 'hu_get_contact_email' ) ? hu_get_conta
 $response_window      = function_exists( 'hu_response_promise' ) ? hu_response_promise( 'window' ) : 'zeitnah';
 $requested_focus      = isset( $_GET['focus'] ) ? sanitize_key( wp_unslash( $_GET['focus'] ) ) : '';
 $requested_type       = isset( $_GET['type'] ) ? sanitize_key( wp_unslash( $_GET['type'] ) ) : '';
-$selected_type        = isset( $request_type_options[ $requested_type ] ) ? $requested_type : 'project';
 
-// Alte ?focus=-Deep-Links bleiben funktionsfähig. Ohne expliziten Typ wird
-// aus dem Fokus ein kompatibler Backend-Typ abgeleitet; sichtbar bleibt nur
-// die eigentliche Themenwahl.
+// Sichtbar sind drei Formulare: Projektanfrage, Website-Analyse
+// (?type=analysis, Conversion-Analyse) und die Ersteinschaetzung. Fruehere
+// Typen aus alten Links (audit, implementation, ongoing, general, client)
+// fuehren seit dem 19.11.2026 in die Projektanfrage; der Server nimmt sie
+// fuer zwischengespeicherte Formulare weiter an.
+$public_request_types = array_merge( [ 'project', 'analysis' ], function_exists( 'hu_first_assessment_key' ) ? [ hu_first_assessment_key() ] : [] );
+if ( isset( $request_type_options[ $requested_type ] ) && ! in_array( $requested_type, $public_request_types, true ) ) {
+	$requested_type = 'project';
+}
+$selected_type = isset( $request_type_options[ $requested_type ] ) ? $requested_type : 'project';
+
+// Alte ?focus=-Deep-Links bleiben funktionsfähig. Ohne expliziten Typ bleibt
+// es bei der Projektanfrage; nur die Ersteinschätzung (Schalter im Kanon) hat
+// ein Thema, das ausschließlich ihren eigenen Typ zulässt.
 if ( '' === $requested_type && isset( $focus_options[ $requested_focus ] ) ) {
 	$focus_types = isset( $focus_options[ $requested_focus ]['types'] ) ? (array) $focus_options[ $requested_focus ]['types'] : [];
 	if ( ! in_array( $selected_type, $focus_types, true ) ) {
-		// Nach der festen Reihenfolge jeder weitere registrierte Typ: die
-		// Ersteinschätzung (Schalter im Kanon) hat ein Thema, das nur ihren
-		// eigenen Typ zulässt. Ohne sie ist die Liste dieselbe wie vorher.
-		$candidate_types = array_unique( array_merge( [ 'project', 'implementation', 'ongoing', 'general', 'analysis', 'audit', 'client' ], array_keys( $request_type_options ) ) );
-		foreach ( $candidate_types as $candidate_type ) {
+		foreach ( $public_request_types as $candidate_type ) {
 			if ( isset( $request_type_options[ $candidate_type ] ) && in_array( $candidate_type, $focus_types, true ) ) {
 				$selected_type = $candidate_type;
 				break;
@@ -46,25 +52,41 @@ if ( '' === $requested_type && isset( $focus_options[ $requested_focus ] ) ) {
 	}
 }
 
-$public_focus_options = array_filter(
-	$focus_options,
-	static function ( $focus_definition ) use ( $selected_type ) {
-		$focus_types = isset( $focus_definition['types'] ) ? (array) $focus_definition['types'] : [];
-		return in_array( $selected_type, $focus_types, true );
-	}
-);
-
-// Bei Projektanfragen stehen die häufigsten Vorhaben oben; die Schlüssel
-// bleiben unverändert, nur die Reihenfolge der Auswahl ändert sich.
+$selected_focus = '';
 if ( 'project' === $selected_type ) {
-	$project_focus_order  = [ 'website', 'landingpage', 'anfragestrecke', 'relaunch', 'takeover', 'wartung', 'implementation_scope', 'conversion', 'tracking', 'seo', 'performance', 'website_strategy', 'followup_scope' ];
-	$public_focus_options = array_merge(
-		array_intersect_key( array_flip( $project_focus_order ), $public_focus_options ),
-		$public_focus_options
+	// Sechs Vorhaben statt einzelner Themen (nexus_get_contact_project_focus_groups()).
+	// Ein früherer ?focus=-Schlüssel wählt seine Gruppe vor. Gilt er für
+	// Projekte, sendet die Option weiter genau diesen Schlüssel: Texte,
+	// Website-/Solar-Umfang, Mail- und CRM-Label bleiben wie bisher. Sonst
+	// sendet sie den Schlüssel der Gruppe.
+	$public_focus_options = [];
+	foreach ( nexus_get_contact_project_focus_groups() as $group_key => $group_members ) {
+		if ( ! isset( $focus_options[ $group_key ] ) ) {
+			continue;
+		}
+		$option_key   = $group_key;
+		$is_requested = in_array( $requested_focus, $group_members, true );
+		if ( $is_requested && isset( $focus_options[ $requested_focus ] ) && in_array( 'project', (array) $focus_options[ $requested_focus ]['types'], true ) ) {
+			$option_key = $requested_focus;
+		}
+		$public_focus_options[ $option_key ] = [
+			'label' => $focus_options[ $group_key ]['label'],
+			'types' => (array) $focus_options[ $option_key ]['types'],
+		];
+		if ( $is_requested ) {
+			$selected_focus = $option_key;
+		}
+	}
+} else {
+	$public_focus_options = array_filter(
+		$focus_options,
+		static function ( $focus_definition ) use ( $selected_type ) {
+			$focus_types = isset( $focus_definition['types'] ) ? (array) $focus_definition['types'] : [];
+			return in_array( $selected_type, $focus_types, true );
+		}
 	);
+	$selected_focus = isset( $public_focus_options[ $requested_focus ] ) ? $requested_focus : '';
 }
-
-$selected_focus = isset( $public_focus_options[ $requested_focus ] ) ? $requested_focus : '';
 
 $hero_titles = [
 	'audit'          => 'Was soll zuerst fachlich geprüft werden?',
