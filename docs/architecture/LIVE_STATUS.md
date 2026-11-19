@@ -339,6 +339,21 @@ Projektabschluss und ruhiger Agentur-Zweitweg, zentrale Metadaten und
   Schichtenfolge am 2026-10-09 umgesetzt und auf der normalen Live-URL geprüft.
   Title „WordPress Freelancer Hannover: Websites & Tracking | Haşim Üner“,
   Query-Owner für `wordpress freelancer` und `wordpress freelancer hannover`.
+  **Stand 2026-11-19 (Entschlackung, ersetzt die älteren Angaben unten, wo sie
+  widersprechen):** Das Besuchsprotokoll im Hero (Herkunft, LCP, Klick,
+  Abschnitte, Scrolltiefe, Etikett „Ihr Besuch kam über“, Signal,
+  `home_hero_station`, `home_protocol_privacy`) und seine FAQ sind entfallen;
+  an seiner Stelle steht das Portrait (480×600, `fetchpriority="high"`, ohne
+  Lazy-Load), das bisher im Abschluss stand. Direkt unter den Hero-Aktionen
+  stehen die drei Sonderwege Wartung, Agenturen, Solar & Wärmepumpe
+  (`home_door_*`, Sektion `hero`); der Block „Drei Fälle mit eigenem Weg“
+  (`#eignung`) entfällt. Preise: Neubau bleibt drei Karten, „Ihre Website steht
+  schon“ ist eine Liste mit fünf Zeilen (Conversion-Analyse, Conversion-Tracking,
+  Übernahme-Check, Weiterentwicklung, SEO-Befund; Name · Kanonpreis ·
+  Unterseite). Fall: primär Marktcheck (`home_work_marktcheck`), sekundär
+  Anfragestrecke für andere Branchen. Vier FAQ. `startseite-strecke.js` misst
+  nur noch die Ladezeit für Station „Seite“ und Prüfstand; White-Label nutzt
+  dasselbe Skript unverändert (Linie, Ende-Zeit).
   Die bestehende Strecke (`assets/css/startseite-strecke.css/.js`) hat acht
   Abschnitte: Klick, Angebote (`#angebote`, mit Preisen), Strecke, Fall,
   Übergabe, Prüfstand, Fragen, Anfrage (Reihenfolge seit 2026-10-30).
@@ -425,6 +440,11 @@ Projektabschluss und ruhiger Agentur-Zweitweg, zentrale Metadaten und
   unverändert per 301 hierher. Beobachtung nach sechs Wochen ab Livegang:
   Fall-CTA gegen Hero-CTA und Qualität der Einsendungen, siehe Experiment-Doku.
 - **`/kontakt/`** (`page-kontakt.php`): Anfrage-Intake, siehe „Anfragewege“.
+  Seit 2026-11-19 sechs Vorhaben statt fünfzehn; alte `?focus=`/`?type=`-Links
+  wählen die passende Option vor (Mapping in `CONVERSION_ROUTING.md`, „Kontakt:
+  sechs Vorhaben“). Fallstudie: Messgerät führt primär zum Marktcheck,
+  sekundär zur Anfragestrecke; CRM-Preis ohne „wie in diesem Fall“.
+  Website- und Landingpage-Seite zeigen im Fußregister keinen Agenturweg.
   Vorausgewählte Kontaktvarianten skalieren ihre H1 in der schmalen
   Einleitungsspalte kleiner und nutzen die verfügbare Breite. Der Titel
   passt bei normaler Schriftgröße mit ganzen Wörtern in die Spalte.

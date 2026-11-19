@@ -3,14 +3,15 @@
  * Homepage: canonical WordPress Freelancer money page.
  *
  * Die Seite ist die Strecke, die sie verkauft: Eine Messlinie laeuft in der
- * Randspalte vom Hero bis zum Anfrageblock und fuellt sich beim Lesen. Oben
- * protokolliert die Hero-Strecke diesen Besuch mit Werten, die der Browser selbst
- * misst; startseite-strecke.js sendet und speichert davon nichts (erzwungen
- * ueber scripts/canon-forbidden-values.txt, Regel strecke-js-privat).
+ * Randspalte vom Hero bis zum Anfrageblock und fuellt sich beim Lesen.
+ * startseite-strecke.js sendet und speichert nichts (erzwungen ueber
+ * scripts/canon-forbidden-values.txt, Regel strecke-js-privat). Das
+ * Besuchsprotokoll im Hero ist seit dem 19.11.2026 entfallen; an seiner
+ * Stelle steht das Portrait.
  *
- * Ohne JavaScript steht alles: Linie statisch, Stationen nativ bedienbar, das
- * Protokoll sagt, dass es leer bleibt. Balken wachsen beim Sichtkontakt;
- * bei reduzierter Bewegung folgt nur die Linie dem Scrollstand.
+ * Ohne JavaScript steht alles: Linie statisch, Stationen nativ bedienbar.
+ * Balken wachsen beim Sichtkontakt; bei reduzierter Bewegung folgt nur die
+ * Linie dem Scrollstand.
  *
  * Fakten (Preise, Antwortzeit, Kontakt, Fallzahlen, Referenzen) kommen aus
  * inc/canon/. Hier steht keine Zahl als Text.
@@ -30,7 +31,6 @@ $website_url    = $routes['website'];
 $landing_url    = $routes['landingpage'];
 $conversion_url = $routes['conversion'];
 $about_url      = $routes['about'];
-$privacy_url    = home_url( '/datenschutz/#privacy-cookies' );
 $github_url     = 'https://github.com/Hasim-Uner/meine-wordpress-site-2fe6f514';
 $psi_url        = 'https://pagespeed.web.dev/analysis?url=' . rawurlencode( home_url( '/' ) );
 $img_uri        = get_stylesheet_directory_uri() . '/assets/img/';
@@ -52,7 +52,6 @@ $strecke_price  = $fest( hu_anfragestrecke_price() );
 $strecke_crm    = $fest( hu_anfragestrecke_price( true ) );
 $seo_price      = $fest( hu_seo_finding_price() );
 $analysis_price = $fest( hu_analysis_price() );
-$analysis_days  = (int) hu_diagnose_canon()['primary_days'];
 $retainer       = $fest( hu_freelancer_retainer_display() );
 
 $e3          = hu_e3_canon();
@@ -183,13 +182,13 @@ $stations = [
 ];
 
 /*
- * Sechs Leistungen mit Kanonpreis. Die ids sind die Anker der Angebote im
- * Service-Schema (inc/schema-positioning.php); scripts/lint-entity-crawler-signals.php
- * prueft, dass jeder Schema-Anker hier als 'id' => '…' steht.
+ * Neubau: drei Karten mit Kanonpreis. Die ids hier und in $offer_lines sind
+ * die Anker der Angebote im Service-Schema (inc/schema-positioning.php);
+ * scripts/lint-entity-crawler-signals.php prueft, dass jeder Schema-Anker
+ * hier als 'id' => '…' steht.
  *
  * 'detail' ist die Produktseite zur Vertiefung (Sub-CTA neben der Anfrage). Sie
- * traegt den Umfang; die Zeile bleibt kurz. Nur wo es keine Produktseite gibt
- * (Uebernahme-Check), nennt der Text den Umfang selbst.
+ * traegt den Umfang; die Zeile bleibt kurz.
  */
 $offers = [
 	[
@@ -234,58 +233,62 @@ $offers = [
 		'cta'     => 'Anfragestrecke anfragen',
 		'detail'  => [ 'url' => $e3_case_url, 'hook' => 'home_offer_anfragestrecke_case', 'label' => 'So sah das im dokumentierten Fall aus' ],
 	],
+];
+
+/*
+ * Bestand: eine kompakte Liste statt Karten (seit 19.11.2026). Je Leistung
+ * eine Zeile: Name, Kanonpreis, Link auf die Unterseite. Die Anker der
+ * frueheren Karten (Schema, Direktlinks) bleiben an ihren Zeilen; die
+ * Detail-Hooks bleiben, die Anfrage-Buttons der Karten entfallen.
+ * Das Monatskontingent hat keine eigene Seite: Es steht auf der
+ * Uebernahme-Seite im Umfang.
+ */
+$offer_lines = [
 	[
 		'id' => 'angebot-conversion',
-		'nr'      => '04',
-		'tags'    => 'Conversion-Optimierung · Anfragesystem-Analyse · B2B',
-		'title'   => 'Conversion-Analyse für B2B-Websites',
-		'price'   => $analysis_price,
-		'situation' => 'Besucher kommen, aber zu wenige passende Anfragen.',
-		'price_note' => sprintf( 'netto · Analyse · %d Werktage · bei Umsetzung angerechnet', $analysis_days ),
-		'text'    => 'Besucher kommen, aber zu wenige passende Anfragen? Die Analyse liefert einen schriftlichen Befund der Strecke vom Besuch bis zur Rückmeldung im Vertrieb. Umgesetzt wird danach nur, was im Befund steht, zu festen Preisen.',
-		'request' => hu_get_contact_intake_url( 'analysis', 'conversion' ),
-		'hook'    => 'home_offer_analysis',
-		'cta'     => 'Analyse anfragen',
-		'detail'  => [ 'url' => $conversion_url, 'hook' => 'home_offer_analysis_detail' ],
+		'name'  => 'Conversion-Analyse',
+		'price' => $analysis_price,
+		'url'   => $conversion_url,
+		'hook'  => 'home_offer_analysis_detail',
 	],
 	[
 		'id' => 'angebot-tracking',
-		'nr'      => '05',
-		'tags'    => 'GA4 · Google Tag Manager · Consent Mode · Server-Side · CRM',
-		'title'   => $tracking_offer['name'],
-		'price'   => $tracking_price,
-		'situation' => 'Anfragen kommen an, aber niemand weiß, woher.',
-		'price_note' => 'netto · Festpreis · ' . $tracking_offer['weeks'],
-		'text'    => 'Messplan, GA4, Google Tag Manager, Consent Mode und Google Ads. Jede Conversion mit Testfall und Abnahmeprotokoll. Gemessen wird im Browser, ohne eigenen Server.',
-		'request' => $project_link( 'tracking' ),
-		'hook'    => 'home_offer_tracking',
-		'cta'     => 'Tracking-Projekt anfragen',
-		'detail'  => [ 'url' => $tracking_url, 'hook' => 'home_offer_tracking_detail' ],
+		'name'  => $tracking_offer['name'],
+		'price' => $tracking_price,
+		'url'   => $tracking_url,
+		'hook'  => 'home_offer_tracking_detail',
 	],
 	[
 		'id' => 'angebot-weiterentwicklung',
-		'nr'      => '06',
-		'tags'    => 'Übernahme · Pflege · Weiterentwicklung',
-		'title'   => 'Bestehende Website übernehmen',
-		'price'   => $takeover_price,
-		'situation' => 'Ihre Website läuft, aber niemand kümmert sich mehr darum.',
-		'price_note' => 'netto · Übernahme-Check · bei Auftrag verrechnet',
-		'text'    => 'Ich prüfe Theme, Plugins, Updates, Backups, Zugänge und Ladezeit. Sie bekommen einen schriftlichen Befund mit Festpreis für den nächsten Schritt. Der Befund gehört Ihnen, auch wenn Sie mit jemand anderem weiterarbeiten.',
-		'request' => $project_link( 'takeover' ),
-		'hook'    => 'home_offer_takeover',
-		'cta'     => 'Übernahme-Check anfragen',
-		'detail'  => [ 'url' => $routes['takeover'], 'hook' => 'home_offer_takeover_detail' ],
+		'name'  => 'Übernahme-Check',
+		'price' => $takeover_price,
+		'url'   => $routes['takeover'],
+		'hook'  => 'home_offer_takeover_detail',
+	],
+	[
+		'id' => 'angebot-kontingent',
+		'name'  => 'Weiterentwicklung',
+		'price' => $retainer . ' im Monat',
+		'url'   => $routes['takeover'],
+		'hook'  => 'home_offer_retainer_more',
+	],
+	[
+		'id' => 'angebot-seo',
+		'name'  => 'SEO-Befund',
+		'price' => $seo_price,
+		'url'   => $routes['technical_seo'],
+		'hook'  => 'home_offer_technical_seo_detail',
 	],
 ];
 
 /*
- * Zwei Ausgangslagen statt einer flachen Liste: Wer neu baut, vergleicht
- * 01 bis 03; wessen Website schon steht, findet 04 bis 06. Reihenfolge,
- * Nummern, Anker und Hooks der Zeilen bleiben unveraendert.
+ * Drei Sonderwege direkt unter den Hero-Aktionen (frueher der Block
+ * "Drei Faelle mit eigenem Weg" in der Uebergabe). Ziele und Hooks wie dort.
  */
-$offer_groups = [
-	[ 'id' => 'angebote-neu', 'label' => 'Sie brauchen etwas Neues · Website, Landingpage, Anfragestrecke', 'items' => array_slice( $offers, 0, 3 ) ],
-	[ 'id' => 'angebote-bestand', 'label' => 'Ihre Website steht schon · prüfen, messen, übernehmen', 'items' => array_slice( $offers, 3 ) ],
+$special_ways = [
+	[ 'label' => 'WordPress-Wartung', 'url' => $routes['maintenance'], 'hook' => 'home_door_maintenance' ],
+	[ 'label' => 'Für Agenturen', 'url' => $whitelabel_url, 'hook' => 'home_door_whitelabel' ],
+	[ 'label' => 'Solar & Wärmepumpe', 'url' => $energy_url, 'hook' => 'home_door_energy' ],
 ];
 
 $handover = [
@@ -325,10 +328,6 @@ $faqs = [
 		'q' => 'Arbeiten Sie nur mit Unternehmen aus Hannover?',
 		'a' => 'Nein. Ich sitze in Pattensen bei Hannover und arbeite remote mit Unternehmen in Deutschland, Österreich und der Schweiz.',
 	],
-	[
-		'q' => 'Was misst das Protokoll oben auf dieser Seite?',
-		'a' => 'Ihr Browser liest, über welchen Weg Sie gekommen sind, misst die Ladezeit dieses Aufrufs, welche Abschnitte Sie erreicht haben, wie weit Sie gescrollt haben und ob Sie auf eine Anfrage geklickt haben. Die Werte bleiben in Ihrem Browser und verschwinden mit dem Tab. Gesendet oder gespeichert wird davon nichts. Die Website selbst zählt nur den Seitenaufruf, ohne Cookie.',
-	],
 ];
 
 /*
@@ -360,12 +359,7 @@ get_header();
 				<p class="st-klein-label st-hero__preis">Websites ab <?php echo esc_html( $website_price ); ?> netto</p>
 			</div>
 			<div class="st-hero__titel" data-st-titel>
-				<h1 class="st-hero__h1" id="st-h1"><span class="st-messzeile"><span class="st-messwort">Mehr Anfragen</span></span> <span class="st-messzeile"><span class="st-messwort">über Ihre Website.</span></span> <span class="st-messzeile st-leise"><span class="st-messwort">Und Sie sehen,</span></span> <span class="st-messzeile st-leise"><span class="st-messwort st-wort--quelle" data-st-wort-quelle><span class="st-quelle__kontur">was funktioniert.</span><span class="st-quelle__fuell" aria-hidden="true" data-text="was funktioniert."></span></span></span></h1>
-				<div class="st-etikett" data-st-etikett aria-hidden="true" hidden>
-					<span class="st-etikett__kopf">Ihr Besuch kam über</span>
-					<span class="st-etikett__wert" data-st-etikett-wert>…</span>
-					<span class="st-etikett__fuss" data-st-etikett-fuss>zugeordnet · ohne Cookie</span>
-				</div>
+				<h1 class="st-hero__h1" id="st-h1"><span class="st-messzeile"><span class="st-messwort">Mehr Anfragen</span></span> <span class="st-messzeile"><span class="st-messwort">über Ihre Website.</span></span> <span class="st-messzeile st-leise"><span class="st-messwort">Und Sie sehen,</span></span> <span class="st-messzeile st-leise"><span class="st-messwort">was funktioniert.</span></span></h1>
 			</div>
 			<div class="st-hero__unten">
 				<p class="st-hero__satz">Ich entwickle Ihre WordPress-Website und den Weg zur Anfrage. Tracking und CRM ergänzen wir, wenn Ihr Projekt sie braucht. Sie arbeiten direkt mit mir, bis zur Übergabe.</p>
@@ -374,39 +368,14 @@ get_header();
 						<a class="tun" href="<?php echo esc_url( $contact_url ); ?>" data-track-action="home_head_contact" data-track-category="lead_gen" data-track-section="hero">Projekt anfragen <span class="pf" aria-hidden="true">→</span></a>
 						<a class="st-link" href="#angebote" data-track-action="home_hero_prices" data-track-category="navigation" data-track-section="hero">Leistungsumfang &amp; Preise <span class="pf" aria-hidden="true">↓</span></a>
 					</div>
+					<p class="st-hero__wege"><?php foreach ( $special_ways as $way ) : ?><a class="st-link" href="<?php echo esc_url( $way['url'] ); ?>" data-track-action="<?php echo esc_attr( $way['hook'] ); ?>" data-track-category="navigation" data-track-section="hero"><?php echo esc_html( $way['label'] ); ?> <span aria-hidden="true">→</span></a><?php endforeach; ?></p>
 					<p class="st-hero__beleg"><a class="st-link" href="<?php echo esc_url( $e3_case_url ); ?>" data-track-action="home_hero_case_proof" data-track-category="proof" data-track-section="hero"><?php echo esc_html( $cpl_drop ); ?> Kosten pro Anfrage · dokumentierter B2B-Fall <span aria-hidden="true">→</span></a></p>
 				</div>
 			</div>
 
-			<div class="st-spur" id="protokoll" role="group" aria-labelledby="st-protokoll-titel" data-st-protokoll>
-				<p class="st-protokoll__kopf"><span id="st-protokoll-titel">Protokoll · Ihr Besuch</span><span class="st-protokoll__status" data-st-status hidden>läuft</span></p>
-				<div class="st-spur__bahn" data-st-bahn>
-					<div class="st-spur__linie" aria-hidden="true" data-st-spur-linie><i data-st-spur-fuell></i></div>
-					<span class="st-spur__signal" aria-hidden="true" data-st-signal hidden><span class="st-spur__hier">Sie sind hier</span></span>
-					<ol class="st-spur__stationen">
-						<?php foreach ( $stations as $i => $station ) : ?>
-							<li class="st-spur__station<?php echo $i > 2 ? ' st-spur__station--spaeter' : ''; // raw-ok -- static class. ?>" data-st-spur-station="<?php echo esc_attr( (string) $i ); ?>">
-								<a href="#station-<?php echo esc_attr( $station['slug'] ); ?>" data-st-station-link data-track-action="home_hero_station" data-track-label="<?php echo esc_attr( $station['slug'] ); ?>" data-track-category="navigation" data-track-section="hero"><span class="st-spur__punkt" aria-hidden="true"></span><span class="st-spur__nr"><?php echo esc_html( sprintf( '%02d', $i + 1 ) ); ?></span><span class="st-spur__name"><?php echo esc_html( $station['name'] ); ?></span></a>
-								<?php if ( 0 === $i ) : ?>
-									<span class="nur-vorlesen">Herkunft: </span><span class="st-spur__wert" data-st-wert="herkunft">…</span>
-								<?php elseif ( 1 === $i ) : ?>
-									<span class="st-spur__wert st-messwert" data-st-wert="lcp">…</span><span class="st-spur__einheit" data-st-lcp-label>Ladezeit (LCP)</span><span class="st-spur__grenze" data-st-lcp-grenze><?php echo esc_html( $lcp_grenze ); ?></span>
-								<?php elseif ( 2 === $i ) : ?>
-									<span class="nur-vorlesen">Klick auf Anfrage: </span><span class="st-spur__wert" data-st-wert="klick">…</span>
-								<?php endif; ?>
-							</li>
-						<?php endforeach; ?>
-					</ol>
-					<p class="st-spur__klammer">Je nach Projekt ergänzen wir Messung, CRM-Übergabe und Terminbestätigung. Der vereinbarte Umfang steht vor dem Start fest.</p>
-				</div>
-				<dl class="st-spur__messung"><div><dt>Abschnitte erreicht</dt><dd data-st-wert="abschnitte">…</dd></div><div><dt>Scrolltiefe</dt><dd data-st-wert="tiefe">…</dd></div></dl>
-				<p class="st-protokoll__ohne-js">Ohne JavaScript misst diese Seite nichts. Das Protokoll bleibt leer.</p>
-				<p class="st-spur__fuss">Diese Werte entstehen in Ihrem Browser und werden nirgendwohin gesendet. <a href="<?php echo esc_url( $privacy_url ); ?>" data-track-action="home_protocol_privacy" data-track-category="trust" data-track-section="hero">Datenschutz&nbsp;<span aria-hidden="true">→</span></a></p>
-				<p class="nur-vorlesen" aria-live="polite" data-st-ansage></p>
-			</div>
-
+			<?php // An der Stelle des früheren Besuchsprotokolls: das Portrait aus dem Abschluss, im Hero ohne Lazy-Load. ?>
 			<div class="st-hero__meta">
-				<img class="st-hero__portrait" src="<?php echo esc_url( $img_uri . 'hasim-freelancer-portrait-112.webp' ); ?>" width="56" height="56" alt="" decoding="async" fetchpriority="low">
+				<img class="st-hero__portrait" src="<?php echo esc_url( $img_uri . 'hasim-freelancer-portrait-480x600.webp' ); ?>" width="480" height="600" alt="Haşim Üner, WordPress-Entwickler aus Pattensen bei Hannover" decoding="async" fetchpriority="high">
 				<p class="st-hero__person"><strong>Haşim Üner</strong> · Entwicklung, Tracking und Conversion <br><a href="<?php echo esc_url( $about_url ); ?>" data-track-action="home_about" data-track-category="trust" data-track-section="hero">Wer hier für Sie arbeitet</a></p>
 			</div>
 
@@ -424,10 +393,9 @@ get_header();
 			<h2 class="st-h2" id="angebote-h">Was es kostet, steht hier. <span class="st-leise">Der Einstieg richtet sich nach Ihrer Ausgangslage.</span></h2>
 			<p class="st-vorspann">Alle Preise netto. Umfang und Endpreis stehen vor dem Start schriftlich fest. Was danach dazukommt, kommt nur mit Ihrer Zustimmung dazu.</p>
 			<div class="st-angebote">
-				<?php foreach ( $offer_groups as $offer_group ) : ?>
-				<div class="st-angebotsgruppe" role="group" aria-labelledby="<?php echo esc_attr( $offer_group['id'] ); ?>-h">
-					<p class="st-klein-label st-angebotsgruppe__kopf" id="<?php echo esc_attr( $offer_group['id'] ); ?>-h"><?php echo esc_html( $offer_group['label'] ); ?></p>
-				<?php foreach ( $offer_group['items'] as $offer ) : ?>
+				<div class="st-angebotsgruppe" role="group" aria-labelledby="angebote-neu-h">
+					<p class="st-klein-label st-angebotsgruppe__kopf" id="angebote-neu-h">Sie brauchen etwas Neues · Website, Landingpage, Anfragestrecke</p>
+				<?php foreach ( $offers as $offer ) : ?>
 					<article class="st-angebot" id="<?php echo esc_attr( $offer['id'] ); ?>" aria-labelledby="<?php echo esc_attr( $offer['id'] ); ?>-h">
 						<span class="st-angebot__nr st-klein-label" aria-hidden="true"><?php echo esc_html( $offer['nr'] ); ?></span>
 						<div class="st-angebot__kopf"><h3 class="st-angebot__titel" id="<?php echo esc_attr( $offer['id'] ); ?>-h"><?php echo esc_html( $offer['title'] ); ?></h3><p class="st-angebot__lage"><?php echo esc_html( $offer['situation'] ); ?></p></div>
@@ -440,10 +408,15 @@ get_header();
 					</article>
 				<?php endforeach; ?>
 				</div>
-				<?php endforeach; ?>
+				<div class="st-angebotsgruppe" role="group" aria-labelledby="angebote-bestand-h">
+					<p class="st-klein-label st-angebotsgruppe__kopf" id="angebote-bestand-h">Ihre Website steht schon · prüfen, messen, übernehmen</p>
+					<ul class="st-angebotsliste">
+						<?php foreach ( $offer_lines as $line ) : ?>
+							<li id="<?php echo esc_attr( $line['id'] ); ?>"><span class="st-angebotsliste__name"><?php echo esc_html( $line['name'] ); ?></span><span class="st-angebotsliste__preis"><?php echo esc_html( $line['price'] ); ?></span><a class="st-link" href="<?php echo esc_url( $line['url'] ); ?>" data-track-action="<?php echo esc_attr( $line['hook'] ); ?>" data-track-category="navigation" data-track-section="angebote">Umfang im Detail <span aria-hidden="true">→</span><span class="nur-vorlesen"> zu <?php echo esc_html( $line['name'] ); ?></span></a></li>
+						<?php endforeach; ?>
+					</ul>
+				</div>
 			</div>
-			<div class="st-weiter"><p><strong>Weiterentwicklung nach dem Projekt.</strong> <?php echo esc_html( $retainer ); ?> im Monat, monatlich kündbar. Eine Voraussetzung ist das nicht.</p><a class="st-link" href="#uebergabe" data-track-action="home_offer_retainer_more" data-track-category="navigation" data-track-section="angebote">Was Sie ohnehin behalten <span aria-hidden="true">↓</span></a></div>
-            <div class="st-weiter"><p><strong>Technisches SEO im Bestand.</strong> Indexierung, Vorlagen und Ladezeit prüfen: schriftlicher SEO-Befund für <?php echo esc_html( $seo_price ); ?> netto, bei Beauftragung der Korrekturen angerechnet. Die Korrekturen laufen zum Festpreis nach Befund.</p><a class="st-link" href="<?php echo esc_url( $routes['technical_seo'] ); ?>" data-track-action="home_offer_technical_seo_detail" data-track-category="navigation" data-track-section="angebote">SEO-Leistungsumfang ansehen <span aria-hidden="true">→</span></a></div>
 			<p class="st-preisnotiz">Hosting, Lizenzen und externe Dienste stehen getrennt im Angebot und laufen auf Ihren Namen.</p>
 			<?php if ( $first_assessment_on ) : ?>
 			<?php // Auffangnetz unter den Preisen: Haarlinie statt dunkler Tafel, damit es leiser steht als die Angebote. ?>
@@ -498,7 +471,9 @@ get_header();
 						<li><span class="st-klein-label">nach <?php echo esc_html( hu_e3_metric( 'timeframe', 'display_dative' ) ); ?></span><span><?php echo esc_html( hu_e3_metric( 'lead_count' ) ); ?> Anfragen insgesamt</span></li>
 					</ol>
 					<a class="st-link st-link--stark" href="<?php echo esc_url( $e3_case_url ); ?>" data-track-action="home_work_system_case" data-track-category="proof" data-track-section="beweis">Den Fall mit allen Zahlen lesen <span aria-hidden="true">→</span></a>
-					<p><a class="st-link" href="#angebot-anfragestrecke" data-track-action="home_work_anfragestrecke" data-track-category="navigation" data-track-section="beweis">Diese Strecke für Ihr Angebot: Anfragestrecke ab <?php echo esc_html( $strecke_price ); ?> <span aria-hidden="true">↑</span></a></p>
+					<?php // Solarbetriebe zuerst in den eigenen Weg; die Anfragestrecke bleibt der Weg für andere Branchen. ?>
+					<p><a class="st-link st-link--stark" href="<?php echo esc_url( $routes['marketcheck'] ); ?>" data-track-action="home_work_marktcheck" data-track-category="navigation" data-track-section="beweis">Solar- oder Wärmepumpenbetrieb? Zum kostenlosen Marktcheck <span aria-hidden="true">→</span></a></p>
+					<p><a class="st-link" href="#angebot-anfragestrecke" data-track-action="home_work_anfragestrecke" data-track-category="navigation" data-track-section="beweis">Anfragestrecke für andere Branchen ab <?php echo esc_html( $strecke_price ); ?> <span aria-hidden="true">→</span></a></p>
 				</div>
 				<figure class="st-messtafel tafel" aria-labelledby="messtafel-h" data-st-messtafel>
 					<div class="st-messtafel__kopf"><p class="st-klein-label" id="messtafel-h">Messwerte · Kosten pro Anfrage</p><span class="st-klein-label">maßstäblich</span></div>
@@ -536,11 +511,6 @@ get_header();
 			</ol>
 			</div>
 			<div class="st-ablauf"><h3 class="st-h3">So läuft ein Projekt.</h3><ol><?php foreach ( $project_steps as $i => $step ) : ?><li><p class="st-klein-label">Schritt <?php echo esc_html( sprintf( '%02d', $i + 1 ) ); ?></p><h4><?php echo esc_html( $step[0] ); ?></h4><p><?php echo esc_html( $step[1] ); ?></p></li><?php endforeach; ?></ol></div>
-			<div class="st-eignung" id="eignung"><div><h3 class="st-h3">Drei Fälle mit eigenem Weg.</h3><p>Lieber sage ich das hier als nach dem ersten Gespräch.</p></div><ul>
-				<li><strong>Ihre Website läuft und soll laufend gewartet werden.</strong> Dafür gibt es ein festes Monatspaket mit Anfrage-Test und Reaktionszeit werktags, ohne Notdienst. <br><a class="st-link" href="<?php echo esc_url( $routes['maintenance'] ); ?>" data-track-action="home_door_maintenance" data-track-category="navigation" data-track-section="tueren">WordPress-Wartung <span aria-hidden="true">→</span></a></li>
-				<li><strong>Sie sind eine Agentur und geben die Arbeit unter Ihrem Namen weiter.</strong> Dafür gibt es einen eigenen Weg mit Agenturkonditionen. <br><a class="st-link" href="<?php echo esc_url( $whitelabel_url ); ?>" data-track-action="home_door_whitelabel" data-track-category="navigation" data-track-section="tueren">White-Label-Zusammenarbeit <span aria-hidden="true">→</span></a></li>
-				<li><strong>Sie betreiben einen Solar- oder Wärmepumpenbetrieb.</strong> Für diese Branche gibt es einen eigenen Anfrageweg mit Marktcheck. <br><a class="st-link" href="<?php echo esc_url( $energy_url ); ?>" data-track-action="home_door_energy" data-track-category="navigation" data-track-section="tueren">Solar &amp; Wärmepumpe <span aria-hidden="true">→</span></a></li>
-			</ul></div>
 		</div>
 	</section>
 
@@ -660,9 +630,8 @@ get_header();
 			<p class="st-ende" data-st-ende><span class="st-ende__text">Ende der Strecke</span><span class="st-ende__zeit" data-st-ende-zeit hidden></span></p>
 			<?php
 			/*
-			 * Heller Abschluss: Ueberschrift, Einstiege, naechste Schritte,
-			 * Portrait. Mobil bleiben die Buttons vor dem Bild; am Desktop
-			 * stellt das Raster die Person neben den Einstieg.
+			 * Heller Abschluss: Ueberschrift, Einstiege, naechste Schritte.
+			 * Das Portrait steht seit dem 19.11.2026 im Hero.
 			 */
 			?>
 			<div class="st-schluss">
@@ -692,10 +661,6 @@ get_header();
 				</div>
 				<ol class="st-danach" aria-label="Was nach dem Absenden passiert"><?php foreach ( $request_steps as $i => $step ) : ?><li><span class="st-klein-label"><?php echo esc_html( sprintf( '%02d', $i + 1 ) ); ?> · <?php echo esc_html( $step[0] ); ?></span><?php echo esc_html( $step[1] ); ?></li><?php endforeach; ?></ol>
 				<?php // Kontaktzeile (E-Mail, Telefon) steht direkt darunter im Fuss; hier nicht ein zweites Mal. ?>
-				<figure class="st-portrait">
-					<img src="<?php echo esc_url( $img_uri . 'hasim-freelancer-portrait-480x600.webp' ); ?>" width="480" height="600" alt="Haşim Üner, WordPress-Entwickler aus Pattensen bei Hannover" loading="lazy" decoding="async">
-					<figcaption><strong>Haşim Üner</strong><br>WordPress · Tracking · Conversion<br>Pattensen bei Hannover</figcaption>
-				</figure>
 			</div>
 		</div>
 	</section>

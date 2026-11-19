@@ -326,6 +326,52 @@ function hu_footer_register_suppressed_templates() {
 }
 
 /**
+ * Wege des Tuerregisters, die eine Seite nicht zeigt, je Template.
+ *
+ * Website- und Landingpage-Seite verkaufen Direktkunden ein Produkt; der
+ * Agenturweg ("Ich bin Agentur …", Test-Sprint) lenkt dort ab. Die Agentur
+ * bleibt ueber die Navigation erreichbar. Schluessel ist das Template,
+ * Wert die Liste der `route`-Schluessel aus
+ * hu_get_site_footer_navigation_contract().
+ *
+ * @return array<string, string[]>
+ */
+function hu_footer_register_hidden_routes_by_template() {
+	return [
+		'page-wordpress-website-erstellen-lassen.php' => [ 'whitelabel' ],
+		'page-landingpage-erstellen-lassen.php'       => [ 'whitelabel' ],
+	];
+}
+
+/**
+ * Footer register ways for the current request, without hidden ways.
+ *
+ * @param array<int, array<string, mixed>> $routes Ways from the footer contract.
+ * @return array<int, array<string, mixed>>
+ */
+function hu_footer_register_routes( array $routes ) {
+	$hidden = [];
+	foreach ( hu_footer_register_hidden_routes_by_template() as $template => $route_keys ) {
+		if ( is_page_template( $template ) ) {
+			$hidden = array_merge( $hidden, $route_keys );
+		}
+	}
+
+	if ( empty( $hidden ) ) {
+		return $routes;
+	}
+
+	return array_values(
+		array_filter(
+			$routes,
+			static function ( $way ) use ( $hidden ) {
+				return ! in_array( (string) ( $way['route'] ?? '' ), $hidden, true );
+			}
+		)
+	);
+}
+
+/**
  * Whether the footer renders the door register on the current request.
  *
  * Das Register steht auf jeder Seite ausser der Kontaktseite (sie ist das Ziel

@@ -35,7 +35,7 @@ A page can remain the canonical SEO destination for its query while its CTA rout
 | `/wordpress-website-uebernehmen/` | Unternehmen mit bestehender WordPress-Website | Übernahme-Check, danach abgegrenzte Weiterentwicklung | `Übernahme-Check anfragen` → `/kontakt/?type=project&focus=takeover` | E3-Projektbeleg, Website-/Relaunch-Angebot und leiser Agenturweg |
 | `/referenzen/` | WordPress-Referenzen und Projektbelege | Kompakte Projektfälle aus dem Referenzkanon, ohne vertrauliche Kennzahlen | Allgemeine Projektanfrage; Agentur-Zweitweg | Neue eigenständige Übersicht; bestehende Ergebnisse-Redirects bleiben erhalten |
 | `/ergebnisse/` | Retired proof hub (since 2026-09-25) | 301 to `/case-study-solar-leadgenerierung/`; excluded from sitemap and `llms.txt` | none | Menu item „Referenzen“ → `/referenzen/`; route `results` → case study |
-| `/case-study-solar-leadgenerierung/` | Proof for all routes (homepage, menu, tracking, agency, Anfragestrecke offer); since 2026-10-23 a competence case with the scroll-driven Messgerät | Evidence page | `Projekt anfragen` in header door (`projekt`), hero (`case_hero_to_step1` → `#schritt1`) and sticky bar (`cta_sticky_case_study_project`). Schritt 1 asks the case form's own question; each answer links to `/kontakt/?type=project&focus=anfragestrecke&ausgangslage=…` (`case_step1_zu_wenige`, `case_step1_falsche`, `case_step1_herkunft`), and `/kontakt/` prefills the message with the answer (`hu_contact_situation_options()`). Without preselection: `cta_case_study_to_project` | Offer rows with fixed prices (`#angebot`, `case_meter_to_offer` from the meter); Solar/Wärmepumpe: quiet Marktcheck link (`cta_case_study_to_diagnostic_request`); methodology links (`cta_case_study_deeper_link`) |
+| `/case-study-solar-leadgenerierung/` | Proof for all routes (homepage, menu, tracking, agency, Anfragestrecke offer); since 2026-10-23 a competence case with the scroll-driven Messgerät | Evidence page | `Projekt anfragen` in header door (`projekt`), hero (`case_hero_to_step1` → `#schritt1`) and sticky bar (`cta_sticky_case_study_project`). Schritt 1 asks the case form's own question; each answer links to `/kontakt/?type=project&focus=anfragestrecke&ausgangslage=…` (`case_step1_zu_wenige`, `case_step1_falsche`, `case_step1_herkunft`), and `/kontakt/` prefills the message with the answer (`hu_contact_situation_options()`). Without preselection: `cta_case_study_to_project` | Offer rows with fixed prices (`#angebot`); since 2026-11-19 the meter carries two ways: primary „Solar- oder Wärmepumpenbetrieb? Zum kostenlosen Marktcheck →“ (`case_meter_to_marktcheck` → `/solar-waermepumpen-leadgenerierung/#marktcheck`), secondary „Anfragestrecke für andere Branchen ab … →“ (`case_meter_to_offer` → `#angebot`); Solar/Wärmepumpe: quiet Marktcheck link (`cta_case_study_to_diagnostic_request`); methodology links (`cta_case_study_deeper_link`) |
 
 Hannover-Cluster, Plan 2026-11-07: Der neue Abschnitt `#woocommerce` beschreibt
 Tracking, Checkout-Conversion und Wartung bestehender WooCommerce-Shops.
@@ -122,6 +122,32 @@ Texte für PHP und den Themenwechsel in `contact.js`; der Absenden-Button
 folgt dem aktuellen Fokus. Das native SST-Formular behält seine eigene Copy.
 Endpunkt, Anfragefelder, Typ-/Fokuswerte und Tracking-Actions bleiben erhalten.
 
+### Kontakt: sechs Vorhaben (seit 2026-11-19)
+
+Das Feld „Vorhaben“ der Projektanfrage zeigt sechs Optionen statt fünfzehn.
+Quelle: `nexus_get_contact_project_focus_groups()` in
+`blocksy-child/inc/contact-page.php`; das Label des Gruppen-Schlüssels ist der
+sichtbare Text und zugleich das Thema in Mail, CRM (`_nexus_contact_focus_label`)
+und Aktivität.
+
+| Option | Gruppen-Schlüssel (Auswahl in der Liste) | Frühere `focus`-Werte, die sie vorauswählen |
+| --- | --- | --- |
+| Website oder Relaunch | `website` | `website`, `relaunch` |
+| Landingpage oder Anfragestrecke | `landingpage_anfragestrecke` (neu) | `landingpage`, `anfragestrecke` |
+| Tracking und Messung | `tracking` | `tracking` |
+| Bestehende Website übernehmen, warten, weiterentwickeln | `implementation_scope` | `takeover`, `wartung`, `ongoing_scope`, `support`, `existing_client` |
+| Anfragesystem Solar und Wärmepumpe | `energy` | `sofortkontakt` |
+| Analyse oder etwas anderes | `analyse_sonstiges` (neu) | `followup_scope`, `conversion`, `seo`, `performance`, `website_strategy`, `audit_scope`, `question`, `cooperation` |
+
+Ein früherer Fokus, der für `project` gilt, wird weiter gesendet (Texte,
+Website-/Solar-Umfang, Mail- und CRM-Label wie bisher); die Option zeigt nur
+das Gruppen-Label. Fokuswerte ohne `project` (`ongoing_scope`, `support`,
+`existing_client`, `audit_scope`, `question`, `cooperation`) senden den
+Gruppen-Schlüssel. `?type=` `audit`, `implementation`, `ongoing`, `general`
+und `client` öffnen die Projektanfrage; sichtbar bleiben nur `project`,
+`analysis` (Conversion-Analyse, eigene Themenliste) und die Ersteinschätzung.
+Der Server nimmt alle bisherigen Typen und Fokuswerte weiter an.
+
 ## Homepage: direkter Freelancer-Einstieg
 
 Seit der Betreiberentscheidung vom 2026-09-13 übernimmt `/` die Inhalte und
@@ -130,9 +156,11 @@ vom 2026-10-09 ordnet die vorhandene Strecke neu: Klick → Angebote → Strecke
 Fall → Prüfstand mit Referenzen → Übergabe → Fragen → Anfrage. Die sechs
 Angebotszeilen mit Preisen stehen direkt nach dem Hero; Hero samt Kopf und
 Messtafel sind die dunklen Messinstrumente.
-Wartung, White-Label und Solar/Wärmepumpe stehen unter „Drei Fälle mit eigenem
-Weg.“ in der Übergabe (`home_door_maintenance` seit 2026-10-25,
-`home_door_whitelabel`, `home_door_energy`). Die Agentur-Seite verlinkt die
+Wartung, White-Label und Solar/Wärmepumpe stehen seit 2026-11-19 als eine
+Zeile direkt unter den Hero-Aktionen („WordPress-Wartung →“, „Für Agenturen →“,
+„Solar & Wärmepumpe →“; `home_door_maintenance`, `home_door_whitelabel`,
+`home_door_energy`, Sektion `hero`). Der frühere Block „Drei Fälle mit eigenem
+Weg.“ (`#eignung`) in der Übergabe entfällt. Die Agentur-Seite verlinkt die
 Wartung als vierte Route-Kachel (`agentur_to_maintenance_offer`), die
 Übernahme-FAQ im Ausfall-Absatz (`takeover_faq_to_maintenance`).
 
@@ -153,9 +181,25 @@ verlinkt seit 2026-10-01 `/wordpress-website-erstellen-lassen/`
 | 01 Website und Relaunch | `home_offer_relaunch` | `/kontakt/?type=project&focus=website` | `home_offer_website_detail` → `/wordpress-website-erstellen-lassen/` |
 | 02 Landingpage | `home_offer_landingpage` | `/kontakt/?type=project&focus=landingpage` | `home_offer_landingpage_detail` → `/landingpage-erstellen-lassen/` |
 | 03 Anfragestrecke | `home_offer_anfragestrecke` | `/kontakt/?type=project&focus=anfragestrecke` | `home_offer_anfragestrecke_case` (`proof`) → Fallstudie |
-| 04 Conversion-Analyse | `home_offer_analysis` | `/kontakt/?type=analysis&focus=conversion` | `home_offer_analysis_detail` → `/conversion-optimierung/` |
-| 05 Tracking | `home_offer_tracking` | `/kontakt/?type=project&focus=tracking` | `home_offer_tracking_detail` → `/ga4-tracking-setup/` |
-| 06 Übernahme-Check | `home_offer_takeover` | `/kontakt/?type=project&focus=takeover` | `home_offer_takeover_detail` → `/wordpress-website-uebernehmen/` |
+
+Seit 2026-11-19 stehen nur 01 bis 03 als Karten. „Ihre Website steht schon“ ist
+eine kompakte Liste, eine Zeile je Leistung (Name · Kanonpreis · Unterseite,
+Kategorie `navigation`); die Anfrage-Hooks `home_offer_analysis`,
+`home_offer_tracking` und `home_offer_takeover` entfallen mit den Karten:
+
+| Zeile | Detail-Hook | Ziel | Anker |
+| --- | --- | --- | --- |
+| Conversion-Analyse | `home_offer_analysis_detail` | `/conversion-optimierung/` | `#angebot-conversion` |
+| Conversion-Tracking | `home_offer_tracking_detail` | `/ga4-tracking-setup/` | `#angebot-tracking` |
+| Übernahme-Check | `home_offer_takeover_detail` | `/wordpress-website-uebernehmen/` | `#angebot-weiterentwicklung` |
+| Weiterentwicklung (Monatskontingent) | `home_offer_retainer_more` | `/wordpress-website-uebernehmen/` | `#angebot-kontingent` |
+| SEO-Befund | `home_offer_technical_seo_detail` | `/technisches-seo-wordpress/` | `#angebot-seo` |
+
+Im Fall stehen seit 2026-11-19 zwei Wege statt „Diese Strecke für Ihr Angebot“:
+primär „Solar- oder Wärmepumpenbetrieb? Zum kostenlosen Marktcheck →“
+(`home_work_marktcheck` → `/solar-waermepumpen-leadgenerierung/#marktcheck`),
+sekundär „Anfragestrecke für andere Branchen ab … →“ (`home_work_anfragestrecke`
+→ `#angebot-anfragestrecke`).
 
 Der Hook `home_offer_conversion` aus der Konsolidierungsentscheidung vom
 2026-09-13 bleibt stillgelegt, damit ein Eventname nicht zwei Angebote trägt;
@@ -178,8 +222,9 @@ eine bedingte Ersteinschätzungs-Tafel Eingabe, drei Befunde und die Antwortzeit
 `home_hero_case_proof` steht leise unter der Hauptaktion bei jeder Breite.
 Die frühere Hero-Seitennavigation mit `home_nav_prices`, `home_nav_case` und
 `home_nav_pruefstand` entfällt. Fall und Referenzen bleiben in der Belege-Leiste.
-Die sechs Hero-Stationslinks tragen `home_hero_station` mit dem Slug als
-`data-track-label`, führen auf `#station-{slug}` und öffnen dort das Akkordeon.
+Das Besuchsprotokoll im Hero mit den sechs Stationslinks (`home_hero_station`)
+und `home_protocol_privacy` ist seit 2026-11-19 entfallen; an seiner Stelle steht
+das Portrait. Direktlinks `#station-{slug}` öffnen weiter das Akkordeon.
 Die Reihenfolge, Türen und Anker der globalen Navigation bleiben unverändert;
 nur auf der Startseite trägt der globale Kopf die dunklen Tafel-Tokens.
 Schalter aus: Kopf, Hero und Fall führen zur Projektanfrage, die zusätzliche
@@ -644,6 +689,11 @@ Preisliteral steht im Template. Die Tür ohne Betrag zeigt „nach Umfang“.
 Kopf und Footer lesen für den allgemeinen Tracking-Einstieg denselben
 Betrag aus `hu_tracking_price( 'measurement', 'setup' )`. Der Server-Side-
 Gesamtpreis gehört zum ausdrücklich bezeichneten Umfang auf der Fachseite.
+Einzelne Wege blendet `hu_footer_register_routes()` je Template aus
+(`hu_footer_register_hidden_routes_by_template()`): Seit 2026-11-19 zeigen
+`/wordpress-website-erstellen-lassen/` und `/landingpage-erstellen-lassen/` den
+Agenturweg („Ich bin Agentur …“, Test-Sprint) nicht; der Navigationspunkt
+„Für Agenturen“ bleibt.
 Die Navigationsprüfung rendert den Fuß in allen Kontexten und prüft den
 gemeinsamen Preisanker; die Literal-Sperre allein erkennt keinen falschen
 Paketschlüssel.

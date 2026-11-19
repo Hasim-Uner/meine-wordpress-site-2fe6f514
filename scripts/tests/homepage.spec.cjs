@@ -46,10 +46,31 @@ for (const width of [360, 768, 1024, 1440]) {
     await expect(page.locator('.leiste .rechts > .tuer')).toHaveAttribute('data-door', 'projekt');
     await expect(page.locator('.fuss .register')).toHaveCount(0);
     await expect(page.locator('.fuss .verzeichnis')).toHaveCount(1);
-    await expect(page.locator('[data-st-wert="herkunft"]')).toHaveText('Direkt aufgerufen');
+    // The visit protocol is gone; the portrait stands in its place without lazy loading.
+    await expect(page.locator('[data-st-protokoll], [data-st-etikett], [data-st-signal], #eignung')).toHaveCount(0);
+    const portrait = page.locator('#klick .st-hero__meta img.st-hero__portrait');
+    await expect(portrait).toHaveAttribute('src', /hasim-freelancer-portrait-480x600\.webp$/);
+    await expect(portrait).toHaveAttribute('fetchpriority', 'high');
+    await expect(portrait).toHaveAttribute('width', '480');
+    await expect(portrait).toHaveAttribute('height', '600');
+    await expect(portrait).not.toHaveAttribute('loading', /.*/);
+    expect(await portrait.getAttribute('alt')).toContain('Haşim Üner');
+    await expect(page.locator('#anfrage img')).toHaveCount(0);
+    // Three own ways directly below the hero actions.
+    const ways = page.locator('.st-hero__ctas + .st-hero__wege a');
+    await expect(ways).toHaveText(['WordPress-Wartung →', 'Für Agenturen →', 'Solar & Wärmepumpe →']);
+    expect(await ways.evaluateAll(els => els.map(el => el.dataset.trackAction))).toEqual(['home_door_maintenance', 'home_door_whitelabel', 'home_door_energy']);
     // One filled action: offers and the assessment stay quiet, the project request leads.
     await expect(page.locator('#angebote .tun:not(.still)')).toHaveCount(0);
-    await expect(page.locator('#angebote .st-angebot .tun.still')).toHaveCount(6);
+    await expect(page.locator('#angebote .st-angebot .tun.still')).toHaveCount(3);
+    // Existing website: one line per service, name, canon price and sub page.
+    await expect(page.locator('#angebote .st-angebotsliste li')).toHaveCount(5);
+    await expect(page.locator('#angebote .st-angebotsliste li a[href^="https://hasimuener.de/"]')).toHaveCount(5);
+    await expect(page.locator('#angebote .st-weiter')).toHaveCount(0);
+    // Case: Solar businesses first into the Marktcheck, other trades to the request route.
+    await expect(page.locator('#arbeiten [data-track-action="home_work_marktcheck"]')).toHaveAttribute('href', 'https://hasimuener.de/solar-waermepumpen-leadgenerierung/#marktcheck');
+    await expect(page.locator('#arbeiten [data-track-action="home_work_anfragestrecke"]')).toHaveAttribute('href', '#angebot-anfragestrecke');
+    await expect(page.locator('#arbeiten [data-track-action="home_work_anfragestrecke"]')).toContainText('Anfragestrecke für andere Branchen ab');
     await expect(page.locator('#anfrage .st-einstieg').first()).toHaveClass(/st-einstieg--haupt/);
     await expect(page.locator('#anfrage .st-einstieg--haupt .tun:not(.still)')).toHaveText('Projekt anfragen →');
     // The H1 carries its last line once; the filled copy is generated content.
@@ -82,12 +103,10 @@ for (const width of [360, 768, 1024, 1440]) {
     expect(ratios[1]).toBeCloseTo(numeric(values[1]) / numeric(values[0]));
     await page.evaluate(() => window.scrollTo(0, document.documentElement.scrollHeight));
     await expect(page.locator('.st-rail__punkt.st-erreicht')).toHaveCount(sections.length);
-    await expect(page.locator('[data-st-wert="abschnitte"]')).toHaveText(`${sections.length} von ${sections.length}`);
-    await expect(page.locator('[data-st-wert="tiefe"]')).toHaveText('100 %');
     await expect(page.locator('[data-st-ende-zeit]')).toBeVisible();
-    await expect(page.locator('#klick [data-st-lcp-grenze]')).toBeVisible();
+    await expect(page.locator('#pruefstand [data-st-lcp-grenze]')).toBeVisible();
     await expect(page.locator('#pruefstand [data-st-lcp-kopie]')).not.toHaveText('…');
-    await expect.poll(() => page.locator('#anfrage img').evaluate(el => el.naturalWidth)).toBeGreaterThan(0);
+    await expect.poll(() => portrait.evaluate(el => el.naturalWidth)).toBeGreaterThan(0);
     expect(errors).toEqual([]);
     if (width === 360 || width === 1440) {
       await page.evaluate(() => window.scrollTo({ top: 0, behavior: 'instant' }));
@@ -103,11 +122,8 @@ for (const width of [360, 768, 1024, 1440]) {
     await open(page, { width, awaitFonts: false });
     await expect(page.locator('[data-st-titel]')).toHaveCSS('container-type', 'inline-size');
     await expect(page.getByRole('heading', { level: 1 })).toHaveAccessibleName('Mehr Anfragen über Ihre Website. Und Sie sehen, was funktioniert.');
-    await expect(page.locator('[data-st-etikett]')).toBeHidden();
-    await expect(page.locator('[data-st-signal]')).toBeHidden();
-    expect(await page.locator('.st-quelle__kontur').evaluate(el => getComputedStyle(el).color)).not.toBe('rgba(0, 0, 0, 0)');
-    await expect(page.locator('.st-protokoll__ohne-js')).toContainText('bleibt leer');
-    await expect(page.locator('.st-protokoll__ohne-js')).toBeVisible();
+    await expect(page.locator('#klick .st-hero__portrait')).toBeVisible();
+    await expect(page.locator('.st-hero__wege a')).toHaveCount(3);
     await page.locator('#angebot-funnel summary').nth(3).click();
     await expect(page.locator('#angebot-funnel details').nth(3)).toHaveAttribute('open', '');
     await expect(page.locator('#angebot-funnel details[open]')).toHaveCount(1);
@@ -137,86 +153,42 @@ test('homepage: reached line and static bars under reduced motion', async ({ pag
   expect(await page.locator('[data-st-fuellung]').last().evaluate(el => getComputedStyle(el).display)).not.toBe('none');
 });
 
-for (const [referer, name] of [
-  ['https://www.google.de/search?q=wordpress', 'Google-Suche'],
-  ['https://www.bing.com/search?q=wordpress', 'Bing-Suche'],
-  ['https://www.linkedin.com/feed/', 'LinkedIn'],
-  ['https://chatgpt.com/', 'ChatGPT'],
-  ['https://www.perplexity.ai/', 'Perplexity'],
-  ['https://example.org/article', 'example.org'],
-]) {
-  test(`homepage: local referral ${name}`, async ({ page }) => {
-    await open(page, { referer });
-    await expect(page.locator('[data-st-wert="herkunft"]')).toHaveText(name);
-  });
-}
-
-test('homepage: campaign text stays text and wins over referral', async ({ page }) => {
-  const source = '<img src=x onerror=alert(1)>';
-  await open(page, { search: `?utm_source=${encodeURIComponent(source)}&utm_medium=email`, referer: 'https://www.google.de/' });
-  await expect(page.locator('[data-st-wert="herkunft"]')).toHaveText(`Kampagne: ${source} / email`);
-  await expect(page.locator('[data-st-wert="herkunft"] img')).toHaveCount(0);
-});
-
-test('homepage: FAQ schema, retained anchors and enquiry locations', async ({ page }) => {
+test('homepage: FAQ schema and retained anchors', async ({ page }) => {
   await open(page);
   const visible = await page.locator('#fragen details').evaluateAll(els => els.map(el => ({ q: el.querySelector('summary').textContent, a: el.querySelector('.antwort').textContent })));
   const schema = await page.locator('#fragen script[type="application/ld+json"]').textContent();
   expect(JSON.parse(schema).mainEntity.map(entry => ({ q: entry.name, a: entry.acceptedAnswer.text }))).toEqual(visible);
-  expect(visible.length).toBe(5);
+  expect(visible.length).toBe(4);
+  expect(visible.map(entry => entry.q).join(' ')).not.toContain('Protokoll');
   for (const id of ['angebot-funnel', 'systemprojekt', 'arbeiten', 'referenzen', 'kontakt', 'angebot-website', 'angebot-landingpage', 'angebot-anfragestrecke', 'angebot-conversion', 'angebot-tracking', 'angebot-weiterentwicklung']) {
     await expect(page.locator(`[id="${id}"]`)).toHaveCount(1);
   }
-  await page.evaluate(() => document.addEventListener('click', e => {
-    if (e.target.closest('[data-track-category="lead_gen"]')) e.preventDefault();
-  }));
-  for (const [selector, name] of [
-    ['.leiste .rechts > .tuer', 'Kopf'], ['#klick .tun', 'Einstieg'], ['#arbeiten .tun', 'Fall'], ['#angebote .st-erstcheck .tun', 'Preise'], ['#anfrage [data-track-action="home_close_ersteinschaetzung"]', 'Ende'],
-  ]) {
-    await page.locator(selector).click();
-    await expect(page.locator('[data-st-wert="klick"]')).toHaveText('geöffnet · ' + name);
-  }
 });
 
-// The first screen is the instrument: price, four lines, action and station 03.
+// First screen: price, four lines and the main action; the portrait follows below.
 for (const [width, height] of [[390, 844], [768, 900], [1100, 900], [1280, 800], [1440, 900], [1920, 1080]]) {
-  test(`homepage instrument ${width}x${height}: geometry, source and first screen`, async ({ page }) => {
+  test(`homepage hero ${width}x${height}: geometry and first screen`, async ({ page }) => {
     const errors = [];
     page.on('pageerror', error => errors.push(error.message));
     await open(page, { width, height });
-    await expect(page.locator('[data-st-signal]')).toHaveClass(/is-here/, { timeout: 6000 });
-    await expect(page.locator('[data-st-etikett]')).toHaveClass(/is-hung/);
-    await expect(page.locator('[data-st-etikett-wert]')).toHaveText('Direkt aufgerufen');
-    await expect(page.locator('[data-st-wert="klick"]')).toHaveText('noch offen');
     await expect(page.locator('.leiste')).toHaveClass(/st-messkopf.*tafel/);
     await expect(page.locator('#klick .st-seitennav')).toHaveCount(0);
-    await expect(page.locator('[data-st-spur-station]')).toHaveCount(6);
     const geometry = await page.locator('#klick').evaluate(hero => {
       const rect = selector => hero.querySelector(selector).getBoundingClientRect();
-      const signal = rect('[data-st-signal]');
-      const point = rect('[data-st-spur-station="2"] .st-spur__punkt');
-      const word = rect('[data-st-wort-quelle]');
-      const tag = rect('[data-st-etikett]');
-      const action = rect('.tun');
       return {
-        signalAligned: Math.hypot(signal.left + signal.width / 2 - point.left - point.width / 2, signal.top + signal.height / 2 - point.top - point.height / 2) < 1,
-        firstScreen: ['.st-hero__kopfzeile', '.st-hero__h1', '.tun', '[data-st-signal]'].every(selector => rect(selector).top >= 0 && rect(selector).bottom <= innerHeight),
-        tagBelow: tag.top > word.bottom,
-        tagBeside: tag.left > word.right,
-        tagEndAligned: Math.abs(tag.right - word.right) < 4,
-        actionClear: tag.right <= action.left || tag.left >= action.right || tag.bottom < action.top || tag.top >= action.bottom,
+        firstScreen: ['.st-hero__kopfzeile', '.st-hero__h1', '.tun'].every(selector => rect(selector).top >= 0 && rect(selector).bottom <= innerHeight),
+        waysBelowActions: rect('.st-hero__wege').top >= rect('.st-hero__ctas').bottom,
+        portraitBelowWays: rect('.st-hero__portrait').top >= rect('.st-hero__wege').bottom,
         h1Size: parseFloat(getComputedStyle(hero.querySelector('h1')).fontSize),
         overflow: document.documentElement.scrollWidth > innerWidth,
         lines: Array.from(hero.querySelectorAll('h1 .st-messzeile')).map(line => line.offsetHeight),
       };
     });
-    expect(geometry.signalAligned).toBe(true);
     expect(geometry.overflow).toBe(false);
-    expect(geometry.actionClear).toBe(true);
+    expect(geometry.waysBelowActions).toBe(true);
+    expect(geometry.portraitBelowWays).toBe(true);
     expect(geometry.lines).toHaveLength(4);
     expect(Math.max(...geometry.lines) - Math.min(...geometry.lines)).toBeLessThan(2);
-    if (width === 1100) { expect(geometry.tagBelow).toBe(true); expect(geometry.tagEndAligned).toBe(true); }
-    if (width >= 1280) expect(geometry.tagBeside).toBe(true);
     if (width === 1280 || width === 1440) expect(geometry.firstScreen).toBe(true);
     if (width >= 1440) expect(geometry.h1Size).toBeGreaterThan(85);
     await page.screenshot({ path: path.resolve(__dirname, `../../.build/home-hero-${width}.png`) });
@@ -224,104 +196,15 @@ for (const [width, height] of [[390, 844], [768, 900], [1100, 900], [1280, 800],
   });
 }
 
-test('homepage Firefox: scaled surface keeps the source anchored and the action clear', async ({ page, browserName }) => {
-  test.skip(browserName !== 'firefox', 'Firefox-only layout correction');
-  await open(page, { width: 1440 });
-  await page.addStyleTag({ content: 'body { zoom: 1.35; }' });
-  await page.setViewportSize({ width: 1400, height: 900 });
-  await expect(page.locator('[data-st-signal]')).toHaveClass(/is-here/, { timeout: 6000 });
-  await expect.poll(() => page.locator('[data-st-etikett]').evaluate(el => {
-    const tag = el.getBoundingClientRect();
-    const word = document.querySelector('[data-st-wort-quelle]').getBoundingClientRect();
-    const action = document.querySelector('#klick .tun').getBoundingClientRect();
-    const gap = tag.left - word.right;
-    const beside = gap > 35 && gap < 60;
-    const below = tag.top > word.bottom && Math.abs(tag.right - word.right) < 5;
-    return (beside || below) && tag.bottom < action.top;
-  })).toBe(true);
-});
-
-test('homepage: late font metrics reposition the source without a window resize', async ({ page }) => {
-  await open(page, { width: 1440 });
-  await expect(page.locator('[data-st-signal]')).toHaveClass(/is-here/, { timeout: 6000 });
-  await page.addStyleTag({ content: '[data-st-wort-quelle] { letter-spacing: .08em; }' });
-  await expect(page.locator('[data-st-etikett]')).toHaveClass(/st-etikett--unten/);
-  await expect.poll(() => page.locator('[data-st-etikett]').evaluate(el => {
-    const tag = el.getBoundingClientRect();
-    const word = document.querySelector('[data-st-wort-quelle]').getBoundingClientRect();
-    const action = document.querySelector('#klick .tun').getBoundingClientRect();
-    return tag.top > word.bottom && Math.abs(tag.right - word.right) < 4 && tag.bottom < action.top;
-  })).toBe(true);
-  await page.addStyleTag({ content: '[data-st-wort-quelle] { letter-spacing: inherit; }' });
-  await expect(page.locator('[data-st-etikett]')).not.toHaveClass(/st-etikett--unten/);
-});
-
-test('homepage Firefox: narrow sidebar viewport keeps the action clear throughout the swing', async ({ page, browserName }) => {
-  test.skip(browserName !== 'firefox', 'Firefox-only layout correction');
-  await open(page, { width: 1100 });
-  const covered = await page.evaluate(() => new Promise(resolve => {
-    let overlaps = false;
-    const start = performance.now();
-    function sample() {
-      const label = document.querySelector('[data-st-etikett]');
-      const tag = label.getBoundingClientRect();
-      const action = document.querySelector('#klick .tun').getBoundingClientRect();
-      if (getComputedStyle(label).opacity > 0 && tag.right > action.left && tag.left < action.right && tag.bottom > action.top && tag.top < action.bottom) overlaps = true;
-      if (performance.now() - start < 2000) requestAnimationFrame(sample);
-      else resolve(overlaps);
-    }
-    requestAnimationFrame(sample);
-  }));
-  expect(covered).toBe(false);
-  for (const width of [1310, 1240, 1100, 768]) {
-    await page.setViewportSize({ width, height: 900 });
-    await expect.poll(() => page.locator('[data-st-etikett]').evaluate(el => {
-      const tag = el.getBoundingClientRect();
-      const action = document.querySelector('#klick .tun').getBoundingClientRect();
-      return tag.right <= action.left || tag.left >= action.right || tag.bottom < action.top;
-    })).toBe(true);
-  }
-});
-
-test('homepage instrument: every station opens its matching details with keyboard focus', async ({ page }) => {
-  await open(page);
-  for (const slug of ['klick', 'seite', 'formular', 'messung', 'crm', 'anfrage']) {
-    // Select the tracking label itself: no dependence on translated link copy.
-    await page.locator(`[data-st-station-link][data-track-label="${slug}"]`).focus();
-    await page.keyboard.press('Enter');
-    await expect(page.locator(`#station-${slug}`)).toBeFocused();
-    await expect(page.locator(`#station-${slug}`).locator('..')).toHaveAttribute('open', '');
-    await expect(page.locator('#angebot-funnel details[open]')).toHaveCount(1);
-    expect(await page.locator(`#station-${slug}`).evaluate(el => getComputedStyle(el).outlineStyle)).not.toBe('none');
-  }
-});
-
-test('homepage instrument: resize during flight and across mobile keeps final positions', async ({ page }) => {
-  await open(page, { width: 1440 });
-  await expect(page.locator('[data-st-signal]')).toHaveClass(/is-visible/);
-  for (const width of [390, 1100, 1280]) {
-    await page.setViewportSize({ width, height: 900 });
-    await expect(page.locator('[data-st-signal]')).toHaveClass(/is-here/);
-    await expect.poll(() => page.locator('[data-st-signal]').evaluate(el => {
-      const r = el.getBoundingClientRect();
-      const p = document.querySelector('[data-st-spur-station="2"] .st-spur__punkt').getBoundingClientRect();
-      return Math.hypot(r.left + r.width / 2 - p.left - p.width / 2, r.top + r.height / 2 - p.top - p.height / 2);
-    })).toBeLessThan(1);
-  }
-});
-
-test('homepage instrument: reduced motion and navigation fallback show immediate measured end state', async ({ page }) => {
+test('homepage: reduced motion and navigation fallback show the measured load time', async ({ page }) => {
   await page.emulateMedia({ reducedMotion: 'reduce' });
   await page.addInitScript(() => { window.PerformanceObserver = undefined; });
   await open(page);
-  await expect(page.locator('[data-st-signal]')).toHaveClass(/is-here/);
-  await expect(page.locator('[data-st-lcp-label]')).toHaveText(['Ladezeit (Seite geladen)', 'Ladezeit (Seite geladen)']);
+  await expect(page.locator('[data-st-lcp-label]')).toHaveText(['Ladezeit (Seite geladen)']);
   // Google's LCP threshold belongs to an LCP only, not to a load-event time.
-  await expect(page.locator('[data-st-lcp-grenze]')).toHaveCount(2);
-  for (const grenze of await page.locator('[data-st-lcp-grenze]').all()) await expect(grenze).toBeHidden();
-  await expect(page.locator('[data-st-wert="lcp"]')).not.toHaveText('…');
-  expect(await page.locator('[data-st-signal]').evaluate(el => el.getAnimations().length)).toBe(0);
-  expect(await page.locator('[data-st-etikett]').evaluate(el => el.getAnimations().length)).toBe(0);
+  await expect(page.locator('[data-st-lcp-grenze]')).toHaveCount(1);
+  await expect(page.locator('[data-st-lcp-grenze]')).toBeHidden();
+  await expect(page.locator('#pruefstand [data-st-lcp-kopie]')).not.toHaveText('…');
   expect(await page.locator('#st-h1 .st-messwort').first().evaluate(el => getComputedStyle(el).transform)).toBe('none');
 });
 

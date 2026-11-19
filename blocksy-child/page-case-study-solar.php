@@ -96,7 +96,7 @@ $offer_rows = [
 	[
 		'title'  => 'Anfragestrecke mit CRM',
 		'price'  => $offer_crm,
-		'note'   => 'netto · wie in diesem Fall',
+		'note'   => 'netto',
 		'items'  => [ 'alles aus der Anfragestrecke' ],
 		'plus'   => [ 'CRM-Anbindung mit Herkunft', 'serverseitige Messung', 'Rückmeldung an Google Ads' ],
 		'action' => 'case_offer_anfragestrecke_crm',
@@ -160,7 +160,9 @@ get_header();
 				</div>
 				<div class="fs-schema"><?php get_template_part( 'template-parts/case-study-strecke' ); ?></div>
 				<div class="fs-monate" aria-hidden="true"><span data-m="0">Vorher</span><span data-m="1">Monat 1</span><span data-m="2">Monat 2</span><span class="is-an" data-m="3"><?php echo esc_html( $e3_reached ); ?></span></div>
-				<a class="fs-geraet__cta" href="#angebot" <?php echo $track( 'case_meter_to_offer', 'navigation' ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?>>Diese Strecke für Ihr Angebot <small>ab <?php echo esc_html( $offer_price ); ?> →</small></a>
+				<?php // Solarbetriebe zuerst in den Marktcheck; die Anfragestrecke ist der Weg für andere Branchen (seit 19.11.2026). ?>
+				<a class="fs-geraet__cta" href="<?php echo esc_url( $diagnostic_url ); ?>" <?php echo $track( 'case_meter_to_marktcheck', 'navigation' ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?>>Solar- oder Wärmepumpenbetrieb? <small>Zum kostenlosen Marktcheck →</small></a>
+				<a class="fs-geraet__cta fs-geraet__cta--leise" href="#angebot" <?php echo $track( 'case_meter_to_offer', 'navigation' ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?>>Anfragestrecke für andere Branchen <small>ab <?php echo esc_html( $offer_price ); ?> →</small></a>
 			</aside>
 
 			<div class="fs-protokoll">

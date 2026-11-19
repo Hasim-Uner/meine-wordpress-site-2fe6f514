@@ -216,6 +216,9 @@
 }
 .fs-geraet[data-ende="1"] .fs-geraet__cta { opacity: 1; transform: none; pointer-events: auto; }
 .fs-geraet__cta small { font-family: var(--mono); font-weight: 500; font-size: var(--mono-m); letter-spacing: .06em; white-space: nowrap; }
+/* Zweiter, leiser Weg unter dem Marktcheck: Anfragestrecke fuer andere Branchen. */
+.fs-geraet__cta--leise { background: transparent; border: 1px solid var(--stempel); font-weight: 500; }
+.fs .fs-geraet__cta--leise, .fs .fs-geraet__cta--leise:visited, .fs .fs-geraet__cta--leise:hover, .fs .fs-geraet__cta--leise:focus, .fs .fs-geraet__cta--leise:active { color: var(--tinte); }
 
 /* ── Protokoll ────────────────────────────────────────────────── */
 .fs-protokoll { min-width: 0; }
