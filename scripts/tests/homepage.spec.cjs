@@ -38,7 +38,12 @@ for (const width of [360, 768, 1024, 1440]) {
     await expect(page.locator('.st-hero__ctas .tun')).toHaveCount(1);
     await expect(page.locator('.st-hero__ctas .st-link')).toHaveText('Leistungsumfang & Preise ↓');
     await expect(page.locator('.st-hero__kopfzeile a')).toHaveCount(0);
-    await expect(page.locator('.st-hero__beleg')).toBeVisible();
+    // The case link left the action group; the -85 % figure itself leads to the case study.
+    await expect(page.locator('.st-hero__beleg')).toHaveCount(0);
+    await expect(page.locator('#klick .st-belege li').first().locator('a')).toHaveAttribute('data-track-action', 'home_hero_case_proof');
+    await expect(page.locator('#klick .st-belege li').first().locator('a')).toHaveAttribute('href', /^https:\/\/hasimuener\.de\/.+/);
+    // Direct visit: no origin line at all.
+    await expect(page.locator('.st-hero__herkunft')).toHaveCount(0);
     await expect(page.locator('#angebote .st-erstcheck')).toContainText('Drei Befunde');
     await expect(page.locator('#angebote .st-erstcheck form')).toHaveAttribute('action', 'https://hasimuener.de/kontakt/');
     await expect(page.locator('#angebote .st-erstcheck input[name="focus"]')).toHaveValue('ersteinschaetzung');
@@ -63,6 +68,14 @@ for (const width of [360, 768, 1024, 1440]) {
     // One filled action: offers and the assessment stay quiet, the project request leads.
     await expect(page.locator('#angebote .tun:not(.still)')).toHaveCount(0);
     await expect(page.locator('#angebote .st-angebot .tun.still')).toHaveCount(3);
+    // Two starting points as tabs: new build active, existing website hidden but in the DOM.
+    await expect(page.locator('#angebote [role="tablist"]')).toBeVisible();
+    await expect(page.locator('#angebote [role="tab"]')).toHaveText(['Neue Website', 'Website steht schon']);
+    await expect(page.locator('#angebote [role="tab"][aria-selected="true"]')).toHaveText('Neue Website');
+    await expect(page.locator('#neubau')).toBeVisible();
+    await expect(page.locator('#bestand')).toBeHidden();
+    expect(await page.locator('#angebote [role="tab"]').evaluateAll(els => els.map(el => el.dataset.trackAction))).toEqual(['home_offers_tab_new', 'home_offers_tab_existing']);
+    expect(await page.locator('#angebote [role="tab"]').first().evaluate(el => el.getBoundingClientRect().height)).toBeGreaterThanOrEqual(44);
     // Existing website: one line per service, name, canon price and sub page.
     await expect(page.locator('#angebote .st-angebotsliste li')).toHaveCount(5);
     await expect(page.locator('#angebote .st-angebotsliste li a[href^="https://hasimuener.de/"]')).toHaveCount(5);
@@ -124,6 +137,11 @@ for (const width of [360, 768, 1024, 1440]) {
     await expect(page.getByRole('heading', { level: 1 })).toHaveAccessibleName('Mehr Anfragen über Ihre Website. Und Sie sehen, was funktioniert.');
     await expect(page.locator('#klick .st-hero__portrait')).toBeVisible();
     await expect(page.locator('.st-hero__wege a')).toHaveCount(3);
+    // Without JavaScript: no origin line, no tab bar, both starting points stacked.
+    await expect(page.locator('.st-hero__herkunft')).toHaveCount(0);
+    await expect(page.locator('#angebote [role="tablist"]')).toBeHidden();
+    await expect(page.locator('#neubau')).toBeVisible();
+    await expect(page.locator('#bestand')).toBeVisible();
     await page.locator('#angebot-funnel summary').nth(3).click();
     await expect(page.locator('#angebot-funnel details').nth(3)).toHaveAttribute('open', '');
     await expect(page.locator('#angebot-funnel details[open]')).toHaveCount(1);
@@ -132,6 +150,46 @@ for (const width of [360, 768, 1024, 1440]) {
     await context.close();
   });
 }
+
+test('homepage: origin line names the detected source and nothing else', async ({ page }) => {
+  await open(page, { referer: 'https://www.google.de/' });
+  await expect(page.locator('[data-st-aktionen] > .st-hero__herkunft')).toHaveText('Ihr Besuch kam über Google · zugeordnet ohne Cookie');
+  expect(await page.locator('.st-hero__herkunft').evaluate(el => parseFloat(getComputedStyle(el).fontSize))).toBeGreaterThanOrEqual(12);
+  expect(await page.locator('.st-hero__herkunft').evaluate(el => getComputedStyle(el).position)).toBe('absolute');
+});
+
+test('homepage: origin line prefers campaign parameters and ignores the own domain', async ({ page }) => {
+  await open(page, { search: '?utm_source=chatgpt.com', referer: 'https://www.bing.com/' });
+  await expect(page.locator('.st-hero__quelle')).toHaveText('ChatGPT');
+  await page.unrouteAll();
+  await open(page, { search: '?utm_source=<b>x</b>&utm_medium=mail' });
+  await expect(page.locator('.st-hero__quelle')).toHaveText('Kampagne: <b>x</b> / mail');
+  await expect(page.locator('.st-hero__herkunft b')).toHaveCount(0);
+  await page.unrouteAll();
+  await open(page, { referer: 'https://hasimuener.de/kontakt/' });
+  await expect(page.locator('.st-hero__herkunft')).toHaveCount(0);
+});
+
+test('homepage: offer tabs follow WAI-ARIA keys and open from an anchor', async ({ page }) => {
+  await open(page, { search: '#angebot-tracking' });
+  await expect(page.locator('#angebote [role="tab"][aria-selected="true"]')).toHaveText('Website steht schon');
+  await expect(page.locator('#bestand')).toBeVisible();
+  await expect(page.locator('#neubau')).toBeHidden();
+  await expect(page.locator('#bestand')).toHaveAttribute('role', 'tabpanel');
+  await expect(page.locator('#bestand')).toHaveAttribute('aria-labelledby', 'angebote-tab-bestand');
+  const tabs = page.locator('#angebote [role="tab"]');
+  await tabs.nth(1).focus();
+  await page.keyboard.press('ArrowRight');
+  await expect(tabs.nth(0)).toBeFocused();
+  await expect(tabs.nth(0)).toHaveAttribute('aria-selected', 'true');
+  await expect(tabs.nth(1)).toHaveAttribute('tabindex', '-1');
+  await expect(page.locator('#neubau')).toBeVisible();
+  expect(await tabs.nth(0).evaluate(el => getComputedStyle(el).outlineStyle)).not.toBe('none');
+  await page.keyboard.press('End');
+  await expect(tabs.nth(1)).toBeFocused();
+  await expect(page.locator('#bestand')).toBeVisible();
+  await page.screenshot({ path: path.resolve(__dirname, '../../.build/home-tabs-bestand.png') });
+});
 
 test('homepage: disabled assessment has project routing at every remaining entry', async ({ page }) => {
   await open(page, { off: true });
@@ -179,6 +237,8 @@ for (const [width, height] of [[390, 844], [768, 900], [1100, 900], [1280, 800],
         firstScreen: ['.st-hero__kopfzeile', '.st-hero__h1', '.tun'].every(selector => rect(selector).top >= 0 && rect(selector).bottom <= innerHeight),
         waysBelowActions: rect('.st-hero__wege').top >= rect('.st-hero__ctas').bottom,
         portraitBelowWays: rect('.st-hero__portrait').top >= rect('.st-hero__wege').bottom,
+        portraitBesideH1: rect('.st-hero__portrait').left >= Math.max(...Array.from(hero.querySelectorAll('h1 .st-messwort')).map(el => el.getBoundingClientRect().right)) && rect('.st-hero__portrait').top < rect('.st-hero__h1').bottom,
+        portraitOnScreen: rect('.st-hero__portrait').bottom <= innerHeight,
         h1Size: parseFloat(getComputedStyle(hero.querySelector('h1')).fontSize),
         overflow: document.documentElement.scrollWidth > innerWidth,
         lines: Array.from(hero.querySelectorAll('h1 .st-messzeile')).map(line => line.offsetHeight),
@@ -186,7 +246,13 @@ for (const [width, height] of [[390, 844], [768, 900], [1100, 900], [1280, 800],
     });
     expect(geometry.overflow).toBe(false);
     expect(geometry.waysBelowActions).toBe(true);
-    expect(geometry.portraitBelowWays).toBe(true);
+    // From 1100 px the portrait fills the space beside the H1; below it follows the ways.
+    if (width >= 1100) {
+      expect(geometry.portraitBesideH1).toBe(true);
+      if (height >= 800) expect(geometry.portraitOnScreen).toBe(true);
+    } else {
+      expect(geometry.portraitBelowWays).toBe(true);
+    }
     expect(geometry.lines).toHaveLength(4);
     expect(Math.max(...geometry.lines) - Math.min(...geometry.lines)).toBeLessThan(2);
     if (width === 1280 || width === 1440) expect(geometry.firstScreen).toBe(true);

@@ -182,7 +182,10 @@ verlinkt seit 2026-10-01 `/wordpress-website-erstellen-lassen/`
 | 02 Landingpage | `home_offer_landingpage` | `/kontakt/?type=project&focus=landingpage` | `home_offer_landingpage_detail` → `/landingpage-erstellen-lassen/` |
 | 03 Anfragestrecke | `home_offer_anfragestrecke` | `/kontakt/?type=project&focus=anfragestrecke` | `home_offer_anfragestrecke_case` (`proof`) → Fallstudie |
 
-Seit 2026-11-19 stehen nur 01 bis 03 als Karten. „Ihre Website steht schon“ ist
+Seit 2026-11-19 stehen nur 01 bis 03 als Karten. Mit JS wechseln „Neue Website“
+(`home_offers_tab_new`, Gruppe `#neubau`) und „Website steht schon“
+(`home_offers_tab_existing`, Gruppe `#bestand`) als Tabs; ein Anker in die
+Bestandsgruppe öffnet ihren Tab. „Ihre Website steht schon“ ist
 eine kompakte Liste, eine Zeile je Leistung (Name · Kanonpreis · Unterseite,
 Kategorie `navigation`); die Anfrage-Hooks `home_offer_analysis`,
 `home_offer_tracking` und `home_offer_takeover` entfallen mit den Karten:
@@ -219,7 +222,9 @@ Im Hero steht daneben „Leistungsumfang & Preise“ (`home_hero_prices`).
 Der Kanonpreis im Kicker ist Klartext. `home_hero_price_line` und
 `home_head_ersteinschaetzung` sind stillgelegt. Unter den Angeboten erklärt
 eine bedingte Ersteinschätzungs-Tafel Eingabe, drei Befunde und die Antwortzeit.
-`home_hero_case_proof` steht leise unter der Hauptaktion bei jeder Breite.
+`home_hero_case_proof` liegt seit 2026-11-19 auf der −85-%-Kennzahl der
+Belege-Leiste (Ziel Fallstudie) statt als eigener Link unter der Hauptaktion;
+`home_proof_strip_case` (→ `#arbeiten`) entfällt damit.
 Die frühere Hero-Seitennavigation mit `home_nav_prices`, `home_nav_case` und
 `home_nav_pruefstand` entfällt. Fall und Referenzen bleiben in der Belege-Leiste.
 Das Besuchsprotokoll im Hero mit den sechs Stationslinks (`home_hero_station`)
