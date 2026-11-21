@@ -1,4 +1,10 @@
 <!-- Testfixture: fiktives Beispiel, kein realer Befund. Adressblock gehoert ins Druck-Template. -->
+---
+adressquelle: Impressum der Unternehmenswebsite, abgerufen 2026-11-18 (fiktiv)
+widerspruchsliste_geprueft: ja 2026-11-20
+antwortweg: projektanfrage
+freigabe: HM 2026-11-20
+---
 Sehr geehrter Herr Beispiel,
 
 Ihr Kontaktformular auf der Startseite zeigt beim Absenden eine leere Bestätigungsseite, und der Aufruf taucht in keiner Zielvorgabe auf. [Q: Beispiel: öffentliche Prüfung der Formularseite, Entwurfsstand]

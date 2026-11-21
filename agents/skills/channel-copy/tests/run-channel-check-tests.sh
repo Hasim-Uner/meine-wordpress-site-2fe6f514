@@ -52,6 +52,62 @@ PY
 expect_code "brief lang" 1 brief "$TMP/long.md"
 expect_rule "brief lang" laenge
 
+# Brief: neue Regeln (Antwortwege, namentliche Anrede, Front Matter, Freigabe)
+mkbrief() { # datei [sed-Ausdruck]: gutes Brief-Fixture mit einer Aenderung
+  if [[ $# -ge 2 ]]; then sed -E "$2" "$FIX/brief-good.md" >"$1"; else cp "$FIX/brief-good.md" "$1"; fi
+}
+mkbrief "$TMP/two-channels.md" 's/^P\.S\. /P.S. Oder rufen Sie mich an: 0511 1234567. /'
+expect_code "brief zwei Antwortwege" 1 brief "$TMP/two-channels.md"
+expect_rule "brief zwei Antwortwege" mehrere-antwortwege
+mkbrief "$TMP/mail-and-url.md" 's/^P\.S\. /P.S. Oder besuchen Sie https:\/\/example.de\/kontakt\/ . /'
+run brief "$TMP/mail-and-url.md"
+expect_rule "brief Antwort-Formulierung und URL" mehrere-antwortwege
+mkbrief "$TMP/phone-only.md" 's/^P\.S\. /P.S. Telefon +49 511 123 4567. /'
+run brief "$TMP/phone-only.md"
+expect_rule "brief Telefon zaehlt als Antwortweg" mehrere-antwortwege
+mkbrief "$TMP/phone-date.md" 's/^P\.S\. /P.S. Stand 03.05.2026. /'
+run brief "$TMP/phone-date.md"
+expect_no_rule "brief Datum ist keine Telefonnummer" mehrere-antwortwege
+mkbrief "$TMP/same-channel-twice.md" 's/^P\.S\. /P.S. Antworten Sie an antwort@example.de. /; s/an die E-Mail-Adresse im Briefkopf/an antwort@example.de/'
+run brief "$TMP/same-channel-twice.md"
+expect_no_rule "brief derselbe Antwortweg wiederholt" mehrere-antwortwege
+
+mkbrief "$TMP/salutation.md" 's/^Sehr geehrter Herr Beispiel,/Sehr geehrter Herr,/'
+expect_code "brief Anrede ohne Namen" 1 brief "$TMP/salutation.md"
+expect_rule "brief Anrede ohne Namen" anrede-nicht-namentlich
+run brief "$FIX/brief-bad.md"
+expect_rule "brief schlecht" anrede-nicht-namentlich
+for rule in fm-adressquelle fm-widerspruch fm-antwortweg fm-freigabe; do expect_rule "brief schlecht ohne Front Matter" "$rule"; done
+
+sed '/^---$/,/^---$/d' "$FIX/brief-good.md" >"$TMP/no-fm.md"
+expect_code "brief ohne Front Matter" 1 brief "$TMP/no-fm.md"
+for rule in fm-adressquelle fm-widerspruch fm-antwortweg fm-freigabe; do expect_rule "brief ohne Front Matter" "$rule"; done
+
+mkbrief "$TMP/fm-empty.md" 's/^adressquelle: .*/adressquelle:/'
+run brief "$TMP/fm-empty.md"; expect_rule "fm adressquelle leer" fm-adressquelle
+mkbrief "$TMP/fm-objection.md" 's/^widerspruchsliste_geprueft: .*/widerspruchsliste_geprueft: ja/'
+run brief "$TMP/fm-objection.md"; expect_rule "fm Widerspruchsliste ohne Datum" fm-widerspruch
+mkbrief "$TMP/fm-objection2.md" 's/^widerspruchsliste_geprueft: .*/widerspruchsliste_geprueft: nein 2026-11-20/'
+run brief "$TMP/fm-objection2.md"; expect_rule "fm Widerspruchsliste nein" fm-widerspruch
+mkbrief "$TMP/fm-objection3.md" 's/^widerspruchsliste_geprueft: .*/widerspruchsliste_geprueft: ja 2026-13-45/'
+run brief "$TMP/fm-objection3.md"; expect_rule "fm Widerspruchsliste Datum ungueltig" fm-widerspruch
+mkbrief "$TMP/fm-route.md" 's/^antwortweg: .*/antwortweg: telefon/'
+run brief "$TMP/fm-route.md"; expect_rule "fm unbekannte Route" fm-antwortweg
+mkbrief "$TMP/fm-approval.md" 's/^freigabe: .*/freigabe: HM/'
+run brief "$TMP/fm-approval.md"; expect_rule "fm Freigabe ohne Datum" fm-freigabe
+
+mkbrief "$TMP/fm-offen.md" 's/^freigabe: .*/freigabe: offen/'
+expect_code "brief Freigabe offen" 1 brief "$TMP/fm-offen.md"
+expect_rule "brief Freigabe offen" freigabe-offen
+
+# Route und URL muessen zusammenpassen; passende URL bleibt ein einziger Antwortweg
+URL_SWAP='s/, antworten Sie mir kurz an die E-Mail-Adresse im Briefkopf\./ unter www.example.de\/whitelabel-retainer\/ nachlesen./'
+mkbrief "$TMP/route-ok.md" "s/^antwortweg: .*/antwortweg: white-label/; $URL_SWAP"
+expect_code "brief Route passt zur URL" 0 brief "$TMP/route-ok.md"
+mkbrief "$TMP/route-bad.md" "s/^antwortweg: .*/antwortweg: marktcheck/; $URL_SWAP"
+expect_code "brief Route passt nicht zur URL" 1 brief "$TMP/route-bad.md"
+expect_rule "brief Route passt nicht zur URL" antwortweg-url
+
 # Quellenmarker hinter dem Satzende zaehlt, Zahl in Rechtszitat und Kommentar nicht
 printf '%s\n' '<!-- 99 Notiz -->' 'Ihr Formular braucht 3 Klicks. [Q: Beispiel]' 'Siehe Art. 14 DSGVO und § 7 Abs. 2 Nr. 1 UWG.' >"$TMP/marker.md"
 run brief "$TMP/marker.md"
@@ -67,6 +123,17 @@ expect_code "linkedin gut" 0 linkedin "$FIX/linkedin-good.md"
 expect_code "linkedin schlecht" 1 linkedin "$FIX/linkedin-bad.md"
 for rule in hook-laenge engagement-koeder hashtags url grenze-fehlt; do expect_rule "linkedin schlecht" "$rule"; done
 
+# LinkedIn: Beobachtung braucht Quelle, Grenze braucht Substanz
+sed -E 's/ *\[Q:[^]]*\]//' "$FIX/linkedin-good.md" >"$TMP/li-noq.md"
+expect_code "linkedin ohne [Q:]" 1 linkedin "$TMP/li-noq.md"
+expect_rule "linkedin ohne [Q:]" beobachtung-ohne-quelle
+sed -E 's/^Gilt nicht, wenn .*/Es gibt eine Ausnahme./' "$FIX/linkedin-good.md" >"$TMP/li-thin.md"
+expect_code "linkedin duenne Grenze" 1 linkedin "$TMP/li-thin.md"
+expect_rule "linkedin duenne Grenze" grenze-zu-duenn
+expect_no_rule "linkedin duenne Grenze" grenze-fehlt
+run linkedin "$FIX/linkedin-bad.md"
+expect_rule "linkedin schlecht" beobachtung-ohne-quelle
+
 printf '%s\n' 'Eine These. [CTA]' 'Gilt nicht, wenn alles stimmt.' >"$TMP/li-cta.md"
 expect_code "linkedin cta" 1 linkedin "$TMP/li-cta.md"
 expect_rule "linkedin cta" cta-verboten
@@ -78,6 +145,9 @@ grep -q '\[Q:' <<<"$OUT" && fail "strip: [Q: noch vorhanden"
 grep -q '\[CTA\]' <<<"$OUT" && fail "strip: [CTA] noch vorhanden"
 grep -q '<!--' <<<"$OUT" && fail "strip: Kommentar noch vorhanden"
 grep -q 'antworten Sie mir kurz an die E-Mail-Adresse im Briefkopf\.$' <<<"$OUT" || fail "strip: Satz fehlt oder Rest-Leerzeichen"
+grep -q '^---' <<<"$OUT" && fail "strip: Front Matter noch vorhanden"
+grep -q 'adressquelle' <<<"$OUT" && fail "strip: Front-Matter-Feld noch vorhanden"
+grep -q '^Sehr geehrter Herr Beispiel,' <<<"$OUT" || fail "strip: Anrede fehlt"
 run brief --strip "$FIX/linkedin-good.md"
 [[ "$CODE" -eq 0 ]] || fail "strip mit Unterbefehl: Exit $CODE"
 
