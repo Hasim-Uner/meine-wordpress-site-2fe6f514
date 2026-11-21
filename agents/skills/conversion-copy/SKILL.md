@@ -12,6 +12,7 @@ Delegate:
 - Write money-page/landing/service copy → `seo-conversion-copywriting`
 - Iterative improvement loop → `conversion-copy-loop`
 - Structural teardown of external/reference copy → `copy-anatomy`
+- Print-Brief an Geschäftsführung / LinkedIn-Beitrag → `channel-copy`
 
 Hard rules:
 - Follow `docs/standards/BRAND_AND_COPY.md` when positioning/public copy is touched.
