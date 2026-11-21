@@ -26,8 +26,15 @@ Script: `agents/skills/agent-system-maintenance/scripts/adversarial-review.py`
 - Enthält `claim` oder `action` eine Ziffer, braucht die Maßnahme mindestens eine
   vorhandene lokale Belegdatei **mit gefundenem Anker**; der Anker ist die Stelle,
   die die Zahl trägt. URL allein oder bloßer Pfad reichen nicht (Status `UNBELEGT`,
-  "Zahl ohne verankerten Beleg"). Der Gate prüft nur, dass die Stelle existiert,
-  nicht dass sie die Zahl inhaltlich stützt; das bleibt Aufgabe des Kritikers.
+  "Zahl ohne verankerten Beleg").
+- Zahlenprüfung am Anker: Aus `claim` und `action` werden die Zahlen gezogen
+  (deutsche Dezimale "0,6" wird 0.6, Tausenderpunkt "1.750" wird 1750, "14/28"
+  und "60:40" zählen als je zwei Zahlen, ein Datum JJJJ-MM-TT bleibt ganz).
+  Paragraphen- und Artikelverweise ("§ 7", "Art. 14/21", "Abs. 2", "Nr. 1") sind
+  keine Claim-Zahlen. Mindestens eine dieser Zahlen muss in den Zeilen um einen
+  Anker vorkommen (Anker-Zeile ±2 Zeilen, dasselbe Fenster wie im Prompt-Auszug),
+  sonst `UNBELEGT` mit "Anker traegt die Zahl nicht". Das prüft nur, dass die Zahl
+  an der Stelle steht, nicht dass die Stelle die Aussage inhaltlich stützt.
 
 ## Schema `critique.v1`
 
@@ -88,17 +95,32 @@ Strukturprüfung gegen Schablonenkritik (Exit 3, "Kritik abgelehnt"):
 - Derselbe `attack` (Leerraum und Groß-/Kleinschreibung normalisiert) bei zwei oder
   mehr Reviews wird abgelehnt ("Angriff nicht massnahmenspezifisch"); dasselbe gilt
   für `falsification`.
-- Jeder `attack` teilt mindestens einen Begriff (ab 5 Buchstaben, Umlaute gefaltet)
-  mit `claim`, `action`, `metric`, Dateiname und Anker der Belege seiner eigenen
-  Maßnahme. Gleiche Stämme zählen als Treffer, wenn der kürzere Begriff
-  mindestens 6 Buchstaben hat und Präfix des längeren ist ("unbelegte" und
-  "unbelegten").
-- `falsification` nennt ein Fenster oder eine Schwelle: eine Ziffer oder eines von
-  Tage, Wochen, Monat, Fenster, Zeitraum, Prüfpunkt, Export, Lauf, vor Freigabe,
-  vor Versand.
+- Jeder `attack` teilt mindestens zwei verschiedene Begriffe (ab 5 Buchstaben,
+  Umlaute gefaltet) mit `claim`, `action`, `metric`, Dateiname und Anker der Belege
+  seiner eigenen Maßnahme. Gleiche Stämme zählen als Treffer, wenn der kürzere
+  Begriff mindestens 6 Buchstaben hat und Präfix des längeren ist ("unbelegte" und
+  "unbelegten"); Beugungsformen desselben Stamms zählen nur einmal.
+- `falsification` nennt ein Fenster oder eine Schwelle. Gültig ist (a) eine Zahl
+  direkt an einer Einheit (Tage, Wochen, Monate, Stunden, %, Prozent,
+  Prozentpunkte, Anfragen, Sitzungen, Briefe, Leads, Fenster, Exporte), ein Datum
+  JJJJ-MM-TT oder "14/28", oder (b) ein Prüfpunkt-Ereignis: "vor Freigabe",
+  "vor Versand", "vor Druck", "vor dem nächsten", "vor jeder", "beim nächsten",
+  "am Prüfpunkt", "nächster Export". Eine bloße Ziffer ("Abschnitt 1") oder
+  ein Wort wie "Lauf" allein genügt nicht.
 
-Die Grenze 0,9 bleibt bestehen. Die Strukturprüfung beweist nicht, dass die Kritik
-gut ist; sie erkennt nur offensichtliche Vorlagentexte.
+Die Grenze 0,9 bleibt bestehen, ist aber nicht kalibriert: sie stammt aus keiner
+Messung und ist nur ein Backstop. Die Strukturprüfungen oben sind die primäre
+Verteidigung. Auch sie erkennen nur Form: Das Gate kann nicht beurteilen, ob eine
+angenommene Kritik inhaltlich richtig ist. Ein Kritiker, der die Struktur erfüllt
+und Unsinn schreibt, kommt durch.
+
+### Stichprobe (Pflicht für Menschen)
+
+Jede Runde liest der Mensch mindestens ein `halten`-Review vollständig und gleicht
+es gegen die zitierten Belege ab (Anker öffnen, Zahl und Aussage prüfen). Trägt der
+Beleg die Aussage nicht, zählt das Review als abgelehnt und die Maßnahme geht in
+die nächste Runde. Gibt es in einer Runde kein `halten`, gilt die Regel für ein
+`nachbessern`-Review.
 
 Code schlägt Modell: Besteht eine Maßnahme den Pre-Gate nicht (`UNBELEGT` oder
 `FEHLER`), meldet `verdict` sie als `verwerfen`, egal was der Kritiker sagt.

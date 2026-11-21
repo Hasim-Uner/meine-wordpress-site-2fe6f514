@@ -19,6 +19,7 @@ video;domain;(^|\.)(youtube\.com|vimeo\.com)$
 social;domain;(^|\.)(instagram\.com|facebook\.com|linkedin\.com|xing\.com|tiktok\.com|pinterest\.[a-z]+|reddit\.com)$
 portal;domain;(^|\.)(freelance\.de|malt\.(com|de)|freelancermap\.(de|at|ch)|it-projekte\.de|gulp\.de|upwork\.com|fiverr\.com|twago\.de|freelancer\.(com|de)|myhammer\.de|my-hammer\.de|aroundhome\.de|check24\.de|gelbeseiten\.de|11880\.com|wlw\.de)$
 portal;title;freelancer (in \w+ )?finden|experten finden|profile (ansehen|anschauen)|sofortkontakt
+portal;domain;(^|\.)(mapquest\.com|linkiverse\.de|yelp\.de|cylex\.de|firmenwissen\.de)$
 vergleich;domain;(^|\.)(feedbax\.de|agenturtipp\.de|sortlist\.(de|com)|clutch\.co|designrush\.com|trustlocal\.de)$
-vergleich;title;die \d+ besten|top[- ]?\d+|im vergleich|\bvergleich\b|\btest\b|rangliste|alternativen
+vergleich;title;die \d+ besten|top[- ]?\d+|im vergleich|\bvergleich\b|\btest\b|rangliste|alternativen|\d+ agenturen
 ratgeber;title;(^|: )(was|wie|warum|wann|welche[rsn]?)\b|anleitung|leitfaden|ratgeber|tipps|\bguide\b|erklaert|erklärt

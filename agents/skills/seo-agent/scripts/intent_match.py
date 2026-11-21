@@ -195,8 +195,12 @@ def crawl_findings(query: str, owner: str, our_type: str, crawl: dict | None) ->
     if "noindex" in (crawl.get("robots") or "").lower():
         found.append("NOINDEX")
     canonical = crawl.get("canonical") or ""
-    if canonical and norm_path(canonical) != norm_path(owner):
-        found.append(f"CANONICAL-FREMD ({norm_path(canonical)})")
+    # Host mitpruefen: ein Canonical auf fremde Domain mit gleichem Pfad gibt
+    # die Seite genauso aus dem Index wie ein falscher Pfad.
+    page_host = urlsplit(crawl.get("final_url") or crawl.get("url") or "").netloc.lower().removeprefix("www.")
+    canon_host = urlsplit(canonical).netloc.lower().removeprefix("www.")
+    if canonical and (norm_path(canonical) != norm_path(owner) or (canon_host and canon_host != page_host)):
+        found.append(f"CANONICAL-FREMD ({canon_host + norm_path(canonical) if canon_host != page_host else norm_path(canonical)})")
     fields = set(toks(crawl.get("title", ""))) | {
         t for h in crawl.get("headings", []) if h.get("level") == 1 for t in toks(h.get("text", ""))}
     missing = [t for t in toks(query) if not covered(t, fields)]
@@ -344,7 +348,11 @@ def main() -> int:
         for q, rec, serp in unowned:
             lead = serp["leaders"][0] if serp["shape"] == "DOMINANT" else "/".join(serp["leaders"]) or "kein Typ"
             out.append(f"  {rec['keyword'][:40]:<40} {serp['shape']} {lead}: {dist(serp)}")
-        out.append("  Vor dem Bauen: intent-gate.sh check. Der Seitentyp oben ist Pflicht, kein Vorschlag.")
+            if serp["fallback_share"] > MAX_FALLBACK_SHARE:
+                out.append(f"    - RESTKLASSE-HOCH ({pct(serp['fallback_share'])} ohne Regeltreffer: "
+                           "kein Typurteil, erst Regeldatei ergaenzen)")
+        out.append("  Vor dem Bauen: intent-gate.sh check und die SERP von Hand sichten. Der Seitentyp")
+        out.append("  oben ist ein Pruefhinweis aus unkalibrierten Schwellen, keine Bauvorgabe.")
         out.append("")
     if missing_serp:
         out.append(f"Ohne SERP-Daten: {len(missing_serp)} Registry-Queries (nicht bewertet, nicht geraten).")

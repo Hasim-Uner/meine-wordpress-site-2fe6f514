@@ -179,6 +179,55 @@ def first_number(text: str) -> float | None:
     return parse_number(raw)
 
 
+NUMBER_TOKEN = r"\d+(?:\.\d{3})+(?:,\d+)?|\d+,\d+|\d+(?:\.\d+)?"
+RANGE_DASH = "[\u2013-]"
+RANGE_PATTERN = re.compile(r"^\s*(" + NUMBER_TOKEN + r")\s*" + RANGE_DASH + r"\s*(" + NUMBER_TOKEN + r")")
+EURO_UNITS = {"\u20ac", "eur", "euro"}
+
+
+def token_value(token: str) -> float | None:
+    if re.fullmatch(r"\d+(?:\.\d{3})+(?:,\d+)?", token):
+        token = token.replace(".", "")
+    return parse_number(token)
+
+
+def token_decimals(token: str) -> int:
+    """Nachkommastellen eines Kanon-Tokens; Punkt vor genau drei Ziffern ist Tausendertrenner."""
+    if re.fullmatch(r"\d+(?:\.\d{3})+(?:,\d+)?", token):
+        return len(token.split(",", 1)[1]) if "," in token else 0
+    return decimals_of(token)
+
+
+def block_number(block: str, field: str) -> float | None:
+    match = re.search(r"""['"]""" + field + r"""['"]\s*=>\s*(-?\d+(?:\.\d+)?)\s*[,\]]""", block + ",")
+    return float(match.group(1)) if match else None
+
+
+def parse_range(text: str) -> tuple[str, str] | None:
+    """Ledger-Wert 'a-b' (Bindestrich oder Gedankenstrich) in beide Endpunkte als Text."""
+    match = re.fullmatch(r"\s*(\d+(?:[.,]\d+)?)\s*" + RANGE_DASH + r"\s*(\d+(?:[.,]\d+)?)\s*", text)
+    return (match.group(1), match.group(2)) if match else None
+
+
+def canon_unit_of(display: str | None) -> str | None:
+    if not display:
+        return None
+    if "%" in display:
+        return "percent"
+    if "\u20ac" in display or re.search(r"\bEUR\b", display, re.IGNORECASE):
+        return "eur"
+    return None
+
+
+def ledger_unit_of(unit: str) -> str:
+    lowered = unit.strip().lower()
+    if lowered in PERCENT_UNITS:
+        return "percent"
+    if lowered in EURO_UNITS:
+        return "eur"
+    return lowered
+
+
 def canon_entry(canon_text: str, key: str) -> tuple[dict[str, object] | None, str | None]:
     """Eintrag des Kanon-Schluessels lesen: (Daten, Fehlertext)."""
     if not canon_has_key(canon_text, key):
@@ -190,11 +239,26 @@ def canon_entry(canon_text: str, key: str) -> tuple[dict[str, object] | None, st
         number = first_number(target) if target else None
         if number is None and display:
             number = first_number(display)
+        source = display if display and re.search(NUMBER_TOKEN, display) else target
+        tokens = re.findall(NUMBER_TOKEN, source) if source else []
+        decimals = max((token_decimals(token) for token in tokens), default=0)
+        # Spanne: Anzeige "a-b" oder value + value_high. Nur display_hedged markiert eine Annahme.
+        span = None
+        range_match = RANGE_PATTERN.match(display) if display else None
+        if range_match:
+            span = (token_value(range_match.group(1)), token_value(range_match.group(2)))
+        elif block_number(block, "value") is not None and block_number(block, "value_high") is not None:
+            span = (block_number(block, "value"), block_number(block, "value_high"))
+        elif re.search(r"""['"]value_high['"]\s*=>""", block):
+            span = (None, None)
         entries.append(
             {
                 "number": number,
                 "label": block_string(block, "label"),
-                "assumption": bool(re.search(r"""['"](?:value_high|display_hedged)['"]\s*=>""", block)),
+                "assumption": bool(re.search(r"""['"]display_hedged['"]\s*=>""", block)),
+                "range": span,
+                "decimals": decimals,
+                "unit": canon_unit_of(display),
             }
         )
     if not entries:
@@ -205,7 +269,8 @@ def canon_entry(canon_text: str, key: str) -> tuple[dict[str, object] | None, st
 
 
 def check_canon_entry(
-    canon_text: str,
+    entry: dict[str, object] | None,
+    problem: str | None,
     key: str,
     value_text: str,
     group_label: str | None,
@@ -216,22 +281,45 @@ def check_canon_entry(
 ) -> None:
     """Wert, Bezugsgruppe und Annahme-Status gegen den Kanon pruefen."""
     prefix = f"{role}: " if role else ""
-    entry, problem = canon_entry(canon_text, key)
     if entry is None:
         errors.append(prefix + str(problem))
         return
     if entry["assumption"]:
         if public:
-            errors.append(prefix + f"Annahme, keine Messung (Kanon-Schluessel {key!r} traegt value_high oder display_hedged)")
+            errors.append(prefix + f"Annahme, keine Messung (Kanon-Schluessel {key!r} traegt display_hedged)")
         else:
             warnings.append(prefix + f"Kanon-Schluessel {key!r} ist eine Annahme, keine Messung; nicht als Ergebnis ausgeben")
         return
-    value = parse_number(value_text) if value_text else None
-    canon_number = entry["number"]
-    if canon_number is None:
-        errors.append(prefix + f"Kanonwert fuer {key!r} nicht lesbar (weder counter_target noch Zahl in display)")
-    elif value is not None and abs(value - float(canon_number)) > rounding_tolerance(value_text):
-        errors.append(prefix + f"Kanonwert weicht ab: Ledger {value_text}, Kanon {float(canon_number):g} ({key})")
+    canon_decimals = int(entry["decimals"])  # type: ignore[arg-type]
+    span = entry["range"]
+    if span is not None:
+        low, high = span  # type: ignore[misc]
+        ledger_range = parse_range(value_text) if value_text else None
+        if low is None or high is None:
+            errors.append(prefix + f"Kanonspanne fuer {key!r} nicht lesbar")
+        elif ledger_range is None:
+            if value_text and parse_number(value_text) is not None:
+                errors.append(prefix + f"Spanne als Einzelwert: Kanon {key!r} ist eine gemessene Spanne {low:g}-{high:g}; value als 'a-b' angeben")
+            elif value_text:
+                errors.append(prefix + f"value muss die Spanne 'a-b' sein (Kanon {key!r}: {low:g}-{high:g})")
+        else:
+            for text, expected in zip(ledger_range, (low, high)):
+                number = parse_number(text)
+                if number is None or abs(number - expected) > rounding_tolerance(text):
+                    errors.append(prefix + f"Kanonwert weicht ab: Ledger {value_text}, Kanon {low:g}-{high:g} ({key})")
+                    break
+            if any(decimals_of(text) > canon_decimals for text in ledger_range):
+                errors.append(prefix + f"Scheingenauigkeit gegenueber Kanon: Ledger {value_text} hat mehr Nachkommastellen als der Kanon ({key})")
+    else:
+        value = parse_number(value_text) if value_text else None
+        canon_number = entry["number"]
+        if canon_number is None:
+            errors.append(prefix + f"Kanonwert fuer {key!r} nicht lesbar (weder counter_target noch Zahl in display)")
+        else:
+            if value is not None and abs(value - float(canon_number)) > rounding_tolerance(value_text):
+                errors.append(prefix + f"Kanonwert weicht ab: Ledger {value_text}, Kanon {float(canon_number):g} ({key})")
+            if value is not None and decimals_of(value_text) > canon_decimals:
+                errors.append(prefix + f"Scheingenauigkeit gegenueber Kanon: Ledger {value_text} hat mehr Nachkommastellen als der Kanon ({key})")
     if group_label is not None:
         canon_label = entry["label"]
         if not canon_label:
@@ -260,7 +348,13 @@ def check_claim(
     if values["unit"].lower() in PERCENT_UNITS:
         values["unit"] = "%"
     value = parse_number(values["value"]) if values["value"] else None
-    if values["value"] and value is None:
+    canon, canon_problem = (
+        canon_entry(canon_text, values["source_locator"])
+        if values["source_kind"] == "canon" and values["source_locator"]
+        else (None, None)
+    )
+    canon_range = canon is not None and canon["range"] is not None and not canon["assumption"]
+    if values["value"] and value is None and not (canon_range and parse_range(values["value"])):
         errors.append(f"value ist keine Zahl ({values['value']!r})")
 
     # Quelle
@@ -271,9 +365,14 @@ def check_claim(
     elif kind == "canon" and locator:
         group = values["denominator_label"] or None
         check_canon_entry(
-            canon_text, locator, values["value"], group,
+            canon, canon_problem, locator, values["value"], group,
             values["public"].lower() == "true", errors, warnings,
         )
+        canon_unit = canon["unit"] if canon is not None else None
+        if canon_unit and ledger_unit_of(values["unit"]) != canon_unit:
+            errors.append(
+                f"Einheit weicht vom Kanon ab: Kanon {canon_unit}, Ledger {values['unit']!r} ({locator})"
+            )
     elif kind and locator and locator_looks_personal(locator):
         errors.append("source_locator enthaelt E-Mail oder Telefonnummer; anonymisierte ID verwenden")
 
@@ -281,8 +380,10 @@ def check_claim(
     if values["public"] and public not in {"true", "false"}:
         errors.append("public muss true oder false sein")
 
-    # Prozentwerte: harte Rechenprobe
-    if values["unit"] == "%":
+    # Prozentwerte: harte Rechenprobe (Spannen haben keinen einzelnen Quotienten)
+    if values["unit"] == "%" and canon_range:
+        pass
+    elif values["unit"] == "%":
         numerator = parse_number(values["numerator"]) if values["numerator"] else None
         denominator = parse_number(values["denominator"]) if values["denominator"] else None
         missing = [
@@ -373,8 +474,9 @@ def check_claim(
             elif not baseline_key:
                 errors.append("oeffentlicher Vorher/Nachher-Claim braucht baseline:<kanon-schluessel> in definition")
             else:
+                base_entry, base_problem = canon_entry(canon_text, baseline_key.group(1))
                 check_canon_entry(
-                    canon_text, baseline_key.group(1), values["baseline_value"], None,
+                    base_entry, base_problem, baseline_key.group(1), values["baseline_value"], None,
                     True, errors, warnings, role="Baseline",
                 )
 

@@ -101,7 +101,7 @@ class AdversarialTests(unittest.TestCase):
 
     def test_numeric_claim_needs_anchored_evidence(self):
         gsc = f'{FIX}/evidence-gsc.csv'
-        claim = 'Absprung liegt bei 40 Prozent.'
+        claim = 'Absprung liegt bei 80 Prozent.'
         res = self.cli('check', self.measures([measure('M1', [gsc], claim=claim)]))
         self.assertEqual(res.returncode, 1)
         self.assertIn('M1\tUNBELEGT', res.stdout)
@@ -111,6 +111,44 @@ class AdversarialTests(unittest.TestCase):
         # url plus bare path is still not anchored
         res = self.cli('check', self.measures([measure('M1', [gsc, 'https://example.com'], claim=claim)]))
         self.assertIn('Zahl ohne verankerten Beleg', res.stdout)
+
+    # ---- anchor must carry the number
+    def test_anchor_without_the_number_is_unbelegt(self):
+        gsc = f'{FIX}/evidence-gsc.csv'
+        res = self.cli('check', self.measures([measure('M1', [f'{gsc}#waermepumpe'],
+                                                       claim='Die Quote steigt um 99 Prozent.')]))
+        self.assertEqual(res.returncode, 1)
+        self.assertIn('M1\tUNBELEGT\tAnker traegt die Zahl nicht', res.stdout)
+
+    def number_status(self, claim, anchor, action='Text anpassen.'):
+        ev = f'{FIX}/evidence-numbers.md#{anchor}'
+        res = self.cli('check', self.measures([measure('M1', [ev], claim=claim, action=action)]))
+        return res.stdout
+
+    def test_number_normalization_german_notation(self):
+        self.assertIn('M1\tOK', self.number_status('Die Quote steigt auf 0.6 Prozent.', 'Quote'))
+        self.assertIn('M1\tOK', self.number_status('Die Quote steigt auf 0,6 Prozent.', 'Quote'))
+        self.assertIn('M1\tOK', self.number_status('Es gibt 1750 Anfragen.', 'Quote'))
+        self.assertIn('M1\tOK', self.number_status('Es gibt 1.750 Anfragen.', 'Quote'))
+        self.assertIn('M1\tOK', self.number_status('Fenster 14/28 Tage.', 'Quote'))
+        self.assertIn('M1\tOK', self.number_status('Nur 28 Tage.', 'Quote'))
+        self.assertIn('M1\tUNBELEGT', self.number_status('Es gibt 1.751 Anfragen.', 'Quote'))
+
+    def test_number_must_lie_within_anchor_window(self):
+        # 77 stands only after "Ferne", outside the +-2 lines around "Quote"
+        self.assertIn('M1\tUNBELEGT\tAnker traegt die Zahl nicht', self.number_status('Wert 77.', 'Quote'))
+        self.assertIn('M1\tOK', self.number_status('Wert 77.', 'Ferne'))
+
+    def test_one_matching_number_is_enough(self):
+        self.assertIn('M1\tOK', self.number_status('Von 99 auf 0,6 Prozent.', 'Quote'))
+
+    def test_article_and_paragraph_numbers_are_not_claim_numbers(self):
+        claim = 'Nach § 7 UWG und Art. 14/21 DSGVO gilt Abs. 2 Nr. 1 ohne Wirkungsversprechen.'
+        self.assertIn('M1\tOK', self.number_status(claim, 'Quote'))
+        # a real number next to references still has to be carried
+        self.assertIn('M1\tUNBELEGT\tAnker traegt die Zahl nicht',
+                      self.number_status('Nach § 7 UWG steigt die Quote um 99 Prozent.', 'Quote'))
+        self.assertIn('M1\tOK', self.number_status('Nach § 7 UWG steigt die Quote um 0,6 Prozent.', 'Quote'))
 
     def test_schema_error_is_usage(self):
         bad = measure('M1', [f'{FIX}/evidence-gsc.csv'])
@@ -230,6 +268,52 @@ class AdversarialTests(unittest.TestCase):
                     'M2: Falsifikation ohne Zeitfenster')
         ok = self.critique([review('M1'), review('M2', falsification='Prüfpunkt vor Freigabe: Hauptanfrage unverändert.')])
         self.assertEqual(self.cli('verdict', self.fixture_measures(), ok).returncode, 0)
+
+    def test_bare_digit_is_not_a_window(self):
+        self.reject([review('M1'),
+                     review('M2', falsification='Die Hauptanfrage Impressionen bleibt in Abschnitt 1 unklar.')],
+                    'M2: Falsifikation ohne Zeitfenster')
+
+    def test_window_forms_accepted(self):
+        forms = ['Kein Anstieg der Hauptanfrage binnen 28 Tagen nach dem Release.',
+                 'Die Hauptanfrage faellt um mehr als 5 Prozent unter den Ausgangswert.',
+                 'Weniger als 12 Anfragen zur Hauptanfrage im Zeitraum.',
+                 'Die Hauptanfrage bleibt nach der 14-Tage-Frist unveraendert flach.',
+                 'Die Hauptanfrage bleibt seit 2026-11-19 unveraendert flach.',
+                 'Die Hauptanfrage bleibt im 14/28 Lauf unveraendert flach.',
+                 'Vor Freigabe zeigt die Hauptanfrage noch keine Bewegung im Ergebnis.',
+                 'Vor Versand zeigt die Hauptanfrage noch keine Bewegung im Ergebnis.',
+                 'Vor Druck zeigt die Hauptanfrage noch keine Bewegung im Ergebnis.',
+                 'Vor dem nächsten Case-Brief zeigt die Hauptanfrage noch keine Bewegung.',
+                 'Vor dem naechsten Case-Brief zeigt die Hauptanfrage noch keine Bewegung.',
+                 'Vor jeder Auslieferung zeigt die Hauptanfrage noch keine Bewegung.',
+                 'Beim nächsten Update zeigt die Hauptanfrage noch keine Bewegung.',
+                 'Beim naechsten Update zeigt die Hauptanfrage noch keine Bewegung.',
+                 'Am Prüfpunkt zeigt die Hauptanfrage noch keine Bewegung im Ergebnis.',
+                 'Am Pruefpunkt zeigt die Hauptanfrage noch keine Bewegung im Ergebnis.',
+                 'Nächster Export zeigt die Hauptanfrage noch ohne Bewegung im Ergebnis.']
+        for fal in forms:
+            c = self.critique([review('M1'), review('M2', falsification=fal)])
+            res = self.cli('verdict', self.fixture_measures(), c)
+            self.assertEqual(res.returncode, 0, fal + res.stdout)
+
+    def test_window_forms_rejected(self):
+        forms = ['Die Hauptanfrage Impressionen bleibt in Abschnitt 1 unklar.',
+                 'Die Hauptanfrage Impressionen sinkt irgendwann einmal spuerbar nach Release 2.',
+                 'Die Hauptanfrage Impressionen zeigt Version 3 ohne jede Bewegung im Lauf.',
+                 'Der Prüfpunkt ist unklar, die Hauptanfrage Impressionen bewegt sich nicht.']
+        for fal in forms:
+            self.reject([review('M1'), review('M2', falsification=fal)], 'M2: Falsifikation ohne Zeitfenster')
+
+    # ---- attack relation
+    def test_single_shared_term_is_not_enough(self):
+        # only "Formular" is shared with M1 (claim/action/metric/evidence)
+        self.reject([review('M1', attack='Das Formular allein ist nie der Grund fuer Verluste im Sommer.'),
+                     review('M2')], 'M1: Angriff nicht massnahmenspezifisch')
+
+    def test_inflections_of_one_stem_count_once(self):
+        self.reject([review('M1', attack='Formular und Formulare und Formularen verlieren Nutzer im Sommer.'),
+                     review('M2')], 'M1: Angriff nicht massnahmenspezifisch')
 
     def test_inflected_token_matches_measure(self):
         # "Formulare" shares the stem with measure token "Formular"

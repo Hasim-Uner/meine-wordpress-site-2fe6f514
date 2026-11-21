@@ -42,7 +42,9 @@ Das Skript `scripts/case-proof-check.py` erzwingt sie. ERROR bricht ab (Exit 1),
 | `source_kind=canon`: der Schlüssel muss als Block `'schluessel' => [ ... ]` im Kanon-Verzeichnis lesbar sein; fehlt er oder lässt sich der Block nicht lesen, ist das ein Fehler (kein stilles Durchwinken) | ERROR | Der Kanon ist die einzige Quelle öffentlicher Zahlen (BRAND_AND_COPY, „Fakten stehen nie als Text“); ein erfundener oder nicht lesbarer Schlüssel wäre ein Beleg ohne Quelle |
 | `source_kind=canon`: `value` stimmt mit der Kanonzahl überein (`counter_target`, sonst die erste Zahl in `display`), im Rahmen der Rundungsregel unten | ERROR „Kanonwert weicht ab“ | Nur das Vorkommen des Schlüssels zu prüfen ließ jeden Wert unter dem Schlüssel durch |
 | `source_kind=canon`: `denominator_label` (bei `%`, sonst falls gesetzt) ist gleich dem `label` des Kanon-Eintrags, ohne Beachtung von Groß-/Kleinschreibung und Leerraum | ERROR „Bezugsgruppe weicht vom Kanon ab“ | Dieselbe Zahl gilt nur für ihre Bezugsgruppe. Das Ledger hat kein eigenes Label-Feld; geprüft wird daher das Nenner-Label |
-| Kanon-Eintrag mit `value_high` oder `display_hedged` (Annahme, keine Messung) | ERROR bei `public=true`, WARN sonst | Marktannahmen dürfen nicht als Ergebnis erscheinen; Wert- und Gruppenabgleich entfallen für sie |
+| Kanon-Eintrag mit `display_hedged` (Annahme, keine Messung) | ERROR bei `public=true`, WARN sonst | Marktannahmen dürfen nicht als Ergebnis erscheinen; Wert- und Gruppenabgleich entfallen für sie. Nur `display_hedged` markiert eine Annahme; `value_high` allein tut es nicht |
+| Kanon-Eintrag mit Spanne (`display` der Form „a–b“ mit Gedankenstrich oder Bindestrich, oder `value` plus `value_high`): `value` muss die ganze Spanne als „a-b“ nennen (Gedankenstrich oder Bindestrich), beide Endpunkte stimmen mit dem Kanon überein. Spannen überspringen die Zähler/Nenner-Rechnung | ERROR „Spanne als Einzelwert“ bei einer einzelnen Zahl, ERROR „Kanonwert weicht ab“ bei falschem Endpunkt | Eine gemessene Spanne ist keine Annahme, darf aber nicht auf einen Endpunkt gekürzt werden |
+| Kanon-Eintrag mit Einheit (aus `display` abgeleitet: Prozentzeichen = Prozent, Euro-Zeichen oder EUR = Euro, sonst keine): die Ledger-`unit` muss übereinstimmen (`%`, `Prozent`, `percent` gelten gleich; Euro-Zeichen, `EUR`, `Euro` gelten gleich) | ERROR „Einheit weicht vom Kanon ab“ | Sonst ließe sich die Quoten-Pflicht (Zähler, Nenner, Label) durch eine fremde Einheit umgehen. Ein Prozent-Kanon-Claim braucht damit immer Zähler, Nenner und Nenner-Label |
 | Nicht-Canon-Locator ist anonym: kein `@`, keine Telefonnummer | ERROR | Rohdaten und Personenbezug bleiben aus dem Ledger |
 | Einheit Prozent: Zähler, Nenner und Nenner-Label Pflicht; Wert 0 bis 100; `value` weicht höchstens um eine halbe Einheit seiner letzten angegebenen Dezimalstelle von Zähler/Nenner × 100 ab | ERROR | Eine Quote ohne benannten Nenner lässt sich nicht verteidigen. Der Referenzfall zeigt es: Lead-Quote und Abschlussquote haben verschiedene Nenner (Besucher, vorqualifizierte CRM-Leads), siehe `hu_e3_summary( 'definitions' )` |
 | Andere Einheit als Prozent, aber Zähler und Nenner gesetzt | ERROR „Einheit fuer Quote unklar“ | Sonst ließe sich die Rechenprobe durch eine andere Schreibweise der Einheit umgehen |
@@ -62,7 +64,11 @@ Dezimalstelle von `value`. Ein Wert ohne Nachkommastelle darf um höchstens 0,5
 Punkte abweichen, ein Wert mit einer Nachkommastelle um höchstens 0,05. Wer
 genauer schreibt, wird genauer geprüft. Das gilt für die Rechenprobe und für
 den Kanonvergleich. Eine genauere Angabe als der Kanon hergibt ist deshalb ein
-Fehler; die Rundung folgt dem Kanon, nicht der Aussage.
+Fehler („Kanonwert weicht ab“, wenn der Wert auch abweicht). Hat das Ledger mehr
+Nachkommastellen als die `display` des Kanons, ist das zusätzlich ein Fehler
+„Scheingenauigkeit gegenueber Kanon“, auch wenn der Zahlenwert gleich bleibt
+(Beispiel: zwei Nullen hinter einer ganzen Kanonzahl). Die Rundung folgt dem
+Kanon, nicht der Aussage.
 
 Zusätzlich gilt aus den Hausregeln, auch ohne Skriptprüfung: Der Rechner-
 Default und Marktannahmen sind keine Messung. Eine Annahme (etwa die
@@ -105,6 +111,15 @@ Fehlt ein öffentlich zulässiger Claim, nennt der Brief keine Kennzahl.
 5. Nach dem Kanon-Update den Ledger-Eintrag auf `source_kind=canon`, Schlüssel und `public=true` umstellen und erneut prüfen.
 6. `--brief` ausgeben, Platzhalter aus Evidenz füllen.
 7. Der Brief geht als Handoff an den Primärskill `conversion-copy`; der schreibt den Text.
+
+## Grenzen der Prüfung
+
+Das Skript prüft Konsistenz mit dem Kanon, nicht Wahrheit und nicht Texttreue.
+Offen und bewusst nicht gelöst:
+
+- **Baseline-Bezugsgruppe:** Das Schema hat keine Spalte für die Bezugsgruppe der Baseline (Label, Zähler, Nenner). Der Vorher-Wert wird nur gegen den Kanon geprüft, nicht gegen eine eigene Gruppe. Ob Vorher und Nachher dieselbe Gruppe meinen, entscheidet ein Mensch; eine neue Spalte ist eine Schema-Entscheidung und hier nicht erfunden.
+- **„Ein Betrieb bleibt ein Fall“:** Das ist eine Formulierungsregel für den Text (Copy-Ebene). Das Skript sieht nur Zahlen und kann Verallgemeinerungen im Text nicht erkennen.
+- Quellenrichtigkeit und Attribution (`attribution_note`) prüft ein Mensch.
 
 ## Harte Grenzen
 

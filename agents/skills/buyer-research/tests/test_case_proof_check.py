@@ -51,12 +51,13 @@ def internal_row(**overrides: str) -> dict[str, str]:
     )
 
 
-def public_canon_row(index: int, metric: str, value: str, locator: str) -> dict[str, str]:
+def public_canon_row(index: int, metric: str, value: str, locator: str, unit: str = "EUR") -> dict[str, str]:
+    """Oeffentlicher Canon-Claim ohne Rechenbasis (nur fuer Nicht-Prozent-Kanon)."""
     return percent_row(
         claim_id=f"T-{index:03d}",
         metric=metric,
         value=value,
-        unit="EUR",
+        unit=unit,
         numerator="",
         denominator="",
         denominator_label="",
@@ -385,13 +386,137 @@ class CaseProofCheckTests(unittest.TestCase):
         )
         self.assertEqual(result.returncode, 0, result.stdout)
 
+    # --- Einheit gegen Kanon (Bypass: Einheit weglassen/umbenennen) ---
+
+    def test_percent_canon_with_euro_unit_and_no_base_fails(self) -> None:
+        result = self.check(public_canon_row(1, "fake_close_rate", "15", "fake_close_rate", unit="EUR"))
+        self.assertEqual(result.returncode, 1)
+        self.assertIn("Einheit weicht vom Kanon ab", result.stdout)
+
+    def test_percent_canon_with_unrelated_unit_fails(self) -> None:
+        result = self.check(public_canon_row(1, "fake_close_rate", "15", "fake_close_rate", unit="count"))
+        self.assertEqual(result.returncode, 1)
+        self.assertIn("Einheit weicht vom Kanon ab", result.stdout)
+
+    def test_percent_canon_always_requires_base(self) -> None:
+        result = self.check(percent_row(numerator="", denominator="", denominator_label=""))
+        self.assertEqual(result.returncode, 1)
+        self.assertIn("Prozentwert braucht numerator, denominator, denominator_label", result.stdout)
+
+    def test_euro_canon_with_percent_unit_fails(self) -> None:
+        result = self.check(percent_row(metric="fake_cpl_after", value="22", source_locator="fake_cpl_after"))
+        self.assertEqual(result.returncode, 1)
+        self.assertIn("Einheit weicht vom Kanon ab", result.stdout)
+
+    def test_euro_unit_spellings_match_euro_canon(self) -> None:
+        for unit in ("EUR", "eur", "Euro", "\u20ac"):
+            with self.subTest(unit=unit):
+                result = self.check(public_canon_row(1, "fake_cpl_after", "22", "fake_cpl_after", unit=unit))
+                self.assertEqual(result.returncode, 0, result.stdout)
+
+    def test_unitless_canon_accepts_any_unit(self) -> None:
+        result = self.check(public_canon_row(1, "fake_lead_count", "200", "fake_lead_count", unit="count"))
+        self.assertEqual(result.returncode, 0, result.stdout)
+
+    # --- Spannen: nur display_hedged ist eine Annahme ---
+
+    def test_measured_range_is_not_an_assumption(self) -> None:
+        result = self.check(public_canon_row(1, "fake_cpl_tested", "70-80", "fake_range_measured"))
+        self.assertEqual(result.returncode, 0, result.stdout)
+        self.assertNotIn("Annahme", result.stdout)
+
+    def test_range_accepts_en_dash_and_spaces(self) -> None:
+        for value in ("70\u201380", "70 - 80", "70 \u2013 80"):
+            with self.subTest(value=value):
+                result = self.check(public_canon_row(1, "fake_cpl_tested", value, "fake_range_measured"))
+                self.assertEqual(result.returncode, 0, result.stdout)
+
+    def test_range_as_single_number_fails(self) -> None:
+        for value in ("70", "80", "75"):
+            with self.subTest(value=value):
+                result = self.check(public_canon_row(1, "fake_cpl_tested", value, "fake_range_measured"))
+                self.assertEqual(result.returncode, 1)
+                self.assertIn("Spanne als Einzelwert", result.stdout)
+
+    def test_range_must_match_both_endpoints(self) -> None:
+        for value in ("70-90", "60-80", "75-80"):
+            with self.subTest(value=value):
+                result = self.check(public_canon_row(1, "fake_cpl_tested", value, "fake_range_measured"))
+                self.assertEqual(result.returncode, 1)
+                self.assertIn("Kanonwert weicht ab", result.stdout)
+
+    def test_display_only_range_requires_full_range(self) -> None:
+        ok = self.check(public_canon_row(1, "fake_cpl_late", "15-30", "fake_range_display_only"))
+        self.assertEqual(ok.returncode, 0, ok.stdout)
+        bad = self.check(public_canon_row(1, "fake_cpl_late", "15", "fake_range_display_only"))
+        self.assertEqual(bad.returncode, 1)
+        self.assertIn("Spanne als Einzelwert", bad.stdout)
+
+    def test_value_high_without_range_display_is_still_a_range(self) -> None:
+        ok = self.check(public_canon_row(1, "fake_cpl_values", "40-50", "fake_range_values_only"))
+        self.assertEqual(ok.returncode, 0, ok.stdout)
+        bad = self.check(public_canon_row(1, "fake_cpl_values", "40", "fake_range_values_only"))
+        self.assertEqual(bad.returncode, 1)
+        self.assertIn("Spanne als Einzelwert", bad.stdout)
+
+    def test_range_with_wrong_unit_fails(self) -> None:
+        result = self.check(public_canon_row(1, "fake_cpl_tested", "70-80", "fake_range_measured", unit="%"))
+        self.assertEqual(result.returncode, 1)
+        self.assertIn("Einheit weicht vom Kanon ab", result.stdout)
+
+    def test_range_value_on_single_number_canon_fails(self) -> None:
+        result = self.check(public_canon_row(1, "fake_cpl_after", "20-25", "fake_cpl_after"))
+        self.assertEqual(result.returncode, 1)
+        self.assertIn("value ist keine Zahl", result.stdout)
+
+    def test_range_endpoints_checked_for_false_precision(self) -> None:
+        result = self.check(public_canon_row(1, "fake_cpl_tested", "70,0-80", "fake_range_measured"))
+        self.assertEqual(result.returncode, 1)
+        self.assertIn("Scheingenauigkeit gegenueber Kanon", result.stdout)
+
+    def test_internal_claim_on_hedged_range_still_assumption_warning(self) -> None:
+        # value_high + display_hedged bleibt Annahme: Gruppen-/Spannenabgleich entfaellt.
+        result = self.check(
+            percent_row(
+                metric="fake_close_rate_before", value="3", numerator="3", denominator="100",
+                source_locator="fake_close_rate_before", public="false",
+            )
+        )
+        self.assertEqual(result.returncode, 0, result.stdout)
+
+    # --- Scheingenauigkeit gegenueber dem Kanon ---
+
+    def test_false_precision_against_canon_fails(self) -> None:
+        for value in ("15,00", "15.0", "15,0"):
+            with self.subTest(value=value):
+                result = self.check(percent_row(value=value, numerator="30", denominator="200"))
+                self.assertEqual(result.returncode, 1)
+                self.assertIn("Scheingenauigkeit gegenueber Kanon", result.stdout)
+
+    def test_canon_decimals_allow_same_precision(self) -> None:
+        ok = self.check(
+            percent_row(value="15,4", numerator="308", denominator="2000", source_locator="fake_decimal_rate")
+        )
+        self.assertEqual(ok.returncode, 0, ok.stdout)
+        # Mehr Stellen als der Kanon (15,4 -> 15,40) ist Scheingenauigkeit.
+        bad = self.check(
+            percent_row(value="15,40", numerator="308", denominator="2000", source_locator="fake_decimal_rate")
+        )
+        self.assertEqual(bad.returncode, 1)
+        self.assertIn("Scheingenauigkeit gegenueber Kanon", bad.stdout)
+
+    def test_false_precision_on_euro_canon_fails(self) -> None:
+        result = self.check(public_canon_row(1, "fake_cpl_after", "22.00", "fake_cpl_after"))
+        self.assertEqual(result.returncode, 1)
+        self.assertIn("Scheingenauigkeit gegenueber Kanon", result.stdout)
+
     def test_brief_prints_max_three_results_and_no_invented_numbers(self) -> None:
         rows = [
-            public_canon_row(1, "fake_close_rate", "15", "fake_close_rate"),
+            percent_row(claim_id="T-001", metric="fake_close_rate"),
             public_canon_row(2, "fake_cpl_after", "22", "fake_cpl_after"),
-            public_canon_row(3, "fake_lead_count", "200", "fake_lead_count"),
-            public_canon_row(4, "fake_won_deals", "15", "fake_close_rate"),
-            public_canon_row(5, "fake_lead_count_b", "200", "fake_lead_count"),
+            public_canon_row(3, "fake_lead_count", "200", "fake_lead_count", unit="count"),
+            percent_row(claim_id="T-004", metric="fake_won_deals"),
+            public_canon_row(5, "fake_lead_count_b", "200", "fake_lead_count", unit="count"),
         ]
         result = self.check(*rows, extra=("--brief",))
         self.assertEqual(result.returncode, 0, result.stdout)

@@ -231,6 +231,33 @@ class IntentMatchTests(unittest.TestCase):
         out = self.match()
         self.assertIn("RESTKLASSE-HOCH (100 % ohne Regeltreffer", out.stdout)
 
+    def test_unowned_with_high_fallback_is_no_build_order(self):
+        # Kern-Runde 2: unklassifizierte Treffer duerfen keine Bauvorgabe erzeugen.
+        rows = [(i, 1, f"firma{i}.example.com", f"Firma {i}") for i in range(1, 9)]
+        self.put("serp", "neu", serp("testfrage neu", rows))
+        out = self.match()
+        self.assertIn("RESTKLASSE-HOCH (100 % ohne Regeltreffer: kein Typurteil", out.stdout)
+        self.assertIn("keine Bauvorgabe", out.stdout)
+        self.assertNotIn("Pflicht", out.stdout)
+
+    def test_canonical_on_foreign_host_same_path_is_hard(self):
+        # Kern-Runde 2: gleicher Pfad auf fremder Domain ist ein fremdes Canonical.
+        anbieter = [(i, 1, f"firma{i}.example.com", f"Firma {i}") for i in range(1, 9)]
+        self.put("serp", "delta", serp("testfrage delta", anbieter))
+        self.put("crawl", "delta", crawl("/delta/", "Testfrage Delta", "Testfrage Delta",
+                                         canonical="https://fremd.example.net/delta/"))
+        out = self.match()
+        self.assertEqual(out.returncode, 1, out.stdout)
+        self.assertIn("CANONICAL-FREMD (fremd.example.net/delta/)", out.stdout)
+
+    def test_canonical_www_variant_is_not_foreign(self):
+        anbieter = [(i, 1, f"firma{i}.example.com", f"Firma {i}") for i in range(1, 9)]
+        self.put("serp", "delta", serp("testfrage delta", anbieter))
+        self.put("crawl", "delta", crawl("/delta/", "Testfrage Delta", "Testfrage Delta",
+                                         canonical="https://www.example.org/delta/"))
+        out = self.match()
+        self.assertNotIn("CANONICAL-FREMD", out.stdout)
+
     def test_foreign_own_url_detected_by_title(self):
         rows = [(i, 1, f"firma{i}.example.com", f"Firma {i}") for i in range(1, 9)]
         rows.append((4, 2, "example.org", "Testfrage Alpha Leistung | Beispiel"))
