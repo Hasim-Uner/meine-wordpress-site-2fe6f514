@@ -28,6 +28,14 @@ Hard rules:
 Focus order: render helpers and readability → internal link graph → Koko context
 fusion → paging and caps → runtime diagnostics.
 
+Live DOM as external fact: when the cockpit's internal link graph or on-page
+diagnostics disagree with the live page, crawl it with
+`python3 agents/skills/seo-agent/scripts/ingest.py crawl --fetch <url> --out-dir .ai/memory/crawl`.
+The `crawl.v1` record (canonical, robots, H1–H6, JSON-LD types, internal links
+with anchor and zone `nav`/`main`/`footer`) is the comparison baseline. Body
+links weigh differently from navigation links; never merge the zones. Keep the
+record outside cockpit runtime code; it is evidence, not a new data source.
+
 Validation: after changing the CSV export contract or cockpit display helpers run
 
 ```bash

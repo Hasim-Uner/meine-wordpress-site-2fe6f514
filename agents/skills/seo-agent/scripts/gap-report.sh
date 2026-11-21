@@ -14,6 +14,9 @@
 #   gap-report.sh --28d                28-Tage-Snapshot (explizit)
 #   gap-report.sh --range=28           gleichwertig zu --28d
 #   gap-report.sh 2026-07 --md         Markdown statt Konsolenausgabe
+#   gap-report.sh --intent             haengt den Intent-Abgleich an (Crawl-Ist
+#                                      gegen SERP, intent_match.py); Exit 1 bei
+#                                      hartem Befund, damit als Gate nutzbar
 #
 # Der Rang-Status kommt immer aus genau EINEM Snapshot: dem neuesten Export des
 # gewaehlten Zeitraums, bestimmt ueber range_days + current_end (nicht ueber den
@@ -35,13 +38,15 @@ RESEARCH_DIR="${RESEARCH_DIR:-$REPO_ROOT/seo-research}"
 PERIOD=""
 FORMAT="text"
 RANGE=""
+INTENT=0
 for arg in "$@"; do
   case "$arg" in
+    --intent) INTENT=1 ;;
     --md|--markdown) FORMAT="md" ;;
     --7d|--7) RANGE="7" ;;
     --28d|--28) RANGE="28" ;;
     --range=*) RANGE="${arg#--range=}" ;;
-    --help|-h) sed -n '2,30p' "${BASH_SOURCE[0]}" | sed 's/^# \{0,1\}//'; exit 0 ;;
+    --help|-h) sed -n '2,33p' "${BASH_SOURCE[0]}" | sed 's/^# \{0,1\}//'; exit 0 ;;
     -*) echo "FEHLER: Unbekannte Option '$arg'. --help zeigt die Nutzung." >&2; exit 2 ;;
     *) PERIOD="$arg" ;;
   esac
@@ -406,3 +411,13 @@ if fmt != "md":
 
 print("\n".join(out))
 PY
+
+# Intent-Abgleich als eigenes Modul: rechnet nicht mit GSC, sondern mit
+# serp.v1/crawl.v1 aus ingest.py. Sein Exit-Code wird durchgereicht.
+if [[ "$INTENT" == "1" ]]; then
+  echo
+  intent_args=(--period "$PERIOD" --research-dir "$RESEARCH_DIR"
+    --ownership "${OWNERSHIP:-$REPO_ROOT/docs/seo/query-ownership.csv}")
+  [[ "$FORMAT" == "md" ]] && intent_args+=(--md)
+  python3 "$(dirname "${BASH_SOURCE[0]}")/intent_match.py" "${intent_args[@]}"
+fi
