@@ -79,6 +79,8 @@ class IntentMatchTests(unittest.TestCase):
             "testfrage beta;/beta/;commercial;owned;test;testfrage gamma\n"
             "testfrage gamma;/gamma/;commercial;owned;test;testfrage beta\n"
             "testfrage delta;/delta/;commercial;owned;test;\n"
+            "testfrage epsilon;/eps/;commercial;owned;test;testfrage epsilon plus\n"
+            "testfrage epsilon plus;/eps/;commercial;owned;test;testfrage epsilon\n"
             "wordpress freelancer hannover;/;local;owned;test;\n", encoding="utf-8")
 
     def tearDown(self):
@@ -170,11 +172,13 @@ class IntentMatchTests(unittest.TestCase):
         self.assertIn("jobboerse 33 %, anbieter 26 %, portal 26 %", out.stdout)
         self.assertIn("eigene Pos. 10", out.stdout)
 
-    def test_mismatch_is_hard_and_onpage_gap_named(self):
+    def test_mismatch_is_review_not_gate_and_onpage_gap_named(self):
+        # Kern-Runde 1: Intent-Schwellen sind unkalibriert -> Pruefbefund, kein Exit 1.
         self.put("serp", "alpha", serp("testfrage alpha", RATGEBER))
         self.put("crawl", "alpha", crawl("/alpha/", "Leistung Alpha", "Alpha fuer Betriebe"))
         out = self.match()
-        self.assertEqual(out.returncode, 1)
+        self.assertEqual(out.returncode, 0, out.stdout)
+        self.assertIn("Harte Befunde: 0. Pruefbefunde: 1", out.stdout)
         self.assertIn("MISMATCH  testfrage alpha", out.stdout)
         self.assertIn("SERP DOMINANT: ratgeber 100 %", out.stdout)
         self.assertIn("ONPAGE-LUECKE (fehlt in Title/H1: testfrage)", out.stdout)
@@ -195,9 +199,37 @@ class IntentMatchTests(unittest.TestCase):
         self.put("serp", "beta", serp("testfrage beta", SHARED))
         self.put("serp", "gamma", serp("testfrage gamma", SHARED[:7] + [(8, 1, "anders.example.com", "x")]))
         out = self.match()
-        self.assertEqual(out.returncode, 1)
+        self.assertEqual(out.returncode, 0)
         self.assertIn("ABGRENZUNG-WIDERLEGT: 'testfrage beta' (/beta/) <-> 'testfrage gamma' (/gamma/) "
                       "Ueberlappung 88 %", out.stdout)
+
+    def test_same_owner_distinct_from_is_no_alarm(self):
+        self.put("serp", "eps", serp("testfrage epsilon", SHARED))
+        self.put("serp", "eps-plus", serp("testfrage epsilon plus", SHARED))
+        out = self.match()
+        self.assertNotIn("ABGRENZUNG-WIDERLEGT", out.stdout)
+        self.assertNotIn("OWNER-SPLIT-FRAGLICH", out.stdout)
+
+    def test_thin_serp_is_not_compared(self):
+        # Eine einzelne gemeinsame Domain darf nicht 100 % Ueberlappung tragen.
+        self.put("serp", "beta", serp("testfrage beta", SHARED[:1]))
+        self.put("serp", "gamma", serp("testfrage gamma", SHARED))
+        out = self.match()
+        self.assertNotIn("ABGRENZUNG-WIDERLEGT", out.stdout)
+        self.assertIn("Abgrenzung nicht pruefbar: 1 Paare", out.stdout)
+
+    def test_sixty_forty_is_split_not_mismatch(self):
+        rows = RATGEBER[:6] + [(i, 1, f"firma{i}.example.com", f"Firma {i}") for i in range(7, 11)]
+        self.put("serp", "alpha", serp("testfrage alpha", rows))
+        out = self.match()
+        self.assertIn("SPLIT     testfrage alpha", out.stdout)
+        self.assertIn("SERP SPLIT: ratgeber 60 %, anbieter 40 %", out.stdout)
+
+    def test_high_fallback_share_is_flagged(self):
+        rows = [(i, 1, f"firma{i}.example.com", f"Firma {i}") for i in range(1, 9)]
+        self.put("serp", "delta", serp("testfrage delta", rows))
+        out = self.match()
+        self.assertIn("RESTKLASSE-HOCH (100 % ohne Regeltreffer", out.stdout)
 
     def test_foreign_own_url_detected_by_title(self):
         rows = [(i, 1, f"firma{i}.example.com", f"Firma {i}") for i in range(1, 9)]
@@ -234,6 +266,7 @@ class IntentMatchTests(unittest.TestCase):
             else:
                 dest.write_bytes(item.read_bytes())
         self.put("serp", "alpha", serp("testfrage alpha", RATGEBER))
+        self.put("crawl", "alpha", crawl("/alpha/", "Testfrage Alpha", "Testfrage Alpha", robots="noindex"))
         env = {"RESEARCH_DIR": str(research), "OWNERSHIP": str(self.ownership),
                "EXCLUSIONS": str(fixtures / "keyword-exclusions.csv")}
         plain = run(["bash", str(GAP), "2026-01", "--md"], env)
