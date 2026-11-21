@@ -1,6 +1,6 @@
 ---
 name: revenue-learning-loop
-description: "Plan or evaluate a release against qualified, progressed and won inquiries. Use for measurement readiness and keep/revert decisions, not analytics implementation."
+description: "Plan or evaluate a release against qualified, progressed and won inquiries; compress retainer updates. Use for measurement readiness and keep/revert decisions, not analytics implementation."
 ---
 
 # Revenue Learning Loop
@@ -13,6 +13,7 @@ read only the relevant route in `llms.txt` and the matching mode below.
 - Instrument: missing or uncertain measurement → [instrument](references/instrument.md).
 - Plan: define one change and freeze outcomes/windows → [plan](references/plan.md).
 - Review: compare declared windows → [review](references/review.md).
+- Report: compressed retainer or White-Label update → [retainer-digest](references/retainer-digest.md).
 
 The mode links to required measurement-contract sections. Do not load all modes.
 

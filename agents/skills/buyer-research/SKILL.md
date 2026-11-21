@@ -55,6 +55,20 @@ the server with WP-CLI; it writes sensitive raw material only to `.ai/memory/`.
    which chooses the next step. Offer/funnel implications may be named as a
    hand-off to the primary skill `offer-funnel-intelligence`.
 
+## Case Study / Proof Asset
+
+When the task turns raw data (CRM or tracking export, canon values) into a case
+study or proof asset, load `references/case-study-engineering.md`, keep a claim
+ledger in `.ai/memory/case-<slug>-YYYY-MM-DD.csv` and validate it:
+
+```bash
+python3 agents/skills/buyer-research/scripts/case-proof-check.py \
+  .ai/memory/case-<slug>-YYYY-MM-DD.csv --brief
+```
+
+Public numbers come only from the canon; a new one needs a separate authorized
+canon task first. The brief goes to `conversion-copy`.
+
 ## Hard Rules
 
 - Never invent, smooth, merge, or back-translate a quote.
@@ -82,8 +96,9 @@ the server with WP-CLI; it writes sensitive raw material only to `.ai/memory/`.
 - `Confidence and gaps` — what is known, hypothesized, contradicted, or missing
 - `Handoff brief` — implications for offer, funnel, landing page, proof, and copy
 - `Promotion list` — direct quotes eligible for manual VoC review; never auto-copy
+- `Case brief` — only for case/proof tasks: validated claim ledger plus brief skeleton
 
-Run regression tests after changing the schema or validator:
+Run regression tests after changing a schema or validator:
 
 ```bash
 bash agents/skills/buyer-research/tests/run-evidence-validator-tests.sh

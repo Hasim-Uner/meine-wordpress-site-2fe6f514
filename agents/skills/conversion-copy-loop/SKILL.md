@@ -38,7 +38,7 @@ Runde n   Kriterien: agents/skills/wordpress-cro-content-design-audit/SKILL.md
           Kriterien: agents/skills/seo-conversion-copywriting/SKILL.md
                                                nur die P0 beheben
           gate-check.sh                        nachmessen
-          Stop-Bedingung?  ja -> Report   nein -> Runde n+1
+          Stop-Bedingung?  ja -> Kern-Gate -> Report   nein -> Runde n+1
 ```
 
 Runde 0 ist nicht optional. Ohne Ausgangsstand ist am Ende nicht belegbar, dass
@@ -52,12 +52,18 @@ versucht, poliert die falsche Ebene.
 
 ## Stop-Bedingung
 
-Fertig ist erreicht, wenn **alle drei** gelten:
+Fertig ist erreicht, wenn **alle vier** gelten:
 
 1. `gate-check.sh` endet mit 0 — kein ROT
 2. kein offener P0 aus `wordpress-cro-content-design-audit`
 3. jeder `copy-check.sh`-Treffer ist entschieden: behoben **oder** mit einem
    Satz begründet stehen gelassen
+4. Kern-Gate: nach grünen Gates endet
+   `python3 agents/skills/agent-system-maintenance/scripts/adversarial-review.py verdict …`
+   mit 0, **oder** jeder `nachbessern`/`verwerfen`-Befund ist behoben oder mit
+   einem Satz widerlegt. Höchstens zwei Kritikrunden; sie zählen nicht zu den
+   3 Loop-Runden. Ablauf und Schemas:
+   `agents/skills/agent-system-maintenance/references/adversarial-review.md`
 
 **P1 und P2 werden nicht geloopt.** Sie sind „wahrscheinliche Verbesserungen",
 und davon findet ein Kritiker immer noch eine. Wer auf P1 loopt, läuft

@@ -37,7 +37,7 @@ Primary routes: see `AGENTS.md` Skill routing. This file only holds the delegati
 | `seo-intelligence` | `seo-agent`, `seo-live-qa`, `seo-drift`, `internal-linking-audit` |
 | `seo-cockpit-dev` | no mandatory delegate |
 | `editorial-seo` | `blog-seo-ux-optimizer`, `pillar-cornerstone-writer`; `internal-linking-audit`, `modern-web-guidance` when the subtask needs them |
-| `conversion-copy` | `buyer-research`, `seo-conversion-copywriting`, `conversion-copy-loop`, `copy-anatomy` |
+| `conversion-copy` | `buyer-research`, `seo-conversion-copywriting`, `conversion-copy-loop`, `copy-anatomy`, `channel-copy` |
 | `offer-funnel-intelligence` | `buyer-research`, `modern-web-guidance` when the subtask needs them |
 | `conversion-architecture` | `wordpress-cro-content-design-audit`, `route-conversion-review`, `landing-page-builder`, `homepage-proof-monitoring` |
 | `wordpress-growth-architecture` | `b2b-design-system` for included UI craft |

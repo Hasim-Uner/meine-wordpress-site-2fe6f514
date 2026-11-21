@@ -1,0 +1,24 @@
+# SERP-Seitentyp-Regeln fuer intent_match.py.
+#
+# Erste passende Zeile gewinnt, Reihenfolge ist Teil der Regel. Treffer ohne
+# Regel fallen in die Restklasse `anbieter` und werden im Report als Restklasse
+# gezaehlt, damit die Unschaerfe sichtbar bleibt.
+#
+# Felder:
+#   type     jobboerse | social | video | portal | vergleich | ratgeber
+#   field    domain (registrierbare Domain ohne www) | title | text (Titel + Snippet)
+#   pattern  Python-Regex, case-insensitive
+#
+# Begruendung der Typen: Die SERP sagt, welche Art Seite Google fuer die Query
+# belohnt. `jobboerse` und `portal` sind die beiden Fremd-Intents, die
+# Dienstleister-Queries in DE am haeufigsten kapern (Jobsuchende, Marktplaetze).
+type;field;pattern
+jobboerse;domain;(^|\.)(indeed\.com|stepstone\.de|jobware\.de|jobtensor\.com|mediengestalter-jobs\.de|bebee\.com|monster\.de|kimeta\.de|jobvector\.de|glassdoor\.de|arbeitsagentur\.de|stellenanzeigen\.de|meinestadt\.de)$
+jobboerse;title;\bjobs?\b|stellenangebot|stellenanzeige|offene stellen|\(m/w/d\)|karriere bei
+video;domain;(^|\.)(youtube\.com|vimeo\.com)$
+social;domain;(^|\.)(instagram\.com|facebook\.com|linkedin\.com|xing\.com|tiktok\.com|pinterest\.[a-z]+|reddit\.com)$
+portal;domain;(^|\.)(freelance\.de|malt\.(com|de)|freelancermap\.(de|at|ch)|it-projekte\.de|gulp\.de|upwork\.com|fiverr\.com|twago\.de|freelancer\.(com|de)|myhammer\.de|my-hammer\.de|aroundhome\.de|check24\.de|gelbeseiten\.de|11880\.com|wlw\.de)$
+portal;title;freelancer (in \w+ )?finden|experten finden|profile (ansehen|anschauen)|sofortkontakt
+vergleich;domain;(^|\.)(feedbax\.de|agenturtipp\.de|sortlist\.(de|com)|clutch\.co|designrush\.com|trustlocal\.de)$
+vergleich;title;die \d+ besten|top[- ]?\d+|im vergleich|\bvergleich\b|\btest\b|rangliste|alternativen
+ratgeber;title;(^|: )(was|wie|warum|wann|welche[rsn]?)\b|anleitung|leitfaden|ratgeber|tipps|\bguide\b|erklaert|erklärt

@@ -3,3 +3,4 @@ set -euo pipefail
 
 ROOT="$(git rev-parse --show-toplevel)"
 python3 "${ROOT}/agents/skills/buyer-research/tests/test_evidence_check.py"
+python3 "${ROOT}/agents/skills/buyer-research/tests/test_case_proof_check.py"
