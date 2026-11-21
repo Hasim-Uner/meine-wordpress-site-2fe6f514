@@ -37,7 +37,8 @@ FIELDS = [
 ]
 
 SOURCE_KINDS = {"canon", "crm_export", "tracking_export", "invoice", "client_statement"}
-PERCENT_TOLERANCE = 0.5
+PERCENT_UNITS = {"%", "prozent", "percent"}
+FLOAT_EPSILON = 1e-9
 SMALL_BASE = 30
 WINDOW_LENGTH_TOLERANCE = 0.10
 MAX_RESULT_CLAIMS = 3
@@ -99,6 +100,146 @@ def canon_has_key(canon_text: str, key: str) -> bool:
     return re.search(r"(?<![A-Za-z0-9_])" + re.escape(key) + r"(?![A-Za-z0-9_])", canon_text) is not None
 
 
+def decimals_of(text: str) -> int:
+    """Anzahl der angegebenen Nachkommastellen (Punkt oder Komma)."""
+    cleaned = text.strip().replace(" ", "").replace(",", ".")
+    return len(cleaned.split(".", 1)[1]) if "." in cleaned else 0
+
+
+def rounding_tolerance(text: str) -> float:
+    """Halbe Einheit der letzten angegebenen Stelle: '15' -> 0,5; '15.4' -> 0,05."""
+    return 0.5 * 10 ** (-decimals_of(text)) + FLOAT_EPSILON
+
+
+def normalize_label(text: str) -> str:
+    return re.sub(r"\s+", " ", text).strip().casefold()
+
+
+def strip_php_comments(text: str) -> str:
+    """Kommentare entfernen, Zeichenketten unangetastet lassen."""
+    out: list[str] = []
+    i, n = 0, len(text)
+    while i < n:
+        char = text[i]
+        if char in "'\"":
+            j = i + 1
+            while j < n and text[j] != char:
+                j += 2 if text[j] == "\\" else 1
+            out.append(text[i : j + 1])
+            i = j + 1
+        elif text.startswith("//", i) or char == "#":
+            while i < n and text[i] != "\n":
+                i += 1
+        elif text.startswith("/*", i):
+            end = text.find("*/", i + 2)
+            i = n if end == -1 else end + 2
+        else:
+            out.append(char)
+            i += 1
+    return "".join(out)
+
+
+def canon_blocks(canon_text: str, key: str) -> list[str]:
+    """Inhalte aller `'key' => [ ... ]`-Bloecke (Klammern gezaehlt, Strings uebersprungen)."""
+    clean = strip_php_comments(canon_text)
+    blocks: list[str] = []
+    for match in re.finditer(r"""['"]""" + re.escape(key) + r"""['"]\s*=>\s*\[""", clean):
+        depth, i, n = 1, match.end(), len(clean)
+        while i < n and depth:
+            char = clean[i]
+            if char in "'\"":
+                i += 1
+                while i < n and clean[i] != char:
+                    i += 2 if clean[i] == "\\" else 1
+            elif char == "[":
+                depth += 1
+            elif char == "]":
+                depth -= 1
+            i += 1
+        if depth == 0:
+            blocks.append(clean[match.end() : i - 1])
+    return blocks
+
+
+def block_string(block: str, field: str) -> str | None:
+    match = re.search(r"""['"]""" + field + r"""['"]\s*=>\s*(?:'([^']*)'|"([^"]*)")""", block)
+    if not match:
+        return None
+    return match.group(1) if match.group(1) is not None else match.group(2)
+
+
+def first_number(text: str) -> float | None:
+    """Erste Zahl; deutsche Tausenderpunkte und Dezimalkomma werden gelesen."""
+    match = re.search(r"\d+(?:\.\d{3})*(?:,\d+)?|\d+(?:\.\d+)?", text)
+    if not match:
+        return None
+    raw = match.group(0)
+    if re.fullmatch(r"\d+(?:\.\d{3})+(?:,\d+)?", raw):
+        raw = raw.replace(".", "")
+    return parse_number(raw)
+
+
+def canon_entry(canon_text: str, key: str) -> tuple[dict[str, object] | None, str | None]:
+    """Eintrag des Kanon-Schluessels lesen: (Daten, Fehlertext)."""
+    if not canon_has_key(canon_text, key):
+        return None, "Kanon-Schluessel nicht gefunden"
+    entries: list[dict[str, object]] = []
+    for block in canon_blocks(canon_text, key):
+        target = block_string(block, "counter_target")
+        display = block_string(block, "display")
+        number = first_number(target) if target else None
+        if number is None and display:
+            number = first_number(display)
+        entries.append(
+            {
+                "number": number,
+                "label": block_string(block, "label"),
+                "assumption": bool(re.search(r"""['"](?:value_high|display_hedged)['"]\s*=>""", block)),
+            }
+        )
+    if not entries:
+        return None, f"Kanon-Schluessel {key!r} nicht parsebar (kein Block 'schluessel' => [ ... ])"
+    if any(entry != entries[0] for entry in entries[1:]):
+        return None, f"Kanon-Schluessel {key!r} mehrdeutig (mehrere abweichende Bloecke)"
+    return entries[0], None
+
+
+def check_canon_entry(
+    canon_text: str,
+    key: str,
+    value_text: str,
+    group_label: str | None,
+    public: bool,
+    errors: list[str],
+    warnings: list[str],
+    role: str = "",
+) -> None:
+    """Wert, Bezugsgruppe und Annahme-Status gegen den Kanon pruefen."""
+    prefix = f"{role}: " if role else ""
+    entry, problem = canon_entry(canon_text, key)
+    if entry is None:
+        errors.append(prefix + str(problem))
+        return
+    if entry["assumption"]:
+        if public:
+            errors.append(prefix + f"Annahme, keine Messung (Kanon-Schluessel {key!r} traegt value_high oder display_hedged)")
+        else:
+            warnings.append(prefix + f"Kanon-Schluessel {key!r} ist eine Annahme, keine Messung; nicht als Ergebnis ausgeben")
+        return
+    value = parse_number(value_text) if value_text else None
+    canon_number = entry["number"]
+    if canon_number is None:
+        errors.append(prefix + f"Kanonwert fuer {key!r} nicht lesbar (weder counter_target noch Zahl in display)")
+    elif value is not None and abs(value - float(canon_number)) > rounding_tolerance(value_text):
+        errors.append(prefix + f"Kanonwert weicht ab: Ledger {value_text}, Kanon {float(canon_number):g} ({key})")
+    if group_label is not None:
+        canon_label = entry["label"]
+        if not canon_label:
+            errors.append(prefix + f"Kanon-Label fuer {key!r} nicht lesbar")
+        elif normalize_label(group_label) != normalize_label(str(canon_label)):
+            errors.append(prefix + f"Bezugsgruppe weicht vom Kanon ab: Ledger {group_label!r}, Kanon {str(canon_label)!r}")
+
+
 def locator_looks_personal(locator: str) -> bool:
     if EMAIL_CHARS in locator:
         return True
@@ -116,6 +257,8 @@ def check_claim(
         if not values[field]:
             errors.append(f"Pflichtfeld {field} fehlt")
 
+    if values["unit"].lower() in PERCENT_UNITS:
+        values["unit"] = "%"
     value = parse_number(values["value"]) if values["value"] else None
     if values["value"] and value is None:
         errors.append(f"value ist keine Zahl ({values['value']!r})")
@@ -126,8 +269,11 @@ def check_claim(
     if kind and kind not in SOURCE_KINDS:
         errors.append(f"unbekannter source_kind {kind!r}; erlaubt: {', '.join(sorted(SOURCE_KINDS))}")
     elif kind == "canon" and locator:
-        if not canon_has_key(canon_text, locator):
-            errors.append("Kanon-Schluessel nicht gefunden")
+        group = values["denominator_label"] or None
+        check_canon_entry(
+            canon_text, locator, values["value"], group,
+            values["public"].lower() == "true", errors, warnings,
+        )
     elif kind and locator and locator_looks_personal(locator):
         errors.append("source_locator enthaelt E-Mail oder Telefonnummer; anonymisierte ID verwenden")
 
@@ -150,7 +296,7 @@ def check_claim(
             errors.append("numerator/denominator sind keine Zahlen")
         elif denominator <= 0:
             errors.append("denominator muss groesser 0 sein")
-        elif value is not None and abs(value - numerator / denominator * 100) > PERCENT_TOLERANCE:
+        elif value is not None and abs(value - numerator / denominator * 100) > rounding_tolerance(values["value"]):
             errors.append(
                 "Rechnung stimmt nicht: "
                 f"{numerator:g} / {denominator:g} = {numerator / denominator * 100:.1f} %, "
@@ -159,6 +305,11 @@ def check_claim(
         if value is not None and not 0 <= value <= 100:
             errors.append("Prozentwert ausserhalb 0-100")
 
+    elif values["numerator"] and values["denominator"]:
+        errors.append(
+            f"Einheit fuer Quote unklar ({values['unit']!r}): Zaehler und Nenner nur mit %, Prozent oder percent"
+        )
+
     # Kleine Basis (gilt fuer jede Einheit, sobald ein Nenner genannt ist)
     if values["denominator"]:
         denominator = parse_number(values["denominator"])
@@ -166,7 +317,10 @@ def check_claim(
             if values["unit"] != "%":
                 errors.append("denominator ist keine Zahl")
         elif 0 < denominator < SMALL_BASE:
-            warnings.append("kleine Basis: als Einzelfall formulieren, keine Quote verallgemeinern")
+            if public == "true":
+                errors.append("kleine Basis nicht oeffentlich verallgemeinern")
+            else:
+                warnings.append("kleine Basis: als Einzelfall formulieren, keine Quote verallgemeinern")
 
     # Zeitfenster
     window_start = parse_iso(values["window_start"]) if values["window_start"] else None
@@ -212,6 +366,17 @@ def check_claim(
             errors.append("public braucht attribution_note")
         if kind and kind != "canon":
             errors.append("erst in den Kanon, dann oeffentlich")
+        if values["baseline_value"]:
+            baseline_key = re.search(r"baseline:\s*([A-Za-z0-9_]+)", values["definition"])
+            if kind != "canon":
+                errors.append("oeffentlicher Vorher/Nachher-Claim braucht source_kind canon")
+            elif not baseline_key:
+                errors.append("oeffentlicher Vorher/Nachher-Claim braucht baseline:<kanon-schluessel> in definition")
+            else:
+                check_canon_entry(
+                    canon_text, baseline_key.group(1), values["baseline_value"], None,
+                    True, errors, warnings, role="Baseline",
+                )
 
 
 def load_ledger(path: Path) -> tuple[list[dict[str, str]] | None, int]:

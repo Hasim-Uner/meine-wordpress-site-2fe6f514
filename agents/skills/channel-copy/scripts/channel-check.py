@@ -9,6 +9,11 @@ Nutzung:
 Exit 0 = keine Befunde, 1 = Befunde, 2 = Aufruffehler. Der Linter findet Muster,
 keine Wahrheit: er prueft, dass eine Quelle genannt ist, nicht ob sie stimmt.
 
+Ein Brief-Entwurf beginnt mit einem Front-Matter-Block zwischen zwei --- Zeilen:
+  adressquelle:, widerspruchsliste_geprueft: ja YYYY-MM-DD,
+  antwortweg: marktcheck|white-label|projektanfrage, freigabe: Kuerzel YYYY-MM-DD | offen
+Der Block wird nicht als Brieftext geprueft; --strip entfernt ihn.
+
 Marker im Entwurf:
   [Q: canon:<schluessel>]       Wert aus blocksy-child/inc/canon/ (Getter oder Schluessel)
   [Q: <Repo-Pfad|Beschreibung>] Messung, Pruefung, Dokument
@@ -17,7 +22,9 @@ HTML-Kommentare (<!-- ... -->) sind Notizen und zaehlen nirgends.
 """
 import re
 import sys
+from datetime import date
 from pathlib import Path
+from urllib.parse import urlparse
 
 ROOT = Path(__file__).resolve().parents[4]
 CANON = ROOT / 'blocksy-child/inc/canon'
@@ -66,6 +73,43 @@ ENGAGEMENT_BAIT = re.compile(
 SALES_CTA = re.compile(
     r'termin\s+(?:buchen|vereinbaren)|jetzt\s+anfragen|kontaktier\w*\s+mich|melde\s+dich\b', re.I)
 LIMIT_SIGNAL = re.compile(r'Gilt nicht|Grenze|Ausnahme|funktioniert nicht, wenn', re.I)
+MIN_LIMIT_WORDS = 8
+
+NAMED_SALUTATION = re.compile(r'^(?:Sehr geehrte Frau|Sehr geehrter Herr|Guten Tag,? (?:Frau|Herr)) \S+')
+
+# Antwortwege im Brieftext (ohne Marker): URL, E-Mail, Telefon, Antwort-Formulierung.
+EMAIL = re.compile(r'[\w.+-]+@[\w-]+(?:\.[\w-]+)+')
+CHANNEL_URL = re.compile(r'(?:https?://|www\.)[^\s<>()\[\]"“”„]+', re.I)
+PHONE = re.compile(r'(?<![\w@/.:-])(?:\+49|0049|0\d)(?:[ ./()-]{0,2}\d)+')
+PHONE_DATE = re.compile(r'0?\d{1,2}[./]\d{1,2}[./]\d{2,4}')
+REPLY_PHRASE = re.compile(r'\b(?:antworten|rufen|schreiben)\s+Sie\b', re.I)
+MIN_PHONE_DIGITS = 7
+
+# Front Matter: Pflichtfelder und die drei Antwortrouten (docs/architecture/CONVERSION_ROUTING.md).
+FM_LINE = re.compile(r'^\s*([A-Za-z_]+)\s*:\s*(.*?)\s*$')
+FM_RULES = {'adressquelle': 'fm-adressquelle', 'widerspruchsliste_geprueft': 'fm-widerspruch',
+            'antwortweg': 'fm-antwortweg', 'freigabe': 'fm-freigabe'}
+ISO_DATE = re.compile(r'\d{4}-\d{2}-\d{2}')
+# Antwortroute -> Linktext in llms.txt. Der Pfad selbst wird zur Laufzeit aus llms.txt gelesen
+# (CONTEXT.md: Routen nie kopieren). Geprueft wird nur, wenn der Brief eine URL enthaelt.
+ROUTE_LABELS = {
+    'marktcheck': 'Marktcheck',
+    'white-label': 'Für Agenturen: White-Label',
+    'projektanfrage': 'Projekt anfragen',
+}
+LLMS_LINK = re.compile(r'^- \[(?P<label>[^\]]+)\]\((?P<href>[^)\s]+)\)', re.M)
+
+
+def route_target(route):
+    """Pfad und Pflicht-Query der Route aus llms.txt; fehlt der Eintrag, ist das ein Bedienfehler."""
+    llms = ROOT / 'llms.txt'
+    links = {m['label']: m['href'] for m in LLMS_LINK.finditer(llms.read_text(encoding='utf-8'))}
+    href = links.get(ROUTE_LABELS[route])
+    if not href:
+        print(f'FEHLER: Route {route!r} ({ROUTE_LABELS[route]}) fehlt in {llms}.', file=sys.stderr)
+        sys.exit(2)
+    parsed = urlparse(href)
+    return parsed.path, parsed.query
 
 _canon_text = None
 
@@ -143,6 +187,110 @@ def snippet(text, limit=48):
     return flat if len(flat) <= limit else flat[:limit - 1] + '…'
 
 
+def front_matter_span(lines):
+    """(Start, Ende) der --- Zeilen; Ende None, wenn der Block nicht geschlossen ist; None ohne Block."""
+    first = next((i for i, line in enumerate(lines) if line.strip()), None)
+    if first is None or lines[first].strip() != '---':
+        return None
+    for index in range(first + 1, len(lines)):
+        if lines[index].strip() == '---':
+            return first, index
+    return first, None
+
+
+def valid_date(text):
+    try:
+        date.fromisoformat(text)
+    except ValueError:
+        return False
+    return True
+
+
+def front_matter_checks(lines, span, report):
+    """Pflichtfelder pruefen; gibt den Wert von antwortweg zurueck (oder None)."""
+    start = span[0] + 1 if span else None
+    fields = {}
+    if span and span[1] is None:
+        report.add(start, 'fm-block', 'Front Matter nicht mit --- geschlossen')
+    elif span:
+        for number in range(span[0] + 1, span[1]):
+            match = FM_LINE.match(lines[number])
+            if match:
+                fields.setdefault(match.group(1).lower(), (number + 1, match.group(2)))
+    for key, rule in FM_RULES.items():
+        number, value = fields.get(key, (start, ''))
+        if not value:
+            where = 'leer' if key in fields else 'fehlt (Front-Matter-Block am Anfang des Entwurfs)'
+            report.add(number, rule, f'{key}: {where}')
+    route = None
+    number, value = fields.get('widerspruchsliste_geprueft', (start, ''))
+    if value:
+        match = re.match(r'ja\b\W*(\d{4}-\d{2}-\d{2})\W*$', value, re.I)
+        if not match or not valid_date(match.group(1)):
+            report.add(number, 'fm-widerspruch', 'erwartet "ja YYYY-MM-DD" (Datum des Abgleichs)')
+    number, value = fields.get('antwortweg', (start, ''))
+    if value:
+        if value.lower() in ROUTE_LABELS:
+            route = value.lower()
+        else:
+            report.add(number, 'fm-antwortweg', 'erwartet marktcheck | white-label | projektanfrage')
+    number, value = fields.get('freigabe', (start, ''))
+    if value.lower() == 'offen':
+        report.add(number, 'freigabe-offen', 'freigabe: offen; Inhaber hat noch nicht freigegeben')
+    elif value:
+        before = ISO_DATE.search(value)
+        if not before or not value[:before.start()].strip(' ,;-:') or not valid_date(before.group(0)):
+            report.add(number, 'fm-freigabe', 'erwartet "Name/Kuerzel YYYY-MM-DD" oder "offen"')
+    return route
+
+
+def blank_span(lines, span):
+    """Front-Matter-Zeilen leeren, Zeilennummern bleiben stabil."""
+    if not span or span[1] is None:
+        return lines
+    return ['' if span[0] <= i <= span[1] else line for i, line in enumerate(lines)]
+
+
+def reply_channels(clean_lines):
+    """Distinkte Antwortwege (URL, E-Mail, Telefon, Antwort-Formulierung) im Brieftext.
+
+    Dieselbe URL/E-Mail/Nummer zaehlt einmal (das P.S. darf den einen Weg wiederholen). Eine
+    Formulierung ("antworten Sie", "rufen Sie", "schreiben Sie") ist ein eigener Weg, ausser derselbe
+    Satz nennt den passenden Wert (Telefon bzw. E-Mail/URL).
+    """
+    found, all_urls = set(), set()
+    for base, block in paragraphs(clean_lines):
+        for _, sentence in sentences(base, block):
+            urls = {m.group(0).rstrip('.,;:!?').lower() for m in CHANNEL_URL.finditer(sentence)}
+            rest = CHANNEL_URL.sub(' ', sentence)
+            emails = {m.group(0).lower() for m in EMAIL.finditer(rest)}
+            rest = EMAIL.sub(' ', rest)
+            phones = set()
+            for match in PHONE.finditer(rest):
+                digits = re.sub(r'\D', '', match.group(0))
+                if len(digits) >= MIN_PHONE_DIGITS and not PHONE_DATE.fullmatch(match.group(0).strip()):
+                    phones.add(digits)
+            found |= {('url', v) for v in urls} | {('email', v) for v in emails} | {('telefon', v) for v in phones}
+            all_urls |= urls
+            for match in REPLY_PHRASE.finditer(rest):
+                call = match.group(0).lower().startswith('rufen')
+                if not (phones if call else (emails or urls)):
+                    found.add(('telefon', 'formulierung') if call else ('antwort', 'formulierung'))
+    return found, all_urls
+
+
+def route_consistency(route, urls, report):
+    path, query = route_target(route)
+    wanted_query = set(filter(None, query.split('&')))
+    for url in sorted(urls):
+        parsed = urlparse(url if '://' in url else '//' + url)
+        same_path = parsed.path.rstrip('/') == path.rstrip('/')
+        if not same_path or not wanted_query <= set(filter(None, parsed.query.split('&'))):
+            expected = path + (f'?{query}' if query else '')
+            report.add(None, 'antwortweg-url',
+                       f'URL {url} passt nicht zu antwortweg: {route} (llms.txt: {expected})')
+
+
 class Report:
     def __init__(self):
         self.items = []
@@ -184,12 +332,22 @@ def common_checks(raw_lines, report):
                 report.add(number, 'zahl-ohne-quelle', f'"{snippet(plain)}"')
 
 
-def brief_checks(raw_lines, report):
+def brief_checks(raw_lines, report, route=None):
     text = '\n'.join(raw_lines)
     clean = '\n'.join(clean_line(line) for line in raw_lines)
     for number, line in enumerate(raw_lines, 1):
         if BAD_SALUTATION.search(line):
             report.add(number, 'anrede', 'keine Sammelanrede; eine namentlich genannte Person ansprechen')
+    first_line = next(((n, l) for n, l in enumerate(raw_lines, 1) if l.strip()), None)
+    if not first_line or not NAMED_SALUTATION.match(first_line[1].strip()):
+        report.add(first_line[0] if first_line else None, 'anrede-nicht-namentlich',
+                   'erste Zeile muss namentlich anreden: Sehr geehrte Frau|Sehr geehrter Herr|Guten Tag Frau|Herr <Name>')
+    channels, urls = reply_channels([clean_line(line) for line in raw_lines])
+    if len(channels) > 1:
+        report.add(None, 'mehrere-antwortwege',
+                   f'{len(channels)} Antwortwege im Text ({", ".join(sorted(k for k, _ in channels))}); genau einer erlaubt')
+    if route:
+        route_consistency(route, urls, report)
     words = len(clean.split())
     if words > MAX_BRIEF_WORDS:
         report.add(None, 'laenge', f'{words} Wörter, höchstens {MAX_BRIEF_WORDS}')
@@ -242,8 +400,14 @@ def linkedin_checks(raw_lines, report):
     for number, line in enumerate(raw_lines, 1):
         if CTA.search(line):
             report.add(number, 'cta-verboten', '[CTA] gehört nicht in einen LinkedIn-Beitrag')
+    if not any(SOURCE.search(line) for line in raw_lines):
+        report.add(None, 'beobachtung-ohne-quelle', 'kein [Q: …]-Marker; die Beobachtung braucht eine Quelle')
+    first = next((i for i, line in enumerate(cleaned) if line.strip()), None)
+    limit_lines = [line for i, line in enumerate(cleaned) if i != first and LIMIT_SIGNAL.search(line)]
     if not LIMIT_SIGNAL.search('\n'.join(cleaned)):
         report.add(None, 'grenze-fehlt', 'keine Grenze (Gilt nicht|Grenze|Ausnahme|funktioniert nicht, wenn)')
+    elif not any(len(line.split()) >= MIN_LIMIT_WORDS for line in limit_lines):
+        report.add(None, 'grenze-zu-duenn', f'Grenze-Zeile hat weniger als {MIN_LIMIT_WORDS} Wörter; sagen, wann die These nicht gilt')
     return total
 
 
@@ -271,13 +435,21 @@ def main(argv):
         print(f'Datei nicht gefunden: {path}', file=sys.stderr)
         return 2
     raw = path.read_text(encoding='utf-8')
-    if strip:
-        sys.stdout.write(strip_markers(raw))
-        return 0
     lines = blank_comments(raw).split('\n')
+    span = front_matter_span(lines)
+    if strip:
+        kept = raw.split('\n')
+        if span and span[1] is not None:
+            kept = kept[:span[0]] + kept[span[1] + 1:]
+        sys.stdout.write(strip_markers('\n'.join(kept)))
+        return 0
     report = Report()
+    route = None
+    if mode == 'brief':
+        route = front_matter_checks(lines, span, report)
+        lines = blank_span(lines, span)
     common_checks(lines, report)
-    size = brief_checks(lines, report) if mode == 'brief' else linkedin_checks(lines, report)
+    size = brief_checks(lines, report, route) if mode == 'brief' else linkedin_checks(lines, report)
     for line in report.lines():
         print(line)
     unit = 'Wörter' if mode == 'brief' else 'Zeichen'

@@ -38,6 +38,13 @@ toplevel. Both CSVs are optional.
   evidence it is a lead indicator, not a result.
 - Only leading metrics present: the digest prints "Nur Frühindikatoren. Kein
   Pipeline-Beleg." Do not rephrase it as success.
+- `inquiries` is not pipeline evidence. Without at least one of `qualified`,
+  `progressed`, `won` the digest prints "Kein Pipeline-Beleg
+  (qualified/progressed/won fehlen)."
+- Maturity: with `--until`, a `won` or `progressed` window whose `window_end`
+  lies within 30 days before `--until` (or later) gets "<metric> noch nicht
+  ausgereift". The value is still shown; late conversions can still change it.
+  With `--range` there is no `--until`, so no maturity note is printed.
 - Executive view: result first, no chart or table, one next step.
 
 ## Input contract
@@ -47,18 +54,37 @@ Semicolon CSV, header exactly `metric;window_start;window_end;value;denominator;
 impressions as `denominator`; it needs the denominator. Other metrics may carry
 one. Unknown metric names stop the run (exit 2).
 
+`source` is a system identifier, not free text: `^[a-z0-9][a-z0-9_.:-]*$`, for
+example `crm:bitrix24`, `ga4`, `gsc`. Anything else stops the run (exit 2).
+
 ## Delta rule
 
 A delta appears only when a metric has exactly two non-overlapping windows of
-equal length in days. Otherwise values are shown with "kein Vergleich" and the
-reason. A delta is a difference of reported values, not an effect of the release.
+equal length in days and the same `source` in both. Otherwise values are shown
+with "kein Vergleich" and the reason (for example "Quelle gewechselt"). A delta
+is a difference of reported values, not an effect of the release.
+
+A delta assumes stable CRM definitions. A changed qualification definition is
+not detectable from the CSV: change `source` (for example `crm:bitrix24-v2`)
+whenever the definition changes, so the delta is suppressed.
 
 ## Privacy rule
 
-Aggregates only. Exit 2 on extra or missing columns, on values that look like an
-email address or phone number, and on a `source` containing `@`. Errors name file
-and row, never the offending value. Decision lines and `--next` must not contain
-email addresses.
+Enforced, and nothing beyond it:
+
+- CSV: exit 2 on extra or missing columns, on `metric`, `value` or
+  `denominator` that look like an email address or phone number, and on a
+  `source` that is not a system identifier (see Input contract).
+- `--decisions` lines and `--next`: exit 2 on email addresses and phone numbers
+  (German formats such as `+49 ...` or `0xxx ...`, at least 7 digits, separators
+  allowed). ISO and German dates are not treated as phone numbers.
+- Commit subjects: email addresses and phone numbers are replaced by
+  "[entfernt]". Only when this happened, the Geliefert block adds "Betreffe
+  bereinigt: N".
+- Errors name file and row, never the offending value.
+
+Not covered: personal names in commit subjects, decision lines or `--next` are
+not detected. The digest is no anonymization; check the text before sending.
 
 ## Wording
 

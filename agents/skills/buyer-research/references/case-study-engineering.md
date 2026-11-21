@@ -23,13 +23,13 @@ claim_id;metric;value;unit;numerator;denominator;denominator_label;window_start;
 | --- | --- |
 | `claim_id` | stabile eindeutige ID, z. B. `CL-001` |
 | `metric` | Kennzahlname; bei `canon` möglichst der Canon-Schlüssel (siehe `hu_e3_metric()` in `blocksy-child/inc/canon/e3-proof-canon.php`, z. B. `cpl_after`, `lead_count`) |
-| `value`, `unit` | Zahl wie belegt und Einheit (`%`, `EUR`, `count`, `days` …) |
+| `value`, `unit` | Zahl wie belegt und Einheit (`%`, `EUR`, `count`, `days` …). `%`, `Prozent` und `percent` gelten gleich als Prozent |
 | `numerator`, `denominator`, `denominator_label` | Rechenbasis; bei `%` Pflicht. Das Label benennt den Nenner in Worten (z. B. „vorqualifizierte CRM-Leads“) |
 | `window_start`, `window_end` | Messfenster, ISO `YYYY-MM-DD` |
 | `baseline_*` | optionaler Vorher-Wert mit eigenem Fenster; alle drei Felder oder keines |
 | `source_kind` | `canon`, `crm_export`, `tracking_export`, `invoice`, `client_statement` |
-| `source_locator` | `canon`: Schlüssel- oder Getter-Name, der im Kanon vorkommt. Sonst anonymisierte Export-/Beleg-ID, nie E-Mail oder Telefonnummer |
-| `definition` | was genau gezählt wurde und was nicht |
+| `source_locator` | `canon`: Schlüssel eines Blocks `'schluessel' => [ ... ]` im Kanon-Verzeichnis (ein bloßer Getter-Name genügt nicht). Sonst anonymisierte Export-/Beleg-ID, nie E-Mail oder Telefonnummer |
+| `definition` | was genau gezählt wurde und was nicht. Öffentlicher Vorher/Nachher-Claim: zusätzlich `baseline:<kanon-schluessel>` |
 | `attribution_note` | was die Zahl nicht beweist (Anteil von Vertrieb, Saisonalität, Mehrfachmaßnahmen …) |
 | `public` | `true` nur für Zahlen, die öffentlich erscheinen sollen |
 
@@ -39,16 +39,30 @@ Das Skript `scripts/case-proof-check.py` erzwingt sie. ERROR bricht ab (Exit 1),
 
 | Regel | Stufe | Grund |
 | --- | --- | --- |
-| `source_kind=canon` braucht einen Schlüssel, der literal im Kanon-Verzeichnis steht | ERROR | Der Kanon ist die einzige Quelle öffentlicher Zahlen (BRAND_AND_COPY, „Fakten stehen nie als Text“); ein erfundener Schlüssel wäre ein Beleg ohne Quelle |
+| `source_kind=canon`: der Schlüssel muss als Block `'schluessel' => [ ... ]` im Kanon-Verzeichnis lesbar sein; fehlt er oder lässt sich der Block nicht lesen, ist das ein Fehler (kein stilles Durchwinken) | ERROR | Der Kanon ist die einzige Quelle öffentlicher Zahlen (BRAND_AND_COPY, „Fakten stehen nie als Text“); ein erfundener oder nicht lesbarer Schlüssel wäre ein Beleg ohne Quelle |
+| `source_kind=canon`: `value` stimmt mit der Kanonzahl überein (`counter_target`, sonst die erste Zahl in `display`), im Rahmen der Rundungsregel unten | ERROR „Kanonwert weicht ab“ | Nur das Vorkommen des Schlüssels zu prüfen ließ jeden Wert unter dem Schlüssel durch |
+| `source_kind=canon`: `denominator_label` (bei `%`, sonst falls gesetzt) ist gleich dem `label` des Kanon-Eintrags, ohne Beachtung von Groß-/Kleinschreibung und Leerraum | ERROR „Bezugsgruppe weicht vom Kanon ab“ | Dieselbe Zahl gilt nur für ihre Bezugsgruppe. Das Ledger hat kein eigenes Label-Feld; geprüft wird daher das Nenner-Label |
+| Kanon-Eintrag mit `value_high` oder `display_hedged` (Annahme, keine Messung) | ERROR bei `public=true`, WARN sonst | Marktannahmen dürfen nicht als Ergebnis erscheinen; Wert- und Gruppenabgleich entfallen für sie |
 | Nicht-Canon-Locator ist anonym: kein `@`, keine Telefonnummer | ERROR | Rohdaten und Personenbezug bleiben aus dem Ledger |
-| Einheit `%`: Zähler, Nenner und Nenner-Label Pflicht; `value` weicht höchstens 0,5 Punkte von Zähler/Nenner × 100 ab; Wert 0 bis 100 | ERROR | Eine Quote ohne benannten Nenner lässt sich nicht verteidigen. Der Referenzfall zeigt es: Lead-Quote und Abschlussquote haben verschiedene Nenner (Besucher, vorqualifizierte CRM-Leads), siehe `hu_e3_summary( 'definitions' )` |
+| Einheit Prozent: Zähler, Nenner und Nenner-Label Pflicht; Wert 0 bis 100; `value` weicht höchstens um eine halbe Einheit seiner letzten angegebenen Dezimalstelle von Zähler/Nenner × 100 ab | ERROR | Eine Quote ohne benannten Nenner lässt sich nicht verteidigen. Der Referenzfall zeigt es: Lead-Quote und Abschlussquote haben verschiedene Nenner (Besucher, vorqualifizierte CRM-Leads), siehe `hu_e3_summary( 'definitions' )` |
+| Andere Einheit als Prozent, aber Zähler und Nenner gesetzt | ERROR „Einheit fuer Quote unklar“ | Sonst ließe sich die Rechenprobe durch eine andere Schreibweise der Einheit umgehen |
 | Datumsfelder ISO; Fensterbeginn nicht nach Fensterende | ERROR | Ohne Zeitraum kein Vergleich |
 | Baseline-Fenster liegt vollständig vor dem Ergebnisfenster | ERROR | Sonst vermischt der Vergleich Vorher und Nachher |
 | Baseline- und Ergebnisfenster unterscheiden sich um mehr als 10 % in der Länge | WARN | Ungleich lange Fenster sind vergleichbar nur mit Kennzeichnung. Nie über unterschiedlich definierte Fenster mitteln (BRAND_AND_COPY, „Referenzfall“: Projektmonate schließen die Vorbereitung ein, Kampagnenmonate nicht) |
-| Nenner kleiner 30 | WARN | Kleine Basis: als Einzelfall formulieren, keine Quote verallgemeinern; Pilot-n und Zeitraum immer nennen |
+| Nenner kleiner 30 | WARN intern, ERROR bei `public=true` („kleine Basis nicht oeffentlich verallgemeinern“) | Kleine Basis: intern als Einzelfall formulieren; öffentlich nicht als Quote auftreten lassen. Auch ab 30 bleibt ein Betrieb ein Fall: das ist eine Formulierungsregel für den Text und vom Skript nicht prüfbar |
 | `public=true` braucht `definition`, `attribution_note` und `source_kind=canon` | ERROR | Nicht-Canon-Zahl öffentlich: erst in den Kanon, dann öffentlich |
+| `public=true` mit gesetztem `baseline_value`: `source_kind=canon` und in `definition` ein `baseline:<kanon-schluessel>`; dieser Schlüssel besteht denselben Wert- und Annahme-Abgleich (gegen `baseline_value`, ohne Gruppenvergleich) | ERROR | Ein öffentliches Vorher/Nachher braucht den Vorher-Wert im Kanon. Die Regel ist bewusst schmal: das Schema hat keine Spalten für Vorher-Zähler und -Nenner, daher prüft sie nur gegen den Kanon |
 | Metrik `cpo` oder `cost_per_order`, deren Definition CPL und Quote zusammen nennt | ERROR | BRAND_AND_COPY verbietet eine Gesamt-CPO aus CPL × CRM-Quote. Die Regel ist bewusst schmal: sie prüft nur Metrikname und Definitionstext, keine Rechnung |
 | doppelte `claim_id` | ERROR | Eindeutige Zuordnung im Brief |
+
+### Rundungstoleranz
+
+Die Toleranz folgt der angegebenen Genauigkeit: eine halbe Einheit der letzten
+Dezimalstelle von `value`. Ein Wert ohne Nachkommastelle darf um höchstens 0,5
+Punkte abweichen, ein Wert mit einer Nachkommastelle um höchstens 0,05. Wer
+genauer schreibt, wird genauer geprüft. Das gilt für die Rechenprobe und für
+den Kanonvergleich. Eine genauere Angabe als der Kanon hergibt ist deshalb ein
+Fehler; die Rundung folgt dem Kanon, nicht der Aussage.
 
 Zusätzlich gilt aus den Hausregeln, auch ohne Skriptprüfung: Der Rechner-
 Default und Marktannahmen sind keine Messung. Eine Annahme (etwa die

@@ -85,8 +85,13 @@ mit Anker und Zone (`nav`/`main`/`footer`), Wortzahl und Inhalts-Hash.
 `serp.v1` haelt Position, `seen_in`, Domain, Titel und SERP-Features. Die
 Rechenregeln stehen im Kopf von `scripts/intent_match.py`, die Seitentypen in
 `references/serp-type-rules.csv`. Urteile: `PASST`, `SPLIT`, `GEMISCHT`,
-`MISMATCH`; Abgrenzung aus Top-10-Ueberlappung: `ABGRENZUNG-WIDERLEGT`,
-`OWNER-SPLIT-FRAGLICH`, `BUENDELUNG-FRAGLICH`. Exit 1 bei hartem Befund.
+`MISMATCH`; Abgrenzung aus Top-10-Ueberlappung (nur verschiedene Owner, je
+mindestens 5 Fremddomains): `ABGRENZUNG-WIDERLEGT`, `OWNER-SPLIT-FRAGLICH`,
+`BUENDELUNG-FRAGLICH`. Exit 1 nur bei technischem Befund (`NICHT-ERREICHBAR`,
+`NOINDEX`, `CANONICAL-FREMD`). Intent-Urteile sind Pruefbefunde: Die Schwellen
+sind nicht gegen manuell gesichtete SERPs kalibriert. Vor einer Umsetzung die
+SERP von Hand sichten und wiederholte Query×URL-Beobachtungen aus zwei
+28-Tage-Fenstern abwarten.
 
 - Kopf-Signale nur aus rohem HTML. Ohne rawHtml bricht `ingest.py` ab; aus
   Markdown wird nichts geraten.

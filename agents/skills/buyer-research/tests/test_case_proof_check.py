@@ -44,6 +44,13 @@ def percent_row(**overrides: str) -> dict[str, str]:
     return row
 
 
+def internal_row(**overrides: str) -> dict[str, str]:
+    """Interner Claim aus einem Export: kein Kanon, nicht oeffentlich."""
+    return percent_row(
+        source_kind="crm_export", source_locator="CRM-EXPORT-A", public="false", **overrides
+    )
+
+
 def public_canon_row(index: int, metric: str, value: str, locator: str) -> dict[str, str]:
     return percent_row(
         claim_id=f"T-{index:03d}",
@@ -99,7 +106,8 @@ class CaseProofCheckTests(unittest.TestCase):
         self.assertIn("Rechnung stimmt nicht", result.stdout)
 
     def test_percent_within_tolerance_passes(self) -> None:
-        result = self.check(percent_row(value="15.4"))
+        # 30/199 = 15,075: ganze Zahl, Abweichung unter einer halben Einheit.
+        result = self.check(percent_row(numerator="30", denominator="199"))
         self.assertEqual(result.returncode, 0, result.stdout)
 
     def test_missing_denominator_fails(self) -> None:
@@ -146,6 +154,9 @@ class CaseProofCheckTests(unittest.TestCase):
     def test_unequal_window_length_warns_only(self) -> None:
         result = self.check(
             percent_row(
+                source_kind="crm_export",
+                source_locator="CRM-EXPORT-A",
+                public="false",
                 baseline_value="5",
                 baseline_window_start="2025-11-01",
                 baseline_window_end="2025-12-31",
@@ -155,7 +166,7 @@ class CaseProofCheckTests(unittest.TestCase):
         self.assertIn("Fenster ungleich lang, Vergleich kennzeichnen", result.stdout)
 
     def test_small_base_warns_only(self) -> None:
-        result = self.check(percent_row(value="20", numerator="4", denominator="20"))
+        result = self.check(internal_row(value="20", numerator="4", denominator="20"))
         self.assertEqual(result.returncode, 0, result.stdout)
         self.assertIn("WARN T-001", result.stdout)
         self.assertIn("kleine Basis", result.stdout)
@@ -193,6 +204,186 @@ class CaseProofCheckTests(unittest.TestCase):
     def test_missing_file_is_usage_error(self) -> None:
         result = self.run_cli(str(FIXTURES / "does-not-exist.csv"))
         self.assertEqual(result.returncode, 2)
+
+    # --- Kanon-Abgleich: Wert, Bezugsgruppe, Annahme, Parsebarkeit ---
+
+    def test_canon_value_mismatch_fails(self) -> None:
+        # 1/2 = 50 % stimmt rechnerisch, weicht aber vom Kanonwert ab.
+        result = self.check(percent_row(value="50", numerator="1", denominator="2"))
+        self.assertEqual(result.returncode, 1)
+        self.assertIn("Kanonwert weicht ab", result.stdout)
+
+    def test_canon_group_label_mismatch_fails(self) -> None:
+        result = self.check(percent_row(denominator_label="alle Anfragen"))
+        self.assertEqual(result.returncode, 1)
+        self.assertIn("Bezugsgruppe weicht vom Kanon ab", result.stdout)
+
+    def test_canon_group_label_is_case_and_whitespace_insensitive(self) -> None:
+        result = self.check(percent_row(denominator_label="  Vorqualifizierte   CRM-leads "))
+        self.assertEqual(result.returncode, 0, result.stdout)
+
+    def test_public_claim_on_hedged_assumption_fails(self) -> None:
+        result = self.check(
+            percent_row(
+                metric="fake_close_rate_before",
+                value="3",
+                numerator="3",
+                denominator="100",
+                denominator_label="Abschlussquote vorher (gekaufte Portal-Leads)",
+                source_locator="fake_close_rate_before",
+            )
+        )
+        self.assertEqual(result.returncode, 1)
+        self.assertIn("Annahme, keine Messung", result.stdout)
+
+    def test_internal_claim_on_hedged_assumption_warns_only(self) -> None:
+        result = self.check(
+            percent_row(
+                metric="fake_close_rate_before",
+                value="3",
+                numerator="3",
+                denominator="100",
+                denominator_label="Abschlussquote vorher (gekaufte Portal-Leads)",
+                source_locator="fake_close_rate_before",
+                public="false",
+            )
+        )
+        self.assertEqual(result.returncode, 0, result.stdout)
+        self.assertIn("Annahme, keine Messung", result.stdout)
+
+    def test_unparseable_canon_key_fails(self) -> None:
+        # Schluessel steht nur als Getter-Argument im Kanon, nicht als Block.
+        result = self.check(percent_row(source_locator="fake_getter_only"))
+        self.assertEqual(result.returncode, 1)
+        self.assertIn("nicht parsebar", result.stdout)
+
+    def test_canon_block_without_readable_number_fails(self) -> None:
+        result = self.check(percent_row(source_locator="fake_no_number"))
+        self.assertEqual(result.returncode, 1)
+        self.assertIn("nicht lesbar", result.stdout)
+
+    def test_canon_number_falls_back_to_display_with_decimal_comma(self) -> None:
+        result = self.check(
+            percent_row(
+                value="15.4", numerator="308", denominator="2000", source_locator="fake_decimal_rate"
+            )
+        )
+        self.assertEqual(result.returncode, 0, result.stdout)
+
+    def test_non_percent_canon_value_mismatch_fails(self) -> None:
+        result = self.check(public_canon_row(1, "fake_cpl_after", "25", "fake_cpl_after"))
+        self.assertEqual(result.returncode, 1)
+        self.assertIn("Kanonwert weicht ab", result.stdout)
+
+    # --- Rundung nach angegebener Genauigkeit ---
+
+    def test_precision_tolerance_blocks_coarse_deviation_on_decimal_value(self) -> None:
+        # 15.4 mit 30/200 = 15,0: frueher durch die globale Toleranz gerutscht.
+        result = self.check(internal_row(value="15.4"))
+        self.assertEqual(result.returncode, 1)
+        self.assertIn("Rechnung stimmt nicht", result.stdout)
+
+    def test_precision_tolerance_accepts_matching_decimal_value(self) -> None:
+        result = self.check(internal_row(value="15.4", numerator="308", denominator="2000"))
+        self.assertEqual(result.returncode, 0, result.stdout)
+
+    def test_precision_tolerance_for_whole_number_is_half_unit(self) -> None:
+        # 31/200 = 15,5: genau eine halbe Einheit entfernt, noch erlaubt.
+        ok = self.check(internal_row(numerator="31", denominator="200"))
+        self.assertEqual(ok.returncode, 0, ok.stdout)
+        # 32/200 = 16,0: eine ganze Einheit entfernt, Fehler.
+        bad = self.check(internal_row(numerator="32", denominator="200"))
+        self.assertEqual(bad.returncode, 1)
+        self.assertIn("Rechnung stimmt nicht", bad.stdout)
+
+    def test_precision_tolerance_applies_to_canon_value(self) -> None:
+        # Genauere Angabe als der Kanon hergibt: 15.4 gegen den Kanonwert mit ganzer Zahl.
+        result = self.check(percent_row(value="15.4", numerator="308", denominator="2000"))
+        self.assertEqual(result.returncode, 1)
+        self.assertIn("Kanonwert weicht ab", result.stdout)
+
+    # --- Kleine Basis ---
+
+    def test_small_base_public_is_error(self) -> None:
+        result = self.check(percent_row(value="15", numerator="3", denominator="20"))
+        self.assertEqual(result.returncode, 1)
+        self.assertIn("kleine Basis nicht oeffentlich verallgemeinern", result.stdout)
+
+    def test_small_base_at_threshold_is_not_small(self) -> None:
+        result = self.check(internal_row(value="20", numerator="6", denominator="30"))
+        self.assertEqual(result.returncode, 0, result.stdout)
+        self.assertNotIn("kleine Basis", result.stdout)
+
+    # --- Einheit ---
+
+    def test_percent_unit_spellings_are_normalized_and_checked(self) -> None:
+        for unit in ("Prozent", "percent", "PERCENT"):
+            with self.subTest(unit=unit):
+                ok = self.check(percent_row(unit=unit))
+                self.assertEqual(ok.returncode, 0, ok.stdout)
+                bad = self.check(percent_row(unit=unit, value="25"))
+                self.assertEqual(bad.returncode, 1)
+                self.assertIn("Rechnung stimmt nicht", bad.stdout)
+
+    def test_unknown_unit_with_numerator_and_denominator_fails(self) -> None:
+        result = self.check(internal_row(unit="pct", value="25"))
+        self.assertEqual(result.returncode, 1)
+        self.assertIn("Einheit fuer Quote unklar", result.stdout)
+
+    # --- Oeffentlicher Vorher/Nachher-Claim ---
+
+    def test_public_baseline_without_baseline_key_fails(self) -> None:
+        row = public_canon_row(1, "fake_cpl_after", "22", "fake_cpl_after")
+        row.update(
+            baseline_value="150",
+            baseline_window_start="2025-07-01",
+            baseline_window_end="2025-12-31",
+        )
+        result = self.check(row)
+        self.assertEqual(result.returncode, 1)
+        self.assertIn("baseline:<kanon-schluessel>", result.stdout)
+
+    def public_before_after(self, **overrides: str) -> subprocess.CompletedProcess[str]:
+        row = public_canon_row(1, "fake_cpl_after", "22", "fake_cpl_after")
+        row.update(
+            baseline_value="150",
+            baseline_window_start="2025-07-01",
+            baseline_window_end="2025-12-31",
+            definition="[SYNTHETISCH] Kosten pro Anfrage, baseline:fake_cpl_before",
+        )
+        row.update(overrides)
+        return self.check(row)
+
+    def test_public_baseline_with_canon_baseline_key_passes(self) -> None:
+        result = self.public_before_after()
+        self.assertEqual(result.returncode, 0, result.stdout)
+
+    def test_public_baseline_value_must_match_canon_baseline(self) -> None:
+        result = self.public_before_after(baseline_value="120")
+        self.assertEqual(result.returncode, 1)
+        self.assertIn("Baseline: Kanonwert weicht ab", result.stdout)
+
+    def test_public_baseline_unknown_key_fails(self) -> None:
+        result = self.public_before_after(definition="[SYNTHETISCH] baseline:fake_missing_key")
+        self.assertEqual(result.returncode, 1)
+        self.assertIn("Baseline: Kanon-Schluessel nicht gefunden", result.stdout)
+
+    def test_public_baseline_on_hedged_assumption_fails(self) -> None:
+        result = self.public_before_after(
+            baseline_value="3", definition="[SYNTHETISCH] baseline:fake_close_rate_before"
+        )
+        self.assertEqual(result.returncode, 1)
+        self.assertIn("Baseline: Annahme, keine Messung", result.stdout)
+
+    def test_internal_baseline_needs_no_canon_baseline(self) -> None:
+        result = self.check(
+            internal_row(
+                baseline_value="5",
+                baseline_window_start="2025-07-01",
+                baseline_window_end="2025-12-31",
+            )
+        )
+        self.assertEqual(result.returncode, 0, result.stdout)
 
     def test_brief_prints_max_three_results_and_no_invented_numbers(self) -> None:
         rows = [

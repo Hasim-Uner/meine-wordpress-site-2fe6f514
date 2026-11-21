@@ -155,9 +155,89 @@ class RetainerDigestTests(unittest.TestCase):
         self.assert_rejected("--outcomes", self.csv("s.csv", "won;2026-10-01;2026-10-30;1;;crm@x\n"), expect="source")
         self.assert_rejected("--outcomes", self.csv("p.csv", "won;2026-10-01;2026-10-30;+49 170 1234567;;crm\n"), expect="phone")
 
-    def test_iso_date_in_source_is_allowed(self) -> None:
-        path = self.csv("d.csv", "won;2026-10-01;2026-10-30;1;;crm export 2026-10-31\n")
-        self.assertEqual(self.run_digest("--outcomes", path).returncode, 0)
+    def test_system_identifier_sources_are_allowed(self) -> None:
+        for source in ("crm:bitrix24", "ga4", "gsc", "crm-export-2026-10-31", "crm:bitrix24-v2"):
+            path = self.csv("d.csv", f"won;2026-10-01;2026-10-30;1;;{source}\n")
+            self.assertEqual(self.run_digest("--outcomes", path).returncode, 0, source)
+
+    def test_person_name_or_free_text_in_source_exits_2(self) -> None:
+        for source in ("Max Mustermann", "crm export 2026-10-31", "CRM", "-crm"):
+            path = self.csv("n.csv", f"won;2026-10-01;2026-10-30;1;;{source}\n")
+            result = self.run_digest("--outcomes", path)
+            self.assertEqual(result.returncode, 2, source)
+            self.assertIn("source", result.stderr)
+            self.assertIn("row 2", result.stderr)
+            self.assertNotIn(source, result.stderr.replace("^[a-z0-9]", ""))
+            self.assertNotIn("Max Mustermann", result.stdout)
+
+    def test_phone_in_decisions_and_next_exits_2(self) -> None:
+        for phone in ("0170 1234567", "+49 170 1234567", "030/12345678", "(0711) 123-4567"):
+            decisions = self.root / "dp.txt"
+            decisions.write_text(f"Rueckruf unter {phone}\n", encoding="utf-8")
+            self.assert_rejected("--decisions", str(decisions), expect="phone")
+            result = self.run_digest("--next", f"Anrufen {phone}")
+            self.assertEqual(result.returncode, 2, phone)
+            self.assertIn("phone", result.stderr)
+            self.assertNotIn(phone, result.stderr)
+
+    def test_dates_and_small_numbers_in_decisions_and_next_pass(self) -> None:
+        decisions = self.root / "dd.txt"
+        decisions.write_text("Freigabe bis 31.10.2026 oder 2026-10-31, Budget 12.500 EUR\n", encoding="utf-8")
+        result = self.run_digest("--decisions", str(decisions), "--next", "Review am 15.11.2026")
+        self.assertEqual(result.returncode, 0, result.stderr)
+
+    def test_phone_and_email_in_commit_subject_are_redacted_and_counted(self) -> None:
+        repo = self.root / "repo-redact"
+        repo.mkdir()
+        run = lambda *a, env=None: subprocess.run(["git", "-C", str(repo), *a], check=True, capture_output=True, env={**ENV, **(env or {})})
+        run("init", "-q")
+        run("config", "user.name", "Digest Fixture")
+        run("config", "user.email", "test@example.invalid")
+        for number, subject in enumerate(
+            ["fix: Rueckruf 0170 1234567 fuer Kunde", "docs: Mail an max@example.com senden", "docs: Notiz vom 04.11.2026 ohne Daten"]
+        ):
+            (repo / f"docs{number}.md").write_text(subject, encoding="utf-8")
+            stamp = f"2026-11-0{number + 2}T12:00:00+0000"
+            run("add", "-A")
+            run("commit", "-q", "-m", subject, env={"GIT_AUTHOR_DATE": stamp, "GIT_COMMITTER_DATE": stamp})
+        out = subprocess.run(
+            [sys.executable, str(SCRIPT), "--repo", str(repo), "--since", "2026-11-01", "--until", "2026-11-30"],
+            capture_output=True, text=True, env=ENV,
+        ).stdout
+        self.assertNotIn("1234567", out)
+        self.assertNotIn("max@example.com", out)
+        self.assertIn("Rueckruf [entfernt] fuer Kunde", out)
+        self.assertIn("Betreffe bereinigt: 2", out)
+        self.assertIn("04.11.2026", out)
+
+    def test_no_redaction_line_without_redaction(self) -> None:
+        self.assertNotIn("Betreffe bereinigt", self.run_digest().stdout)
+
+    def test_delta_suppressed_when_source_changes(self) -> None:
+        outcomes = self.csv(
+            "sc.csv", "qualified;2026-09-01;2026-09-30;4;;crm:bitrix24\nqualified;2026-10-01;2026-10-30;6;;crm:bitrix24-v2\n"
+        )
+        out = self.run_digest("--outcomes", outcomes).stdout
+        self.assertIn("kein Vergleich (Quelle gewechselt)", out)
+        self.assertNotIn("Delta", out)
+
+    def test_inquiries_alone_do_not_count_as_pipeline_evidence(self) -> None:
+        outcomes = self.csv("i.csv", "inquiries;2026-10-01;2026-10-30;12;;crm\n")
+        out = self.run_digest("--outcomes", outcomes).stdout
+        self.assertIn("Kein Pipeline-Beleg (qualified/progressed/won fehlen).", out)
+        with_pipeline = self.csv("ip.csv", "inquiries;2026-10-01;2026-10-30;12;;crm\nqualified;2026-10-01;2026-10-30;3;;crm\n")
+        self.assertNotIn("Kein Pipeline-Beleg", self.run_digest("--outcomes", with_pipeline).stdout)
+
+    def test_recent_lagging_windows_are_marked_immature(self) -> None:
+        outcomes = self.csv(
+            "mat.csv",
+            "won;2026-10-01;2026-10-30;1;;crm\nprogressed;2026-08-01;2026-08-31;3;;crm\nqualified;2026-10-01;2026-10-30;5;;crm\n",
+        )
+        out = self.run_digest("--outcomes", outcomes).stdout
+        self.assertIn("won noch nicht ausgereift", out)
+        self.assertNotIn("progressed noch nicht ausgereift", out)
+        self.assertNotIn("qualified noch nicht ausgereift", out)
+        self.assertIn("won (lagging) 2026-10-01..2026-10-30: 1", out)
 
     def test_extra_column_exits_2(self) -> None:
         path = self.csv("x.csv", "won;2026-10-01;2026-10-30;1;;crm;Anna\n", HEADER.strip() + ";name\n")

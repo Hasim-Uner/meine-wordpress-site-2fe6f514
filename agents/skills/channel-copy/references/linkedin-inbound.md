@@ -19,7 +19,7 @@ Inbound-Positionierung: Wer den Beitrag liest, soll die Beobachtung bei sich wie
 4. Grenze: wann die These nicht gilt. Erst die Grenze trennt These von Provokation.
 5. Offene Frage oder nichts.
 
-Höchstens 3000 Zeichen. Der Linter `channel-check.py linkedin` erwartet ein Signal der Grenze (Gilt nicht, Grenze, Ausnahme, funktioniert nicht, wenn).
+Höchstens 3000 Zeichen. Der Linter `channel-check.py linkedin` erwartet mindestens einen `[Q: …]`-Marker (die Beobachtung) und eine Grenze-Zeile mit mindestens 8 Wörtern, die ein Signal enthält (Gilt nicht, Grenze, Ausnahme, funktioniert nicht, wenn). „Es gibt eine Ausnahme.“ genügt nicht: sagen, wann die These nicht gilt.
 
 ## Tiefe Audits übersetzen
 

@@ -1,5 +1,5 @@
 claim_id;metric;value;unit;numerator;denominator;denominator_label;window_start;window_end;baseline_value;baseline_window_start;baseline_window_end;source_kind;source_locator;definition;attribution_note;public
 CL-001;fake_close_rate;15;%;30;200;vorqualifizierte CRM-Leads;2026-01-01;2026-06-30;;;;canon;fake_close_rate;[SYNTHETISCH] Abschluesse unter den vorqualifizierten CRM-Leads;Vertrieb hatte wesentlichen Anteil am Abschluss;true
-CL-002;fake_cpl_after;22;EUR;;;;2026-01-01;2026-06-30;150;2025-07-01;2025-12-31;canon;fake_cpl_after;[SYNTHETISCH] Kosten pro eigener Anfrage im Kampagnenfenster;Vorher-Wert stammt aus gekauften Portal-Anfragen;true
+CL-002;fake_cpl_after;22;EUR;;;;2026-01-01;2026-06-30;150;2025-07-01;2025-12-31;canon;fake_cpl_after;[SYNTHETISCH] Kosten pro eigener Anfrage im Kampagnenfenster, baseline:fake_cpl_before;Vorher-Wert stammt aus gekauften Portal-Anfragen;true
 CL-003;lead_total;200;count;;;;2026-01-01;2026-06-30;;;;crm_export;CRM-EXPORT-A;[SYNTHETISCH] Anfragen aus allen Quellen;;false
 CL-004;visitor_to_lead;12;%;240;2000;Besucher;2026-01-01;2026-06-30;;;;tracking_export;TRK-EXPORT-B;[SYNTHETISCH] Besucher zu Anfragen;;false

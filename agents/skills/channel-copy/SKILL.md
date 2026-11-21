@@ -18,7 +18,7 @@ python3 agents/skills/channel-copy/scripts/channel-check.py brief <entwurf.md>
 python3 agents/skills/channel-copy/scripts/channel-check.py linkedin <entwurf.md>
 ```
 
-Der Linter findet Muster (Quelle genannt, Verbote, Länge), nicht Wahrheit. Mit `--strip` gibt er den Text ohne Marker aus.
+Der Linter findet Muster (Quelle genannt, Verbote, Länge), nicht Wahrheit. Mit `--strip` gibt er den Text ohne Marker und Front Matter aus.
 
 Prüfraster für jeden Satz (aus dem Copywriting-Teil von coreyhaines31/marketingskills übernommen):
 1. Vorstellbar: Sieht der Leser das Gemeinte vor sich?
@@ -30,8 +30,9 @@ Bewusstseinsstufe des Lesers (problem-unaware bis product-aware) bestimmt den n�
 Hard rules:
 - Zahlen und Kontaktwege aus dem Kanon (`blocksy-child/inc/canon/`), Befunde mit `[Q: …]`-Marker; ohne Beleg wird gestrichen.
 - Keine Kaltakquise per E-Mail, Telefon oder LinkedIn-DM; Brief-Nachfassen nur per Post oder nach Antwort.
+- Brief-Entwurf beginnt mit Front Matter (Adressquelle, Widerspruchsliste geprüft mit Datum, Antwortweg, Freigabe); `freigabe: offen` ist ein Befund.
 - Widerspruchsliste führen und einhalten; Rechtsrahmen steht in `references/direct-mail.md`, keine Rechtsberatung.
 - Keine Kundennamen ohne schriftliche Freigabe, keine erfundenen Begriffsdefinitionen des Inhabers.
 - Der Inhaber gibt vor Druck oder Posting frei.
 
-Deliverable: Entwurf, saubere Linter-Ausgabe, bereinigte Endfassung (`--strip`), offene Rechts- und Freigabepunkte.
+Deliverable: Entwurf mit Front Matter, saubere Linter-Ausgabe, bereinigte Endfassung (`--strip`), offene Rechts- und Freigabepunkte.

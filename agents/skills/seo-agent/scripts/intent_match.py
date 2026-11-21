@@ -17,21 +17,30 @@ Rechenregeln (alle Schwellen stehen unten als Konstanten):
 2. Typ-Anteil = Summe seen_in des Typs / Summe seen_in aller Treffer mit
    Position <= 10. OpenSEO liest jede SERP mehrfach; seen_in gewichtet stabile
    Treffer staerker als einmal gesehene.
-3. Lage: DOMINANT ab 0,6; SPLIT wenn die zwei groessten Typen je >= 0,4;
-   sonst GEMISCHT.
+3. Lage: SPLIT wenn die zwei groessten Typen je >= 0,4 (auch bei 60:40,
+   damit ein Typ mit 40 % nicht als Verlierer gilt); sonst DOMINANT ab 0,6;
+   sonst GEMISCHT. Liegt mehr als die Haelfte des Gewichts in der Restklasse,
+   ist die Verteilung RESTKLASSE-HOCH und das Urteil nur eingeschraenkt lesbar.
 4. Unser Typ aus der Registry-Spalte `intent` (informational -> ratgeber,
    sonst anbieter), gegengeprueft mit JSON-LD aus dem Crawl.
 5. Urteil: PASST (dominanter Typ = unserer) | SPLIT (unserer unter den zwei
    groessten) | GEMISCHT (keine Dominanz, unser Anteil >= 0,2) | MISMATCH.
 6. On-Page: jedes Query-Token muss in Title oder H1 vorkommen (Praefix-Treffer
    ab 4 Zeichen, z. B. lead/leads). Fehlende Tokens werden genannt.
-7. Abgrenzung: Ueberlappung = |A ∩ B| / min(|A|, |B|) der Top-10-Domains.
-   >= 0,7 heisst gleiche Intention, <= 0,1 heisst getrennt (Schwellen nach
-   SERP-Overlap-Clustering: 7 von 10 gleich, 0-1 von 10 getrennt).
+7. Abgrenzung: Ueberlappung = |A ∩ B| / min(|A|, |B|) der Top-10-Domains,
+   nur wenn beide Mengen mindestens 5 Fremddomains haben; sonst traegt eine
+   einzelne Domain 100 %. >= 0,7 heisst gleiche Intention, <= 0,1 heisst
+   getrennt (Schwellen nach SERP-Overlap-Clustering: 7 von 10 gleich, 0-1 von
+   10 getrennt). Nur Paare mit verschiedenen Ownern werden auf Abgrenzung
+   geprueft; `distinct_from` innerhalb desselben Owners trennt Schreibvarianten
+   und erwartet Ueberlappung.
 
-Exit 0 ohne harten Befund, 1 bei MISMATCH, NICHT-ERREICHBAR, NOINDEX,
-CANONICAL-FREMD, ABGRENZUNG-WIDERLEGT oder OWNER-SPLIT-FRAGLICH, 2 bei
-fehlenden Daten oder Bedienfehlern.
+Hart sind nur technische Befunde, die eine Seite aus dem Index nehmen:
+NICHT-ERREICHBAR, NOINDEX, CANONICAL-FREMD. Intent-Urteile (MISMATCH,
+ABGRENZUNG-WIDERLEGT, OWNER-SPLIT-FRAGLICH) sind Pruefbefunde: Die Schwellen
+sind nicht gegen manuell gepruefte Suchintentionen kalibriert und loesen eine
+Sichtung aus, kein Gate. Exit 0 ohne harten Befund, 1 mit, 2 bei fehlenden
+Daten oder Bedienfehlern.
 """
 
 from __future__ import annotations
@@ -56,9 +65,12 @@ SPLIT = 0.4
 MIN_OWN_SHARE = 0.2
 SAME_INTENT = 0.7
 SEPARATE_INTENT = 0.1
+MIN_OVERLAP_DOMAINS = 5
+MAX_FALLBACK_SHARE = 0.5
 MAX_AGE_GAP_DAYS = 30
-HARD = {"MISMATCH", "NICHT-ERREICHBAR", "NOINDEX", "CANONICAL-FREMD",
-        "ABGRENZUNG-WIDERLEGT", "OWNER-SPLIT-FRAGLICH"}
+HARD = {"NICHT-ERREICHBAR", "NOINDEX", "CANONICAL-FREMD"}
+REVIEW = {"MISMATCH", "ABGRENZUNG-WIDERLEGT", "OWNER-SPLIT-FRAGLICH", "BUENDELUNG-FRAGLICH",
+          "FREMDE-URL-RANKT", "TYP-WIDERSPRUCH"}
 
 ARTICLE_TYPES = {"Article", "BlogPosting", "NewsArticle", "TechArticle"}
 SERVICE_TYPES = {"Service", "ProfessionalService", "Product", "Offer", "LocalBusiness"}
@@ -150,10 +162,10 @@ def analyse_serp(record: dict, rules, own_domain: str) -> dict:
     ranked = sorted(shares.items(), key=lambda kv: (-kv[1], kv[0]))
     if not ranked:
         shape, leaders = "LEER", []
-    elif ranked[0][1] >= DOMINANT:
-        shape, leaders = "DOMINANT", [ranked[0][0]]
     elif len(ranked) > 1 and ranked[1][1] >= SPLIT:
         shape, leaders = "SPLIT", [ranked[0][0], ranked[1][0]]
+    elif ranked[0][1] >= DOMINANT:
+        shape, leaders = "DOMINANT", [ranked[0][0]]
     else:
         shape, leaders = "GEMISCHT", []
     titled = sum(1 for r in record["results"] if r.get("title"))
@@ -205,7 +217,7 @@ def days_between(a: str, b: str) -> int | None:
 
 
 def overlap(a: set[str], b: set[str]) -> float | None:
-    if not a or not b:
+    if min(len(a), len(b)) < MIN_OVERLAP_DOMAINS:
         return None
     return len(a & b) / min(len(a), len(b))
 
@@ -240,7 +252,7 @@ def main() -> int:
         return 2
 
     analysed = {q: analyse_serp(rec, rules, args.own_domain) for q, rec in serps.items()}
-    rows, hard = [], 0
+    rows, hard, review, thin_pairs = [], 0, 0, 0
     for q, reg in owned.items():
         if q not in serps:
             continue
@@ -260,9 +272,13 @@ def main() -> int:
                    if serp["own_title"] and fold(rec.get("title", "")) == fold(serp["own_title"])]
         if len(ranking) == 1 and ranking[0] != owner:
             findings.append(f"FREMDE-URL-RANKT ({ranking[0]} auf Pos. {serp['own_position']} statt Owner {owner})")
+        if serp["fallback_share"] > MAX_FALLBACK_SHARE:
+            findings.append(f"RESTKLASSE-HOCH ({pct(serp['fallback_share'])} ohne Regeltreffer: "
+                            "Urteil nur eingeschraenkt lesbar, Regeldatei ergaenzen)")
         if serp["untitled"]:
             findings.append("NUR-DOMAINS (Alt-Export ohne Titel: Typen nur per Domain-Regel)")
-        hard += (result in HARD) + sum(f.split(" ")[0] in HARD for f in findings)
+        hard += sum(f.split(" ")[0] in HARD for f in findings)
+        review += (result in REVIEW) + sum(f.split(" ")[0] in REVIEW for f in findings)
         rows.append((reg, owner, our_type, serp, result, findings))
 
     pair_findings = []
@@ -271,20 +287,21 @@ def main() -> int:
         for b in keys[i + 1:]:
             ratio = overlap(analysed[a]["domains"], analysed[b]["domains"])
             if ratio is None:
+                thin_pairs += 1
                 continue
             ra, rb = owned[a], owned[b]
             distinct = {fold(x) for x in (ra.get("distinct_from") or "").split("|")} | \
                        {fold(x) for x in (rb.get("distinct_from") or "").split("|")}
             same_owner = norm_path(ra["owner_path"]) == norm_path(rb["owner_path"])
             label = None
-            if ratio >= SAME_INTENT and (b in distinct or a in distinct):
+            if ratio >= SAME_INTENT and not same_owner and (b in distinct or a in distinct):
                 label = "ABGRENZUNG-WIDERLEGT"
             elif ratio >= SAME_INTENT and not same_owner:
                 label = "OWNER-SPLIT-FRAGLICH"
             elif ratio <= SEPARATE_INTENT and same_owner:
                 label = "BUENDELUNG-FRAGLICH"
             if label:
-                hard += label in HARD
+                review += label in REVIEW
                 pair_findings.append((label, ra, rb, ratio))
 
     unowned = [(q, serps[q], analysed[q]) for q in sorted(serps) if q not in owned]
@@ -331,7 +348,10 @@ def main() -> int:
         out.append("")
     if missing_serp:
         out.append(f"Ohne SERP-Daten: {len(missing_serp)} Registry-Queries (nicht bewertet, nicht geraten).")
-    out.append(f"Harte Befunde: {hard}.")
+    if thin_pairs:
+        out.append(f"Abgrenzung nicht pruefbar: {thin_pairs} Paare mit weniger als "
+                   f"{MIN_OVERLAP_DOMAINS} Fremddomains in einer SERP.")
+    out.append(f"Harte Befunde: {hard}. Pruefbefunde: {review} (Sichtung, kein Gate).")
     print("\n".join(out))
     return 1 if hard else 0
 
