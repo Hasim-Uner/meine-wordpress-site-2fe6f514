@@ -20,6 +20,7 @@ Marker im Entwurf:
   [CTA]                         der eine Antwortweg des Briefs
 HTML-Kommentare (<!-- ... -->) sind Notizen und zaehlen nirgends.
 """
+import os
 import re
 import sys
 from datetime import date
@@ -84,6 +85,8 @@ PHONE = re.compile(r'(?<![\w@/.:-])(?:\+49|0049|0\d)(?:[ ./()-]{0,2}\d)+')
 PHONE_DATE = re.compile(r'0?\d{1,2}[./]\d{1,2}[./]\d{2,4}')
 REPLY_PHRASE = re.compile(r'\b(?:antworten|rufen|schreiben)\s+Sie\b', re.I)
 MIN_PHONE_DIGITS = 7
+# Eigene Domain; Override per Umgebungsvariable (wie bei den Smoke-/Audit-Skripten des Repos).
+DEFAULT_OWN_HOST = 'hasimuener.de'
 
 # Front Matter: Pflichtfelder und die drei Antwortrouten (docs/architecture/CONVERSION_ROUTING.md).
 FM_LINE = re.compile(r'^\s*([A-Za-z_]+)\s*:\s*(.*?)\s*$')
@@ -101,7 +104,7 @@ LLMS_LINK = re.compile(r'^- \[(?P<label>[^\]]+)\]\((?P<href>[^)\s]+)\)', re.M)
 
 
 def route_target(route):
-    """Pfad und Pflicht-Query der Route aus llms.txt; fehlt der Eintrag, ist das ein Bedienfehler."""
+    """Pfad, Pflicht-Query und Pflicht-Fragment der Route aus llms.txt; fehlt der Eintrag, ist das ein Bedienfehler."""
     llms = ROOT / 'llms.txt'
     links = {m['label']: m['href'] for m in LLMS_LINK.finditer(llms.read_text(encoding='utf-8'))}
     href = links.get(ROUTE_LABELS[route])
@@ -109,7 +112,7 @@ def route_target(route):
         print(f'FEHLER: Route {route!r} ({ROUTE_LABELS[route]}) fehlt in {llms}.', file=sys.stderr)
         sys.exit(2)
     parsed = urlparse(href)
-    return parsed.path, parsed.query
+    return parsed.path, parsed.query, parsed.fragment
 
 _canon_text = None
 
@@ -279,14 +282,32 @@ def reply_channels(clean_lines):
     return found, all_urls
 
 
+def own_hosts():
+    """Erlaubte Hosts: OWN_HOST (Standard hasimuener.de), bare und mit www.-Praefix."""
+    raw = (os.environ.get('OWN_HOST') or DEFAULT_OWN_HOST).strip().lower()
+    host = urlparse(raw if '://' in raw else '//' + raw).hostname or DEFAULT_OWN_HOST
+    host = host[4:] if host.startswith('www.') else host
+    return {host, 'www.' + host}
+
+
+def host_checks(urls, report):
+    allowed = own_hosts()
+    for url in sorted(urls):
+        host = urlparse(url if '://' in url else '//' + url).hostname
+        if host not in allowed:
+            report.add(None, 'fremder-host',
+                       f'URL {url} liegt nicht auf dem eigenen Host ({" | ".join(sorted(allowed))})')
+
+
 def route_consistency(route, urls, report):
-    path, query = route_target(route)
+    path, query, fragment = route_target(route)
     wanted_query = set(filter(None, query.split('&')))
     for url in sorted(urls):
         parsed = urlparse(url if '://' in url else '//' + url)
         same_path = parsed.path.rstrip('/') == path.rstrip('/')
-        if not same_path or not wanted_query <= set(filter(None, parsed.query.split('&'))):
-            expected = path + (f'?{query}' if query else '')
+        if (not same_path or not wanted_query <= set(filter(None, parsed.query.split('&')))
+                or (fragment and parsed.fragment != fragment)):
+            expected = path + (f'?{query}' if query else '') + (f'#{fragment}' if fragment else '')
             report.add(None, 'antwortweg-url',
                        f'URL {url} passt nicht zu antwortweg: {route} (llms.txt: {expected})')
 
@@ -346,6 +367,10 @@ def brief_checks(raw_lines, report, route=None):
     if len(channels) > 1:
         report.add(None, 'mehrere-antwortwege',
                    f'{len(channels)} Antwortwege im Text ({", ".join(sorted(k for k, _ in channels))}); genau einer erlaubt')
+    if not channels:
+        report.add(None, 'kein-antwortweg',
+                   'kein Antwortweg im Text (URL, E-Mail, Telefon oder Antwort-Formulierung); genau einer erforderlich')
+    host_checks(urls, report)
     if route:
         route_consistency(route, urls, report)
     words = len(clean.split())

@@ -8,6 +8,7 @@ FIX="$HERE/fixtures"
 TMP="$(mktemp -d "${TMPDIR:-/tmp}/channel-check.XXXXXX")"
 trap 'rm -rf "$TMP"' EXIT
 export PYTHONDONTWRITEBYTECODE=1
+unset OWN_HOST
 
 failures=0
 fail() { printf 'FAIL: %s\n' "$1" >&2; failures=$((failures + 1)); }
@@ -101,12 +102,50 @@ expect_code "brief Freigabe offen" 1 brief "$TMP/fm-offen.md"
 expect_rule "brief Freigabe offen" freigabe-offen
 
 # Route und URL muessen zusammenpassen; passende URL bleibt ein einziger Antwortweg
-URL_SWAP='s/, antworten Sie mir kurz an die E-Mail-Adresse im Briefkopf\./ unter www.example.de\/whitelabel-retainer\/ nachlesen./'
-mkbrief "$TMP/route-ok.md" "s/^antwortweg: .*/antwortweg: white-label/; $URL_SWAP"
+swap_url() { # datei route url: Antwortweg-Satz durch eine URL ersetzen
+  sed -E "s/^antwortweg: .*/antwortweg: $2/; s|, antworten Sie mir kurz an die E-Mail-Adresse im Briefkopf\.| unter $3 nachlesen.|" \
+    "$FIX/brief-good.md" >"$1"
+}
+swap_url "$TMP/route-ok.md" white-label https://hasimuener.de/whitelabel-retainer/
 expect_code "brief Route passt zur URL" 0 brief "$TMP/route-ok.md"
-mkbrief "$TMP/route-bad.md" "s/^antwortweg: .*/antwortweg: marktcheck/; $URL_SWAP"
+swap_url "$TMP/route-bad.md" marktcheck https://hasimuener.de/whitelabel-retainer/
 expect_code "brief Route passt nicht zur URL" 1 brief "$TMP/route-bad.md"
 expect_rule "brief Route passt nicht zur URL" antwortweg-url
+
+# Marktcheck-Route aus llms.txt hat ein Fragment (#marktcheck); die URL muss es tragen
+swap_url "$TMP/mc-ok.md" marktcheck https://hasimuener.de/solar-waermepumpen-leadgenerierung/#marktcheck
+expect_code "brief Marktcheck mit Fragment" 0 brief "$TMP/mc-ok.md"
+swap_url "$TMP/mc-nofrag.md" marktcheck https://hasimuener.de/solar-waermepumpen-leadgenerierung/
+expect_code "brief Marktcheck ohne Fragment" 1 brief "$TMP/mc-nofrag.md"
+expect_rule "brief Marktcheck ohne Fragment" antwortweg-url
+swap_url "$TMP/mc-wrongfrag.md" marktcheck https://hasimuener.de/solar-waermepumpen-leadgenerierung/#anfrage
+expect_code "brief Marktcheck falsches Fragment" 1 brief "$TMP/mc-wrongfrag.md"
+expect_rule "brief Marktcheck falsches Fragment" antwortweg-url
+
+# Eigener Host: Standard hasimuener.de (mit/ohne www), Override per OWN_HOST, fremde Hosts sind Befunde
+swap_url "$TMP/host-www.md" projektanfrage https://www.hasimuener.de/kontakt/?type=project
+expect_code "brief www-Host" 0 brief "$TMP/host-www.md"
+swap_url "$TMP/host-foreign.md" projektanfrage https://example.de/kontakt/?type=project
+expect_code "brief fremder Host" 1 brief "$TMP/host-foreign.md"
+expect_rule "brief fremder Host" fremder-host
+expect_no_rule "brief fremder Host" antwortweg-url
+swap_url "$TMP/host-suffix.md" projektanfrage https://hasimuener.de.example.de/kontakt/?type=project
+run brief "$TMP/host-suffix.md"; expect_rule "brief Host mit Eigen-Suffix" fremder-host
+swap_url "$TMP/host-userinfo.md" projektanfrage https://hasimuener.de@example.de/kontakt/?type=project
+run brief "$TMP/host-userinfo.md"; expect_rule "brief Host hinter Userinfo" fremder-host
+OWN_HOST=example.de run brief "$TMP/host-foreign.md"
+[[ "$CODE" -eq 0 ]] || fail "brief OWN_HOST-Override: Exit $CODE statt 0
+$OUT"
+OWN_HOST=example.de run brief "$TMP/host-www.md"
+expect_rule "brief OWN_HOST-Override sperrt Standardhost" fremder-host
+
+# Kein Antwortweg im Text: genau einer ist Pflicht
+mkbrief "$TMP/no-channel.md" 's/^Wenn Sie wissen wollen.*/Bei Interesse. [CTA]/'
+expect_code "brief ohne Antwortweg" 1 brief "$TMP/no-channel.md"
+expect_rule "brief ohne Antwortweg" kein-antwortweg
+expect_no_rule "brief ohne Antwortweg" mehrere-antwortwege
+run brief "$FIX/brief-good.md"
+expect_no_rule "brief gut" kein-antwortweg
 
 # Quellenmarker hinter dem Satzende zaehlt, Zahl in Rechtszitat und Kommentar nicht
 printf '%s\n' '<!-- 99 Notiz -->' 'Ihr Formular braucht 3 Klicks. [Q: Beispiel]' 'Siehe Art. 14 DSGVO und § 7 Abs. 2 Nr. 1 UWG.' >"$TMP/marker.md"

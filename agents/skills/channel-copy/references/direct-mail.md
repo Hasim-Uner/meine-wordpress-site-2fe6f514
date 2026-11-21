@@ -37,7 +37,7 @@ freigabe: <Name oder Kürzel> 2026-11-20 | offen
 ---
 ```
 
-`antwortweg` nennt eine der drei Routen aus `docs/architecture/CONVERSION_ROUTING.md`. Steht im Brief eine URL, muss ihr Pfad, ihre Query oder ihr Anker das Schlüsselwort der Route tragen (`marktcheck` bzw. `solar-waermepumpen-leadgenerierung`, `whitelabel`, `kontakt` bzw. `projekt`); ohne URL wird nur geprüft, dass die Route gesetzt ist. `freigabe: offen` ist ein Befund (Exit 1), bis der Inhaber freigibt. Die Anrede ist namentlich (Sehr geehrte Frau | Sehr geehrter Herr | Guten Tag Frau | Herr, dann der Name).
+`antwortweg` nennt eine der drei Routen aus `docs/architecture/CONVERSION_ROUTING.md`. Steht im Brief eine URL, muss sie auf dem eigenen Host liegen (`OWN_HOST`, Standard `hasimuener.de`, mit oder ohne `www.`) und Pfad, Query und, falls der Eintrag in `llms.txt` eines hat, auch das Fragment der Route tragen (Marktcheck: `#marktcheck`). Der Brief braucht genau einen Antwortweg; ohne Antwortweg meldet der Linter `kein-antwortweg`. `freigabe: offen` ist ein Befund (Exit 1), bis der Inhaber freigibt. Die Anrede ist namentlich (Sehr geehrte Frau | Sehr geehrter Herr | Guten Tag Frau | Herr, dann der Name).
 
 Hinweis zum Entwurf: Adressblock, Absender und Datum gehören ins Druck-Template, nicht in den Entwurf; Notizen stehen in HTML-Kommentaren und fallen mit `--strip` heraus.
 
@@ -46,7 +46,7 @@ Hinweis zum Entwurf: Adressblock, Absender und Datum gehören ins Druck-Template
 - Prüfraster aus `SKILL.md` auf jeden Satz, besonders auf Beleg und Swap-Test.
 - Bewusstseinsstufe: Die Geschäftsführung kennt das Problem meist nicht (problem-unaware). Der nächste Schritt ist deshalb Erkennen und Antworten, nicht Kaufen.
 - Positionierungskette: Was würde die Geschäftsführung sonst tun (nichts, intern lösen, Agentur)? Welcher eine Unterschied trägt? Nur dieser steht im Brief.
-- `channel-check.py brief` muss ohne Befund laufen (Front Matter, namentliche Anrede, genau ein Antwortweg); Zahlen ohne Marker, Agentursprache, gesperrte Begriffe, Fristen und „kostenlos“ sind Befunde, über die ein Mensch entscheidet.
+- `channel-check.py brief` muss ohne Befund laufen (Front Matter, namentliche Anrede, genau ein Antwortweg auf eigenem Host); Zahlen ohne Marker, Agentursprache, gesperrte Begriffe, Fristen und „kostenlos“ sind Befunde, über die ein Mensch entscheidet.
 
 ## Vorlauf vor der Skalierung
 
@@ -57,6 +57,13 @@ Die Hypothese oben wird vor jeder Skalierung mit einem Vorlauf geprüft, nicht a
 - Erfolgsmaß: qualifizierte Gespräche je zugestelltem Brief.
 - Wird die vorab erklärte Mindestmenge im Zeitfenster nicht erreicht, lautet das Ergebnis UNZUREICHEND; es gibt weder Erfolg noch Misserfolg, und es wird nicht skaliert.
 - Zeitfenster, Menge und Maß nachträglich zu ändern entwertet den Vorlauf.
+
+Zusätzlich vor der Skalierung festlegen, alles vor dem ersten Brief:
+
+- Definition „qualifiziertes Gespräch“: was ein Gespräch qualifiziert (z. B. Ansprechperson mit Entscheidungsbefugnis, konkretes Problem benannt), schriftlich und vorab; sie wird nach dem Versand nicht angepasst.
+- Vergleichbare Zuordnung: Welche Empfänger einen Brief mit individuellem Website-Befund bekommen und welche einen ohne, steht vor dem Versand fest und folgt einer Regel, die nicht vom Bearbeiter abhängt (z. B. abwechselnd nach Reihenfolge der Adressliste). Keine Auswahl nach Bauchgefühl oder nach „dankbaren“ Empfängern.
+- Kleinster Mehrertrag: der kleinste zusätzliche Ertrag je zugestelltem Brief (zusätzliche qualifizierte Gespräche), der den Recherche-Aufwand für den individuellen Befund rechtfertigt. Liegt der Unterschied darunter, lohnt der Befund nicht, auch wenn er positiv ausfällt.
+- Fehlt eine dieser drei Festlegungen beim ersten Versand, lautet das Ergebnis UNZUREICHEND.
 
 ## Rechtsrahmen
 
@@ -69,7 +76,7 @@ Keine Rechtsberatung, vor dem ersten Versand prüfen lassen.
 
 ## Versand-Checkliste
 
-- Linter ohne Befund (Front Matter vollständig, `freigabe` nicht `offen`), Endfassung mit `--strip` erzeugt
+- Linter ohne Befund (Front Matter vollständig, `freigabe` nicht `offen`), Endfassung mit `--strip` erzeugt. Ein grüner Lauf bestätigt nur, dass die Front-Matter-Felder ausgefüllt sind, nicht dass die menschlichen Schritte (Prüfung der Adressquelle, Widerspruchsliste, Rechtsprüfung, Freigabe) tatsächlich stattgefunden haben.
 - Widerspruchsliste abgeglichen, Herkunft der Adresse dokumentiert
 - Jede Zahl im Kanon oder mit Quellenbeschreibung belegt
 - Inhaber hat Text und Rechtsfragen freigegeben
