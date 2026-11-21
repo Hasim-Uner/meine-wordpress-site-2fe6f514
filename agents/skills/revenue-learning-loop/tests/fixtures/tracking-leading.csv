@@ -1,0 +1,3 @@
+metric;window_start;window_end;value;denominator;source
+sessions;2026-10-01;2026-10-30;900;;tracking-aggregate
+ctr;2026-10-01;2026-10-30;45;1000;gsc-aggregate
