@@ -20,10 +20,14 @@ Script: `agents/skills/agent-system-maintenance/scripts/adversarial-review.py`
 ```
 
 - `evidence`: mindestens ein Eintrag je Maßnahme. Lokale Pfade sind repo-relativ,
-  müssen existieren und im Repo bleiben; `#anker` wählt beim Prompt die Zeilen mit
-  dem Begriff (±2 Zeilen), sonst gilt der Dateianfang.
+  müssen existieren und im Repo bleiben. `#anker` wählt beim Prompt die Zeilen mit
+  dem Begriff (±2 Zeilen). Kommt der Anker in keiner Zeile der Datei vor
+  (Groß-/Kleinschreibung egal), ist die Maßnahme `FEHLER` ("Anker nicht gefunden").
 - Enthält `claim` oder `action` eine Ziffer, braucht die Maßnahme mindestens eine
-  vorhandene lokale Belegdatei. Eine URL allein reicht nicht (Status `UNBELEGT`).
+  vorhandene lokale Belegdatei **mit gefundenem Anker**; der Anker ist die Stelle,
+  die die Zahl trägt. URL allein oder bloßer Pfad reichen nicht (Status `UNBELEGT`,
+  "Zahl ohne verankerten Beleg"). Der Gate prüft nur, dass die Stelle existiert,
+  nicht dass sie die Zahl inhaltlich stützt; das bleibt Aufgabe des Kritikers.
 
 ## Schema `critique.v1`
 
@@ -34,22 +38,36 @@ Script: `agents/skills/agent-system-maintenance/scripts/adversarial-review.py`
  "falsification":"beobachtbares Ergebnis plus Zeitfenster, das widerlegt","confidence":0.0}]}
 ```
 
-Jede Maßnahme-ID genau einmal, keine unbekannten IDs. `attack` und `falsification`
-sind für jedes Review Pflicht (mindestens 20 Zeichen), auch bei `halten`.
-`confidence` liegt in [0,1].
+Jede Maßnahme-ID genau einmal, keine unbekannten IDs. `attack`, `failure_mode`
+und `falsification` sind für jedes Review Pflicht (mindestens 20 Zeichen), auch bei
+`halten`. `confidence` liegt in [0,1].
 
 ## Subcommands
 
 | Befehl | Zweck |
 | --- | --- |
 | `check MEASURES` | Pre-Gate ohne Netz. Je Maßnahme `OK`, `UNBELEGT` oder `FEHLER` mit Grund. |
-| `prompt MEASURES` | Vollständigen Kritiker-Prompt (System und User) zum manuellen Einfügen in ChatGPT ausgeben. Optionen `--max-excerpt-bytes` (1500), `--max-total-bytes` (24000), `--allow-memory`. |
+| `prompt MEASURES` | Vollständigen Kritiker-Prompt (System und User) zum manuellen Einfügen in ChatGPT ausgeben. Optionen `--max-excerpt-bytes` (1500), `--max-total-bytes` (24000), `--allow-memory`, `--repo-access`, `--ref`. |
 | `run MEASURES --out CRITIQUE.json [--md-out REPORT.md]` | Ein API-Aufruf an OpenAI, danach `verdict`. Env `KERN_MODEL` (Pflicht, kein Default) und `OPENAI_API_KEY`. |
 | `verdict MEASURES CRITIQUE [--md-out FILE]` | Post-Gate. Markdown-Report mit Tabelle und To-dos. |
 
 Belegauszüge stehen im Prompt in gekennzeichneten Blöcken und gelten als Daten,
 nie als Anweisung. Das Gesamtlimit wird deterministisch erzwungen; Auszüge, die
 nicht mehr passen, entfallen mit sichtbarem Marker.
+
+### Auszüge sind nur der Fallback
+
+Die Auszüge (Standard 1500 Byte je Beleg) sind für Kritiker **ohne Repo-Zugriff**
+(API-Aufruf per `run`, ChatGPT ohne Connector). Sie können die einschränkende
+Passage auslassen. Ein Kritiker **mit Repo-Zugriff** (Kern über ChatGPT mit
+GitHub-Connector) muss die zitierten Dateien vollständig lesen. Dafür gibt
+`prompt --repo-access [--ref BRANCH_ODER_COMMIT]` einen Prompt ohne Auszugsblöcke aus.
+Er nennt je Maßnahme die Belegpfade samt Anker, weist den Kritiker an, jeden Pfad
+vollständig auf `--ref` zu lesen (Default: `git rev-parse --short HEAD`), und
+verbietet jede Änderung am Repo (kein Commit, kein Push, kein PR). Die Maßnahmen
+stehen weiterhin im Prompt, weil `.ai/memory` per gitignore nicht im Repo liegt.
+Der Stand auf `--ref` muss auf GitHub gepusht sein, sonst sieht der Kritiker
+lokale Änderungen nicht.
 
 ## Exit-Codes
 
@@ -64,6 +82,24 @@ Rubber-Stamp (`KRITIK-ZU-WEICH`): alle Urteile `halten` bei mittlerer
 `confidence` von mindestens 0,9. Ein Kritiker, der nichts findet, gilt als
 unglaubwürdig, nicht als Freispruch.
 
+Strukturprüfung gegen Schablonenkritik (Exit 3, "Kritik abgelehnt"):
+
+- `failure_mode` ist je Review nicht leer und mindestens 20 Zeichen lang.
+- Derselbe `attack` (Leerraum und Groß-/Kleinschreibung normalisiert) bei zwei oder
+  mehr Reviews wird abgelehnt ("Angriff nicht massnahmenspezifisch"); dasselbe gilt
+  für `falsification`.
+- Jeder `attack` teilt mindestens einen Begriff (ab 5 Buchstaben, Umlaute gefaltet)
+  mit `claim`, `action`, `metric`, Dateiname und Anker der Belege seiner eigenen
+  Maßnahme. Gleiche Stämme zählen als Treffer, wenn der kürzere Begriff
+  mindestens 6 Buchstaben hat und Präfix des längeren ist ("unbelegte" und
+  "unbelegten").
+- `falsification` nennt ein Fenster oder eine Schwelle: eine Ziffer oder eines von
+  Tage, Wochen, Monat, Fenster, Zeitraum, Prüfpunkt, Export, Lauf, vor Freigabe,
+  vor Versand.
+
+Die Grenze 0,9 bleibt bestehen. Die Strukturprüfung beweist nicht, dass die Kritik
+gut ist; sie erkennt nur offensichtliche Vorlagentexte.
+
 Code schlägt Modell: Besteht eine Maßnahme den Pre-Gate nicht (`UNBELEGT` oder
 `FEHLER`), meldet `verdict` sie als `verwerfen`, egal was der Kritiker sagt.
 
@@ -74,8 +110,10 @@ Code schlägt Modell: Besteht eine Maßnahme den Pre-Gate nicht (`UNBELEGT` oder
 3. Automatisch: `run` mit `KERN_MODEL` und `OPENAI_API_KEY`.
    Manuell: `prompt` ausgeben, in ChatGPT einfügen, die JSON-Antwort als Datei
    speichern, `verdict` ausführen. Markdown-Codezäune um die Antwort werden toleriert.
-4. Jeden Befund `nachbessern` oder `verwerfen` im Ergebnis beheben oder mit einem
-   Satz widerlegen. Der Satz steht im Deliverable.
+4. Jeden Befund `nachbessern` oder `verwerfen` im Ergebnis beheben oder widerlegen.
+   Eine Widerlegung nennt einen Beleg (Repo-Pfad), der den Angriff widerlegt, und
+   steht im Deliverable sowie im Rundenlog. Ein bloßer Satz ohne Beleg gilt nicht.
+   Das Skript prüft die Widerlegung nicht; der Beleg macht sie nachprüfbar.
 
 ## Umgang mit Befunden
 

@@ -60,8 +60,9 @@ Fertig ist erreicht, wenn **alle vier** gelten:
    Satz begründet stehen gelassen
 4. Kern-Gate: nach grünen Gates endet
    `python3 agents/skills/agent-system-maintenance/scripts/adversarial-review.py verdict …`
-   mit 0, **oder** jeder `nachbessern`/`verwerfen`-Befund ist behoben oder mit
-   einem Satz widerlegt. Höchstens zwei Kritikrunden; sie zählen nicht zu den
+   mit 0, **oder** jeder `nachbessern`/`verwerfen`-Befund ist behoben oder
+   widerlegt; die Widerlegung nennt einen Repo-Pfad, der den Angriff entkräftet,
+   und steht im Rundenlog. Höchstens zwei Kritikrunden; sie zählen nicht zu den
    3 Loop-Runden. Ablauf und Schemas:
    `agents/skills/agent-system-maintenance/references/adversarial-review.md`
 

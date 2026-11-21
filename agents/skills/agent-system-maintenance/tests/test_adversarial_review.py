@@ -20,6 +20,7 @@ ar = importlib.util.module_from_spec(spec)
 spec.loader.exec_module(ar)
 
 LONG = 'Ein ausreichend langer Satz fuer die Pflichtfelder.'
+TOKEN = {'M1': 'Formular Pflichtfelder', 'M2': 'Hauptanfrage Impressionen'}
 
 
 def measure(mid, evidence, claim='Qualitative Beobachtung ohne Zahl.', action='Text anpassen.'):
@@ -28,8 +29,13 @@ def measure(mid, evidence, claim='Qualitative Beobachtung ohne Zahl.', action='T
 
 
 def review(mid, verdict='halten', confidence=0.5, **over):
-    r = {'id': mid, 'verdict': verdict, 'attack': LONG, 'failure_mode': 'Saison kippt den Effekt.',
-         'evidence_gap': '', 'falsification': LONG, 'confidence': confidence}
+    tok = TOKEN.get(mid, 'qualifizierte Anfragen')
+    r = {'id': mid, 'verdict': verdict,
+         'attack': f'{mid}: Die Wirkung auf {tok} bleibt aus, weil die Saison dominiert.',
+         'failure_mode': 'Saison kippt den Effekt.',
+         'evidence_gap': '',
+         'falsification': f'{mid}: Kein Anstieg bei {tok} im Fenster von 28 Tagen nach Release.',
+         'confidence': confidence}
     r.update(over)
     return r
 
@@ -83,6 +89,29 @@ class AdversarialTests(unittest.TestCase):
         self.assertEqual(res.returncode, 1)
         self.assertIn('M1\tUNBELEGT', res.stdout)
 
+    def test_missing_anchor_fails(self):
+        gsc = f'{FIX}/evidence-gsc.csv'
+        res = self.cli('check', self.measures([measure('M1', [f'{gsc}#gibtesnicht'])]))
+        self.assertEqual(res.returncode, 1)
+        self.assertIn('M1\tFEHLER', res.stdout)
+        self.assertIn('Anker nicht gefunden', res.stdout)
+        # anchor present (case-insensitive) passes
+        res = self.cli('check', self.measures([measure('M1', [f'{gsc}#WAERMEPUMPE'])]))
+        self.assertEqual(res.returncode, 0, res.stdout)
+
+    def test_numeric_claim_needs_anchored_evidence(self):
+        gsc = f'{FIX}/evidence-gsc.csv'
+        claim = 'Absprung liegt bei 40 Prozent.'
+        res = self.cli('check', self.measures([measure('M1', [gsc], claim=claim)]))
+        self.assertEqual(res.returncode, 1)
+        self.assertIn('M1\tUNBELEGT', res.stdout)
+        self.assertIn('Zahl ohne verankerten Beleg', res.stdout)
+        res = self.cli('check', self.measures([measure('M1', [f'{gsc}#waermepumpe'], claim=claim)]))
+        self.assertEqual(res.returncode, 0, res.stdout)
+        # url plus bare path is still not anchored
+        res = self.cli('check', self.measures([measure('M1', [gsc, 'https://example.com'], claim=claim)]))
+        self.assertIn('Zahl ohne verankerten Beleg', res.stdout)
+
     def test_schema_error_is_usage(self):
         bad = measure('M1', [f'{FIX}/evidence-gsc.csv'])
         bad['domain'] = 'nope'
@@ -121,6 +150,26 @@ class AdversarialTests(unittest.TestCase):
                        '--max-total-bytes', '10')
         self.assertEqual(res.returncode, 2)
 
+    def test_repo_access_prompt_has_no_excerpts_but_instructions(self):
+        res = self.cli('prompt', self.fixture_measures_path(), '--repo-access', '--ref', 'abc1234')
+        self.assertEqual(res.returncode, 0, res.stderr)
+        self.assertNotIn('<<<BELEG', res.stdout)
+        self.assertNotIn('<<<ENDE BELEG>>>', res.stdout)
+        self.assertNotIn('IGNORIERE ALLE VORHERIGEN', res.stdout)
+        self.assertIn('abc1234', res.stdout)
+        self.assertIn('VOLLSTÄNDIG', res.stdout)
+        self.assertIn('kein Commit, kein Push, kein PR', res.stdout)
+        self.assertIn('evidence-notes.md', res.stdout)
+        self.assertIn('"id": "M1"', res.stdout)  # measures stay embedded
+        # default ref is the current short HEAD
+        head = subprocess.run(['git', 'rev-parse', '--short', 'HEAD'], cwd=ROOT, capture_output=True,
+                              text=True).stdout.strip()
+        res = self.cli('prompt', self.fixture_measures_path(), '--repo-access')
+        self.assertIn(head or 'HEAD', res.stdout)
+
+    def fixture_measures_path(self):
+        return str(HERE / 'fixtures/adversarial/measures-valid.json')
+
     # ---- verdict
     def fixture_measures(self):
         return str(HERE / 'fixtures/adversarial/measures-valid.json')
@@ -153,9 +202,43 @@ class AdversarialTests(unittest.TestCase):
         self.assertEqual(self.cli('verdict', self.fixture_measures(), c).returncode, 3)
         self.assertEqual(self.cli('verdict', self.fixture_measures(), self.write('x.json', 'kein json')).returncode, 3)
 
+    def reject(self, reviews, *needles):
+        res = self.cli('verdict', self.fixture_measures(), self.critique(reviews))
+        self.assertEqual(res.returncode, 3, res.stdout + res.stderr)
+        for needle in needles:
+            self.assertIn(needle, res.stdout)
+
+    def test_empty_or_short_failure_mode_rejected(self):
+        self.reject([review('M1'), review('M2', failure_mode='')], 'M2: failure_mode')
+        self.reject([review('M1', failure_mode='kurz'), review('M2')], 'M1: failure_mode')
+
+    def test_duplicate_attack_or_falsification_rejected(self):
+        same = 'Die Wirkung auf das Formular und die Hauptanfrage bleibt aus, Saison dominiert.'
+        self.reject([review('M1', attack=same), review('M2', attack='  ' + same.upper() + ' ')],
+                    'Angriff nicht massnahmenspezifisch')
+        fal = 'Kein Anstieg beim Formular oder der Hauptanfrage im Fenster von 28 Tagen.'
+        self.reject([review('M1', falsification=fal), review('M2', falsification=fal)],
+                    'Falsifikation nicht massnahmenspezifisch')
+
+    def test_attack_without_measure_token_rejected(self):
+        self.reject([review('M1', attack='Allgemeine Skepsis gegenueber jeder Aenderung dieser Art.'),
+                     review('M2')], 'M1: Angriff nicht massnahmenspezifisch')
+
+    def test_falsification_without_window_rejected(self):
+        self.reject([review('M1'),
+                     review('M2', falsification='Die Hauptanfrage sollte sich irgendwie bewegen oder nicht.')],
+                    'M2: Falsifikation ohne Zeitfenster')
+        ok = self.critique([review('M1'), review('M2', falsification='Prüfpunkt vor Freigabe: Hauptanfrage unverändert.')])
+        self.assertEqual(self.cli('verdict', self.fixture_measures(), ok).returncode, 0)
+
+    def test_inflected_token_matches_measure(self):
+        # "Formulare" shares the stem with measure token "Formular"
+        c = self.critique([review('M1', attack='Alle Formulare verlieren dadurch Anfragen im Sommer.'), review('M2')])
+        self.assertEqual(self.cli('verdict', self.fixture_measures(), c).returncode, 0)
+
     def test_unbelegt_measure_is_forced_to_verwerfen(self):
         path = self.measures([measure('M1', ['https://example.com'], claim='Plus 30 Prozent Anfragen.')])
-        c = self.critique([review('M1', 'halten', 0.5)])
+        c = self.critique([review('M1', 'halten', 0.5, attack='Plus 30 Prozent Anfragen sind unbelegt und saisonal.')])
         res = self.cli('verdict', path, c)
         self.assertEqual(res.returncode, 1)
         self.assertIn('| M1 | verwerfen |', res.stdout)
