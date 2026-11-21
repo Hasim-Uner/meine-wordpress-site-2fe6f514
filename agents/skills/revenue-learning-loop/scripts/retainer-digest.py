@@ -59,7 +59,10 @@ PHONE_OR_DATE = re.compile(
     r"(?P<date>\d{4}-\d{2}-\d{2}|\d{1,2}\.\d{1,2}\.(?:\d{4}|\d{2})(?!\d))"
     r"|(?P<phone>\+\d[\d\s().\/-]{6,}|\d[\d\s().\/-]{6,}\d)"
 )
-SOURCE_ID = re.compile(r"[a-z0-9][a-z0-9_.:-]*")
+# Extending the allowlist is a code change on purpose: every new system is a privacy decision.
+SOURCE_SYSTEMS = ("crm", "ga4", "gsc", "ads", "tracking", "cockpit", "calcom", "sheet")
+SOURCE_DETAIL = re.compile(r"[a-z0-9][a-z0-9_.-]*")
+LONG_DIGITS = re.compile(r"\d{6,}")
 REDACTED = "[entfernt]"
 MATURITY_DAYS = 30
 MATURING = ("won", "progressed")
@@ -94,6 +97,13 @@ def redact(text: str) -> str:
     return PHONE_OR_DATE.sub(lambda match: REDACTED if _phone_match(match) else match.group(0), text)
 
 
+def valid_source(value: str) -> bool:
+    system, colon, detail = value.partition(":")
+    if system not in SOURCE_SYSTEMS or LONG_DIGITS.search(value):
+        return False
+    return not colon or bool(SOURCE_DETAIL.fullmatch(detail))
+
+
 def read_measurements(path: Path) -> list[dict]:
     try:
         handle = path.open(newline="", encoding="utf-8-sig")
@@ -114,10 +124,11 @@ def read_measurements(path: Path) -> list[dict]:
             if len(cells) != len(CSV_HEADER):
                 raise InputError(f"{where}: expected {len(CSV_HEADER)} columns, got {len(cells)}")
             row = dict(zip(CSV_HEADER, (cell.strip() for cell in cells)))
-            if row["source"] and not SOURCE_ID.fullmatch(row["source"]):
+            if row["source"] and not valid_source(row["source"]):
                 raise InputError(
-                    f"{where}: source must be a system identifier matching "
-                    f"^[a-z0-9][a-z0-9_.:-]*$ (e.g. crm:bitrix24, ga4, gsc)"
+                    f"{where}: source must be <system> or <system>:<detail> with system in "
+                    f"{', '.join(SOURCE_SYSTEMS)}, detail matching [a-z0-9][a-z0-9_.-]* "
+                    f"and no run of 6 or more digits (e.g. crm:bitrix24, ga4)"
                 )
             for field in ("metric", "value", "denominator"):
                 if looks_personal(row[field]):
@@ -276,6 +287,8 @@ def result_lines(rows: list[dict], until: date | None = None) -> list[str]:
         lines.append("Kein Pipeline-Beleg (qualified/progressed/won fehlen).")
     sources = sorted({row["source"] for row in rows})
     lines.append("Quellen: " + "; ".join(sources))
+    if until:
+        lines.append(f"Stand: {until.isoformat()} (Referenzdatum für Reife)")
     return lines
 
 
@@ -325,6 +338,12 @@ def render(header: str, blocks: list[tuple[str, list[str], bool]], markdown: boo
     return "\n".join(out)
 
 
+def range_end_date(repo: str, revision_range: str) -> date:
+    """Committer date of the range's end commit; an empty end means HEAD."""
+    end = re.split(r"\.{2,3}", revision_range, maxsplit=1)[1] or "HEAD"
+    return parse_date(git(repo, "log", "-1", "--format=%cs", end, "--").strip(), "range end commit date")
+
+
 def build(args: argparse.Namespace) -> str:
     repo = args.repo or git(".", "rev-parse", "--show-toplevel").strip()
     since = until = None
@@ -334,6 +353,7 @@ def build(args: argparse.Namespace) -> str:
         if args.range.startswith("-") or ".." not in args.range:
             raise InputError("--range must look like A..B")
         window = args.range
+        until = range_end_date(repo, args.range)
     else:
         if not (args.since and args.until):
             raise InputError("give --since and --until, or --range")

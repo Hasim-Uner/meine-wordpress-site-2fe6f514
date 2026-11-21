@@ -110,7 +110,7 @@ class RetainerDigestTests(unittest.TestCase):
 
     def test_tier_order_and_delta_with_equal_windows(self) -> None:
         tracking = self.csv("t.csv", "sessions;2026-10-01;2026-10-30;900;;tracking\n")
-        result = self.run_digest("--outcomes", str(FIXTURES / "outcomes-two-windows.csv"), "--tracking", tracking)
+        result = self.run_digest("--outcomes", str(FIXTURES / "outcomes-two-windows-allowlist.csv"), "--tracking", tracking)
         self.assertEqual(result.returncode, 0, result.stderr)
         out = result.stdout
         self.assertLess(out.index("won (lagging)"), out.index("qualified (lagging)"))
@@ -132,7 +132,7 @@ class RetainerDigestTests(unittest.TestCase):
         self.assertNotIn("Delta", out)
 
     def test_only_leading_metrics_warn_and_rate_delta(self) -> None:
-        out = self.run_digest("--tracking", str(FIXTURES / "tracking-leading.csv")).stdout
+        out = self.run_digest("--tracking", str(FIXTURES / "tracking-leading-allowlist.csv")).stdout
         self.assertIn("Nur Frühindikatoren. Kein Pipeline-Beleg.", out)
         self.assertIn("ctr (leading) 2026-10-01..2026-10-30: 45 von 1000 (4.5%)", out)
 
@@ -156,19 +156,30 @@ class RetainerDigestTests(unittest.TestCase):
         self.assert_rejected("--outcomes", self.csv("p.csv", "won;2026-10-01;2026-10-30;+49 170 1234567;;crm\n"), expect="phone")
 
     def test_system_identifier_sources_are_allowed(self) -> None:
-        for source in ("crm:bitrix24", "ga4", "gsc", "crm-export-2026-10-31", "crm:bitrix24-v2"):
+        for source in ("crm:bitrix24", "ga4", "gsc", "ads", "tracking", "cockpit", "calcom", "sheet", "crm:export-2026.10", "crm:bitrix24-v2", "crm"):
             path = self.csv("d.csv", f"won;2026-10-01;2026-10-30;1;;{source}\n")
             self.assertEqual(self.run_digest("--outcomes", path).returncode, 0, source)
 
     def test_person_name_or_free_text_in_source_exits_2(self) -> None:
-        for source in ("Max Mustermann", "crm export 2026-10-31", "CRM", "-crm"):
+        for source in (
+            "Max Mustermann", "crm export 2026-10-31", "CRM", "-crm", "vorname.nachname", "0511123456",
+            "crm:0511123456", "crm:id-1234567", "crm:", "crm::x", "crm:a:b", "crm:-x", "crm-export", "unknown:crm",
+        ):
             path = self.csv("n.csv", f"won;2026-10-01;2026-10-30;1;;{source}\n")
             result = self.run_digest("--outcomes", path)
             self.assertEqual(result.returncode, 2, source)
             self.assertIn("source", result.stderr)
             self.assertIn("row 2", result.stderr)
-            self.assertNotIn(source, result.stderr.replace("^[a-z0-9]", ""))
+            self.assertNotIn(source, result.stderr.split("source must")[0])  # the rule hint may quote examples
             self.assertNotIn("Max Mustermann", result.stdout)
+
+    def test_source_rejection_names_row_not_value(self) -> None:
+        path = self.csv("sv.csv", "won;2026-10-01;2026-10-30;1;;sheet\nwon;2026-11-01;2026-11-30;1;;anna.schmidt\n")
+        result = self.run_digest("--outcomes", path)
+        self.assertEqual(result.returncode, 2)
+        self.assertIn("row 3", result.stderr)
+        self.assertIn("sv.csv", result.stderr)
+        self.assertNotIn("anna.schmidt", result.stderr)
 
     def test_phone_in_decisions_and_next_exits_2(self) -> None:
         for phone in ("0170 1234567", "+49 170 1234567", "030/12345678", "(0711) 123-4567"):
@@ -238,6 +249,24 @@ class RetainerDigestTests(unittest.TestCase):
         self.assertNotIn("progressed noch nicht ausgereift", out)
         self.assertNotIn("qualified noch nicht ausgereift", out)
         self.assertIn("won (lagging) 2026-10-01..2026-10-30: 1", out)
+
+    def test_range_uses_end_commit_date_for_maturity_and_states_it(self) -> None:
+        outcomes = self.csv("rm.csv", "won;2026-10-01;2026-10-30;1;;crm\nprogressed;2026-08-01;2026-08-31;3;;crm\n")
+        result = self.run_digest("--outcomes", outcomes, "--range", "HEAD~2..HEAD~1", since="")
+        self.assertEqual(result.returncode, 0, result.stderr)
+        self.assertIn("won noch nicht ausgereift", result.stdout)
+        self.assertNotIn("progressed noch nicht ausgereift", result.stdout)
+        self.assertIn("Stand: 2026-10-22", result.stdout)  # committer date of HEAD~1
+        late = self.run_digest("--outcomes", outcomes, "--range", "HEAD~8..HEAD~7", since="")  # ends 2026-10-05
+        self.assertIn("Stand: 2026-10-05", late.stdout)
+
+    def test_range_with_open_end_and_until_state_reference_date(self) -> None:
+        outcomes = self.csv("ro.csv", "won;2026-10-01;2026-10-30;1;;crm\n")
+        result = self.run_digest("--outcomes", outcomes, "--range", "HEAD~3..", since="")
+        self.assertIn("Stand: 2026-10-23", result.stdout)
+        self.assertIn("won noch nicht ausgereift", result.stdout)
+        self.assertIn("Stand: 2026-10-31", self.run_digest("--outcomes", outcomes).stdout)
+        self.assertNotIn("Stand:", self.run_digest().stdout)
 
     def test_extra_column_exits_2(self) -> None:
         path = self.csv("x.csv", "won;2026-10-01;2026-10-30;1;;crm;Anna\n", HEADER.strip() + ";name\n")
