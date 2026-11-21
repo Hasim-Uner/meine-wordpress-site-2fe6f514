@@ -12,7 +12,7 @@ import csv
 import re
 import subprocess
 import sys
-from datetime import date
+from datetime import date, timedelta
 from pathlib import Path
 
 
@@ -54,9 +54,16 @@ PREFIX = re.compile(
 )
 RISK = re.compile(r"\b(revert|hotfix|rollback|roll back)\b", re.IGNORECASE)
 EMAIL = re.compile(r"[^\s@]+@[^\s@]+")
-ISO_DATE = re.compile(r"\d{4}-\d{2}-\d{2}")
-PHONE = re.compile(r"\+\d[\d\s().\/-]{6,}|\d[\d\s().\/-]{6,}\d")
-LONG_DIGITS = re.compile(r"\d{11,}")
+# Dates (ISO or German) are matched first so they are never taken for phone numbers.
+PHONE_OR_DATE = re.compile(
+    r"(?P<date>\d{4}-\d{2}-\d{2}|\d{1,2}\.\d{1,2}\.(?:\d{4}|\d{2})(?!\d))"
+    r"|(?P<phone>\+\d[\d\s().\/-]{6,}|\d[\d\s().\/-]{6,}\d)"
+)
+SOURCE_ID = re.compile(r"[a-z0-9][a-z0-9_.:-]*")
+REDACTED = "[entfernt]"
+MATURITY_DAYS = 30
+MATURING = ("won", "progressed")
+PIPELINE = ("qualified", "progressed", "won")
 
 
 class InputError(ValueError):
@@ -70,11 +77,21 @@ def parse_date(value: str, label: str) -> date:
         raise InputError(f"{label} must use YYYY-MM-DD: {value}") from error
 
 
+def _phone_match(match: re.Match) -> bool:
+    return bool(match.group("phone")) and sum(ch.isdigit() for ch in match.group("phone")) >= 7
+
+
+def has_phone(text: str) -> bool:
+    return any(_phone_match(match) for match in PHONE_OR_DATE.finditer(text))
+
+
 def looks_personal(text: str) -> bool:
-    if EMAIL.search(text):
-        return True
-    stripped = ISO_DATE.sub("", text)
-    return bool(PHONE.search(stripped) or LONG_DIGITS.search(stripped))
+    return bool(EMAIL.search(text)) or has_phone(text)
+
+
+def redact(text: str) -> str:
+    text = EMAIL.sub(REDACTED, text)
+    return PHONE_OR_DATE.sub(lambda match: REDACTED if _phone_match(match) else match.group(0), text)
 
 
 def read_measurements(path: Path) -> list[dict]:
@@ -97,9 +114,12 @@ def read_measurements(path: Path) -> list[dict]:
             if len(cells) != len(CSV_HEADER):
                 raise InputError(f"{where}: expected {len(CSV_HEADER)} columns, got {len(cells)}")
             row = dict(zip(CSV_HEADER, (cell.strip() for cell in cells)))
-            if "@" in row["source"]:
-                raise InputError(f"{where}: source must not contain '@'")
-            for field in ("metric", "value", "denominator", "source"):
+            if row["source"] and not SOURCE_ID.fullmatch(row["source"]):
+                raise InputError(
+                    f"{where}: source must be a system identifier matching "
+                    f"^[a-z0-9][a-z0-9_.:-]*$ (e.g. crm:bitrix24, ga4, gsc)"
+                )
+            for field in ("metric", "value", "denominator"):
                 if looks_personal(row[field]):
                     raise InputError(f"{where}: {field} looks like an email or phone number")
             rows.append(validate_row(row, where))
@@ -150,8 +170,8 @@ def read_lines(path: Path, label: str) -> list[str]:
         raise InputError(f"{path}: cannot read: {error}") from error
     lines = [line.strip() for line in text.splitlines() if line.strip()]
     for number, line in enumerate(lines, start=1):
-        if EMAIL.search(line):
-            raise InputError(f"{path}: {label} entry {number} looks like an email address")
+        if looks_personal(line):
+            raise InputError(f"{path}: {label} entry {number} looks like an email address or phone number")
     return lines
 
 
@@ -224,6 +244,8 @@ def delta_text(metric: str, rows: list[dict]) -> str:
     if len(rows) > 2:
         return "kein Vergleich (mehr als zwei Fenster)"
     first, second = sorted(rows, key=lambda row: row["start"])
+    if first["source"] != second["source"]:
+        return "kein Vergleich (Quelle gewechselt)"
     if first["end"] >= second["start"]:
         return "kein Vergleich (Fenster überlappen)"
     if (first["end"] - first["start"]) != (second["end"] - second["start"]):
@@ -234,7 +256,7 @@ def delta_text(metric: str, rows: list[dict]) -> str:
     return f"Delta {second['value'] - first['value']:+d}"
 
 
-def result_lines(rows: list[dict]) -> list[str]:
+def result_lines(rows: list[dict], until: date | None = None) -> list[str]:
     by_metric: dict[str, list[dict]] = {}
     for row in rows:
         by_metric.setdefault(row["metric"], []).append(row)
@@ -243,9 +265,15 @@ def result_lines(rows: list[dict]) -> list[str]:
         group = sorted(by_metric[metric], key=lambda row: row["start"])
         text = f"{metric} ({METRICS[metric][1]}) " + " -> ".join(window_text(row) for row in group)
         delta = delta_text(metric, group)
-        lines.append(f"{text}; {delta}" if delta else text)
+        if delta:
+            text += f"; {delta}"
+        if until and metric in MATURING and any(row["end"] >= until - timedelta(days=MATURITY_DAYS) for row in group):
+            text += f"; {metric} noch nicht ausgereift"
+        lines.append(text)
     if all(METRICS[name][1] == "leading" for name in by_metric):
         lines.append("Nur Frühindikatoren. Kein Pipeline-Beleg.")
+    elif not any(name in by_metric for name in PIPELINE):
+        lines.append("Kein Pipeline-Beleg (qualified/progressed/won fehlen).")
     sources = sorted({row["source"] for row in rows})
     lines.append("Quellen: " + "; ".join(sources))
     return lines
@@ -260,7 +288,7 @@ def add_duplicates_check(rows: list[dict]) -> None:
         seen.add(key)
 
 
-def delivered_lines(commits: list[dict]) -> list[str]:
+def delivered_lines(commits: list[dict], redacted: int = 0) -> list[str]:
     if not commits:
         return ["Keine Commits im Fenster."]
     grouped: dict[str, list[str]] = {}
@@ -272,6 +300,8 @@ def delivered_lines(commits: list[dict]) -> list[str]:
         if subjects:
             noun = "Commit" if len(subjects) == 1 else "Commits"
             lines.append(f"{label}: {len(subjects)} {noun}: {with_more(subjects, MAX_SUBJECTS)}")
+    if redacted:
+        lines.append(f"Betreffe bereinigt: {redacted}")
     return lines
 
 
@@ -320,18 +350,24 @@ def build(args: argparse.Namespace) -> str:
     add_duplicates_check(rows)
     decisions = read_lines(Path(args.decisions), "decision") if args.decisions else []
     next_step = (args.next or "").strip()
-    if EMAIL.search(next_step):
-        raise InputError("--next looks like it contains an email address")
+    if looks_personal(next_step):
+        raise InputError("--next looks like it contains an email address or phone number")
 
     commits = read_commits(repo, since, until, args.range)
+    redacted = 0
+    for commit in commits:
+        clean = redact(commit["subject"])
+        if clean != commit["subject"]:
+            commit["subject"] = clean
+            redacted += 1
     head = git(repo, "rev-parse", "--short", "HEAD").strip()
 
     blocks: list[tuple[str, list[str], bool]] = []
     if rows:
-        blocks.append(("Ergebnis", result_lines(rows), False))
+        blocks.append(("Ergebnis", result_lines(rows, until), False))
     else:
         blocks.append(("Ergebnis", ["in diesem Fenster nicht gemessen."], True))
-    blocks.append(("Geliefert", delivered_lines(commits), False))
+    blocks.append(("Geliefert", delivered_lines(commits, redacted), False))
     blocks.append(("Risiken", risk_lines(commits), False))
     if decisions:
         shown = decisions[:MAX_DECISIONS]
