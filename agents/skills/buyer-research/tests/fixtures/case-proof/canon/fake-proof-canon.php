@@ -11,7 +11,7 @@ return [
 		'counter_target' => '15',
 		'label'          => 'vorqualifizierte CRM-Leads',
 	],
-	// Annahme, keine Messung: value_high und display_hedged markieren das.
+	// Annahme, keine Messung: nur display_hedged markiert das (value_high allein nicht).
 	'fake_close_rate_before' => [
 		'value'          => 1,
 		'value_high'     => 5,
@@ -40,6 +40,25 @@ return [
 		'value'   => 15.4,
 		'display' => '15,4 %',
 		'label'   => 'vorqualifizierte CRM-Leads',
+	],
+	// Gemessene Spanne: value + value_high und Anzeige "a–b" (Gedankenstrich), KEINE Annahme.
+	'fake_range_measured' => [
+		'value'      => 70,
+		'value_high' => 80,
+		'display'    => '70–80 €',
+		'label'      => 'Kosten pro Anfrage im Messzeitraum',
+	],
+	// Gemessene Spanne nur als Anzeige, ohne value-Schluessel, mit Bindestrich.
+	'fake_range_display_only' => [
+		'display' => '15-30 €',
+		'label'   => 'Spanne der Monatswerte',
+	],
+	// Spanne nur ueber value + value_high; die Anzeige nennt keine Spanne.
+	'fake_range_values_only' => [
+		'value'      => 40,
+		'value_high' => 50,
+		'display'    => 'ca. 40 €',
+		'label'      => 'Kosten pro Anfrage, Werte-Spanne',
 	],
 	// Kein lesbarer Zahlenwert: darf nie still durchgehen.
 	'fake_no_number' => [
