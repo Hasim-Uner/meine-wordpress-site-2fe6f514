@@ -21,6 +21,8 @@ Start with `git status --short` and `npm run lint:skills`. Reuse the selected
 - For routing changes or cross-agent comparisons, use
   [benchmark](references/benchmark.md). A fixture/schema pass is not an agent eval.
 - For switching agents on unfinished work, use [handoff](references/handoff.md).
+- To stress-test generated SEO/conversion measures with an external critic
+  (Kern gate), use [adversarial review](references/adversarial-review.md).
 - Report bytes/lines as context proxies only. Actual token/cost claims need
   measured host usage; include correctness and rework in comparisons.
 - Change host/plugin settings only within the user's requested scope.

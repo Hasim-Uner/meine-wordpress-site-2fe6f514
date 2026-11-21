@@ -1,0 +1,15 @@
+{
+  "schema": "measures.v1",
+  "context": {"scope": "route /waermepumpen-leads/ (Fixture)"},
+  "measures": [
+    {"id": "M1", "domain": "conversion", "claim": "Das Formular bricht nach dem ersten Feld ab.",
+     "action": "Zweites Feld ans Ende verschieben und Pflichtfelder reduzieren.",
+     "evidence": ["agents/skills/agent-system-maintenance/tests/fixtures/adversarial/evidence-notes.md#Formular"],
+     "metric": "qualifizierte Anfragen pro Woche", "expected": "up", "owner": "Repo"},
+    {"id": "M2", "domain": "seo", "claim": "Die Route rankt nur für Nischenanfragen.",
+     "action": "Title auf Hauptanfrage ausrichten.",
+     "evidence": ["agents/skills/agent-system-maintenance/tests/fixtures/adversarial/evidence-gsc.csv#waermepumpe",
+                  "https://search.google.com/search-console"],
+     "metric": "Impressionen für Hauptanfrage", "expected": "up", "owner": "Manual WP"}
+  ]
+}
