@@ -482,7 +482,11 @@ get_header();
 				   data-track-section="final">
 					Marktcheck anfragen · <?php echo esc_html( hu_marketcheck_price() ); ?> <span aria-hidden="true">→</span>
 				</a>
-				<p class="hu-b2b__microcopy">Netto · Absenden ist noch keine Buchung · bei Beauftragung des Anfragesystems anrechenbar</p>
+				<?php if ( hu_marketcheck_is_free() ) : ?>
+					<p class="hu-b2b__microcopy">Unverbindlich · Absenden ist noch keine Buchung</p>
+				<?php else : ?>
+					<p class="hu-b2b__microcopy">Netto · Absenden ist noch keine Buchung · bei Beauftragung des Anfragesystems anrechenbar</p>
+				<?php endif; ?>
 				<a class="hu-b2b__text-link"
 				   href="<?php echo esc_url( $solar_money_url ); ?>"
 				   data-track-action="cta_money_page"
