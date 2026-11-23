@@ -39,7 +39,7 @@ Der Versuch verwendete künstliche Anfragen, einen lokalen Zähler und ein lokal
 2. **Senden Sie genau einmal ab.** Notieren Sie Uhrzeit und Rückmeldung. Prüfen Sie, falls zugänglich, ob das Formularsystem den Vorgang als angenommen führt. Eine Schaltfläche kann auf einen Klick reagieren, obwohl ein Pflichtfeld fehlt. Ein Klick allein taugt deshalb schlecht als Maß für eingegangene Anfragen.
 3. **Lassen Sie den Empfänger nachsehen.** Taucht die Kennung beim Vertrieb auf? Eine Kopie an die Testperson beantwortet diese Frage nicht. Geht eine Mail zunächst an ein Sammelpostfach und von dort ins CRM, prüfen Sie beide Stationen. So erkennen Sie, an welcher Stelle die Spur endet.
 4. **Vergleichen Sie den einzelnen Vorgang.** Sehen Sie im vorhandenen Ereignisprotokoll nach, wie oft die vereinbarte Aktion auftrat. Halten Sie Testumgebung, Uhrzeit und Messbedingungen fest. Bietet Ihr Bericht nur zeitversetzte Summen, bleibt die Einzelzuordnung offen. Eine kurzfristige Differenz reicht dann für die Diagnose nicht aus.
-5. **Versuchen Sie es ohne zweite Anfrage.** Laden Sie nach einem erfolgreichen Test die Bestätigungsseite neu. Der Zähler für angenommene Anfragen muss dabei gleich bleiben. Prüfen Sie separat einen ungültigen Versuch mit leerem Pflichtfeld. Weder Postfach noch Anfragezähler sollten dafür einen Zugang zeigen.
+5. **Versuchen Sie es ohne zweite Anfrage.** Laden Sie die Bestätigungsseite nach der ersten Übermittlung neu. Der Zähler für angenommene Anfragen muss dabei gleich bleiben. Prüfen Sie separat einen ungültigen Versuch mit leerem Pflichtfeld. Weder Postfach noch Anfragezähler sollten dafür einen Zugang zeigen.
 
 ## Was Sie aus einer Abweichung ableiten können
 
