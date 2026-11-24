@@ -24,7 +24,7 @@ function hu_maybe_refresh_landingpage_article_metadata() : void {
 		return;
 	}
 
-	$version    = '2026-09-05-1';
+	$version    = '2026-11-24-1';
 	$option_key = 'hu_article_content_hygiene_landingpage_version';
 
 	if ( (string) get_option( $option_key, '' ) === $version ) {
@@ -41,6 +41,27 @@ function hu_maybe_refresh_landingpage_article_metadata() : void {
 	}
 
 	$current_title = trim( (string) get_post_field( 'post_title', $post_id ) );
+	// Only migrate the two known snippet values for the published November revision.
+	if ( 'B2B-Landingpage optimieren: Wo gehen passende Anfragen verloren?' === $current_title ) {
+		$snippet = [
+			'seo_title'       => [
+				'B2B-Landingpage optimieren: Struktur, Proof & CTA',
+				'B2B-Landingpage optimieren: Wo Anfragen verloren gehen',
+			],
+			'seo_description' => [
+				'B2B-Landingpages systematisch optimieren: Botschaft, Proof, CTA, Formular und Messung so ordnen, dass Reibung sichtbar und testbar wird.',
+				'Ihre B2B-Landingpage bekommt Klicks, aber kaum passende Anfragen? Prüfen Sie Anzeige, Angebot und Formular an einem Beispiel aus der Praxis.',
+			],
+		];
+		foreach ( $snippet as $key => [ $previous, $revised ] ) {
+			if ( $previous === get_post_meta( $post_id, $key, true ) && ! update_post_meta( $post_id, $key, $revised, $previous ) ) {
+				return;
+			}
+		}
+		update_option( $option_key, $version, false );
+		return;
+	}
+
 	$new_title     = 'B2B-Landingpage optimieren: Struktur, Proof und CTA systematisch verbessern';
 	$legacy_title  = (bool) preg_match(
 		'/^B2B-Landingpage optimieren: Das System hinter 8(?:–|-|—)12\s*% Conversion \[2026\]$/u',
