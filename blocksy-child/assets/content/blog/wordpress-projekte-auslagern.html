@@ -1,11 +1,10 @@
 <div class="agency-outsourcing-article" data-agency-outsourcing="v2">
-<p class="agency-outsourcing-article__lede">WordPress-Projekte lassen sich gut auslagern. Entscheidend ist weniger, ob intern oder extern entwickelt wird, sondern <strong>wie klar Ziel, Scope, Übergaben und Abnahme organisiert sind.</strong></p>
+<p class="agency-outsourcing-article__lede">Können Sie in einem Ticket festhalten, was Ihre Agentur auf Staging freigeben wird? Dann können Sie diesen Teil des WordPress-Projekts auslagern. Ein Beispiel: „Das Angebotsformular übernimmt die gewählte Leistung und schickt die Anfrage an unser Testpostfach.“ Dafür kann ein Entwickler Aufwand und Prüfschritte benennen.</p>
 
-<p>Für Agenturen bedeutet das: Die Kundenbeziehung und fachliche Führung bleiben intern. Der Freelancer übernimmt einen definierten technischen Bereich und gibt ihn nachvollziehbar zurück.</p>
+<p>Steht im Ticket nur „Anfrageprozess verbessern“, ist schon das gewünschte Ergebnis offen. Klären Sie mit dem Kunden zuerst, ob mehr passende Anfragen eingehen sollen oder ob vorhandene Anfragen bei der falschen Person landen. Daraus folgen unterschiedliche Aufträge.</p>
 
-<aside class="agency-outsourcing-note" aria-label="Kernaussage">
-<p><strong>Gute externe Zusammenarbeit ist vor allem ein guter Prozess.</strong></p>
-<p>Je klarer Verantwortung, Arbeitsumgebung, QA und Handover geregelt sind, desto weniger zusätzliche Steuerung entsteht.</p>
+<aside class="agency-outsourcing-note" aria-label="Verantwortung bei der Übergabe">
+<p><strong>Die Agentur gibt das Ergebnis frei.</strong> Der Entwickler liefert den Prüfstand, das Ergebnis seiner Eigenprüfung und die offenen Punkte. Legen Sie vor dem Start fest, wer auf Agenturseite Rückfragen bündelt und mit dem Endkunden spricht.</p>
 </aside>
 
 <h2 id="wann-auslagern">Wann lohnt es sich, WordPress-Projekte auszulagern?</h2>
@@ -50,7 +49,14 @@
 <p>Eine getrennte Entwicklungs- oder Staging-Umgebung schafft einen klaren Ort für Umsetzung und Prüfung. Bei laufenden Projekten helfen Versionierung und ein definierter Deployment-Prozess zusätzlich dabei, parallele Änderungen kontrollierbar zu halten.</p>
 
 <h3>4. QA und Tracking gehören zur Abnahme</h3>
-<p>Vor Projektstart sollten die wichtigsten Prüfkriterien feststehen: responsive Darstellung, Formulare, Links, Fokuszustände, Performance und – wenn relevant – Tracking und Consent. Bei Marketingprojekten kann auch <a href="/server-side-tracking-b2b/">Server-Side Tracking</a> Teil der Architektur sein.</p>
+<p>Vereinbaren Sie vor der Umsetzung, woran Ihre Agentur den Auftrag abnimmt. Für das Angebotsformular aus dem Beispiel könnte das Ticket so aussehen:</p>
+<dl>
+<dt><strong>Auftrag</strong></dt><dd>Die auf der Leistungsseite gewählte Option erscheint im Formular und in der Nachricht an das vereinbarte Testpostfach.</dd>
+<dt><strong>Eigenprüfung durch den Entwickler</strong></dt><dd>Auf Staging eine Leistung auswählen, das Formular mit Testdaten ausfüllen und die eingegangene Nachricht mit der Auswahl vergleichen. Prüf-URL, getestete Version und Ergebnis im Ticket festhalten.</dd>
+<dt><strong>Abnahme durch die Agentur</strong></dt><dd>Den Weg selbst durchspielen. Zeigt die Website „gesendet“, aber die Leistung fehlt in der Nachricht, bleibt das Ticket offen. Ist das Testpostfach für den Entwickler gesperrt, bestätigt eine benannte Person der Agentur den Eingang.</dd>
+<dt><strong>Grenze des Auftrags</strong></dt><dd>Eine automatische Zuweisung im CRM braucht ein eigenes Abnahmekriterium. Der erfolgreiche Mailtest belegt nur die Übergabe ans Postfach.</dd>
+</dl>
+<p>Dasselbe Verfahren lässt sich auf ein Template oder eine Tracking-Anpassung übertragen. Halten Sie fest, welche Handlung jemand ausführt, welches Ergebnis er sehen muss und wer es bestätigen kann.</p>
 
 <h3>5. Deployment und Handover abschließen</h3>
 <p>Nach dem Livegang braucht die Agentur einen nachvollziehbaren Stand: Was wurde gebaut? Welche Version ist live? Wie wird die Lösung gepflegt? Welche bekannten Grenzen oder offenen Punkte gibt es?</p>
@@ -87,7 +93,7 @@
 </div>
 </figure>
 
-<p>Bei White-Label-Projekten kommen klare Regeln für Kundenkontakt, Kommunikation und Zugänge hinzu. Das verhindert nicht nur Missverständnisse, sondern hält die Zusammenarbeit schlank.</p>
+<p>Ein Beispiel für die Rollenverteilung: Der Endkunde möchte kurz vor der Freigabe ein zusätzliches Pflichtfeld. Der Entwickler hält im Ticket fest, welche Formularansichten, E-Mails und Tests sich dadurch ändern. Die Agentur entscheidet mit dem Kunden, ob das Feld in diesen Auftrag gehört, und gibt die Entscheidung an den Entwickler zurück.</p>
 
 <h2 id="freelancer-auswaehlen">Woran erkennt eine Agentur einen guten WordPress-Freelancer?</h2>
 
