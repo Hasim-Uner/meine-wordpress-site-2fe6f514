@@ -211,18 +211,17 @@
 		var progress = panel.querySelector('[data-wl-fortschritt]');
 		var rerun = panel.querySelector('[data-wl-nochmal]');
 		var stamp = hero.querySelector('[data-wl-stempel]');
-		var title = hero.querySelector('[data-wl-titel]');
-		var lastWord = hero.querySelector('[data-wl-wort-abnahme]');
-		var scan = hero.querySelector('[data-wl-scan]');
+		var markToggle = panel.querySelector('[data-wl-mass-toggle]');
+		var details = panel.querySelector('[data-wl-details]');
 		var rows = Array.from(panel.querySelectorAll('[data-wl-pruefung]'));
 		var marks = [], timers = [], running = false, complete = false, passed = 0;
-		var started = 0, scanAnimation = null, lcp = null;
+		var started = 0, elapsed = 0, lcp = null;
 		var format = function (value, digits) { return value.toFixed(digits).replace('.', ','); };
 		var seconds = function (value) { return format(value / 1000, 2) + ' s'; };
 		var clock = function () { return performance.now(); };
 		function schedule(fn, ms) { var id = window.setTimeout(fn, ms); timers.push(id); return id; }
 		function wait(ms) { return reduced.matches ? Promise.resolve() : new Promise(function (resolve) { schedule(resolve, ms); }); }
-		function announce() { status.textContent = passed + ' von ' + rows.length + ' bestanden · ' + format((clock() - started) / 1000, 1) + ' s'; }
+		function announce() { status.textContent = passed + ' von ' + rows.length + ' bestanden · Prüfdauer ' + format(elapsed / 1000, 1) + ' s'; }
 
 		/* LCP entries are real browser measurements. If unavailable, name the
 		   document timing explicitly; never substitute the duration of this run. */
@@ -235,11 +234,11 @@
 			var value = loadMeasurement();
 			var label = panel.querySelector('[data-wl-lcp-label]');
 			if (label) label.textContent = value.label;
-			root.querySelectorAll('[data-wl-lcp-kopie]').forEach(function (node) { node.textContent = value.ms === null ? 'nicht prüfbar' : seconds(value.ms); });
+			root.querySelectorAll('[data-wl-lcp-kopie]').forEach(function (node) { node.textContent = value.ms === null ? 'nicht prüfbar' : seconds(value.ms); node.toggleAttribute('data-wl-unavailable', value.ms === null); });
 			root.querySelectorAll('[data-wl-lcp-proof-label]').forEach(function (node) { node.textContent = value.short; });
 			root.querySelectorAll('[data-wl-lcp-proof]').forEach(function (node) { node.hidden = false; });
 			var explanation = panel.querySelector('[data-wl-pruefung="lcp"] .wl-pl-satz');
-			if (explanation) explanation.textContent = (value.short === 'LCP' ? 'Bis das größte Element in Ihrer Verbindung steht.' : 'Bis das Dokument in Ihrer Verbindung geladen ist; dieser Browser meldet noch keinen LCP.') + ' Richtwert: bis ' + seconds(2500) + '.';
+			if (explanation) explanation.textContent = value.short === 'LCP' ? 'Zeit bis zum größten sichtbaren Inhalt bei diesem Besuch.' : 'Zeit bis zum Laden des Dokuments. Der Browser meldet noch keinen LCP.';
 			return { text: value.ms === null ? 'nicht prüfbar' : seconds(value.ms), ok: value.ms !== null && value.ms > 0 };
 		}
 
@@ -295,8 +294,9 @@
 
 		/* Canvas resolves computed CSS colours (including color-mix and alpha)
 		   to sRGB; foreground/background are composited before WCAG luminance. */
-		var context = document.createElement('canvas').getContext('2d', { willReadFrequently: true });
+		var context;
 		function rgba(value) {
+			if (!context) context = document.createElement('canvas').getContext('2d', { willReadFrequently: true });
 			if (!context) throw new Error('Colour measurement unavailable');
 			context.clearRect(0, 0, 1, 1); context.fillStyle = value; context.fillRect(0, 0, 1, 1);
 			var c = context.getImageData(0, 0, 1, 1).data;
@@ -321,74 +321,49 @@
 				case 'bild': return ['Bild ' + element.getAttribute('width') + ' × ' + element.getAttribute('height'), element.hasAttribute('alt') ? (element.alt ? 'Alt: ' + element.alt : 'Alt leer · dekorativ') : 'Alt fehlt'];
 			}
 		}
-		function bounds(element) {
-			if (element.dataset.wlMess === 'h1') {
-				var words = Array.from(element.querySelectorAll('.wl-wort')).map(function (word) { return word.getBoundingClientRect(); });
-				var lines = Array.from(element.querySelectorAll('.wl-zeile')).map(function (line) { return line.getBoundingClientRect(); });
-				return { left: Math.min.apply(null, words.map(function (r) { return r.left; })), right: Math.max.apply(null, words.map(function (r) { return r.right; })), top: lines[0].top, bottom: lines[lines.length - 1].bottom };
-			}
-			return element.getBoundingClientRect();
-		}
 		function buildMarks() {
 			marks.forEach(function (mark) { mark.label.remove(); mark.frame.remove(); }); marks = [];
-			if (window.innerWidth < 768) return;
+			if (window.innerWidth < 768 || markToggle.getAttribute('aria-pressed') !== 'true') return;
 			var h = hero.getBoundingClientRect(), content = hero.querySelector('[data-wl-messfeld]').getBoundingClientRect();
 			var point = hero.querySelector('.st-rail__punkt').getBoundingClientRect();
 			var left = point.right - h.left + 16, width = content.left - h.left - left - 16;
 			hero.querySelectorAll('[data-wl-mess]').forEach(function (element) {
 				var result;
 				try { result = measurement(element); } catch (error) { result = ['Messung', 'nicht prüfbar']; }
-				var rect = bounds(element), label = document.createElement('div'), frame = document.createElement('div');
-				label.className = 'wl-messmarke'; label.setAttribute('aria-hidden', 'true');
+				var rect = element.getBoundingClientRect(), label = document.createElement('div'), frame = document.createElement('div');
+				label.className = 'wl-messmarke is-visible'; label.setAttribute('aria-hidden', 'true');
 				var name = document.createElement('b'), value = document.createElement('span'); name.textContent = result[0]; value.textContent = result[1]; label.append(name, value);
 				Object.assign(label.style, { left: left + 'px', top: (rect.top - h.top) + 'px', width: Math.max(0, width) + 'px' });
-				frame.className = 'wl-messrahmen'; frame.setAttribute('aria-hidden', 'true');
+				frame.className = 'wl-messrahmen is-dimmed'; frame.setAttribute('aria-hidden', 'true');
 				Object.assign(frame.style, { left: (rect.left - h.left - 8) + 'px', top: (rect.top - h.top - 8) + 'px', width: (rect.right - rect.left + 16) + 'px', height: (rect.bottom - rect.top + 16) + 'px' });
-				hero.append(label, frame); marks.push({ label: label, frame: frame, y: rect.top - h.top });
+				hero.append(label, frame); marks.push({ label: label, frame: frame });
 			});
-		}
-		function placeStamp() {
-			if (!stamp || !lastWord) return;
-			var t = title.getBoundingClientRect(), w = lastWord.getBoundingClientRect();
-			// Use layout dimensions, unaffected by the rotated stamp's animation.
-			var sw = stamp.offsetWidth, sh = stamp.offsetHeight;
-			var angle = 7 * Math.PI / 180;
-			var rotatedHeight = sw * Math.sin(angle) + sh * Math.cos(angle);
-			stamp.style.setProperty('--wl-stempel-scale', Math.min(1, w.height * .9 / rotatedHeight));
-			stamp.style.left = Math.max(0, Math.min(w.right - t.left - sw * .45, t.width - sw - 8)) + 'px';
-			stamp.style.top = (w.top - t.top + (w.height - sh) / 2) + 'px';
 		}
 		function stampResult() {
 			var all = passed === rows.length;
-			if (stamp) {
-				stamp.querySelector('[data-wl-stempel-wert]').textContent = passed + '/' + rows.length;
-				var date = new Date();
-				stamp.querySelector('[data-wl-stempel-datum]').textContent = date.toLocaleDateString('de-DE', { day: '2-digit', month: '2-digit', year: 'numeric' }) + ' · ' + date.toLocaleTimeString('de-DE', { hour: '2-digit', minute: '2-digit' });
-				placeStamp(); stamp.classList.toggle('is-finding', !all); stamp.classList.add('is-set');
-			}
+			stamp.querySelector('[data-wl-stempel-wert]').textContent = passed + '/' + rows.length;
+			stamp.classList.toggle('is-finding', !all);
+			stamp.classList.add('is-set');
 			hero.classList.toggle('is-approved', all);
 		}
 		async function run() {
 			if (running) return; running = true; complete = false; passed = 0; started = clock();
-			timers.forEach(window.clearTimeout); timers = []; if (scanAnimation) scanAnimation.cancel();
-			hero.classList.remove('is-approved', 'is-stamped'); stamp.classList.remove('is-set', 'is-finding');
+			timers.forEach(window.clearTimeout); timers = [];
+			hero.classList.remove('is-approved'); stamp.classList.remove('is-set', 'is-finding');
 			panel.classList.remove('is-complete'); rerun.disabled = true;
 			// Keep the control's footprint through reruns to avoid a layout shift.
 			rows.forEach(function (row) { var output = row.querySelector('.wl-pl-wert'); output.textContent = '–'; delete output.dataset.ergebnis; });
-			progress.style.setProperty('--wl-progress', 0); announce();
-			hero.classList.add('is-started'); buildMarks();
-			var end = Math.max(title.getBoundingClientRect().bottom - hero.getBoundingClientRect().top, ...marks.map(function (mark) { return mark.y + 60; }));
-			if (scan && scan.animate && !reduced.matches) scanAnimation = scan.animate([{ transform: 'translateY(0)', opacity: 0 }, { opacity: 1, offset: .08 }, { opacity: 1, offset: .9 }, { transform: 'translateY(' + end + 'px)', opacity: 0 }], { duration: 1300, delay: 320, easing: 'linear', fill: 'both' });
-			marks.forEach(function (mark) {
-				var reveal = function () { mark.label.classList.add('is-visible'); mark.frame.classList.add('is-visible'); if (reduced.matches) mark.frame.classList.add('is-dimmed'); else schedule(function () { mark.frame.classList.add('is-dimmed'); }, 400); };
-				if (reduced.matches) reveal(); else schedule(reveal, 320 + 1300 * Math.min(1, mark.y / Math.max(1, end)));
-			});
-			await wait(1035);
+			progress.style.setProperty('--wl-progress', 0);
+			status.textContent = 'Prüfung läuft …';
 			for (var i = 0; i < rows.length; i++) {
-				await wait(150); var result = safeCheck(rows[i].dataset.wlPruefung); showResult(rows[i], result); if (result.ok) passed++;
-				progress.style.setProperty('--wl-progress', (i + 1) / rows.length); announce();
+				await wait(95);
+				var result = safeCheck(rows[i].dataset.wlPruefung);
+				showResult(rows[i], result);
+				if (result.ok) passed++;
+				progress.style.setProperty('--wl-progress', (i + 1) / rows.length);
 			}
-			panel.classList.add('is-complete'); stampResult(); if (!reduced.matches) hero.classList.add('is-stamped');
+			elapsed = clock() - started;
+			announce(); stampResult(); panel.classList.add('is-complete');
 			rerun.hidden = false; rerun.disabled = false; complete = true; running = false;
 		}
 		try {
@@ -405,31 +380,18 @@
 			}
 		} catch (error) { /* Document timing remains the explicit fallback. */ }
 		rerun.addEventListener('click', function () {
-			if (running) return;
-			panel.classList.remove('is-complete'); rerun.disabled = true;
-			hero.classList.remove('is-started');
-			window.requestAnimationFrame(function () { window.requestAnimationFrame(run); });
+			run();
 		});
-		var reflowTimer;
-		function reflow() {
-			window.clearTimeout(reflowTimer);
-			reflowTimer = window.setTimeout(function () {
-				if (running) { reflow(); return; }
-				buildMarks(); marks.forEach(function (mark) { mark.label.classList.add('is-visible'); mark.frame.classList.add('is-visible', 'is-dimmed'); }); placeStamp();
-			}, 120);
+		function showMarks(show) {
+			markToggle.setAttribute('aria-pressed', String(show));
+			buildMarks();
 		}
-		window.addEventListener('resize', reflow, { passive: true });
-		if (window.ResizeObserver) new ResizeObserver(reflow).observe(hero.querySelector('.wl-hero__links'));
-		if (reduced.addEventListener) reduced.addEventListener('change', function () { if (reduced.matches && scanAnimation) scanAnimation.cancel(); reflow(); });
-		function start() {
-			var fonts = document.fonts ? document.fonts.ready : Promise.resolve();
-			fonts.then(function () {
-				// Enhance only after dependencies are ready; failure leaves words readable.
-				hero.setAttribute('data-wl-enhanced', '');
-				schedule(run, reduced.matches ? 200 : 120);
-			});
-		}
-		if (document.readyState === 'complete') start(); else window.addEventListener('load', start, { once: true });
+		markToggle.hidden = false;
+		markToggle.addEventListener('click', function () { showMarks(markToggle.getAttribute('aria-pressed') !== 'true'); });
+		details.addEventListener('toggle', function () { if (!details.open) showMarks(false); });
+		if (window.ResizeObserver) new ResizeObserver(buildMarks).observe(hero.querySelector('.wl-hero__links'));
+		window.addEventListener('resize', buildMarks, { passive: true });
+		if (document.readyState === 'complete') run(); else window.addEventListener('load', run, { once: true });
 	})();
 	// strecke-js-privat:end
 

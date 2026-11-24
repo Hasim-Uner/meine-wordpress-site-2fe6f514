@@ -456,7 +456,7 @@ Use White-Label as primary route when intent explicitly involves:
 
 A specialist page may show a **secondary** White-Label bridge when the topic is relevant to agencies, but it should not lose its own SEO intent.
 
-The final White-Label route keeps one primary hero action: `Aufgabe beschreiben`
+The final White-Label route keeps one primary hero action: `Projekt einschätzen lassen`
 (`cta_whitelabel_hero_task_brief`). Prices are an anchor link. The offer-stage
 assessment follows proof and prices (`cta_whitelabel_offers_assessment`) and
 remains one of the three enquiry ways (`cta_whitelabel_way_offer`). All three
@@ -526,11 +526,11 @@ Expected route:
 
 The page owns its own local request form (`nexus/v1/whitelabel-request`) and its own success event `whitelabel_request_submit`.
 
-The primary action is “Aufgabe beschreiben” and leads to `#aufgabe`. The paid
-WordPress test sprint is the smallest scoped entry; a retainer follows a successful
-first project. Presales uses the same form with `?case=angebotsphase` and a visible
-context label; since 2026-09-26 it is the hero's quiet second path
-(`cta_whitelabel_hero_offer`). Agencies without a current project use
+The local header, hero and mobile sticky action use “Projekt einschätzen lassen”
+and open the project brief (`?case=aufgabe#aufgabe`). The paid WordPress test
+sprint has its own price card. The optional monthly allocation follows a successful
+first project. The assessment links after prices and beside the form select
+`?case=angebotsphase` and display the corresponding context label. Agencies without a current project use
 `?case=vormerken` (`cta_whitelabel_way_later`, beside the form only); the form
 swaps label, field text, hint, validation message and button per case. The
 calendar is a secondary option beside the form only (`cta_whitelabel_form_call`).
@@ -609,14 +609,11 @@ Menüs, `fokus` den Marktcheck-Einstieg der Solar-Seite):
 | Solar-Seite | fokus | Marktcheck | Marktcheck-Preis | `#marktcheck` | `nav_header_door_marktcheck` |
 | Kontakt | voll | keine Tür | | | |
 
-Die Zeile „White-Label“ gilt für `site-header.php` und für den eigenen Kopf der
-Hauptseite `/whitelabel-retainer/` (`template-parts/whitelabel-header.php`,
-Landeseite der Akquise-Mails mit fünf Ankern der Seite). Beide rendern die
-Tür über `hu_funnel_door_link()`. Der Kopf der Hauptseite behält die Action
-`cta_whitelabel_header_task_brief` (statt `nav_header_door_whitelabel`), damit
-die Zeitreihe der Landeseite nicht abreißt; `data-door="aufgabe"` trägt er
-trotzdem, die Messung liest ihn ohne Sonderfall. Auch dort steht die
-Bezeichnung „Test-Sprint anfragen“ mit Betrag statt „Aufgabe beschreiben“. Ein Beitrag
+Die Zeile „White-Label“ beschreibt den globalen Kopf. Die Akquise-Landeseite
+`/whitelabel-retainer/` verwendet einen eigenen Kopf mit fünf Ankern und
+„Projekt einschätzen lassen“ ohne Betrag. Die Action
+`cta_whitelabel_header_task_brief` und `data-door="aufgabe"` führen die
+bestehende Messung des Formularwegs fort. Ein Beitrag
 ohne Dossier-Kategorie bekommt „Projekt anfragen“: der Rückfall auf das Dossier
 „Leadgenerierung“ beschriftet nur den Artikelpfad.
 

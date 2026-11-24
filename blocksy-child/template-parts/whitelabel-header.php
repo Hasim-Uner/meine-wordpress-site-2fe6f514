@@ -5,10 +5,8 @@
  * Die Seite ist die Landeseite der Akquise-Mails und traegt deshalb eine
  * reduzierte Seitennavigation statt des globalen Hauptmenues: Wortmarke, fuenf
  * Anker der Seite (whitelabel.js markiert sie mit aria-current="location") und
- * rechts die Tuer der Route. Die Tuer kommt wie in site-header.php aus
- * hu_funnel_doors() (Test-Sprint, Betrag aus dem Kanon, data-door), behaelt
- * aber ihre bisherige Tracking-Action cta_whitelabel_header_task_brief, damit
- * die Zeitreihe der Landeseite nicht abreisst. Unter 768 px traegt die
+ * rechts die lokale Projektanfrage. Sie nutzt das globale Tür-Markup und
+ * den bestehenden Aufgaben-Hook der Landeseite. Unter 768 px trägt die
  * Sticky-Leiste am unteren Rand den Weg zum Formular; die Tuer tritt dann zurueck
  * (whitelabel.css).
  *
@@ -54,6 +52,9 @@ $wl_door  = $wl_doors['aufgabe'] ?? null;
 			</nav>
 			<?php
 			if ( is_array( $wl_door ) ) {
+				$wl_door['label']  = __( 'Projekt einschätzen lassen', 'blocksy-child' );
+				$wl_door['short']  = $wl_door['label'];
+				$wl_door['amount'] = '';
 				echo hu_funnel_door_link( // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- escaped inside hu_funnel_door_link().
 					$wl_door,
 					[

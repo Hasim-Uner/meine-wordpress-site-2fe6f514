@@ -142,18 +142,16 @@ $wl_referral_options = function_exists( 'nexus_get_inquiry_referral_options' ) ?
 
 $references     = hu_whitelabel_reference_projects();
 $reference_n    = count( $references );
-$count_words    = [ 1 => 'diese eine Website', 2 => 'diese zwei Websites', 3 => 'diese drei Websites', 4 => 'diese vier Websites', 5 => 'diese fünf Websites' ];
-$reference_word = $count_words[ $reference_n ] ?? sprintf( 'diese %d Websites', $reference_n );
 
 // Sieben lokale Prüfungen, ohne eingetragene Ergebnisse.
 $protocol = [
 	[ 'ueberschriften', 'Überschriften', 'Genau eine H1, jede H2 mit Sprunganker.' ],
-	[ 'bilder', 'Bilder', 'Alt-Text und feste Maße, nichts springt beim Laden.' ],
+	[ 'bilder', 'Bilder', 'Jedes Bild hat ein Alt-Attribut, eine Breite und eine Höhe.' ],
 	[ 'formular', 'Pflichtfelder', 'Jedes Pflichtfeld hat eine Beschriftung.' ],
-	[ 'neuer-tab', 'Neuer Tab', 'Screenreader sagen an, dass sich ein Tab öffnet.' ],
+	[ 'neuer-tab', 'Neuer Tab', 'Links mit neuem Tab haben einen Texthinweis und sind mit noopener gekennzeichnet.' ],
 	[ 'lcp', 'Ladezeit (LCP)', 'Bis das größte Element steht. Der Browser misst diesen Besuch.' ],
 	[ 'cookies', 'Cookies', 'Der Browser zählt die für diese Seite lesbaren Cookies.' ],
-	[ 'schema', 'Strukturierte Daten', 'Gültiges JSON-LD für Suche und KI-Assistenten.' ],
+	[ 'schema', 'Strukturierte Daten', 'Die JSON-LD-Blöcke lassen sich lesen und enthalten typisierte Einträge.' ],
 ];
 
 /*
@@ -164,32 +162,28 @@ $protocol = [
  */
 $services = [
 	[
-		'anlass' => 'Das Projekt ist verkauft, euer Team ist ausgelastet.',
+		'anlass' => 'Der Entwurf ist freigegeben, euer Team ist ausgebucht.',
 		'tags'   => 'WordPress · Templates · Landingpages · Ladezeit · technisches SEO',
-		'title'  => 'Ich setze euren Entwurf in WordPress um.',
-		'text'   => 'Neue Templates, Landingpages und Erweiterungen, auch in bestehenden Installationen und mit eurem Page Builder. Begonnene Websites baue ich fertig. Ladezeit und technisches SEO behebe ich dort, wo sie im System entstehen.',
-		'abnahme' => 'Den Stand auf Staging, Seite für Seite gegen euren Entwurf und auf dem Handy geprüft.',
+		'text'   => 'Ich baue Landingpages und Templates in eurem bestehenden WordPress. Auch ein angefangenes Projekt kann ich übernehmen. Bei langsamen Seiten oder technischen SEO-Fehlern arbeite ich direkt im Theme und in den betroffenen Komponenten.',
+		'abnahme' => 'Auf Staging vergleicht ihr die fertige Seite mit eurem Entwurf und könnt sie am Handy bedienen.',
 	],
 	[
 		'anlass' => 'Beim Kunden passen die Zahlen nicht zu den Anfragen.',
 		'tags'   => 'Tracking · GA4 · Tag Manager · Consent Mode',
-		'title'  => 'Ich richte die Messung ein und prüfe jedes Event.',
-		'text'   => 'GA4, Google Tag Manager und Consent Mode, bei Bedarf Server-Side Tracking und Meta CAPI. Weicht eine Zahl ab, suche ich die Ursache und behebe sie.',
-		'abnahme' => 'Einen Messplan und ein Protokoll, in dem jedes Event einmal ausgelöst und in GA4 geprüft ist.',
+		'text'   => 'Ich prüfe, welche Aktionen GA4 über den Google Tag Manager erfasst und wie die Tags auf den Consent Mode reagieren. Braucht das Projekt Server-Side Tracking oder Meta CAPI, vereinbaren wir die Events vorab.',
+		'abnahme' => 'Im Messplan steht, was zählen soll. Das Testprotokoll zeigt für jedes vereinbarte GA4-Event, was beim Auslösen angekommen ist.',
 	],
 	[
 		'anlass' => 'Die Anfragen kommen an, aber nicht im CRM.',
 		'tags'   => 'Anfragestrecken · Formular · Mailversand · CRM',
-		'title'  => 'Ich verbinde Formular, Messung und CRM.',
-		'text'   => 'Formulare mit wenigen Pflichtfeldern, Mailversand über SPF und DKIM und die Übergabe jeder Anfrage an den vereinbarten Empfänger oder ins CRM.',
-		'abnahme' => 'Eine Testanfrage, die ihr vom Absenden bis zum Eingang im CRM verfolgt.',
+		'text'   => 'Ich verbinde das WordPress-Formular mit eurem Mailversand oder dem CRM des Kunden und ordne die Felder zu, die sein Vertrieb braucht.',
+		'abnahme' => 'Ihr sendet das Formular ab und seht im vereinbarten Postfach oder CRM nach, ob die Testanfrage mit den richtigen Angaben ankommt.',
 	],
 	[
 		'anlass' => 'Euer Kunde fragt nach Barrierefreiheit.',
 		'tags'   => 'Barrierefreiheit · WCAG 2.1 AA · BFSG',
-		'title'  => 'Ich prüfe die Barrierefreiheit und behebe, was im Code liegt.',
-		'text'   => 'Seit dem 28. Juni 2025 gilt das Barrierefreiheitsstärkungsgesetz für viele Online-Angebote an Verbraucher, technischer Maßstab ist WCAG 2.1 AA. Ich prüfe Tastaturbedienung, Kontraste, Formulare, Überschriften und Screenreader-Ausgabe und behebe die Befunde in Theme und Templates. Ob das Gesetz für euren Kunden gilt, ist eine Rechtsfrage; ich liefere den technischen Teil.',
-		'abnahme' => 'Ein Prüfprotokoll je Template: jedes Kriterium mit Befund, Korrektur und Nachprüfung.',
+		'text'   => 'Ich prüfe die vereinbarten Templates anhand der relevanten WCAG-Kriterien. Dazu gehören Tastaturbedienung, Kontraste und verständliche Formularmeldungen. Technische Barrieren behebe ich in Theme und Templates.',
+		'abnahme' => 'Im Protokoll je Template seht ihr den Befund, die Korrektur und das Ergebnis der Nachprüfung.',
 	],
 ];
 
@@ -201,9 +195,9 @@ $service_evidence = [
 	[ 'Das Protokoll oben prüft diese Seite gerade im Browser.', '#protokoll', 'whitelabel_field_protocol', 'Zum Protokoll' ],
 ];
 $entry_projects = [
-	[ 'id' => 'test-sprint', 'key' => 'test_sprint', 'name' => 'Test-Sprint', 'lage' => 'Ihr wollt sehen, wie ich arbeite, bevor ein Kunde dranhängt.', 'text' => 'Eine abgegrenzte WordPress-Aufgabe, zum Beispiel einen Formularfehler beheben oder eine vorhandene Komponente anpassen. Höchstens ein Arbeitstag, mit Funktionstest, Dokumentation und einer Korrekturrunde.', 'more' => 'Relaunch, ganze Landingpage und vollständiges Tracking-Setup gehören nicht dazu. Lizenzen rechne ich separat ab.', 'track' => 'cta_whitelabel_entry_task_brief' ],
-	[ 'id' => 'angebot-tracking-audit', 'key' => 'tracking_audit', 'name' => 'Tracking-Audit', 'lage' => 'Beim Kunden läuft eine Messung, aber niemand traut ihr.', 'text' => 'GA4, Tag Manager und Consent geprüft, mit schriftlichem Befund und einer Fixliste nach Priorität.', 'track' => 'cta_whitelabel_offer_audit' ],
-	[ 'id' => 'angebot-server-side', 'key' => 'server_side', 'name' => 'Server-Side-Setup', 'lage' => 'Werbebudget läuft, aber ein Teil der Conversions fehlt.', 'text' => 'Server-Container, Events und Consent eingerichtet, dokumentiert und in euren Accounts übergeben.', 'track' => 'cta_whitelabel_offer_server_side' ],
+	[ 'id' => 'test-sprint', 'key' => 'test_sprint', 'name' => 'Test-Sprint', 'lage' => 'Lernt meine Arbeit an einem Ticket aus eurem Projekt kennen.', 'text' => 'Eine abgegrenzte WordPress-Aufgabe, zum Beispiel einen Formularfehler beheben oder eine vorhandene Komponente anpassen. Höchstens ein Arbeitstag, mit Funktionstest, Dokumentation und einer Korrekturrunde.', 'more' => 'Relaunch, ganze Landingpage und vollständiges Tracking-Setup gehören nicht dazu. Lizenzen rechne ich separat ab.', 'track' => 'cta_whitelabel_entry_task_brief' ],
+	[ 'id' => 'angebot-tracking-audit', 'key' => 'tracking_audit', 'name' => 'Tracking-Audit', 'lage' => 'Das Reporting zeigt andere Zahlen als der Vertrieb.', 'text' => 'Ich prüfe GA4, Tag Manager und Consent. Ihr bekommt die Befunde und eine nach Dringlichkeit sortierte Liste der Korrekturen.', 'track' => 'cta_whitelabel_offer_audit' ],
+	[ 'id' => 'angebot-server-side', 'key' => 'server_side', 'name' => 'Server-Side-Setup', 'lage' => 'Euer Kunde braucht serverseitiges Tracking für seine Kampagnen.', 'text' => 'Server-Container, Events und Consent eingerichtet, dokumentiert und in euren Accounts übergeben.', 'track' => 'cta_whitelabel_offer_server_side' ],
 	[ 'id' => 'angebot-landingpage', 'key' => 'landingpage', 'name' => 'Landingpage', 'lage' => 'Entwurf und Text stehen, die Seite muss gebaut und gemessen werden.', 'text' => 'Seite, Formular und die vereinbarte Conversion-Messung, auf Staging gebaut und nach eurer Abnahme live.', 'track' => 'cta_whitelabel_offer_landingpage' ],
 ];
 $margin_rows = hu_whitelabel_margin_rows();
@@ -244,12 +238,11 @@ foreach ( $calc_rows as $calc_row ) {
 if ( ! $calc_first && $calc_rows ) {
 	$calc_first = $calc_rows[0];
 }
-$gwa_url = 'https://www.gwa.de/ki-paper';
 $process = [
-	[ 'Aufgabe', 'Ihr schickt das Briefing. Ein NDA unterschreibe ich, bevor ich Kundendaten sehe. Danach bekommt ihr Rückfragen oder Aufwand und Preis.' ],
-	[ 'Umfang', 'Umfang, Festpreis, Termin und Abnahmekriterien stehen schriftlich fest, bevor ich anfange. Vertrag und Rechnung laufen über eure Agentur.' ],
-	[ 'Umsetzung', 'Ich baue auf Staging in euren Accounts, mit einem eigenen Zugang, den ihr jederzeit entziehen könnt. Verzug melde ich, sobald er absehbar ist, nicht erst am Abgabetag.' ],
-	[ 'Abnahme', 'Ihr prüft gegen die vereinbarten Kriterien, live geht es erst nach eurer Freigabe. Das legen wir vor dem Start schriftlich fest. Fehler in meiner Lieferung behebe ich ohne Berechnung, auch nach der Abnahme. Neue Wünsche eures Kunden sind ein neuer Auftrag, mit Preis, bevor ich anfange.' ],
+	[ 'Aufgabe', 'Schickt mir Ziel, Termin und den aktuellen Stand. Ich kläre mit euch, was für ein Angebot noch fehlt.' ],
+	[ 'Umfang', 'Ihr bekommt Umfang, Festpreis, Termin und Abnahmekriterien schriftlich, bevor ihr den Auftrag erteilt.' ],
+	[ 'Umsetzung', 'Auf Staging könnt ihr den aktuellen Stand ansehen. Zeichnet sich eine Verzögerung ab, melde ich mich bei euch.' ],
+	[ 'Abnahme', 'Ihr prüft die vereinbarten Kriterien und gebt den Livegang frei. Fehler in meiner Lieferung behebe ich auch nach der Abnahme ohne Berechnung. Für zusätzliche Wünsche bekommt ihr ein eigenes Angebot.' ],
 	[ 'Übergabe', 'Dokumentation, Code und Zugänge liegen danach bei euch. Euer Team kann ohne mich weiterarbeiten.' ],
 ];
 $safeguards = [
@@ -272,53 +265,57 @@ $marke = static function ( $nr, $name ) {
 <div class="doku st wl-page" id="top" data-track-section="whitelabel_page" data-st data-st-final>
 
 	<section class="st-abschnitt st-hero st-messflaeche wl-hero tafel" id="hero" aria-labelledby="wl-title" data-st-abschnitt="01" data-track-section="hero" data-wl-pruefstand>
-		<div class="wl-scan" aria-hidden="true" data-wl-scan></div>
 		<?php echo $marke( '01', 'Auftrag' ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?>
 		<div class="st-inhalt" data-wl-messfeld>
-			<div class="wl-hero__kopf"><p class="st-klein-label">White-Label für Agenturen · WordPress · Tracking · CRM</p><p class="st-klein-label">Pattensen bei Hannover · remote in DACH</p></div>
+			<div class="wl-hero__kopf"><p class="st-klein-label">White-Label für Agenturen</p></div>
 			<div class="wl-hero__raster">
 				<div class="wl-hero__links">
-					<div class="wl-hero__titel" data-wl-titel>
-						<h1 class="wl-hero__h1" id="wl-title" data-wl-mess="h1"><span class="wl-zeile st-messzeile"><span class="wl-wort st-messwort">Gebaut.</span></span> <span class="wl-zeile st-messzeile"><span class="wl-wort st-messwort">Gemessen.</span></span> <span class="wl-zeile st-messzeile"><span class="wl-wort st-messwort wl-wort--abnahme" data-wl-wort-abnahme>Abgenommen.</span></span></h1>
-						<div class="wl-stempel" data-wl-stempel aria-hidden="true"><span class="wl-stempel__kopf">Geprüft</span><span class="wl-stempel__wert" data-wl-stempel-wert></span><span class="wl-stempel__datum" data-wl-stempel-datum></span></div>
-					</div>
-					<p class="st-hero__satz" data-wl-mess="satz">Ich baue die WordPress-Seite und das Tracking dazu, als White-Label unter eurem Namen und in euren Accounts. Festpreis und Termin stehen, bevor ihr zusagt.</p>
+					<h1 class="wl-hero__h1" id="wl-title" data-wl-mess="h1">WordPress-Entwicklung und Tracking für eure Kunden.</h1>
+					<p class="st-hero__satz" data-wl-mess="satz">Ich baue unter eurem Namen WordPress-Seiten, vom Entwurf bis zur Anfrage im CRM. Festpreis und Liefertermin kennt ihr, bevor ihr eurem Kunden zusagt.</p>
 					<div class="st-hero__ctas">
-						<a class="tun" href="<?php echo esc_url( $wl_form_task_url ); ?>" data-wl-form-link data-wl-mess="cta" data-track-action="cta_whitelabel_hero_task_brief" data-track-category="lead_gen" data-track-section="hero">Aufgabe beschreiben <span class="pf" aria-hidden="true">→</span></a>
-						<a class="st-link" href="#einstieg" data-track-action="cta_whitelabel_hero_prices" data-track-category="navigation" data-track-section="hero">Alle Agenturpreise <span aria-hidden="true">↓</span></a>
+						<a class="tun" href="<?php echo esc_url( $wl_form_task_url ); ?>" data-wl-form-link data-wl-mess="cta" data-track-action="cta_whitelabel_hero_task_brief" data-track-category="lead_gen" data-track-section="hero">Projekt einschätzen lassen <span class="pf" aria-hidden="true">→</span></a>
+						<a class="st-link" href="#einstieg" data-track-action="cta_whitelabel_hero_prices" data-track-category="navigation" data-track-section="hero">Agenturpreise ansehen <span aria-hidden="true">↓</span></a>
 					</div>
-					<p class="st-hero__notiz">Auch in der Angebotsphase: Machbarkeit, Aufwand und Festpreis, kostenlos. <?php echo esc_html( $response_sentence ); ?></p>
+					<p class="st-hero__notiz">Kostenlose Ersteinschätzung. <?php echo esc_html( $response_sentence ); ?></p>
 					<div class="st-hero__meta">
 						<img class="st-hero__portrait" src="<?php echo esc_url( $img_uri . 'hasim-freelancer-portrait-112.webp' ); ?>" width="48" height="48" alt="" decoding="async" fetchpriority="low" data-wl-mess="bild">
-						<p class="st-hero__person"><strong>Haşim Üner</strong> · Entwicklung, Tracking und Conversion <br><a class="st-link" href="<?php echo esc_url( $about_url ); ?>" data-track-action="whitelabel_about" data-track-category="trust" data-track-section="hero">Wer für euch arbeitet</a></p>
+						<p class="st-hero__person"><strong>Haşim Üner</strong> · Region Hannover, remote in DACH <br><a class="st-link" href="<?php echo esc_url( $about_url ); ?>" data-track-action="whitelabel_about" data-track-category="trust" data-track-section="hero">Wer für euch arbeitet</a></p>
 					</div>
 				</div>
 				<aside class="wl-protokoll" id="protokoll" aria-labelledby="wl-protokoll-titel" data-wl-protokoll>
-					<div class="wl-protokoll__kopf"><p class="st-klein-label" id="wl-protokoll-titel">Abnahmeprotokoll · diese Seite</p><p class="wl-protokoll__status" data-wl-status aria-live="polite" aria-atomic="true">Prüflauf braucht JavaScript. Es läuft keine Prüfung.</p></div>
+					<div class="wl-protokoll__kopf">
+						<p class="st-klein-label" id="wl-protokoll-titel">Arbeitsprobe · Live-Messung</p>
+						<div class="wl-stempel" data-wl-stempel aria-hidden="true"><span class="wl-stempel__kopf">Geprüft</span><span class="wl-stempel__wert" data-wl-stempel-wert></span></div>
+					</div>
+					<p class="wl-protokoll__messwert"><span data-wl-lcp-kopie>–</span></p>
+					<p class="wl-protokoll__kennzahl">Ladezeit bei eurem Besuch · <span data-wl-lcp-proof-label>Browsermessung</span></p>
 					<div class="wl-protokoll__balken" aria-hidden="true"><i data-wl-fortschritt></i></div>
-					<ol class="wl-protokoll__liste">
-						<?php foreach ( $protocol as $point ) : ?>
-							<li data-wl-pruefung="<?php echo esc_attr( $point[0] ); ?>"><span class="wl-pl-name"<?php echo 'lcp' === $point[0] ? ' data-wl-lcp-label' : ''; ?>><?php echo esc_html( $point[1] ); ?></span><span class="wl-pl-wert">–</span><span class="wl-pl-satz"><?php echo esc_html( $point[2] ); ?></span></li>
-						<?php endforeach; ?>
-					</ol>
-					<div class="wl-protokoll__fuss"><p>Diese Werte misst euer Browser gerade an dieser Seite. Nichts ist eingetragen, nichts wird gesendet. Mit jeder Lieferung bekommt ihr so ein Protokoll, dort mit Testfällen für Formular, Events und CRM.</p><div class="wl-protokoll__controls"><button type="button" class="wl-protokoll__nochmal" data-wl-nochmal hidden data-track-action="whitelabel_protocol_rerun" data-track-category="engagement" data-track-section="hero">Erneut prüfen <span aria-hidden="true">↻</span></button></div></div>
+					<p class="wl-protokoll__status" data-wl-status aria-live="polite" aria-atomic="true">Prüflauf braucht JavaScript. Es läuft keine Prüfung.</p>
+					<p class="wl-protokoll__erklaerung">Diese Werte misst euer Browser jetzt. Bei eurem Projekt zeigt das Abnahmeprotokoll zum Beispiel, ob eine Testanfrage im CRM ankommt.</p>
+					<details class="wl-protokoll__details" data-wl-details>
+						<summary>Prüfpunkte ansehen</summary>
+						<ol class="wl-protokoll__liste">
+							<?php foreach ( $protocol as $point ) : ?>
+								<li data-wl-pruefung="<?php echo esc_attr( $point[0] ); ?>"><span class="wl-pl-name"<?php echo 'lcp' === $point[0] ? ' data-wl-lcp-label' : ''; ?>><?php echo esc_html( $point[1] ); ?></span><span class="wl-pl-wert">–</span><span class="wl-pl-satz"><?php echo esc_html( $point[2] ); ?></span></li>
+							<?php endforeach; ?>
+						</ol>
+						<div class="wl-protokoll__controls"><button type="button" class="wl-protokoll__nochmal" data-wl-nochmal hidden data-track-action="whitelabel_protocol_rerun" data-track-category="engagement" data-track-section="hero">Erneut prüfen <span aria-hidden="true">↻</span></button><button type="button" class="wl-protokoll__masse" data-wl-mass-toggle hidden aria-pressed="false">Designmaße anzeigen</button></div>
+					</details>
 				</aside>
 			</div>
 			<ul class="st-belege" aria-label="Belege auf dieser Seite">
 				<li><a href="#test-sprint" data-track-action="whitelabel_proof_strip_sprint" data-track-category="proof" data-track-section="hero"><span class="st-belege__zahl"><?php echo esc_html( $fest( hu_format_eur( (int) hu_whitelabel_price( 'test_sprint', 'value' ) ) ) ); ?></span><span class="st-belege__text">netto, Festpreis für den Test-Sprint: eine Aufgabe, höchstens ein Arbeitstag</span></a></li>
-				<?php if ( $hero_margin ) : ?><li><a href="#marge" data-track-action="whitelabel_proof_strip_margin" data-track-category="proof" data-track-section="hero"><span class="st-belege__zahl st-belege__zahl--messwert"><?php echo esc_html( $fest( $hero_margin['discount_display'] ) ); ?></span><span class="st-belege__text">unter meinem eigenen, öffentlichen Endkundenpreis für dieselbe Leistung</span></a></li><?php endif; ?>
+				<?php if ( $hero_margin ) : ?><li><a href="#marge" data-track-action="whitelabel_proof_strip_margin" data-track-category="proof" data-track-section="hero"><span class="st-belege__zahl st-belege__zahl--messwert"><?php echo esc_html( $fest( $hero_margin['discount_display'] ) ); ?></span><span class="st-belege__text">beim Server-Side-Setup gegenüber meinem Endkundenpreis für denselben Umfang</span></a></li><?php endif; ?>
 				<li><a href="#proof" data-track-action="whitelabel_proof_strip_references" data-track-category="proof" data-track-section="hero"><span class="st-belege__zahl"><?php echo esc_html( (string) $reference_n ); ?></span><span class="st-belege__text">öffentliche Websites und der Code dieser Seite, offen zum Nachprüfen</span></a></li>
 			</ul>
 		</div>
-		<svg class="nur-vorlesen" aria-hidden="true" focusable="false"><filter id="tinte" x="-5%" y="-5%" width="110%" height="110%"><feTurbulence type="fractalNoise" baseFrequency=".9" numOctaves="2" seed="11" result="n"/><feColorMatrix in="n" type="matrix" values="0 0 0 0 0  0 0 0 0 0  0 0 0 0 0  0 0 0 -4 3.05" result="m"/><feComposite in="SourceGraphic" in2="m" operator="in"/></filter></svg>
 	</section>
 
 	<section class="st-abschnitt st-leistungen wl-leistungen" id="lieferfelder" aria-labelledby="lieferfelder-h" data-st-abschnitt="02" data-track-section="services">
 		<?php echo $marke( '02', 'Felder' ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?>
 		<div class="st-inhalt">
-			<h2 class="st-h2" id="lieferfelder-h">Kreation holt euer Kunde gerade ins Haus. <span class="st-leiser">Die Technik dahinter nicht.</span></h2>
-			<p class="st-vorspann">80&nbsp;% der befragten Marketingentscheider planen, mehr Aufgaben inhouse umzusetzen, vor allem Research, Kreation und Werbemittel. Bei euch bleibt, was dort niemand bauen kann: die Seite, die Messung, der Weg ins CRM und der Nachweis, dass alles funktioniert.</p>
-			<p class="wl-quelle">Quelle: GWA KI-Whitepaper 2026, Befragung von 170 CEOs und CMOs mit dem Handelsblatt Research Institute. <a class="st-link" href="<?php echo esc_url( $gwa_url ); ?>" target="_blank" rel="noopener" data-track-action="whitelabel_source_gwa" data-track-category="proof" data-track-section="services">Zum Whitepaper&nbsp;<span aria-hidden="true">↗</span><span class="nur-vorlesen"> (öffnet in neuem Tab)</span></a></p>
+			<h2 class="st-h2" id="lieferfelder-h">Vom WordPress-Entwurf <span class="st-leiser">bis zur Anfrage im CRM.</span></h2>
+			<p class="st-vorspann">Euer Kunde gibt das Design frei. Zum Start will er wissen: Kommt eine Anfrage beim Vertrieb an? Und sieht das Marketing sie in GA4? Ich baue die Seite und prüfe mit euch den Weg der ersten Testanfrage.</p>
 			<div class="wl-schichten">
 				<div class="wl-stack" aria-hidden="true" data-wl-stack>
 					<div class="wl-stack__szene" data-wl-szene>
@@ -329,15 +326,15 @@ $marke = static function ( $nr, $name ) {
 					<p class="wl-stack__legende"><span class="wl-stack__punkt"></span>eine Anfrage, von der Seite bis ins CRM</p>
 				</div>
 				<div class="wl-schichten__felder">
-					<p class="wl-schichten__satz">Vier Schichten, meist von zwei oder drei Dienstleistern. Hier baut sie eine Person, und ihr nehmt jede einzeln ab.</p>
+					<p class="wl-schichten__satz">Ihr könnt die ganze Strecke oder eine einzelne Aufgabe an mich geben.</p>
 					<div class="st-stationen">
 						<?php foreach ( $services as $i => $service ) : ?>
 							<details class="st-station wl-feld" name="feld" data-wl-feld="<?php echo esc_attr( (string) $i ); ?>"<?php echo 0 === $i ? ' open' : ''; ?>>
 								<summary><span class="st-station__nr"><?php echo esc_html( sprintf( '%02d', $i + 1 ) ); ?></span><span class="st-station__name" id="leistung-<?php echo esc_attr( (string) ( $i + 1 ) ); ?>-h"><?php echo esc_html( $service_names[ $i ] ); ?></span><span class="st-station__teaser"><?php echo esc_html( $service['anlass'] ); ?></span></summary>
 								<div class="st-station__detail">
 									<p class="st-klein-label wl-feld__tags"><?php echo esc_html( $liste( $service['tags'] ) ); ?></p>
-									<div><p class="st-klein-label">Was ich liefere</p><p><?php echo nexus_glossary_explain_text( $service['text'], 'consent-mode' ); ?></p></div>
-									<div><p class="st-klein-label">Woran ihr abnehmt</p><p><?php echo esc_html( $service['abnahme'] ); ?></p></div>
+									<div><p><?php echo nexus_glossary_explain_text( $service['text'], 'consent-mode' ); ?></p></div>
+									<div><p class="st-klein-label">So prüft ihr das Ergebnis</p><p><?php echo esc_html( $service['abnahme'] ); ?></p></div>
 									<p class="st-station__beleg"><?php echo esc_html( $service_evidence[ $i ][0] ); ?> <a class="st-link" href="<?php echo esc_attr( $service_evidence[ $i ][1] ); ?>" data-track-action="<?php echo esc_attr( $service_evidence[ $i ][2] ); ?>" data-track-category="navigation" data-track-section="services"><?php echo esc_html( $service_evidence[ $i ][3] ); ?> <span aria-hidden="true">→</span></a></p>
 								</div>
 							</details>
@@ -351,34 +348,8 @@ $marke = static function ( $nr, $name ) {
 	<section class="st-abschnitt st-pruefstand st-wash wl-belege" id="proof" aria-labelledby="pruefstand-h" data-st-abschnitt="03" data-track-section="pruefstand">
 		<?php echo $marke( '03', 'Belege' ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- escaped inside the helper. ?>
 		<div class="st-inhalt">
-			<div id="pruefstand">
-				<div class="st-tafel__kopf">
-					<h2 class="st-h2" id="pruefstand-h">Bevor ihr mir einen Kunden gebt, könnt ihr meinen Code lesen.</h2>
-					<p class="st-vorspann">Schickt den Link eurem Entwicklungsteam. Wie sorgfältig ich baue, zeigt diese Website.</p>
-				</div>
-				<ol class="st-pruefungen">
-					<li>
-						<p class="st-pruefungen__label">Quellcode</p>
-						<p class="st-pruefungen__text">Jede Datei dieser Website und jede Änderung, mit Datum und Begründung.</p>
-						<a class="st-link" href="<?php echo esc_url( $github_url . '/commits/main/' ); ?>" target="_blank" rel="noopener" data-track-action="whitelabel_proof_repo" data-track-category="proof" data-track-section="pruefstand">Code und Änderungen auf GitHub&nbsp;<span aria-hidden="true">↗</span><span class="nur-vorlesen"> (öffnet in neuem Tab)</span></a>
-					</li>
-					<li>
-						<p class="st-pruefungen__label">Prüfungen</p>
-						<p class="st-pruefungen__text">Vor jedem Livegang prüft die CI unter anderem PHP-Syntax, statische Analyse, strukturierte Daten und eine Sperrliste veralteter Preise und Zusagen. Schlägt eine Prüfung fehl, geht nichts live.</p>
-						<a class="st-link" href="<?php echo esc_url( $github_url . '/actions' ); ?>" target="_blank" rel="noopener" data-track-action="whitelabel_proof_ci" data-track-category="proof" data-track-section="pruefstand">Prüfläufe auf GitHub&nbsp;<span aria-hidden="true">↗</span><span class="nur-vorlesen"> (öffnet in neuem Tab)</span></a>
-					</li>
-					<li>
-						<p class="st-pruefungen__label">Ladezeit</p>
-						<p class="st-pruefungen__text">Eine Zahl von mir wäre nur eine Behauptung. PageSpeed Insights misst diese Seite jederzeit und ohne mich.</p>
-						<p class="wl-lcp" data-wl-lcp-proof hidden>Dieser Besuch: <span data-wl-lcp-proof-label>LCP</span> <span data-wl-lcp-kopie></span>.</p>
-						<a class="st-link" href="<?php echo esc_url( $psi_url ); ?>" target="_blank" rel="noopener" data-track-action="whitelabel_proof_pagespeed" data-track-category="proof" data-track-section="pruefstand">PageSpeed jetzt messen&nbsp;<span aria-hidden="true">↗</span><span class="nur-vorlesen"> (öffnet in neuem Tab)</span></a>
-					</li>
-				</ol>
-			</div>
-
 			<div class="wl-referenzen" id="referenzen" data-track-section="proof">
-				<h3 class="st-h3" id="proof-h"><?php echo esc_html( ucfirst( $reference_word ) ); ?> könnt ihr selbst öffnen.</h3>
-				<p class="wl-referenzen__satz">White-Label-Arbeit zeige ich nur mit Freigabe der Agentur, für die ich sie gebaut habe. Wie ich an einer Aufgabe von euch arbeite, seht ihr im <a class="st-link" href="#einstieg" data-track-action="cta_whitelabel_proof_test_sprint" data-track-category="lead_gen" data-track-section="proof">Test-Sprint</a>.</p>
+				<h2 class="st-h2" id="pruefstand-h"><span id="proof-h">Projekte und mein Beitrag.</span></h2>
 				<?php if ( $reference_n ) : ?>
 					<ul class="st-referenzen__liste">
 						<?php foreach ( $references as $reference ) : ?>
@@ -390,7 +361,33 @@ $marke = static function ( $nr, $name ) {
 						<?php endforeach; ?>
 					</ul>
 				<?php endif; ?>
+				<p class="wl-referenzen__satz">White-Label-Kunden nenne ich nur mit Freigabe der Agentur. Für eine erste gemeinsame Aufgabe gibt es den <a class="st-link" href="#test-sprint" data-track-action="cta_whitelabel_proof_test_sprint" data-track-category="lead_gen" data-track-section="proof">Test-Sprint</a>.</p>
 				<p class="wl-referenzen__satz"><a class="st-link" href="<?php echo esc_url( hu_get_commercial_route( 'references' ) ); ?>" data-track-action="whitelabel_references_overview" data-track-category="proof" data-track-section="proof">Projektaufgaben und meinen Beitrag ansehen <span aria-hidden="true">→</span></a></p>
+			</div>
+
+			<div id="pruefstand">
+				<div class="st-tafel__kopf">
+					<h3 class="st-h3">Gebaut. Gemessen. Abgenommen.</h3>
+					<p class="st-vorspann">Für euer Entwicklungsteam: der Code dieser Website, die Prüfungen vor dem Livegang und die Ladezeit zum Nachmessen.</p>
+				</div>
+				<ol class="st-pruefungen">
+					<li>
+						<p class="st-pruefungen__label">Quellcode</p>
+						<p class="st-pruefungen__text">Im öffentlichen Repository seht ihr, wie ich das Theme entwickle und welche Änderungen in jede Version eingeflossen sind.</p>
+						<a class="st-link" href="<?php echo esc_url( $github_url . '/commits/main/' ); ?>" target="_blank" rel="noopener" data-track-action="whitelabel_proof_repo" data-track-category="proof" data-track-section="pruefstand">Code und Änderungen auf GitHub&nbsp;<span aria-hidden="true">↗</span><span class="nur-vorlesen"> (öffnet in neuem Tab)</span></a>
+					</li>
+					<li>
+						<p class="st-pruefungen__label">Prüfungen</p>
+						<p class="st-pruefungen__text">Vor jedem Livegang prüft die CI unter anderem PHP-Syntax, statische Analyse, strukturierte Daten und eine Sperrliste veralteter Preise und Zusagen. Schlägt eine Prüfung fehl, geht nichts live.</p>
+						<a class="st-link" href="<?php echo esc_url( $github_url . '/actions' ); ?>" target="_blank" rel="noopener" data-track-action="whitelabel_proof_ci" data-track-category="proof" data-track-section="pruefstand">Prüfläufe auf GitHub&nbsp;<span aria-hidden="true">↗</span><span class="nur-vorlesen"> (öffnet in neuem Tab)</span></a>
+					</li>
+					<li>
+						<p class="st-pruefungen__label">Ladezeit</p>
+						<p class="st-pruefungen__text">Öffnet den Bericht in PageSpeed Insights für eine unabhängige Messung dieser Seite.</p>
+						<p class="wl-lcp" data-wl-lcp-proof hidden>Dieser Besuch: <span data-wl-lcp-proof-label>LCP</span> <span data-wl-lcp-kopie></span>.</p>
+						<a class="st-link" href="<?php echo esc_url( $psi_url ); ?>" target="_blank" rel="noopener" data-track-action="whitelabel_proof_pagespeed" data-track-category="proof" data-track-section="pruefstand">PageSpeed jetzt messen&nbsp;<span aria-hidden="true">↗</span><span class="nur-vorlesen"> (öffnet in neuem Tab)</span></a>
+					</li>
+				</ol>
 			</div>
 		</div>
 	</section>
@@ -398,9 +395,9 @@ $marke = static function ( $nr, $name ) {
 	<section class="st-abschnitt wl-ablauf-abschnitt" id="zusammenarbeit" aria-labelledby="zusammenarbeit-h" data-st-abschnitt="04" data-track-section="process">
 		<?php echo $marke( '04', 'Ablauf' ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?>
 		<div class="st-inhalt st-zweispaltig">
-			<div><h2 class="st-h2" id="zusammenarbeit-h">Euer Kunde merkt den Unterschied. <span class="st-leiser">Wer ihn macht, bleibt eure Sache.</span></h2>
-				<p class="st-vorspann">Ich arbeite in euren Accounts, im Hintergrund oder mit am Tisch beim Kunden. Vertrag und Rechnung laufen über eure Agentur.</p>
-				<div class="st-einwand"><p><strong>Und wenn euer Kunde direkt bei mir anfragt?</strong> Dann verweise ich ihn an euch, während der Zusammenarbeit und <?php echo esc_html( hu_whitelabel_delivery_promise( 'customer_protection' ) ); ?> danach. In eurem Kundenstamm mache ich keine Akquise.</p></div>
+			<div><h2 class="st-h2" id="zusammenarbeit-h">So arbeiten wir <span class="st-leiser">unter eurem Namen.</span></h2>
+				<p class="st-vorspann">Ihr führt das Kundenprojekt und rechnet mit eurem Kunden ab. Ich arbeite in euren Accounts und komme auf euren Wunsch zu technischen Gesprächen dazu.</p>
+				<div class="st-einwand"><p><strong>Kundenschutz.</strong> Direkte Anfragen eures Kunden verweise ich an euch, während der Zusammenarbeit und <?php echo esc_html( hu_whitelabel_delivery_promise( 'customer_protection' ) ); ?> danach. In eurem Kundenstamm mache ich keine Akquise.</p></div>
 			</div>
 			<ol class="wl-ablauf">
 				<?php foreach ( $process as $i => $step ) : ?>
@@ -413,20 +410,19 @@ $marke = static function ( $nr, $name ) {
 	<section class="st-abschnitt st-leistungen st-wash wl-preise" id="einstieg" aria-labelledby="einstieg-h" data-st-abschnitt="05" data-track-section="entry">
 		<?php echo $marke( '05', 'Preise' ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?>
 		<div class="st-inhalt">
-			<h2 class="st-h2" id="einstieg-h">Ihr fangt klein an, <span class="st-leiser">mit einer Aufgabe zum Festpreis.</span></h2>
-			<p class="st-vorspann">Alle Preise netto. Projekte laufen zum Festpreis, deshalb kennt ihr eure Marge, bevor ihr eurem Kunden ein Angebot schickt.</p>
+			<h2 class="st-h2" id="einstieg-h">Agenturpreise <span class="st-leiser">für euer Kundenangebot.</span></h2>
+			<p class="st-vorspann">Eine abgegrenzte WordPress-Aufgabe könnt ihr im Test-Sprint vergeben. Für größere Vorhaben dienen die Ab-Preise zur ersten Kalkulation. Den Festpreis für euren Umfang bekommt ihr vor der Beauftragung. Alle Beträge sind netto.</p>
 			<div class="st-angebote">
 				<?php foreach ( $entry_projects as $i => $project ) : ?>
 					<article class="st-angebot" id="<?php echo esc_attr( $project['id'] ); ?>" aria-labelledby="<?php echo esc_attr( $project['id'] . '-h' ); ?>">
 						<span class="st-angebot__nr" aria-hidden="true"><?php echo esc_html( sprintf( '%02d', $i + 1 ) ); ?></span>
 						<div><h3 class="st-angebot__titel" id="<?php echo esc_attr( $project['id'] . '-h' ); ?>"><?php echo esc_html( $project['name'] ); ?></h3><p class="st-angebot__lage"><?php echo esc_html( $project['lage'] ); ?></p></div>
 						<div class="st-angebot__text"><p><?php echo esc_html( $project['text'] ); ?></p><?php if ( ! empty( $project['more'] ) ) : ?><p class="st-angebot__mehr"><?php echo esc_html( $project['more'] ); ?></p><?php endif; ?></div>
-						<div class="st-angebot__preise"><p class="st-angebot__preis"><?php echo esc_html( $fest( hu_whitelabel_price( $project['key'], 'test_sprint' === $project['key'] ? 'display_fixed' : 'display' ) ) ); ?></p><p class="st-angebot__wege"><a class="st-link st-link--stark" href="<?php echo esc_url( $wl_form_task_url ); ?>" data-wl-form-link data-track-action="<?php echo esc_attr( $project['track'] ); ?>" data-track-category="lead_gen" data-track-section="entry">Aufgabe beschreiben <span aria-hidden="true">→</span><span class="nur-vorlesen"> für <?php echo esc_html( $project['name'] ); ?></span></a></p></div>
+						<div class="st-angebot__preise"><p class="st-angebot__preis"><?php echo esc_html( $fest( hu_whitelabel_price( $project['key'], 'test_sprint' === $project['key'] ? 'display_fixed' : 'display' ) ) ); ?></p><p class="st-angebot__wege"><a class="st-link st-link--stark" href="<?php echo esc_url( $wl_form_task_url ); ?>" data-wl-form-link data-track-action="<?php echo esc_attr( $project['track'] ); ?>" data-track-category="lead_gen" data-track-section="entry"><?php echo esc_html( $project['name'] ); ?> anfragen <span aria-hidden="true">→</span></a></p></div>
 					</article>
 				<?php endforeach; ?>
 			</div>
-			<div class="st-weiter" id="kontingent"><span class="st-klein-label">05</span><p><strong>Monatskontingent nach dem ersten Projekt.</strong> <?php echo esc_html( $retainer_price ); ?>, nur nach einem erfolgreichen Erstprojekt. Prioritäten und Kündigung legen wir vorher schriftlich fest, ohne Verlängerungsfalle.</p><a class="st-link" href="#absicherung" data-track-action="whitelabel_offer_retainer_more" data-track-category="navigation" data-track-section="entry">Wie ihr wieder rauskommt <span aria-hidden="true">↓</span></a></div>
-			<p class="st-preisnotiz">Bei Erstprojekten nenne ich den Festpreis, sobald der Umfang geklärt ist.</p>
+			<div class="st-weiter" id="kontingent"><span class="st-klein-label">05</span><p><strong>Monatskontingent nach einem erfolgreichen Erstprojekt.</strong> <?php echo esc_html( $retainer_price ); ?> für vereinbarte Aufgaben. Prioritäten und Kündigungsfrist klären wir vor dem Start.</p><a class="st-link" href="#absicherung" data-track-action="whitelabel_offer_retainer_more" data-track-category="navigation" data-track-section="entry">Übergabe und Kündigung <span aria-hidden="true">↓</span></a></div>
 			<?php foreach ( $margin_rows as $row ) : ?>
 				<figure class="st-messtafel messtafel tafel wl-marge" id="marge" aria-labelledby="marge-h" data-wl-marge>
 					<div class="st-messtafel__kopf"><h3 class="st-klein-label" id="marge-h">Messwerte · Endkundenpreis gegen Agenturpreis</h3><span class="st-klein-label">maßstäblich</span></div>
@@ -441,7 +437,7 @@ $marke = static function ( $nr, $name ) {
 			<?php if ( $calc_first ) : ?>
 				<div class="wl-rechner" id="rechner" role="group" aria-labelledby="rechner-h" data-wl-rechner hidden>
 					<div class="wl-rechner__kopf">
-						<h3 class="st-h3" id="rechner-h">Rechnet es mit eurem eigenen Preis nach.</h3>
+						<h3 class="st-h3" id="rechner-h">Wie viel bleibt für eure eigene Arbeit?</h3>
 						<p>Wählt die Leistung und zieht den Regler auf den Betrag, den ihr eurem Kunden berechnet.</p>
 					</div>
 					<fieldset class="wl-rechner__wahl">
@@ -459,10 +455,10 @@ $marke = static function ( $nr, $name ) {
 					<div class="wl-rechner__balken" aria-hidden="true"><i data-wl-rechner-balken></i></div>
 					<dl class="wl-rechner__ergebnis" aria-live="polite">
 						<div><dt>Mein Agenturpreis, ab</dt><dd data-wl-rechner-agentur><?php echo esc_html( $fest( hu_format_eur( $calc_first['agency'] ) ) ); ?></dd></div>
-						<div class="wl-rechner__marge"><dt>Bleibt bei euch</dt><dd data-wl-rechner-marge><?php echo esc_html( $fest( hu_format_eur( $calc_first['start'] - $calc_first['agency'] ) ) ); ?></dd></div>
+						<div class="wl-rechner__marge"><dt>Differenz vor eigenen Kosten</dt><dd data-wl-rechner-marge><?php echo esc_html( $fest( hu_format_eur( $calc_first['start'] - $calc_first['agency'] ) ) ); ?></dd></div>
 						<div><dt>Anteil an eurem Preis</dt><dd data-wl-rechner-anteil><?php echo esc_html( $fest( (string) (int) round( ( $calc_first['start'] - $calc_first['agency'] ) / $calc_first['start'] * 100 ) . ' %' ) ); ?></dd></div>
 					</dl>
-					<p class="wl-rechner__notiz">Gerechnet mit dem Ab-Preis; den festen Betrag nenne ich, sobald der Umfang geklärt ist. Eure Projektleitung ist nicht eingerechnet. Die Rechnung läuft in eurem Browser, nichts wird gesendet.</p>
+					<p class="wl-rechner__notiz">Die Rechnung nutzt den jeweiligen Ab-Preis. Aus der Differenz deckt ihr unter anderem eure Projektleitung und weiteren eigenen Aufwand. Euer Verkaufspreis bleibt in eurem Browser.</p>
 				</div>
 			<?php endif; ?>
 			<div class="st-folge"><p>Noch in der Angebotsphase? Ich sage euch, ob es machbar ist und was es kostet, bevor ihr zusagt. Kostenlos.</p><a class="tun" href="<?php echo esc_url( $wl_form_offer_url ); ?>" data-wl-form-link data-track-action="cta_whitelabel_offers_assessment" data-track-category="lead_gen" data-track-section="entry">Vorhaben einschätzen lassen <span class="pf" aria-hidden="true">→</span></a></div>
@@ -473,18 +469,18 @@ $marke = static function ( $nr, $name ) {
 		<?php echo $marke( '06', 'Absicherung' ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?>
 		<div class="st-inhalt">
 			<div class="st-zweispaltig">
-				<div><h2 class="st-h2" id="absicherung-h">Eure Lieferung hängt nicht an mir. <span class="st-leiser">Das ist Absicht.</span></h2><p class="st-vorspann">Code und Setups liegen in euren Accounts, jeder Schritt ist dokumentiert, und der Stand auf Staging ist nachvollziehbar. Ein anderer Entwickler kann dort weitermachen, wo ich aufgehört habe.</p><div class="st-einwand"><p><strong>Und wenn du als Einzelner ausfällst?</strong> Dann sage ich es euch am selben Tag, nicht am Abgabetag.</p></div></div>
+				<div><h2 class="st-h2" id="absicherung-h">Euer Team kann <span class="st-leiser">selbst weiterarbeiten.</span></h2><p class="st-vorspann">Auch wenn ein anderer Entwickler übernimmt, findet er den aktuellen Stand, die Zugänge und die offenen Aufgaben bei euch.</p></div>
 				<ol class="wl-ablauf"><?php foreach ( $safeguards as $i => $step ) : ?><li class="wl-ablauf__station"><span class="wl-ablauf__nr"><?php echo esc_html( sprintf( '%02d', $i + 1 ) ); ?></span><p class="wl-ablauf__name"><?php echo esc_html( $step[0] ); ?></p><p class="wl-ablauf__text"><?php echo esc_html( $step[1] ); ?></p></li><?php endforeach; ?></ol>
 			</div>
 			<p><a class="st-link" href="<?php echo esc_url( home_url( '/wordpress-projekte-auslagern/' ) ); ?>" data-track-action="whitelabel_abnahme_leitfaden" data-track-category="navigation" data-track-section="absicherung">So prüft ihr auf Staging, ob ein WordPress-Projekt bereit für die Abnahme ist.</a></p>
-			<div class="st-eignung" id="eignung"><div><h3 class="st-h3">Wann ein anderer Partner besser passt.</h3><p>Lieber sage ich das hier als nach dem ersten Briefing.</p></div><ul><li><strong>Ihr wollt Stunden einkaufen, ohne dass der Umfang feststeht.</strong> Hier laufen Aufgaben zum Festpreis und Kontingente für definierte Aufgaben.</li><li><strong>Ihr sucht jemanden für die Website eures eigenen Unternehmens.</strong> Dafür gibt es einen eigenen Weg mit Endkundenpreisen. <br><a class="st-link" href="<?php echo esc_url( $wl_home_url ); ?>" data-track-action="nav_whitelabel_door_home" data-track-category="navigation" data-track-section="absicherung">Für Unternehmen <span aria-hidden="true">→</span></a></li></ul></div>
+			<p id="eignung">Ihr sucht Unterstützung für eure eigene Unternehmenswebsite? <a class="st-link" href="<?php echo esc_url( $wl_home_url ); ?>" data-track-action="nav_whitelabel_door_home" data-track-category="navigation" data-track-section="absicherung">Zum Angebot für Unternehmen <span aria-hidden="true">→</span></a></p>
 		</div>
 	</section>
 
 	<section class="st-abschnitt st-fragen st-wash" id="faq" aria-labelledby="faq-h" data-st-abschnitt="07" data-track-section="faq">
 		<?php echo $marke( '07', 'Fragen' ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- escaped inside the helper. ?>
 		<div class="st-inhalt st-zweispaltig">
-			<h2 class="st-h2" id="faq-h">Was Agenturen sonst noch vor dem ersten Briefing fragen.</h2>
+			<h2 class="st-h2" id="faq-h">Fragen zur White-Label-Zusammenarbeit.</h2>
 			<div class="fragen">
 				<?php // Dieselbe Quelle wie das FAQPage-Schema in inc/org-schema.php. ?>
 				<?php foreach ( $faq_items as $item ) : ?>
@@ -499,8 +495,8 @@ $marke = static function ( $nr, $name ) {
 		<div class="st-inhalt"><p class="st-ende"><span>Ende der Strecke</span><span class="st-ende__zeit" data-st-ende-zeit hidden></span></p></div>
 		<div class="st-inhalt wl-anfrage__raster">
 			<div class="wl-anfrage__text">
-				<h2 class="st-h2 st-anfrage__h2" id="anfrage-h">Ich lese eure Aufgabe selbst und antworte <?php echo esc_html( $response_short ); ?>.</h2>
-				<p class="st-vorspann">Ein paar Sätze reichen: was entstehen soll, was schon da ist und bis wann ihr es braucht. Ihr bekommt Rückfragen oder eine Einschätzung mit Aufwand und Preis.</p>
+				<h2 class="st-h2 st-anfrage__h2" id="anfrage-h">Was steht bei euch an?</h2>
+				<p class="st-vorspann">Nennt mir euer Ziel, den aktuellen Stand und euren Wunschtermin. Ich antworte persönlich <?php echo esc_html( $response_short ); ?> mit einer Einschätzung oder konkreten Rückfragen.</p>
 				<ul class="wl-wege">
 					<li>
 						<p>Ihr steckt noch in der Angebotsphase? Dann sage ich euch, ob es machbar ist und was es kostet, bevor ihr eurem Kunden zusagt.</p>
@@ -515,7 +511,7 @@ $marke = static function ( $nr, $name ) {
 						<a class="st-link st-link--stark" href="<?php echo esc_url( $whitelabel_fit_url ); ?>" data-track-action="cta_whitelabel_form_call" data-track-category="lead_gen" data-track-section="naechster_schritt"><?php echo esc_html( hu_whitelabel_delivery_promise( 'call' ) ); ?> buchen&nbsp;<span aria-hidden="true">↗</span></a>
 					</li>
 				</ul>
-				<ol class="st-danach wl-danach" aria-label="Was nach dem Absenden passiert"><li><span class="st-klein-label">01 · Heute</span>Ihr schickt die Aufgabe ab. Pflicht sind nur Text und E-Mail.</li><li><span class="st-klein-label">02 · Antwort <?php echo esc_html( $response_short ); ?></span>Ich lese sie selbst und antworte mit Rückfragen oder Aufwand und Festpreis.</li><li><span class="st-klein-label">03 · Danach</span>Ihr entscheidet, ob ihr zusagt. Ohne Verpflichtung.</li></ol>
+
 			</div>
 
 			<div class="wl-request" id="aufgabe">
@@ -540,12 +536,12 @@ $marke = static function ( $nr, $name ) {
 					<div class="wl-request__feedback" data-wl-feedback aria-live="polite" role="status" tabindex="-1"></div>
 				</form>
 				<noscript><p class="wl-request__ohne-js">Ohne JavaScript sendet das Formular nicht. Schickt eure Aufgabe dann an <a href="<?php echo esc_url( 'mailto:' . $contact_email ); ?>"><?php echo esc_html( $contact_email ); ?></a>.</p></noscript>
-				<p class="wl-request__fallback">Auch per E-Mail: <a href="<?php echo esc_url( 'mailto:' . $contact_email ); ?>"><?php echo esc_html( $contact_email ); ?></a></p>
+				<p class="wl-request__fallback">Ihr habt meine E-Mail schon? Antwortet mir direkt darauf oder schreibt an <a href="<?php echo esc_url( 'mailto:' . $contact_email ); ?>"><?php echo esc_html( $contact_email ); ?></a></p>
 			</div>
 		</div>
 	</section>
 
-	<div class="wl-sticky-cta" id="wl-sticky-cta" aria-hidden="true"><a href="<?php echo esc_url( $wl_form_task_url ); ?>" class="tun" data-wl-form-link data-track-action="cta_sticky_whitelabel_task_brief" data-track-category="lead_gen" data-track-section="sticky_mobile" tabindex="-1">Aufgabe beschreiben <span class="pf" aria-hidden="true">→</span></a></div>
+	<div class="wl-sticky-cta" id="wl-sticky-cta" aria-hidden="true"><a href="<?php echo esc_url( $wl_form_task_url ); ?>" class="tun" data-wl-form-link data-track-action="cta_sticky_whitelabel_task_brief" data-track-category="lead_gen" data-track-section="sticky_mobile" tabindex="-1">Projekt einschätzen lassen <span class="pf" aria-hidden="true">→</span></a></div>
 </div>
 
 <?php

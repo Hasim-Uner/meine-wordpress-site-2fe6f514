@@ -55,7 +55,7 @@ Sperrliste aufgenommen — nicht andersherum.
 Die Website hat drei Geschäftspfade. Die Startseite gehört den direkten WordPress-Projekten. Die Hauptnavigation führt Leistungen, Für Agenturen, Referenzen und Über mich; daneben steht der kontextabhängige Anfragebutton. Solar/Wärmepumpe bleibt als Spezialisierung im ruhigeren Fußverzeichnis und als Nebenweg auf der Startseite erreichbar. Tracking bleibt Teil der Leistungen mit eigenem fachlichem Einstieg. Ihre eigenen Seiten und Anfragewege bleiben unverändert:
 
 1. **Direkte Unternehmen / WordPress-Projekte** → `/` bzw. generische Projektanfrage
-2. **Agenturen** → `/whitelabel-retainer/` bzw. Aufgabe beschreiben / Erstprojekt
+2. **Agenturen** → `/whitelabel-retainer/` bzw. Projekt einschätzen lassen / Erstprojekt
 3. **Solar / Wärmepumpe / Speicher** → `/solar-waermepumpen-leadgenerierung/` bzw. Marktcheck
 
 Die Startseite ist zugleich Marke und direkte Freelancer-Money-Page. Sie übernimmt die frühere Freelancer-Seite vollständig; deren URL leitet dauerhaft auf `/` weiter. White-Label und Solar/Wärmepumpe behalten ihre eigenen Anfragewege. Entscheidung: `docs/decisions/homepage-freelancer-konsolidierung.md`.
@@ -80,12 +80,13 @@ Die Startseite ist zugleich Marke und direkte Freelancer-Money-Page. Sie überni
 - `/whitelabel-retainer/` = eigener Agentur-Einstieg
 - Zielgruppe: Performance-, Web-, SEO- und Full-Service-Agenturen mit Umsetzungsbedarf
 - Lieferfelder: WordPress (Landingpages, Ladezeit, technische SEO), Tracking, Anfragestrecken bis ins CRM, Barrierefreiheit (WCAG 2.1 AA); jede Leistung beginnt mit dem Anlass aus Sicht der Agentur
-- Einstieg in die Lieferfelder (seit 2026-11-14): Kunden holen Kreation ins Haus, die Technik dahinter bleibt Agenturleistung. Beleg ist das GWA KI-Whitepaper 2026 (80 % der befragten Marketingentscheider planen mehr Inhouse-Umsetzung), immer mit Quelle und Link; keine weiteren Marktzahlen ohne Quelle. Das Schichtmodell daneben ist Dekoration zu den vier Feldern, kein fünftes Angebot
-- Primärer nächster Schritt: Aufgabe beschreiben (Formular der Route) oder Erstprojekt mit klarem Scope; Zweitweg im Hero ist die Einschätzung vor der Zusage (`?case=angebotsphase`); Vormerken (`?case=vormerken`) und der 30-Minuten-Termin stehen nur neben dem Formular
-- Unterschied im ersten Bildschirm: WordPress-Seite und Messung aus einer Person, Festpreis und Termin stehen vor der Zusage der Agentur an ihren Kunden (H1: „Ich baue die WordPress-Seite und die Messung dazu. Festpreis und Termin stehen, bevor ihr zusagt.“). Unsichtbarkeit ist kein Versprechen der H1: Ob die Agentur mich im Hintergrund hält oder mit an den Tisch nimmt, entscheidet sie; das steht im Ablauf
-- Keine erfundenen Agentur-Referenzen; keine Akquise im Kundenstamm der Partner
-- Auf der Seite nie: Firmenname oder Kennzahlen des PV-Falls, Zitate, Logos, Projektzahlen, Verfügbarkeitsangaben, Stundensatz (Sperrliste `wl-*`)
-- Margenblock nur für Leistungen mit veröffentlichtem Endkundenpreis für dieselbe Leistung im Kanon (heute das Server-Side-Setup)
+- Die Lieferfelder folgen einem Kundenprojekt vom WordPress-Entwurf bis zur Testanfrage im CRM. Das Schichtmodell veranschaulicht die vier einzeln beauftragbaren Leistungen.
+- Kopf, Hero und mobiler Sticky-CTA führen mit „Projekt einschätzen lassen“ zum Formular der Route (`?case=aufgabe`). Der Preislink springt zum Angebot. Die explizite Angebotsphase (`?case=angebotsphase`) ist nach den Preisen und neben dem Formular erreichbar.
+- Der erste Bildschirm nennt Agenturen, White-Label-WordPress-Entwicklung, Tracking und die Kalkulation vor der Zusage. Das Live-Protokoll demonstriert die Prüfweise an dieser Seite.
+- E3 steht als öffentliches Projekt mit dem eigenen Beitrag vor den technischen Belegen. Keine Kennzahlen oder Verknüpfung mit der anonymen Fallstudie. White-Label-Referenzen nur mit Freigabe der Agentur.
+- Zitate, Logos, Projektzahlen, pauschale Verfügbarkeitsangaben und Stundensätze bleiben durch die bisherigen Regeln zur Agentur-Copy begrenzt (Sperrliste `wl-*`).
+- Kundenschutz, vertrauliche Zusammenarbeit und Übergabe konkret beschreiben. Die Agentur entscheidet über den Kontakt zu ihren Kunden.
+- Der Festpreis gilt für den vereinbarten Umfang. Der Rechner zeigt den Abstand zwischen Agenturpreis und Verkaufspreis vor Eigenkosten. Der öffentliche Endkundenpreis dient nur bei gleichem Umfang als Vergleich (derzeit Server-Side-Setup).
 
 ### Solar / Wärmepumpe / Speicher
 
@@ -112,7 +113,7 @@ Die Startseite ist zugleich Marke und direkte Freelancer-Money-Page. Sie überni
 **Suchintention, Seitenrolle und Conversion-Ziel sind getrennte Entscheidungen.** Eine Seite darf ihre Query besitzen und trotzdem auf einen anderen nächsten Schritt führen.
 
 - Energie-/Portal-/PV-/Wärmepumpen-Intent → Marktcheck
-- Agentur-/White-Label-/Partner-Intent → White-Label-Formular „Aufgabe beschreiben“
+- Agentur-/White-Label-/Partner-Intent → White-Label-Formular „Projekt einschätzen lassen“
 - Direkter WordPress-, Tracking-, CRO-, technischer SEO- oder Landingpage-Intent → Projektanfrage; eine Fachseite bleibt dabei selbst Query-Owner
 - Startseite → direkte Projektanfrage; sichtbare Brücken für Agenturen und Solar/Wärmepumpe
 - Eine rankende Fachseite **nicht** auf eine andere Money Page umleiten, nur weil deren CTA besser passt

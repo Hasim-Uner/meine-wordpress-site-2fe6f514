@@ -165,7 +165,7 @@ Contract und Abnahme: `CHAT_ASSISTANT.md`.
   `/kontakt/?type=project&focus=sofortkontakt`.
   `/whitelabel-retainer/` hat eine eigene Seitennavigation aus derselben
   `.leiste` (`template-parts/whitelabel-header.php`), ohne Klappblatt, mit der
-  Tür „Test-Sprint anfragen“ aus `hu_funnel_doors()` (Action
+  Tür „Projekt einschätzen lassen“ ohne Betrag (Action
   `cta_whitelabel_header_task_brief` bleibt, `data-door="aufgabe"`).
   Auf der Startseite (über `startseite-strecke.css/.js`) ist „Leistungen“ nur
   aktiv, solange `#angebote` im Blick ist (`aria-current="location"`), ohne
@@ -481,22 +481,20 @@ Projektabschluss und ruhiger Agentur-Zweitweg, zentrale Metadaten und
   Button „Drei Befunde anfordern“, ohne Name; `request_type=ersteinschaetzung`
   bleibt das Unterscheidungsmerkmal im Backend.
 - **`/whitelabel-retainer/`** (`page-whitelabel-retainer.php`): Agentur-Einstieg
-  und Landeseite der Akquise-Mails. Finale Fassung im Repo vom 2026-10-02,
-  Live-Abnahme nach dem Deploy. Basis bleibt `startseite-strecke.css/.js`,
+  und Landeseite der Akquise-Mails. Basis bleibt `startseite-strecke.css/.js`,
   `whitelabel.css/.js` ergänzt nur die lokalen Komponenten. Acht Stationen:
   Auftrag (`#hero`), Felder (`#lieferfelder`), Belege (`#proof`, `#pruefstand`,
   `#referenzen`), Ablauf (`#zusammenarbeit`), Preise (`#einstieg`), Absicherung
   (`#absicherung`, `#eignung`), Fragen (`#faq`), Anfrage (`#naechster-schritt`,
   Formular `#aufgabe`). Seitennavigation: Leistungen/Belege/Ablauf/Preise/Fragen;
-  Aufbau und Tür des Kopfes bleiben, Kopf und Hero bilden eine dunkle Fläche.
-  H1 „Gebaut. Gemessen. Abgenommen.“; ein Hauptbutton von Anfang an bedienbar,
-  Preise als Link. Der Hero prüft lokal sieben echte Befunde (Überschriften,
-  Bilder, Pflichtfelder, neue Tabs, LCP mit ausdrücklich benanntem Dokument-
-  Fallback, lesbare Cookies, JSON-LD). Messmarken in der Randspalte ab 768 px,
-  Protokoll daneben ab 1280 px. Stempel und Füllung zeigen die echte Punktzahl;
-  ein Cookie bei eingeloggten Admins bleibt ein Befund. Ohne JS stehen alle
-  Wörter, es läuft keine Prüfung. Reduzierte Bewegung zeigt Ergebnisse ohne
-  Staffelung. Keine Kopplung mehr zwischen Protokoll und Ablaufstationen.
+  Kopf und Hero bilden eine dunkle Fläche. „Projekt einschätzen lassen“ führt
+  zum Aufgabenbriefing, der sekundäre Link zu den Agenturpreisen.
+  Das kompakte Live-Protokoll im Hero zeigt den aktuellen Prüflauf. Die
+  Einzelbefunde sind aufklappbar. Gemessen werden Überschriften, Bilder,
+  Pflichtfelder, neue Tabs, LCP mit Dokument-Fallback, lesbare Cookies und
+  JSON-LD. Jeder Wert stammt aus dem aktuellen Browser. Ohne JavaScript
+  bleibt die Erläuterung sichtbar. E3 und die öffentlichen Projektbeispiele
+  stehen vor den Links zu Code, Prüfläufen und PageSpeed.
   Die vier Felder sind native exklusive Akkordeons. Belege sind hell; dunkel
   sind nur Hero-Prüfstand und Margen-Tafel (`#marge`). Vier Preiszeilen mit
   eigenen Anfrage-CTAs; Monatskontingent danach. `hu_whitelabel_margin_rows()`
@@ -504,7 +502,7 @@ Projektabschluss und ruhiger Agentur-Zweitweg, zentrale Metadaten und
   Server-Side-Setup mit gleichem Umfang. Die Landingpage bleibt wegen des
   abweichenden Endkundenumfangs außerhalb des Vergleichs. Fehler/Änderung
   steht im Ablauf, Ausstieg in der Absicherung; die fünf übrigen FAQ-Antworten
-  einschließlich `kapazitaet` bleiben unverändert.
+  einschließlich `kapazitaet` stammen aus dem gemeinsamen FAQ-Kanon.
   Formular-Markup und Formular-JS bleiben unverändert: REST
   `nexus/v1/whitelabel-request`, Honeypot, Fehlerliste, Zugänge, Mail-Fallback,
   `?case=aufgabe`, `angebotsphase`, `vormerken`. Mobiler Sticky-CTA nach dem

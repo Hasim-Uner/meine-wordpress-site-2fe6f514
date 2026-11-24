@@ -38,3 +38,11 @@ gegen Test-Doubles. Sie ersetzen diese Live-Abnahme nicht.
 Abschnitt 05 den Margen-Rechner. Hero, Reihenfolge der Stationen, CTA-Hooks
 und Formularvertrag sind unverändert. Fällt der Deploy dieser Änderung noch in
 das Sechs-Wochen-Fenster, endet die Auswertung am Vortag des Deploys.
+
+Mit der Überarbeitung vom 2026-11-24 heißt der Hauptweg in Kopf, Hero und
+Sticky-Leiste „Projekt einschätzen lassen“. Er setzt weiterhin `case=aufgabe`.
+Auch Briefings von Agenturen in der Angebotsphase können deshalb unter
+`aufgabe` eingehen. Für die Auswertung den Briefinginhalt hinzuziehen und
+qualifizierte Anfragen sowie daraus entstandene Angebote nach Zugangsquelle
+ausweisen, soweit diese bekannt ist. Die Textänderung ab ihrem Produktiv-Deploy
+als eigenen Zeitraum führen.
