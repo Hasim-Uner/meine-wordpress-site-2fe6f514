@@ -91,13 +91,13 @@ test('whitelabel: layer model mirrors the open field and the calculator uses can
   await open(page);
   await finished(page);
   const active = () => page.locator('[data-wl-platte].is-aktiv').evaluateAll(els => els.map(el => el.dataset.wlPlatte));
-  expect(await active()).toEqual(['0']);
+  await expect.poll(active).toEqual(['0']);
   await page.locator('#lieferfelder summary').nth(2).click();
-  expect(await active()).toEqual(['2']);
+  await expect.poll(active).toEqual(['2']);
   await page.locator('[data-wl-platte="1"]').dispatchEvent('click');
   await expect(page.locator('#lieferfelder details[open]')).toHaveCount(1);
   await expect(page.locator('#lieferfelder details').nth(1)).toHaveAttribute('open', '');
-  expect(await active()).toEqual(['1']);
+  await expect.poll(active).toEqual(['1']);
   await expect(page.locator('[data-wl-stack]')).toHaveAttribute('aria-hidden', 'true');
 
   const calc = page.locator('[data-wl-rechner]');
