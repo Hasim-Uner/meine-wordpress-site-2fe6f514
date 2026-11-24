@@ -539,7 +539,7 @@ test('solar focus: Marktcheck stays on the page ladder and outside global footer
   await expect(register(page).locator('[data-door="marktcheck"]')).toHaveCount(0);
 });
 
-// White-Label landing page: its own header (page anchors) with the Test-Sprint door.
+// White-Label landing page: its own header (page anchors) with the project assessment action.
 const wlDoor = page => page.locator('.wl-site-header .rechts > .tuer');
 
 for (const width of [1081, 1280, 1440]) {
@@ -547,7 +547,7 @@ for (const width of [1081, 1280, 1440]) {
     await open(page, 'whitelabel:own', { width, height: 800 });
     await expect(page.getByRole('navigation', { name: 'Navigation auf dieser Seite' }).getByRole('link')).toHaveText(['Leistungen', 'Belege', 'Preise', 'Ablauf', 'Fragen']);
     await expect(wlDoor(page)).toBeVisible();
-    await expect(wlDoor(page)).toHaveAccessibleName(/^Test-Sprint anfragen \d[\d.]* €$/);
+    await expect(wlDoor(page)).toHaveAccessibleName('Projekt einschätzen lassen');
     await expect(wlDoor(page)).toHaveAttribute('data-track-action', 'cta_whitelabel_header_task_brief');
     const tops = await page.locator('.wl-site-header .rechts > nav a, .wl-site-header .rechts > .tuer').evaluateAll(els => els.map(el => Math.round(el.getBoundingClientRect().top + el.getBoundingClientRect().height / 2)));
     expect(Math.max(...tops) - Math.min(...tops)).toBeLessThanOrEqual(8);

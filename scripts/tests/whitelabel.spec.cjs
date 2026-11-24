@@ -28,9 +28,9 @@ for (const width of [768, 1440]) {
   test(`whitelabel ${width}: the measurement layers do not move hero content`, async ({ page }) => {
     await open(page, width);
     const boxes = () => page.locator('#hero').evaluate(hero => {
-      const strip = hero.querySelector('.st-belege').getBoundingClientRect();
+      const demo = hero.querySelector('[data-wl-protokoll]').getBoundingClientRect();
       const button = hero.querySelector('.tun').getBoundingClientRect();
-      return [hero.getBoundingClientRect().height, strip.top, button.top, button.height];
+      return [hero.getBoundingClientRect().height, demo.top, button.top, button.height];
     });
     const before = await boxes();
     await finished(page);
@@ -56,22 +56,40 @@ for (const width of [360, 768, 1024, 1100, 1440]) {
       const r = el.getBoundingClientRect();
       return r.width > 0 && r.right > innerWidth + 1 && getComputedStyle(el).position !== 'absolute';
     }).map(el => el.className))).toEqual([]);
-    const geometry = await page.locator('#hero').evaluate(hero => {
-      const word = hero.querySelector('[data-wl-wort-abnahme]').getBoundingClientRect();
-      const stamp = hero.querySelector('[data-wl-stempel]').getBoundingClientRect();
-      const content = hero.querySelector('[data-wl-messfeld]').getBoundingClientRect();
-      const rail = hero.querySelector('.st-rail__punkt').getBoundingClientRect();
-      const elements = Array.from(hero.querySelectorAll('[data-wl-mess]'));
-      const marks = Array.from(hero.querySelectorAll('.wl-messmarke')).map((el, i) => {
-        const r = el.getBoundingClientRect(), target = elements[i].getBoundingClientRect();
-        return r.left > rail.right && r.right <= content.left && Math.abs(r.top - target.top) < 3;
+    const hero = page.locator('#hero');
+    const demo = hero.locator('[data-wl-protokoll]');
+    const details = demo.locator('[data-wl-details]');
+    const measure = demo.locator('[data-wl-mass-toggle]');
+    await expect(hero.getByRole('heading', { level: 1 })).toContainText('WordPress');
+    await expect(hero.getByRole('link', { name: 'Projekt einschätzen lassen' })).toBeVisible();
+    await expect(demo.locator('[data-wl-lcp-kopie]')).toBeVisible();
+    await expect(demo.locator('[data-wl-pruefung]').first()).toBeHidden();
+    await expect(hero.locator('.wl-messmarke:visible')).toHaveCount(0);
+    await details.locator('summary').focus();
+    await page.keyboard.press('Enter');
+    await expect(details).toHaveAttribute('open', '');
+    await expect(demo.locator('[data-wl-pruefung]:visible')).toHaveCount(7);
+    if (width >= 768) {
+      await measure.click();
+      await expect(measure).toHaveAttribute('aria-pressed', 'true');
+      await expect(hero.locator('.wl-messmarke:visible')).toHaveCount(4);
+      const marksAlign = () => hero.evaluate(el => {
+        const content = el.querySelector('[data-wl-messfeld]').getBoundingClientRect();
+        const rail = el.querySelector('.st-rail__punkt').getBoundingClientRect();
+        const targets = el.querySelectorAll('[data-wl-mess]');
+        return Array.from(el.querySelectorAll('.wl-messmarke')).every((mark, i) => {
+          const r = mark.getBoundingClientRect();
+          return r.left > rail.right && r.right <= content.left && Math.abs(r.top - targets[i].getBoundingClientRect().top) < 3;
+        });
       });
-      return { stampInsideWord: stamp.top >= word.top - 8 && stamp.bottom <= word.bottom + 8, marks, wordFits: word.right <= hero.querySelector('.wl-hero__links').getBoundingClientRect().right, railBeforeContent: rail.right < content.left };
-    });
-    expect(geometry.wordFits).toBe(true);
-    expect(geometry.stampInsideWord).toBe(true);
-    expect(geometry.railBeforeContent).toBe(true);
-    expect(geometry.marks).toEqual(width < 768 ? [] : [true, true, true, true]);
+      await expect.poll(marksAlign).toBe(true);
+      await measure.click();
+      await expect(measure).toHaveAttribute('aria-pressed', 'false');
+      await expect(hero.locator('.wl-messmarke:visible')).toHaveCount(0);
+    } else {
+      await expect(measure).toBeHidden();
+    }
+    await details.locator('summary').click();
     await page.locator('#lieferfelder summary').nth(1).focus();
     await page.keyboard.press('Enter');
     await expect(page.locator('#lieferfelder details[open]')).toHaveCount(1);
@@ -118,6 +136,7 @@ test('whitelabel: layer model mirrors the open field and the calculator uses can
 test('whitelabel: recheck reports a real cookie finding and malformed schema', async ({ page, context }) => {
   await open(page);
   await finished(page);
+  await page.locator('[data-wl-details] summary').click();
   await context.addCookies([{ name: 'wp-settings-1', value: 'fixture', domain: 'hasimuener.de', path: '/' }]);
   await page.locator('[data-wl-nochmal]').click();
   await finished(page);
@@ -140,9 +159,9 @@ test('whitelabel: reduced motion, document fallback and local privacy', async ({
   });
   await open(page, 768);
   await finished(page);
+  await page.locator('[data-wl-details] summary').click();
   await expect(page.locator('[data-wl-lcp-label]')).toHaveText('Ladezeit (Dokument)');
   await expect(page.locator('[data-wl-status]')).toHaveText(/^7 von 7 bestanden ·/);
-  expect(await page.locator('.wl-wort').first().evaluate(el => getComputedStyle(el).transitionDuration)).toBe('0s');
   expect(await page.locator('#marge .st-balken i').first().evaluate(el => getComputedStyle(el).transitionDuration)).toBe('0s');
   expect(await page.evaluate(() => ({ sent: window.protocolTransport.length, cookies: document.cookie, local: localStorage.length, session: sessionStorage.length }))).toEqual({ sent: 0, cookies: '', local: 0, session: 0 });
   await page.locator('[data-wl-nochmal]').click();
